@@ -1,0 +1,147 @@
+local EBC = '/lua/editor/EconomyBuildConditions.lua'
+local UCBC = '/lua/editor/UnitCountBuildConditions.lua'
+
+local BasePanicZone, BaseMilitaryZone, BaseEnemyZone = import('/mods/AI-Uveso/lua/AI/uvesoutilities.lua').GetDangerZoneRadii()
+
+local MaxCapEngineers = 0.08 -- 8% of all units can be Engineers (categories.MOBILE * categories.ENGINEER)
+
+-- ===================================================-======================================================== --
+-- ==                                 Build Engineers TECH 1,2,3 and SACU                                    == --
+-- ===================================================-======================================================== --
+BuilderGroup { BuilderGroupName = 'Swarm Engineer Builders',
+    BuildersType = 'FactoryBuilder',
+    
+    -- ============ --
+    --    TECH 1    --
+    -- ============ --
+    Builder { BuilderName = 'U1 Engineer builder Cap',
+        PlatoonTemplate = 'T1BuildEngineer',
+        Priority = 1000,
+        BuilderConditions = {
+            { EBC, 'GreaterThanEconTrend', { 0.0, 0.0 } },
+
+            { UCBC, 'UnitCapCheckLess', { 0.95 } },
+
+            { EBC, 'GreaterThanEconIncome', { 0, 0 } },
+
+            { UCBC, 'PoolLessAtLocation', { 'LocationType', 1, categories.MOBILE * categories.ENGINEER * categories.TECH1 } },
+
+            { UCBC, 'LocationFactoriesBuildingLess', { 'LocationType', 1, categories.MOBILE * categories.ENGINEER * categories.TECH1} },
+         },
+        BuilderType = 'Land',
+    },
+
+    -- ============ --
+    --    TECH 2    --
+    -- ============ --
+    Builder { BuilderName = 'U2 Engineer builder Cap',
+        PlatoonTemplate = 'T2BuildEngineer',
+        Priority = 1010,
+        BuilderConditions = {
+            { EBC, 'GreaterThanEconTrend', { 0.0, 0.0 } },
+
+            { UCBC, 'UnitCapCheckLess', { 0.95 } },
+
+            { UCBC, 'PoolLessAtLocation', { 'LocationType', 1, categories.MOBILE * categories.ENGINEER * categories.TECH2 } },
+
+            { UCBC, 'LocationFactoriesBuildingLess', { 'LocationType', 1, categories.MOBILE * categories.ENGINEER * categories.TECH1} },
+        },
+        BuilderType = 'Land',
+    },
+
+    -- ============ --
+    --    TECH 3    --
+    -- ============ --
+    Builder { BuilderName = 'U3 Engineer builder Cap',
+        PlatoonTemplate = 'T3BuildEngineer',
+        Priority = 1015,
+        BuilderConditions = {
+            { EBC, 'GreaterThanEconTrend', { 0.0, 0.0 } },
+
+            { UCBC, 'UnitCapCheckLess', { 0.95 } },
+
+            { UCBC, 'PoolLessAtLocation', { 'LocationType', 1, categories.MOBILE * categories.ENGINEER * categories.TECH3 } },
+
+            { UCBC, 'LocationFactoriesBuildingLess', { 'LocationType', 1, categories.MOBILE * categories.ENGINEER * categories.TECH1} },
+        },
+        BuilderType = 'Land',
+    },
+}
+
+BuilderGroup { BuilderGroupName = 'Swarm SACU Builder',
+    BuildersType = 'FactoryBuilder',
+
+
+    Builder { BuilderName = 'U3 Sub Commander cap',
+        PlatoonTemplate = 'T3LandSubCommander',
+        Priority = 1030,
+        BuilderConditions = {
+            { EBC, 'GreaterThanEconTrend', { 0.0, 0.0 } },
+
+            { UCBC, 'UnitCapCheckLess', { 0.95 } },
+
+            { EBC, 'GreaterThanEconIncome', { 100, 4000 } },
+
+            { UCBC, 'PoolLessAtLocation', { 'LocationType', 1, categories.MOBILE * categories.ENGINEER * categories.SUBCOMMANDER } },
+        },
+        BuilderType = 'Gate',
+    },
+    
+}
+
+-- ===================================================-======================================================== --
+-- ==                                          Engineer Transfers                                            == --
+-- ===================================================-======================================================== --
+BuilderGroup { BuilderGroupName = 'Swarm Engineer Transfer To MainBase',
+    BuildersType = 'PlatoonFormBuilder',
+    -- ============================================ --
+    --    Transfer from LocationType to MainBase    --
+    -- ============================================ --
+
+    Builder { BuilderName = 'U1 Engi Trans to MainBase',
+        PlatoonTemplate = 'U1EngineerTransfer',
+        Priority = 650,
+        InstanceCount = 3,
+        BuilderConditions = {
+            { UCBC, 'GreaterThanGameTimeSeconds', { 60 } },
+            { UCBC, 'BuildNotOnLocation', { 'LocationType', 'MAIN' } },
+            { UCBC, 'EngineerManagerUnitsAtLocation', { 'LocationType', '>', 3,  categories.MOBILE * categories.TECH1 } },
+        },
+        BuilderData = {
+            MoveToLocationType = 'MAIN',
+        },
+        BuilderType = 'Any',
+    },
+
+
+    Builder { BuilderName = 'U2 Engi Trans to MainBase',
+        PlatoonTemplate = 'U2EngineerTransfer',
+        Priority = 750,
+        InstanceCount = 3,
+        BuilderConditions = {
+            { UCBC, 'GreaterThanGameTimeSeconds', { 90 } },
+            { UCBC, 'BuildNotOnLocation', { 'LocationType', 'MAIN' } },
+            { UCBC, 'EngineerManagerUnitsAtLocation', { 'LocationType', '>', 3,  categories.MOBILE * categories.TECH2 } },
+        },
+        BuilderData = {
+            MoveToLocationType = 'MAIN',
+        },
+        BuilderType = 'Any',
+    },
+
+
+    Builder { BuilderName = 'U3 Engi Trans to MainBase',
+        PlatoonTemplate = 'U3EngineerTransfer',
+        Priority = 850,
+        InstanceCount = 3,
+        BuilderConditions = {
+            { UCBC, 'GreaterThanGameTimeSeconds', { 120 } },
+            { UCBC, 'BuildNotOnLocation', { 'LocationType', 'MAIN' } },
+            { UCBC, 'EngineerManagerUnitsAtLocation', { 'LocationType', '>', 3,  categories.MOBILE * categories.TECH3 } },
+        },
+        BuilderData = {
+            MoveToLocationType = 'MAIN',
+        },
+        BuilderType = 'Any',
+    },
+}
