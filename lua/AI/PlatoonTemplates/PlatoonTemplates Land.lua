@@ -3,7 +3,7 @@
 
 PlatoonTemplate {
     Name = 'AISwarm LandAttack Default',
-    Plan = 'AttackForceAI', -- The platoon function to use.
+    Plan = 'StrikeForceAI', -- The platoon function to use.
     GlobalSquads = {
         { categories.MOBILE * categories.LAND - categories.EXPERIMENTAL - categories.ENGINEER, -- Type of units.
           1, -- Min number of units.
@@ -15,7 +15,19 @@ PlatoonTemplate {
 
 PlatoonTemplate {
     Name = 'AISwarm LandAttack Small',
-    Plan = 'AttackForceAI', -- The platoon function to use.
+    Plan = 'StrikeForceAI', -- The platoon function to use.
+    GlobalSquads = {
+        { categories.MOBILE * categories.LAND - categories.EXPERIMENTAL - categories.ENGINEER, -- Type of units.
+          3, -- Min number of units.
+          8, -- Max number of units.
+          'attack', -- platoon types: 'support', 'attack', 'scout',
+          'GrowthFormation' }, -- platoon move formations: 'None', 'AttackFormation', 'GrowthFormation',
+    },
+}
+
+PlatoonTemplate {
+    Name = 'AISwarm LandAttack Medium',
+    Plan = 'StrikeForceAI', -- The platoon function to use.
     GlobalSquads = {
         { categories.MOBILE * categories.LAND - categories.EXPERIMENTAL - categories.ENGINEER, -- Type of units.
           5, -- Min number of units.
@@ -26,24 +38,12 @@ PlatoonTemplate {
 }
 
 PlatoonTemplate {
-    Name = 'AISwarm LandAttack Medium',
-    Plan = 'AttackForceAI', -- The platoon function to use.
-    GlobalSquads = {
-        { categories.MOBILE * categories.LAND - categories.EXPERIMENTAL - categories.ENGINEER, -- Type of units.
-          5, -- Min number of units.
-          15, -- Max number of units.
-          'attack', -- platoon types: 'support', 'attack', 'scout',
-          'GrowthFormation' }, -- platoon move formations: 'None', 'AttackFormation', 'GrowthFormation',
-    },
-}
-
-PlatoonTemplate {
     Name = 'AISwarm LandAttack Large',
     Plan = 'AttackForceAI', -- The platoon function to use.
     GlobalSquads = {
         { categories.MOBILE * categories.LAND - categories.EXPERIMENTAL - categories.ENGINEER, -- Type of units.
-          5, -- Min number of units.
-          20, -- Max number of units.
+          8, -- Min number of units.
+          15, -- Max number of units.
           'attack', -- platoon types: 'support', 'attack', 'scout',
           'GrowthFormation' }, -- platoon move formations: 'None', 'AttackFormation', 'GrowthFormation',
     },
@@ -55,9 +55,33 @@ PlatoonTemplate {
     GlobalSquads = {
         { categories.MOBILE * categories.LAND - categories.EXPERIMENTAL - categories.ENGINEER, -- Type of units.
           3, -- Min number of units.
-          10, -- Max number of units.
+          8, -- Max number of units.
+          'attack', -- platoon types: 'support', 'attack', 'scout',
+          'GrowthFormation' }, -- platoon move formations: 'None', 'AttackFormation', 'GrowthFormation',
+    },
+}
+
+PlatoonTemplate {
+    Name = 'AISwarm LandAttack Early',
+    Plan = 'StrikeForceAI', -- The platoon function to use.
+    GlobalSquads = {
+        { categories.MOBILE * categories.LAND - categories.EXPERIMENTAL - categories.ENGINEER, -- Type of units.
+          1, -- Min number of units.
+          2, -- Max number of units.
           'attack', -- platoon types: 'support', 'attack', 'scout',
           'none' }, -- platoon move formations: 'None', 'AttackFormation', 'GrowthFormation',
+    },
+}
+
+PlatoonTemplate {
+    Name = 'AISwarm LandAttack Assault',
+    Plan = 'StrikeForceAI', -- The platoon function to use.
+    GlobalSquads = {
+        { categories.MOBILE * categories.LAND - categories.EXPERIMENTAL - categories.ENGINEER, -- Type of units.
+          3, -- Min number of units.
+          15, -- Max number of units.
+          'attack', -- platoon types: 'support', 'attack', 'scout',
+          'AttackFormation' }, -- platoon move formations: 'None', 'AttackFormation', 'GrowthFormation',
     },
 }
 

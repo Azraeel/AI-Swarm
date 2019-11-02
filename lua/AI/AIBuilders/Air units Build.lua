@@ -317,7 +317,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Scout Builders',
     BuildersType = 'FactoryBuilder',
     Builder { BuilderName = 'U1 Air Scout',
         PlatoonTemplate = 'T1AirScout',
-        Priority = 600,
+        Priority = 10000,
         BuilderConditions = {
             { EBC, 'GreaterThanEconTrend', { 0.0, 0.0 } },
 
@@ -325,7 +325,9 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Scout Builders',
 
             { EBC, 'GreaterThanEconIncome', { 8, 40 } },
 
-            { UCBC, 'HaveGreaterThanUnitsWithCategory', { 1, categories.FACTORY * categories.AIR * categories.TECH1 } },
+            { UCBC, 'HaveLessThanUnitsWithCategory', { 2, categories.LAND * categories.SCOUT } },
+
+            { UCBC, 'HaveLessThanUnitsWithCategory', { 4, categories.AIR * categories.SCOUT } },
         },
         BuilderType = 'Air',
     },
@@ -333,7 +335,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Scout Builders',
 
     Builder { BuilderName = 'U3 Air Scout',
         PlatoonTemplate = 'T3AirScout',
-        Priority = 1000,
+        Priority = 20000,
         DelayEqualBuildPlattons = {'Scouts', 10},
         BuilderConditions = {
             { EBC, 'GreaterThanEconTrend', { 0.0, 0.0 } },
@@ -342,7 +344,9 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Scout Builders',
 
             { EBC, 'GreaterThanEconIncome', { 8, 40 } },
 
-            { UCBC, 'HaveGreaterThanUnitsWithCategory', { 1, categories.FACTORY * categories.AIR * categories.TECH3 }},
+            { UCBC, 'HaveLessThanUnitsWithCategory', { 2, categories.LAND * categories.SCOUT } },
+
+            { UCBC, 'HaveLessThanUnitsWithCategory', { 4, categories.AIR * categories.SCOUT } },
         },
         BuilderType = 'Air',
     },

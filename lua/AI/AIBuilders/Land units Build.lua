@@ -1,7 +1,7 @@
 local UCBC = '/lua/editor/UnitCountBuildConditions.lua'
 local EBC = '/lua/editor/EconomyBuildConditions.lua'
 local MIBC = '/lua/editor/MiscBuildConditions.lua'
-local BasePanicZone, BaseMilitaryZone, BaseEnemyZone = import('/mods/AI-Uveso/lua/AI/uvesoutilities.lua').GetDangerZoneRadii(true)
+local BasePanicZone, BaseMilitaryZone, BaseEnemyZone = import('/mods/AI-Swarm/lua/AI/swarmutilities.lua').GetDangerZoneRadii(true)
 
 local MaxAttackForce = 0.45                                                     -- 45% of all units can be attacking units (categories.MOBILE - categories.ENGINEER)
 
@@ -15,7 +15,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Scout Builders',                  
     
     Builder { BuilderName = 'U1R Land Scout',
         PlatoonTemplate = 'T1LandScout',
-        Priority = 1500,
+        Priority = 10000,
         BuilderConditions = {
             { EBC, 'GreaterThanEconTrend', { 0.0, 0.0 } },
 
@@ -298,15 +298,33 @@ BuilderGroup { BuilderGroupName = 'SU1 Land Scout Formers',                     
 BuilderGroup {
     BuilderGroupName = 'AISwarm Platoon Builder',
     BuildersType = 'PlatoonFormBuilder', -- A PlatoonFormBuilder is for builder groups of units.
+
     Builder {
-        BuilderName = 'AISwarm LandAttack Default',
-        PlatoonTemplate = 'AISwarm LandAttack Default', 
-        Priority = 100,
-        InstanceCount = 1,
+        BuilderName = 'AISwarm LandAttack Early',
+        PlatoonTemplate = 'AISwarm LandAttack Early', 
+        Priority = 500,
+        InstanceCount = 100,
         BuilderType = 'Any',
         BuilderData = {
             NeverGuardBases = true,
-            NeverGuardEngineers = false,
+            NeverGuardEngineers = true,
+        },        
+        BuilderConditions = { 
+
+            { MIBC, 'LessThanGameTime', { 420 } },
+
+        },
+    },
+
+    Builder {
+        BuilderName = 'AISwarm LandAttack Default',
+        PlatoonTemplate = 'AISwarm LandAttack Default', 
+        Priority = 101,
+        InstanceCount = 3,
+        BuilderType = 'Any',
+        BuilderData = {
+            NeverGuardBases = true,
+            NeverGuardEngineers = true,
             UseFormation = 'GrowthFormation',
         },        
         BuilderConditions = { },
@@ -315,12 +333,12 @@ BuilderGroup {
     Builder {
         BuilderName = 'AISwarm LandAttack Small',
         PlatoonTemplate = 'AISwarm LandAttack Small', 
-        Priority = 101,
-        InstanceCount = 1,
+        Priority = 102,
+        InstanceCount = 3,
         BuilderType = 'Any',
         BuilderData = {
             NeverGuardBases = true,
-            NeverGuardEngineers = false,
+            NeverGuardEngineers = true,
             UseFormation = 'GrowthFormation',
         },        
         BuilderConditions = { },
@@ -329,12 +347,12 @@ BuilderGroup {
     Builder {
         BuilderName = 'AISwarm LandAttack Medium',
         PlatoonTemplate = 'AISwarm LandAttack Medium', 
-        Priority = 102,
-        InstanceCount = 1,
+        Priority = 103,
+        InstanceCount = 3,
         BuilderType = 'Any',
         BuilderData = {
             NeverGuardBases = true,
-            NeverGuardEngineers = false,
+            NeverGuardEngineers = true,
             UseFormation = 'GrowthFormation',
         },        
         BuilderConditions = { },
@@ -343,13 +361,30 @@ BuilderGroup {
     Builder {
         BuilderName = 'AISwarm LandAttack Large',
         PlatoonTemplate = 'AISwarm LandAttack Large', 
-        Priority = 103,
-        InstanceCount = 1,
+        Priority = 100,
+        InstanceCount = 3,
         BuilderType = 'Any',
         BuilderData = {
             NeverGuardBases = true,
-            NeverGuardEngineers = false,
+            NeverGuardEngineers = true,
             UseFormation = 'GrowthFormation',
+        },        
+        BuilderConditions = { },
+    },
+
+    Builder {
+        BuilderName = 'AISwarm LandAttack Assault',
+        PlatoonTemplate = 'AISwarm LandAttack Assault', 
+        Priority = 100,
+        InstanceCount = 3,
+        BuilderType = 'Any',
+        BuilderData = {
+            NeverGuardBases = true,
+            NeverGuardEngineers = true,
+            UseFormation = 'AttackFormation',
+            ThreatWeights = {
+                IgnoreStrongerTargetsRatio = 100.0,
+            },
         },        
         BuilderConditions = { },
     },
@@ -357,8 +392,8 @@ BuilderGroup {
     Builder {
         BuilderName = 'AISwarm LandAttack Raid',
         PlatoonTemplate = 'AISwarm LandAttack Raid', 
-        Priority = 100,
-        InstanceCount = 1,
+        Priority = 101,
+        InstanceCount = 3,
         BuilderType = 'Any',
         BuilderData = {
             NeverGuardBases = true,

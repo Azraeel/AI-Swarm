@@ -68,6 +68,55 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Builders',
     },
 }
 
+BuilderGroup {
+    BuilderGroupName = 'Swarm Engineering Support Builder',
+    BuildersType = 'EngineerBuilder',
+    Builder {
+        BuilderName = 'AISwarm T2 Engineering Support UEF',
+        PlatoonTemplate = 'UEFT2EngineerBuilder',
+        Priority = 200,
+        BuilderConditions = {
+            { UCBC, 'UnitsLessAtLocation', { 'LocationType', 10, 'ENGINEERSTATION' }},
+            { UCBC, 'EngineerGreaterAtLocation', { 'LocationType', 1, 'ENGINEER TECH2' } },
+            { EBC, 'GreaterThanEconIncome',  { 10, 100}},
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.95, 1.4 }},
+        },
+        BuilderType = 'Any',
+        BuilderData = {
+            Construction = {
+                AdjacencyCategory = 'FACTORY',
+                BuildClose = true,
+                FactionIndex = 1,
+                BuildStructures = {
+                    'T2EngineerSupport',
+                },
+            }
+        }
+    },
+    Builder {
+        BuilderName = 'AISwarm T2 Engineering Support Cybran',
+        PlatoonTemplate = 'CybranT2EngineerBuilder',
+        Priority = 200,
+        BuilderConditions = {
+            { UCBC, 'UnitsLessAtLocation', { 'LocationType', 10, 'ENGINEERSTATION' }},
+            { UCBC, 'EngineerGreaterAtLocation', { 'LocationType', 1, 'ENGINEER TECH2' } },
+            { EBC, 'GreaterThanEconIncome',  { 10, 100}},
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.95, 1.4 }},
+        },
+        BuilderType = 'Any',
+        BuilderData = {
+            Construction = {
+                AdjacencyCategory = 'FACTORY',
+                BuildClose = true,
+                FactionIndex = 3,
+                BuildStructures = {
+                    'T2EngineerSupport',
+                },
+            }
+        }
+    },
+}
+
 BuilderGroup { BuilderGroupName = 'Swarm SACU Builder',
     BuildersType = 'FactoryBuilder',
 

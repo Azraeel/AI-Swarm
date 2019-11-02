@@ -928,6 +928,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Defense Anti Ground Builders',         
         BuilderData = {
             NumAssistees = 1,
             Construction = {
+                AdjacencyCategory = categories.STRUCTURE * categories.SHIELD,
                 BuildClose = false,
                 BuildStructures = {
                     'T1GroundDefense',
@@ -956,6 +957,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Defense Anti Ground Builders',         
         BuilderData = {
             NumAssistees = 1,
             Construction = {
+                AdjacencyCategory = categories.STRUCTURE * categories.SHIELD,
                 BuildClose = false,
                 BuildStructures = {
                     'T2GroundDefense',
@@ -987,6 +989,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Defense Anti Ground Builders',         
         BuilderData = {
             NumAssistees = 1,
             Construction = {
+                AdjacencyCategory = categories.STRUCTURE * categories.SHIELD,
                 BuildClose = false,
                 BuildStructures = {
                     'T3GroundDefense',

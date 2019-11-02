@@ -28,6 +28,7 @@ BaseBuilderTemplate {
         -- Engineer Tasks
         'Swarm Engineer Assistees',
         'Swarm Engineer Reclaim',
+        'Swarm Engineering Support Builder',
 
         -- Build MassExtractors / Creators
         'U1 MassBuilders',

@@ -1,4 +1,4 @@
-w#***************************************************************************
+#***************************************************************************
 #*
 #**  File     :  /lua/ai/AIBaseTemplates/TurtleExpansion.lua
 #**
@@ -14,13 +14,14 @@ BaseBuilderTemplate {
         -- ==== Expansion Builders ==== --
         -----------------------------------------------------------------------------
         -- Build an Expansion
-        'U1 Expansion Builder',
+        'Swarm Expansion Builder', 
 
         -----------------------------------------------------------------------------
         -- ==== Engineer ==== --
         -----------------------------------------------------------------------------
         -- Build Engineers Tech 1,2,3 and SACU
         'Swarm Engineer Builders',            -- Priority = 900
+        'Swarm Engineering Support Builder',
         -- Assistees
         'Swarm Engineer Assistees',
         -- Reclaim mass
