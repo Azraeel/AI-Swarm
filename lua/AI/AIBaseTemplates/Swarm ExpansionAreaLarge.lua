@@ -57,11 +57,7 @@ BaseBuilderTemplate {
         -----------------------------------------------------------------------------
         -- ==== Air Units FORMER==== --
         -----------------------------------------------------------------------------
-        'Swarm Air Formers PanicZone',
-        'Swarm Air Formers MilitaryZone',
-        'Swarm Air Formers EnemyZone',
-        'Swarm Air Formers Trasher',
-        'Swarm TorpedoBomber Formers',
+        'Swarm Air Formers',
         
         -----------------------------------------------------------------------------
         -- ==== EXPERIMENTALS BUILDER ==== --

@@ -39,7 +39,7 @@ PlatoonTemplate {
 
 PlatoonTemplate {
     Name = 'AISwarm LandAttack Large',
-    Plan = 'AttackForceAI', -- The platoon function to use.
+    Plan = 'StrikeForceAI', -- The platoon function to use.
     GlobalSquads = {
         { categories.MOBILE * categories.LAND - categories.EXPERIMENTAL - categories.ENGINEER, -- Type of units.
           8, -- Min number of units.

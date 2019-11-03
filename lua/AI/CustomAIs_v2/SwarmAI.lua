@@ -24,5 +24,6 @@ AI = {
             key = 'swarmtestcheat', -- This name will be used in the basetemplate "Swarm Test BaseTemplate.lua"
             name = "AIx: Swarm Test",
         },
+
     },
 }

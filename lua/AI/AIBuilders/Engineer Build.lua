@@ -76,7 +76,7 @@ BuilderGroup {
         PlatoonTemplate = 'UEFT2EngineerBuilder',
         Priority = 200,
         BuilderConditions = {
-            { UCBC, 'UnitsLessAtLocation', { 'LocationType', 10, 'ENGINEERSTATION' }},
+            { UCBC, 'UnitsLessAtLocation', { 'LocationType', 4, 'ENGINEERSTATION' }},
             { UCBC, 'EngineerGreaterAtLocation', { 'LocationType', 1, 'ENGINEER TECH2' } },
             { EBC, 'GreaterThanEconIncome',  { 10, 100}},
             { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.95, 1.4 }},
@@ -98,7 +98,7 @@ BuilderGroup {
         PlatoonTemplate = 'CybranT2EngineerBuilder',
         Priority = 200,
         BuilderConditions = {
-            { UCBC, 'UnitsLessAtLocation', { 'LocationType', 10, 'ENGINEERSTATION' }},
+            { UCBC, 'UnitsLessAtLocation', { 'LocationType', 4, 'ENGINEERSTATION' }},
             { UCBC, 'EngineerGreaterAtLocation', { 'LocationType', 1, 'ENGINEER TECH2' } },
             { EBC, 'GreaterThanEconIncome',  { 10, 100}},
             { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.95, 1.4 }},
@@ -129,13 +129,12 @@ BuilderGroup { BuilderGroupName = 'Swarm SACU Builder',
 
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
 
-            { EBC, 'GreaterThanEconIncome', { 100, 4000 } },
+            { EBC, 'GreaterThanEconIncome', { 50, 3000 } },
 
             { UCBC, 'PoolLessAtLocation', { 'LocationType', 1, categories.MOBILE * categories.ENGINEER * categories.SUBCOMMANDER } },
         },
         BuilderType = 'Gate',
-    },
-    
+    },    
 }
 
 -- ===================================================-======================================================== --

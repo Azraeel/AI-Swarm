@@ -20,7 +20,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Experimental Builders',           
 
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
 
-            { EBC, 'GreaterThanEconIncome', { 130, 5000 } },
+            { EBC, 'GreaterThanEconIncome', { 100, 5000 } },
         },
         BuilderType = 'Any',
         BuilderData = {
@@ -46,7 +46,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Experimental Builders',           
 
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
 
-            { EBC, 'GreaterThanEconIncome', { 130, 5000 } },
+            { EBC, 'GreaterThanEconIncome', { 100, 5000 } },
         },
         BuilderType = 'Any',
         BuilderData = {
@@ -72,7 +72,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Experimental Builders',           
 
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
 
-            { EBC, 'GreaterThanEconIncome', { 130, 5000 } },
+            { EBC, 'GreaterThanEconIncome', { 100, 5000 } },
         },
         BuilderType = 'Any',
         BuilderData = {
@@ -98,7 +98,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Experimental Builders',           
 
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
 
-            { EBC, 'GreaterThanEconIncome', { 130, 5000 } },
+            { EBC, 'GreaterThanEconIncome', { 100, 5000 } },
         },
         BuilderType = 'Any',
         BuilderData = {
@@ -124,7 +124,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Experimental Builders',           
 
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
 
-            { EBC, 'GreaterThanEconIncome', { 130, 5000 } },
+            { EBC, 'GreaterThanEconIncome', { 100, 5000 } },
         },
         BuilderType = 'Any',
         BuilderData = {
@@ -150,7 +150,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Experimental Builders',           
 
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
 
-            { EBC, 'GreaterThanEconIncome', { 130, 5000 } },
+            { EBC, 'GreaterThanEconIncome', { 100, 5000 } },
         },
         BuilderType = 'Any',
         BuilderData = {
@@ -176,7 +176,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Experimental Builders',           
 
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
 
-            { EBC, 'GreaterThanEconIncome', { 130, 5000 } },
+            { EBC, 'GreaterThanEconIncome', { 100, 5000 } },
         },
         BuilderType = 'Any',
         BuilderData = {
@@ -202,7 +202,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Experimental Builders',           
 
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
 
-            { EBC, 'GreaterThanEconIncome', { 130, 5000 } },
+            { EBC, 'GreaterThanEconIncome', { 100, 5000 } },
         },
         BuilderType = 'Any',
         BuilderData = {
@@ -228,7 +228,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Experimental Builders',           
 
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
 
-            { EBC, 'GreaterThanEconIncome', { 130, 5000 } },
+            { EBC, 'GreaterThanEconIncome', { 100, 5000 } },
         },
         BuilderType = 'Any',
         BuilderData = {
@@ -254,7 +254,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Experimental Builders',           
 
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
 
-            { EBC, 'GreaterThanEconIncome', { 130, 5000 } },
+            { EBC, 'GreaterThanEconIncome', { 100, 5000 } },
         },
         BuilderType = 'Any',
         BuilderData = {
