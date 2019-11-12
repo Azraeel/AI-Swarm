@@ -24,9 +24,9 @@ BaseBuilderTemplate {
         -- ==== Factory ==== --
         -----------------------------------------------------------------------------
         -- Build Naval Factories
-        'U1 Factory Builders Naval',
+        'Swarm Factory Builders Naval',
         -- Upgrade Naval Factories TECH1->TECH2 and TECH2->TECH3
-        'U123 Factory Upgrader Naval',
+        'Swarm Factory Upgrader Naval',
 
         -----------------------------------------------------------------------------
         -- ==== Sea Units BUILDER ==== --
@@ -37,10 +37,7 @@ BaseBuilderTemplate {
         -----------------------------------------------------------------------------
         -- ==== Sea Units FORMER ==== --
         -----------------------------------------------------------------------------
-        'Swarm Naval Formers PanicZone',
-        'Swarm Naval Formers MilitaryZone',
-        'Swarm Naval Formers EnemyZone',
-        'Swarm Naval Formers Trasher',
+        'Swarm Naval Formers',
 
         -----------------------------------------------------------------------------
         -- ==== EXPERIMENTALS BUILDER ==== --

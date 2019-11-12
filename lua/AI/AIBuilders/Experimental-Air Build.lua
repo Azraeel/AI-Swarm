@@ -18,7 +18,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Experimental Builders',            
 
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
 
-            { EBC, 'GreaterThanEconIncome', { 100, 4000 } },
+            { EBC, 'GreaterThanEconIncome', { 10, 400 } },
        },
         BuilderType = 'Any',
         BuilderData = {
@@ -44,7 +44,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Experimental Builders',            
 
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
 
-            { EBC, 'GreaterThanEconIncome', { 100, 4000 } },
+            { EBC, 'GreaterThanEconIncome', { 10, 400 } },
        },
         BuilderType = 'Any',
         BuilderData = {
@@ -69,7 +69,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Experimental Builders',            
 
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
 
-            { EBC, 'GreaterThanEconIncome', { 100, 4000 } },
+            { EBC, 'GreaterThanEconIncome', { 10, 400 } },
         },
         BuilderType = 'Any',
         BuilderData = {
@@ -92,7 +92,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Experimental Builders',            
 
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
 
-            { EBC, 'GreaterThanEconIncome', { 100, 4000 } },
+            { EBC, 'GreaterThanEconIncome', { 10, 400 } },
        },
         BuilderType = 'Any',
         BuilderData = {
@@ -118,7 +118,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Experimental Builders',            
 
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
 
-            { EBC, 'GreaterThanEconIncome', { 100, 4000 } },
+            { EBC, 'GreaterThanEconIncome', { 10, 400 } },
        },
         BuilderType = 'Any',
         BuilderData = {
@@ -143,7 +143,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Experimental Builders',            
 
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
 
-            { EBC, 'GreaterThanEconIncome', { 100, 4000 } },
+            { EBC, 'GreaterThanEconIncome', { 10, 400 } },
         },
         BuilderType = 'Any',
         BuilderData = {

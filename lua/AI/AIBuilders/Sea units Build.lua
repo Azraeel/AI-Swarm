@@ -22,7 +22,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Naval Builders',                       
 
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
 
-            { EBC, 'GreaterThanEconIncome', { 2, 20 } },
+            { EBC, 'GreaterThanEconIncome', { 0.2, 2 } },
         },
         BuilderType = 'Sea',
     },
@@ -35,7 +35,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Naval Builders',                       
 
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
 
-            { EBC, 'GreaterThanEconIncome', { 2, 20 } },
+            { EBC, 'GreaterThanEconIncome', { 0.2, 2 } },
         },
         BuilderType = 'Sea',
     },
@@ -51,7 +51,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Naval Builders',                       
 
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
 
-            { EBC, 'GreaterThanEconIncome', { 20, 300 } },
+            { EBC, 'GreaterThanEconIncome', { 2, 30 } },
         },
         BuilderType = 'Sea',
     },
@@ -64,7 +64,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Naval Builders',                       
 
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
 
-            { EBC, 'GreaterThanEconIncome', { 20, 300 } },
+            { EBC, 'GreaterThanEconIncome', { 2, 30 } },
         },
         BuilderType = 'Sea',
     },
@@ -77,7 +77,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Naval Builders',                       
 
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
 
-            { EBC, 'GreaterThanEconIncome', { 20, 300 } },
+            { EBC, 'GreaterThanEconIncome', { 2, 30 } },
         },
         BuilderType = 'Sea',
     },
@@ -90,7 +90,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Naval Builders',                       
 
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
 
-            { EBC, 'GreaterThanEconIncome', { 20, 300 } },
+            { EBC, 'GreaterThanEconIncome', { 2, 30 } },
         },
         BuilderType = 'Sea',
     },
@@ -103,7 +103,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Naval Builders',                       
 
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
 
-            { EBC, 'GreaterThanEconIncome', { 20, 300 } },
+            { EBC, 'GreaterThanEconIncome', { 2, 30 } },
         },
         BuilderType = 'Sea',
     },
@@ -119,7 +119,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Naval Builders',                       
 
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
 
-            { EBC, 'GreaterThanEconIncome', { 35, 1000 } },
+            { EBC, 'GreaterThanEconIncome', { 4, 100 } },
         },
         BuilderType = 'Sea',
     },
@@ -132,7 +132,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Naval Builders',                       
 
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
 
-            { EBC, 'GreaterThanEconIncome', { 35, 1000 } },
+            { EBC, 'GreaterThanEconIncome', { 4, 100 } },
         },
         BuilderType = 'Sea',
     },
@@ -145,7 +145,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Naval Builders',                       
 
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
 
-            { EBC, 'GreaterThanEconIncome', { 35, 1000 } },
+            { EBC, 'GreaterThanEconIncome', { 4, 100 } },
         },
         BuilderType = 'Sea',
     },
@@ -158,7 +158,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Naval Builders',                       
 
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
 
-            { EBC, 'GreaterThanEconIncome', { 35, 1000 } },
+            { EBC, 'GreaterThanEconIncome', { 4, 100 } },
         },
         BuilderType = 'Sea',
     },
@@ -171,7 +171,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Naval Builders',                       
 
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
 
-            { EBC, 'GreaterThanEconIncome', { 35, 1000 } },
+            { EBC, 'GreaterThanEconIncome', { 4, 100 } },
         },
         BuilderType = 'Sea',
     },
@@ -253,176 +253,47 @@ BuilderGroup { BuilderGroupName = 'Swarm Sonar Upgraders',                      
 -- =============== --
 --    PanicZone    --
 -- =============== --
-BuilderGroup { BuilderGroupName = 'Swarm Naval Formers PanicZone',                            -- BuilderGroupName, initalized from AIBaseTemplates in "\lua\AI\AIBaseTemplates\"
+BuilderGroup { BuilderGroupName = 'Swarm Naval Formers',                            -- BuilderGroupName, initalized from AIBaseTemplates in "\lua\AI\AIBaseTemplates\"
     BuildersType = 'PlatoonFormBuilder',
-    
-    Builder { BuilderName = 'U123 PANIC AntiSea',                                     -- Random Builder Name.
-        PlatoonTemplate = 'U123 Panic AntiSea 1 500',                           -- Template Name. These units will be formed. See: "\lua\AI\PlatoonTemplates"
-        Priority = 90,                                                          -- Priority. 1000 is normal.
-        InstanceCount = 5,                                                      -- Number of plattons that will be formed.
-        BuilderData = {
-            SearchRadius = BasePanicZone,                                       -- Searchradius for new target.
-            AggressiveMove = true,                                              -- If true, the unit will attack everything while moving to the target.
-            AttackEnemyStrength = 100000000,                                    -- Compare platoon to enemy strenght. 100 will attack equal, 50 weaker and 150 stronger enemies.
-            TargetSearchCategory = categories.MOBILE - categories.SCOUT,        -- Only find targets matching these categories.
-            MoveToCategories = {                                                -- Move to targets
-                categories.EXPERIMENTAL,
-                categories.MOBILE,
-            },
-        },
-        BuilderConditions = {                                                   -- platoon will be formed if all conditions are true
-            -- When do we want to form this ?
-            { UCBC, 'EnemyUnitsGreaterAtLocationRadius', {  BasePanicZone, 'LocationType', 0, categories.MOBILE }}, -- radius, LocationType, unitCount, categoryEnemy
-        },
-        BuilderType = 'Any',                                                    -- Build with "Land" "Air" "Sea" "Gate" or "All" Factories. - "Any" forms a Platoon.
-    },
-}
--- ================== --
---    MilitaryZone    --
--- ================== --
-BuilderGroup { BuilderGroupName = 'Swarm Naval Formers MilitaryZone',                         -- BuilderGroupName, initalized from AIBaseTemplates in "\lua\AI\AIBaseTemplates\"
-    BuildersType = 'PlatoonFormBuilder',
-    
-    Builder { BuilderName = 'U123 Military AntiSea',                                  -- Random Builder Name.
-        PlatoonTemplate = 'U123 Military AntiSea 5 5',                          -- Template Name. These units will be formed. See: "\lua\AI\PlatoonTemplates"
-        Priority = 80,                                                          -- Priority. 1000 is normal.
-        InstanceCount = 6,                                                      -- Number of plattons that will be formed.
-        BuilderData = {
-            SearchRadius = BaseMilitaryZone,                                    -- Searchradius for new target.
-            AggressiveMove = true,                                              -- If true, the unit will attack everything while moving to the target.
-            AttackEnemyStrength = 150,                                          -- Compare platoon to enemy strenght. 100 will attack equal, 50 weaker and 150 stronger enemies.
-            TargetSearchCategory = categories.MOBILE,                           -- Only find targets matching these categories.
-            MoveToCategories = {                                                -- Move to targets
-                categories.NAVAL * categories.DEFENSE,
-                categories.MOBILE * categories.NAVAL,
-                categories.ALLUNITS,
-            },
-        },
-        BuilderConditions = {                                                   -- platoon will be formed if all conditions are true
-            -- When do we want to form this ?
-            { UCBC, 'EnemyUnitsGreaterAtLocationRadius', {  BaseMilitaryZone, 'LocationType', 0, categories.MOBILE }}, -- radius, LocationType, unitCount, categoryEnemy
-            { UCBC, 'UnitsGreaterAtLocation', { 'LocationType', 6, categories.MOBILE * categories.NAVAL } },
-        },
-        BuilderType = 'Any',                                                    -- Build with "Land" "Air" "Sea" "Gate" or "All" Factories. - "Any" forms a Platoon.
-    },
-}
--- =============== --
---    EnemyZone    --
--- =============== --
-BuilderGroup { BuilderGroupName = 'Swarm Naval Formers EnemyZone',                          -- BuilderGroupName, initalized from AIBaseTemplates in "\lua\AI\AIBaseTemplates\"
-    BuildersType = 'PlatoonFormBuilder',
-    
-    Builder { BuilderName = 'U123 Kill early',
-        PlatoonTemplate = 'U123 Enemy Dual 2 2',
-        Priority = 70,
-        InstanceCount = 1,
-        BuilderData = {
-            SearchRadius = BaseEnemyZone,                                       -- Searchradius for new target.
-            AggressiveMove = true,                                              -- If true, the unit will attack everything while moving to the target.
-            AttackEnemyStrength = 200,                                          -- Compare platoon to enemy strenght. 100 will attack equal, 50 weaker and 150 stronger enemies.
-            TargetSearchCategory = categories.MOBILE + categories.STRUCTURE,    -- Only find targets matching these categories.
-            MoveToCategories = {                                                -- Move to targets
-                categories.STRUCTURE,
-                categories.MOBILE,
-                categories.ALLUNITS,
-            },
-        },
-        BuilderConditions = {                                                   -- platoon will be formed if all conditions are true
-            -- When do we want to form this ?
-            { UCBC, 'UnitsGreaterAtLocation', { 'LocationType', 5, categories.MOBILE * categories.NAVAL } },
-        },
-        BuilderType = 'Any',
-    },
-    
-    Builder { BuilderName = 'U123 Enemy AntiStructure',
-        PlatoonTemplate = 'U123 Enemy AntiSea 10 10',
-        Priority = 70,
-        InstanceCount = 2,
-        BuilderData = {
-            SearchRadius = BaseEnemyZone,                                       -- Searchradius for new target.
-            AggressiveMove = true,                                              -- If true, the unit will attack everything while moving to the target.
-            AttackEnemyStrength = 100,                                          -- Compare platoon to enemy strenght. 100 will attack equal, 50 weaker and 150 stronger enemies.
-            TargetSearchCategory = categories.STRUCTURE * categories.NAVAL,     -- Only find targets matching these categories.
-            MoveToCategories = {                                                -- Move to targets
-                categories.MOBILE * categories.NAVAL * categories.DEFENSE,
-                categories.STRUCTURE * categories.NAVAL,
-            },
-        },
-        BuilderConditions = {                                                   -- platoon will be formed if all conditions are true
-            -- When do we want to form this ?
-            { UCBC, 'UnitsGreaterAtLocation', { 'LocationType', 15, categories.MOBILE * categories.NAVAL } },
-            { UCBC, 'UnitsGreaterAtEnemy', { 1 , categories.STRUCTURE * categories.NAVAL } },
-        },
-        BuilderType = 'Any',
-    },
-    
-    Builder { BuilderName = 'U123 Enemy AntiMobile',
-        PlatoonTemplate = 'U123 Enemy AntiSea 10 10',
-        Priority = 70,
-        InstanceCount = 2,
-        BuilderData = {
-            SearchRadius = BaseEnemyZone,                                       -- Searchradius for new target.
-            AggressiveMove = true,                                              -- If true, the unit will attack everything while moving to the target.
-            AttackEnemyStrength = 100,                                          -- Compare platoon to enemy strenght. 100 will attack equal, 50 weaker and 150 stronger enemies.
-            TargetSearchCategory = categories.MOBILE * categories.NAVAL,        -- Only find targets matching these categories.
-            MoveToCategories = {                                                -- Move to targets
-                categories.MOBILE * categories.NAVAL,
-            },
-        },
-        BuilderConditions = {                                                   -- platoon will be formed if all conditions are true
-            -- When do we want to form this ?
-            { UCBC, 'UnitsGreaterAtLocation', { 'LocationType', 15, categories.MOBILE * categories.NAVAL } },
-            { UCBC, 'UnitsGreaterAtEnemy', { 1 , categories.MOBILE * categories.NAVAL } },
-        },
-        BuilderType = 'Any',
-    },
-    
     Builder {
-        BuilderName = 'U123 Anti NavalFactories',
-        PlatoonTemplate = 'U123 Enemy AntiSea 10 10',
-        Priority = 70,
-        InstanceCount = 1,
-        BuilderData = {
-            SearchRadius = BaseEnemyZone,                                       -- Searchradius for new target.
-            AggressiveMove = true,                                              -- If true, the unit will attack everything while moving to the target.
-            AttackEnemyStrength = 1000000,                                      -- Compare platoon to enemy strenght. 100 will attack equal, 50 weaker and 150 stronger enemies.
-            TargetSearchCategory = categories.STRUCTURE * categories.FACTORY * categories.NAVAL, -- Only find targets matching these categories.
-            MoveToCategories = {                                                -- Move to targets
-                categories.ALLUNITS,
-            },
-        },
-        BuilderConditions = {                                                   -- platoon will be formed if all conditions are true
-            -- When do we want to form this ?
-            { UCBC, 'UnitsGreaterAtLocation', { 'LocationType', 10, categories.MOBILE * categories.NAVAL } },
-            { UCBC, 'UnitsGreaterAtEnemy', { 1 , categories.STRUCTURE * categories.FACTORY * categories.NAVAL } },
-        },
+        BuilderName = 'Swarm Sea Attack Small',
+        PlatoonTemplate = 'Swarm Sea Attack Small',
+        Priority = 100,
+        InstanceCount = 8,
         BuilderType = 'Any',
+        BuilderData = { 
+
+            UseFormation = 'GrowthFormation',
+
+        },
+        BuilderConditions = { },
     },
-}
--- ==================== --
---    Unit Cap Trasher  --
--- ==================== --
-BuilderGroup { BuilderGroupName = 'Swarm Naval Formers Trasher',                            -- BuilderGroupName, initalized from AIBaseTemplates in "\lua\AI\AIBaseTemplates\"
-    BuildersType = 'PlatoonFormBuilder',
-    
-    Builder { BuilderName = 'U123 Anti Naval cap',
-        PlatoonTemplate = 'U123 Panic AntiSea 1 500',
-        Priority = 60,
-        InstanceCount = 1,
-        BuilderData = {
-            SearchRadius = BaseEnemyZone,                                       -- Searchradius for new target.
-            AggressiveMove = true,                                              -- If true, the unit will attack everything while moving to the target.
-            AttackEnemyStrength = 10000,                                        -- Compare platoon to enemy strenght. 100 will attack equal, 50 weaker and 150 stronger enemies.
-            TargetSearchCategory = categories.ALLUNITS,                         -- Only find targets matching these categories.
-            MoveToCategories = {                                                -- Move to targets
-                categories.ALLUNITS,
-            },
-        },
-        BuilderConditions = {                                                   -- platoon will be formed if all conditions are true
-            -- When do we want to form this ?
-            { UCBC, 'UnitCapCheckGreater', { 0.95 } },
-            { UCBC, 'EnemyUnitsLessAtLocationRadius', {  BasePanicZone, 'LocationType', 0, categories.ALLUNITS - categories.SCOUT }}, -- radius, LocationType, unitCount, categoryEnemy
-        },
+
+    Builder {
+        BuilderName = 'Swarm Sea Attack Medium',
+        PlatoonTemplate = 'Swarm Sea Attack Small',
+        Priority = 101,
+        InstanceCount = 8,
         BuilderType = 'Any',
+        BuilderData = { 
+
+            UseFormation = 'GrowthFormation',
+
+        },
+        BuilderConditions = { },
+    },
+
+    Builder {
+        BuilderName = 'Swarm Sea Attack Large',
+        PlatoonTemplate = 'Swarm Sea Attack Small',
+        Priority = 100,
+        InstanceCount = 8,
+        BuilderType = 'Any',
+        BuilderData = { 
+
+            UseFormation = 'GrowthFormation',
+
+        },
+        BuilderConditions = { },
     },
 }

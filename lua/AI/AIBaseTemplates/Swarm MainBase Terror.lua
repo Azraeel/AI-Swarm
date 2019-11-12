@@ -60,19 +60,6 @@ BaseBuilderTemplate {
         'AISwarm Platoon Builder',
 
         -----------------------------------------------------------------------------
-        -- ==== Amphibious Units BUILDER ==== --
-        -----------------------------------------------------------------------------
-        'U123 Amphibious Builders',
-
-        -----------------------------------------------------------------------------
-        -- ==== Amphibious Units FORMER==== --
-        -----------------------------------------------------------------------------
-        'U123 Amphibious Formers PanicZone',
-        'U123 Amphibious Formers MilitaryZone',
-        'U123 Amphibious Formers EnemyZone',
-        'U123 Amphibious Formers Trasher',
-
-        -----------------------------------------------------------------------------
         -- ==== Air Units BUILDER ==== --
         -----------------------------------------------------------------------------
         'Swarm Air Builders',

@@ -48,7 +48,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',                  
 
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
 
-            { EBC, 'GreaterThanEconIncome', { 2, 20 } },
+            { EBC, 'GreaterThanEconIncome', { 0.2, 2 } },
 
             { MIBC, 'CanPathToCurrentEnemy', { true } },
         },
@@ -64,39 +64,22 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',                  
 
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
 
-            { EBC, 'GreaterThanEconIncome', { 2, 20 } },
+            { EBC, 'GreaterThanEconIncome', { 0.2, 2 } },
 
             { MIBC, 'CanPathToCurrentEnemy', { true } },
         },
         BuilderType = 'Land',
     },
 
-    Builder { BuilderName = 'U1 Amphibious',
-        PlatoonTemplate = 'U1 LandSquads Amphibious',
-        Priority = 450,
-        BuilderConditions = {
-            { EBC, 'GreaterThanEconTrend', { 0.0, 0.0 } },
-
-            { UCBC, 'UnitCapCheckLess', { 0.95 } },
-
-            { EBC, 'GreaterThanEconIncome', { 2, 20 } },
-
-            { MIBC, 'CanPathToCurrentEnemy', { false } },
-
-            { UCBC, 'LocationFactoriesBuildingLess', { 'LocationType', 1, categories.HOVER * categories.TECH1} },     
-        },
-        BuilderType = 'Land',
-    },
-
     Builder { BuilderName = 'U1 Ratio AA',
         PlatoonTemplate = 'T1LandAA',
-        Priority = 530,
+        Priority = 580,
         BuilderConditions = {
             { EBC, 'GreaterThanEconTrend', { 0.0, 0.0 } },
 
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
 
-            { EBC, 'GreaterThanEconIncome', { 2, 20 } },
+            { EBC, 'GreaterThanEconIncome', { 0.2, 2 } },
 
             { MIBC, 'CanPathToCurrentEnemy', { true } },
 
@@ -117,7 +100,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',                  
 
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
 
-            { EBC, 'GreaterThanEconIncome', { 10, 200 } },
+            { EBC, 'GreaterThanEconIncome', { 1, 20 } },
 
             { MIBC, 'CanPathToCurrentEnemy', { true } },
         },
@@ -132,7 +115,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',                  
 
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
 
-            { EBC, 'GreaterThanEconIncome', { 10, 200 } },
+            { EBC, 'GreaterThanEconIncome', { 1, 20 } },
 
             { MIBC, 'CanPathToCurrentEnemy', { true } },
         },
@@ -147,7 +130,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',                  
 
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
 
-            { EBC, 'GreaterThanEconIncome', { 10, 200 } },
+            { EBC, 'GreaterThanEconIncome', { 1, 20 } },
 
             { MIBC, 'CanPathToCurrentEnemy', { false } },
 
@@ -158,13 +141,13 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',                  
 
     Builder { BuilderName = 'U2 Mobile AA',
         PlatoonTemplate = 'T2LandAA',
-        Priority = 600,
+        Priority = 665,
         BuilderConditions = {
             { EBC, 'GreaterThanEconTrend', { 0.0, 0.0 } },
 
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
 
-            { EBC, 'GreaterThanEconIncome', { 10, 200 } },
+            { EBC, 'GreaterThanEconIncome', { 1, 20 } },
 
             { MIBC, 'CanPathToCurrentEnemy', { true } },
 
@@ -179,13 +162,13 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',                  
     -- ============ --
     Builder { BuilderName = 'U3 Siege Assault Bot',
         PlatoonTemplate = 'T3LandBot',
-        Priority = 780,
+        Priority = 795,
         BuilderConditions = {
             { EBC, 'GreaterThanEconTrend', { 0.0, 0.0 } },
 
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
 
-            { EBC, 'GreaterThanEconIncome', { 35, 1000 } },
+            { EBC, 'GreaterThanEconIncome', { 3.5, 100 } },
 
             { MIBC, 'CanPathToCurrentEnemy', { true } },
         },
@@ -194,13 +177,13 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',                  
 
     Builder { BuilderName = 'U3 SniperBots',
         PlatoonTemplate = 'T3SniperBots',
-        Priority = 690,
+        Priority = 790,
         BuilderConditions = {
             { EBC, 'GreaterThanEconTrend', { 0.0, 0.0 } },
 
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
 
-            { EBC, 'GreaterThanEconIncome', { 35, 1000 } },
+            { EBC, 'GreaterThanEconIncome', { 3.5, 100 } },
 
             { MIBC, 'CanPathToCurrentEnemy', { true } },
         },
@@ -215,7 +198,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',                  
 
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
 
-            { EBC, 'GreaterThanEconIncome', { 35, 1000 } },
+            { EBC, 'GreaterThanEconIncome', { 3.5, 100 } },
 
             { MIBC, 'CanPathToCurrentEnemy', { true } },
         },
@@ -230,7 +213,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',                  
 
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
 
-            { EBC, 'GreaterThanEconIncome', { 35, 1000 } },
+            { EBC, 'GreaterThanEconIncome', { 3.5, 100 } },
 
             { MIBC, 'CanPathToCurrentEnemy', { false } },
 
@@ -241,13 +224,13 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',                  
 
     Builder { BuilderName = 'U3 Mobile AA',
         PlatoonTemplate = 'T3LandAA',
-        Priority = 700,
+        Priority = 785,
         BuilderConditions = {
             { EBC, 'GreaterThanEconTrend', { 0.0, 0.0 } },
 
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
 
-            { EBC, 'GreaterThanEconIncome', { 35, 1000 } },
+            { EBC, 'GreaterThanEconIncome', { 3.5, 100 } },
 
             { MIBC, 'CanPathToCurrentEnemy', { true } },
 
@@ -266,7 +249,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',                  
 
             { MIBC, 'CanPathToCurrentEnemy', { true } },
 
-            { EBC, 'GreaterThanEconIncome', { 35, 1000 } },
+            { EBC, 'GreaterThanEconIncome', { 3.5, 100 } },
         },
         BuilderType = 'Land',
     },
@@ -320,7 +303,7 @@ BuilderGroup {
         BuilderName = 'AISwarm LandAttack Default',
         PlatoonTemplate = 'AISwarm LandAttack Default', 
         Priority = 101,
-        InstanceCount = 3,
+        InstanceCount = 15,
         BuilderType = 'Any',
         BuilderData = {
             NeverGuardBases = true,
@@ -334,7 +317,7 @@ BuilderGroup {
         BuilderName = 'AISwarm LandAttack Small',
         PlatoonTemplate = 'AISwarm LandAttack Small', 
         Priority = 102,
-        InstanceCount = 3,
+        InstanceCount = 15,
         BuilderType = 'Any',
         BuilderData = {
             NeverGuardBases = true,
@@ -348,7 +331,7 @@ BuilderGroup {
         BuilderName = 'AISwarm LandAttack Medium',
         PlatoonTemplate = 'AISwarm LandAttack Medium', 
         Priority = 103,
-        InstanceCount = 3,
+        InstanceCount = 15,
         BuilderType = 'Any',
         BuilderData = {
             NeverGuardBases = true,
@@ -362,7 +345,7 @@ BuilderGroup {
         BuilderName = 'AISwarm LandAttack Large',
         PlatoonTemplate = 'AISwarm LandAttack Large', 
         Priority = 100,
-        InstanceCount = 3,
+        InstanceCount = 15,
         BuilderType = 'Any',
         BuilderData = {
             NeverGuardBases = true,
@@ -376,7 +359,7 @@ BuilderGroup {
         BuilderName = 'AISwarm LandAttack Assault',
         PlatoonTemplate = 'AISwarm LandAttack Assault', 
         Priority = 100,
-        InstanceCount = 3,
+        InstanceCount = 15,
         BuilderType = 'Any',
         BuilderData = {
             NeverGuardBases = true,
@@ -393,7 +376,7 @@ BuilderGroup {
         BuilderName = 'AISwarm LandAttack Raid',
         PlatoonTemplate = 'AISwarm LandAttack Raid', 
         Priority = 101,
-        InstanceCount = 3,
+        InstanceCount = 15,
         BuilderType = 'Any',
         BuilderData = {
             NeverGuardBases = true,

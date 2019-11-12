@@ -16,39 +16,39 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Builders',
     -- ============ --
     Builder { BuilderName = 'U1 Interceptors',
         PlatoonTemplate = 'T1AirFighter',
-        Priority = 590,
+        Priority = 591,
         BuilderConditions = {
             { EBC, 'GreaterThanEconTrend', { 0.0, 0.0 } },
 
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
 
-            { EBC, 'GreaterThanEconIncome', { 2, 20 } },
+            { EBC, 'GreaterThanEconIncome', { 0.2, 2 } },
         },
         BuilderType = 'Air',
     },
 
     Builder { BuilderName = 'U1 Bomber',
         PlatoonTemplate = 'T1AirBomber',
-        Priority = 585,
+        Priority = 590,
         BuilderConditions = {
             { EBC, 'GreaterThanEconTrend', { 0.0, 0.0 } },
 
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
 
-            { EBC, 'GreaterThanEconIncome', { 2, 20 } },
+            { EBC, 'GreaterThanEconIncome', { 0.2, 2 } },
         },
         BuilderType = 'Air',
     },
 
     Builder { BuilderName = 'U1 Gunship',
         PlatoonTemplate = 'T1Gunship',
-        Priority = 580,
+        Priority = 585,
         BuilderConditions = {
             { EBC, 'GreaterThanEconTrend', { 0.0, 0.0 } },
 
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
 
-            { EBC, 'GreaterThanEconIncome', { 2, 20 } },
+            { EBC, 'GreaterThanEconIncome', { 0.2, 2 } },
         },
         BuilderType = 'Air',
     },
@@ -61,59 +61,59 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Builders',
 
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
 
-            { EBC, 'GreaterThanEconIncome', { 10, 200 } },
+            { EBC, 'GreaterThanEconIncome', { 1, 20 } },
         },
         BuilderType = 'Air',
     },
 
-    Builder { BuilderName = 'U2 Gunship',
+    Builder { BuilderName = 'U2 Bomber',
         PlatoonTemplate = 'T2FighterBomber',
-        Priority = 675,
+        Priority = 680,
         BuilderConditions = {
             { EBC, 'GreaterThanEconTrend', { 0.0, 0.0 } },
 
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
 
-            { EBC, 'GreaterThanEconIncome', { 10, 200 } },
+            { EBC, 'GreaterThanEconIncome', { 1, 20 } },
         },
         BuilderType = 'Air',
     },
 
     Builder { BuilderName = 'U3 Fighter',
         PlatoonTemplate = 'T3AirFighter',
-        Priority = 850,
+        Priority = 851,
         BuilderConditions = {
             { EBC, 'GreaterThanEconTrend', { 0.0, 0.0 } },
 
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
 
-            { EBC, 'GreaterThanEconIncome', { 35, 1000 } },
+            { EBC, 'GreaterThanEconIncome', { 2.5, 100 } },
         },
         BuilderType = 'Air',
     },
 
     Builder { BuilderName = 'U3 Bomber',
         PlatoonTemplate = 'T3AirBomber',
-        Priority = 845,
+        Priority = 850,
         BuilderConditions = {
             { EBC, 'GreaterThanEconTrend', { 0.0, 0.0 } },
 
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
 
-            { EBC, 'GreaterThanEconIncome', { 35, 1000 } },
+            { EBC, 'GreaterThanEconIncome', { 2.5, 100 } },
         },
         BuilderType = 'Air',
     },
 
     Builder { BuilderName = 'U3 Gunship',
         PlatoonTemplate = 'T3AirGunship',
-        Priority = 845,
+        Priority = 850,
         BuilderConditions = {
             { EBC, 'GreaterThanEconTrend', { 0.0, 0.0 } },
 
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
 
-            { EBC, 'GreaterThanEconIncome', { 35, 1000 } },
+            { EBC, 'GreaterThanEconIncome', { 2.5, 100 } },
         },
         BuilderType = 'Air',
     },
@@ -263,9 +263,6 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Scout Formers',
 }
 
 
--- ===================================================-======================================================== --
--- ==                                      TorpedoBomber Formbuilder                                         == --
--- ===================================================-======================================================== --
 BuilderGroup { BuilderGroupName = 'Swarm Air Formers',
     BuildersType = 'PlatoonFormBuilder',                                        -- BuilderTypes are: EngineerBuilder, FactoryBuilder, PlatoonFormBuilder.
     
@@ -294,13 +291,13 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Formers',
     },
 
     Builder {
-        BuilderName = 'AISwarm AirAttack Gunships',
+        BuilderName = 'AISwarm Gunship Attack',
         PlatoonTemplate = 'GunshipAttack',
         Priority = 100,
         InstanceCount = 3,
         BuilderType = 'Any',
         BuilderData = { 
-           UseFormation = 'GrowthFormation', 
+        	UseFormation = 'GrowthFormation', 
         },
         BuilderConditions = { },
     },
@@ -311,17 +308,13 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Formers',
         Priority = 100,
         InstanceCount = 3,
         BuilderType = 'Any',
-        BuilderData = {
-            MarkerType = 'Mass',            
-            MoveFirst = 'Random',
-            MoveNext = 'Threat',
-            ThreatType = 'Economy',             
-            FindHighestThreat = false,                      
-            AvoidBases = true,
-            AvoidBasesRadius = 75,
-            AggressiveMove = true,      
-            AvoidClosestRadius = 50, 
-            UseFormation = 'GrowthFormation',        
+        BuilderData = { 
+            UseFormation = 'GrowthFormation',
+            PrioritizedCategories = {
+                'MASSEXTRACTION',
+                'ENERGYPRODUCTION',
+                'MASSFABRICATION',
+            },        
         },
         BuilderConditions = { },
     },
@@ -337,7 +330,8 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Formers',
             PrioritizedCategories = {
                 'MASSEXTRACTION',
                 'ENERGYPRODUCTION',
-                'MASSFABRICATION',       
+                'MASSFABRICATION',
+            },       
         },
         BuilderConditions = { },
     },
