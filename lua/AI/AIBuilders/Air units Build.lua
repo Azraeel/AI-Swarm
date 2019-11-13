@@ -16,7 +16,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Builders',
     -- ============ --
     Builder { BuilderName = 'U1 Interceptors',
         PlatoonTemplate = 'T1AirFighter',
-        Priority = 591,
+        Priority = 590,
         BuilderConditions = {
             { EBC, 'GreaterThanEconTrend', { 0.0, 0.0 } },
 
@@ -81,7 +81,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Builders',
 
     Builder { BuilderName = 'U3 Fighter',
         PlatoonTemplate = 'T3AirFighter',
-        Priority = 851,
+        Priority = 850,
         BuilderConditions = {
             { EBC, 'GreaterThanEconTrend', { 0.0, 0.0 } },
 

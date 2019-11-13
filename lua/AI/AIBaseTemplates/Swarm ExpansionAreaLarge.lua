@@ -8,7 +8,7 @@
 #****************************************************************************
 
 BaseBuilderTemplate {
-    BaseTemplateName = 'SwarmExpansionArea',
+    BaseTemplateName = 'SwarmExpansionAreaLarge',
     Builders = {
         -----------------------------------------------------------------------------
         -- ==== Engineer ==== --
@@ -143,7 +143,7 @@ BaseBuilderTemplate {
         if personality == 'swarmgrowing' or personality == 'swarmgrowingcheat' 
         or personality == 'swarmterror' or personality == 'swarmterrorcheat'
         or personality == 'eternalswarm' or personality == 'eternalswarm' then
-            return 5000, 'SwarmExpansionArea'
+            return 5000, 'SwarmExpansionAreaLarge'
         end
     end,
 }
