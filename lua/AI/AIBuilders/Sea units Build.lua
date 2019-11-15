@@ -29,7 +29,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Naval Builders',                       
 
     Builder { BuilderName = 'U1 Sub',
         PlatoonTemplate = 'T1SeaSub',
-        Priority = 535,
+        Priority = 550,
         BuilderConditions = {
             { EBC, 'GreaterThanEconTrend', { 0.0, 0.0 } },
 
@@ -45,7 +45,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Naval Builders',                       
     -- ============ --
     Builder { BuilderName = 'U2 Sea Destroyer',
         PlatoonTemplate = 'T2SeaDestroyer',
-        Priority = 675,
+        Priority = 665,
         BuilderConditions = {
             { EBC, 'GreaterThanEconTrend', { 0.0, 0.0 } },
 

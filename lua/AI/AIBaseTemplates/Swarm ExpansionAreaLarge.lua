@@ -143,7 +143,7 @@ BaseBuilderTemplate {
         if personality == 'swarmgrowing' or personality == 'swarmgrowingcheat' 
         or personality == 'swarmterror' or personality == 'swarmterrorcheat'
         or personality == 'eternalswarm' or personality == 'eternalswarm' then
-            return 5000, 'SwarmExpansionAreaLarge'
+            return 5000, 'swarmterror'
         end
     end,
 }

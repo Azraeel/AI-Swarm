@@ -40,9 +40,9 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',                  
     -- ============ --
     --    TECH 1    --
     -- ============ --
-    Builder { BuilderName = 'U1 Ratio Tank',
-        PlatoonTemplate = 'T1LandDFTank',
-        Priority = 590,
+    Builder { BuilderName = 'T1LandDefaultQueue',
+        PlatoonTemplate = 'T1LandDefaultQueue',
+        Priority = 500,
         BuilderConditions = {
             { EBC, 'GreaterThanEconTrend', { 0.0, 0.0 } },
 
@@ -54,62 +54,13 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',                  
         },
         BuilderType = 'Land',
     },
-
-
-    Builder { BuilderName = 'U1 Ratio Bot',
-        PlatoonTemplate = 'T1LandDFBot',
-        Priority = 550,
-        BuilderConditions = {
-            { EBC, 'GreaterThanEconTrend', { 0.0, 0.0 } },
-
-            { UCBC, 'UnitCapCheckLess', { 0.95 } },
-
-            { EBC, 'GreaterThanEconIncome', { 0.2, 2 } },
-
-            { MIBC, 'CanPathToCurrentEnemy', { true } },
-        },
-        BuilderType = 'Land',
-    },
-
-    Builder { BuilderName = 'U1 Ratio AA',
-        PlatoonTemplate = 'T1LandAA',
-        Priority = 580,
-        BuilderConditions = {
-            { EBC, 'GreaterThanEconTrend', { 0.0, 0.0 } },
-
-            { UCBC, 'UnitCapCheckLess', { 0.95 } },
-
-            { EBC, 'GreaterThanEconIncome', { 0.2, 2 } },
-
-            { MIBC, 'CanPathToCurrentEnemy', { true } },
-
-            { UCBC, 'HaveLessThanArmyPoolWithCategory', { 15, categories.ANTIAIR} },
-        },
-        BuilderType = 'Land',
-    },
-
 
     -- ============ --
     --    TECH 2    --
     -- ============ --
-    Builder { BuilderName = 'U2 DFTank',
-        PlatoonTemplate = 'T2LandDFTank',
-        Priority = 680,
-        BuilderConditions = {
-            { EBC, 'GreaterThanEconTrend', { 0.0, 0.0 } },
-
-            { UCBC, 'UnitCapCheckLess', { 0.95 } },
-
-            { EBC, 'GreaterThanEconIncome', { 1, 20 } },
-
-            { MIBC, 'CanPathToCurrentEnemy', { true } },
-        },
-        BuilderType = 'Land',
-    },
-
-    Builder { BuilderName = 'U2 AttackTank',
-        PlatoonTemplate = 'T2AttackTank',
-        Priority = 680,
+    Builder { BuilderName = 'T2LandDefaultQueue',
+        PlatoonTemplate = 'T2LandDefaultQueue',
+        Priority = 700,
         BuilderConditions = {
             { EBC, 'GreaterThanEconTrend', { 0.0, 0.0 } },
 
@@ -124,7 +75,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',                  
 
     Builder { BuilderName = 'U2 Amphibious',
         PlatoonTemplate = 'U2 LandSquads Amphibious',
-        Priority = 260,
+        Priority = 300,
         BuilderConditions = {
             { EBC, 'GreaterThanEconTrend', { 0.0, 0.0 } },
 
@@ -139,60 +90,12 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',                  
         BuilderType = 'Land',
     },
 
-    Builder { BuilderName = 'U2 Mobile AA',
-        PlatoonTemplate = 'T2LandAA',
-        Priority = 665,
-        BuilderConditions = {
-            { EBC, 'GreaterThanEconTrend', { 0.0, 0.0 } },
-
-            { UCBC, 'UnitCapCheckLess', { 0.95 } },
-
-            { EBC, 'GreaterThanEconIncome', { 1, 20 } },
-
-            { MIBC, 'CanPathToCurrentEnemy', { true } },
-
-            { UCBC, 'HaveLessThanArmyPoolWithCategory', { 15, categories.ANTIAIR} },
-        },
-        BuilderType = 'Land',
-    },
-
-
     -- ============ --
     --    TECH 3    --
     -- ============ --
-    Builder { BuilderName = 'U3 Siege Assault Bot',
-        PlatoonTemplate = 'T3LandBot',
-        Priority = 795,
-        BuilderConditions = {
-            { EBC, 'GreaterThanEconTrend', { 0.0, 0.0 } },
-
-            { UCBC, 'UnitCapCheckLess', { 0.95 } },
-
-            { EBC, 'GreaterThanEconIncome', { 3.5, 100 } },
-
-            { MIBC, 'CanPathToCurrentEnemy', { true } },
-        },
-        BuilderType = 'Land',
-    },
-
-    Builder { BuilderName = 'U3 SniperBots',
-        PlatoonTemplate = 'T3SniperBots',
-        Priority = 790,
-        BuilderConditions = {
-            { EBC, 'GreaterThanEconTrend', { 0.0, 0.0 } },
-
-            { UCBC, 'UnitCapCheckLess', { 0.95 } },
-
-            { EBC, 'GreaterThanEconIncome', { 3.5, 100 } },
-
-            { MIBC, 'CanPathToCurrentEnemy', { true } },
-        },
-        BuilderType = 'Land',
-    },
-
-    Builder { BuilderName = 'U3 ArmoredAssault',
-        PlatoonTemplate = 'T3ArmoredAssault',
-        Priority = 825,
+    Builder { BuilderName = 'T3LandDefaultQueue',
+        PlatoonTemplate = 'T3LandDefaultQueue',
+        Priority = 800,
         BuilderConditions = {
             { EBC, 'GreaterThanEconTrend', { 0.0, 0.0 } },
 
@@ -207,7 +110,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',                  
 
     Builder { BuilderName = 'U3 Amphibious',
         PlatoonTemplate = 'U3 LandSquads Amphibious',
-        Priority = 350,
+        Priority = 400,
         BuilderConditions = {
             { EBC, 'GreaterThanEconTrend', { 0.0, 0.0 } },
 
@@ -218,38 +121,6 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',                  
             { MIBC, 'CanPathToCurrentEnemy', { false } },
 
             { UCBC, 'LocationFactoriesBuildingLess', { 'LocationType', 1, categories.MOBILE * categories.TECH1} },     
-        },
-        BuilderType = 'Land',
-    },
-
-    Builder { BuilderName = 'U3 Mobile AA',
-        PlatoonTemplate = 'T3LandAA',
-        Priority = 785,
-        BuilderConditions = {
-            { EBC, 'GreaterThanEconTrend', { 0.0, 0.0 } },
-
-            { UCBC, 'UnitCapCheckLess', { 0.95 } },
-
-            { EBC, 'GreaterThanEconIncome', { 3.5, 100 } },
-
-            { MIBC, 'CanPathToCurrentEnemy', { true } },
-
-            { UCBC, 'HaveLessThanArmyPoolWithCategory', { 15, categories.ANTIAIR} },
-        },
-        BuilderType = 'Land',
-    },
-
-    Builder { BuilderName = 'U3 MobileShields',
-        PlatoonTemplate = 'T3MobileShields',
-        Priority = 610,
-        BuilderConditions = {
-            { EBC, 'GreaterThanEconTrend', { 0.0, 0.0 } },
-
-            { UCBC, 'UnitCapCheckLess', { 0.95 } },
-
-            { MIBC, 'CanPathToCurrentEnemy', { true } },
-
-            { EBC, 'GreaterThanEconIncome', { 3.5, 100 } },
         },
         BuilderType = 'Land',
     },

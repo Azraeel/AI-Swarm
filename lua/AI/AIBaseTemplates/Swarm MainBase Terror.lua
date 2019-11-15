@@ -189,7 +189,7 @@ BaseBuilderTemplate {
         local personality = ScenarioInfo.ArmySetup[aiBrain.Name].AIPersonality
         if personality == 'swarmterror' or personality == 'swarmterrorcheat' then
             --LOG('### M-FirstBaseFunction '..personality)
-            return 2000, 'SwarmTerrorTemplate'
+            return 2000, 'swarmterror'
         end
         return -1
     end,
