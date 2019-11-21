@@ -11,12 +11,12 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
     -- =============== --
     Builder { BuilderName = 'U1 Assist 1st T2 Factory Upgrade',
         PlatoonTemplate = 'EngineerAssist',
-        Priority = 200,
+        Priority = 150,
         InstanceCount = 20,
         BuilderConditions = {
             { EBC, 'GreaterThanEconTrend', { 0.0, 0.0 } },
 
-            { EBC, 'GreaterThanEconIncome', { 14, 100 } },
+            { EBC, 'GreaterThanEconIncome', { 1.4, 20 } },
         },
         BuilderType = 'Any',
         BuilderData = {
@@ -32,12 +32,12 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
     },
     Builder { BuilderName = 'U1 Assist 1st T3 Factory Upgrade',
         PlatoonTemplate = 'EngineerAssist',
-        Priority = 300,
+        Priority = 200,
         InstanceCount = 20,
         BuilderConditions = {
             { EBC, 'GreaterThanEconTrend', { 0.0, 0.0 } },
 
-            { EBC, 'GreaterThanEconIncome', { 30, 400 } },
+            { EBC, 'GreaterThanEconIncome', { 3, 40 } },
         },
         BuilderType = 'Any',
         BuilderData = {
@@ -53,12 +53,12 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
     },
     Builder { BuilderName = 'U2 Assist 1st T3 Factory Upgrade',
         PlatoonTemplate = 'T2EngineerAssist',
-        Priority = 350,
+        Priority = 210,
         InstanceCount = 5,
         BuilderConditions = {
             { EBC, 'GreaterThanEconTrend', { 0.0, 0.0 } },
 
-            { EBC, 'GreaterThanEconIncome', { 34, 500 } },
+            { EBC, 'GreaterThanEconIncome', { 3.4, 50 } },
         },
         BuilderType = 'Any',
         BuilderData = {
@@ -74,12 +74,12 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
     },
     Builder { BuilderName = 'U2 Assist Factory Upgrade',
         PlatoonTemplate = 'T2EngineerAssist',
-        Priority = 300,
+        Priority = 250,
         InstanceCount = 20,
         BuilderConditions = {
             { EBC, 'GreaterThanEconTrend', { 0.0, 0.0 } },
 
-            { EBC, 'GreaterThanEconIncome', { 25, 350 } },
+            { EBC, 'GreaterThanEconIncome', { 2.5, 30 } },
         },
         BuilderType = 'Any',
         BuilderData = {
@@ -102,7 +102,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
         BuilderConditions = {
             { EBC, 'GreaterThanEconTrend', { 0.0, 0.0 } },
 
-            { EBC, 'GreaterThanEconIncome', { 15, 200 } },
+            { EBC, 'GreaterThanEconIncome', { 1.5, 20 } },
 
             { UCBC, 'GreaterThanGameTimeSeconds', { 60*15 } },
         },
@@ -126,7 +126,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
         BuilderConditions = {
             { EBC, 'GreaterThanEconTrend', { 0.0, 0.0 } },
 
-            { EBC, 'GreaterThanEconIncome', { 23, 260 } },
+            { EBC, 'GreaterThanEconIncome', { 1.5, 30 } },
 
             { UCBC, 'GreaterThanGameTimeSeconds', { 60*15 } },
         },
@@ -153,7 +153,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
         BuilderConditions = {
             { EBC, 'GreaterThanEconTrend', { 0.0, 0.0 } },
 
-            { EBC, 'GreaterThanEconIncome', { 20, 150 } },
+            { EBC, 'GreaterThanEconIncome', { 2.0, 20 } },
         },
         BuilderType = 'Any',
         BuilderData = {
@@ -174,7 +174,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
         BuilderConditions = {
             { EBC, 'GreaterThanEconTrend', { 0.0, 0.0 } },
 
-            { EBC, 'GreaterThanEconIncome', { 22, 190 } },
+            { EBC, 'GreaterThanEconIncome', { 2, 20 } },
         },
         BuilderType = 'Any',
         BuilderData = {
@@ -196,7 +196,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
         BuilderConditions = {
             { EBC, 'GreaterThanEconTrend', { 0.0, 0.0 } },
 
-            { EBC, 'GreaterThanEconIncome', { 10, 100 } },
+            { EBC, 'GreaterThanEconIncome', { 2, 20 } },
         },
         BuilderType = 'Any',
         BuilderData = {
@@ -218,7 +218,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
         BuilderConditions = {
             { EBC, 'GreaterThanEconTrend', { 0.0, 0.0 } },
 
-            { EBC, 'GreaterThanEconIncome', { 20, 200 } },
+            { EBC, 'GreaterThanEconIncome', { 4, 50 } },
         },
         BuilderType = 'Any',
         BuilderData = {
@@ -243,7 +243,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
         BuilderConditions = {
             { EBC, 'GreaterThanEconTrend', { 0.0, 0.0 } },
 
-            { EBC, 'GreaterThanEconIncome', { 500, 25000 } },
+            { EBC, 'GreaterThanEconIncome', { 50, 900 } },
         },
         BuilderType = 'Any',
         BuilderData = {
@@ -264,7 +264,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
         BuilderConditions = {
             { EBC, 'GreaterThanEconTrend', { 0.0, 0.0 } },
 
-            { EBC, 'GreaterThanEconIncome', { 500, 25000 } },
+            { EBC, 'GreaterThanEconIncome', { 50, 900 } },
         },
         BuilderType = 'Any',
         BuilderData = {
@@ -285,7 +285,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
         BuilderConditions = {
             { EBC, 'GreaterThanEconTrend', { 0.0, 0.0 } },
 
-            { EBC, 'GreaterThanEconIncome', { 500, 25000 } },
+            { EBC, 'GreaterThanEconIncome', { 50, 900 } },
         },
         BuilderType = 'Any',
         BuilderData = {
@@ -304,19 +304,19 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
     -- =================== --
     Builder { BuilderName = 'U1 Assist Experimental',
         PlatoonTemplate = 'EngineerAssist',
-        Priority = 1000,
+        Priority = 1500,
         InstanceCount = 50,
         BuilderConditions = {
             { EBC, 'GreaterThanEconTrend', { 0.0, 0.0 } },
 
-            { EBC, 'GreaterThanEconIncome', { 85, 5000 } },
+            { EBC, 'GreaterThanEconIncome', { 8.5, 200 } },
         },
         BuilderType = 'Any',
         BuilderData = {
             Assist = {
                 AssistLocation = 'LocationType',
                 AssisteeType = 'Structure',
-                AssistRange = 400,
+                AssistRange = 700,
                 AssistClosestUnit = true,                                       -- Assist the closest unit instead unit with the least number of assisters
                 BeingBuiltCategories = {'EXPERIMENTAL'},                        -- Unitcategories must be type string
                 AssistUntilFinished = true,
@@ -326,19 +326,19 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
     },
     Builder { BuilderName = 'U2 Assist Experimental',
         PlatoonTemplate = 'T2EngineerAssist',
-        Priority = 1010,
+        Priority = 1500,
         InstanceCount = 50,
         BuilderConditions = {
             { EBC, 'GreaterThanEconTrend', { 0.0, 0.0 } },
 
-            { EBC, 'GreaterThanEconIncome', { 90, 5000 } },
+            { EBC, 'GreaterThanEconIncome', { 8.5, 200 } },
         },
         BuilderType = 'Any',
         BuilderData = {
             Assist = {
                 AssistLocation = 'LocationType',
                 AssisteeType = 'Structure',
-                AssistRange = 400,
+                AssistRange = 700,
                 AssistClosestUnit = true,                                       -- Assist the closest unit instead unit with the least number of assisters
                 BeingBuiltCategories = {'EXPERIMENTAL ECONOMIC, EXPERIMENTAL SHIELD, EXPERIMENTAL MOBILE'},-- Unitcategories must be type string
                 AssistUntilFinished = true,
@@ -348,19 +348,19 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
     },
     Builder { BuilderName = 'U3 Assist Experimental',
         PlatoonTemplate = 'T3EngineerAssistNoSUB',
-        Priority = 1100,
+        Priority = 1500,
         InstanceCount = 15,
         BuilderConditions = {
             { EBC, 'GreaterThanEconTrend', { 0.0, 0.0 } },
 
-            { EBC, 'GreaterThanEconIncome', { 95, 5000 } },
+            { EBC, 'GreaterThanEconIncome', { 8.5, 200 } },
         },
         BuilderType = 'Any',
         BuilderData = {
             Assist = {
                 AssistLocation = 'LocationType',
                 AssisteeType = 'Structure',
-                AssistRange = 400,
+                AssistRange = 700,
                 AssistClosestUnit = true,                                       -- Assist the closest unit instead unit with the least number of assisters
                 BeingBuiltCategories = {'EXPERIMENTAL ECONOMIC, EXPERIMENTAL SHIELD, EXPERIMENTAL MOBILE'},-- Unitcategories must be type string
                 AssistUntilFinished = true,
@@ -370,19 +370,19 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
     },
     Builder { BuilderName = 'U3 Assist Experimental',
         PlatoonTemplate = 'T3EngineerAssistSUB',
-        Priority = 1200,
+        Priority = 1500,
         InstanceCount = 30,
         BuilderConditions = {
             { EBC, 'GreaterThanEconTrend', { 0.0, 0.0 } },
 
-            { EBC, 'GreaterThanEconIncome', { 95, 5000 } },
+            { EBC, 'GreaterThanEconIncome', { 8.5, 200 } },
         },
         BuilderType = 'Any',
         BuilderData = {
             Assist = {
                 AssistLocation = 'LocationType',
                 AssisteeType = 'Structure',
-                AssistRange = 400,
+                AssistRange = 700,
                 AssistClosestUnit = true,                                       -- Assist the closest unit instead unit with the least number of assisters
                 BeingBuiltCategories = {'EXPERIMENTAL ECONOMIC, EXPERIMENTAL SHIELD, EXPERIMENTAL MOBILE'},-- Unitcategories must be type string
                 AssistUntilFinished = true,
@@ -401,7 +401,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
         BuilderConditions = {
             { EBC, 'GreaterThanEconTrend', { 0.0, 0.0 } },
 
-            { EBC, 'GreaterThanEconIncome', { 8, 40 } },
+            { EBC, 'GreaterThanEconIncome', { .8, 4 } },
         },
         BuilderType = 'Any',
         BuilderData = {
@@ -431,7 +431,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
             { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 1, categories.MOBILE * categories.LAND * categories.ENGINEER * categories.TECH1 } },
             -- Have we the eco to build it ?
             { EBC, 'GreaterThanEconTrend', { 0.0, 0.0 } }, -- relative income
-            { EBC, 'GreaterThanEconStorageRatio', { 0.40, 0.99}}, -- Ratio from 0 to 1. (1=100%)
+            { EBC, 'GreaterThanEconStorageRatio', { 0.40, 0.50}}, -- Ratio from 0 to 1. (1=100%)
             -- Don't build it if...
         },
         BuilderData = {
@@ -451,7 +451,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
             { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 1, categories.MOBILE * categories.LAND * categories.ENGINEER * categories.TECH2 } },
             -- Have we the eco to build it ?
             { EBC, 'GreaterThanEconTrend', { 0.0, 0.0 } }, -- relative income
-            { EBC, 'GreaterThanEconStorageRatio', { 0.40, 0.99}}, -- Ratio from 0 to 1. (1=100%)
+            { EBC, 'GreaterThanEconStorageRatio', { 0.40, 0.50}}, -- Ratio from 0 to 1. (1=100%)
             -- Don't build it if...
         },
         BuilderData = {
@@ -471,7 +471,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
             { EBC, 'GreaterThanEconTrend', { 0.0, 0.0 } }, -- relative income
             { UCBC, 'DamagedStructuresInArea', { 'LocationType', }},
             { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 0, categories.MOBILE * categories.LAND * categories.ENGINEER * categories.TECH1 } },
-            { EBC, 'GreaterThanEconStorageRatio', { 0.40, 0.99}}, -- Ratio from 0 to 1. (1=100%)
+            { EBC, 'GreaterThanEconStorageRatio', { 0.40, 0.50}}, -- Ratio from 0 to 1. (1=100%)
         },
         BuilderData = {
             LocationType = 'LocationType',
@@ -487,7 +487,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
             { EBC, 'GreaterThanEconTrend', { 0.0, 0.0 } }, -- relative income
             { UCBC, 'DamagedStructuresInArea', { 'LocationType', }},
             { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 0, categories.MOBILE * categories.LAND * categories.ENGINEER * categories.TECH2 } },
-            { EBC, 'GreaterThanEconStorageRatio', { 0.40, 0.99}}, -- Ratio from 0 to 1. (1=100%)
+            { EBC, 'GreaterThanEconStorageRatio', { 0.40, 0.50}}, -- Ratio from 0 to 1. (1=100%)
         },
         BuilderData = {
             LocationType = 'LocationType',

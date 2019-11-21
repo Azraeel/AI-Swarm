@@ -26,17 +26,17 @@ PlatoonTemplate { Name = 'T1LandDefaultQueue',
 PlatoonTemplate { Name = 'T2LandDefaultQueue',
     FactionSquads = {
         UEF = {
-            { 'uel0202', 1, 4, 'Guard', 'none' },       -- Heavy Tank
+            { 'uel0202', 1, 5, 'Guard', 'none' },       -- Heavy Tank
             { 'del0204', 1, 4, 'Attack', 'none' },      -- Gatling Bot
             { 'uel0111', 1, 1, 'Artillery', 'none' },   -- MML
-            { 'uel0205', 1, 1, 'Guard', 'none' },       -- AA
-            { 'uel0307', 1, 2, 'Guard', 'none' },       -- Mobile Shield
+            { 'uel0205', 1, 2, 'Guard', 'none' },       -- AA
+            { 'uel0307', 1, 1, 'Guard', 'none' },       -- Mobile Shield
          },
         Aeon = {
             { 'ual0202', 1, 6, 'Attack', 'none' },      -- Heavy Tank
-            { 'ual0111', 1, 1, 'Artillery', 'none' },   -- MML
+            { 'ual0111', 1, 2, 'Artillery', 'none' },   -- MML
             { 'ual0205', 1, 1, 'Guard', 'none' },       -- AA
-            { 'ual0307', 1, 2, 'Guard', 'none' },       -- Mobile Shield
+            { 'ual0307', 1, 1, 'Guard', 'none' },       -- Mobile Shield
         },
         Cybran = {
             { 'drl0204', 1, 5, 'Attack', 'none' },      -- Rocket Bot

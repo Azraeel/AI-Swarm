@@ -21,7 +21,7 @@ BuilderGroup {
             { UCBC, 'HaveGreaterThanUnitsWithCategory', { 1, categories.STRUCTURE * categories.LAND * categories.FACTORY }},
             -- Have we the eco to build it ?
             { EBC, 'GreaterThanEconIncome',  { 1.0, 6.0}},
-            { EBC, 'GreaterThanEconStorageRatio', { 0.35, 0.99 } },             -- Ratio from 0 to 1. (1=100%)
+            { EBC, 'GreaterThanEconStorageRatio', { 0.35, 0.65 } },             -- Ratio from 0 to 1. (1=100%)
             -- Don't build it if...
             -- Respect UnitCap
             { UCBC, 'HaveUnitRatioVersusCap', { MaxCapFactory , '<', categories.STRUCTURE * categories.FACTORY * categories.LAND } }, -- Maximal 3 factories at 125 unitcap, 12 factories at 500 unitcap...
@@ -64,7 +64,7 @@ BuilderGroup {
             { UCBC, 'HaveGreaterThanUnitsWithCategory', { 1, categories.STRUCTURE * categories.LAND * categories.FACTORY }},
             -- Have we the eco to build it ?
             { EBC, 'GreaterThanEconIncome',  { 1.0, 6.0}},
-            { EBC, 'GreaterThanEconStorageRatio', { 0.35, 0.99 } },             -- Ratio from 0 to 1. (1=100%)
+            { EBC, 'GreaterThanEconStorageRatio', { 0.35, 0.65 } },             -- Ratio from 0 to 1. (1=100%)
             -- Don't build it if...
             -- Respect UnitCap
             { UCBC, 'HaveUnitRatioVersusCap', { MaxCapFactory , '<', categories.STRUCTURE * categories.FACTORY * categories.LAND } }, -- Maximal 3 factories at 125 unitcap, 12 factories at 500 unitcap...
@@ -107,7 +107,7 @@ BuilderGroup {
             { UCBC, 'HaveGreaterThanUnitsWithCategory', { 1, categories.STRUCTURE * categories.LAND * categories.FACTORY }},
             -- Have we the eco to build it ?
             { EBC, 'GreaterThanEconIncome',  { 1.0, 6.0}},
-            { EBC, 'GreaterThanEconStorageRatio', { 0.35, 0.99 } },             -- Ratio from 0 to 1. (1=100%)
+            { EBC, 'GreaterThanEconStorageRatio', { 0.35, 0.65 } },             -- Ratio from 0 to 1. (1=100%)
             -- Don't build it if...
             -- Respect UnitCap
             { UCBC, 'HaveUnitRatioVersusCap', { MaxCapFactory , '<', categories.STRUCTURE * categories.FACTORY * categories.LAND } }, -- Maximal 3 factories at 125 unitcap, 12 factories at 500 unitcap...
@@ -150,7 +150,7 @@ BuilderGroup {
             { UCBC, 'HaveGreaterThanUnitsWithCategory', { 1, categories.STRUCTURE * categories.LAND * categories.FACTORY }},
             -- Have we the eco to build it ?
             { EBC, 'GreaterThanEconIncome',  { 1.0, 6.0}},
-            { EBC, 'GreaterThanEconStorageRatio', { 0.35, 0.99 } },             -- Ratio from 0 to 1. (1=100%)
+            { EBC, 'GreaterThanEconStorageRatio', { 0.35, 0.65 } },             -- Ratio from 0 to 1. (1=100%)
             -- Don't build it if...
             -- Respect UnitCap
             { UCBC, 'HaveUnitRatioVersusCap', { MaxCapFactory , '<', categories.STRUCTURE * categories.FACTORY * categories.LAND } }, -- Maximal 3 factories at 125 unitcap, 12 factories at 500 unitcap...

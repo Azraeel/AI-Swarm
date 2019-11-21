@@ -14,9 +14,9 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Builders',
     -- ============ --
     --    TECH 1    --
     -- ============ --
-    Builder { BuilderName = 'U1 Interceptors',
-        PlatoonTemplate = 'T1AirFighter',
-        Priority = 590,
+    Builder { BuilderName = 'T1AirDefaultQueue',
+        PlatoonTemplate = 'T1AirDefaultQueue',
+        Priority = 500,
         BuilderConditions = {
             { EBC, 'GreaterThanEconTrend', { 0.0, 0.0 } },
 
@@ -27,35 +27,9 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Builders',
         BuilderType = 'Air',
     },
 
-    Builder { BuilderName = 'U1 Bomber',
-        PlatoonTemplate = 'T1AirBomber',
-        Priority = 590,
-        BuilderConditions = {
-            { EBC, 'GreaterThanEconTrend', { 0.0, 0.0 } },
-
-            { UCBC, 'UnitCapCheckLess', { 0.95 } },
-
-            { EBC, 'GreaterThanEconIncome', { 0.2, 2 } },
-        },
-        BuilderType = 'Air',
-    },
-
-    Builder { BuilderName = 'U1 Gunship',
-        PlatoonTemplate = 'T1Gunship',
-        Priority = 585,
-        BuilderConditions = {
-            { EBC, 'GreaterThanEconTrend', { 0.0, 0.0 } },
-
-            { UCBC, 'UnitCapCheckLess', { 0.95 } },
-
-            { EBC, 'GreaterThanEconIncome', { 0.2, 2 } },
-        },
-        BuilderType = 'Air',
-    },
-
-    Builder { BuilderName = 'U2 Gunship',
-        PlatoonTemplate = 'T2AirGunship',
-        Priority = 680,
+    Builder { BuilderName = 'T2AirDefaultQueue',
+        PlatoonTemplate = 'T2AirDefaultQueue',
+        Priority = 600,
         BuilderConditions = {
             { EBC, 'GreaterThanEconTrend', { 0.0, 0.0 } },
 
@@ -66,48 +40,9 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Builders',
         BuilderType = 'Air',
     },
 
-    Builder { BuilderName = 'U2 Bomber',
-        PlatoonTemplate = 'T2FighterBomber',
-        Priority = 680,
-        BuilderConditions = {
-            { EBC, 'GreaterThanEconTrend', { 0.0, 0.0 } },
-
-            { UCBC, 'UnitCapCheckLess', { 0.95 } },
-
-            { EBC, 'GreaterThanEconIncome', { 1, 20 } },
-        },
-        BuilderType = 'Air',
-    },
-
-    Builder { BuilderName = 'U3 Fighter',
-        PlatoonTemplate = 'T3AirFighter',
-        Priority = 850,
-        BuilderConditions = {
-            { EBC, 'GreaterThanEconTrend', { 0.0, 0.0 } },
-
-            { UCBC, 'UnitCapCheckLess', { 0.95 } },
-
-            { EBC, 'GreaterThanEconIncome', { 2.5, 100 } },
-        },
-        BuilderType = 'Air',
-    },
-
-    Builder { BuilderName = 'U3 Bomber',
-        PlatoonTemplate = 'T3AirBomber',
-        Priority = 850,
-        BuilderConditions = {
-            { EBC, 'GreaterThanEconTrend', { 0.0, 0.0 } },
-
-            { UCBC, 'UnitCapCheckLess', { 0.95 } },
-
-            { EBC, 'GreaterThanEconIncome', { 2.5, 100 } },
-        },
-        BuilderType = 'Air',
-    },
-
-    Builder { BuilderName = 'U3 Gunship',
-        PlatoonTemplate = 'T3AirGunship',
-        Priority = 850,
+    Builder { BuilderName = 'T3AirDefaultQueue',
+        PlatoonTemplate = 'T3AirDefaultQueue',
+        Priority = 700,
         BuilderConditions = {
             { EBC, 'GreaterThanEconTrend', { 0.0, 0.0 } },
 

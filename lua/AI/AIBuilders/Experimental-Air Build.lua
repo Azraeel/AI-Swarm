@@ -8,84 +8,10 @@ local BasePanicZone, BaseMilitaryZone, BaseEnemyZone = import('/mods/AI-Uveso/lu
 -- ===================================================-======================================================== --
 BuilderGroup { BuilderGroupName = 'Swarm Air Experimental Builders',                               -- BuilderGroupName, initalized from AIBaseTemplates in "\lua\AI\AIBaseTemplates\"
     BuildersType = 'EngineerBuilder',
-    
-    Builder { BuilderName = 'U4 AirExp1 Minimum',
-        PlatoonTemplate = 'T3EngineerBuilderNoSUB',
-        Priority = 500,
-        InstanceCount = 1,
-        BuilderConditions = {
-            { EBC, 'GreaterThanEconTrend', { 0.0, 0.0 } },
-
-            { UCBC, 'UnitCapCheckLess', { 0.95 } },
-
-            { EBC, 'GreaterThanEconIncome', { 10, 400 } },
-       },
-        BuilderType = 'Any',
-        BuilderData = {
-            Construction = {
-                DesiresAssist = true,
-                NumAssistees = 10,
-                BuildClose = true,
-                AdjacencyCategory = categories.STRUCTURE * categories.SHIELD,
-                BuildStructures = {
-                    'T4AirExperimental1',
-                },
-                Location = 'LocationType',
-            }
-        }
-    },
-    
-    Builder { BuilderName = 'U4 AirExperimental1',
-        PlatoonTemplate = 'T3EngineerBuilderNoSUB',
-        Priority = 500,
-        InstanceCount = 6,
-        BuilderConditions = {
-            { EBC, 'GreaterThanEconTrend', { 0.0, 0.0 } },
-
-            { UCBC, 'UnitCapCheckLess', { 0.95 } },
-
-            { EBC, 'GreaterThanEconIncome', { 10, 400 } },
-       },
-        BuilderType = 'Any',
-        BuilderData = {
-            Construction = {
-                DesiresAssist = true,
-                NumAssistees = 10,
-                BuildClose = true,
-                AdjacencyCategory = categories.STRUCTURE * categories.SHIELD,
-                BuildStructures = {
-                    'T4AirExperimental1',
-                },
-                Location = 'LocationType',
-            }
-        }
-    },
-    
-    Builder { BuilderName = 'U4 Satellite',
-        PlatoonTemplate = 'T3EngineerBuilderNoSUB',
-        Priority = 350,
-        BuilderConditions = {
-            { EBC, 'GreaterThanEconTrend', { 0.0, 0.0 } },
-
-            { UCBC, 'UnitCapCheckLess', { 0.95 } },
-
-            { EBC, 'GreaterThanEconIncome', { 10, 400 } },
-        },
-        BuilderType = 'Any',
-        BuilderData = {
-            Construction = {
-                BuildClose = true,
-                BuildStructures = {
-                    'T4SatelliteExperimental',
-                },
-                Location = 'LocationType',
-            }
-        }
-    },
-    
+        
     Builder { BuilderName = 'U4 AirExp1 Minimum',
         PlatoonTemplate = 'T3EngineerBuilderSUB',
-        Priority = 515,
+        Priority = 950,
         InstanceCount = 1,
         BuilderConditions = {
             { EBC, 'GreaterThanEconTrend', { 0.0, 0.0 } },
@@ -111,8 +37,8 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Experimental Builders',            
     
     Builder { BuilderName = 'U4 AirExperimental1',
         PlatoonTemplate = 'T3EngineerBuilderSUB',
-        Priority = 515,
-        InstanceCount = 6,
+        Priority = 950,
+        InstanceCount = 1,
         BuilderConditions = {
             { EBC, 'GreaterThanEconTrend', { 0.0, 0.0 } },
 
@@ -137,7 +63,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Experimental Builders',            
     
     Builder { BuilderName = 'U4 Satellite',
         PlatoonTemplate = 'T3EngineerBuilderSUB',
-        Priority = 365,
+        Priority = 950,
         BuilderConditions = {
             { EBC, 'GreaterThanEconTrend', { 0.0, 0.0 } },
 

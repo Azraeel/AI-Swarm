@@ -68,10 +68,7 @@ BaseBuilderTemplate {
         -----------------------------------------------------------------------------
         -- ==== EXPERIMENTALS FORMER ==== --
         -----------------------------------------------------------------------------
-        'Swarm Land Experimental Formers PanicZone',
-        'Swarm Land Experimental Formers MilitaryZone',
-        'Swarm Land Experimental Formers EnemyZone',
-        'Swarm Land Experimental Formers Trasher',
+        'Swarm Land Experimental Formers',
         'Swarm Air Experimental Formers PanicZone',
         'Swarm Air Experimental Formers MilitaryZone',
         'Swarm Air Experimental Formers EnemyZone',
@@ -87,13 +84,13 @@ BaseBuilderTemplate {
         -----------------------------------------------------------------------------
         -- ==== Defenses BUILDER ==== --
         -----------------------------------------------------------------------------
-        'Swarm T2 Tactical Missile Launcher minimum',
-        'Swarm T2 Tactical Missile Launcher maximum',
-        'Swarm T2 Tactical Missile Launcher Builder',
+        'Swarm Strategic Builder',
         'Swarm T2 Tactical Missile Defenses Builder',
-        'Swarm Strategic Missile Launcher Builder',
-        'Swarm Strategic Missile Defense Builders',
+        'Swarm SMD Builder',
+        
+        -- Build Anti Air near AirFactories
         'Swarm Defense Anti Air Builders',
+        -- Ground Defense Builder
         'Swarm Defense Anti Ground Builders',
 
         -----------------------------------------------------------------------------

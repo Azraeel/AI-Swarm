@@ -1,0 +1,66 @@
+PlatoonTemplate { Name = 'T1AirDefaultQueue',
+    FactionSquads = {
+        UEF = {
+            { 'uea0102', 1, 5, 'Attack', 'none' },		-- Interceptor
+			{ 'uea0103', 1, 2, 'Attack', 'none' },	    -- Bomber
+         },
+        Aeon = {
+            { 'uaa0102', 1, 5, 'Attack', 'none' },		-- Interceptor
+			{ 'uaa0103', 1, 2, 'Attack', 'none' },	    -- Bomber
+        },
+        Cybran = {
+            { 'ura0102', 1, 6, 'Attack', 'none' },		-- Interceptor
+			{ 'ura0103', 1, 2, 'Attack', 'none' },	    -- Bomber
+            { 'xra0105', 1, 1, 'Attack', 'none' },		-- Gunship
+        },
+        Seraphim = {
+            { 'xsa0102', 1, 5, 'Attack', 'none' },		-- Interceptor
+			{ 'xsa0103', 1, 2, 'Attack', 'none' },	    -- Bomber
+        },
+    }
+}
+
+PlatoonTemplate { Name = 'T2AirDefaultQueue',
+    FactionSquads = {
+        UEF = {
+            { 'dea0202', 1, 5, 'Attack', 'none' },      -- Fighter/Bomber
+            { 'uea0203', 1, 1, 'Attack', 'none' },      -- Gunship
+         },
+        Aeon = {
+            { 'xaa0202', 1, 5, 'Attack', 'none' },      -- Fighter
+            { 'uaa0203', 1, 2, 'Attack', 'none' },      -- Gunship
+        },
+        Cybran = {
+            { 'dra0202', 1, 5, 'Attack', 'none' },      -- Fighter/Bomber
+            { 'ura0203', 1, 2, 'Attack', 'none' },      -- Gunship
+        },
+        Seraphim = {
+            { 'xsa0202', 1, 5, 'Attack', 'none' },      -- Fighter/Bomber
+            { 'xsa0203', 1, 2, 'Attack', 'none' },      -- Gunship
+        },
+    }
+}
+
+PlatoonTemplate { Name = 'T3AirDefaultQueue',
+    FactionSquads = {
+        UEF = {
+            { 'uea0303', 1, 7, 'Attack', 'none' },      -- ASF
+            { 'uea0304', 1, 1, 'Attack', 'none' },      -- Bomber
+            { 'uea0305', 1, 2, 'Attack', 'none' },      -- Gunship
+         },
+        Aeon = {
+            { 'uaa0303', 1, 7, 'Attack', 'none' },      -- ASF
+            { 'uaa0303', 1, 1, 'Attack', 'none' },      -- Bomber
+            { 'xaa0305', 1, 2, 'Attack', 'none' },      -- Gunship
+        },
+        Cybran = {
+            { 'ura0303', 1, 7, 'Attack', 'none' },      -- ASF
+            { 'ura0304', 1, 1, 'Attack', 'none' },      -- Bomber
+            { 'xra0305', 1, 2, 'Attack', 'none' },      -- Gunship
+        },
+        Seraphim = {
+            { 'xsa0303', 1, 8, 'Attack', 'none' },      -- Interceptor
+            { 'xsa0304', 1, 2, 'Attack', 'none' },      -- Bomber
+        },
+    }
+}
