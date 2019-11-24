@@ -76,9 +76,6 @@ BaseBuilderTemplate {
         'Swarm Land Experimental Builders',
         'Swarm Air Experimental Builders',
         'U4 Economic Experimental Builders',
-        'Paragon Turbo Builder',
-        'Paragon Turbo Factory',
-        'Paragon Turbo Air',
         
         -----------------------------------------------------------------------------
         -- ==== EXPERIMENTALS FORMER ==== --
@@ -94,8 +91,6 @@ BaseBuilderTemplate {
         -----------------------------------------------------------------------------
         'Swarm Shields Builder',
         'Swarm Shields Upgrader',
-        
-        'U234 Repair Shields Former',
 
         -----------------------------------------------------------------------------
         -- ==== Defense and Strategic BUILDERS ==== --
@@ -110,17 +105,6 @@ BaseBuilderTemplate {
         'Swarm Defense Anti Ground Builders',
 
         -----------------------------------------------------------------------------
-        -- ==== FireBase BUILDER ==== --
-        -----------------------------------------------------------------------------
-        'U1 FirebaseBuilders',
-
-        -----------------------------------------------------------------------------
-        -- ==== Sniper Former ==== --
-        -----------------------------------------------------------------------------
-        'U3 SACU Teleport Formers',
-
-        -- We need this even if we have Omni View to get target informations for experimentals attack.
-        -----------------------------------------------------------------------------
         -- ==== Scout BUILDER ==== --
         -----------------------------------------------------------------------------
         'Swarm Land Scout Builders',
@@ -129,7 +113,7 @@ BaseBuilderTemplate {
         -----------------------------------------------------------------------------
         -- ==== Scout FORMER ==== --
         -----------------------------------------------------------------------------
-        'U1 Land Scout Formers',
+        'Swarm Land Scout Formers',
         'Swarm Air Scout Formers', 
 
         -----------------------------------------------------------------------------

@@ -130,10 +130,10 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',                  
 -- ===================================================-======================================================== --
 --                                         Land Scouts Formbuilder                                              --
 -- ===================================================-======================================================== --
-BuilderGroup { BuilderGroupName = 'SU1 Land Scout Formers',                               -- BuilderGroupName, initalized from AIBaseTemplates in "\lua\AI\AIBaseTemplates\"
+BuilderGroup { BuilderGroupName = 'Swarm Land Scout Formers',                               -- BuilderGroupName, initalized from AIBaseTemplates in "\lua\AI\AIBaseTemplates\"
     BuildersType = 'PlatoonFormBuilder',
     
-    Builder { BuilderName = 'SU1 Land Scout',
+    Builder { BuilderName = 'Swarm Land Scout',
         PlatoonTemplate = 'T1LandScoutForm',
         Priority = 5000,
         InstanceCount = 8,
@@ -161,7 +161,10 @@ BuilderGroup {
         BuilderType = 'Any',
         BuilderData = {
             AttackEnemyStrength = 100,
-            SearchRadius = BaseEnemyZone,  
+            SearchRadius = BaseEnemyZone,
+            MoveToCategories = {                                                
+                categories.ALLUNITS, 
+            },  
         },        
         BuilderConditions = { 
             { MIBC, 'LessThanGameTime', { 420 } },
@@ -178,6 +181,9 @@ BuilderGroup {
             AttackEnemyStrength = 100,
             SearchRadius = BaseMilitaryZone,
             UseFormation = 'GrowthFormation',
+            MoveToCategories = {                                                
+                categories.ALLUNITS, 
+            },
         },        
         BuilderConditions = { },
     },
@@ -192,6 +198,9 @@ BuilderGroup {
             AttackEnemyStrength = 100,
             SearchRadius = BaseMilitaryZone,
             UseFormation = 'GrowthFormation',
+            MoveToCategories = {                                                
+                categories.ALLUNITS, 
+            },
         },        
         BuilderConditions = { },
     },
@@ -206,6 +215,9 @@ BuilderGroup {
             AttackEnemyStrength = 100,
             SearchRadius = BaseMilitaryZone,
             UseFormation = 'GrowthFormation',
+            MoveToCategories = {                                                
+                categories.ALLUNITS, 
+            },
         },        
         BuilderConditions = { },
     },
@@ -220,6 +232,9 @@ BuilderGroup {
             AttackEnemyStrength = 100,
             SearchRadius = BaseMilitaryZone,
             UseFormation = 'GrowthFormation',
+            MoveToCategories = {                                                
+                categories.ALLUNITS, 
+            },
         },        
         BuilderConditions = { },
     },

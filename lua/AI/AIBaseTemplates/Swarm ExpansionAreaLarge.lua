@@ -79,7 +79,6 @@ BaseBuilderTemplate {
         -----------------------------------------------------------------------------
         'Swarm Shields Builder',
         'Swarm Shields Upgrader',
-        'U234 Repair Shields Former',
 
         -----------------------------------------------------------------------------
         -- ==== Defenses BUILDER ==== --
@@ -104,12 +103,12 @@ BaseBuilderTemplate {
         -- ==== Scout BUILDER ==== --
         -----------------------------------------------------------------------------
         'Swarm Land Scout Builders',
-        'U1 Air Scout Builders',
+        'Swarm Air Scout Builders',
 
         -----------------------------------------------------------------------------
         -- ==== Scout FORMER ==== --
         -----------------------------------------------------------------------------
-        'U1 Land Scout Formers',
+        'Swarm Land Scout Formers',
         'Swarm Air Scout Formers', 
 
     },

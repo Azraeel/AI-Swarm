@@ -1,6 +1,12 @@
 
 -- ==== Global Form platoons ==== --
-
+PlatoonTemplate {
+    Name = 'CDR Attack',
+    Plan = 'ACUAttackAIUveso',
+    GlobalSquads = {
+        { categories.COMMAND, 1, 1, 'Attack', 'none' }
+    }
+}
 PlatoonTemplate {
     Name = 'AISwarm LandAttack Default',
     Plan = 'LandAttackAIUveso', -- The platoon function to use.

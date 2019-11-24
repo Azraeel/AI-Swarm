@@ -79,7 +79,6 @@ BaseBuilderTemplate {
         -----------------------------------------------------------------------------
         'Swarm Shields Builder',
         'Swarm Shields Upgrader',
-        'U234 Repair Shields Former',
 
         -----------------------------------------------------------------------------
         -- ==== Defenses BUILDER ==== --
@@ -92,27 +91,17 @@ BaseBuilderTemplate {
         'Swarm Defense Anti Air Builders',
         -- Ground Defense Builder
         'Swarm Defense Anti Ground Builders',
-
-        -----------------------------------------------------------------------------
-        -- ==== FireBase BUILDER ==== --
-        -----------------------------------------------------------------------------
-
-        -----------------------------------------------------------------------------
-        -- ==== Sniper Former ==== --
-        -----------------------------------------------------------------------------
-        'U3 SACU Teleport Formers',
-
-        -- We need this even if we have Omni View to get target informations for experimentals attack.
+        
         -----------------------------------------------------------------------------
         -- ==== Scout BUILDER ==== --
         -----------------------------------------------------------------------------
         'Swarm Land Scout Builders',
-        'U1 Air Scout Builders',
+        'Swarm Air Scout Builders',
 
         -----------------------------------------------------------------------------
         -- ==== Scout FORMER ==== --
         -----------------------------------------------------------------------------
-        'U1 Land Scout Formers',
+        'Swarm Land Scout Formers',
         'Swarm Air Scout Formers', 
 
     },

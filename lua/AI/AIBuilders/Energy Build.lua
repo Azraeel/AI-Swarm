@@ -24,6 +24,8 @@ BuilderGroup {
         BuilderConditions = {
             { EBC, 'LessThanEconStorageRatio', { 1, 0.80 } },             -- Ratio from 0 to 1. (1=100%)
 
+            { UCBC, 'HaveLessThanUnitsWithCategory', { 1, categories.ENERGYPRODUCTION * ( categories.TECH2 + categories.TECH3 + categories.EXPERIMENTAL ) } },
+
             { UCBC, 'HasNotParagon', {} },
 
             { EBC, 'GreaterThanEconIncome',  { 0.5, 0.0}}, -- Absolut Base income
@@ -48,6 +50,8 @@ BuilderGroup {
         Priority = 500,
         BuilderConditions = {
             { EBC, 'LessThanEconStorageRatio', { 1, 0.90 } },             -- Ratio from 0 to 1. (1=100%)
+
+            { UCBC, 'HaveLessThanUnitsWithCategory', { 1, categories.ENERGYPRODUCTION * ( categories.TECH2 + categories.TECH3 + categories.EXPERIMENTAL ) } },
 
             { UCBC, 'HasNotParagon', {} },
 
@@ -103,11 +107,9 @@ BuilderGroup {
         PlatoonTemplate = 'CommanderBuilder',
         Priority = 19200,
         BuilderConditions = {
-            -- When do we want to build this ?
+        	{ UCBC, 'HaveLessThanUnitsWithCategory', { 1, categories.ENERGYPRODUCTION * ( categories.TECH2 + categories.TECH3 + categories.EXPERIMENTAL ) } },
+
             { UCBC, 'HaveLessThanUnitsWithCategory', { 1, categories.STRUCTURE * categories.ENERGYPRODUCTION } },
-            -- Do we need additional conditions to build it ?
-            -- Have we the eco to build it ?
-            -- Don't build it if...
         },
         InstanceCount = 1,
         BuilderType = 'Any',
@@ -128,11 +130,9 @@ BuilderGroup {
         PlatoonTemplate = 'EngineerBuilder',
         Priority = 19200,
         BuilderConditions = {
-            -- When do we want to build this ?
+            { UCBC, 'HaveLessThanUnitsWithCategory', { 1, categories.ENERGYPRODUCTION * ( categories.TECH2 + categories.TECH3 + categories.EXPERIMENTAL ) } },
+
             { UCBC, 'HaveLessThanUnitsWithCategory', { 1, categories.STRUCTURE * categories.ENERGYPRODUCTION } },
-            -- Do we need additional conditions to build it ?
-            -- Have we the eco to build it ?
-            -- Don't build it if...
         },
         InstanceCount = 1,
         BuilderType = 'Any',
@@ -187,11 +187,7 @@ BuilderGroup {
         Priority = 800,
         InstanceCount = 1,
         BuilderConditions = {
-            { EBC, 'LessThanEconStorageRatio', { 1, 0.20 } },             -- Ratio from 0 to 1. (1=100%)
-
-            { UCBC, 'HasNotParagon', {} },
-
-            { EBC, 'GreaterThanEconIncome',  { 0.5, 0.0}}, -- Absolut Base income
+            { EBC, 'LessThanEconStorageRatio', { 1, 0.45 } },             -- Ratio from 0 to 1. (1=100%)
 
             { UCBC, 'HaveLessThanUnitsInCategoryBeingBuilt', { 1, categories.STRUCTURE * categories.ENERGYPRODUCTION * ( categories.TECH2 + categories.TECH3 ) }},
         },
@@ -251,11 +247,7 @@ BuilderGroup {
         Priority = 3000,
         InstanceCount = 1,
         BuilderConditions = {
-            { EBC, 'LessThanEconStorageRatio', { 1, 0.30 } },             -- Ratio from 0 to 1. (1=100%)
-
-            { UCBC, 'HasNotParagon', {} },
-
-            { EBC, 'GreaterThanEconIncome',  { 0.5, 0.0}}, -- Absolut Base income
+            { EBC, 'LessThanEconStorageRatio', { 1, 0.45 } },             -- Ratio from 0 to 1. (1=100%)
 
             { UCBC, 'HaveLessThanUnitsInCategoryBeingBuilt', { 1, categories.STRUCTURE * categories.ENERGYPRODUCTION * ( categories.TECH2 + categories.TECH3 ) }},
         },

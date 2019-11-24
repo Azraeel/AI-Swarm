@@ -41,3 +41,10 @@ PlatoonTemplate {
         { categories.MOBILE * categories.AIR * (categories.TECH1 + categories.TECH2) * categories.BOMBER - categories.EXPERIMENTAL - categories.ANTINAVY, 1, 7, 'Attack', 'GrowthFormation' },
     },
 }
+PlatoonTemplate {
+    Name = 'U4-ExperimentalInterceptor 1 1',
+    Plan = 'InterceptorAIUveso',
+    GlobalSquads = {
+        { categories.MOBILE * categories.AIR * (categories.TECH1 + categories.TECH2) * categories.BOMBER - categories.EXPERIMENTAL - categories.ANTINAVY, 1, 7, 'Attack', 'GrowthFormation' },
+    },
+}
