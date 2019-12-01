@@ -1025,7 +1025,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Gate Builders',                        
     
     Builder { BuilderName = 'U-T3 Gate Cap',
         PlatoonTemplate = 'T3EngineerBuilder',
-        Priority = 15400,
+        Priority = 17400,
         BuilderConditions = {
             -- When do we want to build this ?
             { UCBC, 'FactoryCapCheck', { 'LocationType', 'Gate' } },
@@ -1052,7 +1052,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Gate Builders',                        
     },
     Builder { BuilderName = 'U-T3 Gate Para',
         PlatoonTemplate = 'T3EngineerBuilder',
-        Priority = 15400,
+        Priority = 17400,
         BuilderConditions = {
             -- When do we want to build this ?
             { UCBC, 'HasParagon', {} },

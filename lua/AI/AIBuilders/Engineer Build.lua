@@ -129,7 +129,7 @@ BuilderGroup { BuilderGroupName = 'Swarm SACU Builder',
 
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
 
-            { EBC, 'GreaterThanEconIncome', { 50, 3000 } },
+            { EBC, 'GreaterThanEconIncome', { 5, 150 } },
 
             { UCBC, 'PoolLessAtLocation', { 'LocationType', 1, categories.MOBILE * categories.ENGINEER * categories.SUBCOMMANDER } },
         },

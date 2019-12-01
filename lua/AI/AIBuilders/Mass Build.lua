@@ -243,7 +243,7 @@ BuilderGroup {
     -- ============ --
     --    TECH 3    --
     -- ============ --
-    Builder {
+    --[[ Builder {
         BuilderName = 'U3 Mass Fab',
         PlatoonTemplate = 'T3EngineerBuilderNoSUB',
         Priority = 500,
@@ -312,7 +312,7 @@ BuilderGroup {
                 },
             }
         }
-    },
+    }, ]]--
     Builder {
         BuilderName = 'U1 Reclaim T1+T2 Massfabrikation',
         PlatoonTemplate = 'EngineerBuilder',
