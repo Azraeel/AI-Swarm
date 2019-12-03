@@ -39,9 +39,8 @@ BaseBuilderTemplate {
         'U123 Energy Builders',
 
         -- Build Land/Air Factories
-        'Swarm Factory Builders 1st',
-        'Swarm Factory Builders ADAPTIVE',
-        'Swarm Factory Builders RECOVER',
+        'Swarm ACU Initial Opener',
+        'Swarm Factory Builder',
         'Swarm Gate Builders',
         
         -- Upgrade Factories TECH1->TECH2 and TECH2->TECH3

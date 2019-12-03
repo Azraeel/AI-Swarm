@@ -11,7 +11,7 @@ BuilderGroup {
     Builder {
         BuilderName = 'U1 Vacant Start Location',                               -- Random Builder Name.
         PlatoonTemplate = 'EngineerBuilder',                                    -- Template Name. These units will be formed. See: "\lua\AI\PlatoonTemplates\"
-        Priority = 15400,                                                        -- Priority. Higher priotity will be build more often then lower priotity.
+        Priority = 500,                                                        -- Priority. Higher priotity will be build more often then lower priotity.
         InstanceCount = 4,                                                      -- Number of plattons that will be formed with this template.
         BuilderConditions = {
             -- When do we want to build this ?
@@ -54,7 +54,7 @@ BuilderGroup {
     Builder {
         BuilderName = 'U1 Vacant Start Location trans',                               -- Random Builder Name.
         PlatoonTemplate = 'EngineerBuilder',                                    -- Template Name. These units will be formed. See: "\lua\AI\PlatoonTemplates\"
-        Priority = 15400,                                                        -- Priority. Higher priotity will be build more often then lower priotity.
+        Priority = 500,                                                        -- Priority. Higher priotity will be build more often then lower priotity.
         InstanceCount = 1,                                                      -- Number of plattons that will be formed with this template.
         BuilderConditions = {
             -- When do we want to build this ?
@@ -97,7 +97,7 @@ BuilderGroup {
     Builder {
         BuilderName = 'U1 Vacant Expansion Area',                               -- Random Builder Name.
         PlatoonTemplate = 'EngineerBuilder',                                    -- Template Name. These units will be formed. See: "\lua\AI\PlatoonTemplates\"
-        Priority = 15300,                                                        -- Priority. Higher priotity will be build more often then lower priotity.
+        Priority = 500,                                                        -- Priority. Higher priotity will be build more often then lower priotity.
         InstanceCount = 4,                                                      -- Number of plattons that will be formed with this template.
         BuilderConditions = {
             -- When do we want to build this ?
@@ -140,7 +140,7 @@ BuilderGroup {
     Builder {
         BuilderName = 'U1 Vacant Expansion Area trans',                               -- Random Builder Name.
         PlatoonTemplate = 'EngineerBuilder',                                    -- Template Name. These units will be formed. See: "\lua\AI\PlatoonTemplates\"
-        Priority = 15300,                                                        -- Priority. Higher priotity will be build more often then lower priotity.
+        Priority = 500,                                                        -- Priority. Higher priotity will be build more often then lower priotity.
         InstanceCount = 1,                                                      -- Number of plattons that will be formed with this template.
         BuilderConditions = {
             -- When do we want to build this ?
@@ -183,7 +183,7 @@ BuilderGroup {
     Builder {
         BuilderName = 'U1 Naval Builder 250',                                       -- Random Builder Name.
         PlatoonTemplate = 'EngineerBuilder',                                    -- Template Name. These units will be formed. See: "\lua\AI\PlatoonTemplates\"
-        Priority = 17880,                                                        -- Priority. Higher priotity will be build more often then lower priotity.
+        Priority = 500,                                                        -- Priority. Higher priotity will be build more often then lower priotity.
         InstanceCount = 2,                                                      -- Number of plattons that will be formed with this template.
         BuilderConditions = {
             -- When do we want to build this ?
@@ -221,7 +221,7 @@ BuilderGroup {
     Builder {
         BuilderName = 'U1 Naval Builder far',                                       -- Random Builder Name.
         PlatoonTemplate = 'EngineerBuilder',                                    -- Template Name. These units will be formed. See: "\lua\AI\PlatoonTemplates\"
-        Priority = 17860,                                                        -- Priority. Higher priotity will be build more often then lower priotity.
+        Priority = 500,                                                        -- Priority. Higher priotity will be build more often then lower priotity.
         InstanceCount = 2,                                                      -- Number of plattons that will be formed with this template.
         BuilderConditions = {
             -- When do we want to build this ?
@@ -259,7 +259,7 @@ BuilderGroup {
     Builder {
         BuilderName = 'U1 Naval Builder trans',                                       -- Random Builder Name.
         PlatoonTemplate = 'EngineerBuilder',                                    -- Template Name. These units will be formed. See: "\lua\AI\PlatoonTemplates\"
-        Priority = 17840,                                                        -- Priority. Higher priotity will be build more often then lower priotity.
+        Priority = 500,                                                        -- Priority. Higher priotity will be build more often then lower priotity.
         InstanceCount = 2,                                                      -- Number of plattons that will be formed with this template.
         BuilderConditions = {
             -- When do we want to build this ?
@@ -299,7 +299,7 @@ BuilderGroup {
     Builder {
         BuilderName = 'U1 Naval Builder Watermap',                                       -- Random Builder Name.
         PlatoonTemplate = 'EngineerBuilder',                                    -- Template Name. These units will be formed. See: "\lua\AI\PlatoonTemplates\"
-        Priority = 17880,                                                        -- Priority. Higher priotity will be build more often then lower priotity.
+        Priority = 500,                                                        -- Priority. Higher priotity will be build more often then lower priotity.
         InstanceCount = 6,                                                      -- Number of plattons that will be formed with this template.
         BuilderConditions = {
             -- When do we want to build this ?

@@ -18,7 +18,7 @@ BuilderGroup {
     Builder {
         BuilderName = 'U1 Power low trend',
         PlatoonTemplate = 'EngineerBuilder',
-        Priority = 500,
+        Priority = 650,
         InstanceCount = 2,                                                      -- Number of plattons that will be formed with this template.
         DelayEqualBuildPlattons = {'Energy', 3},
         BuilderConditions = {
@@ -47,7 +47,7 @@ BuilderGroup {
     Builder {
         BuilderName = 'UC Power low trend',
         PlatoonTemplate = 'CommanderBuilder',
-        Priority = 500,
+        Priority = 650,
         BuilderConditions = {
             { EBC, 'LessThanEconStorageRatio', { 1, 0.90 } },             -- Ratio from 0 to 1. (1=100%)
 
@@ -74,7 +74,7 @@ BuilderGroup {
     Builder {
         BuilderName = 'U1 Power Hydrocarbon',
         PlatoonTemplate = 'EngineerBuilder',
-        Priority = 17885,
+        Priority = 540,
         DelayEqualBuildPlattons = {'Energy', 1},
         InstanceCount = 1,
         BuilderConditions = {
@@ -95,52 +95,6 @@ BuilderGroup {
                 BuildStructures = {
                     'T1HydroCarbon',
                 }
-            }
-        }
-    },
-    Builder {
-        BuilderName = 'UC Energy RECOVER',
-        PlatoonTemplate = 'CommanderBuilder',
-        Priority = 19200,
-        BuilderConditions = {
-        	{ UCBC, 'HaveLessThanUnitsWithCategory', { 1, categories.ENERGYPRODUCTION * ( categories.TECH2 + categories.TECH3 + categories.EXPERIMENTAL ) } },
-
-            { UCBC, 'HaveLessThanUnitsWithCategory', { 1, categories.STRUCTURE * categories.ENERGYPRODUCTION } },
-        },
-        InstanceCount = 1,
-        BuilderType = 'Any',
-        BuilderData = {
-            Construction = {
-                AdjacencyCategory = categories.STRUCTURE * categories.FACTORY * (categories.LAND + categories.AIR),
-                AdjacencyDistance = 50,
-                BuildClose = false,
-                LocationType = 'LocationType',
-                BuildStructures = {
-                    'T1EnergyProduction',
-                },
-            }
-        }
-    },
-    Builder {
-        BuilderName = 'U1 Energy RECOVER',
-        PlatoonTemplate = 'EngineerBuilder',
-        Priority = 19200,
-        BuilderConditions = {
-            { UCBC, 'HaveLessThanUnitsWithCategory', { 1, categories.ENERGYPRODUCTION * ( categories.TECH2 + categories.TECH3 + categories.EXPERIMENTAL ) } },
-
-            { UCBC, 'HaveLessThanUnitsWithCategory', { 1, categories.STRUCTURE * categories.ENERGYPRODUCTION } },
-        },
-        InstanceCount = 1,
-        BuilderType = 'Any',
-        BuilderData = {
-            Construction = {
-                AdjacencyCategory = categories.STRUCTURE * categories.FACTORY * (categories.LAND + categories.AIR),
-                AdjacencyDistance = 50,
-                BuildClose = false,
-                LocationType = 'LocationType',
-                BuildStructures = {
-                    'T1EnergyProduction',
-                },
             }
         }
     },

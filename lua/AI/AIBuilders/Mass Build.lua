@@ -15,62 +15,10 @@ BuilderGroup {
     -- Build MassExtractors / Creators 
     BuilderGroupName = 'U1 MassBuilders',                               -- BuilderGroupName, initalized from AIBaseTemplates in "\lua\AI\AIBaseTemplates\"
     BuildersType = 'EngineerBuilder',
-    -- ================== --
-    --    TECH 1 - CDR    --
-    -- ================== --
-    Builder {
-        BuilderName = 'UC Mass 12 initial',
-        PlatoonTemplate = 'CommanderBuilder',
-        Priority = 19400,
-        BuilderConditions = {
-            -- When do we want to build this ?
-            { MABC, 'CanBuildOnMass', { 'LocationType', 12, -500, 1, 0, 'AntiSurface', 1 }}, -- LocationType, distance, threatMin, threatMax, threatRadius, threatType, maxNum
-            -- Do we need additional conditions to build it ?
-            { UCBC, 'HaveLessThanUnitsWithCategory', { 1, categories.STRUCTURE * categories.MASSEXTRACTION }},
-            -- Have we the eco to build it ?
-            -- Don't build it if...
-            { UCBC, 'HaveUnitRatioVersusCap', { MaxCapMass , '<', categories.STRUCTURE * categories.MASSEXTRACTION } },
-        },
-        BuilderType = 'Any',
-        BuilderData = {
-            DesiresAssist = false,
-            Construction = {
-                BuildStructures = {
-                    'T1Resource',
-                },
-            }
-        }
-    },
-    Builder {
-        BuilderName = 'UC Mass 12',
-        PlatoonTemplate = 'CommanderBuilder',
-        Priority = 19100,
-        BuilderConditions = {
-            -- When do we want to build this ?
-            { MABC, 'CanBuildOnMass', { 'LocationType', 12, -500, 1, 0, 'AntiSurface', 1 }}, -- LocationType, distance, threatMin, threatMax, threatRadius, threatType, maxNum
-            -- Do we need additional conditions to build it ?
-            { UCBC, 'HaveLessThanUnitsWithCategory', { 2, categories.STRUCTURE * categories.MASSEXTRACTION }},
-            -- Have we the eco to build it ?
-            -- Don't build it if...
-            { UCBC, 'HaveUnitRatioVersusCap', { MaxCapMass , '<', categories.STRUCTURE * categories.MASSEXTRACTION } },
-        },
-        BuilderType = 'Any',
-        BuilderData = {
-            DesiresAssist = false,
-            Construction = {
-                BuildStructures = {
-                    'T1Resource',
-                },
-            }
-        }
-    },
-    -- ======================= --
-    --    TECH 1 - Engineer    --
-    -- ======================= --
     Builder {
         BuilderName = 'U1 Mass 30',
         PlatoonTemplate = 'EngineerBuilder',
-        Priority = 17900,
+        Priority = 555,
         InstanceCount = 1,
         BuilderConditions = {
             -- When do we want to build this ?
@@ -93,7 +41,7 @@ BuilderGroup {
     Builder {
         BuilderName = 'U1 Mass 60',
         PlatoonTemplate = 'EngineerBuilder',
-        Priority = 17880,
+        Priority = 535,
         InstanceCount = 1,
         BuilderConditions = {
             -- When do we want to build this ?
@@ -116,7 +64,7 @@ BuilderGroup {
     Builder {
         BuilderName = 'U1 Mass 1000 6+',
         PlatoonTemplate = 'EngineerBuilder',
-        Priority = 17850,
+        Priority = 525,
         DelayEqualBuildPlattons = {'MASSEXTRACTION', 1},
         InstanceCount = 2,
         BuilderConditions = {
@@ -143,7 +91,7 @@ BuilderGroup {
     Builder {
         BuilderName = 'U1 Mass 1000 8+',
         PlatoonTemplate = 'EngineerBuilder',
-        Priority = 17830,
+        Priority = 515,
         DelayEqualBuildPlattons = {'MASSEXTRACTION', 1},
         InstanceCount = 2,
         BuilderConditions = {
@@ -170,7 +118,7 @@ BuilderGroup {
     Builder {
         BuilderName = 'U1 Mass 1000 10+',
         PlatoonTemplate = 'EngineerBuilder',
-        Priority = 17810,
+        Priority = 505,
         DelayEqualBuildPlattons = {'MASSEXTRACTION', 1},
         InstanceCount = 2,
         BuilderConditions = {
@@ -197,7 +145,7 @@ BuilderGroup {
     Builder {
         BuilderName = 'UC Resource RECOVER',
         PlatoonTemplate = 'CommanderBuilder',
-        Priority = 19100,
+        Priority = 150,
         BuilderConditions = {
             -- When do we want to build this ?
             { UCBC, 'GreaterThanGameTimeSeconds', { 2*60 } },
@@ -220,7 +168,7 @@ BuilderGroup {
     Builder {
         BuilderName = 'U1 Resource RECOVER',
         PlatoonTemplate = 'EngineerBuilder',
-        Priority = 19100,
+        Priority = 150,
         BuilderConditions = {
             -- When do we want to build this ?
             { UCBC, 'GreaterThanGameTimeSeconds', { 2*60 } },
@@ -317,7 +265,7 @@ BuilderGroup {
         BuilderName = 'U1 Reclaim T1+T2 Massfabrikation',
         PlatoonTemplate = 'EngineerBuilder',
         PlatoonAIPlan = 'ReclaimStructuresAI',
-        Priority = 790,
+        Priority = 145,
         InstanceCount = 2,
         BuilderConditions = {
             { UCBC, 'HaveGreaterThanUnitsWithCategory', { 20, categories.STRUCTURE * categories.MASSEXTRACTION }},

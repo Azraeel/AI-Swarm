@@ -503,13 +503,14 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Reclaim',                     
     BuildersType = 'PlatoonFormBuilder',
     Builder { BuilderName = 'U1 Reclaim RECOVER mass',
         PlatoonTemplate = 'U1Reclaim',
-        Priority = 19600,
+        Priority = 350,
         InstanceCount = 4,
         BuilderConditions = {
             -- When do we want to build this ?
             { UCBC, 'HaveLessThanUnitsWithCategory', { 1, categories.MOBILE * categories.COMMAND }},
             -- Do we need additional conditions to build it ?
             { UCBC, 'HaveLessThanUnitsWithCategory', { 1, categories.STRUCTURE * categories.MASSEXTRACTION } },
+            { EBC, 'LessThanEconStorageRatio', { 0.4, 1}}, -- Ratio from 0 to 1. (1=100%)
             -- Have we the eco to build it ?
             -- Don't build it if...
         },
@@ -520,13 +521,14 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Reclaim',                     
     },
     Builder { BuilderName = 'U1 Reclaim RECOVER energy',
         PlatoonTemplate = 'U1Reclaim',
-        Priority = 19500,
+        Priority = 350,
         InstanceCount = 4,
         BuilderConditions = {
             -- When do we want to build this ?
             { UCBC, 'HaveLessThanUnitsWithCategory', { 1, categories.MOBILE * categories.COMMAND }},
             -- Do we need additional conditions to build it ?
             { UCBC, 'HaveLessThanUnitsWithCategory', { 1, categories.STRUCTURE * categories.ENERGYPRODUCTION } },
+            { EBC, 'LessThanEconStorageRatio', { 0.7, 0.6}}, -- Ratio from 0 to 1. (1=100%)
             -- Have we the eco to build it ?
             -- Don't build it if...
         },
@@ -537,11 +539,12 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Reclaim',                     
     },
     Builder { BuilderName = 'U1 Reclaim Resource 1',
         PlatoonTemplate = 'U1Reclaim',
-        Priority = 18000,
+        Priority = 350,
         InstanceCount = 4,
         BuilderConditions = {
             -- When do we want to build this ?
             { UCBC, 'HaveGreaterThanUnitsWithCategory', { 3, categories.MOBILE * categories.ENGINEER}},
+            { EBC, 'LessThanEconStorageRatio', { 0.7, 1}}, -- Ratio from 0 to 1. (1=100%)
             -- Do we need additional conditions to build it ?
             -- Have we the eco to build it ?
             -- Don't build it if...
@@ -553,13 +556,13 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Reclaim',                     
     },
     Builder { BuilderName = 'U1 Reclaim Resource 2',
         PlatoonTemplate = 'U1Reclaim',
-        Priority = 17400,
+        Priority = 350,
         InstanceCount = 4,
         BuilderConditions = {
             -- When do we want to build this ?
             { UCBC, 'HaveGreaterThanUnitsWithCategory', { 9, categories.MOBILE * categories.ENGINEER}},
             -- Do we need additional conditions to build it ?
-            { EBC, 'LessThanEconStorageRatio', { 0.80, 2.00}}, -- Ratio from 0 to 1. (1=100%)
+            { EBC, 'LessThanEconStorageRatio', { 0.7, 1}}, -- Ratio from 0 to 1. (1=100%)
             { UCBC, 'BuildOnlyOnLocation', { 'LocationType', 'MAIN' } },
             -- Have we the eco to build it ?
             -- Don't build it if...
@@ -571,13 +574,13 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Reclaim',                     
     },
     Builder { BuilderName = 'U1 Reclaim Resource 3',
         PlatoonTemplate = 'U1Reclaim',
-        Priority = 17400,
+        Priority = 350,
         InstanceCount = 4,
         BuilderConditions = {
             -- When do we want to build this ?
             { UCBC, 'HaveGreaterThanUnitsWithCategory', { 0, categories.MOBILE * categories.ENGINEER * categories.TECH2}},
             -- Do we need additional conditions to build it ?
-            { EBC, 'LessThanEconStorageRatio', { 0.80, 2.00}}, -- Ratio from 0 to 1. (1=100%)
+            { EBC, 'LessThanEconStorageRatio', { 0.7, 1}}, -- Ratio from 0 to 1. (1=100%)
             { UCBC, 'BuildOnlyOnLocation', { 'LocationType', 'MAIN' } },
             -- Have we the eco to build it ?
             -- Don't build it if...
@@ -589,13 +592,13 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Reclaim',                     
     },
     Builder { BuilderName = 'U1 Reclaim Resource 4',
         PlatoonTemplate = 'U1Reclaim',
-        Priority = 17400,
+        Priority = 350,
         InstanceCount = 6,
         BuilderConditions = {
             -- When do we want to build this ?
             { UCBC, 'HaveGreaterThanUnitsWithCategory', { 0, categories.MOBILE * categories.ENGINEER * categories.TECH3}},
             -- Do we need additional conditions to build it ?
-            { EBC, 'LessThanEconStorageRatio', { 0.80, 2.00}}, -- Ratio from 0 to 1. (1=100%)
+            { EBC, 'LessThanEconStorageRatio', { 0.7, 1}}, -- Ratio from 0 to 1. (1=100%)
             { UCBC, 'BuildOnlyOnLocation', { 'LocationType', 'MAIN' } },
             -- Have we the eco to build it ?
             -- Don't build it if...
