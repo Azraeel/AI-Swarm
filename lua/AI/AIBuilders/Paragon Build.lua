@@ -25,6 +25,8 @@ BuilderGroup {
             -- Don't build it if...
             { UCBC, 'CheckBuildPlattonDelay', { 'Paragon' }},
             { UCBC, 'HaveLessThanUnitsInCategoryBeingBuilt', { 1, categories.STRUCTURE * categories.EXPERIMENTAL * categories.ECONOMIC }},
+
+            { UCBC, 'HaveGreaterThanUnitsWithCategory', { 5, categories.ENERGYPRODUCTION * categories.TECH3 } },
             -- Respect UnitCap
         },
         BuilderType = 'Any',
@@ -59,6 +61,8 @@ BuilderGroup {
             -- Don't build it if...
             { UCBC, 'CheckBuildPlattonDelay', { 'Paragon' }},
             { UCBC, 'HaveLessThanUnitsInCategoryBeingBuilt', { 1, categories.STRUCTURE * categories.EXPERIMENTAL * categories.ECONOMIC }},
+
+            { UCBC, 'HaveGreaterThanUnitsWithCategory', { 5, categories.ENERGYPRODUCTION * categories.TECH3 } },
             -- Respect UnitCap
         },
         BuilderType = 'Any',
@@ -94,6 +98,8 @@ BuilderGroup {
             -- Don't build it if...
             { UCBC, 'CheckBuildPlattonDelay', { 'Paragon' }},
             { UCBC, 'HaveLessThanUnitsInCategoryBeingBuilt', { 1, categories.STRUCTURE * categories.EXPERIMENTAL * categories.ECONOMIC }},
+
+            { UCBC, 'HaveGreaterThanUnitsWithCategory', { 5, categories.ENERGYPRODUCTION * categories.TECH3 } },
             -- Respect UnitCap
         },
         BuilderType = 'Any',
@@ -127,6 +133,8 @@ BuilderGroup {
             -- Have we the eco to build it ?
             -- Don't build it if...
             { UCBC, 'HaveLessThanUnitsInCategoryBeingBuilt', { 1, categories.STRUCTURE * categories.EXPERIMENTAL * categories.ECONOMIC }},
+
+            { UCBC, 'HaveGreaterThanUnitsWithCategory', { 5, categories.ENERGYPRODUCTION * categories.TECH3 } },
             -- Respect UnitCap
         },
         BuilderType = 'Any',
@@ -159,6 +167,8 @@ BuilderGroup {
             -- Have we the eco to build it ?
             -- Don't build it if...
             { UCBC, 'HaveLessThanUnitsInCategoryBeingBuilt', { 1, categories.STRUCTURE * categories.EXPERIMENTAL * categories.ECONOMIC }},
+
+            { UCBC, 'HaveGreaterThanUnitsWithCategory', { 5, categories.ENERGYPRODUCTION * categories.TECH3 } },
             -- Respect UnitCap
         },
         BuilderType = 'Any',

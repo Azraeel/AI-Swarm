@@ -14,8 +14,6 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
         Priority = 150,
         InstanceCount = 20,
         BuilderConditions = {
-            { EBC, 'GreaterThanEconTrend', { 0.0, 0.0 } },
-
             { EBC, 'GreaterThanEconIncome', { 1.4, 20 } },
         },
         BuilderType = 'Any',
@@ -35,8 +33,6 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
         Priority = 200,
         InstanceCount = 20,
         BuilderConditions = {
-            { EBC, 'GreaterThanEconTrend', { 0.0, 0.0 } },
-
             { EBC, 'GreaterThanEconIncome', { 3, 40 } },
         },
         BuilderType = 'Any',
@@ -56,8 +52,6 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
         Priority = 210,
         InstanceCount = 5,
         BuilderConditions = {
-            { EBC, 'GreaterThanEconTrend', { 0.0, 0.0 } },
-
             { EBC, 'GreaterThanEconIncome', { 3.4, 50 } },
         },
         BuilderType = 'Any',
@@ -77,8 +71,6 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
         Priority = 250,
         InstanceCount = 20,
         BuilderConditions = {
-            { EBC, 'GreaterThanEconTrend', { 0.0, 0.0 } },
-
             { EBC, 'GreaterThanEconIncome', { 2.5, 30 } },
         },
         BuilderType = 'Any',
@@ -100,8 +92,6 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
         Priority = 450,
         InstanceCount = 6,
         BuilderConditions = {
-            { EBC, 'GreaterThanEconTrend', { 0.0, 0.0 } },
-
             { EBC, 'GreaterThanEconIncome', { 1.5, 20 } },
 
             { UCBC, 'GreaterThanGameTimeSeconds', { 60*15 } },
@@ -124,8 +114,6 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
         Priority = 450,
         InstanceCount = 6,
         BuilderConditions = {
-            { EBC, 'GreaterThanEconTrend', { 0.0, 0.0 } },
-
             { EBC, 'GreaterThanEconIncome', { 1.5, 30 } },
 
             { UCBC, 'GreaterThanGameTimeSeconds', { 60*15 } },
@@ -151,8 +139,6 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
         PlatoonTemplate = 'CommanderAssist',
         Priority = 16300,
         BuilderConditions = {
-            { EBC, 'GreaterThanEconTrend', { 0.0, 0.0 } },
-
             { EBC, 'GreaterThanEconIncome', { 2.0, 20 } },
         },
         BuilderType = 'Any',
@@ -172,8 +158,6 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
         Priority = 550,
         InstanceCount = 10,
         BuilderConditions = {
-            { EBC, 'GreaterThanEconTrend', { 0.0, 0.0 } },
-
             { EBC, 'GreaterThanEconIncome', { 2, 20 } },
         },
         BuilderType = 'Any',
@@ -194,8 +178,6 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
         Priority = 580,
         InstanceCount = 15,
         BuilderConditions = {
-            { EBC, 'GreaterThanEconTrend', { 0.0, 0.0 } },
-
             { EBC, 'GreaterThanEconIncome', { 2, 20 } },
         },
         BuilderType = 'Any',
@@ -216,8 +198,6 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
         Priority = 600,
         InstanceCount = 20,
         BuilderConditions = {
-            { EBC, 'GreaterThanEconTrend', { 0.0, 0.0 } },
-
             { EBC, 'GreaterThanEconIncome', { 4, 50 } },
         },
         BuilderType = 'Any',
@@ -305,10 +285,8 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
     Builder { BuilderName = 'U1 Assist Experimental',
         PlatoonTemplate = 'EngineerAssist',
         Priority = 1500,
-        InstanceCount = 50,
+        InstanceCount = 100,
         BuilderConditions = {
-            { EBC, 'GreaterThanEconTrend', { 0.0, 0.0 } },
-
             { EBC, 'GreaterThanEconIncome', { 8.5, 200 } },
         },
         BuilderType = 'Any',
@@ -327,10 +305,8 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
     Builder { BuilderName = 'U2 Assist Experimental',
         PlatoonTemplate = 'T2EngineerAssist',
         Priority = 1500,
-        InstanceCount = 50,
+        InstanceCount = 100,
         BuilderConditions = {
-            { EBC, 'GreaterThanEconTrend', { 0.0, 0.0 } },
-
             { EBC, 'GreaterThanEconIncome', { 8.5, 200 } },
         },
         BuilderType = 'Any',
@@ -347,12 +323,10 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
         }
     },
     Builder { BuilderName = 'U3 Assist Experimental',
-        PlatoonTemplate = 'T3EngineerAssistNoSUB',
+        PlatoonTemplate = 'T3EngineerAssistnoSUB',
         Priority = 1500,
-        InstanceCount = 15,
+        InstanceCount = 100,
         BuilderConditions = {
-            { EBC, 'GreaterThanEconTrend', { 0.0, 0.0 } },
-
             { EBC, 'GreaterThanEconIncome', { 8.5, 200 } },
         },
         BuilderType = 'Any',
@@ -371,10 +345,8 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
     Builder { BuilderName = 'U3 Assist Experimental',
         PlatoonTemplate = 'T3EngineerAssistSUB',
         Priority = 1500,
-        InstanceCount = 30,
+        InstanceCount = 100,
         BuilderConditions = {
-            { EBC, 'GreaterThanEconTrend', { 0.0, 0.0 } },
-
             { EBC, 'GreaterThanEconIncome', { 8.5, 200 } },
         },
         BuilderType = 'Any',
@@ -392,6 +364,179 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
     },
 
     -- ============== --
+    --    STRATEGIC   --
+    -- ============== --
+
+    Builder { BuilderName = 'Z3 Assist SMD',
+        PlatoonTemplate = 'T2EngineerAssist',
+        Priority = 1500,
+        InstanceCount = 30,
+        BuilderConditions = {
+            { EBC, 'GreaterThanEconIncome', { 8.5, 200 } },
+        },
+        BuilderType = 'Any',
+        BuilderData = {
+            Assist = {
+                AssistLocation = 'LocationType',
+                AssisteeType = 'Structure',
+                AssistRange = 700,
+                AssistClosestUnit = true,                                       -- Assist the closest unit instead unit with the least number of assisters
+                BeingBuiltCategories = {'ANTIMISSILE SILO'},-- Unitcategories must be type string
+                AssistUntilFinished = true,
+                Time = 0,
+            },
+        }
+    },
+
+    Builder { BuilderName = 'Z3 Assist SMD',
+        PlatoonTemplate = 'T3EngineerAssistnoSUB',
+        Priority = 1500,
+        InstanceCount = 30,
+        BuilderConditions = {
+            { EBC, 'GreaterThanEconIncome', { 8.5, 200 } },
+        },
+        BuilderType = 'Any',
+        BuilderData = {
+            Assist = {
+                AssistLocation = 'LocationType',
+                AssisteeType = 'Structure',
+                AssistRange = 700,
+                AssistClosestUnit = true,                                       -- Assist the closest unit instead unit with the least number of assisters
+                BeingBuiltCategories = {'ANTIMISSILE SILO'},-- Unitcategories must be type string
+                AssistUntilFinished = true,
+                Time = 0,
+            },
+        }
+    },
+
+    Builder { BuilderName = 'Z4 Assist SML',
+        PlatoonTemplate = 'T2EngineerAssist',
+        Priority = 1400,
+        InstanceCount = 30,
+        BuilderConditions = {
+            { EBC, 'GreaterThanEconIncome', { 8.5, 200 } },
+        },
+        BuilderType = 'Any',
+        BuilderData = {
+            Assist = {
+                AssistLocation = 'LocationType',
+                AssisteeType = 'Structure',
+                AssistRange = 700,
+                AssistClosestUnit = true,                                       -- Assist the closest unit instead unit with the least number of assisters
+                BeingBuiltCategories = {'STRATEGIC NUKE'},-- Unitcategories must be type string
+                AssistUntilFinished = true,
+                Time = 0,
+            },
+        }
+    },
+
+    Builder { BuilderName = 'Z4 Assist SML',
+        PlatoonTemplate = 'T3EngineerAssistnoSUB',
+        Priority = 1400,
+        InstanceCount = 30,
+        BuilderConditions = {
+            { EBC, 'GreaterThanEconIncome', { 8.5, 200 } },
+        },
+        BuilderType = 'Any',
+        BuilderData = {
+            Assist = {
+                AssistLocation = 'LocationType',
+                AssisteeType = 'Structure',
+                AssistRange = 700,
+                AssistClosestUnit = true,                                       -- Assist the closest unit instead unit with the least number of assisters
+                BeingBuiltCategories = {'STRATEGIC NUKE'},-- Unitcategories must be type string
+                AssistUntilFinished = true,
+                Time = 0,
+            },
+        }
+    },
+
+    Builder { BuilderName = 'Z4 Assist SML',
+        PlatoonTemplate = 'T3EngineerAssistSUB',
+        Priority = 1400,
+        InstanceCount = 30,
+        BuilderConditions = {
+            { EBC, 'GreaterThanEconIncome', { 8.5, 200 } },
+        },
+        BuilderType = 'Any',
+        BuilderData = {
+            Assist = {
+                AssistLocation = 'LocationType',
+                AssisteeType = 'Structure',
+                AssistRange = 700,
+                AssistClosestUnit = true,                                       -- Assist the closest unit instead unit with the least number of assisters
+                BeingBuiltCategories = {'STRATEGIC NUKE'},-- Unitcategories must be type string
+                AssistUntilFinished = true,
+                Time = 0,
+            },
+        }
+    },
+
+    Builder { BuilderName = 'Z5 Assist T3-T4 Artillery',
+        PlatoonTemplate = 'T2EngineerAssist',
+        Priority = 1400,
+        InstanceCount = 150,
+        BuilderConditions = {
+            { EBC, 'GreaterThanEconIncome', { 8.5, 200 } },
+        },
+        BuilderType = 'Any',
+        BuilderData = {
+            Assist = {
+                AssistLocation = 'LocationType',
+                AssisteeType = 'Structure',
+                AssistRange = 700,
+                AssistClosestUnit = true,                                       -- Assist the closest unit instead unit with the least number of assisters
+                BeingBuiltCategories = {'STRATEGIC ARTILLERY'},-- Unitcategories must be type string
+                AssistUntilFinished = true,
+                Time = 0,
+            },
+        }
+    },
+
+    Builder { BuilderName = 'Z5 Assist T3-T4 Artillery',
+        PlatoonTemplate = 'T3EngineerAssistnoSUB',
+        Priority = 1400,
+        InstanceCount = 150,
+        BuilderConditions = {
+            { EBC, 'GreaterThanEconIncome', { 8.5, 200 } },
+        },
+        BuilderType = 'Any',
+        BuilderData = {
+            Assist = {
+                AssistLocation = 'LocationType',
+                AssisteeType = 'Structure',
+                AssistRange = 700,
+                AssistClosestUnit = true,                                       -- Assist the closest unit instead unit with the least number of assisters
+                BeingBuiltCategories = {'STRATEGIC ARTILLERY'},-- Unitcategories must be type string
+                AssistUntilFinished = true,
+                Time = 0,
+            },
+        }
+    },
+
+    Builder { BuilderName = 'Z5 Assist T3-T4 Artillery',
+        PlatoonTemplate = 'T3EngineerAssistSUB',
+        Priority = 1400,
+        InstanceCount = 150,
+        BuilderConditions = {
+            { EBC, 'GreaterThanEconIncome', { 8.5, 200 } },
+        },
+        BuilderType = 'Any',
+        BuilderData = {
+            Assist = {
+                AssistLocation = 'LocationType',
+                AssisteeType = 'Structure',
+                AssistRange = 700,
+                AssistClosestUnit = true,                                       -- Assist the closest unit instead unit with the least number of assisters
+                BeingBuiltCategories = {'STRATEGIC ARTILLERY'},-- Unitcategories must be type string
+                AssistUntilFinished = true,
+                Time = 0,
+            },
+        }
+    },
+
+
+    -- ============== --
     --    Shields     --
     -- ============== --
     Builder { BuilderName = 'U1 Assist Shield',
@@ -399,8 +544,6 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
         Priority = 310,
         InstanceCount = 10,
         BuilderConditions = {
-            { EBC, 'GreaterThanEconTrend', { 0.0, 0.0 } },
-
             { EBC, 'GreaterThanEconIncome', { .8, 4 } },
         },
         BuilderType = 'Any',
@@ -430,7 +573,6 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
             -- Do we need additional conditions to build it ?
             { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 1, categories.MOBILE * categories.LAND * categories.ENGINEER * categories.TECH1 } },
             -- Have we the eco to build it ?
-            { EBC, 'GreaterThanEconTrend', { 0.0, 0.0 } }, -- relative income
             { EBC, 'GreaterThanEconStorageRatio', { 0.40, 0.50}}, -- Ratio from 0 to 1. (1=100%)
             -- Don't build it if...
         },
@@ -450,7 +592,6 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
             -- Do we need additional conditions to build it ?
             { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 1, categories.MOBILE * categories.LAND * categories.ENGINEER * categories.TECH2 } },
             -- Have we the eco to build it ?
-            { EBC, 'GreaterThanEconTrend', { 0.0, 0.0 } }, -- relative income
             { EBC, 'GreaterThanEconStorageRatio', { 0.40, 0.50}}, -- Ratio from 0 to 1. (1=100%)
             -- Don't build it if...
         },

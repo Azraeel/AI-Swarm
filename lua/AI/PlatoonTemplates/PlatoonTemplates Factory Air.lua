@@ -27,23 +27,26 @@ PlatoonTemplate { Name = 'T1AirDefaultQueue',
 PlatoonTemplate { Name = 'T2AirDefaultQueue',
     FactionSquads = {
         UEF = {
-        	{ 'uea0101', 1, 5, 'Attack', 'none' },      -- Fighter/Bomber
-            { 'dea0202', 1, 5, 'Attack', 'none' },      -- Fighter/Bomber
+        	{ 'uea0101', 1, 1, 'Attack', 'none' },      -- Scout
+        	{ 'uea0102', 1, 6, 'Attack', 'none' },		-- Interceptor
+            { 'dea0202', 1, 3, 'Attack', 'none' },      -- Fighter/Bomber
             { 'uea0203', 1, 1, 'Attack', 'none' },      -- Gunship
          },
         Aeon = {
         	{ 'uaa0101', 1, 1, 'Attack', 'none' },		-- Scout
-            { 'xaa0202', 1, 5, 'Attack', 'none' },      -- Fighter
+            { 'xaa0202', 1, 8, 'Attack', 'none' },      -- Fighter
             { 'uaa0203', 1, 2, 'Attack', 'none' },      -- Gunship
         },
         Cybran = {
         	{ 'ura0101', 1, 1, 'Attack', 'none' },		-- Scout
-            { 'dra0202', 1, 5, 'Attack', 'none' },      -- Fighter/Bomber
+        	{ 'ura0102', 1, 6, 'Attack', 'none' },		-- Interceptor
+            { 'dra0202', 1, 3, 'Attack', 'none' },      -- Fighter/Bomber
             { 'ura0203', 1, 2, 'Attack', 'none' },      -- Gunship
         },
         Seraphim = {
         	{ 'xsa0101', 1, 1, 'Attack', 'none' },		-- Scout
-            { 'xsa0202', 1, 5, 'Attack', 'none' },      -- Fighter/Bomber
+        	{ 'xsa0102', 1, 6, 'Attack', 'none' },		-- Interceptor
+            { 'xsa0202', 1, 3, 'Attack', 'none' },      -- Fighter/Bomber
             { 'xsa0203', 1, 2, 'Attack', 'none' },      -- Gunship
         },
     }

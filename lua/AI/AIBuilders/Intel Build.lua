@@ -12,7 +12,7 @@ BuilderGroup {
     Builder {
         BuilderName = 'U1 Radar',
         PlatoonTemplate = 'EngineerBuilder',
-        Priority = 22500,
+        Priority = 600,
         BuilderConditions = {
             -- When do we want to build this ?
             { UCBC, 'UnitsLessAtLocation', { 'LocationType', 1, (categories.RADAR + categories.OMNI) * categories.STRUCTURE}},

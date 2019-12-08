@@ -15,9 +15,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Experimental Builders',           
         Priority = 1000,
         InstanceCount = 1,
         BuilderConditions = {
-        	{ UCBC, 'HaveLessThanUnitsInCategoryBeingBuilt', { 2, categories.EXPERIMENTAL * categories.LAND}},
-        	
-            { EBC, 'GreaterThanEconTrend', { 0.0, 0.0 } },
+        	{ UCBC, 'HaveLessThanUnitsInCategoryBeingBuilt', { 2, categories.EXPERIMENTAL * categories.LAND}},   	
 
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
 
@@ -45,8 +43,6 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Experimental Builders',           
         BuilderConditions = {
         	{ UCBC, 'HaveLessThanUnitsInCategoryBeingBuilt', { 2, categories.EXPERIMENTAL * categories.LAND}},
 
-            { EBC, 'GreaterThanEconTrend', { 0.0, 0.0 } },
-
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
 
             { EBC, 'GreaterThanEconIncome', { 10, 300 } },
@@ -73,8 +69,6 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Experimental Builders',           
         BuilderConditions = {
             { UCBC, 'HaveLessThanUnitsInCategoryBeingBuilt', { 2, categories.EXPERIMENTAL * categories.LAND}},
 
-            { EBC, 'GreaterThanEconTrend', { 0.0, 0.0 } },
-
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
 
             { EBC, 'GreaterThanEconIncome', { 10, 300 } },
@@ -99,7 +93,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Experimental Builders',           
         Priority = 1000,
         InstanceCount = 1,
         BuilderConditions = {
-            { EBC, 'GreaterThanEconTrend', { 0.0, 0.0 } },
+        	{ UCBC, 'HaveLessThanUnitsInCategoryBeingBuilt', { 2, categories.EXPERIMENTAL * categories.LAND}},
 
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
 
@@ -125,8 +119,8 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Experimental Builders',           
         Priority = 1000,
         InstanceCount = 1,
         BuilderConditions = {
-            { EBC, 'GreaterThanEconTrend', { 0.0, 0.0 } },
-
+        	{ UCBC, 'HaveLessThanUnitsInCategoryBeingBuilt', { 2, categories.EXPERIMENTAL * categories.LAND}},
+        	
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
 
             { EBC, 'GreaterThanEconIncome', { 10, 300 } },

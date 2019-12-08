@@ -64,6 +64,22 @@ PlatoonTemplate {
 }
 
 PlatoonTemplate {
+    Name = 'EngineerBuilder',
+    Plan = 'EngineerBuildAI',
+    GlobalSquads = {
+        { categories.ENGINEER * categories.TECH1 - categories.SUBCOMMANDER, 1, 1, 'support', 'None' }
+    },        
+}
+
+PlatoonTemplate {
+    Name = 'T2EngineerBuilder',
+    Plan = 'EngineerBuildAI',
+    GlobalSquads = {
+        { categories.ENGINEER * categories.TECH2 - categories.SUBCOMMANDER, 1, 1, 'support', 'None' }
+    },        
+}
+
+PlatoonTemplate {
     Name = 'T3EngineerBuilderNoSUB',
     Plan = 'EngineerBuildAI',
     GlobalSquads = {
@@ -95,6 +111,6 @@ PlatoonTemplate {
     Name = 'EngineerAssistGROUP',
     Plan = 'ManagerEngineerAssistAI',
     GlobalSquads = {
-        { categories.ENGINEER * categories.TECH1 * categories.TECH2 * categories.TECH3 - categories.SUBCOMMANDER, 1, 40, 'support', 'None' }
+        { categories.ENGINEER * categories.TECH1 * categories.TECH2 * categories.TECH3 - categories.SUBCOMMANDER, 1, 1, 'support', 'None' }
     },
 }

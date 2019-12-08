@@ -1596,13 +1596,13 @@ Platoon = Class(OldPlatoonClass) {
     BuildACUEnhancememnts = function(platoon,cdr)
         local EnhancementsByUnitID = {
             -- UEF
-            ['uel0001'] = {'HeavyAntiMatterCannon', 'DamageStabilization', 'Shield', 'ShieldGeneratorField'},
+            ['uel0001'] = {'HeavyAntiMatterCannon', 'DamageStabilization', 'Shield', 'xxx'},
             -- Aeon
-            ['ual0001'] = {'HeatSink', 'CrysalisBeam', 'Shield', 'ShieldHeavy'},
+            ['ual0001'] = {'HeatSink', 'CrysalisBeam', 'Shield', 'xxx'},
             -- Cybram
-            ['url0001'] = {'CoolingUpgrade', 'StealthGenerator', 'MicrowaveLaserGenerator', 'CloakingGenerator'},
+            ['url0001'] = {'CoolingUpgrade', 'StealthGenerator', 'xxx', 'xxx'},
             -- Seraphim
-            ['xsl0001'] = {'RateOfFire', 'DamageStabilization', 'BlastAttack', 'DamageStabilizationAdvanced'},
+            ['xsl0001'] = {'RateOfFire', 'DamageStabilization', 'xxx', 'xxx'},
             -- Nomads
             ['xnl0001'] = {'Capacitor', 'GunUpgrade', 'MovementSpeedIncrease', 'DoubleGuns'},
 

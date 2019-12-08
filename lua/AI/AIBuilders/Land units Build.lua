@@ -50,6 +50,8 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',                  
 
             { EBC, 'GreaterThanEconIncome', { 0.2, 2 } },
 
+            { UCBC, 'HaveLessThanUnitsWithCategory', { 6, categories.STRUCTURE * categories.SUPPORTFACTORY * categories.TECH2 * categories.LAND }},
+
             { MIBC, 'CanPathToCurrentEnemy', { true } },
         },
         BuilderType = 'Land',
@@ -67,6 +69,8 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',                  
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
 
             { EBC, 'GreaterThanEconIncome', { 1, 20 } },
+
+            { UCBC, 'HaveLessThanUnitsWithCategory', { 6, categories.STRUCTURE * categories.SUPPORTFACTORY * categories.TECH3 * categories.LAND }},
 
             { MIBC, 'CanPathToCurrentEnemy', { true } },
         },
@@ -154,32 +158,14 @@ BuilderGroup {
     BuildersType = 'PlatoonFormBuilder', -- A PlatoonFormBuilder is for builder groups of units.
 
     Builder {
-        BuilderName = 'AISwarm LandAttack Early',
-        PlatoonTemplate = 'AISwarm LandAttack Early', 
-        Priority = 500,
-        InstanceCount = 100,
+        BuilderName = 'AISwarm LandAttack Default',
+        PlatoonTemplate = 'AISwarm LandAttack Default', 
+        Priority = 100,
+        InstanceCount = 4,
         BuilderType = 'Any',
         BuilderData = {
             AttackEnemyStrength = 100,
             SearchRadius = BaseEnemyZone,
-            MoveToCategories = {                                                
-                categories.ALLUNITS, 
-            },  
-        },        
-        BuilderConditions = { 
-            { MIBC, 'LessThanGameTime', { 420 } },
-        },
-    },
-
-    Builder {
-        BuilderName = 'AISwarm LandAttack Default',
-        PlatoonTemplate = 'AISwarm LandAttack Default', 
-        Priority = 100,
-        InstanceCount = 8,
-        BuilderType = 'Any',
-        BuilderData = {
-            AttackEnemyStrength = 100,
-            SearchRadius = BaseMilitaryZone,
             UseFormation = 'GrowthFormation',
             MoveToCategories = {                                                
                 categories.ALLUNITS, 
@@ -189,14 +175,14 @@ BuilderGroup {
     },
 
     Builder {
-        BuilderName = 'AISwarm LandAttack Small',
+        BuilderName = 'AISwarm Assault Small',
         PlatoonTemplate = 'AISwarm LandAttack Small', 
         Priority = 100,
-        InstanceCount = 8,
+        InstanceCount = 5,
         BuilderType = 'Any',
         BuilderData = {
             AttackEnemyStrength = 100,
-            SearchRadius = BaseMilitaryZone,
+            SearchRadius = BaseEnemyZone,
             UseFormation = 'GrowthFormation',
             MoveToCategories = {                                                
                 categories.ALLUNITS, 
@@ -206,10 +192,44 @@ BuilderGroup {
     },
 
     Builder {
-        BuilderName = 'AISwarm LandAttack Medium',
+        BuilderName = 'AISwarm Assault Medium',
         PlatoonTemplate = 'AISwarm LandAttack Medium', 
         Priority = 100,
-        InstanceCount = 6,
+        InstanceCount = 5,
+        BuilderType = 'Any',
+        BuilderData = {
+            AttackEnemyStrength = 100,
+            SearchRadius = BaseEnemyZone,
+            UseFormation = 'GrowthFormation',
+            MoveToCategories = {                                                
+                categories.ALLUNITS, 
+            },
+        },        
+        BuilderConditions = { },
+    },
+
+    Builder {
+        BuilderName = 'AISwarm Assault Large',
+        PlatoonTemplate = 'AISwarm LandAttack Large', 
+        Priority = 100,
+        InstanceCount = 5,
+        BuilderType = 'Any',
+        BuilderData = {
+            AttackEnemyStrength = 100,
+            SearchRadius = BaseEnemyZone,
+            UseFormation = 'GrowthFormation',
+            MoveToCategories = {                                                
+                categories.ALLUNITS, 
+            },
+        },        
+        BuilderConditions = { },
+    },
+
+    Builder {
+        BuilderName = 'AISwarm Expansion Land Protection Medium',
+        PlatoonTemplate = 'AISwarm LandAttack Medium', 
+        Priority = 100,
+        InstanceCount = 5,
         BuilderType = 'Any',
         BuilderData = {
             AttackEnemyStrength = 100,
@@ -223,7 +243,7 @@ BuilderGroup {
     },
 
     Builder {
-        BuilderName = 'AISwarm LandAttack Large',
+        BuilderName = 'AISwarm Expansion Land Protection Large',
         PlatoonTemplate = 'AISwarm LandAttack Large', 
         Priority = 100,
         InstanceCount = 5,
@@ -234,6 +254,90 @@ BuilderGroup {
             UseFormation = 'GrowthFormation',
             MoveToCategories = {                                                
                 categories.ALLUNITS, 
+            },
+        },        
+        BuilderConditions = { },
+    },
+
+    Builder {
+        BuilderName = 'AISwarm Last Defense Panic Medium',
+        PlatoonTemplate = 'AISwarm LandAttack Medium', 
+        Priority = 100,
+        InstanceCount = 5,
+        BuilderType = 'Any',
+        BuilderData = {
+            AttackEnemyStrength = 100,
+            SearchRadius = BasePanicZone,
+            UseFormation = 'GrowthFormation',
+            MoveToCategories = {                                                
+                categories.ALLUNITS, 
+            },
+        },        
+        BuilderConditions = { },
+    },
+
+    Builder {
+        BuilderName = 'AISwarm Last Defense Panic Large',
+        PlatoonTemplate = 'AISwarm LandAttack Large', 
+        Priority = 100,
+        InstanceCount = 5,
+        BuilderType = 'Any',
+        BuilderData = {
+            AttackEnemyStrength = 100,
+            SearchRadius = BasePanicZone,
+            UseFormation = 'GrowthFormation',
+            MoveToCategories = {                                                
+                categories.ALLUNITS, 
+            },
+        },        
+        BuilderConditions = { },
+    },
+
+    Builder {
+        BuilderName = 'AISwarm LandAttack EZ Raid',
+        PlatoonTemplate = 'AISwarm LandAttack Raid', 
+        Priority = 100,
+        InstanceCount = 3,
+        BuilderType = 'Any',
+        BuilderData = {
+            SearchRadius = BaseEnemyZone, 
+            AttackEnemyStrength = 50,
+            TargetSearchCategory = categories.MASSEXTRACTION * categories.MASSFABRICATION * categories.ENERGYPRODUCTION,          
+            MoveToCategories = {                                                
+                categories.MASSEXTRACTION,
+                categories.ENERGYPRODUCTION, 
+            },
+            WeaponTargetCategories = {                                          
+                categories.ENGINEER,
+                categories.MASSEXTRACTION,
+                categories.ENERGYPRODUCTION,
+                categories.MASSFABRICATION,
+                categories.ALLUNITS,
+            },
+        },        
+        BuilderConditions = { },
+    },
+
+    Builder {
+        BuilderName = 'AISwarm LandAttack MZ Raid',
+        PlatoonTemplate = 'AISwarm LandAttack Raid', 
+        Priority = 100,
+        InstanceCount = 3,
+        BuilderType = 'Any',
+        BuilderData = {
+            SearchRadius = BaseMilitaryZone, 
+            AttackEnemyStrength = 50,
+            TargetSearchCategory = categories.MASSEXTRACTION * categories.MASSFABRICATION * categories.ENERGYPRODUCTION,          
+            MoveToCategories = {                                                
+                categories.MASSEXTRACTION,
+                categories.ENERGYPRODUCTION, 
+            },
+            WeaponTargetCategories = {                                          
+                categories.ENGINEER,
+                categories.MASSEXTRACTION,
+                categories.ENERGYPRODUCTION,
+                categories.MASSFABRICATION,
+                categories.ALLUNITS,
             },
         },        
         BuilderConditions = { },
@@ -259,31 +363,6 @@ BuilderGroup {
                 categories.ENERGYPRODUCTION,
                 categories.MASSFABRICATION,
                 categories.STRUCTURE,
-                categories.ALLUNITS,
-            },
-        },        
-        BuilderConditions = { },
-    },
-
-    Builder {
-        BuilderName = 'AISwarm LandAttack Raid',
-        PlatoonTemplate = 'AISwarm LandAttack Raid', 
-        Priority = 100,
-        InstanceCount = 5,
-        BuilderType = 'Any',
-        BuilderData = {
-            SearchRadius = BaseEnemyZone, 
-            AttackEnemyStrength = 50,
-            TargetSearchCategory = categories.MASSEXTRACTION * categories.MASSFABRICATION * categories.ENERGYPRODUCTION,          
-            MoveToCategories = {                                                
-                categories.MASSEXTRACTION,
-                categories.ENERGYPRODUCTION, 
-            },
-            WeaponTargetCategories = {                                          
-                categories.ENGINEER,
-                categories.MASSEXTRACTION,
-                categories.ENERGYPRODUCTION,
-                categories.MASSFABRICATION,
                 categories.ALLUNITS,
             },
         },        

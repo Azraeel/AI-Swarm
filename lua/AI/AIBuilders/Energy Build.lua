@@ -22,13 +22,15 @@ BuilderGroup {
         InstanceCount = 2,                                                      -- Number of plattons that will be formed with this template.
         DelayEqualBuildPlattons = {'Energy', 3},
         BuilderConditions = {
-            { EBC, 'LessThanEconStorageRatio', { 1, 0.80 } },             -- Ratio from 0 to 1. (1=100%)
+            { EBC, 'LessThanEconStorageRatio', { 1, 0.45 } },             -- Ratio from 0 to 1. (1=100%)
 
             { UCBC, 'HaveLessThanUnitsWithCategory', { 1, categories.ENERGYPRODUCTION * ( categories.TECH2 + categories.TECH3 + categories.EXPERIMENTAL ) } },
 
             { UCBC, 'HasNotParagon', {} },
 
             { EBC, 'GreaterThanEconIncome',  { 0.5, 0.0}}, -- Absolut Base income
+
+            { MIBC, 'GreaterThanGameTime', { 260 } },
         },
         BuilderType = 'Any',
         BuilderData = {
@@ -49,7 +51,7 @@ BuilderGroup {
         PlatoonTemplate = 'CommanderBuilder',
         Priority = 650,
         BuilderConditions = {
-            { EBC, 'LessThanEconStorageRatio', { 1, 0.90 } },             -- Ratio from 0 to 1. (1=100%)
+            { EBC, 'LessThanEconStorageRatio', { 1, 0.50 } },             -- Ratio from 0 to 1. (1=100%)
 
             { UCBC, 'HaveLessThanUnitsWithCategory', { 1, categories.ENERGYPRODUCTION * ( categories.TECH2 + categories.TECH3 + categories.EXPERIMENTAL ) } },
 
@@ -104,7 +106,7 @@ BuilderGroup {
     Builder {
         BuilderName = 'U2 Power minimum',
         PlatoonTemplate = 'T2EngineerBuilder',
-        Priority = 825,
+        Priority = 1000,
         DelayEqualBuildPlattons = {'Energy', 20},
         InstanceCount = 1,
         BuilderConditions = {
@@ -134,9 +136,11 @@ BuilderGroup {
     Builder {
         BuilderName = 'U2 Power',
         PlatoonTemplate = 'T2EngineerBuilder',
-        Priority = 800,
+        Priority = 950,
         InstanceCount = 1,
         BuilderConditions = {
+        	{ UCBC, 'HaveLessThanUnitsInCategoryBeingBuilt', { 1, categories.STRUCTURE * categories.ENERGYPRODUCTION * ( categories.TECH2 + categories.TECH3 ) }},
+        	
             { EBC, 'LessThanEconStorageRatio', { 1, 0.45 } },             -- Ratio from 0 to 1. (1=100%)
 
             { UCBC, 'HaveLessThanUnitsInCategoryBeingBuilt', { 1, categories.STRUCTURE * categories.ENERGYPRODUCTION * categories.TECH3 }},
@@ -195,8 +199,11 @@ BuilderGroup {
         BuilderName = 'U3 Power',
         PlatoonTemplate = 'T3EngineerBuilderNoSUB',
         Priority = 2000,
+        DelayEqualBuildPlattons = {'Energy', 10},
         InstanceCount = 1,
         BuilderConditions = {
+            { UCBC, 'CheckBuildPlattonDelay', { 'Energy' }},
+
             { EBC, 'LessThanEconStorageRatio', { 1, 0.45 } },             -- Ratio from 0 to 1. (1=100%)
         },
         BuilderType = 'Any',
@@ -221,9 +228,12 @@ BuilderGroup {
         BuilderName = 'U3 Power',
         PlatoonTemplate = 'T3EngineerBuilderSUB',
         Priority = 2000,
+        DelayEqualBuildPlattons = {'Energy', 10},
         InstanceCount = 1,
         BuilderConditions = {
             { EBC, 'LessThanEconStorageRatio', { 1, 0.45 } },             -- Ratio from 0 to 1. (1=100%)
+
+            { UCBC, 'CheckBuildPlattonDelay', { 'Energy' }},
 
             { UCBC, 'HasNotParagon', {} },
 

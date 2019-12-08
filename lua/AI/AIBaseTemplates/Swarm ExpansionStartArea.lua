@@ -104,6 +104,8 @@ BaseBuilderTemplate {
         
         -- Build Anti Air near AirFactories
         'Swarm Defense Anti Air Builders',
+
+        'Swarm Defense Anti Ground Builders',
         -----------------------------------------------------------------------------
         -- ==== FireBase BUILDER ==== --
         -----------------------------------------------------------------------------

@@ -44,9 +44,9 @@ BuilderGroup { BuilderGroupName = 'Swarm Strategic Builder',
         BuilderConditions = {
             { EBC, 'GreaterThanEconStorageRatio', { 0.50, 0.60 } },       
 
-            { UCBC, 'UnitsLessAtLocation', { 'LocationType', 2, categories.STRUCTURE * categories.TACTICALMISSILEPLATFORM}},
+            { UCBC, 'UnitsLessAtLocation', { 'LocationType', 1, categories.STRUCTURE * categories.TACTICALMISSILEPLATFORM}},
 
-            { UCBC, 'HaveLessThanUnitsWithCategory', { 6, categories.STRUCTURE * categories.TACTICALMISSILEPLATFORM } },
+            { UCBC, 'HaveLessThanUnitsWithCategory', { 2, categories.STRUCTURE * categories.TACTICALMISSILEPLATFORM } },
         },
         BuilderType = 'Any',
         BuilderData = {
@@ -81,6 +81,8 @@ BuilderGroup { BuilderGroupName = 'Swarm Strategic Builder',
         PlatoonTemplate = 'T3EngineerBuilderNoSUB',
         Priority = 900,
         BuilderConditions = {
+            { UCBC, 'HaveGreaterThanUnitsWithCategory', { 1, categories.ENERGYPRODUCTION * categories.TECH3 } },
+
             { UCBC, 'HaveLessThanUnitsWithCategory', { 1, categories.STRUCTURE * categories.NUKE * (categories.TECH3 + categories.EXPERIMENTAL) }},
 
             { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 0, categories.ENGINEER * categories.TECH3}},
@@ -112,6 +114,8 @@ BuilderGroup { BuilderGroupName = 'Swarm Strategic Builder',
         PlatoonTemplate = 'T3EngineerBuilderSUB',
         Priority = 850,
         BuilderConditions = {
+        	{ UCBC, 'HaveGreaterThanUnitsWithCategory', { 2, categories.ENERGYPRODUCTION * categories.TECH3 } },
+
             { EBC, 'GreaterThanEconStorageRatio', { 0.85, 0.85 } },         
 
             { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 0, categories.ENGINEER * categories.TECH3 }},

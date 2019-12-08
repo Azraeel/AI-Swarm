@@ -292,6 +292,7 @@ BuilderGroup {
         InstanceCount = 1,
         FormRadius = 10000,
         BuilderConditions = {
+        	{ MIBC, 'GreaterThanGameTime', { 360 } },
             -- When do we want to build this ?
             { UCBC, 'HaveGreaterThanArmyPoolWithCategory', { 0, categories.MASSEXTRACTION} },
             -- Do we need additional conditions to build it ?
@@ -311,6 +312,7 @@ BuilderGroup {
         InstanceCount = 1,
         FormRadius = 10000,
         BuilderConditions = {
+        	{ MIBC, 'GreaterThanGameTime', { 360 } },
             -- When do we want to build this ?
             { UCBC, 'HaveGreaterThanArmyPoolWithCategory', { 0, categories.MASSEXTRACTION} },
             -- Do we need additional conditions to build it ?
@@ -330,6 +332,7 @@ BuilderGroup {
         InstanceCount = 1,
         FormRadius = 10000,
         BuilderConditions = {
+        	{ MIBC, 'GreaterThanGameTime', { 360 } },
             -- When do we want to build this ?
             { UCBC, 'HaveGreaterThanArmyPoolWithCategory', { 0, categories.MASSEXTRACTION} },
             -- Do we need additional conditions to build it ?
@@ -354,6 +357,7 @@ BuilderGroup {
         InstanceCount = 1,
         FormRadius = 10000,
         BuilderConditions = {
+        	{ MIBC, 'GreaterThanGameTime', { 360 } },
             -- When do we want to build this ?
             { UCBC, 'HaveGreaterThanArmyPoolWithCategory', { 0, categories.MASSEXTRACTION} },
             -- Do we need additional conditions to build it ?
@@ -373,6 +377,7 @@ BuilderGroup {
         InstanceCount = 1,
         FormRadius = 10000,
         BuilderConditions = {
+        	{ MIBC, 'GreaterThanGameTime', { 360 } },
             -- When do we want to build this ?
             { UCBC, 'HaveGreaterThanArmyPoolWithCategory', { 0, categories.MASSEXTRACTION} },
             -- Do we need additional conditions to build it ?

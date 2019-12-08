@@ -18,8 +18,6 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Builders',
         PlatoonTemplate = 'T1BuildEngineer',
         Priority = 1000,
         BuilderConditions = {
-            { EBC, 'GreaterThanEconTrend', { 0.0, 0.0 } },
-
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
 
             { EBC, 'GreaterThanEconIncome', { 0, 0 } },
@@ -38,8 +36,6 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Builders',
         PlatoonTemplate = 'T2BuildEngineer',
         Priority = 1010,
         BuilderConditions = {
-            { EBC, 'GreaterThanEconTrend', { 0.0, 0.0 } },
-
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
 
             { UCBC, 'PoolLessAtLocation', { 'LocationType', 1, categories.MOBILE * categories.ENGINEER * categories.TECH2 } },
@@ -56,8 +52,6 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Builders',
         PlatoonTemplate = 'T3BuildEngineer',
         Priority = 1015,
         BuilderConditions = {
-            { EBC, 'GreaterThanEconTrend', { 0.0, 0.0 } },
-
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
 
             { UCBC, 'PoolLessAtLocation', { 'LocationType', 1, categories.MOBILE * categories.ENGINEER * categories.TECH3 } },
@@ -125,8 +119,6 @@ BuilderGroup { BuilderGroupName = 'Swarm SACU Builder',
         PlatoonTemplate = 'T3LandSubCommander',
         Priority = 1030,
         BuilderConditions = {
-            { EBC, 'GreaterThanEconTrend', { 0.0, 0.0 } },
-
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
 
             { EBC, 'GreaterThanEconIncome', { 5, 150 } },
@@ -140,7 +132,7 @@ BuilderGroup { BuilderGroupName = 'Swarm SACU Builder',
 -- ===================================================-======================================================== --
 -- ==                                          Engineer Transfers                                            == --
 -- ===================================================-======================================================== --
-BuilderGroup { BuilderGroupName = 'Swarm Engineer Transfer To MainBase',
+--[[ BuilderGroup { BuilderGroupName = 'Swarm Engineer Transfer To MainBase',
     BuildersType = 'PlatoonFormBuilder',
     -- ============================================ --
     --    Transfer from LocationType to MainBase    --
@@ -192,4 +184,4 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Transfer To MainBase',
         },
         BuilderType = 'Any',
     },
-}
+} ]]--
