@@ -118,9 +118,9 @@ BuilderGroup {
         },
         BuilderType = 'Any',
         BuilderData = {
+        	NumAssistees = 25,
             Construction = {
                 DesiresAssist = true,
-                NumAssistees = 25,
                 BuildClose = false,
                 AdjacencyCategory = (categories.STRUCTURE * categories.SHIELD) + (categories.FACTORY * (categories.TECH3 + categories.TECH2 + categories.TECH1)),
                 AvoidCategory = categories.ENERGYPRODUCTION * categories.TECH2,
@@ -147,9 +147,9 @@ BuilderGroup {
         },
         BuilderType = 'Any',
         BuilderData = {
+        	NumAssistees = 25,
             Construction = {
                 DesiresAssist = true,
-                NumAssistees = 25,
                 BuildClose = false,
                 AdjacencyCategory = (categories.STRUCTURE * categories.SHIELD) + (categories.FACTORY * (categories.TECH3 + categories.TECH2 + categories.TECH1)),
                 AvoidCategory = categories.ENERGYPRODUCTION * categories.TECH2,
@@ -167,7 +167,7 @@ BuilderGroup {
     -- ============ --
     Builder {
         BuilderName = 'U3 Power minimum',
-        PlatoonTemplate = 'T3EngineerBuilderNoSUB',
+        PlatoonTemplate = 'T3EngineerBuildernoSUB',
         Priority = 2625,
         DelayEqualBuildPlattons = {'Energy', 10},
         InstanceCount = 1,
@@ -180,9 +180,9 @@ BuilderGroup {
         },
         BuilderType = 'Any',
         BuilderData = {
+        	NumAssistees = 40,
             Construction = {
                 DesiresAssist = true,
-                NumAssistees = 40,
                 BuildClose = false,
                 AdjacencyCategory = (categories.STRUCTURE * categories.SHIELD) + (categories.FACTORY * (categories.TECH3 + categories.TECH2 + categories.TECH1)),
                 AvoidCategory = categories.ENERGYPRODUCTION * categories.TECH3,
@@ -197,7 +197,7 @@ BuilderGroup {
     },
     Builder {
         BuilderName = 'U3 Power',
-        PlatoonTemplate = 'T3EngineerBuilderNoSUB',
+        PlatoonTemplate = 'T3EngineerBuildernoSUB',
         Priority = 2000,
         DelayEqualBuildPlattons = {'Energy', 10},
         InstanceCount = 1,
@@ -208,9 +208,9 @@ BuilderGroup {
         },
         BuilderType = 'Any',
         BuilderData = {
+        	NumAssistees = 40,
             Construction = {
                 DesiresAssist = true,
-                NumAssistees = 40,
                 BuildClose = false,
                 AdjacencyCategory = (categories.STRUCTURE * categories.SHIELD) + (categories.FACTORY * (categories.TECH3 + categories.TECH2 + categories.TECH1)),
                 AvoidCategory = categories.ENERGYPRODUCTION * categories.TECH3,
@@ -241,9 +241,9 @@ BuilderGroup {
         },
         BuilderType = 'Any',
         BuilderData = {
+        	NumAssistees = 40,
             Construction = {
                 DesiresAssist = true,
-                NumAssistees = 40,
                 BuildClose = false,
                 AdjacencyCategory = (categories.STRUCTURE * categories.SHIELD) + (categories.FACTORY * (categories.TECH3 + categories.TECH2 + categories.TECH1)),
                 AvoidCategory = categories.ENERGYPRODUCTION * categories.TECH3,

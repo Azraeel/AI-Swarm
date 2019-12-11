@@ -10,7 +10,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Naval Experimental Builders',          
     BuildersType = 'EngineerBuilder',
     
     Builder { BuilderName = 'U4 NavalExp1 Minimum',
-        PlatoonTemplate = 'T3EngineerBuilderNoSUB',
+        PlatoonTemplate = 'T3EngineerBuildernoSUB',
         Priority = 160,
         InstanceCount = 1,
         BuilderConditions = {
@@ -39,7 +39,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Naval Experimental Builders',          
     },
     
     Builder { BuilderName = 'U4 SeaExperimental1',
-        PlatoonTemplate = 'T3EngineerBuilderNoSUB',
+        PlatoonTemplate = 'T3EngineerBuildernoSUB',
         Priority = 150,
         InstanceCount = 3,
         BuilderConditions = {

@@ -14,18 +14,11 @@ BuilderGroup {
         Priority = 500,                                                        -- Priority. Higher priotity will be build more often then lower priotity.
         InstanceCount = 4,                                                      -- Number of plattons that will be formed with this template.
         BuilderConditions = {
-            -- When do we want to build this ?
             { UCBC, 'ExpansionBaseCheck', { } },
-            -- Do we need additional conditions to build it ?
+
             { UCBC, 'StartLocationNeedsEngineer', { 'LocationType', 1000, -1000, 100, 1, 'StructuresNotMex' } },
-            { UCBC, 'HaveGreaterThanUnitsWithCategory', { 1, categories.STRUCTURE * categories.LAND * categories.FACTORY }},
-            -- Have we the eco to build it ?
-            { EBC, 'GreaterThanEconIncome',  { 1.0, 6.0}},
-            { EBC, 'GreaterThanEconStorageRatio', { 0.35, 0.65 } },             -- Ratio from 0 to 1. (1=100%)
-            -- Don't build it if...
-            -- Respect UnitCap
-            { UCBC, 'HaveUnitRatioVersusCap', { MaxCapFactory , '<', categories.STRUCTURE * categories.FACTORY * categories.LAND } }, -- Maximal 3 factories at 125 unitcap, 12 factories at 500 unitcap...
-            { UCBC, 'HaveUnitRatioVersusCap', { MaxCapStructure , '<', categories.STRUCTURE - categories.MASSEXTRACTION - categories.DEFENSE - categories.FACTORY } },
+
+            { EBC, 'GreaterThanEconStorageRatio', { 0.45, 0.45 } },             -- Ratio from 0 to 1. (1=100%)
         },
         BuilderType = 'Any',
         BuilderData = {
@@ -47,7 +40,6 @@ BuilderGroup {
                     'T1Radar',
                     'T1GroundDefense',
                     'T1AADefense',
-                    'T1GroundDefense',
                 }
             },
         }
@@ -58,18 +50,11 @@ BuilderGroup {
         Priority = 500,                                                        -- Priority. Higher priotity will be build more often then lower priotity.
         InstanceCount = 1,                                                      -- Number of plattons that will be formed with this template.
         BuilderConditions = {
-            -- When do we want to build this ?
             { UCBC, 'ExpansionBaseCheck', { } },
-            -- Do we need additional conditions to build it ?
+
             { UCBC, 'StartLocationNeedsEngineer', { 'LocationType', 1000, -1000, 100, 1, 'StructuresNotMex' } },
-            { UCBC, 'HaveGreaterThanUnitsWithCategory', { 1, categories.STRUCTURE * categories.LAND * categories.FACTORY }},
-            -- Have we the eco to build it ?
-            { EBC, 'GreaterThanEconIncome',  { 1.0, 6.0}},
-            { EBC, 'GreaterThanEconStorageRatio', { 0.35, 0.65 } },             -- Ratio from 0 to 1. (1=100%)
-            -- Don't build it if...
-            -- Respect UnitCap
-            { UCBC, 'HaveUnitRatioVersusCap', { MaxCapFactory , '<', categories.STRUCTURE * categories.FACTORY * categories.LAND } }, -- Maximal 3 factories at 125 unitcap, 12 factories at 500 unitcap...
-            { UCBC, 'HaveUnitRatioVersusCap', { MaxCapStructure , '<', categories.STRUCTURE - categories.MASSEXTRACTION - categories.DEFENSE - categories.FACTORY } },
+
+            { EBC, 'GreaterThanEconStorageRatio', { 0.45, 0.45 } },             -- Ratio from 0 to 1. (1=100%)
         },
         BuilderType = 'Any',
         BuilderData = {
@@ -91,7 +76,6 @@ BuilderGroup {
                     'T1Radar',
                     'T1GroundDefense',
                     'T1AADefense',
-                    'T1GroundDefense',
                 }
             },
         }
@@ -102,18 +86,11 @@ BuilderGroup {
         Priority = 500,                                                        -- Priority. Higher priotity will be build more often then lower priotity.
         InstanceCount = 4,                                                      -- Number of plattons that will be formed with this template.
         BuilderConditions = {
-            -- When do we want to build this ?
             { UCBC, 'ExpansionBaseCheck', { } },
-            -- Do we need additional conditions to build it ?
-            { UCBC, 'ExpansionAreaNeedsEngineer', { 'LocationType', 1000, -1000, 100, 1, 'StructuresNotMex' } },
-            { UCBC, 'HaveGreaterThanUnitsWithCategory', { 1, categories.STRUCTURE * categories.LAND * categories.FACTORY }},
-            -- Have we the eco to build it ?
-            { EBC, 'GreaterThanEconIncome',  { 1.0, 6.0}},
-            { EBC, 'GreaterThanEconStorageRatio', { 0.35, 0.65 } },             -- Ratio from 0 to 1. (1=100%)
-            -- Don't build it if...
-            -- Respect UnitCap
-            { UCBC, 'HaveUnitRatioVersusCap', { MaxCapFactory , '<', categories.STRUCTURE * categories.FACTORY * categories.LAND } }, -- Maximal 3 factories at 125 unitcap, 12 factories at 500 unitcap...
-            { UCBC, 'HaveUnitRatioVersusCap', { MaxCapStructure , '<', categories.STRUCTURE - categories.MASSEXTRACTION - categories.DEFENSE - categories.FACTORY } },
+
+            { UCBC, 'StartLocationNeedsEngineer', { 'LocationType', 1000, -1000, 100, 1, 'StructuresNotMex' } },
+
+            { EBC, 'GreaterThanEconStorageRatio', { 0.45, 0.45 } },             -- Ratio from 0 to 1. (1=100%)
         },
         BuilderType = 'Any',
         BuilderData = {
@@ -135,7 +112,6 @@ BuilderGroup {
                     'T1Radar',
                     'T1GroundDefense',
                     'T1AADefense',
-                    'T1GroundDefense',
                 }
             },
         }
@@ -146,18 +122,11 @@ BuilderGroup {
         Priority = 500,                                                        -- Priority. Higher priotity will be build more often then lower priotity.
         InstanceCount = 1,                                                      -- Number of plattons that will be formed with this template.
         BuilderConditions = {
-            -- When do we want to build this ?
             { UCBC, 'ExpansionBaseCheck', { } },
-            -- Do we need additional conditions to build it ?
-            { UCBC, 'ExpansionAreaNeedsEngineer', { 'LocationType', 1000, -1000, 100, 1, 'StructuresNotMex' } },
-            { UCBC, 'HaveGreaterThanUnitsWithCategory', { 1, categories.STRUCTURE * categories.LAND * categories.FACTORY }},
-            -- Have we the eco to build it ?
-            { EBC, 'GreaterThanEconIncome',  { 1.0, 6.0}},
-            { EBC, 'GreaterThanEconStorageRatio', { 0.35, 0.65 } },             -- Ratio from 0 to 1. (1=100%)
-            -- Don't build it if...
-            -- Respect UnitCap
-            { UCBC, 'HaveUnitRatioVersusCap', { MaxCapFactory , '<', categories.STRUCTURE * categories.FACTORY * categories.LAND } }, -- Maximal 3 factories at 125 unitcap, 12 factories at 500 unitcap...
-            { UCBC, 'HaveUnitRatioVersusCap', { MaxCapStructure , '<', categories.STRUCTURE - categories.MASSEXTRACTION - categories.DEFENSE - categories.FACTORY } },
+
+            { UCBC, 'StartLocationNeedsEngineer', { 'LocationType', 1000, -1000, 100, 1, 'StructuresNotMex' } },
+
+            { EBC, 'GreaterThanEconStorageRatio', { 0.45, 0.45 } },             -- Ratio from 0 to 1. (1=100%)
         },
         BuilderType = 'Any',
         BuilderData = {
@@ -179,7 +148,6 @@ BuilderGroup {
                     'T1Radar',
                     'T1GroundDefense',
                     'T1AADefense',
-                    'T1GroundDefense',
                 }
             },
         }

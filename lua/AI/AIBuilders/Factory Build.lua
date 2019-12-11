@@ -54,7 +54,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Factory Builder',
         BuilderConditions = {
             { UCBC, 'CheckBuildPlattonDelay', { 'Factories' }},
 
-            { EBC, 'GreaterThanEconStorageRatio', { 0.15, 0.40}}, 
+            { EBC, 'GreaterThanEconStorageRatio', { 0.15, 0.30}}, 
 
             { EBC, 'MassToFactoryRatioBaseCheck', { 'LocationType' } },
 
@@ -62,8 +62,8 @@ BuilderGroup { BuilderGroupName = 'Swarm Factory Builder',
         },
         BuilderType = 'Any',
         BuilderData = {
-            DesiresAssist = true,
             Construction = {
+            	DesiresAssist = true,
             	AdjacencyCategory = categories.MASSEXTRACTION * (categories.TECH3 + categories.TECH2 + categories.TECH1),
                 Location = 'LocationType',
                 BuildStructures = {
@@ -89,8 +89,8 @@ BuilderGroup { BuilderGroupName = 'Swarm Factory Builder',
         },
         BuilderType = 'Any',
         BuilderData = {
-            DesiresAssist = true,
             Construction = {
+            	DesiresAssist = true,
                 AdjacencyCategory = categories.MASSEXTRACTION * (categories.TECH3 + categories.TECH2 + categories.TECH1),
                 Location = 'LocationType',
                 BuildStructures = {
@@ -116,8 +116,8 @@ BuilderGroup { BuilderGroupName = 'Swarm Factory Builder',
         },
         BuilderType = 'Any',
         BuilderData = {
-            DesiresAssist = true,
             Construction = {
+            	DesiresAssist = true,
             	AdjacencyCategory = categories.MASSEXTRACTION * (categories.TECH3 + categories.TECH2 + categories.TECH1),
                 Location = 'LocationType',
                 BuildStructures = {
@@ -170,7 +170,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Factory Builders Expansions',
             -- When do we want to build this ?
             { UCBC, 'UnitsLessAtLocation', { 'LocationType', 6, categories.STRUCTURE * categories.FACTORY * categories.LAND}},
  
-            { EBC, 'GreaterThanEconStorageRatio', { 0.20, 0.50 } },             -- Ratio from 0 to 1. (1=100%)
+            { EBC, 'GreaterThanEconStorageRatio', { 0.20, 0.35 } },             -- Ratio from 0 to 1. (1=100%)
 
             { EBC, 'MassToFactoryRatioBaseCheck', { 'LocationType' } },
 
@@ -194,7 +194,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Factory Builders Expansions',
         BuilderConditions = {
             { UCBC, 'UnitsLessAtLocation', { 'LocationType', 4, categories.STRUCTURE * categories.FACTORY * categories.AIR}},
 
-            { EBC, 'GreaterThanEconStorageRatio', { 0.20, 0.50 } },  
+            { EBC, 'GreaterThanEconStorageRatio', { 0.20, 0.45 } },  
 
             { EBC, 'MassToFactoryRatioBaseCheck', { 'LocationType' } },           
 

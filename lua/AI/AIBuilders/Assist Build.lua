@@ -194,7 +194,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
         }
     },
     Builder { BuilderName = 'U3 Assist Energy Turbo',
-        PlatoonTemplate = 'T3EngineerAssistNoSUB',
+        PlatoonTemplate = 'T3EngineerAssistnoSUB',
         Priority = 600,
         InstanceCount = 20,
         BuilderConditions = {
@@ -208,6 +208,26 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
                 AssistRange = 200,
                 AssistClosestUnit = true,                                       -- Assist the closest unit instead unit with the least number of assisters
                 BeingBuiltCategories = {'STRUCTURE ENERGYPRODUCTION TECH2', 'STRUCTURE ENERGYPRODUCTION TECH3'},-- Unitcategories must be type string
+                AssistUntilFinished = true,
+                Time = 0,
+            },
+        }
+    },
+    Builder { BuilderName = 'U1 Assist HYDROCARBON Turbo',
+        PlatoonTemplate = 'EngineerAssist',
+        Priority = 550,
+        InstanceCount = 10,
+        BuilderConditions = {
+            { EBC, 'GreaterThanEconIncome', { 0.2, 2 } },
+        },
+        BuilderType = 'Any',
+        BuilderData = {
+            Assist = {
+                AssistLocation = 'LocationType',
+                AssisteeType = 'Structure',
+                AssistRange = 200,
+                AssistClosestUnit = true,                                       -- Assist the closest unit instead unit with the least number of assisters
+                BeingBuiltCategories = {'HYDROCARBON'},-- Unitcategories must be type string
                 AssistUntilFinished = true,
                 Time = 0,
             },
@@ -259,7 +279,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
         }
     },
     Builder { BuilderName = 'U3 Assist PARA',
-        PlatoonTemplate = 'T3EngineerAssistNoSUB',
+        PlatoonTemplate = 'T3EngineerAssistnoSUB',
         Priority = 1015,
         InstanceCount = 30,
         BuilderConditions = {
@@ -565,15 +585,13 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
     Builder { BuilderName = 'U1 Finisher',
         PlatoonTemplate = 'EngineerBuilder',
         PlatoonAIPlan = 'FinisherAI',
-        Priority = 250,
+        Priority = 550,
         InstanceCount = 2,
         BuilderConditions = {
             -- When do we want to build this ?
             { UCBC, 'UnfinishedUnitsAtLocation', { 'LocationType' }},
-            -- Do we need additional conditions to build it ?
-            { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 1, categories.MOBILE * categories.LAND * categories.ENGINEER * categories.TECH1 } },
             -- Have we the eco to build it ?
-            { EBC, 'GreaterThanEconStorageRatio', { 0.40, 0.50}}, -- Ratio from 0 to 1. (1=100%)
+            { EBC, 'GreaterThanEconStorageRatio', { 0.25, 0.25}}, -- Ratio from 0 to 1. (1=100%)
             -- Don't build it if...
         },
         BuilderData = {
@@ -584,15 +602,13 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
     Builder { BuilderName = 'U2 Finisher',
         PlatoonTemplate = 'T2EngineerBuilder',
         PlatoonAIPlan = 'FinisherAI',
-        Priority = 250,
+        Priority = 450,
         InstanceCount = 2,
         BuilderConditions = {
             -- When do we want to build this ?
             { UCBC, 'UnfinishedUnitsAtLocation', { 'LocationType' }},
-            -- Do we need additional conditions to build it ?
-            { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 1, categories.MOBILE * categories.LAND * categories.ENGINEER * categories.TECH2 } },
             -- Have we the eco to build it ?
-            { EBC, 'GreaterThanEconStorageRatio', { 0.40, 0.50}}, -- Ratio from 0 to 1. (1=100%)
+            { EBC, 'GreaterThanEconStorageRatio', { 0.25, 0.25}}, -- Ratio from 0 to 1. (1=100%)
             -- Don't build it if...
         },
         BuilderData = {

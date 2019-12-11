@@ -9,7 +9,7 @@ BuilderGroup {
     BuildersType = 'EngineerBuilder',
     Builder {
         BuilderName = 'U4 Paragon 1st mass40',
-        PlatoonTemplate = 'T3EngineerBuilderNoSUB',
+        PlatoonTemplate = 'T3EngineerBuildernoSUB',
         Priority = 300,
         DelayEqualBuildPlattons = {'Paragon', 60},
         BuilderConditions = {
@@ -47,7 +47,7 @@ BuilderGroup {
     },
     Builder {
         BuilderName = 'U4 Paragon 1st 35min',
-        PlatoonTemplate = 'T3EngineerBuilderNoSUB',
+        PlatoonTemplate = 'T3EngineerBuildernoSUB',
         Priority = 350,
         DelayEqualBuildPlattons = {'Paragon', 60},
         BuilderConditions = {
@@ -83,7 +83,7 @@ BuilderGroup {
     },
     Builder {
         BuilderName = 'U4 Paragon 1st HighTrend',
-        PlatoonTemplate = 'T3EngineerBuilderNoSUB',
+        PlatoonTemplate = 'T3EngineerBuildernoSUB',
         Priority = 3500,
         DelayEqualBuildPlattons = {'Paragon', 60},
         BuilderConditions = {
@@ -120,7 +120,7 @@ BuilderGroup {
     },
     Builder {
         BuilderName = 'U4 Paragon 2nd',
-        PlatoonTemplate = 'T3EngineerBuilder',
+        PlatoonTemplate = 'T3EngineerBuildernoSUB',
         Priority = 350,
         BuilderConditions = {
             -- When do we want to build this ?
@@ -155,7 +155,7 @@ BuilderGroup {
     },
     Builder {
         BuilderName = 'U4 Paragon 3nd',
-        PlatoonTemplate = 'T3EngineerBuilder',
+        PlatoonTemplate = 'T3EngineerBuildernoSUB',
         Priority = 350,
         BuilderConditions = {
             -- When do we want to build this ?

@@ -37,7 +37,7 @@ BuilderGroup {
     },
     Builder {
         BuilderName = 'U3 Radar',
-        PlatoonTemplate = 'T3EngineerBuilder',
+        PlatoonTemplate = 'T3EngineerBuildernoSUB',
         Priority = 1000,
         BuilderConditions = {
             -- When do we want to build this ?

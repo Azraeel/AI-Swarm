@@ -78,7 +78,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Strategic Builder',
 
     Builder {
         BuilderName = 'U3 SML Rush',
-        PlatoonTemplate = 'T3EngineerBuilderNoSUB',
+        PlatoonTemplate = 'T3EngineerBuildernoSUB',
         Priority = 900,
         BuilderConditions = {
             { UCBC, 'HaveGreaterThanUnitsWithCategory', { 1, categories.ENERGYPRODUCTION * categories.TECH3 } },
@@ -93,9 +93,9 @@ BuilderGroup { BuilderGroupName = 'Swarm Strategic Builder',
         },
         BuilderType = 'Any',
         BuilderData = {
+        	NumAssistees = 35,
             Construction = {
                 DesiresAssist = true,
-                NumAssistees = 35,
                 BuildClose = false,
                 AdjacencyCategory = categories.STRUCTURE * categories.SHIELD,
                 AvoidCategory = categories.STRUCTURE * categories.NUKE,
@@ -128,6 +128,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Strategic Builder',
         },
         BuilderType = 'Any',
         BuilderData = {
+        	NumAssistees = 35,
             Construction = {
                 DesiresAssist = true,
                 BuildClose = false,
@@ -171,9 +172,9 @@ BuilderGroup { BuilderGroupName = 'Swarm Strategic Builder',
         },
         BuilderType = 'Any',
         BuilderData = {
+        	NumAssistees = 40,
             Construction = {
                 DesiresAssist = true,
-                NumAssistees = 40,
                 BuildClose = true,
                 BuildStructures = {
                     'T3Artillery',
@@ -196,9 +197,9 @@ BuilderGroup { BuilderGroupName = 'Swarm Strategic Builder',
         },
         BuilderType = 'Any',
         BuilderData = {
+        	NumAssistees = 40,
             Construction = {
                 DesiresAssist = true,
-                NumAssistees = 40,
                 BuildClose = true,
                 BuildStructures = {
                     'T3RapidArtillery',
@@ -223,9 +224,9 @@ BuilderGroup { BuilderGroupName = 'Swarm Strategic Builder',
         },
         BuilderType = 'Any',
         BuilderData = {
+        	NumAssistees = 40,
             Construction = {
                 DesiresAssist = true,
-                NumAssistees = 40,
                 BuildClose = true,
                 BuildStructures = {
                     'T4Artillery',

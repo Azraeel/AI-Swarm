@@ -44,8 +44,6 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',                  
         PlatoonTemplate = 'T1LandDefaultQueue',
         Priority = 500,
         BuilderConditions = {
-            { EBC, 'GreaterThanEconTrend', { 0.0, 0.0 } },
-
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
 
             { EBC, 'GreaterThanEconIncome', { 0.2, 2 } },
@@ -64,8 +62,6 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',                  
         PlatoonTemplate = 'T2LandDefaultQueue',
         Priority = 700,
         BuilderConditions = {
-            { EBC, 'GreaterThanEconTrend', { 0.0, 0.0 } },
-
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
 
             { EBC, 'GreaterThanEconIncome', { 1, 20 } },
@@ -81,8 +77,6 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',                  
         PlatoonTemplate = 'U2 LandSquads Amphibious',
         Priority = 300,
         BuilderConditions = {
-            { EBC, 'GreaterThanEconTrend', { 0.0, 0.0 } },
-
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
 
             { EBC, 'GreaterThanEconIncome', { 1, 20 } },
@@ -101,8 +95,6 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',                  
         PlatoonTemplate = 'T3LandDefaultQueue',
         Priority = 800,
         BuilderConditions = {
-            { EBC, 'GreaterThanEconTrend', { 0.0, 0.0 } },
-
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
 
             { EBC, 'GreaterThanEconIncome', { 3.5, 100 } },
@@ -116,8 +108,6 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',                  
         PlatoonTemplate = 'U3 LandSquads Amphibious',
         Priority = 400,
         BuilderConditions = {
-            { EBC, 'GreaterThanEconTrend', { 0.0, 0.0 } },
-
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
 
             { EBC, 'GreaterThanEconIncome', { 3.5, 100 } },
