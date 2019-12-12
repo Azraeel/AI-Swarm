@@ -26,9 +26,9 @@ BuilderGroup { BuilderGroupName = 'Swarm Naval Experimental Builders',          
         },
         BuilderType = 'Any',
         BuilderData = {
+        	NumAssistees = 40,
             Construction = {
                 DesiresAssist = true,
-                NumAssistees = 10,
                 BuildClose = false,
                 BuildStructures = {
                     'T4SeaExperimental1',
@@ -57,9 +57,9 @@ BuilderGroup { BuilderGroupName = 'Swarm Naval Experimental Builders',          
         },
         BuilderType = 'Any',
         BuilderData = {
+        	NumAssistees = 40,
             Construction = {
                 DesiresAssist = true,
-                NumAssistees = 10,
                 BuildClose = false,
                 BuildStructures = {
                     'T4SeaExperimental1',

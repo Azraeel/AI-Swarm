@@ -95,6 +95,7 @@ BaseBuilderTemplate {
         -- ==== Defense and Strategic BUILDERS ==== --
         -----------------------------------------------------------------------------
         'Swarm Strategic Builder',
+        'Strategic Platoon Formers',
         'Swarm T2 Tactical Missile Defenses Builder',
         'Swarm SMD Builder',
         

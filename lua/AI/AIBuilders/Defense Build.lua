@@ -46,6 +46,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Shields Builder',                      
         Priority = 1250,
         InstanceCount = 3,
         BuilderConditions = {
+        	{ UCBC, 'HaveGreaterThanUnitsWithCategory', { 2, categories.ENERGYPRODUCTION * categories.TECH3 } },
             -- Have we the eco to build it ?
             { EBC, 'GreaterThanEconStorageRatio', { 0.20, 0.50 } },             -- Ratio from 0 to 1. (1=100%)
             -- Don't build it if...
@@ -76,6 +77,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Shields Builder',                      
         Priority = 1000,
         InstanceCount = 2,
         BuilderConditions = {
+        	{ UCBC, 'HaveGreaterThanUnitsWithCategory', { 2, categories.ENERGYPRODUCTION * categories.TECH3 } },
             -- When do we want to build this ?
             { UCBC, 'HasParagon', {} },
             -- Do we need additional conditions to build it ?

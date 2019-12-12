@@ -196,7 +196,7 @@ BuilderGroup {
         }
     },
     Builder {
-        BuilderName = 'U3 Power',
+        BuilderName = 'U3 Power0',
         PlatoonTemplate = 'T3EngineerBuildernoSUB',
         Priority = 2000,
         DelayEqualBuildPlattons = {'Energy', 10},
@@ -225,7 +225,7 @@ BuilderGroup {
     },
 
     Builder {
-        BuilderName = 'U3 Power',
+        BuilderName = 'U3 Power1',
         PlatoonTemplate = 'T3EngineerBuilderSUB',
         Priority = 2000,
         DelayEqualBuildPlattons = {'Energy', 10},

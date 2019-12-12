@@ -63,20 +63,6 @@ BuilderGroup { BuilderGroupName = 'Swarm Strategic Builder',
     },
 
     Builder {
-        BuilderName = 'U2 TML AI',
-        PlatoonTemplate = 'U2TML',
-        Priority = 18000,
-        InstanceCount = 20,
-        BuilderConditions = {
-            { UCBC, 'HaveGreaterThanArmyPoolWithCategory', { 0, categories.STRUCTURE * categories.TACTICALMISSILEPLATFORM * categories.TECH2} },
-        },
-        BuilderData = {
-            LocationType = 'LocationType',
-        },
-        BuilderType = 'Any',
-    },
-
-    Builder {
         BuilderName = 'U3 SML Rush',
         PlatoonTemplate = 'T3EngineerBuildernoSUB',
         Priority = 900,
@@ -142,21 +128,6 @@ BuilderGroup { BuilderGroupName = 'Swarm Strategic Builder',
                 },
             }
         }
-    },
-
-    Builder {
-        BuilderName = 'NukePlatoonAI',
-        PlatoonTemplate = 'AddToNukePlatoon',
-        Priority = 4000,
-        InstanceCount = 1,
-        FormRadius = 10000,
-        BuilderConditions = {
-            { UCBC, 'HaveGreaterThanArmyPoolWithCategory', { 0, categories.STRUCTURE * categories.NUKE * (categories.TECH2 + categories.TECH3 + categories.EXPERIMENTAL) } },
-        },
-        BuilderData = {
-            AIPlan = 'NukePlatoonAI',
-        },
-        BuilderType = 'Any',
     },
 
     Builder {
@@ -235,7 +206,11 @@ BuilderGroup { BuilderGroupName = 'Swarm Strategic Builder',
             }
         }
     },
+}
 
+BuilderGroup {
+    BuilderGroupName = 'Strategic Platoon Formers',                       -- BuilderGroupName, initalized from AIBaseTemplates in "\lua\AI\AIBaseTemplates\"
+    BuildersType = 'PlatoonFormBuilder',
     Builder {
         BuilderName = 'U34ArtilleryAI',
         PlatoonTemplate = 'AddToArtilleryPlatoon',
@@ -251,6 +226,35 @@ BuilderGroup { BuilderGroupName = 'Swarm Strategic Builder',
         },
         BuilderData = {
             AIPlan = 'U34ArtilleryAI',
+        },
+        BuilderType = 'Any',
+    },
+
+    Builder {
+        BuilderName = 'NukePlatoonAI',
+        PlatoonTemplate = 'AddToNukePlatoon',
+        Priority = 4000,
+        InstanceCount = 1,
+        FormRadius = 10000,
+        BuilderConditions = {
+            { UCBC, 'HaveGreaterThanArmyPoolWithCategory', { 0, categories.STRUCTURE * categories.NUKE * (categories.TECH2 + categories.TECH3 + categories.EXPERIMENTAL) } },
+        },
+        BuilderData = {
+            AIPlan = 'NukePlatoonAI',
+        },
+        BuilderType = 'Any',
+    },
+
+    Builder {
+        BuilderName = 'U2 TML AI',
+        PlatoonTemplate = 'U2TML',
+        Priority = 18000,
+        InstanceCount = 20,
+        BuilderConditions = {
+            { UCBC, 'HaveGreaterThanArmyPoolWithCategory', { 0, categories.STRUCTURE * categories.TACTICALMISSILEPLATFORM * categories.TECH2} },
+        },
+        BuilderData = {
+            LocationType = 'LocationType',
         },
         BuilderType = 'Any',
     },

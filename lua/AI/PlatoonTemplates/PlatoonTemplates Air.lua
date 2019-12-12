@@ -42,8 +42,8 @@ PlatoonTemplate {
     },
 }
 PlatoonTemplate {
-    Name = 'U4-ExperimentalInterceptor 1 1',
-    Plan = 'StrikeForceAI',
+    Name = 'AISwarm AirAttack Experimental',
+    Plan = 'InterceptorAIUveso',
     GlobalSquads = {
         { categories.AIR * categories.EXPERIMENTAL - categories.ANTINAVY - categories.SCOUT, 1, 3, 'Attack', 'GrowthFormation' },
     },
