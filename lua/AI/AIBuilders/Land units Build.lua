@@ -48,7 +48,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',                  
 
             { EBC, 'GreaterThanEconIncome', { 0.2, 2 } },
 
-            { UCBC, 'HaveLessThanUnitsWithCategory', { 6, categories.STRUCTURE * categories.SUPPORTFACTORY * categories.TECH2 * categories.LAND }},
+            { UCBC, 'HaveLessThanUnitsWithCategory', { 6, categories.STRUCTURE * categories.SUPPORTFACTORY * categories.LAND * (categories.TECH2 + categories.TECH3) }},
 
             { MIBC, 'CanPathToCurrentEnemy', { true } },
         },
@@ -66,7 +66,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',                  
 
             { EBC, 'GreaterThanEconIncome', { 1, 20 } },
 
-            { UCBC, 'HaveLessThanUnitsWithCategory', { 6, categories.STRUCTURE * categories.SUPPORTFACTORY * categories.TECH3 * categories.LAND }},
+            { UCBC, 'HaveLessThanUnitsWithCategory', { 6, categories.STRUCTURE * categories.SUPPORTFACTORY * categories.LAND * (categories.TECH2 + categories.TECH3) }},
 
             { MIBC, 'CanPathToCurrentEnemy', { true } },
         },

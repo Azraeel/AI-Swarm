@@ -24,7 +24,7 @@ BuilderGroup {
         BuilderConditions = {
             { EBC, 'LessThanEconStorageRatio', { 1, 0.45 } },             -- Ratio from 0 to 1. (1=100%)
 
-            { UCBC, 'HaveLessThanUnitsWithCategory', { 1, categories.ENERGYPRODUCTION * ( categories.TECH2 + categories.TECH3 + categories.EXPERIMENTAL ) } },
+            { UCBC, 'HaveLessThanUnitsWithCategory', { 1, categories.ENERGYPRODUCTION * categories.TECH2 } },
 
             { UCBC, 'HasNotParagon', {} },
 
@@ -53,7 +53,7 @@ BuilderGroup {
         BuilderConditions = {
             { EBC, 'LessThanEconStorageRatio', { 1, 0.50 } },             -- Ratio from 0 to 1. (1=100%)
 
-            { UCBC, 'HaveLessThanUnitsWithCategory', { 1, categories.ENERGYPRODUCTION * ( categories.TECH2 + categories.TECH3 + categories.EXPERIMENTAL ) } },
+            { UCBC, 'HaveLessThanUnitsWithCategory', { 1, categories.ENERGYPRODUCTION * categories.TECH2 } },
 
             { UCBC, 'HasNotParagon', {} },
 
@@ -110,7 +110,7 @@ BuilderGroup {
         DelayEqualBuildPlattons = {'Energy', 20},
         InstanceCount = 1,
         BuilderConditions = {
-            { UCBC, 'HaveLessThanUnitsWithCategory', { 1, categories.ENERGYPRODUCTION * ( categories.TECH2 + categories.TECH3 + categories.EXPERIMENTAL ) } },
+            { UCBC, 'HaveLessThanUnitsWithCategory', { 1, categories.ENERGYPRODUCTION * categories.TECH2 } },
 
             { UCBC, 'CheckBuildPlattonDelay', { 'Energy' }},
 
@@ -139,11 +139,11 @@ BuilderGroup {
         Priority = 950,
         InstanceCount = 1,
         BuilderConditions = {
-        	{ UCBC, 'HaveLessThanUnitsInCategoryBeingBuilt', { 1, categories.STRUCTURE * categories.ENERGYPRODUCTION * ( categories.TECH2 + categories.TECH3 ) }},
+        	{ UCBC, 'HaveLessThanUnitsWithCategory', { 1, categories.ENERGYPRODUCTION * categories.TECH3 } },
         	
             { EBC, 'LessThanEconStorageRatio', { 1, 0.45 } },             -- Ratio from 0 to 1. (1=100%)
 
-            { UCBC, 'HaveLessThanUnitsInCategoryBeingBuilt', { 1, categories.STRUCTURE * categories.ENERGYPRODUCTION * categories.TECH3 }},
+            { UCBC, 'HaveLessThanUnitsInCategoryBeingBuilt', { 1, categories.STRUCTURE * categories.ENERGYPRODUCTION * categories.TECH2 }},
         },
         BuilderType = 'Any',
         BuilderData = {
