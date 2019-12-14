@@ -18,7 +18,7 @@ PlatoonTemplate {
     Name = 'Swarm Sea Attack Large',
     Plan = 'NavalForceAI',
     GlobalSquads = {
-        { categories.MOBILE * categories.NAVAL - categories.EXPERIMENTAL - categories.CARRIER, 5, 40, 'Attack', 'GrowthFormation' }
+        { categories.MOBILE * categories.NAVAL - categories.EXPERIMENTAL - categories.CARRIER, 10, 40, 'Attack', 'GrowthFormation' }
     },
 }
 

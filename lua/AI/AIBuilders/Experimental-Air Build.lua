@@ -63,7 +63,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Experimental Builders',            
 -- =============== --
 --    PanicZone    --
 -- =============== --
-BuilderGroup { BuilderGroupName = 'Swarm Air Experimental Formers PanicZone',               -- BuilderGroupName, initalized from AIBaseTemplates in "\lua\AI\AIBaseTemplates\"
+BuilderGroup { BuilderGroupName = 'Swarm Air Experimental Formers',               -- BuilderGroupName, initalized from AIBaseTemplates in "\lua\AI\AIBaseTemplates\"
     BuildersType = 'PlatoonFormBuilder',
     Builder {
         BuilderName = 'AISwarm AirAttack EZ Experimental',                                  -- Random Builder Name.

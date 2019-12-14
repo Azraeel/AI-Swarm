@@ -17,8 +17,6 @@ BaseBuilderTemplate {
         'Swarm Engineer Builders',            -- Priority = 900
         -- Assistees
         'Swarm Engineer Assistees',
-        -- Return engineers back to base
-        'Swarm Engineer Transfer To MainBase',
 
         -----------------------------------------------------------------------------
         -- ==== Factory ==== --

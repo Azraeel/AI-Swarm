@@ -19,8 +19,6 @@ BaseBuilderTemplate {
         'Swarm Engineer Assistees',
         -- Reclaim mass
         'Swarm Engineer Reclaim',
-        -- Return engineers back to base
-        'Swarm Engineer Transfer To MainBase',
 
         -----------------------------------------------------------------------------
         -- ==== Energy ==== --
@@ -69,10 +67,7 @@ BaseBuilderTemplate {
         -- ==== EXPERIMENTALS FORMER ==== --
         -----------------------------------------------------------------------------
         'Swarm Land Experimental Formers',
-        'Swarm Air Experimental Formers PanicZone',
-        'Swarm Air Experimental Formers MilitaryZone',
-        'Swarm Air Experimental Formers EnemyZone',
-        'Swarm Air Experimental Formers Trasher',
+        'Swarm Air Experimental Formers',
 
         -----------------------------------------------------------------------------
         -- ==== Structure Shield BUILDER ==== --

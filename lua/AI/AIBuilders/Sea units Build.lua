@@ -262,37 +262,31 @@ BuilderGroup { BuilderGroupName = 'Swarm Naval Formers',                        
         InstanceCount = 8,
         BuilderType = 'Any',
         BuilderData = { 
-
             UseFormation = 'GrowthFormation',
-
         },
         BuilderConditions = { },
     },
 
     Builder {
         BuilderName = 'Swarm Sea Attack Medium',
-        PlatoonTemplate = 'Swarm Sea Attack Small',
-        Priority = 101,
+        PlatoonTemplate = 'Swarm Sea Attack Medium',
+        Priority = 100,
         InstanceCount = 8,
         BuilderType = 'Any',
         BuilderData = { 
-
             UseFormation = 'GrowthFormation',
-
         },
         BuilderConditions = { },
     },
 
     Builder {
         BuilderName = 'Swarm Sea Attack Large',
-        PlatoonTemplate = 'Swarm Sea Attack Small',
+        PlatoonTemplate = 'Swarm Sea Attack Large',
         Priority = 100,
         InstanceCount = 8,
         BuilderType = 'Any',
         BuilderData = { 
-
             UseFormation = 'GrowthFormation',
-
         },
         BuilderConditions = { },
     },
