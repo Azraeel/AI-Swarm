@@ -55,6 +55,23 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',                  
         BuilderType = 'Land',
     },
 
+    Builder { BuilderName = 'U1 Amphibious',
+        PlatoonTemplate = 'U1 LandSquads Amphibious',
+        Priority = 200,
+        BuilderConditions = {
+            { UCBC, 'UnitCapCheckLess', { 0.95 } },
+
+            { EBC, 'GreaterThanEconIncome', { 0.2, 2 } },
+
+            { MIBC, 'CanPathToCurrentEnemy', { false } },
+
+            { UCBC, 'HaveLessThanUnitsWithCategory', { 3, categories.STRUCTURE * categories.SUPPORTFACTORY * categories.LAND * (categories.TECH2 + categories.TECH3) }},
+
+            { UCBC, 'LocationFactoriesBuildingLess', { 'LocationType', 3, categories.MOBILE * categories.TECH1} },
+        },
+        BuilderType = 'Land',
+    },
+
     -- ============ --
     --    TECH 2    --
     -- ============ --
@@ -66,7 +83,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',                  
 
             { EBC, 'GreaterThanEconIncome', { 1, 20 } },
 
-            { UCBC, 'HaveLessThanUnitsWithCategory', { 6, categories.STRUCTURE * categories.SUPPORTFACTORY * categories.LAND * (categories.TECH2 + categories.TECH3) }},
+            { UCBC, 'HaveLessThanUnitsWithCategory', { 8, categories.STRUCTURE * categories.SUPPORTFACTORY * categories.LAND * categories.TECH3 }},
 
             { MIBC, 'CanPathToCurrentEnemy', { true } },
         },
@@ -83,7 +100,9 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',                  
 
             { MIBC, 'CanPathToCurrentEnemy', { false } },
 
-            { UCBC, 'LocationFactoriesBuildingLess', { 'LocationType', 1, categories.MOBILE * categories.TECH1} },     
+            { UCBC, 'HaveLessThanUnitsWithCategory', { 6, categories.STRUCTURE * categories.SUPPORTFACTORY * categories.LAND * categories.TECH3 }},
+
+            { UCBC, 'LocationFactoriesBuildingLess', { 'LocationType', 4, categories.MOBILE * categories.TECH2} },     
         },
         BuilderType = 'Land',
     },
@@ -114,7 +133,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',                  
 
             { MIBC, 'CanPathToCurrentEnemy', { false } },
 
-            { UCBC, 'LocationFactoriesBuildingLess', { 'LocationType', 1, categories.MOBILE * categories.TECH1} },     
+            { UCBC, 'LocationFactoriesBuildingLess', { 'LocationType', 5, categories.MOBILE * categories.TECH3} },     
         },
         BuilderType = 'Land',
     },

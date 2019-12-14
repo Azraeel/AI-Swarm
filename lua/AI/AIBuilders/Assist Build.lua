@@ -392,7 +392,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
         Priority = 1500,
         InstanceCount = 30,
         BuilderConditions = {
-            { EBC, 'GreaterThanEconIncome', { 8.5, 200 } },
+            { EBC, 'GreaterThanEconIncome', { 4.5, 50 } },
         },
         BuilderType = 'Any',
         BuilderData = {
@@ -434,7 +434,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
         Priority = 1400,
         InstanceCount = 30,
         BuilderConditions = {
-            { EBC, 'GreaterThanEconIncome', { 8.5, 200 } },
+            { EBC, 'GreaterThanEconIncome', { 4.5, 100 } },
         },
         BuilderType = 'Any',
         BuilderData = {
@@ -585,8 +585,8 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
     Builder { BuilderName = 'U1 Finisher',
         PlatoonTemplate = 'EngineerBuilder',
         PlatoonAIPlan = 'FinisherAI',
-        Priority = 550,
-        InstanceCount = 2,
+        Priority = 750,
+        InstanceCount = 10,
         BuilderConditions = {
             -- When do we want to build this ?
             { UCBC, 'UnfinishedUnitsAtLocation', { 'LocationType' }},
@@ -602,8 +602,8 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
     Builder { BuilderName = 'U2 Finisher',
         PlatoonTemplate = 'T2EngineerBuilder',
         PlatoonAIPlan = 'FinisherAI',
-        Priority = 450,
-        InstanceCount = 2,
+        Priority = 760,
+        InstanceCount = 10,
         BuilderConditions = {
             -- When do we want to build this ?
             { UCBC, 'UnfinishedUnitsAtLocation', { 'LocationType' }},

@@ -106,11 +106,13 @@ BuilderGroup {
     Builder {
         BuilderName = 'U2 Power minimum',
         PlatoonTemplate = 'T2EngineerBuilder',
-        Priority = 1000,
+        Priority = 1250,
         DelayEqualBuildPlattons = {'Energy', 20},
         InstanceCount = 1,
         BuilderConditions = {
-            { UCBC, 'HaveLessThanUnitsWithCategory', { 1, categories.ENERGYPRODUCTION * categories.TECH2 } },
+            { UCBC, 'HaveLessThanUnitsWithCategory', { 2, categories.ENERGYPRODUCTION * categories.TECH3 } },
+            
+            { UCBC, 'HaveLessThanUnitsWithCategory', { 2, categories.ENERGYPRODUCTION * categories.TECH2 } },
 
             { UCBC, 'CheckBuildPlattonDelay', { 'Energy' }},
 
@@ -136,10 +138,10 @@ BuilderGroup {
     Builder {
         BuilderName = 'U2 Power',
         PlatoonTemplate = 'T2EngineerBuilder',
-        Priority = 950,
+        Priority = 1000,
         InstanceCount = 1,
         BuilderConditions = {
-        	{ UCBC, 'HaveLessThanUnitsWithCategory', { 1, categories.ENERGYPRODUCTION * categories.TECH3 } },
+        	{ UCBC, 'HaveLessThanUnitsWithCategory', { 2, categories.ENERGYPRODUCTION * categories.TECH3 } },
         	
             { EBC, 'LessThanEconStorageRatio', { 1, 0.45 } },             -- Ratio from 0 to 1. (1=100%)
 
@@ -202,6 +204,8 @@ BuilderGroup {
         DelayEqualBuildPlattons = {'Energy', 10},
         InstanceCount = 1,
         BuilderConditions = {
+            { UCBC, 'HaveGreaterThanUnitsWithCategory', { 2, categories.ENERGYPRODUCTION * categories.TECH3 } },
+
             { UCBC, 'CheckBuildPlattonDelay', { 'Energy' }},
 
             { EBC, 'LessThanEconStorageRatio', { 1, 0.45 } },             -- Ratio from 0 to 1. (1=100%)
@@ -231,6 +235,8 @@ BuilderGroup {
         DelayEqualBuildPlattons = {'Energy', 10},
         InstanceCount = 1,
         BuilderConditions = {
+            { UCBC, 'HaveGreaterThanUnitsWithCategory', { 2, categories.ENERGYPRODUCTION * categories.TECH3 } },
+
             { EBC, 'LessThanEconStorageRatio', { 1, 0.45 } },             -- Ratio from 0 to 1. (1=100%)
 
             { UCBC, 'CheckBuildPlattonDelay', { 'Energy' }},

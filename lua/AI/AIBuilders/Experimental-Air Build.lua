@@ -40,6 +40,8 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Experimental Builders',            
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
 
             { EBC, 'GreaterThanEconIncome', { 10, 400 } },
+
+            { MIBC, 'GreaterThanGameTime', { 3600 } },
         },
         BuilderType = 'Any',
         BuilderData = {

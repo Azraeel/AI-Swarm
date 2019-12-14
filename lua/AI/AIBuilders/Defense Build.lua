@@ -44,7 +44,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Shields Builder',                      
     Builder { BuilderName = 'U3 Shield Ratio',
         PlatoonTemplate = 'T3EngineerBuildernoSUB',
         Priority = 1250,
-        InstanceCount = 3,
+        InstanceCount = 2,
         BuilderConditions = {
         	{ UCBC, 'HaveGreaterThanUnitsWithCategory', { 2, categories.ENERGYPRODUCTION * categories.TECH3 } },
             -- Have we the eco to build it ?
