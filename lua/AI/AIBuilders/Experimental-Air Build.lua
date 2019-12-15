@@ -79,7 +79,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Experimental Formers',             
             IgnorePathing = true,                                               -- If true, the platoon will not use AI pathmarkers and move directly to the target
             TargetSearchCategory = categories.ALLUNITS - categories.SCOUT,        -- Only find targets matching these categories.
             MoveToCategories = {                                                -- Move to targets
-                categories.STRUCTURE
+                categories.STRUCTURE,
                 categories.EXPERIMENTAL,
                 categories.MOBILE,
             },
@@ -101,7 +101,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Experimental Formers',             
             IgnorePathing = true,                                               -- If true, the platoon will not use AI pathmarkers and move directly to the target
             TargetSearchCategory = categories.ALLUNITS - categories.SCOUT,        -- Only find targets matching these categories.
             MoveToCategories = {                                                -- Move to targets
-                categories.STRUCTURE
+                categories.STRUCTURE,
                 categories.EXPERIMENTAL,
                 categories.MOBILE,
             },
@@ -123,7 +123,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Experimental Formers',             
             IgnorePathing = true,                                               -- If true, the platoon will not use AI pathmarkers and move directly to the target
             TargetSearchCategory = categories.ALLUNITS - categories.SCOUT,        -- Only find targets matching these categories.
             MoveToCategories = {                                                -- Move to targets
-                categories.STRUCTURE
+                categories.STRUCTURE,
                 categories.EXPERIMENTAL,
                 categories.MOBILE,
             },

@@ -59,9 +59,13 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',                  
         PlatoonTemplate = 'U1 LandSquads Amphibious',
         Priority = 200,
         BuilderConditions = {
+        	{ UCBC, 'HaveUnitRatioVersusEnemy', { 1.0, categories.MOBILE * categories.LAND - categories.ENGINEER, '<=', (categories.MOBILE * categories.LAND) + (categories.STRUCTURE * categories.DEFENSE) } },
+
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
 
             { EBC, 'GreaterThanEconIncome', { 0.2, 2 } },
+
+            { EBC, 'GreaterThanEconTrend', { 0.0, 0.0 } },
 
             { MIBC, 'CanPathToCurrentEnemy', { false } },
 
@@ -94,15 +98,19 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',                  
         PlatoonTemplate = 'U2 LandSquads Amphibious',
         Priority = 300,
         BuilderConditions = {
+        	{ UCBC, 'HaveUnitRatioVersusEnemy', { 1.0, categories.MOBILE * categories.LAND - categories.ENGINEER, '<=', (categories.MOBILE * categories.LAND) + (categories.STRUCTURE * categories.DEFENSE) } },
+
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
 
             { EBC, 'GreaterThanEconIncome', { 1, 20 } },
+
+            { EBC, 'GreaterThanEconTrend', { 0.0, 0.0 } },
 
             { MIBC, 'CanPathToCurrentEnemy', { false } },
 
             { UCBC, 'HaveLessThanUnitsWithCategory', { 6, categories.STRUCTURE * categories.SUPPORTFACTORY * categories.LAND * categories.TECH3 }},
 
-            { UCBC, 'LocationFactoriesBuildingLess', { 'LocationType', 4, categories.MOBILE * categories.TECH2} },     
+            { UCBC, 'LocationFactoriesBuildingLess', { 'LocationType', 2, categories.MOBILE * categories.TECH2} },     
         },
         BuilderType = 'Land',
     },
@@ -127,9 +135,13 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',                  
         PlatoonTemplate = 'U3 LandSquads Amphibious',
         Priority = 400,
         BuilderConditions = {
+        	{ UCBC, 'HaveUnitRatioVersusEnemy', { 1.0, categories.MOBILE * categories.LAND - categories.ENGINEER, '<=', (categories.MOBILE * categories.LAND) + (categories.STRUCTURE * categories.DEFENSE) } },
+
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
 
             { EBC, 'GreaterThanEconIncome', { 3.5, 100 } },
+
+            { EBC, 'GreaterThanEconTrend', { 0.0, 0.0 } },
 
             { MIBC, 'CanPathToCurrentEnemy', { false } },
 

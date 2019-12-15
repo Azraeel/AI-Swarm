@@ -81,7 +81,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Naval Experimental Formers PanicZone', 
     BuildersType = 'PlatoonFormBuilder',
     
     Builder { BuilderName = 'U4 BasePanicZone SEA',                                   -- Random Builder Name.
-        PlatoonTemplate = 'U4-ExperimentalInterceptor 1 1',                     -- Template Name. These units will be formed. See: "\lua\AI\PlatoonTemplates"
+        PlatoonTemplate = 'U4-ExperimentalSea 1 1',                     -- Template Name. These units will be formed. See: "\lua\AI\PlatoonTemplates"
         --PlatoonAddPlans = {'NameUnitsSorian'},
         Priority = 90,                                                          -- Priority. 1000 is normal.
         InstanceCount = 5,                                                      -- Number of plattons that will be formed.

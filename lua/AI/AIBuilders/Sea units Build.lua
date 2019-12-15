@@ -18,6 +18,8 @@ BuilderGroup { BuilderGroupName = 'Swarm Naval Builders',                       
         PlatoonTemplate = 'T1NavyDefaultQueue',
         Priority = 500,
         BuilderConditions = {
+            { EBC, 'GreaterThanEconTrend', { 0.0, 0.0 } },
+
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
 
             { EBC, 'GreaterThanEconIncome', { 0.2, 2 } },
@@ -32,6 +34,8 @@ BuilderGroup { BuilderGroupName = 'Swarm Naval Builders',                       
         PlatoonTemplate = 'T2NavyDefaultQueue',
         Priority = 600,
         BuilderConditions = {
+        	{ EBC, 'GreaterThanEconTrend', { 0.0, 0.0 } },
+
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
 
             { EBC, 'GreaterThanEconIncome', { 2, 30 } },
@@ -46,13 +50,15 @@ BuilderGroup { BuilderGroupName = 'Swarm Naval Builders',                       
         PlatoonTemplate = 'T3NavyDefaultQueue',
         Priority = 750,
         BuilderConditions = {
+        	{ EBC, 'GreaterThanEconTrend', { 0.0, 0.0 } },
+
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
 
             { EBC, 'GreaterThanEconIncome', { 4, 100 } },
         },
         BuilderType = 'Sea',
     },
-
+}
 
 -- ===================================================-======================================================== --
 -- ==                                            Sonar  builder                                              == --
@@ -143,7 +149,8 @@ BuilderGroup { BuilderGroupName = 'Swarm Naval Formers',                        
             SearchRadius = BaseEnemyZone,
             UseFormation = 'GrowthFormation',
             MoveToCategories = {                                                
-                categories.ALLUNITS, 
+                categories.NAVY, 
+                categories.ALLUNITS,
             },
         },
         BuilderConditions = { },
@@ -160,7 +167,8 @@ BuilderGroup { BuilderGroupName = 'Swarm Naval Formers',                        
             SearchRadius = BaseEnemyZone,
             UseFormation = 'GrowthFormation',
             MoveToCategories = {                                                
-                categories.ALLUNITS, 
+                categories.NAVY, 
+                categories.ALLUNITS,
             },
         },
         BuilderConditions = { },
@@ -177,7 +185,8 @@ BuilderGroup { BuilderGroupName = 'Swarm Naval Formers',                        
             SearchRadius = BaseEnemyZone,
             UseFormation = 'GrowthFormation',
             MoveToCategories = {                                                
-                categories.ALLUNITS, 
+                categories.NAVY, 
+                categories.ALLUNITS,
             },
         },
         BuilderConditions = { },
@@ -194,7 +203,8 @@ BuilderGroup { BuilderGroupName = 'Swarm Naval Formers',                        
             SearchRadius = BaseMilitaryZone,
             UseFormation = 'GrowthFormation',
             MoveToCategories = {                                                
-                categories.ALLUNITS, 
+                categories.NAVY, 
+                categories.ALLUNITS,
             },
         },
         BuilderConditions = { },
@@ -211,7 +221,8 @@ BuilderGroup { BuilderGroupName = 'Swarm Naval Formers',                        
             SearchRadius = BaseMilitaryZone,
             UseFormation = 'GrowthFormation',
             MoveToCategories = {                                                
-                categories.ALLUNITS, 
+                categories.NAVY, 
+                categories.ALLUNITS,
             },
         },
         BuilderConditions = { },
@@ -228,7 +239,8 @@ BuilderGroup { BuilderGroupName = 'Swarm Naval Formers',                        
             SearchRadius = BasePanicZone,
             UseFormation = 'GrowthFormation',
             MoveToCategories = {                                                
-                categories.ALLUNITS, 
+                categories.NAVY, 
+                categories.ALLUNITS,
             },
         },
         BuilderConditions = { },
@@ -245,7 +257,8 @@ BuilderGroup { BuilderGroupName = 'Swarm Naval Formers',                        
             SearchRadius = BasePanicZone,
             UseFormation = 'GrowthFormation',
             MoveToCategories = {                                                
-                categories.ALLUNITS, 
+                categories.NAVY, 
+                categories.ALLUNITS,
             },
         },
         BuilderConditions = { },

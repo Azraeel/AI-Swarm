@@ -610,7 +610,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Defense Anti Ground Builders',         
         }
     },
 
-    Builder {
+    --[[ Builder {
         BuilderName = 'UA1 Perimeter Defense',
         PlatoonTemplate = 'EngineerBuilder',
         Priority = 535,
@@ -631,7 +631,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Defense Anti Ground Builders',         
                 Location = 'LocationType',
             }
         }
-    },
+    }, ]]--
 
     Builder {
         BuilderName = 'UA2 Perimeter Defense',
