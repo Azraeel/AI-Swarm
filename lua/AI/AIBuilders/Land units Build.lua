@@ -49,29 +49,6 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',                  
             { EBC, 'GreaterThanEconIncome', { 0.2, 2 } },
 
             { UCBC, 'HaveLessThanUnitsWithCategory', { 6, categories.STRUCTURE * categories.SUPPORTFACTORY * categories.LAND * (categories.TECH2 + categories.TECH3) }},
-
-            { MIBC, 'CanPathToCurrentEnemy', { true } },
-        },
-        BuilderType = 'Land',
-    },
-
-    Builder { BuilderName = 'U1 Amphibious',
-        PlatoonTemplate = 'U1 LandSquads Amphibious',
-        Priority = 200,
-        BuilderConditions = {
-        	{ UCBC, 'HaveUnitRatioVersusEnemy', { 1.0, categories.MOBILE * categories.LAND - categories.ENGINEER, '<=', (categories.MOBILE * categories.LAND) + (categories.STRUCTURE * categories.DEFENSE) } },
-
-            { UCBC, 'UnitCapCheckLess', { 0.95 } },
-
-            { EBC, 'GreaterThanEconIncome', { 0.2, 2 } },
-
-            { EBC, 'GreaterThanEconTrend', { 0.0, 0.0 } },
-
-            { MIBC, 'CanPathToCurrentEnemy', { false } },
-
-            { UCBC, 'HaveLessThanUnitsWithCategory', { 3, categories.STRUCTURE * categories.SUPPORTFACTORY * categories.LAND * (categories.TECH2 + categories.TECH3) }},
-
-            { UCBC, 'LocationFactoriesBuildingLess', { 'LocationType', 3, categories.MOBILE * categories.TECH1} },
         },
         BuilderType = 'Land',
     },
@@ -88,29 +65,6 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',                  
             { EBC, 'GreaterThanEconIncome', { 1, 20 } },
 
             { UCBC, 'HaveLessThanUnitsWithCategory', { 8, categories.STRUCTURE * categories.SUPPORTFACTORY * categories.LAND * categories.TECH3 }},
-
-            { MIBC, 'CanPathToCurrentEnemy', { true } },
-        },
-        BuilderType = 'Land',
-    },
-
-    Builder { BuilderName = 'U2 Amphibious',
-        PlatoonTemplate = 'U2 LandSquads Amphibious',
-        Priority = 300,
-        BuilderConditions = {
-        	{ UCBC, 'HaveUnitRatioVersusEnemy', { 1.0, categories.MOBILE * categories.LAND - categories.ENGINEER, '<=', (categories.MOBILE * categories.LAND) + (categories.STRUCTURE * categories.DEFENSE) } },
-
-            { UCBC, 'UnitCapCheckLess', { 0.95 } },
-
-            { EBC, 'GreaterThanEconIncome', { 1, 20 } },
-
-            { EBC, 'GreaterThanEconTrend', { 0.0, 0.0 } },
-
-            { MIBC, 'CanPathToCurrentEnemy', { false } },
-
-            { UCBC, 'HaveLessThanUnitsWithCategory', { 6, categories.STRUCTURE * categories.SUPPORTFACTORY * categories.LAND * categories.TECH3 }},
-
-            { UCBC, 'LocationFactoriesBuildingLess', { 'LocationType', 2, categories.MOBILE * categories.TECH2} },     
         },
         BuilderType = 'Land',
     },
@@ -125,32 +79,10 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',                  
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
 
             { EBC, 'GreaterThanEconIncome', { 3.5, 100 } },
-
-            { MIBC, 'CanPathToCurrentEnemy', { true } },
-        },
-        BuilderType = 'Land',
-    },
-
-    Builder { BuilderName = 'U3 Amphibious',
-        PlatoonTemplate = 'U3 LandSquads Amphibious',
-        Priority = 400,
-        BuilderConditions = {
-        	{ UCBC, 'HaveUnitRatioVersusEnemy', { 1.0, categories.MOBILE * categories.LAND - categories.ENGINEER, '<=', (categories.MOBILE * categories.LAND) + (categories.STRUCTURE * categories.DEFENSE) } },
-
-            { UCBC, 'UnitCapCheckLess', { 0.95 } },
-
-            { EBC, 'GreaterThanEconIncome', { 3.5, 100 } },
-
-            { EBC, 'GreaterThanEconTrend', { 0.0, 0.0 } },
-
-            { MIBC, 'CanPathToCurrentEnemy', { false } },
-
-            { UCBC, 'LocationFactoriesBuildingLess', { 'LocationType', 5, categories.MOBILE * categories.TECH3} },     
         },
         BuilderType = 'Land',
     },
 }
-
 
 -- ===================================================-======================================================== --
 --                                         Land Scouts Formbuilder                                              --

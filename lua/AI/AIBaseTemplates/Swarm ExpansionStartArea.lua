@@ -70,6 +70,7 @@ BaseBuilderTemplate {
         -- ==== Air Units FORMER==== --
         -----------------------------------------------------------------------------
         'Swarm Air Formers',
+        'Swarm Air Scout Formers',
         
         -----------------------------------------------------------------------------
         -- ==== EXPERIMENTALS BUILDER ==== --
