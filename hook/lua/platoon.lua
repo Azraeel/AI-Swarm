@@ -2383,6 +2383,45 @@ Platoon = Class(OldPlatoonClass) {
         end
     end,
 
+    ArtilleryAI = function(self)
+        local aiBrain = self:GetBrain()
+
+        local atkPri = { 'STRUCTURE STRATEGIC', 'STRUCTURE ENERGYPRODUCTION', 'STRUCTURE SHIELD', 'STRUCTURE FACTORY', 'COMMAND', 
+            'STRUCTURE DEFENSE', 'EXPERIMENTAL LAND', 'MOBILE TECH3 LAND', 'MOBILE TECH2 LAND', 'SPECIALLOWPRI', 'ALLUNITS' }
+        local atkPriTable = {}
+        for k,v in atkPri do
+            table.insert(atkPriTable, ParseEntityCategory(v))
+        end
+
+        --DUNCAN - changed from Attack group
+        self:SetPrioritizedTargetList('Artillery', atkPriTable)
+
+        -- Set priorities on the unit so if the target has died it will reprioritize before the platoon does
+        local unit = false
+        for k,v in self:GetPlatoonUnits() do
+            if not v.Dead then
+                unit = v
+                break
+            end
+        end
+        if not unit then
+            return
+        end
+        unit:SetTargetPriorities(atkPriTable)
+        local bp = unit:GetBlueprint()
+        local weapon = bp.Weapon[1]
+        local maxRadius = weapon.MaxRadius
+
+        while aiBrain:PlatoonExists(self) do
+            local target = self:FindPrioritizedUnit('Artillery', 'Enemy', true, self:GetPlatoonPosition(), maxRadius)
+            if target then
+                self:Stop()
+                self:AttackTarget(target)
+            end
+            WaitSeconds(20)
+        end
+    end,
+
     ShieldRepairAI = function(self)
         local aiBrain = self:GetBrain()
         local BuilderManager = aiBrain.BuilderManagers['MAIN']

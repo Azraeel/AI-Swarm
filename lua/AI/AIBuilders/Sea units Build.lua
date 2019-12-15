@@ -14,25 +14,10 @@ BuilderGroup { BuilderGroupName = 'Swarm Naval Builders',                       
     -- =========== --
     --    TECH 1   --
     -- =========== --
-    Builder { BuilderName = 'U1 Sea Frigate ratio',
-        PlatoonTemplate = 'T1SeaFrigate',
-        Priority = 550,
+    Builder { BuilderName = 'T1NavyDefaultQueue',
+        PlatoonTemplate = 'T1NavyDefaultQueue',
+        Priority = 500,
         BuilderConditions = {
-            { EBC, 'GreaterThanEconTrend', { 0.0, 0.0 } },
-
-            { UCBC, 'UnitCapCheckLess', { 0.95 } },
-
-            { EBC, 'GreaterThanEconIncome', { 0.2, 2 } },
-        },
-        BuilderType = 'Sea',
-    },
-
-    Builder { BuilderName = 'U1 Sub',
-        PlatoonTemplate = 'T1SeaSub',
-        Priority = 550,
-        BuilderConditions = {
-            { EBC, 'GreaterThanEconTrend', { 0.0, 0.0 } },
-
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
 
             { EBC, 'GreaterThanEconIncome', { 0.2, 2 } },
@@ -43,64 +28,10 @@ BuilderGroup { BuilderGroupName = 'Swarm Naval Builders',                       
     -- ============ --
     --    TECH 2    --
     -- ============ --
-    Builder { BuilderName = 'U2 Sea Destroyer',
-        PlatoonTemplate = 'T2SeaDestroyer',
-        Priority = 665,
+    Builder { BuilderName = 'T2NavyDefaultQueue',
+        PlatoonTemplate = 'T2NavyDefaultQueue',
+        Priority = 600,
         BuilderConditions = {
-            { EBC, 'GreaterThanEconTrend', { 0.0, 0.0 } },
-
-            { UCBC, 'UnitCapCheckLess', { 0.95 } },
-
-            { EBC, 'GreaterThanEconIncome', { 2, 30 } },
-        },
-        BuilderType = 'Sea',
-    },
-
-    Builder { BuilderName = 'U2 Sea Cruiser',
-        PlatoonTemplate = 'T2SeaCruiser',
-        Priority = 645,
-        BuilderConditions = {
-            { EBC, 'GreaterThanEconTrend', { 0.0, 0.0 } },
-
-            { UCBC, 'UnitCapCheckLess', { 0.95 } },
-
-            { EBC, 'GreaterThanEconIncome', { 2, 30 } },
-        },
-        BuilderType = 'Sea',
-    },
-
-    Builder { BuilderName = 'U2 Sea SubKiller',
-        PlatoonTemplate = 'T2SubKiller',
-        Priority = 655,
-        BuilderConditions = {
-            { EBC, 'GreaterThanEconTrend', { 0.0, 0.0 } },
-
-            { UCBC, 'UnitCapCheckLess', { 0.95 } },
-
-            { EBC, 'GreaterThanEconIncome', { 2, 30 } },
-        },
-        BuilderType = 'Sea',
-    },
-
-    Builder { BuilderName = 'U2 Sea ShieldBoat',
-        PlatoonTemplate = 'T2ShieldBoat',
-        Priority = 635,
-        BuilderConditions = {
-            { EBC, 'GreaterThanEconTrend', { 0.0, 0.0 } },
-
-            { UCBC, 'UnitCapCheckLess', { 0.95 } },
-
-            { EBC, 'GreaterThanEconIncome', { 2, 30 } },
-        },
-        BuilderType = 'Sea',
-    },
-
-    Builder { BuilderName = 'U2 Sea CounterIntelBoat',
-        PlatoonTemplate = 'T2CounterIntelBoat',
-        Priority = 580,
-        BuilderConditions = {
-            { EBC, 'GreaterThanEconTrend', { 0.0, 0.0 } },
-
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
 
             { EBC, 'GreaterThanEconIncome', { 2, 30 } },
@@ -111,12 +42,10 @@ BuilderGroup { BuilderGroupName = 'Swarm Naval Builders',                       
     -- ============ --
     --    TECH 3    --
     -- ============ --
-    Builder { BuilderName = 'U3 Sea Battleship',
-        PlatoonTemplate = 'T3SeaBattleship',
+    Builder { BuilderName = 'T3NavyDefaultQueue',
+        PlatoonTemplate = 'T3NavyDefaultQueue',
         Priority = 750,
         BuilderConditions = {
-            { EBC, 'GreaterThanEconTrend', { 0.0, 0.0 } },
-
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
 
             { EBC, 'GreaterThanEconIncome', { 4, 100 } },
@@ -124,58 +53,6 @@ BuilderGroup { BuilderGroupName = 'Swarm Naval Builders',                       
         BuilderType = 'Sea',
     },
 
-    Builder { BuilderName = 'U3 Sea NukeSub',
-        PlatoonTemplate = 'T3SeaNukeSub',
-        Priority = 725,
-        BuilderConditions = {
-            { EBC, 'GreaterThanEconTrend', { 0.0, 0.0 } },
-
-            { UCBC, 'UnitCapCheckLess', { 0.95 } },
-
-            { EBC, 'GreaterThanEconIncome', { 4, 100 } },
-        },
-        BuilderType = 'Sea',
-    },
-
-    Builder { BuilderName = 'U3 Sea MissileBoat',
-        PlatoonTemplate = 'T3MissileBoat',
-        Priority = 725,
-        BuilderConditions = {
-            { EBC, 'GreaterThanEconTrend', { 0.0, 0.0 } },
-
-            { UCBC, 'UnitCapCheckLess', { 0.95 } },
-
-            { EBC, 'GreaterThanEconIncome', { 4, 100 } },
-        },
-        BuilderType = 'Sea',
-    },
-
-    Builder { BuilderName = 'U3 Sea SubKiller',
-        PlatoonTemplate = 'T3SubKiller',
-        Priority = 740,
-        BuilderConditions = {
-            { EBC, 'GreaterThanEconTrend', { 0.0, 0.0 } },
-
-            { UCBC, 'UnitCapCheckLess', { 0.95 } },
-
-            { EBC, 'GreaterThanEconIncome', { 4, 100 } },
-        },
-        BuilderType = 'Sea',
-    },
-
-    Builder { BuilderName = 'U3 Sea Battlecruiser',
-        PlatoonTemplate = 'T3Battlecruiser',
-        Priority = 745,
-        BuilderConditions = {
-            { EBC, 'GreaterThanEconTrend', { 0.0, 0.0 } },
-
-            { UCBC, 'UnitCapCheckLess', { 0.95 } },
-
-            { EBC, 'GreaterThanEconIncome', { 4, 100 } },
-        },
-        BuilderType = 'Sea',
-    },
-}
 
 -- ===================================================-======================================================== --
 -- ==                                            Sonar  builder                                              == --
@@ -256,37 +133,120 @@ BuilderGroup { BuilderGroupName = 'Swarm Sonar Upgraders',                      
 BuilderGroup { BuilderGroupName = 'Swarm Naval Formers',                            -- BuilderGroupName, initalized from AIBaseTemplates in "\lua\AI\AIBaseTemplates\"
     BuildersType = 'PlatoonFormBuilder',
     Builder {
-        BuilderName = 'Swarm Sea Attack Small',
+        BuilderName = 'Swarm Sea Assault Small',
         PlatoonTemplate = 'Swarm Sea Attack Small',
         Priority = 100,
         InstanceCount = 8,
         BuilderType = 'Any',
         BuilderData = { 
+            AttackEnemyStrength = 100,
+            SearchRadius = BaseEnemyZone,
             UseFormation = 'GrowthFormation',
+            MoveToCategories = {                                                
+                categories.ALLUNITS, 
+            },
         },
         BuilderConditions = { },
     },
 
     Builder {
-        BuilderName = 'Swarm Sea Attack Medium',
+        BuilderName = 'Swarm Sea Assault Medium',
         PlatoonTemplate = 'Swarm Sea Attack Medium',
         Priority = 100,
         InstanceCount = 8,
         BuilderType = 'Any',
         BuilderData = { 
+            AttackEnemyStrength = 100,
+            SearchRadius = BaseEnemyZone,
             UseFormation = 'GrowthFormation',
+            MoveToCategories = {                                                
+                categories.ALLUNITS, 
+            },
         },
         BuilderConditions = { },
     },
 
     Builder {
-        BuilderName = 'Swarm Sea Attack Large',
+        BuilderName = 'Swarm Sea Assault Large',
         PlatoonTemplate = 'Swarm Sea Attack Large',
         Priority = 100,
         InstanceCount = 8,
         BuilderType = 'Any',
         BuilderData = { 
+            AttackEnemyStrength = 100,
+            SearchRadius = BaseEnemyZone,
             UseFormation = 'GrowthFormation',
+            MoveToCategories = {                                                
+                categories.ALLUNITS, 
+            },
+        },
+        BuilderConditions = { },
+    },
+
+    Builder {
+        BuilderName = 'Swarm Sea Protection Medium',
+        PlatoonTemplate = 'Swarm Sea Attack Medium',
+        Priority = 100,
+        InstanceCount = 8,
+        BuilderType = 'Any',
+        BuilderData = { 
+            AttackEnemyStrength = 100,
+            SearchRadius = BaseMilitaryZone,
+            UseFormation = 'GrowthFormation',
+            MoveToCategories = {                                                
+                categories.ALLUNITS, 
+            },
+        },
+        BuilderConditions = { },
+    },
+
+    Builder {
+        BuilderName = 'Swarm Sea Protection Large',
+        PlatoonTemplate = 'Swarm Sea Attack Large',
+        Priority = 100,
+        InstanceCount = 8,
+        BuilderType = 'Any',
+        BuilderData = { 
+            AttackEnemyStrength = 100,
+            SearchRadius = BaseMilitaryZone,
+            UseFormation = 'GrowthFormation',
+            MoveToCategories = {                                                
+                categories.ALLUNITS, 
+            },
+        },
+        BuilderConditions = { },
+    },
+
+    Builder {
+        BuilderName = 'Swarm Sea Defense Medium',
+        PlatoonTemplate = 'Swarm Sea Attack Medium',
+        Priority = 100,
+        InstanceCount = 8,
+        BuilderType = 'Any',
+        BuilderData = { 
+            AttackEnemyStrength = 100,
+            SearchRadius = BasePanicZone,
+            UseFormation = 'GrowthFormation',
+            MoveToCategories = {                                                
+                categories.ALLUNITS, 
+            },
+        },
+        BuilderConditions = { },
+    },
+
+    Builder {
+        BuilderName = 'Swarm Sea Defense Large',
+        PlatoonTemplate = 'Swarm Sea Attack Large',
+        Priority = 100,
+        InstanceCount = 8,
+        BuilderType = 'Any',
+        BuilderData = { 
+            AttackEnemyStrength = 100,
+            SearchRadius = BasePanicZone,
+            UseFormation = 'GrowthFormation',
+            MoveToCategories = {                                                
+                categories.ALLUNITS, 
+            },
         },
         BuilderConditions = { },
     },

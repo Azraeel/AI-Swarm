@@ -212,7 +212,7 @@ BuilderGroup {
     BuilderGroupName = 'Strategic Platoon Formers',                       -- BuilderGroupName, initalized from AIBaseTemplates in "\lua\AI\AIBaseTemplates\"
     BuildersType = 'PlatoonFormBuilder',
     Builder {
-        BuilderName = 'U34ArtilleryAI',
+        BuilderName = 'ArtilleryAI',
         PlatoonTemplate = 'AddToArtilleryPlatoon',
         Priority = 4000,
         InstanceCount = 1,
@@ -225,7 +225,7 @@ BuilderGroup {
             -- Don't build it if...
         },
         BuilderData = {
-            AIPlan = 'U34ArtilleryAI',
+            AIPlan = 'ArtilleryAI',
         },
         BuilderType = 'Any',
     },

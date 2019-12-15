@@ -1,6 +1,6 @@
 PlatoonTemplate {
     Name = 'Swarm Sea Attack Small',
-    Plan = 'NavalForceAI',
+    Plan = 'NavalAttackAIUveso',
     GlobalSquads = {
         { categories.MOBILE * categories.NAVAL - categories.EXPERIMENTAL - categories.CARRIER, 1, 10, 'Attack', 'GrowthFormation' }
     },
@@ -8,7 +8,7 @@ PlatoonTemplate {
 
 PlatoonTemplate {
     Name = 'Swarm Sea Attack Medium',
-    Plan = 'NavalForceAI',
+    Plan = 'NavalAttackAIUveso',
     GlobalSquads = {
         { categories.MOBILE * categories.NAVAL - categories.EXPERIMENTAL - categories.CARRIER, 5, 20, 'Attack', 'GrowthFormation' }
     },
@@ -16,7 +16,7 @@ PlatoonTemplate {
 
 PlatoonTemplate {
     Name = 'Swarm Sea Attack Large',
-    Plan = 'NavalForceAI',
+    Plan = 'NavalAttackAIUveso',
     GlobalSquads = {
         { categories.MOBILE * categories.NAVAL - categories.EXPERIMENTAL - categories.CARRIER, 10, 40, 'Attack', 'GrowthFormation' }
     },
