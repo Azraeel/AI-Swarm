@@ -62,7 +62,6 @@ BaseBuilderTemplate {
         -- ==== Air Units BUILDER ==== --
         -----------------------------------------------------------------------------
         'Swarm Air Builders',
-        'Swarm Air Transport Builders',
 
         -----------------------------------------------------------------------------
         -- ==== Air Units FORMER==== --

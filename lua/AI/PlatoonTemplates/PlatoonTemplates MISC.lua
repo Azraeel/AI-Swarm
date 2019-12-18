@@ -65,7 +65,7 @@ PlatoonTemplate {
 
 PlatoonTemplate {
     Name = 'U2TML',
-    Plan = 'TMLAIUveso',
+    Plan = 'TacticalAISwarm',
     GlobalSquads = {
         { categories.STRUCTURE * categories.TACTICALMISSILEPLATFORM * categories.TECH2 , 1, 300, 'support', 'none' }
     },

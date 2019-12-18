@@ -363,7 +363,7 @@ BuilderGroup { BuilderGroupName = 'Swarm SMD Builder',
     Builder {
         BuilderName = 'U3 SMD 1st Main',
         PlatoonTemplate = 'T3EngineerBuildernoSUB',
-        Priority = 1400,
+        Priority = 1600,
         BuilderConditions = {
         	{ UCBC, 'HaveGreaterThanUnitsWithCategory', { 1, categories.ENERGYPRODUCTION * categories.TECH3 } },
 
@@ -395,7 +395,7 @@ BuilderGroup { BuilderGroupName = 'Swarm SMD Builder',
     Builder {
         BuilderName = 'U3 SMD Enemy Main',
         PlatoonTemplate = 'T3EngineerBuildernoSUB',
-        Priority = 1175,
+        Priority = 1275,
         BuilderConditions = {
         	{ UCBC, 'HaveGreaterThanUnitsWithCategory', { 2, categories.ENERGYPRODUCTION * categories.TECH3 } },
 
@@ -404,6 +404,8 @@ BuilderGroup { BuilderGroupName = 'Swarm SMD Builder',
             { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 0, categories.ENGINEER * categories.TECH3}},
 
             { UCBC, 'BuildOnlyOnLocation', { 'LocationType', 'MAIN' } },
+
+            { EBC, 'GreaterThanEconStorageRatio', { 0.35, 0.50 } }, 
         },
         BuilderType = 'Any',
         BuilderData = {
@@ -435,7 +437,7 @@ BuilderGroup { BuilderGroupName = 'Swarm SMD Builder',
 
             { UCBC, 'BuildOnlyOnLocation', { 'LocationType', 'MAIN' } },
 
-            { EBC, 'GreaterThanEconStorageRatio', { 0.00, 0.00 } },  
+            { EBC, 'GreaterThanEconStorageRatio', { 0.35, 0.50 } },   
         },
         BuilderType = 'Any',
         BuilderData = {
@@ -467,7 +469,7 @@ BuilderGroup { BuilderGroupName = 'Swarm SMD Builder',
 
             { UCBC, 'BuildNotOnLocation', { 'LocationType', 'MAIN' } },
 
-            { EBC, 'GreaterThanEconStorageRatio', { 0.65, 0.60 } },       
+            { EBC, 'GreaterThanEconStorageRatio', { 0.35, 0.50 } },       
 
             { UCBC, 'HaveLessThanUnitsInCategoryBeingBuilt', { 1, categories.STRUCTURE * categories.DEFENSE * categories.ANTIMISSILE * (categories.TECH3 + categories.EXPERIMENTAL) } },
         },
@@ -561,7 +563,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Defense Anti Ground Builders',         
     Builder {
         BuilderName = 'U2 Ground Defense always',
         PlatoonTemplate = 'T2EngineerBuilder',
-        Priority = 1000,
+        Priority = 850,
         BuilderConditions = {
             { EBC, 'GreaterThanEconStorageRatio', { 0.25, 0.35 } },   
 
@@ -584,7 +586,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Defense Anti Ground Builders',         
     Builder {
         BuilderName = 'U3 Ground Defense always',
         PlatoonTemplate = 'T3EngineerBuildernoSUB',
-        Priority = 1250,
+        Priority = 900,
         InstanceCount = 3,
         BuilderConditions = {
             { UCBC, 'UnitsGreaterAtEnemy', { 0 , categories.LAND * categories.EXPERIMENTAL } },
@@ -786,7 +788,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Defense Anti Air Builders',
     Builder {
         BuilderName = 'U3 AA',
         PlatoonTemplate = 'T3EngineerBuildernoSUB',
-        Priority = 1125,
+        Priority = 1025,
         InstanceCount = 3,                                      
         BuilderConditions = {
             { EBC, 'GreaterThanEconStorageRatio', { 0.35, 0.45}}, 

@@ -133,7 +133,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Strategic Builder',
     Builder {
         BuilderName = 'U3 Artillery',
         PlatoonTemplate = 'T3EngineerBuilderSUB',
-        Priority = 1000,
+        Priority = 1100,
         BuilderConditions = {
             { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 0, categories.ENGINEER * categories.TECH3}},
 

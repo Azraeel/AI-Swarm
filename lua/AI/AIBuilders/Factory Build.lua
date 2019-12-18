@@ -164,7 +164,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Factory Builders Expansions',
     Builder { BuilderName = 'U1 Land Factory Expansions',
         PlatoonTemplate = 'EngineerBuilder',
         Priority = 500,
-        InstanceCount = 1,                                                      -- Number of plattons that will be formed with this template.
+        InstanceCount = 4,                                                      -- Number of plattons that will be formed with this template.
         DelayEqualBuildPlattons = {'Factories', 3},
         BuilderConditions = {
             -- When do we want to build this ?
@@ -187,9 +187,64 @@ BuilderGroup { BuilderGroupName = 'Swarm Factory Builders Expansions',
             }
         }
     },
+
+    Builder { BuilderName = 'U1 Land Factory Expansions',
+        PlatoonTemplate = 'T2EngineerBuilder',
+        Priority = 500,
+        InstanceCount = 4,                                                      -- Number of plattons that will be formed with this template.
+        DelayEqualBuildPlattons = {'Factories', 3},
+        BuilderConditions = {
+            -- When do we want to build this ?
+            { UCBC, 'UnitsLessAtLocation', { 'LocationType', 6, categories.STRUCTURE * categories.FACTORY * categories.LAND}},
+ 
+            { EBC, 'GreaterThanEconStorageRatio', { 0.20, 0.35 } },             -- Ratio from 0 to 1. (1=100%)
+
+            { EBC, 'MassToFactoryRatioBaseCheck', { 'LocationType' } },
+
+            { UCBC, 'CheckBuildPlattonDelay', { 'Factories' }},
+        },
+        BuilderType = 'Any',
+        BuilderData = {
+            Construction = {
+                Location = 'LocationType',
+                AdjacencyCategory = categories.MASSEXTRACTION * (categories.TECH3 + categories.TECH2 + categories.TECH1),
+                BuildStructures = {
+                    'T1LandFactory',
+                },
+            }
+        }
+    },
+
     Builder { BuilderName = 'U1 Air Factory Expansions',
         PlatoonTemplate = 'EngineerBuilder',
         Priority = 500,
+        InstanceCount = 1,
+        DelayEqualBuildPlattons = {'Factories', 3},
+        BuilderConditions = {
+            { UCBC, 'UnitsLessAtLocation', { 'LocationType', 4, categories.STRUCTURE * categories.FACTORY * categories.AIR}},
+
+            { EBC, 'GreaterThanEconStorageRatio', { 0.20, 0.45 } },  
+
+            { EBC, 'MassToFactoryRatioBaseCheck', { 'LocationType' } },           
+
+            { UCBC, 'CheckBuildPlattonDelay', { 'Factories' }},
+        },
+        BuilderType = 'Any',
+        BuilderData = {
+            Construction = {
+                Location = 'LocationType',
+                AdjacencyCategory = categories.ENERGYPRODUCTION * (categories.TECH3 + categories.TECH2 + categories.TECH1),
+                BuildStructures = {
+                    'T1AirFactory',
+                },
+            }
+        }
+    },
+
+    Builder { BuilderName = 'U1 Air Factory Expansions',
+        PlatoonTemplate = 'T2EngineerBuilder',
+        Priority = 500,
+        InstanceCount = 1,
         DelayEqualBuildPlattons = {'Factories', 3},
         BuilderConditions = {
             { UCBC, 'UnitsLessAtLocation', { 'LocationType', 4, categories.STRUCTURE * categories.FACTORY * categories.AIR}},
@@ -644,15 +699,9 @@ BuilderGroup { BuilderGroupName = 'Swarm Gate Builders',                        
         PlatoonTemplate = 'T3EngineerBuilder',
         Priority = 17400,
         BuilderConditions = {
-            -- When do we want to build this ?
-            { UCBC, 'FactoryCapCheck', { 'LocationType', 'Gate' } },
-            -- Do we need additional conditions to build it ?
-            -- Have we the eco to build it ?
-            { EBC, 'GreaterThanEconStorageRatio', { 0.20, 0.50 } },             -- Ratio from 0 to 1. (1=100%)
-            -- Don't build it if...
             { UCBC, 'HaveGreaterThanUnitsWithCategory', { 1, categories.STRUCTURE * categories.ENERGYPRODUCTION * categories.TECH3 } },
-            -- Respect UnitCap
-            { UCBC, 'HaveUnitRatioVersusCap', { 0.02 , '<', categories.STRUCTURE * categories.GATE } },
+
+            { UCBC, 'HaveLessThanUnitsWithCategory', { 4, categories.STRUCTURE * categories.GATE } },
         },
         BuilderType = 'Any',
         BuilderData = {

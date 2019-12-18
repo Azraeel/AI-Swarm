@@ -1,6 +1,6 @@
 PlatoonTemplate {
     Name = 'AirAttack',
-    Plan = 'StrikeForceAI',
+    Plan = 'StrikeForceAISwarm',
     GlobalSquads = {
         { categories.MOBILE * categories.AIR - categories.GROUNDATTACK - categories.BOMBER - categories.EXPERIMENTAL - categories.TRANSPORTFOCUS - categories.ANTINAVY - categories.SCOUT, 
           8, -- Min number of units.
@@ -12,7 +12,7 @@ PlatoonTemplate {
 
 PlatoonTemplate {
     Name = 'BomberAttack',
-    Plan = 'StrikeForceAI',
+    Plan = 'HuntAISwarm',
     GlobalSquads = {
         { categories.MOBILE * categories.AIR * categories.BOMBER - categories.EXPERIMENTAL - categories.ANTINAVY - categories.SCOUT, 2, 15, 'Attack', 'GrowthFormation' },
     }
@@ -20,7 +20,7 @@ PlatoonTemplate {
 
 PlatoonTemplate {
     Name = 'GunshipAttack',
-    Plan = 'StrikeForceAI',
+    Plan = 'GunshipHuntAI',
     GlobalSquads = {
         { categories.MOBILE * categories.AIR * categories.GROUNDATTACK - categories.BOMBER - categories.EXPERIMENTAL - categories.TRANSPORTFOCUS - categories.SCOUT, 4, 10, 'Attack', 'GrowthFormation' },
     }
@@ -28,7 +28,7 @@ PlatoonTemplate {
 
 PlatoonTemplate {
     Name = 'GunshipMassHunter',
-    Plan = 'StrikeForceAI',
+    Plan = 'StrikeForceAISwarm',
     GlobalSquads = {
         { categories.MOBILE * categories.AIR * categories.GROUNDATTACK - categories.BOMBER - categories.EXPERIMENTAL - categories.TRANSPORTFOCUS - categories.SCOUT, 4, 10, 'Attack', 'GrowthFormation' },
     }
@@ -36,7 +36,7 @@ PlatoonTemplate {
 
 PlatoonTemplate {
     Name = 'MassHunterBomber',
-    Plan = 'StrikeForceAI',
+    Plan = 'StrikeForceAISwarm',
     GlobalSquads = {
         { categories.MOBILE * categories.AIR * (categories.TECH1 + categories.TECH2) * categories.BOMBER - categories.EXPERIMENTAL - categories.ANTINAVY - categories.SCOUT, 3, 7, 'Attack', 'GrowthFormation' },
     },

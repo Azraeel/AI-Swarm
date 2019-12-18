@@ -25,6 +25,10 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Builders',
         BuilderType = 'Air',
     },
 
+    -- ============ --
+    --    TECH 2    --
+    -- ============ --
+
     Builder { BuilderName = 'T2AirDefaultQueue',
         PlatoonTemplate = 'T2AirDefaultQueue',
         Priority = 600,
@@ -35,6 +39,10 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Builders',
         },
         BuilderType = 'Air',
     },
+
+    -- ============ --
+    --    TECH 3    --
+    -- ============ --
 
     Builder { BuilderName = 'T3AirDefaultQueue',
         PlatoonTemplate = 'T3AirDefaultQueue',
@@ -47,20 +55,9 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Builders',
         BuilderType = 'Air',
     },
 
-    Builder { BuilderName = 'U1 Air Transport 1st',
-        PlatoonTemplate = 'T1AirTransport',
-        Priority = 550, 
-        BuilderConditions = {
-            { EBC, 'GreaterThanEconTrend', { 0.0, 0.0 } },
-
-            { UCBC, 'UnitCapCheckLess', { 0.95 } },
-
-            { EBC, 'GreaterThanEconIncome', { 0.2, 2 } },
-
-            { MIBC, 'ArmyNeedsTransports', {} },
-        },
-        BuilderType = 'Air',
-    },
+    -- ============ --
+    --   TRANSPORT  --
+    -- ============ --
 
     Builder { BuilderName = 'U1 Air Transport',
         PlatoonTemplate = 'T1AirTransport',
@@ -73,6 +70,10 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Builders',
             { EBC, 'GreaterThanEconIncome', { 0.2, 2 } },
 
             { MIBC, 'ArmyNeedsTransports', {} },
+
+            { UCBC, 'LocationFactoriesBuildingLess', { 'LocationType', 1, categories.AIR * categories.TRANSPORTATION} },
+
+            { UCBC, 'PoolLessAtLocation', { 'LocationType', 1, categories.AIR * categories.TRANSPORTATION }},
         },
         BuilderType = 'Air',
     },
@@ -80,7 +81,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Builders',
 
     Builder { BuilderName = 'U2 Air Transport',
         PlatoonTemplate = 'T2AirTransport',
-        Priority = 200,
+        Priority = 650,
         BuilderConditions = {
             { EBC, 'GreaterThanEconTrend', { 0.0, 0.0 } },
 
@@ -89,6 +90,10 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Builders',
             { EBC, 'GreaterThanEconIncome', { 1, 20 } },
 
             { MIBC, 'ArmyNeedsTransports', {} },
+
+            { UCBC, 'LocationFactoriesBuildingLess', { 'LocationType', 1, categories.AIR * categories.TRANSPORTATION} },
+
+            { UCBC, 'PoolLessAtLocation', { 'LocationType', 1, categories.AIR * categories.TRANSPORTATION }}
         },
         BuilderType = 'Air',
     },
@@ -96,7 +101,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Builders',
 
     Builder { BuilderName = 'U3 Air Transport',
         PlatoonTemplate = 'T3AirTransport',
-        Priority = 250,
+        Priority = 750,
         BuilderConditions = {
             { EBC, 'GreaterThanEconTrend', { 0.0, 0.0 } },
 
@@ -105,9 +110,13 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Builders',
             { EBC, 'GreaterThanEconIncome', { 2.5, 100 } },
 
             { MIBC, 'ArmyNeedsTransports', {} },
+
+            { UCBC, 'LocationFactoriesBuildingLess', { 'LocationType', 1, categories.AIR * categories.TRANSPORTATION} },
+
+            { UCBC, 'PoolLessAtLocation', { 'LocationType', 1, categories.AIR * categories.TRANSPORTATION }}
        },
         BuilderType = 'Air',
-    },
+    }, 
 }
 
 
@@ -141,6 +150,9 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Scout Formers',
     },
 }
 
+-- ===================================================-======================================================== --
+--                                          Air Formbuilder                                                     --
+-- ===================================================-======================================================== --
 
 BuilderGroup { BuilderGroupName = 'Swarm Air Formers',
     BuildersType = 'PlatoonFormBuilder',                                        -- BuilderTypes are: EngineerBuilder, FactoryBuilder, PlatoonFormBuilder.
