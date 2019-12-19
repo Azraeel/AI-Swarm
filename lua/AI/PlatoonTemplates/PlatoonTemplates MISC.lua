@@ -120,9 +120,9 @@ PlatoonTemplate {
 }
 
 PlatoonTemplate {
-    Name = 'EngineerAssistGROUP',
+    Name = 'EngineerAssistALLTECH',
     Plan = 'ManagerEngineerAssistAI',
     GlobalSquads = {
-        { categories.ENGINEER * categories.TECH1 - categories.SUBCOMMANDER, 1, 10, 'support', 'None' }
+        { categories.ENGINEER * categories.TECH1 * categories.TECH2 * categories.TECH3 * categories.SUBCOMMANDER, 1, 1, 'support', 'None' }
     },
 }

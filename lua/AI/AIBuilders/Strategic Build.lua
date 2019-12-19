@@ -66,6 +66,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Strategic Builder',
         BuilderName = 'U3 SML Rush',
         PlatoonTemplate = 'T3EngineerBuildernoSUB',
         Priority = 900,
+        InstanceCount = 1, 
         BuilderConditions = {
             { UCBC, 'HaveGreaterThanUnitsWithCategory', { 1, categories.ENERGYPRODUCTION * categories.TECH3 } },
 
@@ -99,6 +100,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Strategic Builder',
         BuilderName = 'U3 SML Overwhelm',
         PlatoonTemplate = 'T3EngineerBuilderSUB',
         Priority = 850,
+        InstanceCount = 2, 
         BuilderConditions = {
         	{ UCBC, 'HaveGreaterThanUnitsWithCategory', { 2, categories.ENERGYPRODUCTION * categories.TECH3 } },
 

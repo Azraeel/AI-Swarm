@@ -71,6 +71,8 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Builders',
 
             { MIBC, 'ArmyNeedsTransports', {} },
 
+            { MIBC, 'CanPathToCurrentEnemy', { true } },
+
             { UCBC, 'LocationFactoriesBuildingLess', { 'LocationType', 1, categories.AIR * categories.TRANSPORTATION} },
 
             { UCBC, 'PoolLessAtLocation', { 'LocationType', 1, categories.AIR * categories.TRANSPORTATION }},
@@ -91,6 +93,8 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Builders',
 
             { MIBC, 'ArmyNeedsTransports', {} },
 
+            { MIBC, 'CanPathToCurrentEnemy', { true } },
+
             { UCBC, 'LocationFactoriesBuildingLess', { 'LocationType', 1, categories.AIR * categories.TRANSPORTATION} },
 
             { UCBC, 'PoolLessAtLocation', { 'LocationType', 1, categories.AIR * categories.TRANSPORTATION }}
@@ -110,6 +114,8 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Builders',
             { EBC, 'GreaterThanEconIncome', { 2.5, 100 } },
 
             { MIBC, 'ArmyNeedsTransports', {} },
+
+            { MIBC, 'CanPathToCurrentEnemy', { true } },
 
             { UCBC, 'LocationFactoriesBuildingLess', { 'LocationType', 1, categories.AIR * categories.TRANSPORTATION} },
 

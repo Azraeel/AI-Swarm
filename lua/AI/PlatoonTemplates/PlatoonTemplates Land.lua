@@ -137,6 +137,14 @@ PlatoonTemplate {
     },
 }
 PlatoonTemplate {
+    Name = 'T2AeonBlaze',
+    FactionSquads = {
+        Aeon = {
+            { 'xal0203', 1, 1, 'attack', 'None' }
+        },
+    },
+}
+PlatoonTemplate {
     Name = 'T2MobileShields',
     FactionSquads = {
         UEF = {

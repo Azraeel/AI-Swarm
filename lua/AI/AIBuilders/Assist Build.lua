@@ -9,6 +9,28 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
     -- =============== --
     --    Factories    --
     -- =============== --
+    Builder {
+        BuilderName = 'Basic Engineer Assist Engineer',
+        PlatoonTemplate = 'EngineerAssistALLTECH',
+        Priority = 1000,
+        InstanceCount = 75,
+        BuilderConditions = {
+            { EBC, 'GreaterThanEconStorageRatio', { 0.35, 0.40 } },
+
+            { EBC, 'GreaterThanEconIncome', { 1.4, 20 } },
+        },
+        BuilderType = 'Any',
+        BuilderData = {
+            Assist = {
+                AssistLocation = 'LocationType',
+                PermanentAssist = false,
+                AssisteeType = 'Engineer',
+                AssistUntilFinished = true,
+                Time = 0,
+            },
+        }
+    },
+
     Builder { BuilderName = 'U1 Assist 1st T2 Factory Upgrade',
         PlatoonTemplate = 'EngineerAssist',
         Priority = 150,

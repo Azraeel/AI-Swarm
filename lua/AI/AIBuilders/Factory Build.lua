@@ -1,6 +1,7 @@
 local UCBC = '/lua/editor/UnitCountBuildConditions.lua'
 local EBC = '/lua/editor/EconomyBuildConditions.lua'
 local SAI = '/lua/ScenarioPlatoonAI.lua'
+local MIBC = '/lua/editor/MiscBuildConditions.lua'
 local IBC = '/lua/editor/InstantBuildConditions.lua'
 
 local BasePanicZone, BaseMilitaryZone, BaseEnemyZone = import('/mods/AI-Swarm/lua/AI/swarmutilities.lua').GetDangerZoneRadii()
@@ -56,6 +57,8 @@ BuilderGroup { BuilderGroupName = 'Swarm Factory Builder',
 
             { EBC, 'GreaterThanEconStorageRatio', { 0.15, 0.30}}, 
 
+            { MIBC, 'CanPathToCurrentEnemy', { true } },
+
             { EBC, 'MassToFactoryRatioBaseCheck', { 'LocationType' } },
 
             { UCBC, 'HaveLessThanUnitsWithCategory', { 8, categories.STRUCTURE * categories.FACTORY * categories.LAND * (categories.TECH1 + categories.TECH2 + categories.TECH3) }},
@@ -83,6 +86,8 @@ BuilderGroup { BuilderGroupName = 'Swarm Factory Builder',
 
             { EBC, 'GreaterThanEconStorageRatio', { 0.15, 0.40}}, 
 
+            { MIBC, 'CanPathToCurrentEnemy', { true } },
+
             { EBC, 'MassToFactoryRatioBaseCheck', { 'LocationType' } },
 
             { UCBC, 'HaveLessThanUnitsWithCategory', { 1, categories.STRUCTURE * categories.AIR * categories.FACTORY * (categories.TECH1 + categories.TECH2 + categories.TECH3)  }},
@@ -108,7 +113,9 @@ BuilderGroup { BuilderGroupName = 'Swarm Factory Builder',
         BuilderConditions = {
             { UCBC, 'CheckBuildPlattonDelay', { 'Factories' }},
 
-            { EBC, 'GreaterThanEconStorageRatio', { 0.25, 0.40}}, 
+            { EBC, 'GreaterThanEconStorageRatio', { 0.25, 0.40}},
+
+            { MIBC, 'CanPathToCurrentEnemy', { true } }, 
 
             { EBC, 'MassToFactoryRatioBaseCheck', { 'LocationType' } },
 
@@ -136,6 +143,8 @@ BuilderGroup { BuilderGroupName = 'Swarm Factory Builder',
             { UCBC, 'CheckBuildPlattonDelay', { 'Factories' }},
 
             { EBC, 'GreaterThanEconStorageRatio', { 0.25, 0.40}},
+
+            { MIBC, 'CanPathToCurrentEnemy', { true } },
 
             { EBC, 'MassToFactoryRatioBaseCheck', { 'LocationType' } },
 

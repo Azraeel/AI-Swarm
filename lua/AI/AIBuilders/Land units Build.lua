@@ -48,9 +48,9 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',                  
 
             { EBC, 'GreaterThanEconIncome', { 0.2, 2 } },
 
-            { UCBC, 'PoolLessAtLocation', { 'LocationType', 25, categories.DIRECTFIRE * categories.LAND }},
-
             { MIBC, 'CanPathToCurrentEnemy', { true } },
+
+            { UCBC, 'PoolLessAtLocation', { 'LocationType', 25, categories.DIRECTFIRE * categories.LAND }},
         },
         BuilderType = 'Land',
     },
@@ -63,9 +63,9 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',                  
 
             { EBC, 'GreaterThanEconIncome', { 0.2, 2 } },
 
-            { UCBC, 'PoolLessAtLocation', { 'LocationType', 4, categories.INDIRECTFIRE * categories.LAND }},
-
             { MIBC, 'CanPathToCurrentEnemy', { true } },
+
+            { UCBC, 'PoolLessAtLocation', { 'LocationType', 4, categories.INDIRECTFIRE * categories.LAND }},
         },
         BuilderType = 'Land',
     },
@@ -78,30 +78,9 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',                  
 
             { EBC, 'GreaterThanEconIncome', { 0.2, 2 } },
 
-            { UCBC, 'PoolLessAtLocation', { 'LocationType', 2, categories.LAND * categories.MOBILE * categories.ANTIAIR }},
-
             { MIBC, 'CanPathToCurrentEnemy', { true } },
-        },
-        BuilderType = 'Land',
-    },
 
-    Builder { BuilderName = 'U1 Amphibious',
-        PlatoonTemplate = 'U1 LandSquads Amphibious',
-        Priority = 200,
-        BuilderConditions = {
-            { UCBC, 'UnitCapCheckLess', { 0.95 } },
-
-            { EBC, 'GreaterThanEconIncome', { 0.2, 2 } },
-
-            { UCBC, 'PoolLessAtLocation', { 'LocationType', 10, categories.LAND * categories.HOVER * categories.AMPHIBIOUS }},
-
-            { EBC, 'GreaterThanEconTrend', { 0.0, 0.0 } },
-
-            { MIBC, 'CanPathToCurrentEnemy', { false } },
-
-            { UCBC, 'HaveLessThanUnitsWithCategory', { 3, categories.STRUCTURE * categories.SUPPORTFACTORY * categories.LAND * (categories.TECH2 + categories.TECH3) }},
-
-            { UCBC, 'LocationFactoriesBuildingLess', { 'LocationType', 3, categories.MOBILE * categories.TECH1} },
+            { UCBC, 'PoolLessAtLocation', { 'LocationType', 2, categories.LAND * categories.MOBILE * categories.ANTIAIR }},
         },
         BuilderType = 'Land',
     },
@@ -117,9 +96,9 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',                  
 
             { EBC, 'GreaterThanEconIncome', { 1, 20 } },
 
-            { UCBC, 'PoolLessAtLocation', { 'LocationType', 25, categories.DIRECTFIRE * categories.LAND * categories.TECH2 }},
-
             { MIBC, 'CanPathToCurrentEnemy', { true } },
+
+            { UCBC, 'PoolLessAtLocation', { 'LocationType', 25, categories.DIRECTFIRE * categories.LAND * categories.TECH2 }},
         },
         BuilderType = 'Land',
     },
@@ -132,9 +111,9 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',                  
 
             { EBC, 'GreaterThanEconIncome', { 1, 20 } },
 
-            { UCBC, 'PoolLessAtLocation', { 'LocationType', 25, categories.DIRECTFIRE * categories.LAND * categories.TECH2 }},
-
             { MIBC, 'CanPathToCurrentEnemy', { true } },
+
+            { UCBC, 'PoolLessAtLocation', { 'LocationType', 25, categories.DIRECTFIRE * categories.LAND * categories.TECH2 }},
         },
         BuilderType = 'Land',
     },
@@ -147,9 +126,9 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',                  
 
             { EBC, 'GreaterThanEconIncome', { 1, 20 } },
 
-            { UCBC, 'PoolLessAtLocation', { 'LocationType', 3, categories.INDIRECTFIRE * categories.LAND * categories.TECH2 }},
-
             { MIBC, 'CanPathToCurrentEnemy', { true } },
+
+            { UCBC, 'PoolLessAtLocation', { 'LocationType', 3, categories.INDIRECTFIRE * categories.LAND * categories.TECH2 }},
         },
         BuilderType = 'Land',
     },
@@ -162,9 +141,9 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',                  
 
             { EBC, 'GreaterThanEconIncome', { 1, 20 } },
 
-            { UCBC, 'PoolLessAtLocation', { 'LocationType', 2, categories.MOBILE * categories.LAND * categories.SHIELD }},
-
             { MIBC, 'CanPathToCurrentEnemy', { true } },
+
+            { UCBC, 'PoolLessAtLocation', { 'LocationType', 2, categories.MOBILE * categories.LAND * categories.SHIELD }},
         },
         BuilderType = 'Land',
     },
@@ -177,30 +156,9 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',                  
 
             { EBC, 'GreaterThanEconIncome', { 1, 20 } },
 
-            { UCBC, 'PoolLessAtLocation', { 'LocationType', 3, categories.LAND * categories.MOBILE * categories.ANTIAIR * categories.TECH2 }},
-
             { MIBC, 'CanPathToCurrentEnemy', { true } },
-        },
-        BuilderType = 'Land',
-    },
 
-    Builder { BuilderName = 'U2 Amphibious',
-        PlatoonTemplate = 'U2 LandSquads Amphibious',
-        Priority = 300,
-        BuilderConditions = {
-            { UCBC, 'UnitCapCheckLess', { 0.95 } },
-
-            { EBC, 'GreaterThanEconIncome', { 0.2, 2 } },
-
-            { EBC, 'GreaterThanEconTrend', { 0.0, 0.0 } },
-
-            { MIBC, 'CanPathToCurrentEnemy', { false } },
-
-            { UCBC, 'PoolLessAtLocation', { 'LocationType', 10, categories.LAND * categories.HOVER * categories.AMPHIBIOUS }},
-
-            { UCBC, 'HaveLessThanUnitsWithCategory', { 3, categories.STRUCTURE * categories.SUPPORTFACTORY * categories.LAND * categories.TECH3 }},
-
-            { UCBC, 'LocationFactoriesBuildingLess', { 'LocationType', 3, categories.MOBILE * categories.TECH2} },
+            { UCBC, 'PoolLessAtLocation', { 'LocationType', 3, categories.LAND * categories.MOBILE * categories.ANTIAIR * categories.TECH2 }},
         },
         BuilderType = 'Land',
     },
@@ -216,9 +174,9 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',                  
 
             { EBC, 'GreaterThanEconIncome', { 3.5, 100 } },
 
-            { UCBC, 'PoolLessAtLocation', { 'LocationType', 25, categories.DIRECTFIRE * categories.LAND * categories.TECH3 }},
-
             { MIBC, 'CanPathToCurrentEnemy', { true } },
+
+            { UCBC, 'PoolLessAtLocation', { 'LocationType', 25, categories.DIRECTFIRE * categories.LAND * categories.TECH3 }},
         },
         BuilderType = 'Land',
     },
@@ -231,9 +189,9 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',                  
 
             { EBC, 'GreaterThanEconIncome', { 3.5, 100 } },
 
-            { UCBC, 'PoolLessAtLocation', { 'LocationType', 25, categories.DIRECTFIRE * categories.LAND * categories.TECH3 }},
-
             { MIBC, 'CanPathToCurrentEnemy', { true } },
+
+            { UCBC, 'PoolLessAtLocation', { 'LocationType', 25, categories.DIRECTFIRE * categories.LAND * categories.TECH3 }},
         },
         BuilderType = 'Land',
     },
@@ -246,9 +204,9 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',                  
 
             { EBC, 'GreaterThanEconIncome', { 3.5, 100 } },
 
-            { UCBC, 'PoolLessAtLocation', { 'LocationType', 2, categories.DIRECTFIRE * categories.LAND * categories.SNIPER * categories.TECH3 }},
-
             { MIBC, 'CanPathToCurrentEnemy', { true } },
+
+            { UCBC, 'PoolLessAtLocation', { 'LocationType', 2, categories.DIRECTFIRE * categories.LAND * categories.SNIPER * categories.TECH3 }},
         },
         BuilderType = 'Land',
     },
@@ -261,9 +219,9 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',                  
 
             { EBC, 'GreaterThanEconIncome', { 3.5, 100 } },
 
-            { UCBC, 'PoolLessAtLocation', { 'LocationType', 3, categories.INDIRECTFIRE * categories.LAND * categories.TECH3 }},
-
             { MIBC, 'CanPathToCurrentEnemy', { true } },
+
+            { UCBC, 'PoolLessAtLocation', { 'LocationType', 3, categories.INDIRECTFIRE * categories.LAND * categories.TECH3 }},
         },
         BuilderType = 'Land',
     },
@@ -276,9 +234,9 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',                  
 
             { EBC, 'GreaterThanEconIncome', { 3.5, 100 } },
 
-            { UCBC, 'PoolLessAtLocation', { 'LocationType', 3, categories.INDIRECTFIRE * categories.LAND * categories.TECH3 }},
-
             { MIBC, 'CanPathToCurrentEnemy', { true } },
+
+            { UCBC, 'PoolLessAtLocation', { 'LocationType', 3, categories.INDIRECTFIRE * categories.LAND * categories.TECH3 }},
         },
         BuilderType = 'Land',
     },
@@ -291,28 +249,9 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',                  
 
             { EBC, 'GreaterThanEconIncome', { 3.5, 100 } },
 
-            { UCBC, 'PoolLessAtLocation', { 'LocationType', 3, categories.LAND * categories.MOBILE * categories.ANTIAIR * categories.TECH3 }},
-
             { MIBC, 'CanPathToCurrentEnemy', { true } },
-        },
-        BuilderType = 'Land',
-    },
 
-    Builder { BuilderName = 'U3 Amphibious',
-        PlatoonTemplate = 'U3 LandSquads Amphibious',
-        Priority = 400,
-        BuilderConditions = {
-            { UCBC, 'UnitCapCheckLess', { 0.95 } },
-
-            { EBC, 'GreaterThanEconIncome', { 0.2, 2 } },
-
-            { EBC, 'GreaterThanEconTrend', { 0.0, 0.0 } },
-
-            { UCBC, 'PoolLessAtLocation', { 'LocationType', 10, categories.LAND * categories.HOVER * categories.AMPHIBIOUS }},
-
-            { MIBC, 'CanPathToCurrentEnemy', { false } },
-
-            { UCBC, 'LocationFactoriesBuildingLess', { 'LocationType', 3, categories.MOBILE * categories.TECH3} },
+            { UCBC, 'PoolLessAtLocation', { 'LocationType', 3, categories.LAND * categories.MOBILE * categories.ANTIAIR * categories.TECH3 }},
         },
         BuilderType = 'Land',
     },
