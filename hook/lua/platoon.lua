@@ -3299,11 +3299,21 @@ Platoon = Class(OldPlatoonClass) {
         local maxRadius = weapon.MaxRadius
         local minRadius = weapon.MinRadius
         unit:SetAutoMode(true)
-        local atkPri = { 'STRUCTURE STRATEGIC EXPERIMENTAL', 'ARTILLERY EXPERIMENTAL', 'STRUCTURE NUKE EXPERIMENTAL', 'EXPERIMENTAL ORBITALSYSTEM', 'STRUCTURE ARTILLERY TECH3',
-        'STRUCTURE NUKE TECH3', 'EXPERIMENTAL ENERGYPRODUCTION STRUCTURE', 'COMMAND', 'EXPERIMENTAL MOBILE LAND', 'TECH3 MASSFABRICATION', 'TECH3 ENERGYPRODUCTION', 'TECH3 MASSPRODUCTION', 'TECH2 ENERGYPRODUCTION', 'TECH2 MASSPRODUCTION', 'STRUCTURE SHIELD' } -- 'STRUCTURE STRATEGIC', 'STRUCTURE DEFENSE TECH3', 'STRUCTURE DEFENSE TECH2', 'STRUCTURE FACTORY', 'STRUCTURE', 'LAND, NAVAL' }
-        self:SetPrioritizedTargetList('Attack', { categories.STRUCTURE * categories.ARTILLERY * categories.EXPERIMENTAL, categories.STRUCTURE * categories.NUKE * categories.EXPERIMENTAL, categories.EXPERIMENTAL * categories.ORBITALSYSTEM, categories.STRUCTURE * categories.ARTILLERY * categories.TECH3,
-        categories.STRUCTURE * categories.NUKE * categories.TECH3, categories.EXPERIMENTAL * categories.ENERGYPRODUCTION * categories.STRUCTURE, categories.COMMAND, categories.EXPERIMENTAL * categories.MOBILE * categories.LAND, categories.TECH3 * categories.MASSFABRICATION,
-        categories.TECH3 * categories.ENERGYPRODUCTION, categories.TECH3 * categories.MASSPRODUCTION, categories.TECH2 * categories.ENERGYPRODUCTION, categories.TECH2 * categories.MASSPRODUCTION, categories.STRUCTURE * categories.SHIELD }) -- categories.STRUCTURE * categories.STRATEGIC, categories.STRUCTURE * categories.DEFENSE * categories.TECH3, categories.STRUCTURE * categories.DEFENSE * categories.TECH2, categories.STRUCTURE * categories.FACTORY, categories.STRUCTURE, categories.LAND + categories.NAVAL })
+
+        --DUNCAN - commented out
+        --local atkPri = { 'COMMAND', 'STRUCTURE STRATEGIC', 'STRUCTURE DEFENSE', 'CONSTRUCTION', 'EXPERIMENTAL MOBILE LAND', 'TECH3 MOBILE LAND',
+        --    'TECH2 MOBILE LAND', 'TECH1 MOBILE LAND', 'ALLUNITS' }
+
+        --DUNCAN - added energy production, removed construction, repriotised.
+        self:SetPrioritizedTargetList('Attack', {
+            categories.COMMAND,
+            categories.EXPERIMENTAL,
+            categories.MASSEXTRACTION * categories.TECH3,
+            categories.ENERGYPRODUCTION * categories.TECH3,
+            categories.MASSEXTRACTION * categories.TECH2,
+            categories.ENERGYPRODUCTION * categories.TECH2,
+            categories.STRUCTURE,
+            categories.TECH3 * categories.MOBILE})
         while aiBrain:PlatoonExists(self) do
             local target = false
             local blip = false
@@ -3311,18 +3321,13 @@ Platoon = Class(OldPlatoonClass) {
                 WaitSeconds(7)
                 target = false
                 while not target do
+
+                    --DUNCAN - Commented out
                     --if aiBrain:GetCurrentEnemy() and aiBrain:GetCurrentEnemy().Result == "defeat" then
                     --    aiBrain:PickEnemyLogic()
                     --end
+                    --target = AIUtils.AIFindBrainTargetInRange(aiBrain, self, 'Attack', maxRadius, atkPri, aiBrain:GetCurrentEnemy())
 
-                    target = AIUtils.AIFindBrainTargetInRangeSorian(aiBrain, self, 'Attack', maxRadius, atkPri, true)
-                    local newtarget = false
-                    if aiBrain.AttackPoints and table.getn(aiBrain.AttackPoints) > 0 then
-                        newtarget = AIUtils.AIFindPingTargetInRangeSorian(aiBrain, self, 'Attack', maxRadius, atkPri, true)
-                        if newtarget then
-                            target = newtarget
-                        end
-                    end
                     if not target then
                         target = self:FindPrioritizedUnit('Attack', 'Enemy', true, unit:GetPosition(), maxRadius)
                     end
@@ -3337,14 +3342,7 @@ Platoon = Class(OldPlatoonClass) {
             end
             if not target.Dead then
                 --LOG('*AI DEBUG: Firing Tactical Missile at enemy swine!')
-                if EntityCategoryContains(categories.STRUCTURE, target) then
-                    IssueTactical({unit}, target)
-                else
-                    targPos = SUtils.LeadTarget(self, target)
-                    if targPos then
-                        IssueTactical({unit}, targPos)
-                    end
-                end
+                IssueTactical({unit}, target)
             end
             WaitSeconds(3)
         end

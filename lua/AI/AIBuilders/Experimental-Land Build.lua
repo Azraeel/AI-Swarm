@@ -111,10 +111,21 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Experimental Formers',            
             AggressiveMove = true,                                              -- If true, the unit will attack everything while moving to the target.
             AttackEnemyStrength = 100,                                          -- Compare platoon to enemy strenght. 100 will attack equal, 50 weaker and 150 stronger enemies.
             IgnorePathing = true,                                               -- If true, the platoon will not use AI pathmarkers and move directly to the target
-            TargetSearchCategory = categories.MOBILE * categories.LAND - categories.SCOUT,        -- Only find targets matching these categories.
+            TargetSearchCategory = categories.ALLUNITS - categories.WALL,        -- Only find targets matching these categories.
             MoveToCategories = {                                                -- Move to targets
                 categories.EXPERIMENTAL,
+                categories.STRUCTURE,
+                categories.MOBILE * categories.LAND,
+                categories.ALLUNITS,
+            },
+            WeaponTargetCategories = {                                          
+                categories.EXPERIMENTAL,
+                categories.COMMAND,
+                categories.INDIRECTFIRE,
+                categories.DIRECTFIRE,
+                categories.ANTIAIR,
                 categories.MOBILE,
+                categories.ALLUNITS,
             },
         },
         BuilderConditions = { },
@@ -132,10 +143,21 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Experimental Formers',            
             AggressiveMove = true,                                              -- If true, the unit will attack everything while moving to the target.
             AttackEnemyStrength = 100,                                          -- Compare platoon to enemy strenght. 100 will attack equal, 50 weaker and 150 stronger enemies.
             IgnorePathing = true,                                               -- If true, the platoon will not use AI pathmarkers and move directly to the target
-            TargetSearchCategory = categories.MOBILE * categories.LAND - categories.SCOUT,        -- Only find targets matching these categories.
+            TargetSearchCategory = categories.ALLUNITS - categories.WALL,        -- Only find targets matching these categories.
             MoveToCategories = {                                                -- Move to targets
                 categories.EXPERIMENTAL,
+                categories.STRUCTURE,
+                categories.MOBILE * categories.LAND,
+                categories.ALLUNITS,
+            },
+            WeaponTargetCategories = {                                          
+                categories.EXPERIMENTAL,
+                categories.COMMAND,
+                categories.INDIRECTFIRE,
+                categories.DIRECTFIRE,
+                categories.ANTIAIR,
                 categories.MOBILE,
+                categories.ALLUNITS,
             },
         },
         BuilderConditions = { },
@@ -153,10 +175,21 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Experimental Formers',            
             AggressiveMove = true,                                              -- If true, the unit will attack everything while moving to the target.
             AttackEnemyStrength = 100,                                          -- Compare platoon to enemy strenght. 100 will attack equal, 50 weaker and 150 stronger enemies.
             IgnorePathing = true,                                               -- If true, the platoon will not use AI pathmarkers and move directly to the target
-            TargetSearchCategory = categories.MOBILE * categories.LAND - categories.SCOUT,        -- Only find targets matching these categories.
+            TargetSearchCategory = categories.ALLUNITS - categories.WALL,        -- Only find targets matching these categories.
             MoveToCategories = {                                                -- Move to targets
                 categories.EXPERIMENTAL,
+                categories.STRUCTURE,
+                categories.MOBILE * categories.LAND,
+                categories.ALLUNITS,
+            },
+            WeaponTargetCategories = {                                          
+                categories.EXPERIMENTAL,
+                categories.COMMAND,
+                categories.INDIRECTFIRE,
+                categories.DIRECTFIRE,
+                categories.ANTIAIR,
                 categories.MOBILE,
+                categories.ALLUNITS,
             },
         },
         BuilderConditions = { },
