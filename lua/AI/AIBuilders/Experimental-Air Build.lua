@@ -71,28 +71,24 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Experimental Formers',             
         PlatoonTemplate = 'AISwarm AirAttack Experimental',                            -- Template Name. These units will be formed. See: "\lua\AI\PlatoonTemplates"
         Priority = 100,                                                          -- Priority. 1000 is normal.
         InstanceCount = 100,                                                      -- Number of plattons that will be formed
+        FormRadius = 10000,
         BuilderData = {
             SearchRadius = BaseEnemyZone,                                       -- Searchradius for new target.
-            GetTargetsFromBase = true,                                          -- Get targets from base position (true) or platoon position (false)
-            AggressiveMove = true,                                              -- If true, the unit will attack everything while moving to the target.
-            AttackEnemyStrength = 150,                                          -- Compare platoon to enemy strenght. 100 will attack equal, 50 weaker and 150 stronger enemies.
+            GetTargetsFromBase = false,                                         -- Get targets from base position (true) or platoon position (false)
+            AggressiveMove = false,                                             -- If true, the unit will attack everything while moving to the target.
+            AttackEnemyStrength = 100,                                       -- Compare platoon to enemy strenght. 100 will attack equal, 50 weaker and 150 stronger enemies.
             IgnorePathing = true,                                               -- If true, the platoon will not use AI pathmarkers and move directly to the target
-            TargetSearchCategory = categories.ALLUNITS - categories.SCOUT,        -- Only find targets matching these categories.
+            TargetSearchCategory = categories.ALLUNITS,                         -- Only find targets matching these categories.
             MoveToCategories = {                                                -- Move to targets
+                categories.STRUCTURE * categories.EXPERIMENTAL * categories.ECONOMIC,
+                categories.STRUCTURE * categories.EXPERIMENTAL,
+                categories.STRUCTURE * categories.NUKE,
+                categories.STRUCTURE * categories.FACTORY * categories.TECH3,
+                categories.STRUCTURE * categories.ENERGYPRODUCTION * categories.TECH3,
+                categories.STRUCTURE * categories.DEFENSE * categories.TECH3,
+                categories.STRUCTURE * categories.DEFENSE * categories.TECH2,
+                categories.STRUCTURE * categories.DEFENSE,
                 categories.STRUCTURE,
-                categories.EXPERIMENTAL,
-                categories.MOBILE,
-            },
-            WeaponTargetCategories = {                                          
-                categories.EXPERIMENTAL,
-                categories.COMMAND,
-                categories.STRUCTURE * categories.ENERGYPRODUCTION,
-                categories.STRUCTURE * categories.MASSEXTRACTION,
-                categories.STRUCTURE,
-                categories.INDIRECTFIRE,
-                categories.DIRECTFIRE,
-                categories.ANTIAIR,
-                categories.MOBILE,
                 categories.ALLUNITS,
             },
         },
@@ -105,28 +101,24 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Experimental Formers',             
         PlatoonTemplate = 'AISwarm AirAttack Experimental',                            -- Template Name. These units will be formed. See: "\lua\AI\PlatoonTemplates"
         Priority = 100,                                                          -- Priority. 1000 is normal.
         InstanceCount = 100,                                                      -- Number of plattons that will be formed
+        FormRadius = 10000,
         BuilderData = {
             SearchRadius = BaseMilitaryZone,                                       -- Searchradius for new target.
-            GetTargetsFromBase = true,                                          -- Get targets from base position (true) or platoon position (false)
-            AggressiveMove = true,                                              -- If true, the unit will attack everything while moving to the target.
-            AttackEnemyStrength = 150,                                          -- Compare platoon to enemy strenght. 100 will attack equal, 50 weaker and 150 stronger enemies.
+            GetTargetsFromBase = false,                                         -- Get targets from base position (true) or platoon position (false)
+            AggressiveMove = false,                                             -- If true, the unit will attack everything while moving to the target.
+            AttackEnemyStrength = 100,                                       -- Compare platoon to enemy strenght. 100 will attack equal, 50 weaker and 150 stronger enemies.
             IgnorePathing = true,                                               -- If true, the platoon will not use AI pathmarkers and move directly to the target
-            TargetSearchCategory = categories.ALLUNITS - categories.SCOUT,        -- Only find targets matching these categories.
+            TargetSearchCategory = categories.ALLUNITS,                         -- Only find targets matching these categories.
             MoveToCategories = {                                                -- Move to targets
+                categories.STRUCTURE * categories.EXPERIMENTAL * categories.ECONOMIC,
+                categories.STRUCTURE * categories.EXPERIMENTAL,
+                categories.STRUCTURE * categories.NUKE,
+                categories.STRUCTURE * categories.FACTORY * categories.TECH3,
+                categories.STRUCTURE * categories.ENERGYPRODUCTION * categories.TECH3,
+                categories.STRUCTURE * categories.DEFENSE * categories.TECH3,
+                categories.STRUCTURE * categories.DEFENSE * categories.TECH2,
+                categories.STRUCTURE * categories.DEFENSE,
                 categories.STRUCTURE,
-                categories.EXPERIMENTAL,
-                categories.MOBILE,
-            },
-            WeaponTargetCategories = {                                          
-                categories.EXPERIMENTAL,
-                categories.COMMAND,
-                categories.STRUCTURE * categories.ENERGYPRODUCTION,
-                categories.STRUCTURE * categories.MASSEXTRACTION,
-                categories.STRUCTURE,
-                categories.INDIRECTFIRE,
-                categories.DIRECTFIRE,
-                categories.ANTIAIR,
-                categories.MOBILE,
                 categories.ALLUNITS,
             },
         },
@@ -139,28 +131,24 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Experimental Formers',             
         PlatoonTemplate = 'AISwarm AirAttack Experimental',                            -- Template Name. These units will be formed. See: "\lua\AI\PlatoonTemplates"
         Priority = 100,                                                          -- Priority. 1000 is normal.
         InstanceCount = 100,                                                      -- Number of plattons that will be formed
+        FormRadius = 10000,
         BuilderData = {
             SearchRadius = BasePanicZone,                                       -- Searchradius for new target.
-            GetTargetsFromBase = true,                                          -- Get targets from base position (true) or platoon position (false)
-            AggressiveMove = true,                                              -- If true, the unit will attack everything while moving to the target.
-            AttackEnemyStrength = 150,                                          -- Compare platoon to enemy strenght. 100 will attack equal, 50 weaker and 150 stronger enemies.
+            GetTargetsFromBase = false,                                         -- Get targets from base position (true) or platoon position (false)
+            AggressiveMove = false,                                             -- If true, the unit will attack everything while moving to the target.
+            AttackEnemyStrength = 100,                                       -- Compare platoon to enemy strenght. 100 will attack equal, 50 weaker and 150 stronger enemies.
             IgnorePathing = true,                                               -- If true, the platoon will not use AI pathmarkers and move directly to the target
-            TargetSearchCategory = categories.ALLUNITS - categories.SCOUT,        -- Only find targets matching these categories.
+            TargetSearchCategory = categories.ALLUNITS,                         -- Only find targets matching these categories.
             MoveToCategories = {                                                -- Move to targets
+                categories.STRUCTURE * categories.EXPERIMENTAL * categories.ECONOMIC,
+                categories.STRUCTURE * categories.EXPERIMENTAL,
+                categories.STRUCTURE * categories.NUKE,
+                categories.STRUCTURE * categories.FACTORY * categories.TECH3,
+                categories.STRUCTURE * categories.ENERGYPRODUCTION * categories.TECH3,
+                categories.STRUCTURE * categories.DEFENSE * categories.TECH3,
+                categories.STRUCTURE * categories.DEFENSE * categories.TECH2,
+                categories.STRUCTURE * categories.DEFENSE,
                 categories.STRUCTURE,
-                categories.EXPERIMENTAL,
-                categories.MOBILE,
-            },
-            WeaponTargetCategories = {                                          
-                categories.EXPERIMENTAL,
-                categories.COMMAND,
-                categories.STRUCTURE * categories.ENERGYPRODUCTION,
-                categories.STRUCTURE * categories.MASSEXTRACTION,
-                categories.STRUCTURE,
-                categories.INDIRECTFIRE,
-                categories.DIRECTFIRE,
-                categories.ANTIAIR,
-                categories.MOBILE,
                 categories.ALLUNITS,
             },
         },
