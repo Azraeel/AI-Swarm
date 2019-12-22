@@ -173,11 +173,11 @@ BuilderGroup { BuilderGroupName = 'Swarm Factory Builders Expansions',
     Builder { BuilderName = 'U1 Land Factory Expansions',
         PlatoonTemplate = 'EngineerBuilder',
         Priority = 500,
-        InstanceCount = 4,                                                      -- Number of plattons that will be formed with this template.
+        InstanceCount = 1,                                                      -- Number of plattons that will be formed with this template.
         DelayEqualBuildPlattons = {'Factories', 3},
         BuilderConditions = {
             -- When do we want to build this ?
-            { UCBC, 'UnitsLessAtLocation', { 'LocationType', 6, categories.STRUCTURE * categories.FACTORY * categories.LAND}},
+            { UCBC, 'UnitsLessAtLocation', { 'LocationType', 5, categories.STRUCTURE * categories.FACTORY * categories.LAND}},
  
             { EBC, 'GreaterThanEconStorageRatio', { 0.20, 0.35 } },             -- Ratio from 0 to 1. (1=100%)
 
@@ -200,11 +200,11 @@ BuilderGroup { BuilderGroupName = 'Swarm Factory Builders Expansions',
     Builder { BuilderName = 'U1 Land Factory Expansions',
         PlatoonTemplate = 'T2EngineerBuilder',
         Priority = 500,
-        InstanceCount = 4,                                                      -- Number of plattons that will be formed with this template.
+        InstanceCount = 1,                                                      -- Number of plattons that will be formed with this template.
         DelayEqualBuildPlattons = {'Factories', 3},
         BuilderConditions = {
             -- When do we want to build this ?
-            { UCBC, 'UnitsLessAtLocation', { 'LocationType', 6, categories.STRUCTURE * categories.FACTORY * categories.LAND}},
+            { UCBC, 'UnitsLessAtLocation', { 'LocationType', 5, categories.STRUCTURE * categories.FACTORY * categories.LAND}},
  
             { EBC, 'GreaterThanEconStorageRatio', { 0.20, 0.35 } },             -- Ratio from 0 to 1. (1=100%)
 
