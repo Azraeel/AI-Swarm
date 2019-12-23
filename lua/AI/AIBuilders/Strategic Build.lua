@@ -66,13 +66,16 @@ BuilderGroup { BuilderGroupName = 'Swarm Strategic Builder',
         BuilderName = 'U3 SML Rush',
         PlatoonTemplate = 'T3EngineerBuildernoSUB',
         Priority = 900,
+        DelayEqualBuildPlattons = {'NukeBuilder', 3},
         InstanceCount = 1, 
         BuilderConditions = {
-            { UCBC, 'HaveGreaterThanUnitsWithCategory', { 1, categories.ENERGYPRODUCTION * categories.TECH3 } },
+            { UCBC, 'HaveGreaterThanUnitsWithCategory', { 2, categories.ENERGYPRODUCTION * categories.TECH3 } },
 
             { UCBC, 'HaveLessThanUnitsWithCategory', { 1, categories.STRUCTURE * categories.NUKE * (categories.TECH3 + categories.EXPERIMENTAL) }},
 
             { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 0, categories.ENGINEER * categories.TECH3}},
+
+            { UCBC, 'CheckBuildPlattonDelay', { 'NukeBuilder' }},
 
             { EBC, 'GreaterThanEconIncome',  { 4, 200}}, 
 
@@ -100,13 +103,16 @@ BuilderGroup { BuilderGroupName = 'Swarm Strategic Builder',
         BuilderName = 'U3 SML Overwhelm',
         PlatoonTemplate = 'T3EngineerBuilderSUB',
         Priority = 850,
+        DelayEqualBuildPlattons = {'NukeBuilder', 3},
         InstanceCount = 2, 
         BuilderConditions = {
-        	{ UCBC, 'HaveGreaterThanUnitsWithCategory', { 2, categories.ENERGYPRODUCTION * categories.TECH3 } },
+        	{ UCBC, 'HaveGreaterThanUnitsWithCategory', { 4, categories.ENERGYPRODUCTION * categories.TECH3 } },
 
             { EBC, 'GreaterThanEconStorageRatio', { 0.85, 0.85 } },         
 
             { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 0, categories.ENGINEER * categories.TECH3 }},
+
+            { UCBC, 'CheckBuildPlattonDelay', { 'NukeBuilder' }},
 
             { UCBC, 'HaveUnitRatioVersusEnemy', { 2, categories.STRUCTURE * categories.NUKE * categories.TECH3, '<=', categories.STRUCTURE * categories.DEFENSE * categories.ANTIMISSILE * categories.TECH3 } },
 
@@ -136,6 +142,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Strategic Builder',
         BuilderName = 'U3 Artillery',
         PlatoonTemplate = 'T3EngineerBuilderSUB',
         Priority = 1100,
+        InstanceCount = 1,
         BuilderConditions = {
             { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 0, categories.ENGINEER * categories.TECH3}},
 
@@ -161,6 +168,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Strategic Builder',
         BuilderName = 'U3 RapidArtillery',
         PlatoonTemplate = 'T3EngineerBuilderSUB',
         Priority = 1000,
+        InstanceCount = 1,
         BuilderConditions = {
             { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 0, categories.ENGINEER * categories.TECH3}},
 
@@ -186,6 +194,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Strategic Builder',
         BuilderName = 'Swarm Artillery',
         PlatoonTemplate = 'T3EngineerBuilderSUB',
         Priority = 1000,
+        InstanceCount = 1,
         BuilderConditions = {
             { UCBC, 'HaveGreaterThanUnitsWithCategory', { 2, categories.EXPERIMENTAL}},
 

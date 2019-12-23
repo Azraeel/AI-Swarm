@@ -5,8 +5,8 @@ local LastBuilder = ''
 local DEBUGBUILDER = {}
 
 -- Hook for debugging
-TheSwBuilderManager = BuilderManager
-BuilderManager = Class(TheSwBuilderManager) {
+TheOldBuilderManager = BuilderManager
+BuilderManager = Class(TheOldBuilderManager) {
 
     GetHighestBuilder = function(self,bType,factory)
         if not self.BuilderData[bType] then

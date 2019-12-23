@@ -2,8 +2,8 @@ WARN('['..string.gsub(debug.getinfo(1).source, ".*\\(.*.lua)", "%1")..', line:'.
 
 local UUtils = import('/mods/AI-Swarm/lua/AI/swarmutilities.lua')
 
-SwPlatoonClass = Platoon
-Platoon = Class(SwPlatoonClass) {
+OldPlatoonClass = Platoon
+Platoon = Class(OldPlatoonClass) {
 
 -- For AI Patch V4 (patched). Return/exit the function on platoon disband
     EngineerBuildAI = function(self)
@@ -1047,7 +1047,7 @@ Platoon = Class(SwPlatoonClass) {
     BaseManagersDistressAI = function(self)
        -- Only use this with AI-Uveso
         if not self.Uveso then
-            return SwPlatoonClass.BaseManagersDistressAI(self)
+            return OldPlatoonClass.BaseManagersDistressAI(self)
         end
         WaitTicks(10)
         -- We are leaving this forked thread here because we don't need it.

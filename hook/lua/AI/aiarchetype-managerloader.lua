@@ -2,7 +2,7 @@ local CalculateBrainScore = import('/lua/sim/score.lua').CalculateBrainScore
 local Buff = import('/lua/sim/Buff.lua')
 
 -- This hook is for debug-option Platoon-Names. Hook for all AI's
-SwExecutePlanFunction = ExecutePlan
+OldExecutePlanFunction = ExecutePlan
 function ExecutePlan(aiBrain)
     aiBrain:SetConstantEvaluate(false)
     local behaviors = import('/lua/ai/AIBehaviors.lua')

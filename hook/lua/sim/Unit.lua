@@ -1,6 +1,6 @@
 
-local SwUnitClass = Unit
-Unit = Class(SwUnitClass) {
+local OldUnitClass = Unit
+Unit = Class(OldUnitClass) {
 
     -- prevent capturing
     OnStopBeingCaptured = function(self, captor)
