@@ -1,6 +1,6 @@
 -- This hook is for debug Option Platoon-Names. Hook for all AI's
-OldFactoryBuilderManagerClass = FactoryBuilderManager
-FactoryBuilderManager = Class(OldFactoryBuilderManagerClass) {
+SwFactoryBuilderManagerClass = FactoryBuilderManager
+FactoryBuilderManager = Class(SwFactoryBuilderManagerClass) {
 
     -- For AI Patch V4 (patched). 
     GetFactoryTemplate = function(self, templateName, factory)
@@ -98,13 +98,13 @@ FactoryBuilderManager = Class(OldFactoryBuilderManagerClass) {
     -- Hook for adding factory.LastActive to restart factories.
     DelayBuildOrder = function(self,factory,bType,time)
         factory.LastActive = GetGameTimeSeconds()
-        OldFactoryBuilderManagerClass.DelayBuildOrder(self,factory,bType,time)
+        SwFactoryBuilderManagerClass.DelayBuildOrder(self,factory,bType,time)
     end,
 
     RallyPointMonitor = function(self)
         -- Only use this with AI-Uveso
         if not self.Brain.Uveso then
-            return OldFactoryBuilderManagerClass.RallyPointMonitor(self)
+            return SwFactoryBuilderManagerClass.RallyPointMonitor(self)
         end
         -- Exit the ForkThread RallyPointMonitor
     end,
@@ -112,7 +112,7 @@ FactoryBuilderManager = Class(OldFactoryBuilderManagerClass) {
     SetRallyPoint = function(self, factory)
         -- Only use this with AI-Uveso
         if not self.Brain.Uveso then
-            return OldFactoryBuilderManagerClass.SetRallyPoint(self, factory)
+            return SwFactoryBuilderManagerClass.SetRallyPoint(self, factory)
         end
         -- don't set any rally point, we use units on the fly.
         return true

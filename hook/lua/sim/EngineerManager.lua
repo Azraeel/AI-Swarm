@@ -1,19 +1,19 @@
 -- Don't disable units on low energy/mass for AI-Uveso
 
-TheOldEngineerManager = EngineerManager
-EngineerManager = Class(TheOldEngineerManager) {
+TheSwEngineerManager = EngineerManager
+EngineerManager = Class(TheSwEngineerManager) {
 
     LowMass = function(self)
         -- Only use this with AI-Uveso
         if not self.Brain.Uveso then
-            return TheOldEngineerManager.LowMass(self)
+            return TheSwEngineerManager.LowMass(self)
         end
     end,
 
     LowEnergy = function(self)
         -- Only use this with AI-Uveso
         if not self.Brain.Uveso then
-            return TheOldEngineerManager.LowEnergy(self)
+            return TheSwEngineerManager.LowEnergy(self)
         end
     end,
 

@@ -1,6 +1,6 @@
 
-OldAIBrainClass = AIBrain
-AIBrain = Class(OldAIBrainClass) {
+SwAIBrainClass = AIBrain
+AIBrain = Class(SwAIBrainClass) {
 
     -- For AI Patch V5 (patched). patch for missing StrategyManager
     OnDefeat = function(self)
@@ -271,7 +271,7 @@ AIBrain = Class(OldAIBrainClass) {
     AddBuilderManagers = function(self, position, radius, baseName, useCenter)
        -- Only use this with AI-Uveso
         if not self.Uveso then
-            return OldAIBrainClass.AddBuilderManagers(self, position, radius, baseName, useCenter)
+            return SwAIBrainClass.AddBuilderManagers(self, position, radius, baseName, useCenter)
         end
         self.BuilderManagers[baseName] = {
             FactoryManager = FactoryManager.CreateFactoryBuilderManager(self, baseName, position, radius, useCenter),
@@ -298,7 +298,7 @@ AIBrain = Class(OldAIBrainClass) {
     BaseMonitorThread = function(self)
        -- Only use this with AI-Uveso
         if not self.Uveso then
-            return OldAIBrainClass.BaseMonitorThread(self)
+            return SwAIBrainClass.BaseMonitorThread(self)
         end
         WaitTicks(10)
         -- We are leaving this forked thread here because we don't need it.
@@ -308,7 +308,7 @@ AIBrain = Class(OldAIBrainClass) {
     EconomyMonitor = function(self)
         -- Only use this with AI-Uveso
         if not self.Uveso then
-            return OldAIBrainClass.EconomyMonitor(self)
+            return SwAIBrainClass.EconomyMonitor(self)
         end
         WaitTicks(10)
         -- We are leaving this forked thread here because we don't need it.
@@ -319,7 +319,7 @@ AIBrain = Class(OldAIBrainClass) {
    ExpansionHelpThread = function(self)
        -- Only use this with AI-Uveso
         if not self.Uveso then
-            return OldAIBrainClass.ExpansionHelpThread(self)
+            return SwAIBrainClass.ExpansionHelpThread(self)
         end
         WaitTicks(10)
         -- We are leaving this forked thread here because we don't need it.
@@ -329,21 +329,21 @@ AIBrain = Class(OldAIBrainClass) {
     InitializeEconomyState = function(self)
         -- Only use this with AI-Uveso
         if not self.Uveso then
-            return OldAIBrainClass.InitializeEconomyState(self)
+            return SwAIBrainClass.InitializeEconomyState(self)
         end
     end,
 
     OnIntelChange = function(self, blip, reconType, val)
         -- Only use this with AI-Uveso
         if not self.Uveso then
-            return OldAIBrainClass.OnIntelChange(self, blip, reconType, val)
+            return SwAIBrainClass.OnIntelChange(self, blip, reconType, val)
         end
     end,
 
     SetupAttackVectorsThread = function(self)
        -- Only use this with AI-Uveso
         if not self.Uveso then
-            return OldAIBrainClass.SetupAttackVectorsThread(self)
+            return SwAIBrainClass.SetupAttackVectorsThread(self)
         end
         WaitTicks(10)
         -- We are leaving this forked thread here because we don't need it.
@@ -353,7 +353,7 @@ AIBrain = Class(OldAIBrainClass) {
     ParseIntelThread = function(self)
        -- Only use this with AI-Uveso
         if not self.Uveso then
-            return OldAIBrainClass.ParseIntelThread(self)
+            return SwAIBrainClass.ParseIntelThread(self)
         end
         WaitTicks(10)
         -- We are leaving this forked thread here because we don't need it.

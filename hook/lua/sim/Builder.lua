@@ -1,7 +1,7 @@
 
 -- For AI Patch V5 (patched). Repaired function to set platoonbuilder priority
-TheOldBuilder = Builder
-Builder = Class(TheOldBuilder) {
+TheSwBuilder = Builder
+Builder = Class(TheSwBuilder) {
 
     CalculatePriority = function(self, builderManager)
         self.PriorityAltered = false
@@ -20,8 +20,8 @@ Builder = Class(TheOldBuilder) {
 }
 
 -- For Platoon debugging. Unremarking the debugline will print all platoons with priority inside game.log
-TheOldPlatoonBuilder = PlatoonBuilder
-PlatoonBuilder = Class(TheOldPlatoonBuilder) {
+TheSwPlatoonBuilder = PlatoonBuilder
+PlatoonBuilder = Class(TheSwPlatoonBuilder) {
 
     Create = function(self,brain,data,locationType)
         Builder.Create(self,brain,data,locationType)
@@ -45,8 +45,8 @@ PlatoonBuilder = Class(TheOldPlatoonBuilder) {
 
 
 -- For Platoon debugging. Unremarking the debugline will print all platoons with priority inside game.log
-TheOldFactoryBuilder = FactoryBuilder
-FactoryBuilder = Class(TheOldFactoryBuilder) {
+TheSwFactoryBuilder = FactoryBuilder
+FactoryBuilder = Class(TheSwFactoryBuilder) {
 
     Create = function(self,brain,data,locationType)
         Builder.Create(self,brain,data,locationType)
@@ -61,8 +61,8 @@ FactoryBuilder = Class(TheOldFactoryBuilder) {
 }
 
 -- For Platoon debugging. Unremarking the debugline will print all platoons with priority inside game.log
-TheOldEngineerBuilder = EngineerBuilder
-EngineerBuilder = Class(TheOldEngineerBuilder) {
+TheSwEngineerBuilder = EngineerBuilder
+EngineerBuilder = Class(TheSwEngineerBuilder) {
 
     Create = function(self,brain,data, locationType)
         PlatoonBuilder.Create(self,brain,data, locationType)

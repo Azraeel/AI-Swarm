@@ -26,9 +26,9 @@ function SetupSession()
     ValidateMapAndMarkers()
 end
 
-local OldBeginSessionFunction = BeginSession
+local SwBeginSessionFunction = BeginSession
 function BeginSession()
-    OldBeginSessionFunction()
+    SwBeginSessionFunction()
     ValidateModFiles()
     if ScenarioInfo.Options.AIPathingDebug ~= 'off' then
         LOG('ForkThread(GraphRender)')
@@ -55,9 +55,9 @@ function BeginSession()
     end
 end
 
-local OldOnCreateArmyBrainFunction = OnCreateArmyBrain
+local SwOnCreateArmyBrainFunction = OnCreateArmyBrain
 function OnCreateArmyBrain(index, brain, name, nickname)
-    OldOnCreateArmyBrainFunction(index, brain, name, nickname)
+    SwOnCreateArmyBrainFunction(index, brain, name, nickname)
     -- check if we have an Ai brain that is not a civilian army
     if brain.BrainType == 'AI' and nickname ~= 'civilian' then
         -- check if we need to set a new unitcap for the AI. (0 = we are using the player unit cap)
