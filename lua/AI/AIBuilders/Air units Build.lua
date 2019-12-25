@@ -14,13 +14,56 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Builders',
     -- ============ --
     --    TECH 1    --
     -- ============ --
-    Builder { BuilderName = 'T1AirDefaultQueue',
-        PlatoonTemplate = 'T1AirDefaultQueue',
+    Builder { BuilderName = 'T1AirScout - Swarm',
+        PlatoonTemplate = 'T1AirScout',
+        Priority = 505,
+        BuilderConditions = {
+            { UCBC, 'UnitCapCheckLess', { 0.95 } },
+
+            { EBC, 'GreaterThanEconIncome', { 2.5, 100 } },
+
+            { UCBC, 'PoolLessAtLocation', { 'LocationType', 2, categories.AIR * categories.MOBILE * categories.SCOUT }},
+
+            { UCBC, 'HaveLessThanUnitsWithCategory', { 3, categories.AIR * categories.MOBILE * categories.SCOUT } },
+        },
+        BuilderType = 'Air',
+    },
+
+    Builder { BuilderName = 'T1AirFighter - Swarm',
+        PlatoonTemplate = 'T1AirFighter',
         Priority = 500,
         BuilderConditions = {
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
 
             { EBC, 'GreaterThanEconIncome', { 0.2, 2 } },
+
+            { UCBC, 'PoolLessAtLocation', { 'LocationType', 20, categories.AIR * categories.MOBILE * categories.ANTIAIR }},
+        },
+        BuilderType = 'Air',
+    },
+
+    Builder { BuilderName = 'T1AirBomber - Swarm',
+        PlatoonTemplate = 'T1AirBomber',
+        Priority = 500,
+        BuilderConditions = {
+            { UCBC, 'UnitCapCheckLess', { 0.95 } },
+
+            { EBC, 'GreaterThanEconIncome', { 0.2, 2 } },
+
+            { UCBC, 'PoolLessAtLocation', { 'LocationType', 5, categories.AIR * categories.MOBILE * categories.BOMBER }},
+        },
+        BuilderType = 'Air',
+    },
+
+    Builder { BuilderName = 'T1Gunship - Swarm',
+        PlatoonTemplate = 'T1Gunship',
+        Priority = 500,
+        BuilderConditions = {
+            { UCBC, 'UnitCapCheckLess', { 0.95 } },
+
+            { EBC, 'GreaterThanEconIncome', { 0.2, 2 } },
+
+            { UCBC, 'PoolLessAtLocation', { 'LocationType', 4, categories.AIR * categories.MOBILE * categories.GROUNDATTACK }},
         },
         BuilderType = 'Air',
     },
@@ -28,14 +71,28 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Builders',
     -- ============ --
     --    TECH 2    --
     -- ============ --
-
-    Builder { BuilderName = 'T2AirDefaultQueue',
-        PlatoonTemplate = 'T2AirDefaultQueue',
+    Builder { BuilderName = 'T2FighterBomber - Swarm',
+        PlatoonTemplate = 'T2FighterBomber',
         Priority = 600,
         BuilderConditions = {
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
 
             { EBC, 'GreaterThanEconIncome', { 1, 20 } },
+
+            { UCBC, 'PoolLessAtLocation', { 'LocationType', 16, categories.AIR * categories.MOBILE * categories.ANTIAIR * categories.BOMBER * categories.TECH2 }},
+        },
+        BuilderType = 'Air',
+    },
+
+    Builder { BuilderName = 'T2AirGunship - Swarm',
+        PlatoonTemplate = 'T2AirGunship',
+        Priority = 600,
+        BuilderConditions = {
+            { UCBC, 'UnitCapCheckLess', { 0.95 } },
+
+            { EBC, 'GreaterThanEconIncome', { 1, 20 } },
+
+            { UCBC, 'PoolLessAtLocation', { 'LocationType', 6, categories.AIR * categories.MOBILE * categories.GROUNDATTACK * categories.TECH2 }},
         },
         BuilderType = 'Air',
     },
@@ -44,13 +101,56 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Builders',
     --    TECH 3    --
     -- ============ --
 
-    Builder { BuilderName = 'T3AirDefaultQueue',
-        PlatoonTemplate = 'T3AirDefaultQueue',
+    Builder { BuilderName = 'T3AirScout - Swarm',
+        PlatoonTemplate = 'T3AirScout',
+        Priority = 705,
+        BuilderConditions = {
+            { UCBC, 'UnitCapCheckLess', { 0.95 } },
+
+            { EBC, 'GreaterThanEconIncome', { 2.5, 100 } },
+
+            { UCBC, 'PoolLessAtLocation', { 'LocationType', 2, categories.AIR * categories.MOBILE * categories.SCOUT * categories.TECH3 }},
+
+            { UCBC, 'HaveLessThanUnitsWithCategory', { 3, categories.AIR * categories.MOBILE * categories.SCOUT * categories.TECH3 } },
+        },
+        BuilderType = 'Air',
+    },
+
+    Builder { BuilderName = 'T3AirFighter - Swarm',
+        PlatoonTemplate = 'T3AirFighter',
         Priority = 700,
         BuilderConditions = {
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
 
             { EBC, 'GreaterThanEconIncome', { 2.5, 100 } },
+
+            { UCBC, 'PoolLessAtLocation', { 'LocationType', 30, categories.AIR * categories.MOBILE * categories.ANTIAIR * categories.TECH3 }},
+        },
+        BuilderType = 'Air',
+    },
+
+    Builder { BuilderName = 'T3AirGunship - Swarm',
+        PlatoonTemplate = 'T3AirGunship',
+        Priority = 700,
+        BuilderConditions = {
+            { UCBC, 'UnitCapCheckLess', { 0.95 } },
+
+            { EBC, 'GreaterThanEconIncome', { 2.5, 100 } },
+
+            { UCBC, 'PoolLessAtLocation', { 'LocationType', 9, categories.AIR * categories.MOBILE * categories.GROUNDATTACK * categories.TECH3 }},
+        },
+        BuilderType = 'Air',
+    },
+
+    Builder { BuilderName = 'T3AirBomber - Swarm',
+        PlatoonTemplate = 'T3AirBomber',
+        Priority = 700,
+        BuilderConditions = {
+            { UCBC, 'UnitCapCheckLess', { 0.95 } },
+
+            { EBC, 'GreaterThanEconIncome', { 2.5, 100 } },
+
+            { UCBC, 'PoolLessAtLocation', { 'LocationType', 6, categories.AIR * categories.MOBILE * categories.BOMBER * categories.TECH3 }},
         },
         BuilderType = 'Air',
     },
@@ -59,7 +159,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Builders',
     --   TRANSPORT  --
     -- ============ --
 
-    Builder { BuilderName = 'U1 Air Transport',
+    Builder { BuilderName = 'U1 Air Transport - Swarm',
         PlatoonTemplate = 'T1AirTransport',
         Priority = 550, 
         BuilderConditions = {
@@ -76,12 +176,14 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Builders',
             { UCBC, 'LocationFactoriesBuildingLess', { 'LocationType', 1, categories.AIR * categories.TRANSPORTATION} },
 
             { UCBC, 'PoolLessAtLocation', { 'LocationType', 1, categories.AIR * categories.TRANSPORTATION }},
+
+            { UCBC, 'HaveLessThanUnitsWithCategory', { 1, categories.AIR * categories.TRANSPORTATION } },
         },
         BuilderType = 'Air',
     },
 
 
-    Builder { BuilderName = 'U2 Air Transport',
+    Builder { BuilderName = 'U2 Air Transport - Swarm',
         PlatoonTemplate = 'T2AirTransport',
         Priority = 650,
         BuilderConditions = {
@@ -97,13 +199,15 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Builders',
 
             { UCBC, 'LocationFactoriesBuildingLess', { 'LocationType', 1, categories.AIR * categories.TRANSPORTATION} },
 
-            { UCBC, 'PoolLessAtLocation', { 'LocationType', 1, categories.AIR * categories.TRANSPORTATION }}
+            { UCBC, 'PoolLessAtLocation', { 'LocationType', 1, categories.AIR * categories.TRANSPORTATION }},
+
+            { UCBC, 'HaveLessThanUnitsWithCategory', { 1, categories.AIR * categories.TRANSPORTATION } },
         },
         BuilderType = 'Air',
     },
 
 
-    Builder { BuilderName = 'U3 Air Transport',
+    Builder { BuilderName = 'U3 Air Transport - Swarm',
         PlatoonTemplate = 'T3AirTransport',
         Priority = 750,
         BuilderConditions = {
@@ -119,7 +223,9 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Builders',
 
             { UCBC, 'LocationFactoriesBuildingLess', { 'LocationType', 1, categories.AIR * categories.TRANSPORTATION} },
 
-            { UCBC, 'PoolLessAtLocation', { 'LocationType', 1, categories.AIR * categories.TRANSPORTATION }}
+            { UCBC, 'PoolLessAtLocation', { 'LocationType', 1, categories.AIR * categories.TRANSPORTATION }},
+
+            { UCBC, 'HaveLessThanUnitsWithCategory', { 1, categories.AIR * categories.TRANSPORTATION } },
        },
         BuilderType = 'Air',
     }, 
@@ -164,13 +270,130 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Formers',
     BuildersType = 'PlatoonFormBuilder',                                        -- BuilderTypes are: EngineerBuilder, FactoryBuilder, PlatoonFormBuilder.
     
     Builder {
-        BuilderName = 'AISwarm AirAttack Bombers',
+        BuilderName = 'AISwarm AirAttack Bombers Mass',
         PlatoonTemplate = 'BomberAttack',
         Priority = 100,
         InstanceCount = 3,
         BuilderType = 'Any',
         BuilderData = { 
-           UseFormation = 'GrowthFormation', 
+           UseFormation = 'NoFormation',
+           PrioritizedCategories = {
+                'MASSEXTRACTION',
+                'MASSFABRICATION',
+                'ENGINEER',
+                'MOBILE ANTIAIR',
+                'MOBILE LAND',
+                'ALLUNITS',
+            }, 
+        },
+        BuilderConditions = { },
+    },
+
+    Builder {
+        BuilderName = 'AISwarm AirAttack Bombers Energy',
+        PlatoonTemplate = 'BomberAttack',
+        Priority = 100,
+        InstanceCount = 3,
+        BuilderType = 'Any',
+        BuilderData = { 
+           UseFormation = 'NoFormation',
+           PrioritizedCategories = {
+                'ENERGYPRODUCTION',
+                'ENGINEER',
+                'MOBILE ANTIAIR',
+                'MOBILE LAND',
+                'ALLUNITS',
+            }, 
+        },
+        BuilderConditions = { },
+    },
+
+    Builder {
+        BuilderName = 'AISwarm AirAttack Bombers Units',
+        PlatoonTemplate = 'BomberAttack',
+        Priority = 100,
+        InstanceCount = 1,
+        BuilderType = 'Any',
+        BuilderData = { 
+           UseFormation = 'NoFormation',
+           PrioritizedCategories = {
+                'MOBILE LAND',
+                'MOBILE ANTIAIR',
+                'ENGINEER',
+                'ALLUNITS',
+            }, 
+        },
+        BuilderConditions = { },
+    },
+
+    Builder {
+        BuilderName = 'AISwarm AirAttack Snipe - T3 - Anti-Resource',
+        PlatoonTemplate = 'SpecialOpsBomberAttack',
+        Priority = 100,
+        InstanceCount = 4,
+        BuilderType = 'Any',
+        BuilderData = { 
+           UseFormation = 'NoFormation',
+           PrioritizedCategories = {
+                'ENERGYPRODUCTION',
+                'MASSFABRICATION',
+                'MASSEXTRACTION',
+                'SHIELD',
+                'ANTIAIR STRUCTURE',
+                'DEFENSE STRUCTURE',
+                'STRUCTURE',
+                'MOBILE ANTIAIR',
+                'ALLUNITS',
+            }, 
+        },
+        BuilderConditions = { },
+    },
+
+    Builder {
+        BuilderName = 'AISwarm AirAttack Snipe - T3 - Structure',
+        PlatoonTemplate = 'SpecialOpsBomberAttack',
+        Priority = 100,
+        InstanceCount = 2,
+        BuilderType = 'Any',
+        BuilderData = { 
+           UseFormation = 'NoFormation',
+           PrioritizedCategories = {
+                'EXPERIMENTAL STRUCTURE',
+                'STRATEGIC ARTILLERY',
+                'SILO NUKE',
+                'SILO ANTIMISSLE',
+                'COMMAND',
+                'ENERGYPRODUCTION',
+                'MASSFABRICATION',
+                'MASSEXTRACTION',
+                'SHIELD',
+                'ANTIAIR STRUCTURE',
+                'DEFENSE STRUCTURE',
+                'STRUCTURE',
+                'MOBILE ANTIAIR',
+                'ALLUNITS',
+            }, 
+        },
+        BuilderConditions = { },
+    },
+
+    Builder {
+        BuilderName = 'AISwarm AirAttack Snipe - T3 - Anti-Land',
+        PlatoonTemplate = 'SpecialOpsBomberAttack',
+        Priority = 100,
+        InstanceCount = 2,
+        BuilderType = 'Any',
+        BuilderData = { 
+           UseFormation = 'NoFormation',
+           PrioritizedCategories = {
+                'COMMAND',
+                'EXPERIMENTAL LAND',
+                'SUBCOMMANDER',
+                'MOBILE LAND TECH3',
+                'MOBILE LAND TECH2',
+                'MOBILE LAND TECH1',
+                'ALLUNITS',
+            }, 
         },
         BuilderConditions = { },
     },
@@ -179,10 +402,26 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Formers',
         BuilderName = 'AISwarm AirAttack Fighters',
         PlatoonTemplate = 'AirAttack',
         Priority = 100,
+        InstanceCount = 5,
+        BuilderType = 'Any',
+        BuilderData = { 
+           UseFormation = 'GrowthFormation',
+           PrioritizedCategories = {
+                'MOBILE AIR',
+                'ALLUNITS',
+            }, 
+        },
+        BuilderConditions = { },
+    },
+
+    Builder {
+        BuilderName = 'AISwarm AirAttack Threat Fighters',
+        PlatoonTemplate = 'AirAttackThreat',
+        Priority = 100,
         InstanceCount = 3,
         BuilderType = 'Any',
         BuilderData = { 
-           UseFormation = 'GrowthFormation', 
+           ThreatThreshold = 100, 
         },
         BuilderConditions = { },
     },
@@ -195,40 +434,15 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Formers',
         BuilderType = 'Any',
         BuilderData = { 
         	UseFormation = 'GrowthFormation', 
-        },
-        BuilderConditions = { },
-    },
-
-    Builder {
-        BuilderName = 'AISwarm AirAttack Gunship Raid',
-        PlatoonTemplate = 'GunshipMassHunter',
-        Priority = 100,
-        InstanceCount = 3,
-        BuilderType = 'Any',
-        BuilderData = { 
-            UseFormation = 'GrowthFormation',
             PrioritizedCategories = {
+                'EXPERIMENTAL LAND',
                 'MASSEXTRACTION',
                 'ENERGYPRODUCTION',
-                'MASSFABRICATION',
-            },        
-        },
-        BuilderConditions = { },
-    },
-
-    Builder {
-        BuilderName = 'AISwarm AirAttack Bomber Raid',
-        PlatoonTemplate = 'MassHunterBomber',
-        Priority = 100,
-        InstanceCount = 3,
-        BuilderType = 'Any',
-        BuilderData = {
-        	UseFormation = 'GrowthFormation', 
-            PrioritizedCategories = {
-                'MASSEXTRACTION',
-                'ENERGYPRODUCTION',
-                'MASSFABRICATION',
-            },       
+                'ENGINEER',
+                'MOBILE ANTIAIR',
+                'MOBILE LAND',
+                'ALLUNITS',
+            },
         },
         BuilderConditions = { },
     },

@@ -3871,6 +3871,55 @@ Platoon = Class(OldPlatoonClass) {
             self:PlatoonDisband()
         end
     end,
+
+    ThreatStrikeSwarm = function(self)
+        self:Stop()
+        local aiBrain = self:GetBrain()
+        local threshold = self.PlatoonData.ThreatThreshold
+        while aiBrain:PlatoonExists(self) do
+            local bestDist = false
+            local bestTarget = false
+            local position = self:GetPlatoonPosition()
+            if self.BaseMonitor.AlertSounded then
+                for k,v in self.BaseMonitor.AlertsTable do
+                    if v.Threat < threshold then
+                        continue
+                    end
+
+                    local tempDist = Utilities.XZDistanceTwoVectors(position, v.Position)
+
+                    if not bestDist or tempDist < bestDist then
+                        bestDist = tempDist
+                        local height = GetTerrainHeight(v.Position[1], v.Position[3])
+                        local surfHeight = GetSurfaceHeight(v.Position[1], v.Position[3])
+                        if surfHeight > height then
+                            height = surfHeight
+                        end
+                        bestTarget = { v.Position[1], height, v.Position[3] }
+                    end
+                end
+                if bestTarget then
+                    local safePath, reason = AIAttackUtils.PlatoonGenerateSafePathTo(aiBrain, 'Air', self:GetPlatoonPosition(), bestTarget, 200)
+                    if safePath then
+                        local pathSize = table.getn(path)
+                        for wpidx,waypointPath in path do
+                            if wpidx == pathSize then
+                                self:AggressiveMoveToLocation(bestTarget)
+                            else
+                                self:MoveToLocation(waypointPath, false)
+                            end
+                        end
+                    else
+                        self:AggressiveMoveToLocation(bestTarget)
+                    end
+                end
+            end
+            if not bestTarget then
+                return self:AirHuntAI()
+            end
+            WaitSeconds(17)
+        end
+    end,
 }
 
 

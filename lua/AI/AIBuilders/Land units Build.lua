@@ -40,7 +40,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',                  
     -- ============ --
     --    TECH 1    --
     -- ============ --
-    Builder { BuilderName = 'T1LandDFTank',
+    Builder { BuilderName = 'T1LandDFTank - Swarm',
         PlatoonTemplate = 'T1LandDFTank',
         Priority = 500,
         BuilderConditions = {
@@ -55,7 +55,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',                  
         BuilderType = 'Land',
     },
 
-    Builder { BuilderName = 'T1LandArtillery',
+    Builder { BuilderName = 'T1LandArtillery - Swarm',
         PlatoonTemplate = 'T1LandArtillery',
         Priority = 500,
         BuilderConditions = {
@@ -70,7 +70,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',                  
         BuilderType = 'Land',
     },
 
-    Builder { BuilderName = 'T1LandAA',
+    Builder { BuilderName = 'T1LandAA - Swarm',
         PlatoonTemplate = 'T1LandAA',
         Priority = 500,
         BuilderConditions = {
@@ -88,7 +88,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',                  
     -- ============ --
     --    TECH 2    --
     -- ============ --
-    Builder { BuilderName = 'T2LandDFTank',
+    Builder { BuilderName = 'T2LandDFTank - Swarm',
         PlatoonTemplate = 'T2LandDFTank',
         Priority = 700,
         BuilderConditions = {
@@ -103,7 +103,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',                  
         BuilderType = 'Land',
     },
 
-    Builder { BuilderName = 'T2AttackTank',
+    Builder { BuilderName = 'T2AttackTank - Swarm',
         PlatoonTemplate = 'T2AttackTank',
         Priority = 700,
         BuilderConditions = {
@@ -118,7 +118,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',                  
         BuilderType = 'Land',
     },
 
-    Builder { BuilderName = 'T2LandArtillery',
+    Builder { BuilderName = 'T2LandArtillery - Swarm',
         PlatoonTemplate = 'T2LandArtillery',
         Priority = 700,
         BuilderConditions = {
@@ -133,7 +133,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',                  
         BuilderType = 'Land',
     },
 
-    Builder { BuilderName = 'T2MobileShields',
+    Builder { BuilderName = 'T2MobileShields - Swarm',
         PlatoonTemplate = 'T2MobileShields',
         Priority = 700,
         BuilderConditions = {
@@ -148,7 +148,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',                  
         BuilderType = 'Land',
     },
 
-    Builder { BuilderName = 'T2LandAA',
+    Builder { BuilderName = 'T2LandAA - Swarm',
         PlatoonTemplate = 'T2LandAA',
         Priority = 700,
         BuilderConditions = {
@@ -166,7 +166,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',                  
     -- ============ --
     --    TECH 3    --
     -- ============ --
-    Builder { BuilderName = 'T3ArmoredAssault',
+    Builder { BuilderName = 'T3ArmoredAssault - Swarm',
         PlatoonTemplate = 'T3ArmoredAssault',
         Priority = 900,
         BuilderConditions = {
@@ -181,7 +181,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',                  
         BuilderType = 'Land',
     },
 
-    Builder { BuilderName = 'T3LandBot',
+    Builder { BuilderName = 'T3LandBot - Swarm',
         PlatoonTemplate = 'T3LandBot',
         Priority = 900,
         BuilderConditions = {
@@ -196,7 +196,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',                  
         BuilderType = 'Land',
     },
 
-    Builder { BuilderName = 'T3SniperBots',
+    Builder { BuilderName = 'T3SniperBots - Swarm',
         PlatoonTemplate = 'T3SniperBots',
         Priority = 900,
         BuilderConditions = {
@@ -211,7 +211,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',                  
         BuilderType = 'Land',
     },
 
-    Builder { BuilderName = 'T3LandArtillery',
+    Builder { BuilderName = 'T3LandArtillery - Swarm',
         PlatoonTemplate = 'T3LandArtillery',
         Priority = 900,
         BuilderConditions = {
@@ -226,7 +226,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',                  
         BuilderType = 'Land',
     },
 
-    Builder { BuilderName = 'T3MobileMissile',
+    Builder { BuilderName = 'T3MobileMissile - Swarm',
         PlatoonTemplate = 'T3MobileMissile',
         Priority = 900,
         BuilderConditions = {
@@ -241,7 +241,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',                  
         BuilderType = 'Land',
     },
 
-    Builder { BuilderName = 'T3LandAA',
+    Builder { BuilderName = 'T3LandAA - Swarm',
         PlatoonTemplate = 'T3LandAA',
         Priority = 900,
         BuilderConditions = {
@@ -284,6 +284,35 @@ BuilderGroup {
     BuildersType = 'PlatoonFormBuilder', -- A PlatoonFormBuilder is for builder groups of units.
 
     Builder {
+        BuilderName = 'Land Attack Mass Raid',
+        PlatoonTemplate = 'AISwarm LandAttack Early Raid',
+        Priority = 100,
+        InstanceCount = 4,
+        BuilderType = 'Any',
+        BuilderConditions = { 
+            { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 1, categories.LAND * categories.MOBILE * categories.DIRECTFIRE - categories.SCOUT - categories.EXPERIMENTAL}}, 
+
+            { UCBC, 'LessThanGameTimeSeconds', { 600 } },
+        },
+        BuilderData = {
+            ThreatSupport = 100,
+            LocationType = 'LocationType',
+            MarkerType = 'Mass',
+            MoveFirst = 'Random',
+            MoveNext = 'Threat',
+            ThreatType = 'Economy',             
+            FindHighestThreat = false,      
+            MaxThreatThreshold = 4900,      
+            MinThreatThreshold = 1000,      
+            AvoidBases = true,
+            AvoidBasesRadius = 75,
+            UseFormation = 'NoFormation',
+            AggressiveMove = false,
+            AvoidClosestRadius = 100,
+        },
+    },
+
+    Builder {
         BuilderName = 'Land Attack Small',
         PlatoonTemplate = 'AISwarm LandAttack Small',
         Priority = 100,
@@ -294,7 +323,9 @@ BuilderGroup {
 
             { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 3, categories.LAND * categories.MOBILE * categories.INDIRECTFIRE - categories.EXPERIMENTAL }},
 
-            { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 1, categories.LAND * categories.MOBILE * categories.ANTIAIR }},            
+            { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 1, categories.LAND * categories.MOBILE * categories.ANTIAIR }}, 
+
+            { UCBC, 'LessThanGameTimeSeconds', { 900 } },           
         },
         BuilderData = {
             ThreatSupport = 100,
@@ -318,6 +349,8 @@ BuilderGroup {
             { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 6, categories.LAND * categories.MOBILE * categories.INDIRECTFIRE - categories.EXPERIMENTAL }},
 
             { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 2, categories.LAND * categories.MOBILE * categories.ANTIAIR }},
+
+            { UCBC, 'GreaterThanGameTimeSeconds', { 900 } },
         },
         BuilderData = {
             ThreatSupport = 100,
@@ -341,6 +374,8 @@ BuilderGroup {
             { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 2, categories.LAND * categories.MOBILE * categories.INDIRECTFIRE - categories.EXPERIMENTAL }},
 
             { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 1, categories.LAND * categories.MOBILE * categories.ANTIAIR }},
+
+            { UCBC, 'GreaterThanGameTimeSeconds', { 600 } },
         },
         BuilderData = {
             ThreatSupport = 75,
@@ -368,6 +403,8 @@ BuilderGroup {
             { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 2, categories.LAND * categories.MOBILE * categories.DIRECTFIRE - categories.SCOUT - categories.EXPERIMENTAL}},
 
             { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 2, categories.LAND * categories.MOBILE * categories.INDIRECTFIRE - categories.EXPERIMENTAL }},
+
+            { UCBC, 'GreaterThanGameTimeSeconds', { 600 } },
         },
         BuilderData = {
             ThreatSupport = 100,
@@ -377,7 +414,7 @@ BuilderGroup {
             MoveNext = 'Threat',
             ThreatType = 'Economy',             
             FindHighestThreat = false,      
-            MaxThreatThreshold = 4500,      
+            MaxThreatThreshold = 2000,      
             MinThreatThreshold = 1000,      
             AvoidBases = true,
             AvoidBasesRadius = 75,
@@ -391,9 +428,11 @@ BuilderGroup {
         BuilderName = 'Microed Small Land Attack',
         PlatoonTemplate = 'AISwarm LandAttack Micro Small', 
         Priority = 101,
-        InstanceCount = 2,
+        InstanceCount = 4,
         BuilderType = 'Any',
-        BuilderConditions = { },
+        BuilderConditions = { 
+            { UCBC, 'LessThanGameTimeSeconds', { 1500 } },
+        },
         BuilderData = {
             AttackEnemyStrength = 100,
             SearchRadius = BaseMilitaryZone,
@@ -424,9 +463,11 @@ BuilderGroup {
         BuilderName = 'Microed Small Land Attack',
         PlatoonTemplate = 'AISwarm LandAttack Micro Small', 
         Priority = 101,
-        InstanceCount = 2,
+        InstanceCount = 4,
         BuilderType = 'Any',
-        BuilderConditions = { },
+        BuilderConditions = { 
+            { UCBC, 'LessThanGameTimeSeconds', { 1500 } },
+        },
         BuilderData = {
             AttackEnemyStrength = 100,
             SearchRadius = BaseEnemyZone,
@@ -457,9 +498,11 @@ BuilderGroup {
         BuilderName = 'Microed Big Land Attack',
         PlatoonTemplate = 'AISwarm LandAttack Micro Big', 
         Priority = 101,
-        InstanceCount = 2,
+        InstanceCount = 4,
         BuilderType = 'Any',
-        BuilderConditions = { },
+        BuilderConditions = { 
+            { UCBC, 'GreaterThanGameTimeSeconds', { 1500 } },
+        },
         BuilderData = {
             AttackEnemyStrength = 100,
             SearchRadius = BaseMilitaryZone,
@@ -490,9 +533,11 @@ BuilderGroup {
         BuilderName = 'Microed Big Land Attack',
         PlatoonTemplate = 'AISwarm LandAttack Micro Big', 
         Priority = 101,
-        InstanceCount = 2,
+        InstanceCount = 4,
         BuilderType = 'Any',
-        BuilderConditions = { },
+        BuilderConditions = { 
+            { UCBC, 'GreaterThanGameTimeSeconds', { 1500 } },
+        },
         BuilderData = {
             AttackEnemyStrength = 100,
             SearchRadius = BaseEnemyZone,

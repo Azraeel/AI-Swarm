@@ -14,7 +14,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Naval Builders',                       
     -- =========== --
     --    TECH 1   --
     -- =========== --
-    Builder { BuilderName = 'T1SeaFrigate',
+    Builder { BuilderName = 'T1SeaFrigate - Swarm',
         PlatoonTemplate = 'T1SeaFrigate',
         Priority = 500,
         BuilderConditions = {
@@ -29,7 +29,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Naval Builders',                       
         BuilderType = 'Sea',
     },
 
-    Builder { BuilderName = 'T1SeaSub',
+    Builder { BuilderName = 'T1SeaSub - Swarm',
         PlatoonTemplate = 'T1SeaSub',
         Priority = 500,
         BuilderConditions = {
@@ -47,7 +47,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Naval Builders',                       
     -- ============ --
     --    TECH 2    --
     -- ============ --
-    Builder { BuilderName = 'T2SeaDestroyer',
+    Builder { BuilderName = 'T2SeaDestroyer - Swarm',
         PlatoonTemplate = 'T2SeaDestroyer',
         Priority = 600,
         BuilderConditions = {
@@ -62,7 +62,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Naval Builders',                       
         BuilderType = 'Sea',
     },
 
-    Builder { BuilderName = 'T2SeaCruiser',
+    Builder { BuilderName = 'T2SeaCruiser - Swarm',
         PlatoonTemplate = 'T2SeaCruiser',
         Priority = 600,
         BuilderConditions = {
@@ -77,7 +77,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Naval Builders',                       
         BuilderType = 'Sea',
     },
 
-    Builder { BuilderName = 'T2SubKiller',
+    Builder { BuilderName = 'T2SubKiller - Swarm',
         PlatoonTemplate = 'T2SubKiller',
         Priority = 600,
         BuilderConditions = {
@@ -92,7 +92,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Naval Builders',                       
         BuilderType = 'Sea',
     },
 
-    Builder { BuilderName = 'T2ShieldBoat',
+    Builder { BuilderName = 'T2ShieldBoat - Swarm',
         PlatoonTemplate = 'T2ShieldBoat',
         Priority = 600,
         BuilderConditions = {
@@ -107,7 +107,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Naval Builders',                       
         BuilderType = 'Sea',
     },
 
-    Builder { BuilderName = 'T2CounterIntelBoat',
+    Builder { BuilderName = 'T2CounterIntelBoat - Swarm',
         PlatoonTemplate = 'T2CounterIntelBoat',
         Priority = 600,
         BuilderConditions = {
@@ -125,7 +125,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Naval Builders',                       
     -- ============ --
     --    TECH 3    --
     -- ============ --
-    Builder { BuilderName = 'T3SeaBattleship',
+    Builder { BuilderName = 'T3SeaBattleship - Swarm',
         PlatoonTemplate = 'T3SeaBattleship',
         Priority = 750,
         BuilderConditions = {
@@ -140,7 +140,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Naval Builders',                       
         BuilderType = 'Sea',
     },
 
-    Builder { BuilderName = 'T3Battlecruiser',
+    Builder { BuilderName = 'T3Battlecruiser - Swarm',
         PlatoonTemplate = 'T3Battlecruiser',
         Priority = 750,
         BuilderConditions = {
@@ -155,7 +155,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Naval Builders',                       
         BuilderType = 'Sea',
     },
 
-    Builder { BuilderName = 'T3SubKiller',
+    Builder { BuilderName = 'T3SubKiller - Swarm',
         PlatoonTemplate = 'T3SubKiller',
         Priority = 750,
         BuilderConditions = {
@@ -170,7 +170,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Naval Builders',                       
         BuilderType = 'Sea',
     },
 
-    Builder { BuilderName = 'T3MissileBoat',
+    Builder { BuilderName = 'T3MissileBoat - Swarm',
         PlatoonTemplate = 'T3MissileBoat',
         Priority = 750,
         BuilderConditions = {
@@ -185,7 +185,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Naval Builders',                       
         BuilderType = 'Sea',
     },
 
-    Builder { BuilderName = 'T3SeaNukeSub',
+    Builder { BuilderName = 'T3SeaNukeSub - Swarm',
         PlatoonTemplate = 'T3SeaNukeSub',
         Priority = 750,
         BuilderConditions = {

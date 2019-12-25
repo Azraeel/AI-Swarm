@@ -9,6 +9,18 @@ PlatoonTemplate {
 }
 
 PlatoonTemplate {
+    Name = 'AISwarm LandAttack Early Raid',
+    Plan = 'GuardMarkerSwarm',
+    GlobalSquads = {
+        { categories.MOBILE * categories.DIRECTFIRE * categories.LAND - categories.EXPERIMENTAL - categories.ENGINEER - categories.SCOUT,
+          1,
+          4,
+          'attack',
+          'none' },
+    },
+}
+
+PlatoonTemplate {
     Name = 'AISwarm LandAttack Small',
     Plan = 'AttackForceAISwarm', 
     GlobalSquads = {
