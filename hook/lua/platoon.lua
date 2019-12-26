@@ -3203,6 +3203,78 @@ Platoon = Class(OldPlatoonClass) {
         end
     end,
 
+    StrikeForceAI = function(self)
+        local aiBrain = self:GetBrain()
+        local armyIndex = aiBrain:GetArmyIndex()
+        local data = self.PlatoonData
+        local categoryList = {}
+        local atkPri = {}
+        if data.PrioritizedCategories then
+            for k,v in data.PrioritizedCategories do
+                table.insert(atkPri, v)
+                table.insert(categoryList, ParseEntityCategory(v))
+            end
+        end
+        table.insert(atkPri, 'ALLUNITS')
+        table.insert(categoryList, categories.ALLUNITS)
+        self:SetPrioritizedTargetList('Attack', categoryList)
+        local target
+        local blip = false
+        local maxRadius = data.SearchRadius or 50
+        local movingToScout = false
+        while aiBrain:PlatoonExists(self) do
+            if not target or target.Dead then
+                --if aiBrain:GetCurrentEnemy() and aiBrain:GetCurrentEnemy().Result == "defeat" then
+                --    aiBrain:PickEnemyLogic()
+                --end
+                local mult = { 1,10,25 }
+                for _,i in mult do
+                    target = AIUtils.AIFindBrainTargetInRange(aiBrain, self, 'Attack', maxRadius * i, atkPri)
+                    if target then
+                        break
+                    end
+                    WaitSeconds(1) --DUNCAN - was 3
+                    if not aiBrain:PlatoonExists(self) then
+                        return
+                    end
+                end
+
+                --target = self:FindPrioritizedUnit('Attack', 'Enemy', true, self:GetPlatoonPosition(), maxRadius)
+
+                --DUNCAN - added to target experimentals if they exist.
+                local newtarget
+                if AIAttackUtils.GetSurfaceThreatOfUnits(self) > 0 then
+                    newtarget = self:FindClosestUnit('Attack', 'Enemy', true, categories.EXPERIMENTAL * (categories.LAND + categories.NAVAL + categories.STRUCTURE))
+                elseif AIAttackUtils.GetAirThreatOfUnits(self) > 0 then
+                    newtarget = self:FindClosestUnit('Attack', 'Enemy', true, categories.EXPERIMENTAL * categories.AIR)
+                end
+                if newtarget then
+                    target = newtarget
+                end
+
+                if target then
+                    self:Stop()
+                    if not data.UseMoveOrder then
+                        self:AttackTarget(target)
+                    else
+                        self:MoveToLocation(table.copy(target:GetPosition()), false)
+                    end
+                    movingToScout = false
+                elseif not movingToScout then
+                    movingToScout = true
+                    self:Stop()
+                    for k,v in AIUtils.AIGetSortedMassLocations(aiBrain, 10, nil, nil, nil, nil, self:GetPlatoonPosition()) do
+                        if v[1] < 0 or v[3] < 0 or v[1] > ScenarioInfo.size[1] or v[3] > ScenarioInfo.size[2] then
+                            --LOG('*AI DEBUG: STRIKE FORCE SENDING UNITS TO WRONG LOCATION - ' .. v[1] .. ', ' .. v[3])
+                        end
+                        self:MoveToLocation((v), false)
+                    end
+                end
+            end
+            WaitSeconds(7)
+        end
+    end,
+
     StrikeForceAISwarm = function(self)
         local aiBrain = self:GetBrain()
         local armyIndex = aiBrain:GetArmyIndex()
