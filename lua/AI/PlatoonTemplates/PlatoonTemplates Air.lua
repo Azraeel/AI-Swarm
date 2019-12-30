@@ -40,7 +40,7 @@ PlatoonTemplate {
 
 PlatoonTemplate {
     Name = 'GunshipAttack',
-    Plan = 'StrikeForceAI',
+    Plan = 'GunshipHuntAI',
     GlobalSquads = {
         { categories.MOBILE * categories.AIR * categories.GROUNDATTACK - categories.BOMBER - categories.EXPERIMENTAL - categories.TRANSPORTFOCUS - categories.SCOUT, 5, 20, 'Attack', 'GrowthFormation' },
     }

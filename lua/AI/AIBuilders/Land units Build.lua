@@ -428,7 +428,7 @@ BuilderGroup {
         BuilderName = 'Microed Small Land Attack',
         PlatoonTemplate = 'AISwarm LandAttack Micro Small', 
         Priority = 101,
-        InstanceCount = 4,
+        InstanceCount = 6,
         BuilderType = 'Any',
         BuilderConditions = { 
             { UCBC, 'LessThanGameTimeSeconds', { 1500 } },
@@ -463,7 +463,7 @@ BuilderGroup {
         BuilderName = 'Microed Small Land Attack',
         PlatoonTemplate = 'AISwarm LandAttack Micro Small', 
         Priority = 101,
-        InstanceCount = 4,
+        InstanceCount = 6,
         BuilderType = 'Any',
         BuilderConditions = { 
             { UCBC, 'LessThanGameTimeSeconds', { 1500 } },
@@ -498,7 +498,7 @@ BuilderGroup {
         BuilderName = 'Microed Big Land Attack',
         PlatoonTemplate = 'AISwarm LandAttack Micro Big', 
         Priority = 101,
-        InstanceCount = 4,
+        InstanceCount = 8,
         BuilderType = 'Any',
         BuilderConditions = { 
             { UCBC, 'GreaterThanGameTimeSeconds', { 1500 } },
@@ -533,7 +533,7 @@ BuilderGroup {
         BuilderName = 'Microed Big Land Attack',
         PlatoonTemplate = 'AISwarm LandAttack Micro Big', 
         Priority = 101,
-        InstanceCount = 4,
+        InstanceCount = 8,
         BuilderType = 'Any',
         BuilderConditions = { 
             { UCBC, 'GreaterThanGameTimeSeconds', { 1500 } },
