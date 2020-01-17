@@ -85,10 +85,10 @@ PlatoonTemplate {
     Plan = 'LandAttackAIUveso',
     GlobalSquads = {
         { categories.MOBILE * categories.LAND - categories.EXPERIMENTAL - categories.ENGINEER - categories.SCOUT,
-          4,
-          7,
+          5,
+          15,
           'attack',
-          'GrowthFormation' },
+          'none' },
     },
 }
 
@@ -97,8 +97,8 @@ PlatoonTemplate {
     Plan = 'LandAttackAIUveso',
     GlobalSquads = {
         { categories.MOBILE * categories.LAND - categories.EXPERIMENTAL - categories.ENGINEER - categories.SCOUT,
-          10,
-          16,
+          15,
+          25,
           'attack',
           'none' },
     },

@@ -258,7 +258,7 @@ BuilderGroup {
 
     Builder {
         BuilderName = 'U2 TML AI',
-        PlatoonTemplate = 'U2TML',
+        PlatoonTemplate = 'T2TacticalLauncherSwarm',
         Priority = 18000,
         InstanceCount = 20,
         BuilderConditions = {
