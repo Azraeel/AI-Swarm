@@ -425,6 +425,32 @@ BuilderGroup {
     },
 
     Builder {
+        BuilderName = 'AISwarm LandAttack Base Siege',
+        PlatoonTemplate = 'AISwarm LandAttack Base Siege', 
+        Priority = 100,
+        InstanceCount = 15,
+        BuilderType = 'Any',
+        BuilderData = {
+            AttackEnemyStrength = 10000,
+            SearchRadius = BaseEnemyZone,
+            AggressiveMove = true,
+            TargetSearchCategory = categories.STRUCTURE,
+            MoveToCategories = {                                                
+                categories.STRUCTURE, 
+            }, 
+            WeaponTargetCategories = {                                          
+                categories.SHIELD,
+                categories.MASSEXTRACTION,
+                categories.ENERGYPRODUCTION,
+                categories.MASSFABRICATION,
+                categories.STRUCTURE,
+                categories.ALLUNITS,
+            },
+        },        
+        BuilderConditions = { },
+    },
+
+    Builder {
         BuilderName = 'Microed Small Land Attack',
         PlatoonTemplate = 'AISwarm LandAttack Micro Small', 
         Priority = 101,

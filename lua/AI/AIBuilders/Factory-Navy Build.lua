@@ -15,16 +15,15 @@ BuilderGroup {
     Builder {
         BuilderName = 'U1 Sea Factory 1st',
         PlatoonTemplate = 'EngineerBuilder',
-        Priority = 16600,
+        Priority = 605,
         DelayEqualBuildPlattons = {'Factories', 3},
         BuilderConditions = {
-            -- When do we want to build this ?
-            -- Do we need additional conditions to build it ?
             { UCBC, 'HaveLessThanUnitsWithCategory', { 1, categories.STRUCTURE * categories.FACTORY * categories.NAVAL - categories.SUPPORTFACTORY } },
-            -- Have we the eco to build it ?
-            { EBC, 'GreaterThanEconStorageRatio', { 0.10, 0.90}}, -- Ratio from 0 to 1. (1=100%)
-            { EBC, 'GreaterThanEconIncome',  { 0.8, 0.1}}, -- Absolut Base income
-            -- Don't build it if...
+
+            { EBC, 'GreaterThanEconStorageRatio', { 0.10, 0.90}},
+
+            { EBC, 'GreaterThanEconIncome',  { 0.8, 0.1}}, 
+
             { UCBC, 'CheckBuildPlattonDelay', { 'Factories' }},
         },
         BuilderType = 'Any',
@@ -41,90 +40,19 @@ BuilderGroup {
     --    TECH 1 Enemy    --
     -- ================== --
     Builder {
-        BuilderName = 'U1 Naval Factory Enemy',
+        BuilderName = 'Swarm Naval Factory',
         PlatoonTemplate = 'EngineerBuilder',
-        Priority = 15500,
+        Priority = 600,
         DelayEqualBuildPlattons = {'Factories', 3},
         BuilderConditions = {
             -- When do we want to build this ?
-            { UCBC, 'HaveUnitRatioVersusEnemy', { 1.00, categories.STRUCTURE * categories.FACTORY * categories.NAVAL, '<',categories.STRUCTURE * categories.FACTORY * categories.NAVAL } },
-            { UCBC, 'NavalBaseWithLeastUnits', {  60, 'LocationType', categories.STRUCTURE * categories.FACTORY * categories.NAVAL }}, -- radius, LocationType, categoryUnits
-            -- Do we need additional conditions to build it ?
-            { UCBC, 'HaveUnitRatioUveso', { 1.0, categories.STRUCTURE * categories.FACTORY * categories.NAVAL, '<',categories.STRUCTURE * categories.FACTORY * categories.LAND } },
-            -- Have we the eco to build it ?
-            { EBC, 'GreaterThanEconStorageRatio', { 0.20, 1.00 } },             -- Ratio from 0 to 1. (1=100%)
-            { EBC, 'GreaterThanEconTrend', { 0.0, 0.0 } }, -- relative income
-            -- Don't build it if...
+            { EBC, 'GreaterThanEconStorageRatio', { 0.25, 0.40}},
+
             { UCBC, 'CheckBuildPlattonDelay', { 'Factories' }},
-            { UCBC, 'HaveLessThanUnitsInCategoryBeingBuilt', { 1, categories.STRUCTURE * categories.FACTORY * categories.NAVAL * categories.TECH1 }},
-            -- Respect UnitCap
-            { UCBC, 'HaveUnitRatioVersusCap', { MaxCapFactory , '<', categories.STRUCTURE * categories.FACTORY * categories.NAVAL } }, -- Maximal 3 factories at 125 unitcap, 12 factories at 500 unitcap...
-        },
-        BuilderType = 'Any',
-        BuilderData = {
-            Construction = {
-                NearMarkerType = 'Naval Area',
-                LocationRadius = 90,
-                Location = 'LocationType',
-                BuildStructures = {
-                    'T1SeaFactory',
-                },
-            }
-        }
-    },
-    -- ================ --
-    --    TECH 1 Cap    --
-    -- ================ --
-    -- build at lest 4 factories at every naval location
-    Builder {
-        BuilderName = 'U1 Sea Factory < 4',
-        PlatoonTemplate = 'EngineerBuilder',
-        Priority = 15500,
-        DelayEqualBuildPlattons = {'Factories', 3},
-        BuilderConditions = {
-            -- When do we want to build this ?
-            { UCBC, 'UnitsLessAtLocation', { 'LocationType', 4, categories.STRUCTURE * categories.FACTORY * categories.NAVAL } },
-            -- Do we need additional conditions to build it ?
-            -- Have we the eco to build it ?
-            { EBC, 'GreaterThanEconTrend', { 0.0, 0.0 } }, -- relative income
-            { EBC, 'GreaterThanEconStorageRatio', { 0.30, 0.99}}, -- Ratio from 0 to 1. (1=100%)
-            -- Don't build it if...
-            { UCBC, 'CheckBuildPlattonDelay', { 'Factories' }},
-            -- Respect UnitCap
-            { UCBC, 'HaveUnitRatioVersusCap', { MaxCapFactory , '<', categories.STRUCTURE * categories.FACTORY * categories.NAVAL } }, -- Maximal 3 factories at 125 unitcap, 12 factories at 500 unitcap...
-        },
-        BuilderType = 'Any',
-        BuilderData = {
-            Construction = {
-                NearMarkerType = 'Naval Area',
-                LocationRadius = 90,
-                Location = 'LocationType',
-                BuildStructures = {
-                    'T1SeaFactory',
-                },
-            }
-        }
-    },
-    -- ================ --
-    --    TECH 1 Max    --
-    -- ================ --
-    Builder {
-        BuilderName = 'U1 Sea Factory Max',
-        PlatoonTemplate = 'EngineerBuilder',
-        Priority = 15400,
-        InstanceCount = 4,                                                      -- Number of plattons that will be formed with this template.
-        DelayEqualBuildPlattons = {'Factories', 3},
-        BuilderConditions = {
-            -- When do we want to build this ?
-            { UCBC, 'NavalBaseWithLeastUnits', {  60, 'LocationType', categories.STRUCTURE * categories.FACTORY * categories.NAVAL }}, -- radius, LocationType, categoryUnits
-            -- Do we need additional conditions to build it ?
-            -- Have we the eco to build it ?
-            { EBC, 'GreaterThanEconStorageRatio', { 0.35, 1.00 } },             -- Ratio from 0 to 1. (1=100%)
-            { EBC, 'GreaterThanEconTrend', { 0.0, 0.0 } }, -- relative income
-            -- Don't build it if...
-            { UCBC, 'CheckBuildPlattonDelay', { 'Factories' }},
-            -- Respect UnitCap
-            { UCBC, 'HaveUnitRatioVersusCap', { MaxCapFactory , '<', categories.STRUCTURE * categories.FACTORY * categories.NAVAL } }, -- Maximal 3 factories at 125 unitcap, 12 factories at 500 unitcap...
+
+            { UCBC, 'HaveLessThanUnitsWithCategory', { 17, categories.STRUCTURE * categories.FACTORY * categories.NAVAL * (categories.TECH1 + categories.TECH2 + categories.TECH3) }},
+
+            { EBC, 'MassToFactoryRatioBaseCheck', { 'LocationType' } },
         },
         BuilderType = 'Any',
         BuilderData = {
@@ -167,6 +95,47 @@ BuilderGroup {
         },
         BuilderType = 'Any',
     },
+
+    Builder {
+        BuilderName = 'U1 N UP HQ 1->2 1st Enemy',
+        PlatoonTemplate = 'T1SeaFactoryUpgrade',
+        Priority = 15400,
+        DelayEqualBuildPlattons = {'FactoryUpgrade', 3},
+        BuilderConditions = {
+            { UCBC, 'UnitsGreaterAtLocation', { 'LocationType', 3, categories.STRUCTURE * categories.FACTORY * categories.NAVAL } },
+
+            { UCBC, 'HaveLessThanUnitsWithCategory', { 1, categories.STRUCTURE * categories.FACTORY * categories.NAVAL * (categories.TECH2 + categories.TECH3) - categories.SUPPORTFACTORY } },
+
+            { UCBC, 'UnitsGreaterAtEnemy', { 0 , categories.STRUCTURE * categories.FACTORY * (categories.TECH2 + categories.TECH3) } },
+
+            { EBC, 'GreaterThanEconStorageRatio', { 0.50, 0.50 } },
+
+            { EBC, 'GreaterThanEconTrend', { 0.0, 0.0 } }, 
+
+            { UCBC, 'CheckBuildPlattonDelay', { 'FactoryUpgrade' }},
+
+            { UCBC, 'HaveLessThanUnitsInCategoryBeingUpgrade', { 2, categories.STRUCTURE * categories.FACTORY * categories.TECH1 }},
+        },
+        BuilderType = 'Any',
+    },
+
+    Builder {
+        BuilderName = 'U1 N UP HQ 1->2 1st Time',
+        PlatoonTemplate = 'T1SeaFactoryUpgrade',
+        Priority = 15400,
+        DelayEqualBuildPlattons = {'FactoryUpgrade', 3},
+        BuilderConditions = {
+            { UCBC, 'HaveLessThanUnitsWithCategory', { 1, categories.STRUCTURE * categories.FACTORY * categories.NAVAL * (categories.TECH2 + categories.TECH3) - categories.SUPPORTFACTORY } },
+
+            { EBC, 'GreaterThanEconStorageRatio', { 0.25, 0.50 } }, 
+
+            { UCBC, 'CheckBuildPlattonDelay', { 'FactoryUpgrade' }},
+
+            { UCBC, 'GreaterThanGameTimeSeconds', { 840 } },
+        },
+        BuilderType = 'Any',
+    },
+
     Builder {
         BuilderName = 'U2 N UP HQ 2->3 1st Force',
         PlatoonTemplate = 'T2SeaFactoryUpgrade',
@@ -181,10 +150,48 @@ BuilderGroup {
             { EBC, 'GreaterThanEconTrend', { 0.0, 0.0 } }, -- relative income
             -- Don't build it if...
             { UCBC, 'CheckBuildPlattonDelay', { 'FactoryUpgrade' }},
-            { UCBC, 'HaveLessThanUnitsInCategoryBeingUpgrade', { 1, categories.STRUCTURE * categories.FACTORY * categories.TECH2 }},
         },
         BuilderType = 'Any',
     },
+
+    Builder {
+        BuilderName = 'U1 N UP HQ 2->3 1st Enemy',
+        PlatoonTemplate = 'T2SeaFactoryUpgrade',
+        Priority = 15400,
+        DelayEqualBuildPlattons = {'FactoryUpgrade', 3},
+        BuilderConditions = {
+            { UCBC, 'UnitsGreaterAtLocation', { 'LocationType', 3, categories.STRUCTURE * categories.FACTORY * categories.NAVAL } },
+
+            { UCBC, 'HaveLessThanUnitsWithCategory', { 1, categories.STRUCTURE * categories.FACTORY * categories.NAVAL * (categories.TECH2 + categories.TECH3) - categories.SUPPORTFACTORY } },
+
+            { UCBC, 'UnitsGreaterAtEnemy', { 0 , categories.STRUCTURE * categories.FACTORY * categories.TECH3 } },
+
+            { EBC, 'GreaterThanEconStorageRatio', { 0.50, 0.50 } },
+
+            { EBC, 'GreaterThanEconTrend', { 0.0, 0.0 } }, 
+
+            { UCBC, 'CheckBuildPlattonDelay', { 'FactoryUpgrade' }},
+        },
+        BuilderType = 'Any',
+    },
+
+    Builder {
+        BuilderName = 'U1 N UP HQ 2->3 1st Time',
+        PlatoonTemplate = 'T2SeaFactoryUpgrade',
+        Priority = 15400,
+        DelayEqualBuildPlattons = {'FactoryUpgrade', 3},
+        BuilderConditions = {
+            { UCBC, 'HaveLessThanUnitsWithCategory', { 1, categories.STRUCTURE * categories.FACTORY * categories.NAVAL * (categories.TECH2 + categories.TECH3) - categories.SUPPORTFACTORY } },
+
+            { EBC, 'GreaterThanEconStorageRatio', { 0.25, 0.50 } }, 
+
+            { UCBC, 'CheckBuildPlattonDelay', { 'FactoryUpgrade' }},
+
+            { UCBC, 'GreaterThanGameTimeSeconds', { 1560 } },
+        },
+        BuilderType = 'Any',
+    },
+
     Builder {
         BuilderName = 'U2 N UP HQ 2->3 Late',
         PlatoonTemplate = 'T2SeaFactoryUpgrade',
@@ -203,6 +210,7 @@ BuilderGroup {
         },
         BuilderType = 'Any',
     },
+
 -- NAVAL Support Factories
     Builder {
         BuilderName = 'U1 N UP SUPORT/HQ 1->2 Always',
@@ -218,7 +226,6 @@ BuilderGroup {
             -- Do we need additional conditions to build it ?
             -- Have we the eco to build it ?
             { EBC, 'GreaterThanEconStorageRatio', { 0.30, 0.50 } },
-            { EBC, 'GreaterThanEconTrend', { 0.0, 0.0 } }, -- relative income
             -- Don't build it if...
             { UCBC, 'CheckBuildPlattonDelay', { 'FactoryUpgrade' }},
             { UCBC, 'HaveLessThanUnitsInCategoryBeingUpgrade', { 2, categories.STRUCTURE * categories.FACTORY * categories.TECH1 }},
@@ -241,7 +248,6 @@ BuilderGroup {
             { UCBC, 'HaveGreaterThanUnitsWithCategory', { 0, categories.UEF * categories.NAVAL * categories.SUPPORTFACTORY * categories.TECH2 }},
             -- Have we the eco to build it ?
             { EBC, 'GreaterThanEconStorageRatio', { 0.40, 0.50 } },
-            { EBC, 'GreaterThanEconTrend', { 0.0, 0.0 } }, -- relative income
             -- Don't build it if...
             { UCBC, 'CheckBuildPlattonDelay', { 'FactoryUpgrade' }},
             { UCBC, 'HaveLessThanUnitsInCategoryBeingUpgrade', { 2, categories.STRUCTURE * categories.FACTORY * categories.TECH1 }},
@@ -263,7 +269,6 @@ BuilderGroup {
             { UCBC, 'HaveGreaterThanUnitsWithCategory', { 0, categories.AEON * categories.NAVAL * categories.SUPPORTFACTORY * categories.TECH2 }},
             -- Have we the eco to build it ?
             { EBC, 'GreaterThanEconStorageRatio', { 0.40, 0.50 } },
-            { EBC, 'GreaterThanEconTrend', { 0.0, 0.0 } }, -- relative income
             -- Don't build it if...
             { UCBC, 'CheckBuildPlattonDelay', { 'FactoryUpgrade' }},
             { UCBC, 'HaveLessThanUnitsInCategoryBeingUpgrade', { 2, categories.STRUCTURE * categories.FACTORY * categories.TECH1 }},
@@ -285,7 +290,6 @@ BuilderGroup {
             { UCBC, 'HaveGreaterThanUnitsWithCategory', { 0, categories.CYBRAN * categories.NAVAL * categories.SUPPORTFACTORY * categories.TECH2 }},
             -- Have we the eco to build it ?
             { EBC, 'GreaterThanEconStorageRatio', { 0.40, 0.50 } },
-            { EBC, 'GreaterThanEconTrend', { 0.0, 0.0 } }, -- relative income
             -- Don't build it if...
             { UCBC, 'CheckBuildPlattonDelay', { 'FactoryUpgrade' }},
             { UCBC, 'HaveLessThanUnitsInCategoryBeingUpgrade', { 2, categories.STRUCTURE * categories.FACTORY * categories.TECH1 }},
@@ -307,7 +311,6 @@ BuilderGroup {
             { UCBC, 'HaveGreaterThanUnitsWithCategory', { 0, categories.SERAPHIM * categories.NAVAL * categories.SUPPORTFACTORY * categories.TECH2 }},
             -- Have we the eco to build it ?
             { EBC, 'GreaterThanEconStorageRatio', { 0.40, 0.50 } },
-            { EBC, 'GreaterThanEconTrend', { 0.0, 0.0 } }, -- relative income
             -- Don't build it if...
             { UCBC, 'CheckBuildPlattonDelay', { 'FactoryUpgrade' }},
             { UCBC, 'HaveLessThanUnitsInCategoryBeingUpgrade', { 2, categories.STRUCTURE * categories.FACTORY * categories.TECH1 }},
@@ -329,7 +332,6 @@ BuilderGroup {
             { UCBC, 'HaveGreaterThanUnitsWithCategory', { 0, categories.SUPPORTFACTORY * categories.TECH2 * categories.NAVAL - categories.SERAPHIM - categories.CYBRAN - categories.AEON - categories.UEF }},
             -- Have we the eco to build it ?
             { EBC, 'GreaterThanEconStorageRatio', { 0.40, 0.50 } },
-            { EBC, 'GreaterThanEconTrend', { 0.0, 0.0 } }, -- relative income
             -- Don't build it if...
             { UCBC, 'CheckBuildPlattonDelay', { 'FactoryUpgrade' }},
             { UCBC, 'HaveLessThanUnitsInCategoryBeingUpgrade', { 2, categories.STRUCTURE * categories.FACTORY * categories.TECH1 }},

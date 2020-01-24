@@ -1,9 +1,9 @@
 name = "AI-Swarm"
-uid = "a13ac591-b2d9-4d94-0120-3d4b3cce6b97"
-version = 120
-copyright = "2019 SilentAzraeel"
+uid = "a13ac591-b2d9-4d94-0123-3d4b3cce6b97"
+version = 123
+copyright = "2020 Azraeel"
 description = "Welcome to Swarm. What is Swarm? Swarm is a AI Improvement Mod, Swarm wants to make the AI; Smart and Tough to be beat with the goal of reaching a level of truly Competitive AI. That Can Teach New Players and Help Everyone Get Better."
-author = "SilentAzraeel"
+author = "Azraeel"
 url = ""
 icon = "/mods/AI-Swarm/icon.jpg"
 selectable = true
