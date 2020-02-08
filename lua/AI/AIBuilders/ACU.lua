@@ -9,12 +9,12 @@ BuilderGroup {
 --    ACU Former    --
 -- ================ --
     Builder {
-        BuilderName = 'UC CDR Attack PANIC 40',                                    -- Random Builder Name.
+        BuilderName = 'UC CDR Attack PANIC 100',                                    -- Random Builder Name.
         PlatoonTemplate = 'CDR Attack',                                         -- Template Name. These units will be formed. See: "\lua\AI\PlatoonTemplates\"
         Priority = 100,                                                       -- Priority. Higher priotity will be build more often then lower priotity.
         InstanceCount = 1,                                                      -- Number of plattons that will be formed with this template.
         BuilderData = {
-            SearchRadius = 55, 			                                        -- Searchradius from main base for new target. (A 5x5 Map is 256 high)
+            SearchRadius = 100, 			                                        -- Searchradius from main base for new target. (A 5x5 Map is 256 high)
             SearchRadius = BasePanicZone,
             GetTargetsFromBase = true,                                          -- Get targets from base position (true) or platoon position (false)
             RequireTransport = false,                                           -- If this is true, the unit is forced to use a transport, even if it has a valid path to the destination.
@@ -33,19 +33,19 @@ BuilderGroup {
             -- When do we want to build this ?
             { UCBC, 'GreaterThanGameTimeSeconds', { 60*3 } },
             -- Do we need additional conditions to build it ?
-            { UCBC, 'EnemyUnitsGreaterAtLocationRadius', {  55, 'LocationType', 0, categories.ALLUNITS - (categories.ENGINEER * categories.TECH1 * categories.TECH2) - categories.AIR - categories.SCOUT }}, -- radius, LocationType, unitCount, categoryEnemy
+            { UCBC, 'EnemyUnitsGreaterAtLocationRadius', {  100, 'LocationType', 0, categories.ALLUNITS - (categories.ENGINEER * categories.TECH1 * categories.TECH2) - categories.AIR - categories.SCOUT }}, -- radius, LocationType, unitCount, categoryEnemy
             -- Don't build it if...
             { UCBC, 'HaveGreaterThanUnitsWithCategory', { 0, categories.STRUCTURE * categories.FACTORY * categories.LAND - categories.SUPPORTFACTORY } },
         },
         BuilderType = 'Any',                                                    -- Build with "Land" "Air" "Sea" "Gate" or "All" Factories. - "Any" forms a Platoon.
     },
     Builder {
-        BuilderName = 'UC CDR Attack Panic +20',                                 -- Random Builder Name.
+        BuilderName = 'UC CDR Attack Panic +50',                                 -- Random Builder Name.
         PlatoonTemplate = 'CDR Attack',                                         -- Template Name. These units will be formed. See: "\lua\AI\PlatoonTemplates\"
         Priority = 250,                                                       -- Priority. Higher priotity will be build more often then lower priotity.
         InstanceCount = 1,                                                      -- Number of plattons that will be formed with this template.
         BuilderData = {
-            SearchRadius = 80, 	                                            -- Searchradius from main base for new target. (A 5x5 Map is 256 high)
+            SearchRadius = 150, 	                                            -- Searchradius from main base for new target. (A 5x5 Map is 256 high)
             SearchRadius = BasePanicZone,
             GetTargetsFromBase = true,                                          -- Get targets from base position (true) or platoon position (false)
             RequireTransport = false,                                           -- If this is true, the unit is forced to use a transport, even if it has a valid path to the destination.
@@ -64,7 +64,7 @@ BuilderGroup {
             -- When do we want to build this ?
             { UCBC, 'GreaterThanGameTimeSeconds', { 60*10 } },
             -- Do we need additional conditions to build it ?
-            { UCBC, 'EnemyUnitsGreaterAtLocationRadius', {  80, 'LocationType', 0, categories.ALLUNITS - (categories.ENGINEER * categories.TECH1 * categories.TECH2) - categories.AIR - categories.SCOUT }}, -- radius, LocationType, unitCount, categoryEnemy
+            { UCBC, 'EnemyUnitsGreaterAtLocationRadius', {  150, 'LocationType', 0, categories.ALLUNITS - (categories.ENGINEER * categories.TECH1 * categories.TECH2) - categories.AIR - categories.SCOUT }}, -- radius, LocationType, unitCount, categoryEnemy
             -- Don't build it if...
             { UCBC, 'HaveGreaterThanUnitsWithCategory', { 0, categories.STRUCTURE * categories.FACTORY * categories.LAND - categories.SUPPORTFACTORY } },
         },

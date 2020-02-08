@@ -22,7 +22,7 @@ BuilderGroup {
         InstanceCount = 2,                                                      -- Number of plattons that will be formed with this template.
         DelayEqualBuildPlattons = {'Energy', 3},
         BuilderConditions = {
-            { EBC, 'LessThanEconStorageRatio', { 1, 0.45 } },             -- Ratio from 0 to 1. (1=100%)
+            { EBC, 'LessThanEconStorageRatio', { 1, 0.40 } },             -- Ratio from 0 to 1. (1=100%)
 
             { UCBC, 'HaveLessThanUnitsWithCategory', { 1, categories.ENERGYPRODUCTION * categories.TECH2 } },
 
@@ -51,7 +51,7 @@ BuilderGroup {
         PlatoonTemplate = 'CommanderBuilder',
         Priority = 650,
         BuilderConditions = {
-            { EBC, 'LessThanEconStorageRatio', { 1, 0.50 } },             -- Ratio from 0 to 1. (1=100%)
+            { EBC, 'LessThanEconStorageRatio', { 1, 0.30 } },             -- Ratio from 0 to 1. (1=100%)
 
             { UCBC, 'HaveLessThanUnitsWithCategory', { 1, categories.ENERGYPRODUCTION * categories.TECH2 } },
 

@@ -1266,6 +1266,7 @@ Platoon = Class(OldPlatoonClass) {
         local WantsTransport = self.PlatoonData.RequireTransport
         local maxRadius = self.PlatoonData.SearchRadius
         local TargetSearchCategory = self.PlatoonData.TargetSearchCategory or 'ALLUNITS'
+        local PlatoonFormation = self.PlatoonData.UseFormation
         local PlatoonPos = self:GetPlatoonPosition()
         local LastTargetPos = PlatoonPos
         local DistanceToTarget = 0

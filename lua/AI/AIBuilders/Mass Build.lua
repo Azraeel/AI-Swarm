@@ -292,7 +292,7 @@ BuilderGroup {
         InstanceCount = 1,
         FormRadius = 10000,
         BuilderConditions = {
-        	{ MIBC, 'GreaterThanGameTime', { 360 } },
+        	{ MIBC, 'GreaterThanGameTime', { 480 } },
             -- When do we want to build this ?
             { UCBC, 'HaveGreaterThanArmyPoolWithCategory', { 0, categories.MASSEXTRACTION} },
             -- Do we need additional conditions to build it ?
@@ -312,7 +312,7 @@ BuilderGroup {
         InstanceCount = 1,
         FormRadius = 10000,
         BuilderConditions = {
-        	{ MIBC, 'GreaterThanGameTime', { 360 } },
+        	{ MIBC, 'GreaterThanGameTime', { 600 } },
             -- When do we want to build this ?
             { UCBC, 'HaveGreaterThanArmyPoolWithCategory', { 0, categories.MASSEXTRACTION} },
             -- Do we need additional conditions to build it ?
@@ -336,7 +336,7 @@ BuilderGroup {
             -- When do we want to build this ?
             { UCBC, 'HaveGreaterThanArmyPoolWithCategory', { 0, categories.MASSEXTRACTION} },
             -- Do we need additional conditions to build it ?
-            { UCBC, 'GreaterThanGameTimeSeconds', { 6*60 } },
+            { UCBC, 'GreaterThanGameTimeSeconds', { 600 } },
             -- Have we the eco to build it ?
             -- Don't build it if...
         },
@@ -357,7 +357,7 @@ BuilderGroup {
         InstanceCount = 1,
         FormRadius = 10000,
         BuilderConditions = {
-        	{ MIBC, 'GreaterThanGameTime', { 360 } },
+        	{ MIBC, 'GreaterThanGameTime', { 600 } },
             -- When do we want to build this ?
             { UCBC, 'HaveGreaterThanArmyPoolWithCategory', { 0, categories.MASSEXTRACTION} },
             -- Do we need additional conditions to build it ?
@@ -377,7 +377,7 @@ BuilderGroup {
         InstanceCount = 1,
         FormRadius = 10000,
         BuilderConditions = {
-        	{ MIBC, 'GreaterThanGameTime', { 360 } },
+        	{ MIBC, 'GreaterThanGameTime', { 600 } },
             -- When do we want to build this ?
             { UCBC, 'HaveGreaterThanArmyPoolWithCategory', { 0, categories.MASSEXTRACTION} },
             -- Do we need additional conditions to build it ?
@@ -405,6 +405,7 @@ BuilderGroup {
         Priority = 18000,
         DelayEqualBuildPlattons = {'MASSSTORAGE', 3},
         BuilderConditions = {
+            { UCBC, 'HaveGreaterThanUnitsWithCategory', { 4, categories.STRUCTURE * categories.MASSEXTRACTION * categories.TECH2}},
             -- When do we want to build this ?
             { UCBC, 'HaveLessThanUnitsWithCategory', { 1, categories.MOBILE * categories.COMMAND }},
             -- Do we need additional conditions to build it ?
@@ -432,6 +433,7 @@ BuilderGroup {
         Priority = 17450,
         DelayEqualBuildPlattons = {'MASSSTORAGE', 3},
         BuilderConditions = {
+            { UCBC, 'HaveGreaterThanUnitsWithCategory', { 4, categories.STRUCTURE * categories.MASSEXTRACTION * categories.TECH2}},
             -- When do we want to build this ?
             { UCBC, 'HaveLessThanUnitsWithCategory', { 1, categories.STRUCTURE * categories.MASSSTORAGE }},
             -- Do we need additional conditions to build it ?
@@ -460,6 +462,7 @@ BuilderGroup {
         Priority = 17879,
         DelayEqualBuildPlattons = {'MASSSTORAGE', 5},
         BuilderConditions = {
+            { UCBC, 'HaveGreaterThanUnitsWithCategory', { 4, categories.STRUCTURE * categories.MASSEXTRACTION * categories.TECH2}},
             -- When do we want to build this ?
             { UCBC, 'AdjacencyCheck', { 'LocationType', categories.STRUCTURE * categories.MASSEXTRACTION * (categories.TECH2 + categories.TECH3), 100, 'ueb1106' } },
             -- Do we need additional conditions to build it ?
@@ -490,6 +493,7 @@ BuilderGroup {
         Priority = 17878,
         DelayEqualBuildPlattons = {'MASSSTORAGE', 5},
         BuilderConditions = {
+            { UCBC, 'HaveGreaterThanUnitsWithCategory', { 4, categories.STRUCTURE * categories.MASSEXTRACTION * categories.TECH2}},
             -- When do we want to build this ?
             { UCBC, 'AdjacencyCheck', { 'LocationType', categories.MASSEXTRACTION * categories.TECH3, 100, 'ueb1106' } },
             -- Do we need additional conditions to build it ?

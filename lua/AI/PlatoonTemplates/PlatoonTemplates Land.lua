@@ -9,86 +9,11 @@ PlatoonTemplate {
 }
 
 PlatoonTemplate {
-    Name = 'AISwarm LandAttack Early Raid',
-    Plan = 'GuardMarkerSwarm',
+    Name = 'AISwarm LandAttack Intercept',
+    Plan = 'InterceptorAIUveso',
     GlobalSquads = {
-        { categories.MOBILE * categories.LAND - (categories.INDIRECTFIRE * (categories.TECH2 + categories.TECH3)) - categories.EXPERIMENTAL - categories.ENGINEER - categories.SCOUT,
-          1,
-          4,
-          'attack',
-          'none' },
-    },
-}
-
-PlatoonTemplate {
-    Name = 'AISwarm LandAttack Small',
-    Plan = 'AttackForceAISwarm', 
-    GlobalSquads = {
-        { categories.MOBILE * categories.LAND - (categories.INDIRECTFIRE * (categories.TECH2 + categories.TECH3)) - categories.EXPERIMENTAL - categories.ENGINEER - categories.SCOUT, 
-          10, 
-          15, 
-          'attack', 
-          'none' }, 
-    },
-}
-
-PlatoonTemplate {
-    Name = 'AISwarm LandAttack Medium',
-    Plan = 'AttackForceAISwarm', 
-    GlobalSquads = {
-        { categories.MOBILE * categories.LAND - (categories.INDIRECTFIRE * (categories.TECH2 + categories.TECH3)) - categories.EXPERIMENTAL - categories.ENGINEER - categories.SCOUT, 
-          20, 
-          35, 
-          'attack', 
-          'none' }, 
-    },
-}
-
-PlatoonTemplate {
-    Name = 'AISwarm LandAttack Large',
-    Plan = 'AttackForceAISwarm', 
-    GlobalSquads = {
-        { categories.MOBILE * categories.LAND - (categories.INDIRECTFIRE * (categories.TECH2 + categories.TECH3)) - categories.EXPERIMENTAL - categories.ENGINEER - categories.SCOUT, 
-          25, 
-          50, 
-          'attack', 
-          'none' }, 
-    },
-}
-
-PlatoonTemplate {
-    Name = 'AISwarm LandAttack Rapid Deployment',
-    Plan = 'GuardMarkerSwarm',
-    GlobalSquads = {
-        { categories.MOBILE * categories.LAND - (categories.INDIRECTFIRE * (categories.TECH2 + categories.TECH3)) - categories.EXPERIMENTAL - categories.ENGINEER - categories.SCOUT,
-          10,
-          15,
-          'attack',
-          'none' },
-    },
-}
-
-PlatoonTemplate {
-    Name = 'AISwarm LandAttack Base Siege',
-    Plan = 'LandAttackAIUveso', -- The platoon function to use.
-    GlobalSquads = {
-        { categories.MOBILE * categories.LAND * categories.INDIRECTFIRE - (categories.INDIRECTFIRE * categories.TECH1) * (categories.TECH2 + categories.TECH3) - categories.EXPERIMENTAL - categories.ENGINEER - categories.SCOUT, -- Type of units.
-          3, -- Min number of units.
-          15, -- Max number of units.
-          'attack', -- platoon types: 'support', 'attack', 'scout',
-          'AttackFormation' }, -- platoon move formations: 'None', 'AttackFormation', 'GrowthFormation',
-    },
-}
-
-PlatoonTemplate {
-    Name = 'AISwarm LandAttack Special Ops',
-    Plan = 'GuardMarkerSwarm',
-    GlobalSquads = {
-        { categories.MOBILE * categories.LAND - (categories.INDIRECTFIRE * (categories.TECH2 + categories.TECH3)) - categories.EXPERIMENTAL - categories.ENGINEER - categories.SCOUT,
-          4,
-          12,
-          'attack',
-          'GrowthFormation' },
+        { categories.MOBILE * categories.LAND * categories.DIRECTFIRE - categories.ANTIAIR - categories.EXPERIMENTAL - categories.ENGINEER - categories.SCOUT, 1, 8, 'attack', 'none' },
+        { categories.MOBILE * categories.LAND * categories.INDIRECTFIRE - categories.ANTIAIR - categories.EXPERIMENTAL - categories.ENGINEER - categories.SCOUT, 0, 3, 'artillery', 'none' },
     },
 }
 
@@ -96,11 +21,11 @@ PlatoonTemplate {
     Name = 'AISwarm LandAttack Micro Small',
     Plan = 'LandAttackAIUveso',
     GlobalSquads = {
-        { categories.MOBILE * categories.LAND - (categories.INDIRECTFIRE * (categories.TECH2 + categories.TECH3)) - categories.EXPERIMENTAL - categories.ENGINEER - categories.SCOUT,
-          5,
-          15,
-          'attack',
-          'none' },
+        { categories.MOBILE * categories.LAND * categories.DIRECTFIRE - categories.ANTIAIR - categories.EXPERIMENTAL - categories.ENGINEER - categories.SCOUT, 4, 20, 'attack', 'none' },
+        { categories.MOBILE * categories.LAND - categories.EXPERIMENTAL - categories.ENGINEER - categories.SCOUT, 1, 4, 'attack', 'none' },
+        { categories.MOBILE * categories.LAND * categories.INDIRECTFIRE - categories.ANTIAIR - categories.EXPERIMENTAL - categories.ENGINEER - categories.SCOUT, 1, 5, 'artillery', 'none' },
+        { categories.MOBILE * categories.LAND * categories.ANTIAIR - categories.EXPERIMENTAL - categories.ENGINEER - categories.SCOUT, 1, 3, 'guard', 'none' },
+        -- { categories.LAND * categories.SCOUT, 0, 1, 'scout', 'none' },
     },
 }
 
@@ -108,16 +33,16 @@ PlatoonTemplate {
     Name = 'AISwarm LandAttack Micro Big',
     Plan = 'LandAttackAIUveso',
     GlobalSquads = {
-        { categories.MOBILE * categories.LAND - (categories.INDIRECTFIRE * (categories.TECH2 + categories.TECH3)) - categories.EXPERIMENTAL - categories.ENGINEER - categories.SCOUT,
-          15,
-          25,
-          'attack',
-          'none' },
+        { categories.MOBILE * categories.LAND * categories.DIRECTFIRE - categories.ANTIAIR - categories.EXPERIMENTAL - categories.ENGINEER - categories.SCOUT, 8, 40, 'attack', 'none' },
+        { categories.MOBILE * categories.LAND - categories.EXPERIMENTAL - categories.ENGINEER - categories.SCOUT, 1, 4, 'attack', 'none' },
+        { categories.MOBILE * categories.LAND * categories.INDIRECTFIRE - categories.ANTIAIR - categories.EXPERIMENTAL - categories.ENGINEER - categories.SCOUT, 1, 12, 'artillery', 'none' },
+        { categories.MOBILE * categories.LAND * categories.ANTIAIR - categories.EXPERIMENTAL - categories.ENGINEER - categories.SCOUT, 1, 8, 'guard', 'none' },
+        -- { categories.LAND * categories.SCOUT, 0, 1, 'scout', 'none' },
     },
 }
 
 PlatoonTemplate {
-    Name = 'AISwarm LandAttack Experimental',
+    Name = 'AISwarm LandAttack Experimental', 
     Plan = 'LandAttackAIUveso',
     GlobalSquads = {
         { categories.MOBILE * categories.LAND * categories.EXPERIMENTAL - categories.ENGINEER - categories.SCOUT,

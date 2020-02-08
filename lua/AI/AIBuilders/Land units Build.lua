@@ -15,17 +15,15 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Scout Builders',                  
     
     Builder { BuilderName = 'U1R Land Scout',
         PlatoonTemplate = 'T1LandScout',
-        Priority = 10000,
+        Priority = 1001,
         BuilderConditions = {
-            { EBC, 'GreaterThanEconTrend', { 0.0, 0.0 } },
+            { UCBC, 'LessThanGameTimeSeconds', { 60 } }, 
 
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
 
-            { EBC, 'GreaterThanEconIncome', { 1, 10 } },
+            { EBC, 'GreaterThanEconIncome', { 0.2, 2 } },
 
-            { UCBC, 'HaveLessThanUnitsWithCategory', { 2, categories.LAND * categories.SCOUT } },
-
-            { UCBC, 'HaveLessThanUnitsWithCategory', { 2, categories.AIR * categories.SCOUT } },
+            { UCBC, 'HaveLessThanUnitsWithCategory', { 1, categories.LAND * categories.MOBILE * categories.SCOUT - categories.ENGINEER }},
         },
         BuilderType = 'Land',
     },
@@ -40,6 +38,25 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',                  
     -- ============ --
     --    TECH 1    --
     -- ============ --
+    Builder { BuilderName = 'T1LandDFTank - Swarm - Early Game',
+        PlatoonTemplate = 'T1LandDFTank',
+        Priority = 1005, -- Early Game Unit Coverage
+        BuilderConditions = {
+            { UCBC, 'LessThanGameTimeSeconds', { 420 } }, -- don't build after 7 minutes
+
+            { UCBC, 'UnitCapCheckLess', { 0.95 } },
+
+            { EBC, 'GreaterThanEconIncome', { 0.2, 2 } },
+
+            { MIBC, 'CanPathToCurrentEnemy', { true } },
+
+            { UCBC, 'HaveGreaterThanUnitsWithCategory', { 4, categories.MOBILE * categories.ENGINEER}},
+
+            { UCBC, 'HaveLessThanUnitsWithCategory', { 2, categories.LAND * categories.MOBILE * categories.DIRECTFIRE - categories.ENGINEER }},
+        },
+        BuilderType = 'Land',
+    },
+
     Builder { BuilderName = 'T1LandDFTank - Swarm',
         PlatoonTemplate = 'T1LandDFTank',
         Priority = 500,
@@ -65,7 +82,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',                  
 
             { MIBC, 'CanPathToCurrentEnemy', { true } },
 
-            { UCBC, 'PoolLessAtLocation', { 'LocationType', 4, categories.INDIRECTFIRE * categories.LAND }},
+            { UCBC, 'PoolLessAtLocation', { 'LocationType', 3, categories.INDIRECTFIRE * categories.LAND }},
         },
         BuilderType = 'Land',
     },
@@ -80,7 +97,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',                  
 
             { MIBC, 'CanPathToCurrentEnemy', { true } },
 
-            { UCBC, 'PoolLessAtLocation', { 'LocationType', 2, categories.LAND * categories.MOBILE * categories.ANTIAIR }},
+            { UCBC, 'PoolLessAtLocation', { 'LocationType', 1, categories.LAND * categories.MOBILE * categories.ANTIAIR }},
         },
         BuilderType = 'Land',
     },
@@ -128,7 +145,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',                  
 
             { MIBC, 'CanPathToCurrentEnemy', { true } },
 
-            { UCBC, 'PoolLessAtLocation', { 'LocationType', 3, categories.INDIRECTFIRE * categories.LAND * categories.TECH2 }},
+            { UCBC, 'PoolLessAtLocation', { 'LocationType', 1, categories.INDIRECTFIRE * categories.LAND * categories.TECH2 }},
         },
         BuilderType = 'Land',
     },
@@ -158,7 +175,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',                  
 
             { MIBC, 'CanPathToCurrentEnemy', { true } },
 
-            { UCBC, 'PoolLessAtLocation', { 'LocationType', 3, categories.LAND * categories.MOBILE * categories.ANTIAIR * categories.TECH2 }},
+            { UCBC, 'PoolLessAtLocation', { 'LocationType', 1, categories.LAND * categories.MOBILE * categories.ANTIAIR * categories.TECH2 }},
         },
         BuilderType = 'Land',
     },
@@ -221,7 +238,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',                  
 
             { MIBC, 'CanPathToCurrentEnemy', { true } },
 
-            { UCBC, 'PoolLessAtLocation', { 'LocationType', 3, categories.INDIRECTFIRE * categories.LAND * categories.TECH3 }},
+            { UCBC, 'PoolLessAtLocation', { 'LocationType', 2, categories.INDIRECTFIRE * categories.LAND * categories.TECH3 }},
         },
         BuilderType = 'Land',
     },
@@ -236,7 +253,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',                  
 
             { MIBC, 'CanPathToCurrentEnemy', { true } },
 
-            { UCBC, 'PoolLessAtLocation', { 'LocationType', 3, categories.INDIRECTFIRE * categories.LAND * categories.TECH3 }},
+            { UCBC, 'PoolLessAtLocation', { 'LocationType', 1, categories.INDIRECTFIRE * categories.LAND * categories.TECH3 }},
         },
         BuilderType = 'Land',
     },
@@ -251,7 +268,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',                  
 
             { MIBC, 'CanPathToCurrentEnemy', { true } },
 
-            { UCBC, 'PoolLessAtLocation', { 'LocationType', 3, categories.LAND * categories.MOBILE * categories.ANTIAIR * categories.TECH3 }},
+            { UCBC, 'PoolLessAtLocation', { 'LocationType', 1, categories.LAND * categories.MOBILE * categories.ANTIAIR * categories.TECH3 }},
         },
         BuilderType = 'Land',
     },
@@ -265,8 +282,8 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Scout Formers',                   
     
     Builder { BuilderName = 'Swarm Land Scout',
         PlatoonTemplate = 'T1LandScoutForm',
-        Priority = 5000,
-        InstanceCount = 8,
+        Priority = 10000,
+        InstanceCount = 10,
         BuilderConditions = {
             -- When do we want to build this ?
             { UCBC, 'HaveGreaterThanUnitsWithCategory', { 0, categories.LAND * categories.SCOUT } },
@@ -284,177 +301,128 @@ BuilderGroup {
     BuildersType = 'PlatoonFormBuilder', -- A PlatoonFormBuilder is for builder groups of units.
 
     Builder {
-        BuilderName = 'Land Attack Mass Raid',
-        PlatoonTemplate = 'AISwarm LandAttack Early Raid',
-        Priority = 100,
-        InstanceCount = 4,
-        BuilderType = 'Any',
-        BuilderConditions = { 
-            { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 1, categories.LAND * categories.MOBILE * categories.DIRECTFIRE - categories.SCOUT - categories.EXPERIMENTAL}}, 
-
-            { UCBC, 'LessThanGameTimeSeconds', { 600 } },
-        },
+        BuilderName = 'Microed Enemy Intercept - Panic',                                     
+        PlatoonTemplate = 'AISwarm LandAttack Intercept',                         
+        Priority = 100,                                                          
+        InstanceCount = 1,                                                      
         BuilderData = {
-            ThreatSupport = 100,
-            LocationType = 'LocationType',
-            MarkerType = 'Mass',
-            MoveFirst = 'Random',
-            MoveNext = 'Threat',
-            ThreatType = 'Economy',             
-            FindHighestThreat = false,      
-            MaxThreatThreshold = 4900,      
-            MinThreatThreshold = 1000,      
-            AvoidBases = true,
-            AvoidBasesRadius = 75,
-            UseFormation = 'NoFormation',
-            AggressiveMove = false,
-            AvoidClosestRadius = 100,
-        },
-    },
-
-    Builder {
-        BuilderName = 'Land Attack Small',
-        PlatoonTemplate = 'AISwarm LandAttack Small',
-        Priority = 100,
-        InstanceCount = 6,
-        BuilderType = 'Any',
-        BuilderConditions = { 
-            { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 6, categories.LAND * categories.MOBILE * categories.DIRECTFIRE - categories.SCOUT - categories.EXPERIMENTAL}},
-
-            { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 3, categories.LAND * categories.MOBILE * categories.INDIRECTFIRE - categories.EXPERIMENTAL }},
-
-            { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 1, categories.LAND * categories.MOBILE * categories.ANTIAIR }}, 
-
-            { UCBC, 'LessThanGameTimeSeconds', { 900 } },           
-        },
-        BuilderData = {
-            ThreatSupport = 100,
-            NeverGuardBases = true,
-            NeverGuardEngineers = true,
-            UseFormation = 'AttackFormation',
-            LocationType = 'LocationType',
-            AggressiveMove = false,
-        },
-    },
-
-    Builder {
-        BuilderName = 'Land Attack Medium',
-        PlatoonTemplate = 'AISwarm LandAttack Medium',
-        Priority = 100,
-        InstanceCount = 3,
-        BuilderType = 'Any',
-        BuilderConditions = { 
-            { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 12, categories.LAND * categories.MOBILE * categories.DIRECTFIRE - categories.SCOUT - categories.EXPERIMENTAL}},
-
-            { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 6, categories.LAND * categories.MOBILE * categories.INDIRECTFIRE - categories.EXPERIMENTAL }},
-
-            { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 2, categories.LAND * categories.MOBILE * categories.ANTIAIR }},
-
-            { UCBC, 'GreaterThanGameTimeSeconds', { 900 } },
-        },
-        BuilderData = {
-            ThreatSupport = 100,
-            NeverGuardBases = true,
-            NeverGuardEngineers = true,
-            UseFormation = 'AttackFormation',
-            LocationType = 'LocationType',
-            AggressiveMove = false,
-        },
-    },
-
-    Builder {
-        BuilderName = 'Location Deployment',
-        PlatoonTemplate = 'AISwarm LandAttack Rapid Deployment',
-        Priority = 100,
-        InstanceCount = 2,
-        BuilderType = 'Any',
-        BuilderConditions = { 
-            { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 3, categories.LAND * categories.MOBILE * categories.DIRECTFIRE - categories.SCOUT - categories.EXPERIMENTAL}},
-
-            { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 2, categories.LAND * categories.MOBILE * categories.INDIRECTFIRE - categories.EXPERIMENTAL }},
-
-            { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 1, categories.LAND * categories.MOBILE * categories.ANTIAIR }},
-
-            { UCBC, 'GreaterThanGameTimeSeconds', { 600 } },
-        },
-        BuilderData = {
-            ThreatSupport = 75,
-            MarkerType = 'Start Location',
-            MoveFirst = 'Closest',
-            LocationType = 'LocationType',
-            MoveNext = 'Random',
-            AvoidBases = true,
-            AvoidBasesRadius = 100,
-            AggressiveMove = false,
-            AvoidClosestRadius = 50,
-            UseFormation = 'AttackFormation',
-        },
-    },
-
-
-
-    Builder {
-        BuilderName = 'Land Attack Mex Raid',
-        PlatoonTemplate = 'AISwarm LandAttack Special Ops',
-        Priority = 100,
-        InstanceCount = 5,
-        BuilderType = 'Any',
-        BuilderConditions = { 
-            { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 2, categories.LAND * categories.MOBILE * categories.DIRECTFIRE - categories.SCOUT - categories.EXPERIMENTAL}},
-
-            { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 2, categories.LAND * categories.MOBILE * categories.INDIRECTFIRE - categories.EXPERIMENTAL }},
-
-            { UCBC, 'GreaterThanGameTimeSeconds', { 600 } },
-        },
-        BuilderData = {
-            ThreatSupport = 100,
-            LocationType = 'LocationType',
-            MarkerType = 'Mass',
-            MoveFirst = 'Random',
-            MoveNext = 'Threat',
-            ThreatType = 'Economy',             
-            FindHighestThreat = false,      
-            MaxThreatThreshold = 2000,      
-            MinThreatThreshold = 1000,      
-            AvoidBases = true,
-            AvoidBasesRadius = 75,
-            UseFormation = 'GrowthFormation',
-            AggressiveMove = false,
-            AvoidClosestRadius = 50,
-        },
-    },
-
-    Builder {
-        BuilderName = 'AISwarm LandAttack Base Siege',
-        PlatoonTemplate = 'AISwarm LandAttack Base Siege', 
-        Priority = 100,
-        InstanceCount = 15,
-        BuilderType = 'Any',
-        BuilderData = {
-            AttackEnemyStrength = 10000,
-            SearchRadius = BaseEnemyZone,
-            AggressiveMove = true,
-            TargetSearchCategory = categories.STRUCTURE,
+            SearchRadius = BasePanicZone,                                     
+            GetTargetsFromBase = false,                                        
+            RequireTransport = false,                                          
+            AggressiveMove = true,                                            
+            AttackEnemyStrength = 150,                                        
+            TargetSearchCategory = categories.MOBILE * categories.LAND - categories.SCOUT, 
             MoveToCategories = {                                                
-                categories.STRUCTURE, 
-            }, 
+                categories.EXPERIMENTAL,
+                categories.MOBILE * categories.LAND * categories.INDIRECTFIRE - categories.SCOUT,
+                categories.MOBILE * categories.LAND * categories.DIRECTFIRE - categories.SCOUT,
+                categories.MOBILE * categories.LAND * categories.ANTIAIR,
+                categories.STRUCTURE * categories.ANTIAIR,
+                categories.STRUCTURE * categories.DEFENSE,
+                categories.ALLUNITS,
+            },
+        },
+        BuilderConditions = {                                                   
+            { UCBC, 'UnitsGreaterAtEnemy', { 0 , categories.MOBILE * categories.LAND - categories.SCOUT } },
+        },
+        BuilderType = 'Any',                                                    
+    },
+
+    Builder {
+        BuilderName = 'Microed Enemy Intercept - Military',                                     
+        PlatoonTemplate = 'AISwarm LandAttack Intercept',                         
+        Priority = 100,                                                          
+        InstanceCount = 1,                                                      
+        BuilderData = {
+            SearchRadius = BaseMilitaryZone,                                     
+            GetTargetsFromBase = false,                                        
+            RequireTransport = false,                                          
+            AggressiveMove = true,                                            
+            AttackEnemyStrength = 150,                                        
+            TargetSearchCategory = categories.MOBILE * categories.LAND - categories.SCOUT, 
+            MoveToCategories = {                                                
+                categories.EXPERIMENTAL,
+                categories.MOBILE * categories.LAND * categories.INDIRECTFIRE - categories.SCOUT,
+                categories.MOBILE * categories.LAND * categories.DIRECTFIRE - categories.SCOUT,
+                categories.MOBILE * categories.LAND * categories.ANTIAIR,
+                categories.STRUCTURE * categories.ANTIAIR,
+                categories.STRUCTURE * categories.DEFENSE,
+                categories.ALLUNITS,
+            },
+        },
+        BuilderConditions = {                                                   
+            { UCBC, 'UnitsGreaterAtEnemy', { 0 , categories.MOBILE * categories.LAND - categories.SCOUT } },
+        },
+        BuilderType = 'Any',                                                    
+    },
+
+    Builder {
+        BuilderName = 'Microed Enemy Intercept - Enemy',                                     
+        PlatoonTemplate = 'AISwarm LandAttack Intercept',                         
+        Priority = 100,                                                          
+        InstanceCount = 3,                                                      
+        BuilderData = {
+            SearchRadius = BaseEnemyZone,                                     
+            GetTargetsFromBase = false,                                        
+            RequireTransport = false,                                          
+            AggressiveMove = false,                                            
+            AttackEnemyStrength = 150,                                        
+            TargetSearchCategory = categories.MOBILE * categories.LAND - categories.SCOUT, 
+            MoveToCategories = {                                                
+                categories.EXPERIMENTAL,
+                categories.MOBILE * categories.LAND * categories.INDIRECTFIRE - categories.SCOUT,
+                categories.MOBILE * categories.LAND * categories.DIRECTFIRE - categories.SCOUT,
+                categories.MOBILE * categories.LAND * categories.ANTIAIR,
+                categories.STRUCTURE * categories.ANTIAIR,
+                categories.STRUCTURE * categories.DEFENSE,
+                categories.ALLUNITS,
+            },
+        },
+        BuilderConditions = {                                                   
+            { UCBC, 'UnitsGreaterAtEnemy', { 0 , categories.MOBILE * categories.LAND - categories.SCOUT } },
+        },
+        BuilderType = 'Any',                                                    
+    },
+
+    Builder {
+        BuilderName = 'Microed Small Land Attack - Panic',
+        PlatoonTemplate = 'AISwarm LandAttack Micro Small', 
+        Priority = 100,
+        InstanceCount = 13,
+        BuilderType = 'Any',
+        BuilderConditions = { 
+        },
+        BuilderData = {
+            AttackEnemyStrength = 100,
+            SearchRadius = BasePanicZone,
+            GetTargetsFromBase = false,
+            TargetSearchCategory = categories.ALLUNITS,                         
+            MoveToCategories = {
+                categories.MOBILE * categories.LAND * categories.INDIRECTFIRE,
+                categories.MOBILE * categories.LAND * categories.DIRECTFIRE,
+                categories.MOBILE * categories.LAND * categories.ANTIAIR,
+                categories.STRUCTURE * categories.MASSEXTRACTION, 
+                categories.STRUCTURE * categories.ENERGYPRODUCTION,  
+                categories.STRUCTURE,                                             
+                categories.ALLUNITS, 
+            },
             WeaponTargetCategories = {                                          
-                categories.SHIELD,
-                categories.MASSEXTRACTION,
-                categories.ENERGYPRODUCTION,
-                categories.MASSFABRICATION,
-                categories.STRUCTURE,
+                categories.EXPERIMENTAL,
+                categories.COMMAND,
+                categories.INDIRECTFIRE,
+                categories.DIRECTFIRE,
+                categories.ANTIAIR,
+                categories.MOBILE,
                 categories.ALLUNITS,
             },
         },        
-        BuilderConditions = { },
     },
 
     Builder {
-        BuilderName = 'Microed Small Land Attack',
+        BuilderName = 'Microed Small Land Attack - Military',
         PlatoonTemplate = 'AISwarm LandAttack Micro Small', 
-        Priority = 101,
-        InstanceCount = 6,
+        Priority = 100,
+        InstanceCount = 13,
         BuilderType = 'Any',
         BuilderConditions = { 
             { UCBC, 'LessThanGameTimeSeconds', { 1500 } },
@@ -486,10 +454,10 @@ BuilderGroup {
     },
 
     Builder {
-        BuilderName = 'Microed Small Land Attack',
+        BuilderName = 'Microed Small Land Attack - Enemy',
         PlatoonTemplate = 'AISwarm LandAttack Micro Small', 
-        Priority = 101,
-        InstanceCount = 6,
+        Priority = 100,
+        InstanceCount = 13,
         BuilderType = 'Any',
         BuilderConditions = { 
             { UCBC, 'LessThanGameTimeSeconds', { 1500 } },
@@ -521,10 +489,10 @@ BuilderGroup {
     },
 
     Builder {
-        BuilderName = 'Microed Big Land Attack',
+        BuilderName = 'Microed Big Land Attack - Military',
         PlatoonTemplate = 'AISwarm LandAttack Micro Big', 
-        Priority = 101,
-        InstanceCount = 8,
+        Priority = 100,
+        InstanceCount = 10,
         BuilderType = 'Any',
         BuilderConditions = { 
             { UCBC, 'GreaterThanGameTimeSeconds', { 1500 } },
@@ -556,10 +524,10 @@ BuilderGroup {
     },
 
     Builder {
-        BuilderName = 'Microed Big Land Attack',
+        BuilderName = 'Microed Big Land Attack - Enemy',
         PlatoonTemplate = 'AISwarm LandAttack Micro Big', 
-        Priority = 101,
-        InstanceCount = 8,
+        Priority = 100,
+        InstanceCount = 10,
         BuilderType = 'Any',
         BuilderConditions = { 
             { UCBC, 'GreaterThanGameTimeSeconds', { 1500 } },

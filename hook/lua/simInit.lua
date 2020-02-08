@@ -319,7 +319,7 @@ end
 
 function DrawBaseRanger()
     -- get the range of combat zones
-    local BasePanicZone, BaseMilitaryZone, BaseEnemyZone = import('/mods/AI-Uveso/lua/AI/uvesoutilities.lua').GetDangerZoneRadii()
+    local BasePanicZone, BaseMilitaryZone, BaseEnemyZone = import('/mods/AI-Swarm/lua/AI/swarmutilities.lua').GetDangerZoneRadii()
     local FocussedArmy = GetFocusArmy()
     -- Render the radius of any base and expansion location
     if Scenario.MasterChain._MASTERCHAIN_.BaseRanger then

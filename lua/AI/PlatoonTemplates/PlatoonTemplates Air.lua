@@ -1,48 +1,36 @@
 PlatoonTemplate {
-    Name = 'AirAttack',
-    Plan = 'StrikeForceAISwarm',
-    GlobalSquads = {
-        { categories.MOBILE * categories.AIR - categories.GROUNDATTACK - categories.BOMBER - categories.EXPERIMENTAL - categories.TRANSPORTFOCUS - categories.ANTINAVY - categories.SCOUT, 
-          8, -- Min number of units.
-          50, -- Max number of units.
-          'Attack', -- platoon types: 'support', 'attack', 'scout',
-          'GrowthFormation' } -- platoon move formations: 'None', 'AttackFormation', 'GrowthFormation',
-    },
-}
-
-PlatoonTemplate {
     Name = 'AirAttackThreat',
-    Plan = 'ThreatStrikeSwarm',
+    Plan = 'InterceptorAIUveso',
     GlobalSquads = {
         { categories.MOBILE * categories.AIR - categories.GROUNDATTACK - categories.BOMBER - categories.EXPERIMENTAL - categories.TRANSPORTFOCUS - categories.ANTINAVY - categories.SCOUT, 
           1, -- Min number of units.
           100, -- Max number of units.
           'Attack', -- platoon types: 'support', 'attack', 'scout',
-          'GrowthFormation' } -- platoon move formations: 'None', 'AttackFormation', 'GrowthFormation',
+          'None' } -- platoon move formations: 'None', 'AttackFormation', 'GrowthFormation',
     },
 }
 
 PlatoonTemplate {
     Name = 'BomberAttack',
-    Plan = 'StrikeForceAISwarm',
+    Plan = 'InterceptorAIUveso',
     GlobalSquads = {
-        { categories.MOBILE * categories.AIR * categories.BOMBER * (categories.TECH1 + categories.TECH2) - categories.TECH3 - categories.EXPERIMENTAL - categories.ANTINAVY - categories.SCOUT, 2, 15, 'Attack', 'none' },
+        { categories.MOBILE * categories.AIR * categories.BOMBER * (categories.TECH1 + categories.TECH2) - categories.TECH3 - categories.EXPERIMENTAL - categories.ANTINAVY - categories.SCOUT, 1, 100, 'Attack', 'none' },
     }
 }
 
 PlatoonTemplate {
     Name = 'SpecialOpsBomberAttack',
-    Plan = 'StrikeForceAISwarm',
+    Plan = 'InterceptorAIUveso',
     GlobalSquads = {
-        { categories.MOBILE * categories.AIR * categories.BOMBER * categories.TECH3 - categories.EXPERIMENTAL - categories.ANTINAVY - categories.SCOUT, 5, 20, 'Attack', 'none' },
+        { categories.MOBILE * categories.AIR * categories.BOMBER * categories.TECH3 - categories.EXPERIMENTAL - categories.ANTINAVY - categories.SCOUT, 5, 100, 'Attack', 'none' },
     }
 }
 
 PlatoonTemplate {
     Name = 'GunshipAttack',
-    Plan = 'GunshipHuntAI',
+    Plan = 'InterceptorAIUveso',
     GlobalSquads = {
-        { categories.MOBILE * categories.AIR * categories.GROUNDATTACK - categories.BOMBER - categories.EXPERIMENTAL - categories.TRANSPORTFOCUS - categories.SCOUT, 5, 20, 'Attack', 'GrowthFormation' },
+        { categories.MOBILE * categories.AIR * categories.GROUNDATTACK - categories.BOMBER - categories.EXPERIMENTAL - categories.TRANSPORTFOCUS - categories.SCOUT, 5, 100, 'Attack', 'GrowthFormation' },
     }
 }
 
