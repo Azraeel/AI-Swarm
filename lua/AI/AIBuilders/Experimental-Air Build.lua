@@ -66,79 +66,19 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Experimental Builders',            
 BuilderGroup { BuilderGroupName = 'Swarm Air Experimental Formers',               -- BuilderGroupName, initalized from AIBaseTemplates in "\lua\AI\AIBaseTemplates\"
     BuildersType = 'PlatoonFormBuilder',
     Builder {
-        BuilderName = 'AISwarm AirAttack EZ Experimental',                                  -- Random Builder Name.
+        BuilderName = 'AISwarm Air Experimental PZ',                                -- Random Builder Name.
+        PlatoonTemplate = 'AISwarm AirAttack Experimental',                     -- Template Name. These units will be formed. See: "\lua\AI\PlatoonTemplates"
         --PlatoonAddPlans = {'NameUnitsSorian'},
-        PlatoonTemplate = 'AISwarm AirAttack Experimental',                            -- Template Name. These units will be formed. See: "\lua\AI\PlatoonTemplates"
         Priority = 100,                                                          -- Priority. 1000 is normal.
-        InstanceCount = 100,                                                      -- Number of plattons that will be formed
-        FormRadius = 10000,
-        BuilderData = {
-            SearchRadius = BaseEnemyZone,                                       -- Searchradius for new target.
-            GetTargetsFromBase = false,                                         -- Get targets from base position (true) or platoon position (false)
-            AggressiveMove = false,                                             -- If true, the unit will attack everything while moving to the target.
-            AttackEnemyStrength = 100,                                       -- Compare platoon to enemy strenght. 100 will attack equal, 50 weaker and 150 stronger enemies.
-            IgnorePathing = true,                                               -- If true, the platoon will not use AI pathmarkers and move directly to the target
-            TargetSearchCategory = categories.ALLUNITS,                         -- Only find targets matching these categories.
-            MoveToCategories = {                                                -- Move to targets
-                categories.STRUCTURE * categories.EXPERIMENTAL * categories.ECONOMIC,
-                categories.STRUCTURE * categories.EXPERIMENTAL,
-                categories.STRUCTURE * categories.NUKE,
-                categories.STRUCTURE * categories.FACTORY * categories.TECH3,
-                categories.STRUCTURE * categories.ENERGYPRODUCTION * categories.TECH3,
-                categories.STRUCTURE * categories.DEFENSE * categories.TECH3,
-                categories.STRUCTURE * categories.DEFENSE * categories.TECH2,
-                categories.STRUCTURE * categories.DEFENSE,
-                categories.STRUCTURE,
-                categories.ALLUNITS,
-            },
-        },
-        BuilderConditions = { },
-        BuilderType = 'Any',                                                    
-    },
-    Builder {
-        BuilderName = 'AISwarm AirAttack MZ Experimental',                                  -- Random Builder Name.
-        --PlatoonAddPlans = {'NameUnitsSorian'},
-        PlatoonTemplate = 'AISwarm AirAttack Experimental',                            -- Template Name. These units will be formed. See: "\lua\AI\PlatoonTemplates"
-        Priority = 100,                                                          -- Priority. 1000 is normal.
-        InstanceCount = 100,                                                      -- Number of plattons that will be formed
-        FormRadius = 10000,
-        BuilderData = {
-            SearchRadius = BaseMilitaryZone,                                       -- Searchradius for new target.
-            GetTargetsFromBase = false,                                         -- Get targets from base position (true) or platoon position (false)
-            AggressiveMove = false,                                             -- If true, the unit will attack everything while moving to the target.
-            AttackEnemyStrength = 100,                                       -- Compare platoon to enemy strenght. 100 will attack equal, 50 weaker and 150 stronger enemies.
-            IgnorePathing = true,                                               -- If true, the platoon will not use AI pathmarkers and move directly to the target
-            TargetSearchCategory = categories.ALLUNITS,                         -- Only find targets matching these categories.
-            MoveToCategories = {                                                -- Move to targets
-                categories.STRUCTURE * categories.EXPERIMENTAL * categories.ECONOMIC,
-                categories.STRUCTURE * categories.EXPERIMENTAL,
-                categories.STRUCTURE * categories.NUKE,
-                categories.STRUCTURE * categories.FACTORY * categories.TECH3,
-                categories.STRUCTURE * categories.ENERGYPRODUCTION * categories.TECH3,
-                categories.STRUCTURE * categories.DEFENSE * categories.TECH3,
-                categories.STRUCTURE * categories.DEFENSE * categories.TECH2,
-                categories.STRUCTURE * categories.DEFENSE,
-                categories.STRUCTURE,
-                categories.ALLUNITS,
-            },
-        },
-        BuilderConditions = { },
-        BuilderType = 'Any',                                                    
-    },
-    Builder {
-        BuilderName = 'AISwarm AirAttack PZ Experimental',                                  -- Random Builder Name.
-        --PlatoonAddPlans = {'NameUnitsSorian'},
-        PlatoonTemplate = 'AISwarm AirAttack Experimental',                            -- Template Name. These units will be formed. See: "\lua\AI\PlatoonTemplates"
-        Priority = 100,                                                          -- Priority. 1000 is normal.
-        InstanceCount = 100,                                                      -- Number of plattons that will be formed
+        InstanceCount = 5,                                                      -- Number of plattons that will be formed.
         FormRadius = 10000,
         BuilderData = {
             SearchRadius = BasePanicZone,                                       -- Searchradius for new target.
             GetTargetsFromBase = false,                                         -- Get targets from base position (true) or platoon position (false)
             AggressiveMove = false,                                             -- If true, the unit will attack everything while moving to the target.
-            AttackEnemyStrength = 100,                                       -- Compare platoon to enemy strenght. 100 will attack equal, 50 weaker and 150 stronger enemies.
+            AttackEnemyStrength = 100,                                            -- Compare platoon to enemy strenght. 100 will attack equal, 50 weaker and 150 stronger enemies.
             IgnorePathing = true,                                               -- If true, the platoon will not use AI pathmarkers and move directly to the target
-            TargetSearchCategory = categories.ALLUNITS,                         -- Only find targets matching these categories.
+            TargetSearchCategory = categories.STRUCTURE + categories.MOBILE,                                 -- Only find targets matching these categories.
             MoveToCategories = {                                                -- Move to targets
                 categories.STRUCTURE * categories.EXPERIMENTAL * categories.ECONOMIC,
                 categories.STRUCTURE * categories.EXPERIMENTAL,
@@ -149,11 +89,71 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Experimental Formers',             
                 categories.STRUCTURE * categories.DEFENSE * categories.TECH2,
                 categories.STRUCTURE * categories.DEFENSE,
                 categories.STRUCTURE,
-                categories.ALLUNITS,
+                categories.MOBILE,
             },
         },
-        BuilderConditions = { },
-        BuilderType = 'Any',                                                    
+        BuilderConditions = {  },
+        BuilderType = 'Any',                                                    -- Build with "Land" "Air" "Sea" "Gate" or "All" Factories. - "Any" forms a Platoon.
+    },
+    Builder {
+        BuilderName = 'AISwarm Air Experimental MZ',                                -- Random Builder Name.
+        PlatoonTemplate = 'AISwarm AirAttack Experimental',                     -- Template Name. These units will be formed. See: "\lua\AI\PlatoonTemplates"
+        --PlatoonAddPlans = {'NameUnitsSorian'},
+        Priority = 100,                                                          -- Priority. 1000 is normal.
+        InstanceCount = 5,                                                      -- Number of plattons that will be formed.
+        FormRadius = 10000,
+        BuilderData = {
+            SearchRadius = BaseMilitaryZone,                                       -- Searchradius for new target.
+            GetTargetsFromBase = false,                                         -- Get targets from base position (true) or platoon position (false)
+            AggressiveMove = false,                                             -- If true, the unit will attack everything while moving to the target.
+            AttackEnemyStrength = 100,                                            -- Compare platoon to enemy strenght. 100 will attack equal, 50 weaker and 150 stronger enemies.
+            IgnorePathing = true,                                               -- If true, the platoon will not use AI pathmarkers and move directly to the target
+            TargetSearchCategory = categories.STRUCTURE,                                 -- Only find targets matching these categories.
+            MoveToCategories = {                                                -- Move to targets
+                categories.STRUCTURE * categories.EXPERIMENTAL * categories.ECONOMIC,
+                categories.STRUCTURE * categories.EXPERIMENTAL,
+                categories.STRUCTURE * categories.NUKE,
+                categories.STRUCTURE * categories.FACTORY * categories.TECH3,
+                categories.STRUCTURE * categories.ENERGYPRODUCTION * categories.TECH3,
+                categories.STRUCTURE * categories.DEFENSE * categories.TECH3,
+                categories.STRUCTURE * categories.DEFENSE * categories.TECH2,
+                categories.STRUCTURE * categories.DEFENSE,
+                categories.STRUCTURE,
+                categories.MOBILE,
+            },
+        },
+        BuilderConditions = {  },
+        BuilderType = 'Any',                                                    -- Build with "Land" "Air" "Sea" "Gate" or "All" Factories. - "Any" forms a Platoon.
+    },
+    Builder {
+        BuilderName = 'AISwarm Air Experimental EZ',                                -- Random Builder Name.
+        PlatoonTemplate = 'AISwarm AirAttack Experimental',                     -- Template Name. These units will be formed. See: "\lua\AI\PlatoonTemplates"
+        --PlatoonAddPlans = {'NameUnitsSorian'},
+        Priority = 100,                                                          -- Priority. 1000 is normal.
+        InstanceCount = 5,                                                      -- Number of plattons that will be formed.
+        FormRadius = 10000,
+        BuilderData = {
+            SearchRadius = BaseEnemyZone,                                       -- Searchradius for new target.
+            GetTargetsFromBase = false,                                         -- Get targets from base position (true) or platoon position (false)
+            AggressiveMove = false,                                             -- If true, the unit will attack everything while moving to the target.
+            AttackEnemyStrength = 100,                                            -- Compare platoon to enemy strenght. 100 will attack equal, 50 weaker and 150 stronger enemies.
+            IgnorePathing = true,                                               -- If true, the platoon will not use AI pathmarkers and move directly to the target
+            TargetSearchCategory = categories.STRUCTURE,                                 -- Only find targets matching these categories.
+            MoveToCategories = {                                                -- Move to targets
+                categories.STRUCTURE * categories.EXPERIMENTAL * categories.ECONOMIC,
+                categories.STRUCTURE * categories.EXPERIMENTAL,
+                categories.STRUCTURE * categories.NUKE,
+                categories.STRUCTURE * categories.FACTORY * categories.TECH3,
+                categories.STRUCTURE * categories.ENERGYPRODUCTION * categories.TECH3,
+                categories.STRUCTURE * categories.DEFENSE * categories.TECH3,
+                categories.STRUCTURE * categories.DEFENSE * categories.TECH2,
+                categories.STRUCTURE * categories.DEFENSE,
+                categories.STRUCTURE,
+                categories.MOBILE,
+            },
+        },
+        BuilderConditions = {  },
+        BuilderType = 'Any',                                                    -- Build with "Land" "Air" "Sea" "Gate" or "All" Factories. - "Any" forms a Platoon.
     },
 }
 

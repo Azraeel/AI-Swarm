@@ -38,6 +38,6 @@ PlatoonTemplate {
     Name = 'AISwarm AirAttack Experimental',
     Plan = 'InterceptorAIUveso',
     GlobalSquads = {
-        { categories.AIR * categories.EXPERIMENTAL - categories.ANTINAVY - categories.SCOUT, 1, 3, 'Attack', 'GrowthFormation' },
+        { categories.AIR * categories.EXPERIMENTAL - categories.ANTINAVY - categories.SCOUT, 1, 3, 'Attack', 'none' },
     },
 }
