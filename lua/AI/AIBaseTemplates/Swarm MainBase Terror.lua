@@ -57,6 +57,7 @@ BaseBuilderTemplate {
         -- ==== Land Units FORMER==== --
         -----------------------------------------------------------------------------
         'AISwarm Platoon Builder',
+        'AISwarm Platoon Builder Intercepter',
 
         -----------------------------------------------------------------------------
         -- ==== Air Units BUILDER ==== --

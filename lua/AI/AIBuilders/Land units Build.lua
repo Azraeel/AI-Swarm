@@ -301,90 +301,6 @@ BuilderGroup {
     BuildersType = 'PlatoonFormBuilder', -- A PlatoonFormBuilder is for builder groups of units.
 
     Builder {
-        BuilderName = 'Microed Enemy Intercept - Panic',                                     
-        PlatoonTemplate = 'AISwarm LandAttack Intercept',                         
-        Priority = 100,                                                          
-        InstanceCount = 1,                                                      
-        BuilderData = {
-            SearchRadius = BasePanicZone,                                     
-            GetTargetsFromBase = false,                                        
-            RequireTransport = false,                                          
-            AggressiveMove = true,                                            
-            AttackEnemyStrength = 150,                                        
-            TargetSearchCategory = categories.MOBILE * categories.LAND - categories.SCOUT, 
-            MoveToCategories = {                                                
-                categories.EXPERIMENTAL,
-                categories.MOBILE * categories.LAND * categories.INDIRECTFIRE - categories.SCOUT,
-                categories.MOBILE * categories.LAND * categories.DIRECTFIRE - categories.SCOUT,
-                categories.MOBILE * categories.LAND * categories.ANTIAIR,
-                categories.STRUCTURE * categories.ANTIAIR,
-                categories.STRUCTURE * categories.DEFENSE,
-                categories.ALLUNITS,
-            },
-        },
-        BuilderConditions = {                                                   
-            { UCBC, 'UnitsGreaterAtEnemy', { 0 , categories.MOBILE * categories.LAND - categories.SCOUT } },
-        },
-        BuilderType = 'Any',                                                    
-    },
-
-    Builder {
-        BuilderName = 'Microed Enemy Intercept - Military',                                     
-        PlatoonTemplate = 'AISwarm LandAttack Intercept',                         
-        Priority = 100,                                                          
-        InstanceCount = 1,                                                      
-        BuilderData = {
-            SearchRadius = BaseMilitaryZone,                                     
-            GetTargetsFromBase = false,                                        
-            RequireTransport = false,                                          
-            AggressiveMove = true,                                            
-            AttackEnemyStrength = 150,                                        
-            TargetSearchCategory = categories.MOBILE * categories.LAND - categories.SCOUT, 
-            MoveToCategories = {                                                
-                categories.EXPERIMENTAL,
-                categories.MOBILE * categories.LAND * categories.INDIRECTFIRE - categories.SCOUT,
-                categories.MOBILE * categories.LAND * categories.DIRECTFIRE - categories.SCOUT,
-                categories.MOBILE * categories.LAND * categories.ANTIAIR,
-                categories.STRUCTURE * categories.ANTIAIR,
-                categories.STRUCTURE * categories.DEFENSE,
-                categories.ALLUNITS,
-            },
-        },
-        BuilderConditions = {                                                   
-            { UCBC, 'UnitsGreaterAtEnemy', { 0 , categories.MOBILE * categories.LAND - categories.SCOUT } },
-        },
-        BuilderType = 'Any',                                                    
-    },
-
-    Builder {
-        BuilderName = 'Microed Enemy Intercept - Enemy',                                     
-        PlatoonTemplate = 'AISwarm LandAttack Intercept',                         
-        Priority = 100,                                                          
-        InstanceCount = 3,                                                      
-        BuilderData = {
-            SearchRadius = BaseEnemyZone,                                     
-            GetTargetsFromBase = false,                                        
-            RequireTransport = false,                                          
-            AggressiveMove = false,                                            
-            AttackEnemyStrength = 150,                                        
-            TargetSearchCategory = categories.MOBILE * categories.LAND - categories.SCOUT, 
-            MoveToCategories = {                                                
-                categories.EXPERIMENTAL,
-                categories.MOBILE * categories.LAND * categories.INDIRECTFIRE - categories.SCOUT,
-                categories.MOBILE * categories.LAND * categories.DIRECTFIRE - categories.SCOUT,
-                categories.MOBILE * categories.LAND * categories.ANTIAIR,
-                categories.STRUCTURE * categories.ANTIAIR,
-                categories.STRUCTURE * categories.DEFENSE,
-                categories.ALLUNITS,
-            },
-        },
-        BuilderConditions = {                                                   
-            { UCBC, 'UnitsGreaterAtEnemy', { 0 , categories.MOBILE * categories.LAND - categories.SCOUT } },
-        },
-        BuilderType = 'Any',                                                    
-    },
-
-    Builder {
         BuilderName = 'Microed Small Land Attack - Panic',
         PlatoonTemplate = 'AISwarm LandAttack Micro Small', 
         Priority = 100,
@@ -556,5 +472,66 @@ BuilderGroup {
                 categories.ALLUNITS,
             },
         },        
+    },
+}
+
+BuilderGroup {
+    BuilderGroupName = 'AISwarm Platoon Builder Intercepter',
+    BuildersType = 'PlatoonFormBuilder', -- A PlatoonFormBuilder is for builder groups of units.
+
+    Builder {
+        BuilderName = 'Microed Enemy Intercept - Panic',                                     
+        PlatoonTemplate = 'AISwarm LandAttack Intercept',                         
+        Priority = 100,                                                          
+        InstanceCount = 2,                                                      
+        BuilderData = {
+            SearchRadius = BasePanicZone,                                     
+            GetTargetsFromBase = false,                                        
+            RequireTransport = false,                                          
+            AggressiveMove = true,                                            
+            AttackEnemyStrength = 150,                                        
+            TargetSearchCategory = categories.MOBILE * categories.LAND - categories.SCOUT, 
+            MoveToCategories = {                                                
+                categories.EXPERIMENTAL,
+                categories.MOBILE * categories.LAND * categories.INDIRECTFIRE - categories.SCOUT,
+                categories.MOBILE * categories.LAND * categories.DIRECTFIRE - categories.SCOUT,
+                categories.MOBILE * categories.LAND * categories.ANTIAIR,
+                categories.STRUCTURE * categories.ANTIAIR,
+                categories.STRUCTURE * categories.DEFENSE,
+                categories.ALLUNITS,
+            },
+        },
+        BuilderConditions = {                                                   
+            { UCBC, 'EnemyUnitsGreaterAtLocationRadius', {  BasePanicZone, 'LocationType', 1, categories.LAND - categories.SCOUT - categories.ENGINEER }},
+        },
+        BuilderType = 'Any',                                                    
+    },
+
+    Builder {
+        BuilderName = 'Microed Enemy Intercept - Military',                                     
+        PlatoonTemplate = 'AISwarm LandAttack Intercept',                         
+        Priority = 100,                                                          
+        InstanceCount = 1,                                                      
+        BuilderData = {
+            SearchRadius = BaseMilitaryZone,                                     
+            GetTargetsFromBase = false,                                        
+            RequireTransport = false,                                          
+            AggressiveMove = true,                                            
+            AttackEnemyStrength = 150,                                        
+            TargetSearchCategory = categories.MOBILE * categories.LAND - categories.SCOUT, 
+            MoveToCategories = {                                                
+                categories.EXPERIMENTAL,
+                categories.MOBILE * categories.LAND * categories.INDIRECTFIRE - categories.SCOUT,
+                categories.MOBILE * categories.LAND * categories.DIRECTFIRE - categories.SCOUT,
+                categories.MOBILE * categories.LAND * categories.ANTIAIR,
+                categories.STRUCTURE * categories.ANTIAIR,
+                categories.STRUCTURE * categories.DEFENSE,
+                categories.ALLUNITS,
+            },
+        },
+        BuilderConditions = {                                                   
+            { UCBC, 'EnemyUnitsGreaterAtLocationRadius', {  BaseMilitaryZone, 'LocationType', 1, categories.LAND - categories.SCOUT - categories.ENGINEER }},
+        },
+        BuilderType = 'Any',                                                    
     },
 }
