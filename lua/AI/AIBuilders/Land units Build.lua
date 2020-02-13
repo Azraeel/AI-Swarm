@@ -307,6 +307,7 @@ BuilderGroup {
         InstanceCount = 13,
         BuilderType = 'Any',
         BuilderConditions = { 
+        	{ UCBC, 'EnemyUnitsGreaterAtLocationRadius', {  BasePanicZone, 'LocationType', 1, categories.LAND - categories.SCOUT }},
         },
         BuilderData = {
             AttackEnemyStrength = 100,
@@ -342,6 +343,8 @@ BuilderGroup {
         BuilderType = 'Any',
         BuilderConditions = { 
             { UCBC, 'LessThanGameTimeSeconds', { 1500 } },
+
+            { UCBC, 'EnemyUnitsGreaterAtLocationRadius', {  BaseMilitaryZone, 'LocationType', 1, categories.LAND - categories.SCOUT }},
         },
         BuilderData = {
             AttackEnemyStrength = 100,
@@ -377,6 +380,8 @@ BuilderGroup {
         BuilderType = 'Any',
         BuilderConditions = { 
             { UCBC, 'LessThanGameTimeSeconds', { 1500 } },
+
+            { UCBC, 'EnemyUnitsGreaterAtLocationRadius', {  BaseEnemyZone, 'LocationType', 1, categories.LAND - categories.SCOUT }},
         },
         BuilderData = {
             AttackEnemyStrength = 100,
@@ -412,6 +417,8 @@ BuilderGroup {
         BuilderType = 'Any',
         BuilderConditions = { 
             { UCBC, 'GreaterThanGameTimeSeconds', { 1500 } },
+
+            { UCBC, 'EnemyUnitsGreaterAtLocationRadius', {  BaseMilitaryZone, 'LocationType', 1, categories.LAND - categories.SCOUT }},
         },
         BuilderData = {
             AttackEnemyStrength = 100,
@@ -447,6 +454,8 @@ BuilderGroup {
         BuilderType = 'Any',
         BuilderConditions = { 
             { UCBC, 'GreaterThanGameTimeSeconds', { 1500 } },
+
+            { UCBC, 'EnemyUnitsGreaterAtLocationRadius', {  BaseEnemyZone, 'LocationType', 1, categories.LAND - categories.SCOUT }},
         },
         BuilderData = {
             AttackEnemyStrength = 100,
