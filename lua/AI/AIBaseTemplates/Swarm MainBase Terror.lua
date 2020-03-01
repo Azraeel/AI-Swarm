@@ -24,6 +24,7 @@ BaseBuilderTemplate {
         -- Produce Engineers
         'Swarm Engineer Builders',
         'Swarm SACU Builder',
+        'Swarm Hive+Kennel Upgrade',
 
         -- Engineer Tasks
         'Swarm Engineer Assistees',
@@ -58,6 +59,7 @@ BaseBuilderTemplate {
         -----------------------------------------------------------------------------
         'AISwarm Platoon Builder',
         'AISwarm Platoon Builder Intercepter',
+        'S3 SACU Formers',
 
         -----------------------------------------------------------------------------
         -- ==== Air Units BUILDER ==== --

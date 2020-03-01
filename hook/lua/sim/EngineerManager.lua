@@ -3,25 +3,112 @@
 TheOldEngineerManager = EngineerManager
 EngineerManager = Class(TheOldEngineerManager) {
 
-    LowMass = function(self)
-        -- Only use this with AI-Uveso
-        if not self.Brain.Uveso then
-            return TheOldEngineerManager.LowMass(self)
+-- For AI Patch V8 self:ForkEngineerTask(unit)
+    AddUnit = function(self, unit, dontAssign)
+        for k,v in self.ConsumptionUnits do
+            if EntityCategoryContains(v.Category, unit) then
+                table.insert(v.Units, { Unit = unit, Status = true })
+                table.insert(v.UnitsList, unit)
+                v.Count = v.Count + 1
+
+                if not unit.BuilderManagerData then
+                    unit.BuilderManagerData = {}
+                end
+                unit.BuilderManagerData.EngineerManager = self
+                unit.BuilderManagerData.LocationType = self.LocationType
+
+                if not unit.BuilderManagerData.CallbacksSetup then
+                    unit.BuilderManagerData.CallbacksSetup = true
+                    -- Callbacks here
+                    local deathFunction = function(unit)
+                        unit.BuilderManagerData.EngineerManager:RemoveUnit(unit)
+                    end
+
+                    import('/lua/scenariotriggers.lua').CreateUnitDestroyedTrigger(deathFunction, unit)
+
+                    local newlyCapturedFunction = function(unit, captor)
+                        local aiBrain = captor:GetAIBrain()
+                        --LOG('*AI DEBUG: ENGINEER: I was Captured by '..aiBrain.Nickname..'!')
+                        if aiBrain.BuilderManagers then
+                            local engManager = aiBrain.BuilderManagers[captor.BuilderManagerData.LocationType].EngineerManager
+                            if engManager then
+                                engManager:AddUnit(unit)
+                            end
+                        end
+                    end
+
+                    import('/lua/scenariotriggers.lua').CreateUnitCapturedTrigger(nil, newlyCapturedFunction, unit)
+
+                    if EntityCategoryContains(categories.ENGINEER - categories.STATIONASSISTPOD, unit) then
+                        local unitConstructionFinished = function(unit, finishedUnit)
+                                                    -- Call function on builder manager; let it handle the finish of work
+                                                    local aiBrain = unit:GetAIBrain()
+                                                    local engManager = aiBrain.BuilderManagers[unit.BuilderManagerData.LocationType].EngineerManager
+                                                    if engManager then
+                                                        engManager:UnitConstructionFinished(unit, finishedUnit)
+                                                    end
+                        end
+                        import('/lua/ScenarioTriggers.lua').CreateUnitBuiltTrigger(unitConstructionFinished, unit, categories.ALLUNITS)
+
+                        local unitConstructionStarted = function(unit, unitBeingBuilt)
+                                                    local aiBrain = unit:GetAIBrain()
+                                                    local engManager = aiBrain.BuilderManagers[unit.BuilderManagerData.LocationType].EngineerManager
+                                                    if engManager then
+                                                        engManager:UnitConstructionStarted(unit, unitBeingBuilt)
+                                                    end
+                        end
+                        import('/lua/ScenarioTriggers.lua').CreateStartBuildTrigger(unitConstructionStarted, unit, categories.ALLUNITS)
+                    end
+                end
+
+                if not dontAssign then
+                    self:ForkEngineerTask(unit)
+                end
+
+                return
+            end
         end
     end,
-
-    LowEnergy = function(self)
-        -- Only use this with AI-Uveso
-        if not self.Brain.Uveso then
-            return TheOldEngineerManager.LowEnergy(self)
+-- For AI Patch V8 self:ForkEngineerTask(unit)
+    TaskFinished = function(self, unit)
+        --LOG('+ TaskFinished')
+        if VDist3(self.Location, unit:GetPosition()) > self.Radius and not EntityCategoryContains(categories.COMMAND, unit) then
+            self:ReassignUnit(unit)
+        else
+            self:ForkEngineerTask(unit)
         end
     end,
-
-    -- For AI Patch V4. (patched)
+-- For AI Patch V8 KillThread
+    ForkEngineerTask = function(manager, unit)
+        --LOG('+ ForkEngineerTask')
+        if unit.ForkedEngineerTask then
+            KillThread(unit.ForkedEngineerTask)
+            unit.ForkedEngineerTask = unit:ForkThread(manager.Wait, manager, 3)
+        else
+            unit.ForkedEngineerTask = unit:ForkThread(manager.Wait, manager, 20)
+        end
+    end,
+-- For AI Patch V8 KillThread
+    DelayAssign = function(manager, unit, delaytime)
+        --LOG('+ DelayAssign')
+        if unit.ForkedEngineerTask then
+            KillThread(unit.ForkedEngineerTask)
+        end
+        unit.ForkedEngineerTask = unit:ForkThread(manager.Wait, manager, delaytime or 10)
+    end,
+-- For AI Patch V8 manager:AssignEngineerTask(unit)
+    Wait = function(unit, manager, ticks)
+        --LOG('+ Wait')
+        coroutine.yield(ticks)
+        if not unit.Dead then
+            manager:AssignEngineerTask(unit)
+        end
+    end,
+-- For AI Patch V8 self:ForkEngineerTask(unit)
     AssignEngineerTask = function(self, unit)
-        unit.LastActive = GetGameTimeSeconds()
+        --LOG('+ AssignEngineerTask')
         if unit.UnitBeingAssist or unit.UnitBeingBuilt then
-            self:DelayAssign(self, unit)
+            self:DelayAssign(unit, 50)
             return
         end
 
@@ -30,7 +117,7 @@ EngineerManager = Class(TheOldEngineerManager) {
         unit.MinNumAssistees = nil
 
         if self.AssigningTask then
-            self:DelayAssign(self, unit)
+            self:DelayAssign(unit, 50)
             return
         else
             self.AssigningTask = true
@@ -105,6 +192,23 @@ EngineerManager = Class(TheOldEngineerManager) {
             return
         end
         self.AssigningTask = false
-        self:ForkThread(self.EngineerWaiting, unit)
+        self:DelayAssign(unit, 50)
     end,
+
+    -- Hook For AI-Uveso. Don't need this, we have our own ecomanagement
+    LowMass = function(self)
+        -- Only use this with AI-Uveso
+        if not self.Brain.Uveso then
+            return TheOldEngineerManager.LowMass(self)
+        end
+    end,
+
+    -- Hook For AI-Uveso. Don't need this, we have our own ecomanagement
+    LowEnergy = function(self)
+        -- Only use this with AI-Uveso
+        if not self.Brain.Uveso then
+            return TheOldEngineerManager.LowEnergy(self)
+        end
+    end,
+
 }

@@ -1,6 +1,7 @@
 -- hook for additional build conditions used from AIBuilders
 
 local BASEPOSTITIONS = {}
+local mapSizeX, mapSizeZ = GetMapSize()
 
 --{ UCBC, 'ReturnTrue', {} },
 function ReturnTrue(aiBrain)
@@ -63,33 +64,6 @@ function LessThanGameTimeSeconds(aiBrain, num)
     return false
 end
 
---            { UCBC, 'LessThanMassTrend', { 50.0 } },
-function LessThanMassTrend(aiBrain, mTrend)
-    local econ = AIUtils.AIGetEconomyNumbers(aiBrain)
-    if econ.MassTrend < mTrend then
-        return true
-    else
-        return false
-    end
-end
-
---            { UCBC, 'LessThanEnergyTrend', { 50.0 } },
-function LessThanEnergyTrend(aiBrain, eTrend)
-    local econ = AIUtils.AIGetEconomyNumbers(aiBrain)
-    if econ.EnergyTrend < eTrend then
-        return true
-    else
-        return false
-    end
-end
-
---            { UCBC, 'EnergyToMassRatioIncome', { 10.0, '>=',true } },  -- True if we have 10 times more Energy then Mass income ( 100 >= 10 = true )
-function EnergyToMassRatioIncome(aiBrain, ratio, compareType)
-    local econ = AIUtils.AIGetEconomyNumbers(aiBrain)
-    --LOG(aiBrain:GetArmyIndex()..' CompareBody {World} ( E:'..(econ.EnergyIncome*10)..' '..compareType..' M:'..(econ.MassIncome*10)..' ) -- R['..ratio..'] -- return '..repr(CompareBody(econ.EnergyIncome / econ.MassIncome, ratio, compareType)))
-    return CompareBody(econ.EnergyIncome / econ.MassIncome, ratio, compareType)
-end
-
 --            { UCBC, 'HaveUnitRatioVersusCap', { 0.024, '<=', categories.STRUCTURE * categories.FACTORY * categories.LAND } }, -- Maximal 3 factories at 125 unitcap, 12 factories at 500 unitcap...
 function HaveUnitRatioVersusCap(aiBrain, ratio, compareType, categoryOwn)
     local numOwnUnits = aiBrain:GetCurrentUnits(categoryOwn)
@@ -105,7 +79,6 @@ function HaveUnitRatioVersusEnemy(aiBrain, ratio, categoryOwn, compareType, cate
         return true
     end
     local numOwnUnits = aiBrain:GetCurrentUnits(categoryOwn)
-    local mapSizeX, mapSizeZ = GetMapSize()
     local numEnemyUnits = aiBrain:GetNumUnitsAroundPoint(categoryEnemy, Vector(mapSizeX/2,0,mapSizeZ/2), mapSizeX+mapSizeZ , 'Enemy')
     --LOG(aiBrain:GetArmyIndex()..' CompareBody {World} ( '..numOwnUnits..' '..compareType..' '..numEnemyUnits..' ) -- ['..ratio..'] -- return '..repr(CompareBody(numOwnUnits / numEnemyUnits, ratio, compareType)))
     return CompareBody(numOwnUnits / numEnemyUnits, ratio, compareType)
@@ -118,7 +91,7 @@ function HaveUnitRatioAtLocation(aiBrain, locType, ratio, categoryNeed, compareT
         baseposition = BASEPOSTITIONS[AIName][locType].Pos
         radius = BASEPOSTITIONS[AIName][locType].Rad
     elseif aiBrain.BuilderManagers[locType] then
-        baseposition = aiBrain.BuilderManagers[locType].FactoryManager:GetLocationCoords()
+        baseposition = aiBrain.BuilderManagers[locType].FactoryManager.Location
         radius = aiBrain.BuilderManagers[locType].FactoryManager:GetLocationRadius()
         BASEPOSTITIONS[AIName] = BASEPOSTITIONS[AIName] or {} 
         BASEPOSTITIONS[AIName][locType] = {Pos=baseposition, Rad=radius}
@@ -150,7 +123,7 @@ function HaveUnitRatioAtLocationRadiusVersusEnemy(aiBrain, ratio, locType, radiu
         baseposition = BASEPOSTITIONS[AIName][locType].Pos
         radius = BASEPOSTITIONS[AIName][locType].Rad
     elseif aiBrain.BuilderManagers[locType] then
-        baseposition = aiBrain.BuilderManagers[locType].FactoryManager:GetLocationCoords()
+        baseposition = aiBrain.BuilderManagers[locType].FactoryManager.Location
         radius = aiBrain.BuilderManagers[locType].FactoryManager:GetLocationRadius()
         BASEPOSTITIONS[AIName] = BASEPOSTITIONS[AIName] or {} 
         BASEPOSTITIONS[AIName][locType] = {Pos=baseposition, Rad=radius}
@@ -169,7 +142,6 @@ function HaveUnitRatioAtLocationRadiusVersusEnemy(aiBrain, ratio, locType, radiu
         return false
     end
     local numNeedUnits = aiBrain:GetNumUnitsAroundPoint(categoryOwn, baseposition, radius , 'Ally')
-    local mapSizeX, mapSizeZ = GetMapSize()
     local numEnemyUnits = aiBrain:GetNumUnitsAroundPoint(categoryEnemy, Vector(mapSizeX/2,0,mapSizeZ/2), mapSizeX+mapSizeZ , 'Enemy')
     return CompareBody(numNeedUnits / numEnemyUnits, ratio, compareType)
 end
@@ -233,7 +205,6 @@ end
 --            { UCBC, 'UnitsLessAtEnemy', { 1 , 'MOBILE EXPERIMENTAL' } },
 --            { UCBC, 'UnitsGreaterAtEnemy', { 1 , 'MOBILE EXPERIMENTAL' } },
 function GetEnemyUnits(aiBrain, unitCount, categoryEnemy, compareType)
-    local mapSizeX, mapSizeZ = GetMapSize()
     local numEnemyUnits = aiBrain:GetNumUnitsAroundPoint(categoryEnemy, Vector(mapSizeX/2,0,mapSizeZ/2), mapSizeX+mapSizeZ , 'Enemy')
     --LOG(aiBrain:GetArmyIndex()..' CompareBody {World} '..categoryEnemy..' ['..numEnemyUnits..'] '..compareType..' ['..unitCount..'] return '..repr(CompareBody(numEnemyUnits, unitCount, compareType)))
     return CompareBody(numEnemyUnits, unitCount, compareType)
@@ -273,9 +244,9 @@ end
 function HaveGreaterThanUnitsInCategoryBeingBuiltAtLocation(aiBrain, locationType, numReq, category, constructionCat)
     local numUnits
     if constructionCat then
-        numUnits = table.getn( GetUnitsBeingBuiltLocation(aiBrain, locationType, category, category + categories.ENGINEER * categories.MOBILE + constructionCat) or {} )
+        numUnits = table.getn( GetUnitsBeingBuiltLocation(aiBrain, locationType, category, category + (categories.ENGINEER * categories.MOBILE - categories.STATIONASSISTPOD) + constructionCat) or {} )
     else
-        numUnits = table.getn( GetUnitsBeingBuiltLocation(aiBrain,locationType, category, category + categories.ENGINEER * categories.MOBILE ) or {} )
+        numUnits = table.getn( GetUnitsBeingBuiltLocation(aiBrain,locationType, category, category + (categories.ENGINEER * categories.MOBILE - categories.STATIONASSISTPOD) ) or {} )
     end
     if numUnits > numReq then
         return true
@@ -290,7 +261,7 @@ function GetUnitsBeingBuiltLocation(aiBrain, locType, buildingCategory, builderC
         baseposition = BASEPOSTITIONS[AIName][locType].Pos
         radius = BASEPOSTITIONS[AIName][locType].Rad
     elseif aiBrain.BuilderManagers[locType] then
-        baseposition = aiBrain.BuilderManagers[locType].FactoryManager:GetLocationCoords()
+        baseposition = aiBrain.BuilderManagers[locType].FactoryManager.Location
         radius = aiBrain.BuilderManagers[locType].FactoryManager:GetLocationRadius()
         BASEPOSTITIONS[AIName] = BASEPOSTITIONS[AIName] or {} 
         BASEPOSTITIONS[AIName][locType] = {Pos=baseposition, Rad=radius}
@@ -345,7 +316,7 @@ function GetOwnUnitsAroundLocation(aiBrain, category, location, radius)
 end
 
 function HaveLessThanIdleEngineers(aiBrain, count, tech)
-    local ENGINEER = aiBrain:GetListOfUnits(categories.ENGINEER, true, false)
+    local ENGINEER = aiBrain:GetListOfUnits(categories.ENGINEER - categories.STATIONASSISTPOD, true, false)
     local engineers = {}
     engineers[5] = EntityCategoryFilterDown(categories.SUBCOMMANDER, ENGINEER)
     engineers[4] = EntityCategoryFilterDown(categories.TECH3 - categories.SUBCOMMANDER, ENGINEER)
@@ -360,22 +331,6 @@ function HaveLessThanIdleEngineers(aiBrain, count, tech)
     end
     --LOG('tech '..tech..' - Eng='..table.getn(engineers[tech])..' - idle='..c..' == '..repr(c < count))
     return c < count
-end
-
---            { UCBC, 'HasParagon', {} },
-function HasParagon(aiBrain)
-    if aiBrain.HasParagon then
-        return true
-    end
-    return false
-end
-
---            { UCBC, 'HasNotParagon', {} },
-function HasNotParagon(aiBrain)
-    if not aiBrain.HasParagon then
-        return true
-    end
-    return false
 end
 
 --            { UCBC, 'NavalBaseWithLeastUnits', {  60, 'LocationType', categories.STRUCTURE * categories.FACTORY * categories.NAVAL }}, -- radius, LocationType, categoryUnits
@@ -401,6 +356,28 @@ function NavalBaseWithLeastUnits(aiBrain, radius, locationType, unitCategory)
     return locationType == lowloc
 end
 
+--            { UCBC, 'CanPathNavalBaseToNavalTargets', {  'LocationType', categories.STRUCTURE * categories.FACTORY * categories.NAVAL }}, -- LocationType, categoryUnits
+function CanPathNavalBaseToNavalTargets(aiBrain, locationType, unitCategory)
+    local AIAttackUtils = import('/lua/AI/aiattackutilities.lua')
+    baseposition = aiBrain.BuilderManagers[locationType].FactoryManager.Location
+    --LOG('Searching water path from base ['..locationType..'] position '..repr(baseposition))
+    local EnemyNavalUnits = aiBrain:GetUnitsAroundPoint(unitCategory, Vector(mapSizeX/2,0,mapSizeZ/2), mapSizeX+mapSizeZ, 'Enemy')
+    local path, reason
+    for _, EnemyUnit in EnemyNavalUnits do
+        if not EnemyUnit.Dead then
+            --LOG('checking enemy factories '..repr(EnemyUnit:GetPosition()))
+            path, reason = AIAttackUtils.PlatoonGenerateSafePathTo(aiBrain, 'Water', baseposition, EnemyUnit:GetPosition(), 1)
+            --LOG('reason'..repr(reason))
+            if path then
+                --LOG('Found a water path from base ['..locationType..'] to enemy position '..repr(EnemyUnit:GetPosition()))
+                return true
+            end
+        end
+    end
+    --LOG('Found no path to any target from naval base ['..locationType..']')
+    return false
+end
+
 --            { UCBC, 'UnfinishedUnitsAtLocation', { 'LocationType' }},
 function UnfinishedUnitsAtLocation(aiBrain, locationType)
     local engineerManager = aiBrain.BuilderManagers[locationType].EngineerManager
@@ -408,7 +385,7 @@ function UnfinishedUnitsAtLocation(aiBrain, locationType)
         --WARN('*AI WARNING: UnfinishedUnitsAtLocation: Invalid location - ' .. locationType)
         return false
     end
-    local unfinishedUnits = aiBrain:GetUnitsAroundPoint(categories.STRUCTURE + categories.EXPERIMENTAL, engineerManager:GetLocationCoords(), engineerManager.Radius, 'Ally')
+    local unfinishedUnits = aiBrain:GetUnitsAroundPoint(categories.STRUCTURE + categories.EXPERIMENTAL, engineerManager.Location, engineerManager.Radius, 'Ally')
     for num, unit in unfinishedUnits do
         local FractionComplete = unit:GetFractionComplete()
         if FractionComplete < 1 and table.getn(unit:GetGuards()) < 1 then
@@ -517,5 +494,21 @@ function HaveLessUnitsInLayer(aiBrain, layer)
     end
     LOG('Less Units in layer: '..layer..'. Land:('..LANDMOBILE..') Air:('..AIRMOBILE..') Naval:('..NAVALMOBILE..')')
     return true
+end
+
+--            { UCBC, 'HasParagon', {} },
+function HasParagon(aiBrain)
+    if aiBrain.HasParagon then
+        return true
+    end
+    return false
+end
+
+--            { UCBC, 'HasNotParagon', {} },
+function HasNotParagon(aiBrain)
+    if not aiBrain.HasParagon then
+        return true
+    end
+    return false
 end
 

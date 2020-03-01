@@ -21,7 +21,9 @@ BaseBuilderTemplate {
         -----------------------------------------------------------------------------
         -- Build Engineers Tech 1,2,3 and SACU
         'Swarm Engineer Builders',            -- Priority = 900
+        'Swarm SACU Builder',
         'Swarm Engineering Support Builder',
+        'Swarm Hive+Kennel Upgrade', 
         -- Assistees
         'Swarm Engineer Assistees',
         -- Reclaim mass
@@ -48,6 +50,7 @@ BaseBuilderTemplate {
         'Swarm Factory Builders Expansions',
         -- Upgrade Factories TECH1->TECH2 and TECH2->TECH3
         'Swarm Factory Upgrader Rush',
+        'Swarm Gate Builders',
 
         -----------------------------------------------------------------------------
         -- ==== Land Units BUILDER ==== --
@@ -58,6 +61,7 @@ BaseBuilderTemplate {
         -- ==== Land Units FORMER==== --
         -----------------------------------------------------------------------------
         'AISwarm Platoon Builder',
+        'S3 SACU Formers',
 
         -----------------------------------------------------------------------------
         -- ==== Air Units BUILDER ==== --

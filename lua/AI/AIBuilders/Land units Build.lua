@@ -544,3 +544,170 @@ BuilderGroup {
         BuilderType = 'Any',                                                    
     },
 }
+
+BuilderGroup {
+    BuilderGroupName = 'S3 SACU Formers',                              
+    BuildersType = 'PlatoonFormBuilder',
+-- ================= --
+--    SACU Former    --
+-- ================= --
+    Builder {
+        BuilderName = 'U3 Teleport 1',
+        PlatoonTemplate = 'SACU Teleport 1 1',
+        Priority = 21000,
+        InstanceCount = 3,
+        FormRadius = 10000,
+        BuilderData = {
+            SearchRadius = 10000,                                               -- Searchradius for new target.
+            GetTargetsFromBase = false,                                         -- Get targets from base position (true) or platoon position (false)
+            AggressiveMove = false,                                             -- If true, the unit will attack everything while moving to the target.
+            AttackEnemyStrength = 50000,                                        -- Compare platoon to enemy strenght. 100 will attack equal, 50 weaker and 150 stronger enemies.
+            IgnorePathing = true,                                               -- If true, the platoon will not use AI pathmarkers and move directly to the target
+            TargetSearchCategory = categories.STRUCTURE - categories.NAVAL,     -- Only find targets matching these categories.
+            MoveToCategories = {                                                -- Move to targets
+                categories.STRUCTURE * categories.EXPERIMENTAL * categories.ECONOMIC,
+                categories.STRUCTURE * categories.EXPERIMENTAL * categories.SHIELD,
+                categories.STRUCTURE * categories.ENERGYPRODUCTION * categories.TECH3,
+                categories.STRUCTURE * categories.EXPERIMENTAL,
+                categories.FACTORY * categories.TECH3,
+                categories.ALLUNITS,
+            },
+        },
+        BuilderConditions = {
+            { MIBC, 'FactionIndex', { 2, 4 }}, -- 1: UEF, 2: Aeon, 3: Cybran, 4: Seraphim, 5: Nomads 
+
+            { EBC, 'GreaterThanEconTrend', { 0.0, 1000.0 } }, -- relative income (wee need 10000 energy for a teleport. x3 SACU's
+
+            { UCBC, 'HaveGreaterThanArmyPoolWithCategory', { 0, categories.SUBCOMMANDER} },
+
+            { UCBC, 'UnitsGreaterAtEnemy', { 1 , categories.STRUCTURE } },
+        },
+        BuilderType = 'Any',
+    },
+    Builder {
+        BuilderName = 'U3 Teleport 3',
+        PlatoonTemplate = 'SACU Teleport 3 3',
+        Priority = 21000,
+        InstanceCount = 2,
+        FormRadius = 10000,
+        BuilderData = {
+            SearchRadius = 10000,                                               -- Searchradius for new target.
+            GetTargetsFromBase = false,                                         -- Get targets from base position (true) or platoon position (false)
+            AggressiveMove = false,                                             -- If true, the unit will attack everything while moving to the target.
+            AttackEnemyStrength = 50000,                                        -- Compare platoon to enemy strenght. 100 will attack equal, 50 weaker and 150 stronger enemies.
+            IgnorePathing = true,                                               -- If true, the platoon will not use AI pathmarkers and move directly to the target
+            TargetSearchCategory = categories.STRUCTURE - categories.NAVAL,     -- Only find targets matching these categories.
+            MoveToCategories = {                                                -- Move to targets
+                categories.STRUCTURE * categories.EXPERIMENTAL * categories.ECONOMIC,
+                categories.STRUCTURE * categories.EXPERIMENTAL * categories.SHIELD,
+                categories.STRUCTURE * categories.ENERGYPRODUCTION * categories.TECH3,
+                categories.STRUCTURE * categories.EXPERIMENTAL,
+                categories.FACTORY * categories.TECH3,
+                categories.ALLUNITS,
+            },
+        },
+        BuilderConditions = {
+            { MIBC, 'FactionIndex', { 2, 4 }}, -- 1: UEF, 2: Aeon, 3: Cybran, 4: Seraphim, 5: Nomads 
+
+            { EBC, 'GreaterThanEconTrend', { 0.0, 3000.0 } }, -- relative income (wee need 10000 energy for a teleport. x3 SACU's
+
+            { UCBC, 'HaveGreaterThanArmyPoolWithCategory', { 3, categories.SUBCOMMANDER} },
+
+            { UCBC, 'UnitsGreaterAtEnemy', { 1 , categories.STRUCTURE } },
+        },
+        BuilderType = 'Any',
+    },
+    Builder {
+        BuilderName = 'U3 Teleport 6',
+        PlatoonTemplate = 'SACU Teleport 6 6',
+        Priority = 21000,
+        InstanceCount = 1,
+        FormRadius = 10000,
+        BuilderData = {
+            SearchRadius = 10000,                                               -- Searchradius for new target.
+            GetTargetsFromBase = false,                                         -- Get targets from base position (true) or platoon position (false)
+            AggressiveMove = false,                                             -- If true, the unit will attack everything while moving to the target.
+            AttackEnemyStrength = 50000,                                        -- Compare platoon to enemy strenght. 100 will attack equal, 50 weaker and 150 stronger enemies.
+            IgnorePathing = true,                                               -- If true, the platoon will not use AI pathmarkers and move directly to the target
+            TargetSearchCategory = categories.STRUCTURE - categories.NAVAL,     -- Only find targets matching these categories.
+            MoveToCategories = {                                                -- Move to targets
+                categories.STRUCTURE * categories.EXPERIMENTAL * categories.ECONOMIC,
+                categories.STRUCTURE * categories.EXPERIMENTAL * categories.SHIELD,
+                categories.STRUCTURE * categories.ENERGYPRODUCTION * categories.TECH3,
+                categories.STRUCTURE * categories.EXPERIMENTAL,
+                categories.FACTORY * categories.TECH3,
+                categories.ALLUNITS,
+            },
+        },
+        BuilderConditions = {
+            { MIBC, 'FactionIndex', { 2, 4 }}, -- 1: UEF, 2: Aeon, 3: Cybran, 4: Seraphim, 5: Nomads 
+
+            { EBC, 'GreaterThanEconTrend', { 0.0, 6000.0 } }, -- relative income (wee need 10000 energy for a teleport. x3 SACU's
+
+            { UCBC, 'HaveGreaterThanArmyPoolWithCategory', { 6, categories.SUBCOMMANDER} },
+
+            { UCBC, 'UnitsGreaterAtEnemy', { 1 , categories.STRUCTURE } },
+        },
+        BuilderType = 'Any',
+    },
+    Builder {
+        BuilderName = 'U3 Teleport 9',
+        PlatoonTemplate = 'SACU Teleport 9 9',
+        Priority = 21000,
+        InstanceCount = 1,
+        FormRadius = 10000,
+        BuilderData = {
+            SearchRadius = 10000,                                               -- Searchradius for new target.
+            GetTargetsFromBase = false,                                         -- Get targets from base position (true) or platoon position (false)
+            AggressiveMove = false,                                             -- If true, the unit will attack everything while moving to the target.
+            AttackEnemyStrength = 50000,                                        -- Compare platoon to enemy strenght. 100 will attack equal, 50 weaker and 150 stronger enemies.
+            IgnorePathing = true,                                               -- If true, the platoon will not use AI pathmarkers and move directly to the target
+            TargetSearchCategory = categories.STRUCTURE - categories.NAVAL,     -- Only find targets matching these categories.
+            MoveToCategories = {                                                -- Move to targets
+                categories.STRUCTURE * categories.EXPERIMENTAL * categories.ECONOMIC,
+                categories.STRUCTURE * categories.EXPERIMENTAL * categories.SHIELD,
+                categories.STRUCTURE * categories.ENERGYPRODUCTION * categories.TECH3,
+                categories.STRUCTURE * categories.EXPERIMENTAL,
+                categories.FACTORY * categories.TECH3,
+                categories.ALLUNITS,
+            },
+        },
+        BuilderConditions = {
+            { MIBC, 'FactionIndex', { 2, 4 }}, -- 1: UEF, 2: Aeon, 3: Cybran, 4: Seraphim, 5: Nomads 
+
+            { EBC, 'GreaterThanEconTrend', { 0.0, 12000.0 } }, -- relative income (wee need 10000 energy for a teleport. x3 SACU's
+
+            { UCBC, 'HaveGreaterThanArmyPoolWithCategory', { 9, categories.SUBCOMMANDER} },
+
+            { UCBC, 'UnitsGreaterAtEnemy', { 1 , categories.STRUCTURE } },
+        },
+        BuilderType = 'Any',
+    },
+    Builder {
+        BuilderName = 'U3 SACU CAP 3 7',
+        PlatoonTemplate = 'SACU Fight 3 7',
+        Priority = 500,
+        InstanceCount = 4,
+        FormRadius = 10000,
+        BuilderData = {
+            SearchRadius = BaseEnemyZone,                                       -- Searchradius for new target.
+            GetTargetsFromBase = false,                                         -- Get targets from base position (true) or platoon position (false)
+            AggressiveMove = false,                                             -- If true, the unit will attack everything while moving to the target.
+            AttackEnemyStrength = 100,                                        -- Compare platoon to enemy strenght. 100 will attack equal, 50 weaker and 150 stronger enemies.
+            IgnorePathing = false,                                              -- If true, the platoon will not use AI pathmarkers and move directly to the target
+            TargetSearchCategory = categories.STRUCTURE - categories.NAVAL,     -- Only find targets matching these categories.
+            MoveToCategories = {                                                -- Move to targets
+                categories.STRUCTURE * categories.EXPERIMENTAL * categories.ECONOMIC,
+                categories.STRUCTURE * categories.EXPERIMENTAL * categories.SHIELD,
+                categories.STRUCTURE * categories.ENERGYPRODUCTION * categories.TECH3,
+                categories.STRUCTURE * categories.EXPERIMENTAL,
+                categories.FACTORY * categories.TECH3,
+                categories.ALLUNITS,
+            },
+        },
+        BuilderConditions = {
+            { UCBC, 'HaveGreaterThanArmyPoolWithCategory', { 3, categories.SUBCOMMANDER} },
+        },
+        BuilderType = 'Any',
+    },
+}

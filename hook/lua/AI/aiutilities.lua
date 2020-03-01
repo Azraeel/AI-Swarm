@@ -1,6 +1,6 @@
 
 
--- Enhancment for BuildOnMassAI
+-- Hook For AI-Uveso. Enhancment for BuildOnMassAI
 UvesoEngineerMoveWithSafePath = EngineerMoveWithSafePath
 function EngineerMoveWithSafePath(aiBrain, unit, destination)
     -- Only use this with AI-Uveso
@@ -25,10 +25,10 @@ function EngineerMoveWithSafePath(aiBrain, unit, destination)
         if reason == 'NoGraph' then
             result = true
         elseif VDist2(pos[1], pos[3], destination[1], destination[3]) < 200 then
-            LOG('* AI-Uveso: EngineerMoveWithSafePath(): executing CanPathTo  because of ('..repr(reason)..') '..VDist2(pos[1], pos[3], destination[1], destination[3]))
+            SPEW('* AI-Uveso: EngineerMoveWithSafePath(): executing CanPathTo(). LUA GenerateSafePathTo returned: ('..repr(reason)..') '..VDist2(pos[1], pos[3], destination[1], destination[3]))
             -- be really sure we don't try a pathing with a destoryed c-object
             if unit.Dead or unit:BeenDestroyed() or IsDestroyed(unit) then
-                LOG('unit is death before calling CanPathTo()')
+                SPEW('* AI-Uveso: Unit is death before calling CanPathTo()')
                 return false
             end
             result, bestPos = unit:CanPathTo(destination)
@@ -78,7 +78,7 @@ function EngineerMoveWithSafePath(aiBrain, unit, destination)
     return false
 end
 
--- For AI Patch V7. Faster transport drop off
+-- For AI Patch V8. Faster transport drop off
 function UseTransports(units, transports, location, transportPlatoon)
     local aiBrain
     for k, v in units do
@@ -281,7 +281,7 @@ function UseTransports(units, transports, location, transportPlatoon)
     return true
 end
 
--- For AI Patch V7. fixed return value in case there is reclaim
+-- For AI Patch V8. fixed return value in case there is reclaim
 function EngineerTryReclaimCaptureArea(aiBrain, eng, pos)
     if not pos then
         return false
@@ -302,13 +302,14 @@ function EngineerTryReclaimCaptureArea(aiBrain, eng, pos)
                 -- if we can capture the unit/building then do so
                 unit.CaptureInProgress = true
                 IssueCapture({eng}, unit)
+                Reclaiming = true
             else
                 -- if we can't capture then reclaim
                 unit.ReclaimInProgress = true
                 IssueReclaim({eng}, unit)
+                Reclaiming = true
             end
         end
-        Reclaiming = true
     end
     -- reclaim rocks etc or we can't build mexes or hydros
     local Reclaimables = GetReclaimablesInRect(Rect(pos[1], pos[3], pos[1], pos[3]))
@@ -323,12 +324,9 @@ function EngineerTryReclaimCaptureArea(aiBrain, eng, pos)
     return Reclaiming
 end
 
-
-
-
-
--- Helper function for targeting
+-- AI-Uveso: Helper function for targeting
 function ValidateLayer(UnitPos,MovementLayer)
+    -- Air can go everywhere
     if MovementLayer == 'Air' then
         return true
     end
@@ -339,7 +337,7 @@ function ValidateLayer(UnitPos,MovementLayer)
         --LOG('AttackLayer '..MovementLayer..' - TerrainHeight > SurfaceHeight. = Target is on land ')
         return true
     end
-    -- Terrain > Surface = Target is underwater
+    -- Terrain < Surface = Target is underwater
     if TerrainHeight < SurfaceHeight and ( MovementLayer == 'Water' or MovementLayer == 'Amphibious' ) then
         --LOG('AttackLayer '..MovementLayer..' - TerrainHeight < SurfaceHeight. = Target is on water ')
         return true
@@ -348,7 +346,22 @@ function ValidateLayer(UnitPos,MovementLayer)
     return false
 end
 
--- Target function
+-- AI-Uveso: Helper function for targeting
+function IsNukeBlastArea(aiBrain, TargetPosition)
+    -- check if the target is inside a nuke blast radius
+    if aiBrain.NukedArea then
+        for i, data in aiBrain.NukedArea or {} do
+            if data.NukeTime + 50 <  GetGameTimeSeconds() then
+                table.remove(aiBrain.NukedArea, i)
+            elseif VDist2(TargetPosition[1], TargetPosition[3], data.Location[1], data.Location[3]) < 40 then
+                return true
+            end
+        end
+    end
+    return false
+end
+
+-- AI-Uveso: Target function
 function AIFindNearestCategoryTargetInRange(aiBrain, platoon, squad, position, maxRange, MoveToCategories, TargetSearchCategory, enemyBrain)
     if not maxRange then
         --LOG('* AI-Uveso: AIFindNearestCategoryTargetInRange: function called with empty "maxRange"' )
@@ -428,9 +441,11 @@ function AIFindNearestCategoryTargetInRange(aiBrain, platoon, squad, position, m
                 end
                 TargetPosition = Target:GetPosition()
                 EnemyStrength = 0
+                -- check if the target is inside a nuke blast radius
+                if IsNukeBlastArea(aiBrain, TargetPosition) then continue end
                 -- check if the target is on the same layer then the attacker
                 if not ValidateLayer(TargetPosition, platoon.MovementLayer) then continue end
-                -- check if we have a special player index as enemy
+                -- check if we have a special player as enemy
                 if enemyBrain and enemyIndex and enemyBrain ~= enemyIndex then continue end
                 -- check if the Target is still alive, matches our target priority and can be attacked from our platoon
                 canAttack = platoon:CanAttackTarget(squad, Target) or false
@@ -556,8 +571,9 @@ function AIFindNearestCategoryTargetInRangeCDR(aiBrain, position, maxRange, Move
                 end
                 TargetPosition = Target:GetPosition()
                 EnemyStrength = 0
-                -- check if the target is on the same layer then the attacker
-                -- check if we have a special player index as enemy
+                -- check if the target is inside a nuke blast radius
+                if IsNukeBlastArea(aiBrain, TargetPosition) then continue end
+                -- check if we have a special player as enemy
                 if enemyBrain and enemyIndex and enemyBrain ~= enemyIndex then continue end
                 -- check if the Target is still alive, matches our target priority and can be attacked from our platoon
                 if not Target.Dead and EntityCategoryContains(category, Target) then
@@ -615,8 +631,9 @@ function AIFindNearestCategoryTeleportLocation(aiBrain, position, maxRange, Move
                 continue
             end
             TargetPosition = Target:GetPosition()
-            -- check if the target is on the same layer then the attacker
-            -- check if we have a special player index as enemy
+            -- check if the target is inside a nuke blast radius
+            if IsNukeBlastArea(aiBrain, TargetPosition) then continue end
+            -- check if we have a special player as enemy
             if enemyBrain and enemyIndex and enemyBrain ~= enemyIndex then continue end
             -- check if the Target is still alive, matches our target priority and can be attacked from our platoon
             if not Target.Dead and EntityCategoryContains(category, Target) then
