@@ -21,9 +21,9 @@ BuilderGroup { BuilderGroupName = 'Swarm Transports - Water Map',               
 
             { MIBC, 'CanPathToCurrentEnemy', { false } },
 
-            { UCBC, 'LocationFactoriesBuildingLess', { 'LocationType', 3, categories.AIR * categories.TRANSPORTATION} },
+            { UCBC, 'LocationFactoriesBuildingLess', { 'LocationType', 1, categories.AIR * categories.TRANSPORTATION} },
 
-            { UCBC, 'PoolLessAtLocation', { 'LocationType', 3, categories.AIR * categories.TRANSPORTATION }},
+            { UCBC, 'PoolLessAtLocation', { 'LocationType', 1, categories.AIR * categories.TRANSPORTATION }},
         },
         BuilderType = 'Air',
     },
@@ -43,9 +43,9 @@ BuilderGroup { BuilderGroupName = 'Swarm Transports - Water Map',               
 
             { MIBC, 'CanPathToCurrentEnemy', { false } },
 
-            { UCBC, 'LocationFactoriesBuildingLess', { 'LocationType', 3, categories.AIR * categories.TRANSPORTATION} },
+            { UCBC, 'LocationFactoriesBuildingLess', { 'LocationType', 1, categories.AIR * categories.TRANSPORTATION} },
 
-            { UCBC, 'PoolLessAtLocation', { 'LocationType', 3, categories.AIR * categories.TRANSPORTATION }}
+            { UCBC, 'PoolLessAtLocation', { 'LocationType', 1, categories.AIR * categories.TRANSPORTATION }}
         },
         BuilderType = 'Air',
     },
@@ -65,9 +65,9 @@ BuilderGroup { BuilderGroupName = 'Swarm Transports - Water Map',               
 
             { MIBC, 'CanPathToCurrentEnemy', { false } },
 
-            { UCBC, 'LocationFactoriesBuildingLess', { 'LocationType', 3, categories.AIR * categories.TRANSPORTATION} },
+            { UCBC, 'LocationFactoriesBuildingLess', { 'LocationType', 1, categories.AIR * categories.TRANSPORTATION} },
 
-            { UCBC, 'PoolLessAtLocation', { 'LocationType', 3, categories.AIR * categories.TRANSPORTATION }}
+            { UCBC, 'PoolLessAtLocation', { 'LocationType', 1, categories.AIR * categories.TRANSPORTATION }}
        },
         BuilderType = 'Air',
     }, 
@@ -279,7 +279,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Factory Builder - Water Map',
 
             { EBC, 'MassToFactoryRatioBaseCheck', { 'LocationType' } },
 
-            { UCBC, 'HaveLessThanUnitsWithCategory', { 2, categories.STRUCTURE * categories.FACTORY * categories.LAND * (categories.TECH1 + categories.TECH2 + categories.TECH3) }},
+            { UCBC, 'HaveLessThanUnitsWithCategory', { 1, categories.STRUCTURE * categories.FACTORY * categories.LAND * (categories.TECH1 + categories.TECH2 + categories.TECH3) }},
         },
         BuilderType = 'Any',
         BuilderData = {
@@ -297,7 +297,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Factory Builder - Water Map',
     Builder {
         BuilderName = 'Swarm Commander Factory Builder Air - Water Map',
         PlatoonTemplate = 'CommanderBuilder',
-        Priority = 595,
+        Priority = 600,
         DelayEqualBuildPlattons = {'Factories', 3},
         BuilderConditions = {
             { UCBC, 'CheckBuildPlattonDelay', { 'Factories' }},
@@ -337,7 +337,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Factory Builder - Water Map',
 
             { EBC, 'MassToFactoryRatioBaseCheck', { 'LocationType' } },
 
-            { UCBC, 'HaveLessThanUnitsWithCategory', { 4, categories.STRUCTURE * categories.FACTORY * categories.LAND * (categories.TECH1 + categories.TECH2 + categories.TECH3) }},
+            { UCBC, 'HaveLessThanUnitsWithCategory', { 3, categories.STRUCTURE * categories.FACTORY * categories.LAND * (categories.TECH1 + categories.TECH2 + categories.TECH3) }},
         },
         BuilderType = 'Any',
         BuilderData = {
@@ -355,7 +355,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Factory Builder - Water Map',
     Builder {
         BuilderName = 'Swarm Factory Builder Air - Water Map',
         PlatoonTemplate = 'EngineerBuilder',
-        Priority = 605,
+        Priority = 610,
         DelayEqualBuildPlattons = {'Factories', 3},
         BuilderConditions = {
             { UCBC, 'CheckBuildPlattonDelay', { 'Factories' }},
@@ -368,7 +368,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Factory Builder - Water Map',
 
             { UCBC, 'HaveLessThanUnitsInCategoryBeingBuilt', { 1, categories.STRUCTURE * categories.FACTORY * categories.AIR * categories.TECH1 }},
 
-            { UCBC, 'HaveLessThanUnitsWithCategory', { 5, categories.STRUCTURE * categories.FACTORY * categories.AIR * (categories.TECH1 + categories.TECH2 + categories.TECH3) }},
+            { UCBC, 'HaveLessThanUnitsWithCategory', { 7, categories.STRUCTURE * categories.FACTORY * categories.AIR * (categories.TECH1 + categories.TECH2 + categories.TECH3) }},
         },
         BuilderType = 'Any',
         BuilderData = {
