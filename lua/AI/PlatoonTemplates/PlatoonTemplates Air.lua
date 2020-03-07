@@ -11,6 +11,14 @@ PlatoonTemplate {
 }
 
 PlatoonTemplate {
+    Name = 'U123-TorpedoBomber 1 100',    
+    Plan = 'InterceptorAIUveso',
+    GlobalSquads = {
+        { categories.MOBILE * categories.AIR * categories.ANTINAVY - categories.TRANSPORTFOCUS - categories.EXPERIMENTAL, 1, 100, 'Attack', 'AttackFormation' },
+    }
+}
+
+PlatoonTemplate {
     Name = 'BomberAttack',
     Plan = 'InterceptorAIUveso',
     GlobalSquads = {

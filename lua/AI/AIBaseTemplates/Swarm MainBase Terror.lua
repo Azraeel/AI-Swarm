@@ -109,6 +109,7 @@ BaseBuilderTemplate {
         'Swarm Transports - Water Map',
         'Swarm Land Builders - Water Map',
         'Swarm Factory Builder - Water Map',
+        'Swarm Amphibious Formers',
         -----------------------------------------------------------------------------
         -- ==== Scout BUILDER ==== --
         -----------------------------------------------------------------------------

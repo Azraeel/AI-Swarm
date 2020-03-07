@@ -242,6 +242,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Sonar Builders',                       
             -- Do we need additional conditions to build it ?
             { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 0, categories.ENGINEER * categories.TECH1 }},
             { UCBC, 'HaveGreaterThanUnitsWithCategory', { 1, categories.STRUCTURE * categories.FACTORY * categories.NAVAL } },
+            { EBC, 'GreaterThanEconStorageRatio', { 0.40, 0.90 } },
             -- Have we the eco to build it ?
             -- Don't build it if...
             -- Respect UnitCap
@@ -272,7 +273,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Sonar Upgraders',                      
             -- Do we need additional conditions to build it ?
             -- Have we the eco to build it ?
             { EBC, 'GreaterThanEconTrend', { 0.0, 0.0 } }, -- relative income
-            { EBC, 'GreaterThanEconStorageRatio', { 0.15, 0.99 } },             -- Ratio from 0 to 1. (1=100%)
+            { EBC, 'GreaterThanEconStorageRatio', { 0.90, 0.90 } },             -- Ratio from 0 to 1. (1=100%)
             -- Don't build it if...
             -- Respect UnitCap
         },
@@ -289,7 +290,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Sonar Upgraders',                      
             { MIBC, 'FactionIndex', { 1, 2, 3, 5 }}, -- 1: UEF, 2: Aeon, 3: Cybran, 4: Seraphim, 5: Nomads 
             -- Have we the eco to build it ?
             { EBC, 'GreaterThanEconTrend', { 0.0, 0.0 } }, -- relative income
-            { EBC, 'GreaterThanEconStorageRatio', { 0.25, 0.99 } },             -- Ratio from 0 to 1. (1=100%)
+            { EBC, 'GreaterThanEconStorageRatio', { 0.90, 0.90 } },             -- Ratio from 0 to 1. (1=100%)
             -- Don't build it if...
             -- Respect UnitCap
         },

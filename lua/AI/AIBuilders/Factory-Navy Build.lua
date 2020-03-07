@@ -80,6 +80,7 @@ BuilderGroup {
         BuilderName = 'U1 N UP HQ 1->2 1st Force',
         PlatoonTemplate = 'T1SeaFactoryUpgrade',
         Priority = 15400,
+        InstanceCount = 1,
         DelayEqualBuildPlattons = {'FactoryUpgrade', 3},
         BuilderConditions = {
             -- When do we want to build this ?
@@ -91,7 +92,7 @@ BuilderGroup {
             { EBC, 'GreaterThanEconTrend', { 0.0, 0.0 } }, -- relative income
             -- Don't build it if...
             { UCBC, 'CheckBuildPlattonDelay', { 'FactoryUpgrade' }},
-            { UCBC, 'HaveLessThanUnitsInCategoryBeingUpgrade', { 2, categories.STRUCTURE * categories.FACTORY * categories.TECH1 }},
+            { UCBC, 'HaveLessThanUnitsInCategoryBeingUpgrade', { 1, categories.STRUCTURE * categories.FACTORY * categories.TECH1 }},
         },
         BuilderType = 'Any',
     },
@@ -100,6 +101,7 @@ BuilderGroup {
         BuilderName = 'U1 N UP HQ 1->2 1st Enemy',
         PlatoonTemplate = 'T1SeaFactoryUpgrade',
         Priority = 15400,
+        InstanceCount = 1,
         DelayEqualBuildPlattons = {'FactoryUpgrade', 3},
         BuilderConditions = {
             { UCBC, 'UnitsGreaterAtLocation', { 'LocationType', 3, categories.STRUCTURE * categories.FACTORY * categories.NAVAL } },
@@ -114,7 +116,7 @@ BuilderGroup {
 
             { UCBC, 'CheckBuildPlattonDelay', { 'FactoryUpgrade' }},
 
-            { UCBC, 'HaveLessThanUnitsInCategoryBeingUpgrade', { 2, categories.STRUCTURE * categories.FACTORY * categories.TECH1 }},
+            { UCBC, 'HaveLessThanUnitsInCategoryBeingUpgrade', { 1, categories.STRUCTURE * categories.FACTORY * categories.TECH1 }},
         },
         BuilderType = 'Any',
     },
@@ -123,6 +125,7 @@ BuilderGroup {
         BuilderName = 'U1 N UP HQ 1->2 1st Time',
         PlatoonTemplate = 'T1SeaFactoryUpgrade',
         Priority = 15400,
+        InstanceCount = 1,
         DelayEqualBuildPlattons = {'FactoryUpgrade', 3},
         BuilderConditions = {
             { UCBC, 'HaveLessThanUnitsWithCategory', { 1, categories.STRUCTURE * categories.FACTORY * categories.NAVAL * (categories.TECH2 + categories.TECH3) - categories.SUPPORTFACTORY } },
@@ -140,6 +143,7 @@ BuilderGroup {
         BuilderName = 'U2 N UP HQ 2->3 1st Force',
         PlatoonTemplate = 'T2SeaFactoryUpgrade',
         Priority = 15400,
+        InstanceCount = 1,
         DelayEqualBuildPlattons = {'FactoryUpgrade', 3},
         BuilderConditions = {
             -- When do we want to build this ?
@@ -158,6 +162,7 @@ BuilderGroup {
         BuilderName = 'U1 N UP HQ 2->3 1st Enemy',
         PlatoonTemplate = 'T2SeaFactoryUpgrade',
         Priority = 15400,
+        InstanceCount = 1,
         DelayEqualBuildPlattons = {'FactoryUpgrade', 3},
         BuilderConditions = {
             { UCBC, 'UnitsGreaterAtLocation', { 'LocationType', 3, categories.STRUCTURE * categories.FACTORY * categories.NAVAL } },
@@ -179,6 +184,7 @@ BuilderGroup {
         BuilderName = 'U1 N UP HQ 2->3 1st Time',
         PlatoonTemplate = 'T2SeaFactoryUpgrade',
         Priority = 15400,
+        InstanceCount = 1,
         DelayEqualBuildPlattons = {'FactoryUpgrade', 3},
         BuilderConditions = {
             { UCBC, 'HaveLessThanUnitsWithCategory', { 1, categories.STRUCTURE * categories.FACTORY * categories.NAVAL * (categories.TECH2 + categories.TECH3) - categories.SUPPORTFACTORY } },
@@ -196,6 +202,7 @@ BuilderGroup {
         BuilderName = 'U2 N UP HQ 2->3 Late',
         PlatoonTemplate = 'T2SeaFactoryUpgrade',
         Priority = 15000,
+        InstanceCount = 1,
         DelayEqualBuildPlattons = {'FactoryUpgrade', 3},
         BuilderConditions = {
             -- When do we want to build this ?

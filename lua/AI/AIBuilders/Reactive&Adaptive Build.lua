@@ -76,8 +76,8 @@ BuilderGroup { BuilderGroupName = 'Swarm Transports - Water Map',               
 BuilderGroup { BuilderGroupName = 'Swarm Land Builders - Water Map',                         -- BuilderGroupName, initalized from AIBaseTemplates in "\lua\AI\AIBaseTemplates\"
     BuildersType = 'FactoryBuilder',
 
-    Builder { BuilderName = 'T1LandDFTank - Water Map',
-        PlatoonTemplate = 'T1LandDFTank',
+    Builder { BuilderName = 'Swarm LandSquads Amphibious 1',
+        PlatoonTemplate = 'U1 LandSquads Amphibious',
         Priority = 500,
         BuilderConditions = {
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
@@ -86,43 +86,9 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders - Water Map',            
 
             { MIBC, 'CanPathToCurrentEnemy', { false } },
 
-            { UCBC, 'PoolLessAtLocation', { 'LocationType', 5, categories.DIRECTFIRE * categories.LAND }},
+            { UCBC, 'PoolLessAtLocation', { 'LocationType', 5, categories.LAND * categories.TECH1 * (categories.DIRECTFIRE + categories.INDIRECTFIRE)}},
 
-            { UCBC, 'LocationFactoriesBuildingLess', { 'LocationType', 1, categories.DIRECTFIRE * categories.LAND} },
-        },
-        BuilderType = 'Land',
-    },
-
-    Builder { BuilderName = 'T1LandArtillery - Water Map',
-        PlatoonTemplate = 'T1LandArtillery',
-        Priority = 500,
-        BuilderConditions = {
-            { UCBC, 'UnitCapCheckLess', { 0.95 } },
-
-            { EBC, 'GreaterThanEconIncome', { 0.2, 2 } },
-
-            { MIBC, 'CanPathToCurrentEnemy', { false } },
-
-            { UCBC, 'PoolLessAtLocation', { 'LocationType', 2, categories.INDIRECTFIRE * categories.LAND }},
-
-            { UCBC, 'LocationFactoriesBuildingLess', { 'LocationType', 1, categories.INDIRECTFIRE * categories.LAND} },
-        },
-        BuilderType = 'Land',
-    },
-
-    Builder { BuilderName = 'T1LandAA - Water Map',
-        PlatoonTemplate = 'T1LandAA',
-        Priority = 500,
-        BuilderConditions = {
-            { UCBC, 'UnitCapCheckLess', { 0.95 } },
-
-            { EBC, 'GreaterThanEconIncome', { 0.2, 2 } },
-
-            { MIBC, 'CanPathToCurrentEnemy', { false } },
-
-            { UCBC, 'PoolLessAtLocation', { 'LocationType', 1, categories.LAND * categories.MOBILE * categories.ANTIAIR }},
-
-            { UCBC, 'LocationFactoriesBuildingLess', { 'LocationType', 1, categories.LAND * categories.MOBILE * categories.ANTIAIR} },
+            { UCBC, 'LocationFactoriesBuildingLess', { 'LocationType', 2, categories.LAND * categories.TECH1 * (categories.DIRECTFIRE + categories.INDIRECTFIRE)} },
         },
         BuilderType = 'Land',
     },
@@ -130,95 +96,19 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders - Water Map',            
     -- ============ --
     --    TECH 2    --
     -- ============ --
-    Builder { BuilderName = 'T2LandDFTank - Water Map',
-        PlatoonTemplate = 'T2LandDFTank',
-        Priority = 700,
-        BuilderConditions = {
-            { UCBC, 'UnitCapCheckLess', { 0.95 } },
-
-            { EBC, 'GreaterThanEconIncome', { 1, 20 } },
-
-            { MIBC, 'CanPathToCurrentEnemy', { false } },
-
-            { UCBC, 'PoolLessAtLocation', { 'LocationType', 5, categories.DIRECTFIRE * categories.LAND * categories.TECH2 }},
-
-            { UCBC, 'LocationFactoriesBuildingLess', { 'LocationType', 2, categories.DIRECTFIRE * categories.LAND * categories.TECH2} },
-        },
-        BuilderType = 'Land',
-    },
-
-    Builder { BuilderName = 'T2AeonBlaze - Water Map',
-        PlatoonTemplate = 'T2AeonBlaze',
-        Priority = 700,
-        BuilderConditions = {
-            { MIBC, 'FactionIndex', { 2 }}, -- 1: UEF, 2: Aeon, 3: Cybran, 4: Seraphim, 5: Nomads
-
-            { UCBC, 'UnitCapCheckLess', { 0.95 } },
-
-            { EBC, 'GreaterThanEconIncome', { 1, 20 } },
-
-            { MIBC, 'CanPathToCurrentEnemy', { false } },
-
-            { UCBC, 'PoolLessAtLocation', { 'LocationType', 3, categories.DIRECTFIRE * categories.LAND * categories.TECH2 * categories.HOVER * categories.AEON }},
-
-            { UCBC, 'LocationFactoriesBuildingLess', { 'LocationType', 1, categories.MOBILE * categories.LAND * categories.HOVER * categories.TECH2 * categories.AEON} },
-        },
-        BuilderType = 'Land',
-    },
-
-    Builder { BuilderName = 'T2MobileShields - Water Map - Aeon Only',
-        PlatoonTemplate = 'T2MobileShields',
-        Priority = 700,
-        BuilderConditions = {
-            { MIBC, 'FactionIndex', { 2 }}, -- 1: UEF, 2: Aeon, 3: Cybran, 4: Seraphim, 5: Nomads
-
-            { UCBC, 'UnitCapCheckLess', { 0.95 } },
-
-            { EBC, 'GreaterThanEconIncome', { 1, 20 } },
-
-            { MIBC, 'CanPathToCurrentEnemy', { false } },
-
-            { UCBC, 'PoolLessAtLocation', { 'LocationType', 2, categories.MOBILE * categories.LAND * categories.SHIELD * categories.TECH2 }},
-
-            { UCBC, 'LocationFactoriesBuildingLess', { 'LocationType', 1, categories.MOBILE * categories.LAND * categories.SHIELD * categories.TECH2} },
-        },
-        BuilderType = 'Land',
-    },
-
-    Builder { BuilderName = 'T2LandAA - Water Map - Aeon and Seraphim Only',
-        PlatoonTemplate = 'T2LandAA',
-        Priority = 700,
-        BuilderConditions = {
-            { MIBC, 'FactionIndex', { 2, 4 }}, -- 1: UEF, 2: Aeon, 3: Cybran, 4: Seraphim, 5: Nomads
-
-            { UCBC, 'UnitCapCheckLess', { 0.95 } },
-
-            { EBC, 'GreaterThanEconIncome', { 1, 20 } },
-
-            { MIBC, 'CanPathToCurrentEnemy', { false } },
-
-            { UCBC, 'PoolLessAtLocation', { 'LocationType', 3, categories.LAND * categories.MOBILE * categories.ANTIAIR * categories.TECH2 * categories.HOVER}},
-
-            { UCBC, 'LocationFactoriesBuildingLess', { 'LocationType', 1, categories.MOBILE * categories.HOVER * categories.TECH2 * categories.ANTIAIR * categories.LAND} },
-        },
-        BuilderType = 'Land',
-    },
-
-    Builder { BuilderName = 'U2 Amphibious',
+    Builder { BuilderName = 'Swarm LandSquads Amphibious 2',
         PlatoonTemplate = 'U2 LandSquads Amphibious',
-        Priority = 300,
+        Priority = 700,
         BuilderConditions = {
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
 
-            { EBC, 'GreaterThanEconIncome', { 0.2, 2 } },
-
-            { EBC, 'GreaterThanEconTrend', { 0.0, 0.0 } },
+            { EBC, 'GreaterThanEconIncome', { 1, 20 } },
 
             { MIBC, 'CanPathToCurrentEnemy', { false } },
 
-            { UCBC, 'PoolLessAtLocation', { 'LocationType', 10, categories.LAND * categories.HOVER * categories.AMPHIBIOUS * categories.TECH2 }},
+            { UCBC, 'PoolLessAtLocation', { 'LocationType', 5, categories.LAND * categories.TECH2 * (categories.DIRECTFIRE + categories.INDIRECTFIRE)}},
 
-            { UCBC, 'LocationFactoriesBuildingLess', { 'LocationType', 2, categories.MOBILE * categories.AMPHIBIOUS * categories.TECH2 * categories.DIRECTFIRE} },
+            { UCBC, 'LocationFactoriesBuildingLess', { 'LocationType', 2, categories.LAND * categories.TECH2 * (categories.DIRECTFIRE + categories.INDIRECTFIRE)} },
         },
         BuilderType = 'Land',
     },
@@ -226,27 +116,8 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders - Water Map',            
     -- ============ --
     --    TECH 3    --
     -- ============ --
-    Builder { BuilderName = 'T3ArmoredAssault - Water Map',
-        PlatoonTemplate = 'T3ArmoredAssault',
-        Priority = 900,
-        BuilderConditions = {
-            { MIBC, 'FactionIndex', { 1, 3 }}, -- 1: UEF, 2: Aeon, 3: Cybran, 4: Seraphim, 5: Nomads
-
-            { UCBC, 'UnitCapCheckLess', { 0.95 } },
-
-            { EBC, 'GreaterThanEconIncome', { 3.5, 100 } },
-
-            { MIBC, 'CanPathToCurrentEnemy', { false } },
-
-            { UCBC, 'PoolLessAtLocation', { 'LocationType', 8, categories.DIRECTFIRE * categories.LAND * categories.TECH3 }},
-
-            { UCBC, 'LocationFactoriesBuildingLess', { 'LocationType', 2, categories.LAND * categories.MOBILE * categories.AMPHIBIOUS * categories.TECH3 }},
-        },
-        BuilderType = 'Land',
-    },
-
-    Builder { BuilderName = 'T3LandAA - Water Map',
-        PlatoonTemplate = 'T3LandAA',
+    Builder { BuilderName = 'Swarm LandSquads Amphibious 3',
+        PlatoonTemplate = 'U3 LandSquads Amphibious',
         Priority = 900,
         BuilderConditions = {
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
@@ -255,9 +126,9 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders - Water Map',            
 
             { MIBC, 'CanPathToCurrentEnemy', { false } },
 
-            { UCBC, 'PoolLessAtLocation', { 'LocationType', 2, categories.LAND * categories.MOBILE * categories.ANTIAIR * categories.TECH3 }},
+            { UCBC, 'PoolLessAtLocation', { 'LocationType', 8, categories.LAND * categories.TECH3 * (categories.DIRECTFIRE + categories.INDIRECTFIRE)}},
 
-            { UCBC, 'LocationFactoriesBuildingLess', { 'LocationType', 1, categories.LAND * categories.MOBILE * categories.ANTIAIR * categories.TECH3 }},
+            { UCBC, 'LocationFactoriesBuildingLess', { 'LocationType', 2, categories.LAND * categories.TECH3 * (categories.DIRECTFIRE + categories.INDIRECTFIRE)}},
         },
         BuilderType = 'Land',
     },
@@ -380,5 +251,174 @@ BuilderGroup { BuilderGroupName = 'Swarm Factory Builder - Water Map',
                 },
             }
         }
+    },
+}
+
+BuilderGroup {
+    BuilderGroupName = 'Swarm Amphibious Formers',                     -- BuilderGroupName, initalized from AIBaseTemplates in "\lua\AI\AIBaseTemplates\"
+    BuildersType = 'PlatoonFormBuilder',                                        -- BuilderTypes are: EngineerBuilder, FactoryBuilder, PlatoonFormBuilder.
+    Builder {
+        BuilderName = 'U123 Amphibious PANIC 1 10',                             -- Random Builder Name.
+        PlatoonTemplate = 'U123 Amphibious 1 10',                               -- Template Name. These units will be formed. See: "UvesoPlatoonTemplatesLand.lua"
+        Priority = 100,                                                       -- Priority. Higher priotity will be build more often then lower priotity.
+        InstanceCount = 12,                                                      -- Number of plattons that will be formed with this template.
+        BuilderData = {
+            SearchRadius = BasePanicZone,                                       -- Searchradius for new target.
+            GetTargetsFromBase = true,                                          -- Get targets from base position (true) or platoon position (false)
+            RequireTransport = false,                                           -- If this is true, the unit is forced to use a transport, even if it has a valid path to the destination.
+            AggressiveMove = true,                                              -- If true, the unit will attack everything while moving to the target.
+            AttackEnemyStrength = 100000000,                                    -- Compare platoon to enemy strenght. 100 will attack equal, 50 weaker and 150 stronger enemies.
+            IgnorePathing = true,                                               -- If true, the platoon will not use AI pathmarkers and move directly to the target
+            TargetSearchCategory = categories.MOBILE - categories.SCOUT,        -- Only find targets matching these categories.
+            MoveToCategories = {                                                -- Move to targets
+                categories.EXPERIMENTAL,
+                categories.MOBILE,
+            },
+        },
+        BuilderConditions = {                                                   -- platoon will be formed if all conditions are true
+            -- When do we want to form this ?
+            { UCBC, 'EnemyUnitsGreaterAtLocationRadius', {  BasePanicZone, 'LocationType', 0, categories.STRUCTURE}}, -- radius, LocationType, unitCount, categoryEnemy
+        },
+        BuilderType = 'Any',                                                    -- Build with "Land" "Air" "Sea" "Gate" or "All" Factories. - "Any" forms a Platoon.
+    },
+                                       
+    Builder {
+        BuilderName = 'U123 Amphibious Military 1 10',                          -- Random Builder Name.
+        PlatoonTemplate = 'U123 Amphibious 1 10',                               -- Template Name. These units will be formed. See: "UvesoPlatoonTemplatesLand.lua"
+        Priority = 90,                                                          -- Priority. 1000 is normal.
+        InstanceCount = 4,                                                      -- Number of plattons that will be formed.
+        BuilderData = {
+            SearchRadius = BaseMilitaryZone,                                    -- Searchradius for new target.
+            GetTargetsFromBase = false,                                         -- Get targets from base position (true) or platoon position (false)
+            RequireTransport = false,                                           -- If this is true, the unit is forced to use a transport, even if it has a valid path to the destination.
+            AggressiveMove = true,                                              -- If true, the unit will attack everything while moving to the target.
+            AttackEnemyStrength = 300,                                          -- Compare platoon to enemy strenght. 100 will attack equal, 50 weaker and 150 stronger enemies.
+            TargetSearchCategory = categories.STRUCTURE + categories.MOBILE,    -- Only find targets matching these categories.
+            MoveToCategories = {                                                -- Move to targets
+                categories.MOBILE * categories.NAVAL * categories.EXPERIMENTAL,
+                categories.MOBILE * categories.NAVAL * categories.ANTIAIR,
+                categories.MOBILE * categories.LAND * categories.EXPERIMENTAL,
+                categories.MOBILE * categories.LAND * categories.ANTIAIR,
+                categories.ANTIAIR,
+                categories.MOBILE,
+                categories.ALLUNITS,
+            },
+        },
+        BuilderConditions = {                                                   -- platoon will be formed if all conditions are true
+            -- When do we want to form this ?
+            { MIBC, 'CanPathToCurrentEnemy', { false } },
+            { UCBC, 'EnemyUnitsGreaterAtLocationRadius', {  BaseMilitaryZone, 'LocationType', 0, categories.STRUCTURE}}, -- radius, LocationType, unitCount, categoryEnemy
+        },
+        BuilderType = 'Any',                                                    -- Build with "Land" "Air" "Sea" "Gate" or "All" Factories. - "Any" forms a Platoon.
+    },
+
+    Builder {
+        BuilderName = 'U123 Amphibious Enemy 1 10',                             -- Random Builder Name.
+        PlatoonTemplate = 'U123 Amphibious 1 10',                               -- Template Name. These units will be formed. See: "UvesoPlatoonTemplatesLand.lua"
+        Priority = 80,                                                        -- Priority. 1000 is normal.
+        InstanceCount = 4,                                                      -- Number of plattons that will be formed.
+        BuilderData = {
+            SearchRadius = BaseEnemyZone,                                       -- Searchradius for new target.
+            GetTargetsFromBase = false,                                         -- Get targets from base position (true) or platoon position (false)
+            RequireTransport = false,                                           -- If this is true, the unit is forced to use a transport, even if it has a valid path to the destination.
+            AggressiveMove = true,                                              -- If true, the unit will attack everything while moving to the target.
+            AttackEnemyStrength = 500,                                          -- Compare platoon to enemy strenght. 100 will attack equal, 50 weaker and 150 stronger enemies.
+            TargetSearchCategory = categories.STRUCTURE + categories.MOBILE,    -- Only find targets matching these categories.
+            MoveToCategories = {                                                -- Move to targets
+                categories.MOBILE * categories.NAVAL * categories.EXPERIMENTAL,
+                categories.MOBILE * categories.NAVAL * categories.ANTIAIR,
+                categories.STRUCTURE * categories.NAVAL * categories.FACTORY,
+                categories.MOBILE * categories.NAVAL * categories.DEFENSE,
+                categories.MOBILE * categories.LAND * categories.EXPERIMENTAL,
+                categories.MOBILE * categories.LAND * categories.ANTIAIR,
+                categories.ANTIAIR,
+                categories.MOBILE,
+                categories.ALLUNITS,
+            },
+        },
+        BuilderConditions = {                                                   -- platoon will be formed if all conditions are true
+            -- When do we want to form this ?
+            { MIBC, 'CanPathToCurrentEnemy', { false } },
+            { UCBC, 'EnemyUnitsGreaterAtLocationRadius', {  BaseEnemyZone, 'LocationType', 0, categories.STRUCTURE}}, -- radius, LocationType, unitCount, categoryEnemy
+        },
+        BuilderType = 'Any',                                                    -- Build with "Land" "Air" "Sea" "Gate" or "All" Factories. - "Any" forms a Platoon.
+    },
+
+    Builder {
+        BuilderName = 'U123 Hover PANIC 1 10',                                  -- Random Builder Name.
+        PlatoonTemplate = 'U123 Hover 1 10',                                    -- Template Name. These units will be formed. See: "UvesoPlatoonTemplatesLand.lua"
+        Priority = 90,                                                          -- Priority. Higher priotity will be build more often then lower priotity.
+        InstanceCount = 6,                                                      -- Number of plattons that will be formed with this template.
+        BuilderData = {
+            SearchRadius = BasePanicZone,                                       -- Searchradius for new target.
+            GetTargetsFromBase = true,                                          -- Get targets from base position (true) or platoon position (false)
+            RequireTransport = false,                                           -- If this is true, the unit is forced to use a transport, even if it has a valid path to the destination.
+            AggressiveMove = true,                                              -- If true, the unit will attack everything while moving to the target.
+            AttackEnemyStrength = 100000000,                                    -- Compare platoon to enemy strenght. 100 will attack equal, 50 weaker and 150 stronger enemies.
+            IgnorePathing = true,                                               -- If true, the platoon will not use AI pathmarkers and move directly to the target
+            TargetSearchCategory = categories.MOBILE,                           -- Only find targets matching these categories.
+            MoveToCategories = {                                                -- Move to targets
+                categories.EXPERIMENTAL,
+                categories.ALLUNITS,
+            },
+        },
+        BuilderConditions = {                                                   -- platoon will be formed if all conditions are true
+            -- When do we want to form this ?
+            { UCBC, 'EnemyUnitsGreaterAtLocationRadius', {  BasePanicZone, 'LocationType', 0, categories.MOBILE }}, -- radius, LocationType, unitCount, categoryEnemy
+        },
+        BuilderType = 'Any',                                                    -- Build with "Land" "Air" "Sea" "Gate" or "All" Factories. - "Any" forms a Platoon.
+    },
+
+    Builder {
+        BuilderName = 'U123 Hover Military 1 100',                              -- Random Builder Name.
+        PlatoonTemplate = 'U123 Hover 1 10',                                    -- Template Name. These units will be formed. See: "UvesoPlatoonTemplatesLand.lua"
+        Priority = 80,                                                        -- Priority. 1000 is normal.
+        InstanceCount = 4,                                                      -- Number of plattons that will be formed.
+        BuilderData = {
+            SearchRadius = BaseMilitaryZone,                                    -- Searchradius for new target.
+            GetTargetsFromBase = false,                                         -- Get targets from base position (true) or platoon position (false)
+            RequireTransport = false,                                           -- If this is true, the unit is forced to use a transport, even if it has a valid path to the destination.
+            AggressiveMove = true,                                              -- If true, the unit will attack everything while moving to the target.
+            AttackEnemyStrength = 200,                                          -- Compare platoon to enemy strenght. 100 will attack equal, 50 weaker and 150 stronger enemies.
+            TargetSearchCategory = categories.LAND + categories.NAVAL,          -- Only find targets matching these categories.
+            MoveToCategories = {                                                -- Move to targets
+                categories.EXPERIMENTAL,
+                categories.MOBILE * categories.LAND * categories.INDIRECTFIRE,
+                categories.MOBILE * categories.LAND * categories.DIRECTFIRE,
+                categories.MOBILE * categories.LAND * categories.ANTIAIR,
+                categories.STRUCTURE * categories.DEFENSE,
+                categories.STRUCTURE * categories.ANTIAIR,
+                categories.ALLUNITS,
+            },
+        },
+        BuilderConditions = {                                                   -- platoon will be formed if all conditions are true
+            -- When do we want to form this ?
+            { UCBC, 'EnemyUnitsGreaterAtLocationRadius', {  BaseMilitaryZone, 'LocationType', 0, categories.LAND + categories.NAVAL }}, -- radius, LocationType, unitCount, categoryEnemy
+        },
+        BuilderType = 'Any',                                                    -- Build with "Land" "Air" "Sea" "Gate" or "All" Factories. - "Any" forms a Platoon.
+    },
+
+    Builder {
+        BuilderName = 'U123 Hover Enemy 1 100',                                 -- Random Builder Name.
+        PlatoonTemplate = 'U123 Hover 1 10',                                    -- Template Name. These units will be formed. See: "UvesoPlatoonTemplatesLand.lua"
+        Priority = 70,                                                        -- Priority. 1000 is normal.
+        InstanceCount = 4,                                                      -- Number of plattons that will be formed.
+        BuilderData = {
+            SearchRadius = BaseEnemyZone,                                       -- Searchradius for new target.
+            GetTargetsFromBase = false,                                         -- Get targets from base position (true) or platoon position (false)
+            RequireTransport = false,                                           -- If this is true, the unit is forced to use a transport, even if it has a valid path to the destination.
+            AggressiveMove = true,                                              -- If true, the unit will attack everything while moving to the target.
+            AttackEnemyStrength = 200,                                          -- Compare platoon to enemy strenght. 100 will attack equal, 50 weaker and 150 stronger enemies.
+            TargetSearchCategory = categories.LAND + categories.NAVAL,          -- Only find targets matching these categories.
+            MoveToCategories = {                                                -- Move to targets
+                categories.EXPERIMENTAL,
+                categories.ALLUNITS,
+            },
+        },
+        BuilderConditions = {                                                   -- platoon will be formed if all conditions are true
+            -- When do we want to form this ?
+            { UCBC, 'EnemyUnitsGreaterAtLocationRadius', {  BaseMilitaryZone, 'LocationType', 0, categories.LAND + categories.NAVAL }}, -- radius, LocationType, unitCount, categoryEnemy
+        },
+        BuilderType = 'Any',                                                    -- Build with "Land" "Air" "Sea" "Gate" or "All" Factories. - "Any" forms a Platoon.
     },
 }

@@ -84,6 +84,14 @@ BaseBuilderTemplate {
         'Swarm Defense Anti Air Builders',
         -- Ground Defense Builder
         'Swarm Defense Anti Ground Builders',
+
+        -----------------------------------------------------------------------------
+        -- ==== Reactive BUILDERS ==== --
+        -----------------------------------------------------------------------------
+        'Swarm Transports - Water Map',
+        'Swarm Land Builders - Water Map',
+        'Swarm Factory Builder - Water Map',
+        'Swarm Amphibious Formers',
         
         -----------------------------------------------------------------------------
         -- ==== Scout BUILDER ==== --

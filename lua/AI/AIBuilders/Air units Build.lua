@@ -108,6 +108,38 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Builders',
         BuilderType = 'Air',
     },
 
+    Builder { BuilderName = 'T2AirTorpedoBomber - Swarm',
+        PlatoonTemplate = 'T2AirTorpedoBomber',
+        Priority = 600,
+        BuilderConditions = {
+            { UCBC, 'UnitCapCheckLess', { 0.95 } },
+
+            { EBC, 'GreaterThanEconIncome', { 1, 20 } },
+
+            { UCBC, 'UnitsGreaterAtEnemy', { 0 , categories.NAVAL * categories.FACTORY } },
+
+            { UCBC, 'PoolLessAtLocation', { 'LocationType', 11, categories.MOBILE * categories.AIR * categories.ANTINAVY }},
+        },
+        BuilderType = 'Air',
+    },
+
+    Builder { BuilderName = 'T2AirTorpedoBomber - Swarm - Response',
+        PlatoonTemplate = 'T2AirTorpedoBomber',
+        Priority = 605,
+        BuilderConditions = {
+            { UCBC, 'UnitCapCheckLess', { 0.95 } },
+
+            { EBC, 'GreaterThanEconIncome', { 1, 20 } },
+
+            { UCBC, 'UnitsGreaterAtEnemy', { 0 , categories.NAVAL * categories.FACTORY } },
+
+            { UCBC, 'EnemyUnitsGreaterAtLocationRadius', { BaseMilitaryZone, 'LocationType', 6, categories.MOBILE * categories.NAVAL }},
+
+            { UCBC, 'PoolLessAtLocation', { 'LocationType', 11, categories.MOBILE * categories.AIR * categories.ANTINAVY }},
+        },
+        BuilderType = 'Air',
+    },
+
     Builder { BuilderName = 'T2AirGunship - Swarm',
         PlatoonTemplate = 'T2AirGunship',
         Priority = 600,
@@ -690,5 +722,89 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Formers',
         },
         BuilderConditions = { },
         BuilderType = 'Any',                                                    
+    },
+    
+    Builder {
+        BuilderName = 'U123 PANIC AntiSea TorpedoBomber',                       -- Random Builder Name.
+        PlatoonTemplate = 'U123-TorpedoBomber 1 100',
+        Priority = 90,                                                          -- Priority. 1000 is normal.
+        InstanceCount = 5,                                                      -- Number of plattons that will be formed.
+        BuilderData = {
+            SearchRadius = BasePanicZone,                                       -- Searchradius for new target.
+            GetTargetsFromBase = false,                                         -- Get targets from base position (true) or platoon position (false)
+            AggressiveMove = true,                                              -- If true, the unit will attack everything while moving to the target.
+            AttackEnemyStrength = 100000000,                                    -- Compare platoon to enemy strenght. 100 will attack equal, 50 weaker and 150 stronger enemies.
+            IgnorePathing = true,                                               -- If true, the platoon will not use AI pathmarkers and move directly to the target
+            TargetSearchCategory = categories.STRUCTURE + categories.MOBILE,    -- Only find targets matching these categories.
+            MoveToCategories = {                                                -- Move to targets
+                categories.MOBILE * categories.NAVAL * categories.EXPERIMENTAL,
+                categories.ALLUNITS,
+            },
+        },
+        BuilderConditions = {                                                   -- platoon will be formed if all conditions are true
+            -- When do we want to form this ?
+            { UCBC, 'EnemyUnitsGreaterAtLocationRadius', {  BasePanicZone, 'LocationType', 0, categories.MOBILE }}, -- radius, LocationType, unitCount, categoryEnemy
+        },
+        BuilderType = 'Any',                                                    -- Build with "Land" "Air" "Sea" "Gate" or "All" Factories. - "Any" forms a Platoon.
+    },
+
+    Builder {
+        BuilderName = 'U123 Military AntiSea TorpedoBomber',                    -- Random Builder Name.
+        PlatoonTemplate = 'U123-TorpedoBomber 1 100',
+        Priority = 80,                                                          -- Priority. 1000 is normal.
+        InstanceCount = 6,                                                      -- Number of plattons that will be formed.
+        BuilderData = {
+            SearchRadius = BaseMilitaryZone,                                    -- Searchradius for new target.
+            GetTargetsFromBase = false,                                         -- Get targets from base position (true) or platoon position (false)
+            AggressiveMove = true,                                              -- If true, the unit will attack everything while moving to the target.
+            AttackEnemyStrength = 150,                                          -- Compare platoon to enemy strenght. 100 will attack equal, 50 weaker and 150 stronger enemies.
+            IgnorePathing = true,                                               -- If true, the platoon will not use AI pathmarkers and move directly to the target
+            TargetSearchCategory = categories.STRUCTURE + categories.MOBILE,    -- Only find targets matching these categories.
+            MoveToCategories = {                                                -- Move to targets
+                categories.MOBILE * categories.NAVAL * categories.EXPERIMENTAL,
+                categories.MOBILE * categories.NAVAL * categories.ANTIAIR,
+                categories.MOBILE * categories.LAND * categories.EXPERIMENTAL,
+                categories.MOBILE * categories.LAND * categories.ANTIAIR,
+                categories.ANTIAIR,
+                categories.MOBILE,
+                categories.ALLUNITS,
+            },
+        },
+        BuilderConditions = {                                                   -- platoon will be formed if all conditions are true
+            -- When do we want to form this ?
+            { UCBC, 'EnemyUnitsGreaterAtLocationRadius', {  BaseMilitaryZone, 'LocationType', 0, categories.STRUCTURE + categories.MOBILE }}, -- radius, LocationType, unitCount, categoryEnemy
+        },
+        BuilderType = 'Any',                                                    -- Build with "Land" "Air" "Sea" "Gate" or "All" Factories. - "Any" forms a Platoon.
+    },
+
+    Builder {
+        BuilderName = 'U123 Enemy AntiStructure TorpedoBomber',
+        PlatoonTemplate = 'U123-TorpedoBomber 1 100',
+        Priority = 70,
+        InstanceCount = 2,
+        BuilderData = {
+            SearchRadius = BaseEnemyZone,                                       -- Searchradius for new target.
+            GetTargetsFromBase = false,                                         -- Get targets from base position (true) or platoon position (false)
+            AggressiveMove = true,                                              -- If true, the unit will attack everything while moving to the target.
+            AttackEnemyStrength = 150,                                          -- Compare platoon to enemy strenght. 100 will attack equal, 50 weaker and 150 stronger enemies.
+            IgnorePathing = true,                                               -- If true, the platoon will not use AI pathmarkers and move directly to the target
+            TargetSearchCategory = categories.STRUCTURE + categories.MOBILE,    -- Only find targets matching these categories.
+            MoveToCategories = {                                                -- Move to targets
+                categories.MOBILE * categories.NAVAL * categories.EXPERIMENTAL,
+                categories.MOBILE * categories.NAVAL * categories.ANTIAIR,
+                categories.STRUCTURE * categories.NAVAL * categories.FACTORY,
+                categories.MOBILE * categories.NAVAL * categories.DEFENSE,
+                categories.MOBILE * categories.LAND * categories.EXPERIMENTAL,
+                categories.MOBILE * categories.LAND * categories.ANTIAIR,
+                categories.ANTIAIR,
+                categories.MOBILE,
+                categories.ALLUNITS,
+            },
+        },
+        BuilderConditions = {                                                   -- platoon will be formed if all conditions are true
+            -- When do we want to form this ?
+            { UCBC, 'UnitsGreaterAtEnemy', { 1 , categories.STRUCTURE + categories.MOBILE } },
+        },
+        BuilderType = 'Any',
     },
 }
