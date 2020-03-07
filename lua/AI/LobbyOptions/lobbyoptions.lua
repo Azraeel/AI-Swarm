@@ -21,7 +21,7 @@ AIOpts = {
         default = 2,
         label = "AI Map Marker generator - Swarm",
         help = "Autogenerate map markers for AI pathfinding on 5x5 and 10x10 maps - Swarm",
-        key = 'AIMapMarker',
+        key = 'AIMapMarkerSwarm',
         values = {
             {
                 text = "<LOC aisettingsUveso_0194>Original Map markers",
