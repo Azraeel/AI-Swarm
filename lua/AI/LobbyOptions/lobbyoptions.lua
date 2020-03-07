@@ -2,9 +2,9 @@
 AIOpts = {
     {
         default = 1,
-        label = "<LOC aisettingsUveso_0187>AI Unit Cap",
-        help = "<LOC aisettingsUveso_0188>Set an AI unit cap independently from player unit cap.",
-        key = 'AIUnitCap',
+        label = "AI Unit Cap - Swarm",
+        help = "Set an AI unit cap independently from player unit cap. - Swarm",
+        key = 'AIUnitCapSwarm',
         value_text = "%s",
         value_help = "<LOC aisettingsUveso_0189>%s units per AI may be in play",
         values = {
@@ -19,8 +19,8 @@ AIOpts = {
     },
     {
         default = 2,
-        label = "<LOC aisettingsUveso_0192>AI Map Marker generator",
-        help = "<LOC aisettingsUveso_0193>Autogenerate map markers for AI pathfinding on 5x5 and 10x10 maps",
+        label = "AI Map Marker generator - Swarm",
+        help = "Autogenerate map markers for AI pathfinding on 5x5 and 10x10 maps - Swarm",
         key = 'AIMapMarker',
         values = {
             {
@@ -52,9 +52,9 @@ AIOpts = {
     },
     {
         default = 1,
-        label = "<LOC aisettingsUveso_0153>DEBUG: AI pathfinding",
-        help = "<LOC aisettingsUveso_0154>Displays pathfinding, waypoints and location radii (only AI-Uveso)",
-        key = 'AIPathingDebug',
+        label = "DEBUG: AI pathfinding - Swarm",
+        help = "Displays pathfinding, waypoints and location radii (only AI-Uveso) - Swarm",
+        key = 'AIPathingDebugSwarm',
         values = {
             {
                 text = "<LOC aisettingsUveso_0155>Off",
@@ -100,9 +100,9 @@ AIOpts = {
     },
     {
         default = 1,
-        label = "<LOC aisettingsUveso_0167>DEBUG: AI Platoon names",
-        help = "<LOC aisettingsUveso_0168>Displays Platoon and AI plan name",
-        key = 'AIPLatoonNameDebug',
+        label = "DEBUG: AI Platoon names - Swarm",
+        help = "Displays Platoon and AI plan name - Swarm",
+        key = 'AIPLatoonNameDebugSwarm',
         values = {
             {
                 text = "<LOC aisettingsUveso_0155>Off",
@@ -133,9 +133,9 @@ AIOpts = {
     },
     {
         default = 1,
-        label = "<LOC aisettingsUveso_0178>DEBUG: AI BuilderManager",
-        help = "<LOC aisettingsUveso_0179>Print platoon builder names into the game.log",
-        key = 'AIBuilderNameDebug',
+        label = "DEBUG: AI BuilderManager - Swarm",
+        help = "Print platoon builder names into the game.log - Swarm",
+        key = 'AIBuilderNameDebugSwarm',
         values = {
             {
                 text = "<LOC aisettingsUveso_0155>Off",
