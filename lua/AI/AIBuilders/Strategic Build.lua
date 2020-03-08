@@ -236,7 +236,7 @@ BuilderGroup {
             -- Don't build it if...
         },
         BuilderData = {
-            AIPlan = 'ArtilleryAI',
+            AIPlan = 'U34ArtilleryAI',
         },
         BuilderType = 'Any',
     },
