@@ -973,7 +973,7 @@ function BaseTargetManagerThread(aiBrain)
         WaitTicks(10)
     end
     LOG('* AI-Uveso: Function BaseTargetManagerThread() started. ['..aiBrain.Nickname..']')
-    local BasePanicZone, BaseMilitaryZone, BaseEnemyZone = import('/mods/AI-Uveso/lua/AI/uvesoutilities.lua').GetDangerZoneRadii()
+    local BasePanicZone, BaseMilitaryZone, BaseEnemyZone = import('/mods/AI-Swarm/lua/AI/swarmutilities.lua').GetDangerZoneRadii()
     local targets = {}
     local baseposition, radius
     local ClosestTarget

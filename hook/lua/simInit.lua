@@ -319,7 +319,7 @@ end
 
 function DrawBaseRanger()
     -- get the range of combat zones
-    local BasePanicZone, BaseMilitaryZone, BaseEnemyZone = import('/mods/AI-Uveso/lua/AI/uvesoutilities.lua').GetDangerZoneRadii()
+    local BasePanicZone, BaseMilitaryZone, BaseEnemyZone = import('/mods/AI-Swarm/lua/AI/swarmutilities.lua').GetDangerZoneRadii()
     local FocussedArmy = GetFocusArmy()
     -- Render the radius of any base and expansion location
     if Scenario.MasterChain._MASTERCHAIN_.BaseRanger then
@@ -1586,10 +1586,10 @@ function CreateNavalExpansions()
 end
 
 function ValidateModFiles()
-    local ModName = "* AI-Uveso"
-    local ModDirectory = 'AI-Uveso'
-    local Files = 84
-    local Bytes = 1544081
+    local ModName = "* AI-Swarm"
+    local ModDirectory = 'AI-Swarm'
+    local Files = 76
+    local Bytes = 1277880
     LOG(''..ModName..': ['..string.gsub(debug.getinfo(1).source, ".*\\(.*.lua)", "%1")..', line:'..debug.getinfo(1).currentline..'] - Running from: '..debug.getinfo(1).source..'.')
     LOG(''..ModName..': ['..string.gsub(debug.getinfo(1).source, ".*\\(.*.lua)", "%1")..', line:'..debug.getinfo(1).currentline..'] - Checking directory /mods/ for '..ModDirectory..'...')
     local FilesInFolder = DiskFindFiles('/mods/', '*.*')
