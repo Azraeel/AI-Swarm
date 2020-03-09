@@ -1589,7 +1589,7 @@ function ValidateModFiles()
     local ModName = "* AI-Swarm"
     local ModDirectory = 'AI-Swarm'
     local Files = 76
-    local Bytes = 1277880
+    local Bytes = 1278920
     LOG(''..ModName..': ['..string.gsub(debug.getinfo(1).source, ".*\\(.*.lua)", "%1")..', line:'..debug.getinfo(1).currentline..'] - Running from: '..debug.getinfo(1).source..'.')
     LOG(''..ModName..': ['..string.gsub(debug.getinfo(1).source, ".*\\(.*.lua)", "%1")..', line:'..debug.getinfo(1).currentline..'] - Checking directory /mods/ for '..ModDirectory..'...')
     local FilesInFolder = DiskFindFiles('/mods/', '*.*')
