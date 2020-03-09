@@ -1,6 +1,6 @@
 --WARN('['..string.gsub(debug.getinfo(1).source, ".*\\(.*.lua)", "%1")..', line:'..debug.getinfo(1).currentline..'] * AI-Uveso: offset platoon.lua' )
 
-local UUtils = import('/mods/AI-Uveso/lua/AI/uvesoutilities.lua')
+local UUtils = import('/mods/AI-Swarm/lua/AI/Swarmutilities.lua')
 
 OldPlatoonClass = Platoon
 Platoon = Class(OldPlatoonClass) {
