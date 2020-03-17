@@ -758,11 +758,13 @@ BuilderGroup { BuilderGroupName = 'Swarm Gate Builders',                        
     
     Builder { BuilderName = 'U-T3 Gate Cap',
         PlatoonTemplate = 'T3EngineerBuilder',
-        Priority = 17400,
+        Priority = 1350,
         BuilderConditions = {
+        	{ EBC, 'GreaterThanEconStorageRatio', { 0.25, 0.90 } },
+
             { UCBC, 'HaveGreaterThanUnitsWithCategory', { 1, categories.STRUCTURE * categories.ENERGYPRODUCTION * categories.TECH3 } },
 
-            { UCBC, 'HaveLessThanUnitsWithCategory', { 4, categories.STRUCTURE * categories.GATE } },
+            { UCBC, 'HaveLessThanUnitsWithCategory', { 3, categories.STRUCTURE * categories.GATE } },
         },
         BuilderType = 'Any',
         BuilderData = {
@@ -778,7 +780,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Gate Builders',                        
     },
     Builder { BuilderName = 'U-T3 Gate Para',
         PlatoonTemplate = 'T3EngineerBuilder',
-        Priority = 17400,
+        Priority = 2000,
         BuilderConditions = {
             -- When do we want to build this ?
             { UCBC, 'HasParagon', {} },

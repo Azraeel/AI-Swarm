@@ -27,7 +27,24 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Builders',
 
             { UCBC, 'LocationFactoriesBuildingLess', { 'LocationType', 1, categories.MOBILE * categories.ENGINEER * categories.TECH1} },
          },
-        BuilderType = 'Land',
+        BuilderType = 'All',
+    },
+
+    Builder { BuilderName = 'U1 Engineer builder - Excess Mass',
+        PlatoonTemplate = 'T1BuildEngineer',
+        Priority = 1005,
+        BuilderConditions = {
+            { UCBC, 'UnitCapCheckLess', { 0.95 } },
+
+            { EBC, 'GreaterThanEconIncome', { 0, 0 } },
+
+            { EBC, 'GreaterThanEconStorageRatio', { 0.98, 0.50 } }, 
+
+            { UCBC, 'PoolLessAtLocation', { 'LocationType', 2, categories.MOBILE * categories.ENGINEER * categories.TECH1 } },
+
+            { UCBC, 'LocationFactoriesBuildingLess', { 'LocationType', 3, categories.MOBILE * categories.ENGINEER * categories.TECH1} },
+         },
+        BuilderType = 'All',
     },
 
     -- ============ --
@@ -41,9 +58,26 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Builders',
 
             { UCBC, 'PoolLessAtLocation', { 'LocationType', 1, categories.MOBILE * categories.ENGINEER * categories.TECH2 } },
 
-            { UCBC, 'LocationFactoriesBuildingLess', { 'LocationType', 1, categories.MOBILE * categories.ENGINEER * categories.TECH1} },
+            { UCBC, 'LocationFactoriesBuildingLess', { 'LocationType', 1, categories.MOBILE * categories.ENGINEER * categories.TECH2} },
         },
-        BuilderType = 'Land',
+        BuilderType = 'All',
+    },
+
+    Builder { BuilderName = 'U2 Engineer builder - Excess Mass',
+        PlatoonTemplate = 'T2BuildEngineer',
+        Priority = 1015,
+        BuilderConditions = {
+            { UCBC, 'UnitCapCheckLess', { 0.95 } },
+
+            { EBC, 'GreaterThanEconIncome', { 0, 0 } },
+
+            { EBC, 'GreaterThanEconStorageRatio', { 0.98, 0.50 } }, 
+
+            { UCBC, 'PoolLessAtLocation', { 'LocationType', 2, categories.MOBILE * categories.ENGINEER * categories.TECH2 } },
+
+            { UCBC, 'LocationFactoriesBuildingLess', { 'LocationType', 3, categories.MOBILE * categories.ENGINEER * categories.TECH2} },
+         },
+        BuilderType = 'All',
     },
 
     -- ============ --
@@ -51,7 +85,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Builders',
     -- ============ --
     Builder { BuilderName = 'U3 Engineer builder Cap',
         PlatoonTemplate = 'T3BuildEngineer',
-        Priority = 1015,
+        Priority = 1020,
         BuilderConditions = {
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
 
@@ -59,7 +93,24 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Builders',
 
             { UCBC, 'LocationFactoriesBuildingLess', { 'LocationType', 1, categories.MOBILE * categories.ENGINEER * categories.TECH1} },
         },
-        BuilderType = 'Land',
+        BuilderType = 'All',
+    },
+
+    Builder { BuilderName = 'U3 Engineer builder - Excess Mass',
+        PlatoonTemplate = 'T3BuildEngineer',
+        Priority = 1025,
+        BuilderConditions = {
+            { UCBC, 'UnitCapCheckLess', { 0.95 } },
+
+            { EBC, 'GreaterThanEconIncome', { 0, 0 } },
+
+            { EBC, 'GreaterThanEconStorageRatio', { 0.98, 0.50 } }, 
+
+            { UCBC, 'PoolLessAtLocation', { 'LocationType', 2, categories.MOBILE * categories.ENGINEER * categories.TECH3 } },
+
+            { UCBC, 'LocationFactoriesBuildingLess', { 'LocationType', 3, categories.MOBILE * categories.ENGINEER * categories.TECH3} },
+         },
+        BuilderType = 'All',
     },
 }
 

@@ -191,23 +191,18 @@ BuilderGroup {
     -- ============ --
     --    TECH 3    --
     -- ============ --
-    --[[ Builder {
+    Builder {
         BuilderName = 'U3 Mass Fab',
-        PlatoonTemplate = 'T3EngineerBuilderNoSUB',
-        Priority = 500,
+        PlatoonTemplate = 'T3EngineerBuildernoSUB',
+        Priority = 1175,
         BuilderConditions = {
-            -- When do we want to build this ?
-            -- Do we need additional conditions to build it ?
             { UCBC, 'HasNotParagon', {} },
-            { UCBC, 'HaveUnitRatioUveso', { 0.3, categories.STRUCTURE * categories.MASSFABRICATION, '<=',categories.STRUCTURE * categories.ENERGYPRODUCTION * categories.TECH3 } },
-            -- Have we the eco to build it ?
-            { EBC, 'GreaterThanEconTrend', { 0.0, 0.0 } }, -- relative income
+
+            { EBC, 'GreaterThanEconTrend', { 0, 10000 } }, -- relative income
+
             { EBC, 'GreaterThanEconStorageRatio', { 0.40, 1.00}}, -- Ratio from 0 to 1. (1=100%)
             -- Don't build it if...
-            { UCBC, 'HaveLessThanUnitsInCategoryBeingBuilt', { 1, categories.STRUCTURE * categories.MASSFABRICATION } },
-            -- Respect UnitCap
-            { UCBC, 'HaveUnitRatioVersusCap', { MaxCapMass , '<', categories.STRUCTURE * (categories.MASSEXTRACTION + categories.MASSFABRICATION) } },
-
+            { UCBC, 'HaveLessThanUnitsInCategoryBeingBuilt', { 1, categories.STRUCTURE * categories.MASSFABRICATION * categories.TECH3 } },
         },
         BuilderType = 'Any',
         BuilderData = {
@@ -226,41 +221,7 @@ BuilderGroup {
             }
         }
     },
-    Builder {
-        BuilderName = 'U3 Mass Fab Adja',
-        PlatoonTemplate = 'T3EngineerBuilderNoSUB',
-        Priority = 400,
-        BuilderConditions = {
-            -- When do we want to build this ?
-            { UCBC, 'HaveGreaterThanUnitsWithCategory', { 1, categories.STRUCTURE * categories.ENERGYPRODUCTION * categories.TECH3 }},
-            -- Do we need additional conditions to build it ?
-            { UCBC, 'HaveUnitRatioUveso', { 0.5, categories.STRUCTURE * categories.MASSFABRICATION, '<=',categories.STRUCTURE * categories.ENERGYPRODUCTION * categories.TECH3 } },
-            { UCBC, 'HasNotParagon', {} },
-            -- Have we the eco to build it ?
-            { EBC, 'GreaterThanEconTrend', { 0.0, 0.0 } }, -- relative income
-            { EBC, 'GreaterThanEconStorageRatio', { 0.05, 0.95}}, -- Ratio from 0 to 1. (1=100%)
-            -- Don't build it if...
-            { UCBC, 'HaveLessThanUnitsInCategoryBeingBuilt', { 1, categories.STRUCTURE * categories.MASSFABRICATION } },
-            -- Respect UnitCap
-            { UCBC, 'HaveUnitRatioVersusCap', { MaxCapMass , '<', categories.STRUCTURE * (categories.MASSEXTRACTION + categories.MASSFABRICATION) } },
-        },
-        BuilderType = 'Any',
-        BuilderData = {
-            Construction = {
-                DesiresAssist = true,
-                NumAssistees = 4,
-                AdjacencyCategory = categories.STRUCTURE * categories.ENERGYPRODUCTION * categories.TECH3,
-                AdjacencyDistance = 50,
-                AvoidCategory = categories.MASSFABRICATION,
-                maxUnits = 1,
-                maxRadius = 15,
-                BuildClose = true,
-                BuildStructures = {
-                    'T3MassCreation',
-                },
-            }
-        }
-    }, ]]--
+
     Builder {
         BuilderName = 'U1 Reclaim T1+T2 Massfabrikation',
         PlatoonTemplate = 'EngineerBuilder',
