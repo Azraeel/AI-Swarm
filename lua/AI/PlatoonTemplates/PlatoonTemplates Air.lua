@@ -49,3 +49,19 @@ PlatoonTemplate {
         { categories.AIR * categories.EXPERIMENTAL - categories.SCOUT, 1, 3, 'Attack', 'none' },
     }
 }
+
+PlatoonTemplate {
+    Name = 'T1AirScoutFormSwarm',
+    Plan = 'ScoutingAISwarm',
+    GlobalSquads = {
+        { categories.AIR * categories.SCOUT * categories.TECH1, 1, 1, 'scout', 'None' },
+    }
+}
+
+PlatoonTemplate {
+    Name = 'T3AirScoutFormSwarm',
+    Plan = 'ScoutingAISwarm',
+    GlobalSquads = {
+        { categories.AIR * categories.SCOUT * categories.TECH3, 1, 1, 'scout', 'None' },
+    }
+}

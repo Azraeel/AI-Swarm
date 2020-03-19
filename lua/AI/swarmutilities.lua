@@ -908,3 +908,103 @@ function GetDangerZoneRadii(bool)
     end
     return BasePanicZone, BaseMilitaryZone, BaseEnemyZone
 end
+
+-- 99% of this is Relent0r's Work --Scouting--
+function AirScoutPatrolSwarmAIThread(self, aiBrain)
+    
+    local scout = self:GetPlatoonUnits()[1]
+    if not scout then
+        return
+    end
+
+    -- build scoutlocations if not already done.
+    if not aiBrain.InterestList then
+        aiBrain:BuildScoutLocations()
+    end
+
+    --If we have Stealth (are cybran), then turn on our Stealth
+    if scout:TestToggleCaps('RULEUTC_CloakToggle') then
+        scout:EnableUnitIntel('Toggle', 'Cloak')
+    end
+
+    while not scout.Dead do
+        local targetArea = false
+        local highPri = false
+
+        local mustScoutArea, mustScoutIndex = aiBrain:GetUntaggedMustScoutArea()
+        local unknownThreats = aiBrain:GetThreatsAroundPosition(scout:GetPosition(), 16, true, 'Unknown')
+
+        --1) If we have any "must scout" (manually added) locations that have not been scouted yet, then scout them
+        if mustScoutArea then
+            mustScoutArea.TaggedBy = scout
+            targetArea = mustScoutArea.Position
+
+        --2) Scout "unknown threat" areas with a threat higher than 25
+        elseif table.getn(unknownThreats) > 0 and unknownThreats[1][3] > 25 then
+            aiBrain:AddScoutArea({unknownThreats[1][1], 0, unknownThreats[1][2]})
+
+        --3) Scout high priority locations
+        elseif aiBrain.IntelData.AirHiPriScouts < aiBrain.NumOpponents and aiBrain.IntelData.AirLowPriScouts < 1
+        and table.getn(aiBrain.InterestList.HighPriority) > 0 then
+            aiBrain.IntelData.AirHiPriScouts = aiBrain.IntelData.AirHiPriScouts + 1
+
+            highPri = true
+
+            targetData = aiBrain.InterestList.HighPriority[1]
+            targetData.LastScouted = GetGameTimeSeconds()
+            targetArea = targetData.Position
+
+            aiBrain:SortScoutingAreas(aiBrain.InterestList.HighPriority)
+
+        --4) Every time we scout NumOpponents number of high priority locations, scout a low priority location
+        elseif aiBrain.IntelData.AirLowPriScouts < 1 and table.getn(aiBrain.InterestList.LowPriority) > 0 then
+            aiBrain.IntelData.AirHiPriScouts = 0
+            aiBrain.IntelData.AirLowPriScouts = aiBrain.IntelData.AirLowPriScouts + 1
+
+            targetData = aiBrain.InterestList.LowPriority[1]
+            targetData.LastScouted = GetGameTimeSeconds()
+            targetArea = targetData.Position
+
+            aiBrain:SortScoutingAreas(aiBrain.InterestList.LowPriority)
+        else
+            --Reset number of scoutings and start over
+            aiBrain.IntelData.AirLowPriScouts = 0
+            aiBrain.IntelData.AirHiPriScouts = 0
+        end
+
+        --Air scout do scoutings.
+        if targetArea then
+            self:Stop()
+
+            local vec = self:DoAirScoutVecs(scout, targetArea)
+
+            while not scout.Dead and not scout:IsIdleState() do
+
+                --If we're close enough...
+                if VDist2Sq(vec[1], vec[3], scout:GetPosition()[1], scout:GetPosition()[3]) < 15625 then
+                    if mustScoutArea then
+                        --Untag and remove
+                        for idx,loc in aiBrain.InterestList.MustScout do
+                            if loc == mustScoutArea then
+                               table.remove(aiBrain.InterestList.MustScout, idx)
+                               break
+                            end
+                        end
+                    end
+                    --Break within 125 ogrids of destination so we don't decelerate trying to stop on the waypoint.
+                    break
+                end
+
+                if VDist3(scout:GetPosition(), targetArea) < 25 then
+                    break
+                end
+
+                WaitTicks(50)
+            end
+        else
+            WaitTicks(10)
+        end
+        WaitTicks(5)
+    end
+end
+

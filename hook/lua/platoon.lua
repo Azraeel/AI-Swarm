@@ -4187,6 +4187,215 @@ Platoon = Class(OldPlatoonClass) {
             WaitSeconds(20)
         end
     end,
+    
+    -- 90% of this Relent0r's Work  --Scouting--
+    ScoutingAISwarm = function(self)
+        AIAttackUtils.GetMostRestrictiveLayer(self)
+
+        if self.MovementLayer == 'Air' then
+            return self:AirScoutingAISwarm()
+        else
+            return self:LandScoutingAISwarm()
+        end
+    end,
+
+    AirScoutingAISwarm = function(self)
+        local patrol = self.PlatoonData.Patrol or false
+        local scout = self:GetPlatoonUnits()[1]
+        if not scout then
+            return
+        end
+        local aiBrain = self:GetBrain()
+
+        if not aiBrain.InterestList then
+            aiBrain:BuildScoutLocations()
+        end
+
+        if scout:TestToggleCaps('RULEUTC_CloakToggle') then
+            scout:EnableUnitIntel('Toggle', 'Cloak')
+        end
+
+        if patrol == true then
+            local patrolTime = self.PlatoonData.PatrolTime or 30
+            local estartX = nil
+            local estartZ = nil
+            local startX = nil
+            local startZ = nil
+            local patrolPositionX = nil
+            local patrolPositionZ = nil
+            while not scout.Dead do
+                if aiBrain:GetCurrentEnemy() then
+                    estartX, estartZ = aiBrain:GetCurrentEnemy():GetArmyStartPos()
+                end
+                startX, startZ = aiBrain:GetArmyStartPos()
+                local rng = math.random(1,3)
+                if rng == 1 then
+                    patrolPositionX = (estartX + startX) / 2.2
+                    patrolPositionZ = (estartZ + startZ) / 2.2
+                elseif rng == 2 then
+                    patrolPositionX = (estartX + startX) / 2
+                    patrolPositionZ = (estartZ + startZ) / 2
+                    patrolPositionX = (patrolPositionX + startX) / 2
+                    patrolPositionZ = (patrolPositionZ + startZ) / 2
+                elseif rng == 3 then
+                    patrolPositionX = (estartX + startX) / 2
+                    patrolPositionZ = (estartZ + startZ) / 2
+                end
+                patrolLocation1 = AIUtils.RandomLocation(patrolPositionX, patrolPositionZ)
+                patrolLocation2 = AIUtils.RandomLocation(patrolPositionX, patrolPositionZ)
+                self:MoveToLocation({patrolPositionX, 0, patrolPositionZ}, false)
+                local patrolunits = self:GetPlatoonUnits()
+                IssuePatrol(patrolunits, AIUtils.RandomLocation(patrolPositionX, patrolPositionZ))
+                IssuePatrol(patrolunits, AIUtils.RandomLocation(patrolPositionX, patrolPositionZ))
+                IssuePatrol(patrolunits, AIUtils.RandomLocation(patrolPositionX, patrolPositionZ))
+                WaitSeconds(patrolTime)
+                self:MoveToLocation({startX, 0, startZ}, false)
+                self:PlatoonDisband()
+                return
+            end
+        else
+            while not scout.Dead do
+                local targetArea = false
+                local highPri = false
+
+                local mustScoutArea, mustScoutIndex = aiBrain:GetUntaggedMustScoutArea()
+                local unknownThreats = aiBrain:GetThreatsAroundPosition(scout:GetPosition(), 16, true, 'Unknown')
+                if mustScoutArea then
+                    mustScoutArea.TaggedBy = scout
+                    targetArea = mustScoutArea.Position
+
+                elseif table.getn(unknownThreats) > 0 and unknownThreats[1][3] > 25 then
+                    aiBrain:AddScoutArea({unknownThreats[1][1], 0, unknownThreats[1][2]})
+
+                elseif aiBrain.IntelData.AirHiPriScouts < aiBrain.NumOpponents and aiBrain.IntelData.AirLowPriScouts < 1
+                and table.getn(aiBrain.InterestList.HighPriority) > 0 then
+                    aiBrain.IntelData.AirHiPriScouts = aiBrain.IntelData.AirHiPriScouts + 1
+
+                    highPri = true
+
+                    targetData = aiBrain.InterestList.HighPriority[1]
+                    targetData.LastScouted = GetGameTimeSeconds()
+                    targetArea = targetData.Position
+
+                    aiBrain:SortScoutingAreas(aiBrain.InterestList.HighPriority)
+
+
+                elseif aiBrain.IntelData.AirLowPriScouts < 1 and table.getn(aiBrain.InterestList.LowPriority) > 0 then
+                    aiBrain.IntelData.AirHiPriScouts = 0
+                    aiBrain.IntelData.AirLowPriScouts = aiBrain.IntelData.AirLowPriScouts + 1
+
+                    targetData = aiBrain.InterestList.LowPriority[1]
+                    targetData.LastScouted = GetGameTimeSeconds()
+                    targetArea = targetData.Position
+
+                    aiBrain:SortScoutingAreas(aiBrain.InterestList.LowPriority)
+                else
+
+                    aiBrain.IntelData.AirLowPriScouts = 0
+                    aiBrain.IntelData.AirHiPriScouts = 0
+                end
+
+
+                if targetArea then
+                    self:Stop()
+
+                    local vec = self:DoAirScoutVecs(scout, targetArea)
+
+                    while not scout.Dead and not scout:IsIdleState() do
+
+
+                        if VDist2Sq(vec[1], vec[3], scout:GetPosition()[1], scout:GetPosition()[3]) < 15625 then
+                           if mustScoutArea then
+
+                                for idx,loc in aiBrain.InterestList.MustScout do
+                                    if loc == mustScoutArea then
+                                       table.remove(aiBrain.InterestList.MustScout, idx)
+                                       break
+                                    end
+                                end
+                            end
+
+                            break
+                        end
+
+                        if VDist3(scout:GetPosition(), targetArea) < 25 then
+                            break
+                        end
+
+                        WaitTicks(50)
+                    end
+                else
+                    WaitTicks(10)
+                end
+                WaitTicks(1)
+            end
+        end
+    end,
+
+    LandScoutingAISwarm = function(self)
+        AIAttackUtils.GetMostRestrictiveLayer(self)
+
+        local aiBrain = self:GetBrain()
+        local scout = self:GetPlatoonUnits()[1]
+
+
+        if not aiBrain.InterestList then
+            aiBrain:BuildScoutLocations()
+        end
+
+
+        if scout:TestToggleCaps('RULEUTC_CloakToggle') then
+            scout:SetScriptBit('RULEUTC_CloakToggle', false)
+        end
+
+        while not scout.Dead do
+
+            local targetData = false
+
+
+            if aiBrain.IntelData.HiPriScouts < aiBrain.NumOpponents and table.getn(aiBrain.InterestList.HighPriority) > 0 then
+                targetData = aiBrain.InterestList.HighPriority[1]
+                aiBrain.IntelData.HiPriScouts = aiBrain.IntelData.HiPriScouts + 1
+                targetData.LastScouted = GetGameTimeSeconds()
+
+                aiBrain:SortScoutingAreas(aiBrain.InterestList.HighPriority)
+
+            elseif table.getn(aiBrain.InterestList.LowPriority) > 0 then
+                targetData = aiBrain.InterestList.LowPriority[1]
+                aiBrain.IntelData.HiPriScouts = 0
+                targetData.LastScouted = GetGameTimeSeconds()
+
+                aiBrain:SortScoutingAreas(aiBrain.InterestList.LowPriority)
+            else
+
+                aiBrain.IntelData.HiPriScouts = 0
+            end
+
+
+            if targetData then
+
+                local path, reason = AIAttackUtils.PlatoonGenerateSafePathTo(aiBrain, self.MovementLayer, scout:GetPosition(), targetData.Position, 400) --DUNCAN - Increase threatwieght from 100
+
+                IssueClearCommands(self)
+
+                if path then
+                    local pathLength = table.getn(path)
+                    for i=1, pathLength-1 do
+                        self:MoveToLocation(path[i], false)
+                    end
+                end
+
+                self:MoveToLocation(targetData.Position, false)
+
+
+                while not scout.Dead and not scout:IsIdleState() do
+                    WaitTicks(25)
+                end
+            end
+
+            WaitTicks(10)
+        end
+    end,
 }
 
 --T4 Kanonenbot

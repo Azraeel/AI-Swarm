@@ -132,6 +132,8 @@ BuilderGroup { BuilderGroupName = 'Swarm Factory Builder',
         BuilderConditions = {
             { MIBC, 'CanPathToCurrentEnemy', { true } },
 
+            { EBC, 'GreaterThanEconStorageRatio', { 0.25, 0.40}},
+
             { EBC, 'MassToFactoryRatioBaseCheck', { 'LocationType' } },
 
             { UCBC, 'HaveLessThanUnitsInCategoryBeingBuilt', { 1, categories.STRUCTURE * categories.FACTORY * categories.AIR * categories.TECH1 }},

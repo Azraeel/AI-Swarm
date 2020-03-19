@@ -22,7 +22,9 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Builders',
 
             { EBC, 'GreaterThanEconIncome', { 0.2, 2 } },
 
-            { UCBC, 'HaveLessThanUnitsWithCategory', { 1, categories.AIR * categories.MOBILE * categories.SCOUT } },
+            { UCBC, 'PoolLessAtLocation', { 'LocationType', 2, categories.AIR * categories.MOBILE * categories.SCOUT * categories.TECH1 }},
+
+            { UCBC, 'HaveLessThanUnitsWithCategory', { 15, categories.AIR * categories.MOBILE * categories.SCOUT } },
         },
         BuilderType = 'Air',
     },
@@ -167,7 +169,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Builders',
 
             { UCBC, 'PoolLessAtLocation', { 'LocationType', 2, categories.AIR * categories.MOBILE * categories.SCOUT * categories.TECH3 }},
 
-            { UCBC, 'HaveLessThanUnitsWithCategory', { 3, categories.AIR * categories.MOBILE * categories.SCOUT * categories.TECH3 } },
+            { UCBC, 'HaveLessThanUnitsWithCategory', { 20, categories.AIR * categories.MOBILE * categories.SCOUT * categories.TECH3 } },
         },
         BuilderType = 'Air',
     },
@@ -306,27 +308,58 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Builders',
 -- ===================================================-======================================================== --
 BuilderGroup { BuilderGroupName = 'Swarm Air Scout Formers',
     BuildersType = 'PlatoonFormBuilder',
-    Builder { BuilderName = 'U1 Air Scout Form',
-        PlatoonTemplate = 'T1AirScoutForm',
-        Priority = 10000,
-        InstanceCount = 3,
+    Builder {
+        BuilderName = 'Swarm Former Scout T1',
+        PlatoonTemplate = 'T1AirScoutFormSwarm',
+        InstanceCount = 8,
+        Priority = 900,
         BuilderConditions = {
-            -- When do we want to form this ?
             { UCBC, 'HaveGreaterThanUnitsWithCategory', { 0, categories.AIR * categories.SCOUT } },
         },
+        LocationType = 'LocationType',
         BuilderType = 'Any',
     },
-
-
-    Builder { BuilderName = 'U3 Air Scout Form',
-        PlatoonTemplate = 'T3AirScoutForm',
-        PlatoonAddBehaviors = { 'AirUnitRefit' },
-        Priority = 20000,
-        InstanceCount = 5,
+    Builder {
+    BuilderName = 'Swarm Former Scout T3',
+        PlatoonTemplate = 'T3AirScoutFormSwarm',
+        InstanceCount = 8,
+        Priority = 910,
         BuilderConditions = {
-            -- When do we want to form this ?
-            { UCBC, 'HaveGreaterThanUnitsWithCategory', { 0, categories.AIR * categories.INTELLIGENCE } },
+            { UCBC, 'HaveGreaterThanUnitsWithCategory', { 0, categories.AIR * categories.SCOUT } },
         },
+        LocationType = 'LocationType',
+        BuilderType = 'Any',
+    },
+    Builder {
+        BuilderName = 'Swarm Former Scout Patrol DMZ T1',
+        PlatoonTemplate = 'T1AirScoutFormSwarm',
+        InstanceCount = 4,
+        Priority = 900,
+        BuilderConditions = {
+            { UCBC, 'HaveGreaterThanUnitsWithCategory', { 0, categories.AIR * categories.SCOUT } },
+        },
+        BuilderData = {
+            Patrol = true,
+            PatrolTime = 120,
+            --MilitaryArea = 'BaseDMZArea',
+        },
+        LocationType = 'LocationType',
+        BuilderType = 'Any',
+    },
+    Builder {
+        BuilderName = 'Swarm Former Scout Patrol DMZ T3',
+        PlatoonTemplate = 'T3AirScoutFormSwarm',
+        InstanceCount = 4,
+        Priority = 900,
+        BuilderData = {
+            Patrol = true,
+            PatrolTime = 120,
+            --MilitaryArea = 'BaseDMZArea',
+        },
+        BuilderConditions = {
+            { UCBC, 'HaveGreaterThanUnitsWithCategory', { 0, categories.AIR * categories.SCOUT } },
+        },
+        LocationType = 'LocationType',
         BuilderType = 'Any',
     },
 }
