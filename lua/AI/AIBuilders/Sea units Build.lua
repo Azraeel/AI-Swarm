@@ -80,7 +80,26 @@ BuilderGroup { BuilderGroupName = 'Swarm Naval Builders',                       
 
             { EBC, 'GreaterThanEconIncome', { 4, 40 } },
 
-            { UCBC, 'PoolLessAtLocation', { 'LocationType', 2, categories.CRUISER * categories.NAVAL * categories.TECH2 }},
+            { UCBC, 'PoolLessAtLocation', { 'LocationType', 3, categories.CRUISER * categories.NAVAL * categories.TECH2 }},
+        },
+        BuilderType = 'Sea',
+    },
+
+    Builder { BuilderName = 'T2SeaCruiser - Swarm - Reactive',
+        PlatoonTemplate = 'T2SeaCruiser',
+        Priority = 605,
+        BuilderConditions = {
+            { UCBC, 'CanPathNavalBaseToNavalTargets', {  'LocationType', categories.STRUCTURE * categories.FACTORY * categories.NAVAL }},
+
+            { UCBC, 'EnemyUnitsGreaterAtLocationRadius', {  BaseMilitaryZone, 'LocationType', 5, categories.AIR * (categories.ANTINAVY + categories.GROUNDATTACK) }},
+
+            { EBC, 'GreaterThanEconTrend', { 0.0, 0.0 } },
+
+            { UCBC, 'UnitCapCheckLess', { 0.95 } },
+
+            { EBC, 'GreaterThanEconIncome', { 4, 40 } },
+
+            { UCBC, 'PoolLessAtLocation', { 'LocationType', 4, categories.CRUISER * categories.NAVAL * categories.TECH2 }},
         },
         BuilderType = 'Sea',
     },
@@ -169,6 +188,27 @@ BuilderGroup { BuilderGroupName = 'Swarm Naval Builders',                       
             { EBC, 'GreaterThanEconIncome', { 10, 100 } },
 
             { UCBC, 'PoolLessAtLocation', { 'LocationType', 2, categories.CRUISER * categories.NAVAL * categories.TECH3 }},
+        },
+        BuilderType = 'Sea',
+    },
+
+    Builder { BuilderName = 'T2SeaCruiser - Swarm - Reactive - Tech3',
+        PlatoonTemplate = 'T2SeaCruiser',
+        Priority = 755,
+        BuilderConditions = {
+            { UCBC, 'CanPathNavalBaseToNavalTargets', {  'LocationType', categories.STRUCTURE * categories.FACTORY * categories.NAVAL }},
+
+            { UCBC, 'EnemyUnitsGreaterAtLocationRadius', {  BaseMilitaryZone, 'LocationType', 5, categories.AIR * (categories.ANTINAVY + categories.GROUNDATTACK) }},
+
+            { UCBC, 'HaveGreaterThanUnitsWithCategory', { 0, categories.STRUCTURE * categories.FACTORY * categories.NAVAL * categories.TECH3 } },
+
+            { EBC, 'GreaterThanEconTrend', { 0.0, 0.0 } },
+
+            { UCBC, 'UnitCapCheckLess', { 0.95 } },
+
+            { EBC, 'GreaterThanEconIncome', { 4, 40 } },
+
+            { UCBC, 'PoolLessAtLocation', { 'LocationType', 4, categories.CRUISER * categories.NAVAL * categories.TECH2 }},
         },
         BuilderType = 'Sea',
     },

@@ -340,7 +340,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Scout Formers',
         },
         BuilderData = {
             Patrol = true,
-            PatrolTime = 120,
+            PatrolTime = 600,
             --MilitaryArea = 'BaseDMZArea',
         },
         LocationType = 'LocationType',
@@ -353,7 +353,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Scout Formers',
         Priority = 900,
         BuilderData = {
             Patrol = true,
-            PatrolTime = 120,
+            PatrolTime = 600,
             --MilitaryArea = 'BaseDMZArea',
         },
         BuilderConditions = {

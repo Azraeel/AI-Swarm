@@ -17,13 +17,13 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Scout Builders',                  
         PlatoonTemplate = 'T1LandScout',
         Priority = 1001,
         BuilderConditions = {
-            { UCBC, 'LessThanGameTimeSeconds', { 60 } }, 
+            { UCBC, 'LessThanGameTimeSeconds', { 120 } }, 
 
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
 
             { EBC, 'GreaterThanEconIncome', { 0.2, 2 } },
 
-            { UCBC, 'HaveLessThanUnitsWithCategory', { 1, categories.LAND * categories.MOBILE * categories.SCOUT - categories.ENGINEER }},
+            { UCBC, 'HaveLessThanUnitsWithCategory', { 2, categories.LAND * categories.MOBILE * categories.SCOUT - categories.ENGINEER }},
         },
         BuilderType = 'Land',
     },
@@ -102,6 +102,23 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',                  
         BuilderType = 'Land',
     },
 
+    Builder { BuilderName = 'T1LandAA - Swarm - Reactive',
+        PlatoonTemplate = 'T1LandAA',
+        Priority = 500,
+        BuilderConditions = {
+            { UCBC, 'UnitCapCheckLess', { 0.95 } },
+
+            { EBC, 'GreaterThanEconIncome', { 0.2, 2 } },
+
+            { MIBC, 'CanPathToCurrentEnemy', { true } },
+
+            { UCBC, 'EnemyUnitsGreaterAtLocationRadius', {  BaseMilitaryZone, 'LocationType', 5, categories.AIR * (categories.BOMBER + categories.GROUNDATTACK) }},
+
+            { UCBC, 'PoolLessAtLocation', { 'LocationType', 2, categories.LAND * categories.MOBILE * categories.ANTIAIR }},
+        },
+        BuilderType = 'Land',
+    },
+
     -- ============ --
     --    TECH 2    --
     -- ============ --
@@ -176,6 +193,23 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',                  
             { MIBC, 'CanPathToCurrentEnemy', { true } },
 
             { UCBC, 'PoolLessAtLocation', { 'LocationType', 1, categories.LAND * categories.MOBILE * categories.ANTIAIR * categories.TECH2 }},
+        },
+        BuilderType = 'Land',
+    },
+
+    Builder { BuilderName = 'T2LandAA - Swarm - Reactive',
+        PlatoonTemplate = 'T2LandAA',
+        Priority = 700,
+        BuilderConditions = {
+            { UCBC, 'UnitCapCheckLess', { 0.95 } },
+
+            { EBC, 'GreaterThanEconIncome', { 1, 20 } },
+
+            { MIBC, 'CanPathToCurrentEnemy', { true } },
+
+            { UCBC, 'EnemyUnitsGreaterAtLocationRadius', {  BaseMilitaryZone, 'LocationType', 5, categories.AIR * (categories.BOMBER + categories.GROUNDATTACK) }},
+
+            { UCBC, 'PoolLessAtLocation', { 'LocationType', 2, categories.LAND * categories.MOBILE * categories.ANTIAIR * categories.TECH2 }},
         },
         BuilderType = 'Land',
     },
@@ -269,6 +303,23 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',                  
             { MIBC, 'CanPathToCurrentEnemy', { true } },
 
             { UCBC, 'PoolLessAtLocation', { 'LocationType', 1, categories.LAND * categories.MOBILE * categories.ANTIAIR * categories.TECH3 }},
+        },
+        BuilderType = 'Land',
+    },
+
+    Builder { BuilderName = 'T3LandAA - Swarm - Reactive',
+        PlatoonTemplate = 'T3LandAA',
+        Priority = 900,
+        BuilderConditions = {
+            { UCBC, 'UnitCapCheckLess', { 0.95 } },
+
+            { EBC, 'GreaterThanEconIncome', { 3.5, 100 } },
+
+            { MIBC, 'CanPathToCurrentEnemy', { true } },
+
+            { UCBC, 'EnemyUnitsGreaterAtLocationRadius', {  BaseMilitaryZone, 'LocationType', 5, categories.AIR * (categories.BOMBER + categories.GROUNDATTACK) }},
+
+            { UCBC, 'PoolLessAtLocation', { 'LocationType', 3, categories.LAND * categories.MOBILE * categories.ANTIAIR * categories.TECH3 }},
         },
         BuilderType = 'Land',
     },
@@ -381,7 +432,7 @@ BuilderGroup {
         BuilderConditions = { 
             { UCBC, 'LessThanGameTimeSeconds', { 1500 } },
 
-            { UCBC, 'EnemyUnitsGreaterAtLocationRadius', {  BaseEnemyZone, 'LocationType', 1, categories.LAND - categories.SCOUT }},
+            { UCBC, 'EnemyUnitsGreaterAtLocationRadius', {  BaseEnemyZone, 'LocationType', 1, categories.STRUCTURE - categories.SCOUT }},
         },
         BuilderData = {
             AttackEnemyStrength = 100,
@@ -455,7 +506,7 @@ BuilderGroup {
         BuilderConditions = { 
             { UCBC, 'GreaterThanGameTimeSeconds', { 1500 } },
 
-            { UCBC, 'EnemyUnitsGreaterAtLocationRadius', {  BaseEnemyZone, 'LocationType', 1, categories.LAND - categories.SCOUT }},
+            { UCBC, 'EnemyUnitsGreaterAtLocationRadius', {  BaseEnemyZone, 'LocationType', 1, categories.STRUCTURE - categories.SCOUT }},
         },
         BuilderData = {
             AttackEnemyStrength = 100,
@@ -512,34 +563,6 @@ BuilderGroup {
         },
         BuilderConditions = {                                                   
             { UCBC, 'EnemyUnitsGreaterAtLocationRadius', {  BasePanicZone, 'LocationType', 1, categories.LAND - categories.SCOUT - categories.ENGINEER }},
-        },
-        BuilderType = 'Any',                                                    
-    },
-
-    Builder {
-        BuilderName = 'Microed Enemy Intercept - Military',                                     
-        PlatoonTemplate = 'AISwarm LandAttack Intercept',                         
-        Priority = 100,                                                          
-        InstanceCount = 1,                                                      
-        BuilderData = {
-            SearchRadius = BaseMilitaryZone,                                     
-            GetTargetsFromBase = false,                                        
-            RequireTransport = false,                                          
-            AggressiveMove = true,                                            
-            AttackEnemyStrength = 150,                                        
-            TargetSearchCategory = categories.MOBILE * categories.LAND - categories.SCOUT, 
-            MoveToCategories = {                                                
-                categories.EXPERIMENTAL,
-                categories.MOBILE * categories.LAND * categories.INDIRECTFIRE - categories.SCOUT,
-                categories.MOBILE * categories.LAND * categories.DIRECTFIRE - categories.SCOUT,
-                categories.MOBILE * categories.LAND * categories.ANTIAIR,
-                categories.STRUCTURE * categories.ANTIAIR,
-                categories.STRUCTURE * categories.DEFENSE,
-                categories.ALLUNITS,
-            },
-        },
-        BuilderConditions = {                                                   
-            { UCBC, 'EnemyUnitsGreaterAtLocationRadius', {  BaseMilitaryZone, 'LocationType', 1, categories.LAND - categories.SCOUT - categories.ENGINEER }},
         },
         BuilderType = 'Any',                                                    
     },

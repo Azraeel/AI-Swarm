@@ -132,7 +132,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Factory Builder',
         BuilderConditions = {
             { MIBC, 'CanPathToCurrentEnemy', { true } },
 
-            { EBC, 'GreaterThanEconStorageRatio', { 0.25, 0.40}},
+            { EBC, 'GreaterThanEconStorageRatio', { 0.10, 0.30}},
 
             { EBC, 'MassToFactoryRatioBaseCheck', { 'LocationType' } },
 
@@ -556,6 +556,25 @@ BuilderGroup { BuilderGroupName = 'Swarm Factory Upgrader Rush',                
         BuilderType = 'Any',
     },
 
+    Builder { BuilderName = 'U1 A UP HQ 1->2 1st Enemy',
+        PlatoonTemplate = 'T1AirFactoryUpgrade',
+        Priority = 15400,
+        DelayEqualBuildPlattons = {'FactoryUpgrade', 3},
+        BuilderConditions = {
+            -- When do we want to build this ? 
+            { UCBC, 'HaveLessThanUnitsWithCategory', { 1, categories.STRUCTURE * categories.FACTORY * categories.AIR * (categories.TECH2 + categories.TECH3) - categories.SUPPORTFACTORY } },
+            -- Do we need additional conditions to build it ?
+            { UCBC, 'UnitsGreaterAtEnemy', { 0 , categories.STRUCTURE * categories.FACTORY * (categories.TECH2 + categories.TECH3) } },
+            { UCBC, 'BuildOnlyOnLocation', { 'LocationType', 'MAIN' } },
+            { EBC, 'GreaterThanEconStorageRatio', { 0.50, 0.50 } },
+            { EBC, 'GreaterThanEconTrend', { 1.03, 1.03 } },
+            -- Don't build it if...
+            { UCBC, 'HaveLessThanUnitsInCategoryBeingUpgrade', { 1, categories.STRUCTURE * categories.FACTORY * categories.TECH1 }},
+            { UCBC, 'CheckBuildPlattonDelay', { 'FactoryUpgrade' }},
+        },
+        BuilderType = 'Any',
+    },
+
     Builder { BuilderName = 'U1 A UP HQ 1->2 1st Time',
         PlatoonTemplate = 'T1AirFactoryUpgrade',
         Priority = 15400,
@@ -591,6 +610,25 @@ BuilderGroup { BuilderGroupName = 'Swarm Factory Upgrader Rush',                
             -- Don't build it if...
             { UCBC, 'CheckBuildPlattonDelay', { 'FactoryUpgrade' }},
             { UCBC, 'HaveLessThanUnitsInCategoryBeingUpgrade', { 1, categories.STRUCTURE * categories.FACTORY * categories.TECH2 }},
+        },
+        BuilderType = 'Any',
+    },
+
+    Builder { BuilderName = 'U2 A UP HQ 2->3 1st Enemy',
+        PlatoonTemplate = 'T2AirFactoryUpgrade',
+        Priority = 15400,
+        DelayEqualBuildPlattons = {'FactoryUpgrade', 3},
+        BuilderConditions = {
+            -- When do we want to build this ?
+            { UCBC, 'HaveLessThanUnitsWithCategory', { 1, categories.STRUCTURE * categories.FACTORY * categories.AIR * categories.TECH3 - categories.SUPPORTFACTORY } },
+            -- Do we need additional conditions to build it ?
+            { UCBC, 'UnitsGreaterAtEnemy', { 0 , categories.STRUCTURE * categories.FACTORY * categories.TECH3 } },
+            { UCBC, 'BuildOnlyOnLocation', { 'LocationType', 'MAIN' } },
+            { EBC, 'GreaterThanEconTrend', { 1.03, 1.03 } },
+            -- Have we the eco to build it ?
+            { EBC, 'GreaterThanEconStorageRatio', { 0.50, 0.50 } },
+            -- Don't build it if...
+            { UCBC, 'CheckBuildPlattonDelay', { 'FactoryUpgrade' }},
         },
         BuilderType = 'Any',
     },
@@ -762,7 +800,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Gate Builders',                        
         PlatoonTemplate = 'T3EngineerBuilder',
         Priority = 1350,
         BuilderConditions = {
-        	{ EBC, 'GreaterThanEconStorageRatio', { 0.25, 0.90 } },
+        	{ EBC, 'GreaterThanEconStorageRatio', { 0.15, 0.50 } },
 
             { UCBC, 'HaveGreaterThanUnitsWithCategory', { 1, categories.STRUCTURE * categories.ENERGYPRODUCTION * categories.TECH3 } },
 

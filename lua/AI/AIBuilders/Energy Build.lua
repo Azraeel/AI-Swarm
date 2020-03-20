@@ -46,6 +46,39 @@ BuilderGroup {
             }
         }
     },
+
+    Builder {
+        BuilderName = 'U1 Power low trend - Overbuild',
+        PlatoonTemplate = 'EngineerBuilder',
+        Priority = 650,
+        InstanceCount = 2,                                                      -- Number of plattons that will be formed with this template.
+        DelayEqualBuildPlattons = {'Energy', 3},
+        BuilderConditions = {
+            { EBC, 'LessThanEconStorageRatio', { 1, 0.80 } },             -- Ratio from 0 to 1. (1=100%)
+
+            { UCBC, 'HaveLessThanUnitsWithCategory', { 1, categories.ENERGYPRODUCTION * categories.TECH2 } },
+
+            { UCBC, 'HasNotParagon', {} },
+
+            { EBC, 'GreaterThanEconIncome',  { 0.5, 0.0}}, -- Absolut Base income
+
+            { MIBC, 'GreaterThanGameTime', { 260 } },
+        },
+        BuilderType = 'Any',
+        BuilderData = {
+            NumAssistees = 1,
+            Construction = {
+                AdjacencyCategory = categories.FACTORY * categories.STRUCTURE * (categories.AIR + categories.LAND),
+                AdjacencyDistance = 50,
+                BuildClose = true,
+                LocationType = 'LocationType',
+                BuildStructures = {
+                    'T1EnergyProduction',
+                },
+            }
+        }
+    },
+
     Builder {
         BuilderName = 'UC Power low trend',
         PlatoonTemplate = 'CommanderBuilder',
@@ -141,7 +174,7 @@ BuilderGroup {
         Priority = 1000,
         InstanceCount = 1,
         BuilderConditions = {
-        	{ UCBC, 'HaveLessThanUnitsWithCategory', { 2, categories.ENERGYPRODUCTION * categories.TECH3 } },
+        	{ UCBC, 'HaveLessThanUnitsWithCategory', { 1, categories.ENERGYPRODUCTION * categories.TECH3 } },
 
             { UCBC, 'HaveGreaterThanUnitsWithCategory', { 1, categories.ENERGYPRODUCTION * categories.TECH2 } },
         	
@@ -206,7 +239,7 @@ BuilderGroup {
         DelayEqualBuildPlattons = {'Energy', 10},
         InstanceCount = 1,
         BuilderConditions = {
-            { UCBC, 'HaveGreaterThanUnitsWithCategory', { 2, categories.ENERGYPRODUCTION * categories.TECH3 } },
+            { UCBC, 'HaveGreaterThanUnitsWithCategory', { 1, categories.ENERGYPRODUCTION * categories.TECH3 } },
 
             { UCBC, 'CheckBuildPlattonDelay', { 'Energy' }},
 

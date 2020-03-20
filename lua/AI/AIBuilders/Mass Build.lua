@@ -19,7 +19,7 @@ BuilderGroup {
         BuilderName = 'U1 Mass 30',
         PlatoonTemplate = 'EngineerBuilder',
         Priority = 555,
-        InstanceCount = 1,
+        InstanceCount = 2,
         BuilderConditions = {
             -- When do we want to build this ?
             { MABC, 'CanBuildOnMass', { 'LocationType', 30, -500, 1, 0, 'AntiSurface', 1 }}, -- LocationType, distance, threatMin, threatMax, threatRadius, threatType, maxNum
@@ -41,8 +41,8 @@ BuilderGroup {
     Builder {
         BuilderName = 'U1 Mass 60',
         PlatoonTemplate = 'EngineerBuilder',
-        Priority = 535,
-        InstanceCount = 1,
+        Priority = 545,
+        InstanceCount = 2,
         BuilderConditions = {
             -- When do we want to build this ?
             { MABC, 'CanBuildOnMass', { 'LocationType', 60, -500, 1, 0, 'AntiSurface', 1 }}, -- LocationType, distance, threatMin, threatMax, threatRadius, threatType, maxNum
@@ -64,7 +64,7 @@ BuilderGroup {
     Builder {
         BuilderName = 'U1 Mass 1000 6+',
         PlatoonTemplate = 'EngineerBuilder',
-        Priority = 525,
+        Priority = 535,
         DelayEqualBuildPlattons = {'MASSEXTRACTION', 1},
         InstanceCount = 2,
         BuilderConditions = {
@@ -91,7 +91,7 @@ BuilderGroup {
     Builder {
         BuilderName = 'U1 Mass 1000 8+',
         PlatoonTemplate = 'EngineerBuilder',
-        Priority = 515,
+        Priority = 525,
         DelayEqualBuildPlattons = {'MASSEXTRACTION', 1},
         InstanceCount = 2,
         BuilderConditions = {
@@ -118,7 +118,7 @@ BuilderGroup {
     Builder {
         BuilderName = 'U1 Mass 1000 10+',
         PlatoonTemplate = 'EngineerBuilder',
-        Priority = 505,
+        Priority = 515,
         DelayEqualBuildPlattons = {'MASSEXTRACTION', 1},
         InstanceCount = 2,
         BuilderConditions = {
