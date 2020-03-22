@@ -46,10 +46,10 @@ PlatoonTemplate {
     Plan = 'LandAttackAIUveso',
     GlobalSquads = {
         { categories.MOBILE * categories.LAND * categories.EXPERIMENTAL - categories.ENGINEER - categories.SCOUT,
-          1,
-          3,
-          'attack',
-          'GrowthFormation' },
+        1,
+        3,
+        'attack',
+        'GrowthFormation' },
     },
 }
 

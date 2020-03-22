@@ -257,8 +257,6 @@ BuilderGroup { BuilderGroupName = 'Swarm SACU Builder',
         PlatoonTemplate = 'U3 SACU RAS preset 123x5',
         Priority = 1020,
         BuilderConditions = {
-        	{ EBC, 'GreaterThanEconStorageRatio', { 0.10, 0.50}},
-        	
             { UCBC, 'HaveLessThanUnitsWithCategory', { 50, categories.ENGINEERPRESET + categories.RASPRESET } },
 
             { UCBC, 'PoolLessAtLocation', { 'LocationType', 1, categories.ENGINEERPRESET + categories.RASPRESET } },

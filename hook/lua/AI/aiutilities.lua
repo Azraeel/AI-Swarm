@@ -678,3 +678,40 @@ function AIFindNearestCategoryTeleportLocation(aiBrain, position, maxRange, Move
     end
     return TargetUnit
 end
+
+function RandomLocation(x, z)
+    local finalX = x + Random(-30, 30)
+    while finalX <= 0 or finalX >= ScenarioInfo.size[1] do
+        finalX = x + Random(-30, 30)
+    end
+
+    local finalZ = z + Random(-30, 30)
+    while finalZ <= 0 or finalZ >= ScenarioInfo.size[2] do
+        finalZ = z + Random(-30, 30)
+    end
+
+    local movePos = {finalX, 0, finalZ}
+    local height = GetTerrainHeight(movePos[1], movePos[3])
+    if GetSurfaceHeight(movePos[1], movePos[3]) > height then
+        height = GetSurfaceHeight(movePos[1], movePos[3])
+    end
+    movePos[2] = height
+
+    return movePos
+end
+
+function points(original,radius,num)
+    local nnn=0
+    local coords = {}
+    while nnn < num do
+        local xxx = 0
+        local yyy = 0
+        xxx = original[1] + radius * math.cos (nnn/num* (2 * math.pi))
+        yyy = original[3] + radius * math.sin (nnn/num* (2 * math.pi))
+        table.insert(coords, {xxx, yyy})
+        nnn = nnn + 1
+    end
+    for k, v in ipairs(coords) do
+    print(v[1]..':'..v[2])
+    end
+end
