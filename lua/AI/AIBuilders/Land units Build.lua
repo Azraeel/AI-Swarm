@@ -536,7 +536,7 @@ BuilderGroup {
 
     Builder {
         BuilderName = 'Microed Raid Structures - Military',                          
-        PlatoonTemplate = 'AISwarm LandAttack Micro Small',                          
+        PlatoonTemplate = 'AISwarm LandAttack Micro Raid',                          
         Priority = 100,                                                        
         InstanceCount = 2,                                                   
         BuilderData = {
@@ -570,7 +570,7 @@ BuilderGroup {
 
     Builder {
         BuilderName = 'Microed Raid Structure&Engineer - Enemy',                              
-        PlatoonTemplate = 'AISwarm LandAttack Micro Small',                           
+        PlatoonTemplate = 'AISwarm LandAttack Micro Raid',                           
         Priority = 100,                                                       
         InstanceCount = 2,                                                     
         BuilderData = {
@@ -601,7 +601,7 @@ BuilderGroup {
 
     Builder {
         BuilderName = 'Microed AntiMass - Enemy',                            
-        PlatoonTemplate = 'AISwarm LandAttack Micro Small',                     
+        PlatoonTemplate = 'AISwarm LandAttack Micro Raid',                     
         Priority = 100,                                                   
         InstanceCount = 2,                                                    
         BuilderData = {
@@ -626,6 +626,24 @@ BuilderGroup {
             { UCBC, 'UnitsGreaterAtEnemy', { 0 , categories.MASSEXTRACTION + categories.DEFENSE } },
         },
         BuilderType = 'Any',                                                    
+    },
+
+    Builder {
+        BuilderName = 'Microed Land Experimental Guard',
+        PlatoonTemplate = 'T3ExperimentalAAGuard',
+        PlatoonAIPlan = 'GuardUnit',
+        Priority = 115,
+        InstanceCount = 4,
+        BuilderData = {
+            GuardRadius = 70,
+            GuardCategory = categories.MOBILE * categories.LAND * categories.EXPERIMENTAL,
+            LocationType = 'LocationType',
+        },
+        BuilderConditions = {
+--          { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 5, categories.MOBILE * categories.LAND * categories.ANTIAIR - categories.SCOUT - categories.ENGINEER } },
+            { UCBC, 'UnitsNeedGuard', { categories.MOBILE * categories.EXPERIMENTAL * categories.LAND} },
+        },
+        BuilderType = 'Any',
     },
 }
 

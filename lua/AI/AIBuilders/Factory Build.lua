@@ -58,7 +58,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Factory Builder',
 
             { EBC, 'MassToFactoryRatioBaseCheck', { 'LocationType' } },
 
-            { UCBC, 'HaveLessThanUnitsWithCategory', { 8, categories.STRUCTURE * categories.FACTORY * categories.LAND * (categories.TECH1 + categories.TECH2 + categories.TECH3) }},
+            { UCBC, 'HaveLessThanUnitsWithCategory', { 10, categories.STRUCTURE * categories.FACTORY * categories.LAND * (categories.TECH1 + categories.TECH2 + categories.TECH3) }},
         },
         BuilderType = 'Any',
         BuilderData = {
@@ -104,7 +104,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Factory Builder',
         PlatoonTemplate = 'EngineerBuilder',
         Priority = 600,
         BuilderConditions = {
-            { EBC, 'GreaterThanEconStorageRatio', { 0.25, 0.40}},
+            { EBC, 'GreaterThanEconStorageRatio', { 0.10, 0.40}},
 
             { MIBC, 'CanPathToCurrentEnemy', { true } }, 
 
@@ -157,7 +157,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Factory Builder',
         PlatoonTemplate = 'EngineerBuilder',
         Priority = 600,
         BuilderConditions = {
-            { EBC, 'GreaterThanEconStorageRatio', { 0.25, 0.40}},
+            { EBC, 'GreaterThanEconStorageRatio', { 0.10, 0.40}},
 
             { MIBC, 'CanPathToCurrentEnemy', { true } },
 
@@ -194,7 +194,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Factory Builders Expansions',
             -- When do we want to build this ?
             { UCBC, 'UnitsLessAtLocation', { 'LocationType', 5, categories.STRUCTURE * categories.FACTORY * categories.LAND}},
  
-            { EBC, 'GreaterThanEconStorageRatio', { 0.20, 0.35 } },             -- Ratio from 0 to 1. (1=100%)
+            { EBC, 'GreaterThanEconStorageRatio', { 0.10, 0.35 } },             -- Ratio from 0 to 1. (1=100%)
 
             { EBC, 'MassToFactoryRatioBaseCheck', { 'LocationType' } },
 
@@ -221,7 +221,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Factory Builders Expansions',
             -- When do we want to build this ?
             { UCBC, 'UnitsLessAtLocation', { 'LocationType', 5, categories.STRUCTURE * categories.FACTORY * categories.LAND}},
  
-            { EBC, 'GreaterThanEconStorageRatio', { 0.20, 0.35 } },             -- Ratio from 0 to 1. (1=100%)
+            { EBC, 'GreaterThanEconStorageRatio', { 0.15, 0.35 } },             -- Ratio from 0 to 1. (1=100%)
 
             { EBC, 'MassToFactoryRatioBaseCheck', { 'LocationType' } },
 

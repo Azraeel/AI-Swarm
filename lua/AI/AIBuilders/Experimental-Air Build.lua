@@ -108,7 +108,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Experimental Formers',             
             AggressiveMove = false,                                             -- If true, the unit will attack everything while moving to the target.
             AttackEnemyStrength = 200,                                            -- Compare platoon to enemy strenght. 100 will attack equal, 50 weaker and 150 stronger enemies.
             IgnorePathing = true,                                               -- If true, the platoon will not use AI pathmarkers and move directly to the target
-            TargetSearchCategory = categories.STRUCTURE,                                 -- Only find targets matching these categories.
+            TargetSearchCategory = categories.STRUCTURE - categories.WALL,                                 -- Only find targets matching these categories.
             MoveToCategories = {                                                -- Move to targets
                 categories.STRUCTURE * categories.EXPERIMENTAL * categories.ECONOMIC,
                 categories.STRUCTURE * categories.EXPERIMENTAL,
@@ -138,7 +138,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Experimental Formers',             
             AggressiveMove = false,                                             -- If true, the unit will attack everything while moving to the target.
             AttackEnemyStrength = 200,                                            -- Compare platoon to enemy strenght. 100 will attack equal, 50 weaker and 150 stronger enemies.
             IgnorePathing = true,                                               -- If true, the platoon will not use AI pathmarkers and move directly to the target
-            TargetSearchCategory = categories.STRUCTURE,                                 -- Only find targets matching these categories.
+            TargetSearchCategory = categories.STRUCTURE - categories.WALL,                                 -- Only find targets matching these categories.
             MoveToCategories = {                                                -- Move to targets
                 categories.STRUCTURE * categories.EXPERIMENTAL * categories.ECONOMIC,
                 categories.STRUCTURE * categories.EXPERIMENTAL,

@@ -659,8 +659,6 @@ BuilderGroup { BuilderGroupName = 'Swarm Defense Anti Ground Builders',         
                 NearBasePatrolPoints = true,
                 BuildStructures = {
                     'T1GroundDefense',
-                    'T1GroundDefense',
-                    'T1AADefense',
                 },
                 Location = 'LocationType',
             }

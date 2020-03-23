@@ -715,3 +715,7 @@ function points(original,radius,num)
     print(v[1]..':'..v[2])
     end
 end
+
+local originalcoords = { 233.5, 25.239820480347, 464.5, type="VECTOR3" }
+
+points(originalcoords, 20, 6)

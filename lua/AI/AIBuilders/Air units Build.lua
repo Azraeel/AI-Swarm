@@ -232,13 +232,13 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Builders',
 
     Builder { BuilderName = 'U1 Air Transport - Swarm',
         PlatoonTemplate = 'T1AirTransport',
-        Priority = 550, 
+        Priority = 510, 
         BuilderConditions = {
             { EBC, 'GreaterThanEconTrend', { 0.0, 0.0 } },
 
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
 
-            { EBC, 'GreaterThanEconIncome', { 0.2, 2 } },
+            { EBC, 'GreaterThanEconIncome', { 2, 20 } },
 
             { MIBC, 'ArmyNeedsTransports', {} },
 
@@ -256,13 +256,13 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Builders',
 
     Builder { BuilderName = 'U2 Air Transport - Swarm',
         PlatoonTemplate = 'T2AirTransport',
-        Priority = 650,
+        Priority = 603,
         BuilderConditions = {
             { EBC, 'GreaterThanEconTrend', { 0.0, 0.0 } },
 
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
 
-            { EBC, 'GreaterThanEconIncome', { 1, 20 } },
+            { EBC, 'GreaterThanEconIncome', { 2, 20 } },
 
             { MIBC, 'ArmyNeedsTransports', {} },
 
@@ -280,13 +280,13 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Builders',
 
     Builder { BuilderName = 'U3 Air Transport - Swarm',
         PlatoonTemplate = 'T3AirTransport',
-        Priority = 750,
+        Priority = 707,
         BuilderConditions = {
             { EBC, 'GreaterThanEconTrend', { 0.0, 0.0 } },
 
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
 
-            { EBC, 'GreaterThanEconIncome', { 2.5, 100 } },
+            { EBC, 'GreaterThanEconIncome', { 3.5, 100 } },
 
             { MIBC, 'ArmyNeedsTransports', {} },
 
@@ -376,7 +376,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Formers',
         PlatoonTemplate = 'BomberAttack',
         PlatoonAddBehaviors = { 'AirUnitRefit' },                             
         Priority = 100,                                                          
-        InstanceCount = 5,                                                 
+        InstanceCount = 1,                                                 
         BuilderData = {
             SearchRadius = BasePanicZone,                                      
             GetTargetsFromBase = true,                                         
@@ -408,7 +408,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Formers',
         PlatoonTemplate = 'BomberAttack',
         PlatoonAddBehaviors = { 'AirUnitRefit' },                             
         Priority = 100,                                                          
-        InstanceCount = 5,                                                 
+        InstanceCount = 1,                                                 
         BuilderData = {
             SearchRadius = BaseMilitaryZone,                                      
             GetTargetsFromBase = true,                                         
@@ -447,10 +447,9 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Formers',
             AggressiveMove = true,                                      
             AttackEnemyStrength = 100,                                         
             IgnorePathing = true,                                             
-            TargetSearchCategory = categories.STRUCTURE,                 
+            TargetSearchCategory = categories.STRUCTURE - categories.WALL,                 
             MoveToCategories = {          
-                categories.STRUCTURE * categories.MASSEXTRACTION,                                      
-                categories.STRUCTURE * categories.ENERGYPRODUCTION,
+                categories.STRUCTURE * (categories.MASSEXTRACTION + categories.ENERGYPRODUCTION),
                 categories.STRUCTURE * categories.MASSFABRICATION,
                 categories.STRUCTURE * categories.ANTIAIR,
                 categories.MOBILE * categories.LAND,
@@ -485,10 +484,9 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Formers',
             AggressiveMove = true,                                      
             AttackEnemyStrength = 100,                                         
             IgnorePathing = true,                                             
-            TargetSearchCategory = categories.STRUCTURE,                 
+            TargetSearchCategory = categories.STRUCTURE - categories.WALL,                 
             MoveToCategories = {          
-                categories.STRUCTURE * categories.MASSEXTRACTION,                                      
-                categories.STRUCTURE * categories.ENERGYPRODUCTION,
+                categories.STRUCTURE * (categories.MASSEXTRACTION + categories.ENERGYPRODUCTION),                                      
                 categories.STRUCTURE * categories.MASSFABRICATION,
                 categories.STRUCTURE * categories.ANTIAIR,
                 categories.MOBILE * categories.LAND,
@@ -522,7 +520,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Formers',
             AggressiveMove = true,                                          
             AttackEnemyStrength = 150,                                            
             IgnorePathing = true,                                              
-            TargetSearchCategory = categories.STRUCTURE,                        
+            TargetSearchCategory = categories.STRUCTURE - categories.WALL,                        
             MoveToCategories = {                                                
                 categories.COMMAND,
                 categories.STRUCTURE * categories.EXPERIMENTAL * categories.ARTILLERY,
@@ -593,7 +591,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Formers',
             AttackEnemyStrength = 1000000,                                      
             IgnorePathing = false,                                              
             AggressiveMove = true,                                             
-            TargetSearchCategory = categories.MOBILE * categories.AIR - categories.SCOUT , 
+            TargetSearchCategory = categories.MOBILE * categories.AIR - categories.SCOUT, 
             MoveToCategories = {                                                
                 categories.MOBILE * categories.EXPERIMENTAL,
                 categories.MOBILE * categories.AIR * categories.ANTIAIR * categories.HIGHALTAIR,
@@ -621,7 +619,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Formers',
             AttackEnemyStrength = 1000000,                                      
             IgnorePathing = false,                                              
             AggressiveMove = true,                                             
-            TargetSearchCategory = categories.MOBILE * categories.AIR - categories.SCOUT , 
+            TargetSearchCategory = categories.MOBILE * categories.AIR - categories.SCOUT, 
             MoveToCategories = {                                                
                 categories.MOBILE * categories.EXPERIMENTAL,
                 categories.MOBILE * categories.AIR * categories.ANTIAIR * categories.HIGHALTAIR,
@@ -676,7 +674,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Formers',
             AggressiveMove = true,                                           
             AttackEnemyStrength = 100,                                        
             IgnorePathing = true,                                             
-            TargetSearchCategory = categories.STRUCTURE,                      
+            TargetSearchCategory = categories.STRUCTURE - categories.WALL,                      
             MoveToCategories = {                                             
                 categories.MASSEXTRACTION,
                 categories.ENGINEER,
@@ -722,7 +720,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Formers',
             AggressiveMove = true,                                           
             AttackEnemyStrength = 100,                                        
             IgnorePathing = true,                                             
-            TargetSearchCategory = categories.STRUCTURE,                      
+            TargetSearchCategory = categories.STRUCTURE - categories.WALL,                      
             MoveToCategories = {                                             
                 categories.MASSEXTRACTION,
                 categories.ENGINEER,

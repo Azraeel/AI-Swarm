@@ -5,8 +5,8 @@ local MABC = '/lua/editor/MarkerBuildConditions.lua'
 
 local BasePanicZone, BaseMilitaryZone, BaseEnemyZone = import('/mods/AI-Swarm/lua/AI/swarmutilities.lua').GetDangerZoneRadii()
 
-local MaxCapMass = 0.10 -- 10% of all units can be mass extractors (STRUCTURE * MASSEXTRACTION)
-local MaxCapStructure = 0.12                                                    -- 12% of all units can be structures (STRUCTURE -MASSEXTRACTION -DEFENSE -FACTORY)
+local MaxCapMass = 0.25 -- 25% of all units can be mass extractors (STRUCTURE * MASSEXTRACTION)
+local MaxCapStructure = 0.25                                                    -- 12% of all units can be structures (STRUCTURE -MASSEXTRACTION -DEFENSE -FACTORY)
 
 -- ============================================================================================================ --
 -- ==                                     Build MassExtractors / Creators                                    == --
@@ -18,7 +18,7 @@ BuilderGroup {
     Builder {
         BuilderName = 'U1 Mass 30',
         PlatoonTemplate = 'EngineerBuilder',
-        Priority = 555,
+        Priority = 600,
         InstanceCount = 2,
         BuilderConditions = {
             -- When do we want to build this ?
@@ -41,7 +41,7 @@ BuilderGroup {
     Builder {
         BuilderName = 'U1 Mass 60',
         PlatoonTemplate = 'EngineerBuilder',
-        Priority = 545,
+        Priority = 585,
         InstanceCount = 2,
         BuilderConditions = {
             -- When do we want to build this ?
@@ -64,7 +64,7 @@ BuilderGroup {
     Builder {
         BuilderName = 'U1 Mass 1000 6+',
         PlatoonTemplate = 'EngineerBuilder',
-        Priority = 535,
+        Priority = 575,
         DelayEqualBuildPlattons = {'MASSEXTRACTION', 1},
         InstanceCount = 2,
         BuilderConditions = {
@@ -91,7 +91,7 @@ BuilderGroup {
     Builder {
         BuilderName = 'U1 Mass 1000 8+',
         PlatoonTemplate = 'EngineerBuilder',
-        Priority = 525,
+        Priority = 565,
         DelayEqualBuildPlattons = {'MASSEXTRACTION', 1},
         InstanceCount = 2,
         BuilderConditions = {
@@ -118,7 +118,7 @@ BuilderGroup {
     Builder {
         BuilderName = 'U1 Mass 1000 10+',
         PlatoonTemplate = 'EngineerBuilder',
-        Priority = 515,
+        Priority = 555,
         DelayEqualBuildPlattons = {'MASSEXTRACTION', 1},
         InstanceCount = 2,
         BuilderConditions = {
