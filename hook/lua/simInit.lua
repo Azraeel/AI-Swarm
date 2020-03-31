@@ -149,7 +149,7 @@ function ValidateMapAndMarkers()
 
     -- Check map markers
     local TEMP = {}
-    local UNKNOWNMARKER
+    local UNKNOWNMARKER = {}
     local dist
     for k, v in Scenario.MasterChain._MASTERCHAIN_.Markers do
         -- Check if the marker is known. If not, send a debug message

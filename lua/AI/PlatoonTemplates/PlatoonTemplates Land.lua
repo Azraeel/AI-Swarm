@@ -125,4 +125,17 @@ PlatoonTemplate {
     }
 }
 
+-- Remove Loyalist and Titans -- Just Not Effective In-Game
+PlatoonTemplate {
+    Name = 'T3LandBotSwarm',
+    FactionSquads = {
+        Aeon = {
+            { 'ual0303', 1, 1, 'attack', 'none' },
+        },
+        Seraphim = {
+            { 'xsl0303', 1, 1, 'attack', 'none' },
+        },
+    }
+}
+
 

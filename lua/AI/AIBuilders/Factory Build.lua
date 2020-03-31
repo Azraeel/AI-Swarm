@@ -377,6 +377,25 @@ BuilderGroup { BuilderGroupName = 'Swarm Factory Upgrader Rush',                
         BuilderType = 'Any',
     },
 
+    Builder { BuilderName = 'U2 L UP HQ 2->3 1st Eco',
+        PlatoonTemplate = 'T2LandFactoryUpgrade',
+        Priority = 15400,
+        DelayEqualBuildPlattons = {'FactoryUpgrade', 3},
+        BuilderConditions = {
+        	{ UCBC, 'GreaterThanGameTimeSeconds', { 840 } },
+            -- When do we want to build this ?
+            { UCBC, 'HaveLessThanUnitsWithCategory', { 1, categories.STRUCTURE * categories.FACTORY * categories.LAND * categories.TECH3 - categories.SUPPORTFACTORY } },
+            -- Do we need additional conditions to build it ?
+            { UCBC, 'BuildOnlyOnLocation', { 'LocationType', 'MAIN' } },
+            { EBC, 'GreaterThanEconTrend', { 0.0, 0.0 } },
+            -- Have we the eco to build it ?
+            { EBC, 'GreaterThanEconStorageRatio', { 0.15, 0.50 } },
+            -- Don't build it if...
+            { UCBC, 'CheckBuildPlattonDelay', { 'FactoryUpgrade' }},
+        },
+        BuilderType = 'Any',
+    },
+
     Builder { BuilderName = 'U2 L UP HQ 2->3 1st Time',
         PlatoonTemplate = 'T2LandFactoryUpgrade',
         Priority = 15400,
@@ -796,7 +815,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Factory Upgrader Rush',                
 BuilderGroup { BuilderGroupName = 'Swarm Gate Builders',                               -- BuilderGroupName, initalized from AIBaseTemplates in "\lua\AI\AIBaseTemplates\"
     BuildersType = 'EngineerBuilder',
     
-    Builder { BuilderName = 'U-T3 Gate Cap',
+    Builder { BuilderName = 'U-T3 Gate Cap - Main Base',
         PlatoonTemplate = 'T3EngineerBuilder',
         Priority = 1350,
         BuilderConditions = {
@@ -805,6 +824,8 @@ BuilderGroup { BuilderGroupName = 'Swarm Gate Builders',                        
             { UCBC, 'HaveGreaterThanUnitsWithCategory', { 1, categories.STRUCTURE * categories.ENERGYPRODUCTION * categories.TECH3 } },
 
             { UCBC, 'HaveLessThanUnitsWithCategory', { 3, categories.STRUCTURE * categories.GATE } },
+
+            { UCBC, 'BuildOnlyOnLocation', { 'LocationType', 'MAIN' } },
         },
         BuilderType = 'Any',
         BuilderData = {
@@ -818,6 +839,30 @@ BuilderGroup { BuilderGroupName = 'Swarm Gate Builders',                        
             }
         }
     },
+
+    Builder { BuilderName = 'U-T3 Gate Cap - Expansions',
+        PlatoonTemplate = 'T3EngineerBuilder',
+        Priority = 1300,
+        BuilderConditions = {
+        	{ EBC, 'GreaterThanEconStorageRatio', { 0.25, 0.50 } },
+
+            { UCBC, 'HaveGreaterThanUnitsWithCategory', { 1, categories.STRUCTURE * categories.ENERGYPRODUCTION * categories.TECH3 } },
+
+            { UCBC, 'HaveGreaterThanUnitsWithCategory', { 2, categories.STRUCTURE * categories.GATE } },
+        },
+        BuilderType = 'Any',
+        BuilderData = {
+            Construction = {
+                BuildClose = true,
+                Location = 'LocationType',
+                AdjacencyCategory = 'ENERGYPRODUCTION',
+                BuildStructures = {
+                    'T3QuantumGate',
+                },
+            }
+        }
+    },
+
     Builder { BuilderName = 'U-T3 Gate Para',
         PlatoonTemplate = 'T3EngineerBuilder',
         Priority = 2000,

@@ -233,7 +233,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',                  
     },
 
     Builder { BuilderName = 'T3LandBot - Swarm',
-        PlatoonTemplate = 'T3LandBot',
+        PlatoonTemplate = 'T3LandBotSwarm',
         Priority = 900,
         BuilderConditions = {
             { UCBC, 'UnitCapCheckLess', { 0.95 } },

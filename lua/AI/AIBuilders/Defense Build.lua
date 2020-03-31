@@ -31,7 +31,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Shields Builder',                      
                 BuildClose = true,
                 AdjacencyCategory = (categories.ENERGYPRODUCTION * categories.TECH3) + (categories.ENERGYPRODUCTION * categories.EXPERIMENTAL) + (categories.STRUCTURE * categories.FACTORY),
                 AvoidCategory = categories.STRUCTURE * categories.SHIELD,
-                maxUnits = 1,
+                maxUnits = 3,
                 maxRadius = 25,
                 LocationType = 'LocationType',
                 BuildStructures = {
@@ -52,7 +52,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Shields Builder',                      
             -- Don't build it if...
             { UCBC, 'HaveLessThanUnitsInCategoryBeingBuilt', { 3, categories.STRUCTURE * categories.SHIELD}},
 
-            { UCBC, 'HaveLessThanUnitsWithCategory', { 16, categories.STRUCTURE * categories.SHIELD * (categories.TECH2 + categories.TECH3) }},
+            { UCBC, 'HaveLessThanUnitsWithCategory', { 25, categories.STRUCTURE * categories.SHIELD * categories.TECH3 }},
         },
         BuilderType = 'Any',
         BuilderData = {
@@ -62,7 +62,38 @@ BuilderGroup { BuilderGroupName = 'Swarm Shields Builder',                      
                 BuildClose = false,
                 AdjacencyCategory = (categories.ENERGYPRODUCTION * categories.TECH3) + (categories.ENERGYPRODUCTION * categories.EXPERIMENTAL) + (categories.STRUCTURE * categories.FACTORY),
                 AvoidCategory = categories.STRUCTURE * categories.SHIELD,
-                maxUnits = 1,
+                maxUnits = 3,
+                maxRadius = 25,
+                LocationType = 'LocationType',
+                BuildStructures = {
+                    'T3ShieldDefense',
+                }
+            }
+        }
+    },
+
+    Builder { BuilderName = 'U3 Shield Ratio',
+        PlatoonTemplate = 'T3EngineerBuilderSUB',
+        Priority = 1250,
+        InstanceCount = 2,
+        BuilderConditions = {
+        	{ UCBC, 'HaveGreaterThanUnitsWithCategory', { 1, categories.ENERGYPRODUCTION * categories.TECH3 } },
+            -- Have we the eco to build it ?
+            { EBC, 'GreaterThanEconStorageRatio', { 0.20, 0.40 } },             -- Ratio from 0 to 1. (1=100%)
+            -- Don't build it if...
+            { UCBC, 'HaveLessThanUnitsInCategoryBeingBuilt', { 3, categories.STRUCTURE * categories.SHIELD}},
+
+            { UCBC, 'HaveLessThanUnitsWithCategory', { 30, categories.STRUCTURE * categories.SHIELD * categories.TECH3) }},
+        },
+        BuilderType = 'Any',
+        BuilderData = {
+        	NumAssistees = 4,
+            Construction = {
+                DesiresAssist = true,
+                BuildClose = false,
+                AdjacencyCategory = (categories.ENERGYPRODUCTION * categories.TECH3) + (categories.ENERGYPRODUCTION * categories.EXPERIMENTAL) + (categories.STRUCTURE * categories.FACTORY),
+                AvoidCategory = categories.STRUCTURE * categories.SHIELD,
+                maxUnits = 3,
                 maxRadius = 25,
                 LocationType = 'LocationType',
                 BuildStructures = {
@@ -95,7 +126,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Shields Builder',                      
                 BuildClose = false,
                 AdjacencyCategory = (categories.ENERGYPRODUCTION * categories.TECH3) + (categories.ENERGYPRODUCTION * categories.EXPERIMENTAL) + (categories.STRUCTURE * categories.FACTORY),
                 AvoidCategory = categories.STRUCTURE * categories.SHIELD,
-                maxUnits = 1,
+                maxUnits = 3,
                 maxRadius = 25,
                 LocationType = 'LocationType',
                 BuildStructures = {
@@ -143,8 +174,6 @@ BuilderGroup { BuilderGroupName = 'Swarm Shields Builder',                      
         Priority = 500,
         InstanceCount = 1,
         BuilderConditions = {
-            -- When do we want to build this ?
-            { UCBC, 'HaveUnitRatioVersusCap', { MaxDefense, '>', categories.STRUCTURE * categories.DEFENSE } },
             { UCBC, 'HaveGreaterThanUnitsWithCategory', { 2, categories.STRUCTURE * categories.SHIELD * categories.EXPERIMENTAL } },
             -- Do we need additional conditions to build it ?
             { UCBC, 'HaveGreaterThanUnitsWithCategory', { 6, categories.STRUCTURE * categories.DEFENSE * categories.SHIELD * categories.TECH3 }},
@@ -168,8 +197,6 @@ BuilderGroup { BuilderGroupName = 'Swarm Shields Builder',                      
         Priority = 500,
         InstanceCount = 1,
         BuilderConditions = {
-            -- When do we want to build this ?
-            { UCBC, 'HaveUnitRatioVersusCap', { MaxDefense, '>', categories.STRUCTURE * categories.DEFENSE } },
             { UCBC, 'HaveGreaterThanUnitsWithCategory', { 2, categories.STRUCTURE * categories.SHIELD * categories.EXPERIMENTAL } },
             -- Do we need additional conditions to build it ?
             { UCBC, 'HaveGreaterThanUnitsWithCategory', { 0, categories.STRUCTURE * categories.DEFENSE * categories.SHIELD * categories.EXPERIMENTAL }},
