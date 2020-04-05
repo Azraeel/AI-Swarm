@@ -62,7 +62,7 @@ AIBrain = Class(UvesoAIBrainClass) {
     OnCreateAI = function(self, planName)
         UvesoAIBrainClass.OnCreateAI(self, planName)
         local per = ScenarioInfo.ArmySetup[self.Name].AIPersonality
-        if string.find(per, 'uveso') then
+        if string.find(per, 'swarm') then
             LOG('* AI-Uveso: OnCreateAI() found AI-Uveso  Name: ('..self.Name..') - personality: ('..per..') ')
             self.Uveso = true
         end

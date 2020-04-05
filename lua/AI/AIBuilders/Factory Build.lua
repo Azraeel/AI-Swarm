@@ -29,8 +29,6 @@ BuilderGroup { BuilderGroupName = 'Swarm ACU Initial Opener',
         PlatoonAddFunctions = { {SAI, 'BuildOnce'}, },
         BuilderData = {
             Construction = {
-            	BaseTemplateFile = '/mods/AI-Swarm/lua/AI/AIBuilders/ACUBaseTemplate.lua',
-                BaseTemplate = 'ACUBaseTemplate',
                 Location = 'LocationType',
                 BuildStructures = {
                     'T1LandFactory',
@@ -56,15 +54,12 @@ BuilderGroup { BuilderGroupName = 'Swarm Factory Builder',
 
             { MIBC, 'CanPathToCurrentEnemy', { true } },
 
-            { EBC, 'MassToFactoryRatioBaseCheck', { 'LocationType' } },
-
             { UCBC, 'HaveLessThanUnitsWithCategory', { 10, categories.STRUCTURE * categories.FACTORY * categories.LAND * (categories.TECH1 + categories.TECH2 + categories.TECH3) }},
         },
         BuilderType = 'Any',
         BuilderData = {
             Construction = {
             	DesiresAssist = true,
-            	AdjacencyCategory = categories.MASSEXTRACTION * (categories.TECH3 + categories.TECH2 + categories.TECH1),
                 Location = 'LocationType',
                 BuildStructures = {
                    'T1LandFactory',
@@ -82,15 +77,12 @@ BuilderGroup { BuilderGroupName = 'Swarm Factory Builder',
 
             { MIBC, 'CanPathToCurrentEnemy', { true } },
 
-            { EBC, 'MassToFactoryRatioBaseCheck', { 'LocationType' } },
-
             { UCBC, 'HaveLessThanUnitsWithCategory', { 1, categories.STRUCTURE * categories.AIR * categories.FACTORY * (categories.TECH1 + categories.TECH2 + categories.TECH3)  }},
         },
         BuilderType = 'Any',
         BuilderData = {
             Construction = {
             	DesiresAssist = true,
-                AdjacencyCategory = categories.MASSEXTRACTION * (categories.TECH3 + categories.TECH2 + categories.TECH1),
                 Location = 'LocationType',
                 BuildStructures = {
                    'T1AirFactory',
@@ -108,15 +100,12 @@ BuilderGroup { BuilderGroupName = 'Swarm Factory Builder',
 
             { MIBC, 'CanPathToCurrentEnemy', { true } }, 
 
-            { EBC, 'MassToFactoryRatioBaseCheck', { 'LocationType' } },
-
             { UCBC, 'HaveLessThanUnitsWithCategory', { 10, categories.STRUCTURE * categories.FACTORY * categories.LAND * (categories.TECH1 + categories.TECH2 + categories.TECH3) }},
         },
         BuilderType = 'Any',
         BuilderData = {
             Construction = {
             	DesiresAssist = true,
-            	AdjacencyCategory = categories.MASSEXTRACTION * (categories.TECH3 + categories.TECH2 + categories.TECH1),
                 Location = 'LocationType',
                 BuildStructures = {
                    'T1LandFactory',
@@ -132,9 +121,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Factory Builder',
         BuilderConditions = {
             { MIBC, 'CanPathToCurrentEnemy', { true } },
 
-            { EBC, 'GreaterThanEconStorageRatio', { 0.10, 0.30}},
-
-            { EBC, 'MassToFactoryRatioBaseCheck', { 'LocationType' } },
+            { EBC, 'GreaterThanEconStorageRatio', { 0.10, 0.60}},
 
             { UCBC, 'HaveLessThanUnitsInCategoryBeingBuilt', { 1, categories.STRUCTURE * categories.FACTORY * categories.AIR * categories.TECH1 }},
 
@@ -144,7 +131,6 @@ BuilderGroup { BuilderGroupName = 'Swarm Factory Builder',
         BuilderData = {
             Construction = {
                 Location = 'LocationType',
-                AdjacencyCategory = categories.ENERGYPRODUCTION * (categories.TECH3 + categories.TECH2 + categories.TECH1),
                 BuildStructures = {
                     'T1AirFactory',
                 },
@@ -161,8 +147,6 @@ BuilderGroup { BuilderGroupName = 'Swarm Factory Builder',
 
             { MIBC, 'CanPathToCurrentEnemy', { true } },
 
-            { EBC, 'MassToFactoryRatioBaseCheck', { 'LocationType' } },
-
             { UCBC, 'HaveLessThanUnitsInCategoryBeingBuilt', { 1, categories.STRUCTURE * categories.FACTORY * categories.AIR * categories.TECH1 }},
 
             { UCBC, 'HaveLessThanUnitsWithCategory', { 4, categories.STRUCTURE * categories.FACTORY * categories.AIR * (categories.TECH1 + categories.TECH2 + categories.TECH3) }},
@@ -171,7 +155,6 @@ BuilderGroup { BuilderGroupName = 'Swarm Factory Builder',
         BuilderData = {
             Construction = {
                 Location = 'LocationType',
-                AdjacencyCategory = categories.ENERGYPRODUCTION * (categories.TECH3 + categories.TECH2 + categories.TECH1),
                 BuildStructures = {
                     'T1AirFactory',
                 },
@@ -196,15 +179,12 @@ BuilderGroup { BuilderGroupName = 'Swarm Factory Builders Expansions',
  
             { EBC, 'GreaterThanEconStorageRatio', { 0.10, 0.35 } },             -- Ratio from 0 to 1. (1=100%)
 
-            { EBC, 'MassToFactoryRatioBaseCheck', { 'LocationType' } },
-
             { UCBC, 'CheckBuildPlattonDelay', { 'Factories' }},
         },
         BuilderType = 'Any',
         BuilderData = {
             Construction = {
                 Location = 'LocationType',
-                AdjacencyCategory = categories.MASSEXTRACTION * (categories.TECH3 + categories.TECH2 + categories.TECH1),
                 BuildStructures = {
                     'T1LandFactory',
                 },
@@ -223,15 +203,12 @@ BuilderGroup { BuilderGroupName = 'Swarm Factory Builders Expansions',
  
             { EBC, 'GreaterThanEconStorageRatio', { 0.15, 0.35 } },             -- Ratio from 0 to 1. (1=100%)
 
-            { EBC, 'MassToFactoryRatioBaseCheck', { 'LocationType' } },
-
             { UCBC, 'CheckBuildPlattonDelay', { 'Factories' }},
         },
         BuilderType = 'Any',
         BuilderData = {
             Construction = {
                 Location = 'LocationType',
-                AdjacencyCategory = categories.MASSEXTRACTION * (categories.TECH3 + categories.TECH2 + categories.TECH1),
                 BuildStructures = {
                     'T1LandFactory',
                 },
@@ -247,9 +224,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Factory Builders Expansions',
         BuilderConditions = {
             { UCBC, 'UnitsLessAtLocation', { 'LocationType', 4, categories.STRUCTURE * categories.FACTORY * categories.AIR}},
 
-            { EBC, 'GreaterThanEconStorageRatio', { 0.20, 0.45 } },  
-
-            { EBC, 'MassToFactoryRatioBaseCheck', { 'LocationType' } },           
+            { EBC, 'GreaterThanEconStorageRatio', { 0.20, 0.45 } },         
 
             { UCBC, 'CheckBuildPlattonDelay', { 'Factories' }},
         },
@@ -257,7 +232,6 @@ BuilderGroup { BuilderGroupName = 'Swarm Factory Builders Expansions',
         BuilderData = {
             Construction = {
                 Location = 'LocationType',
-                AdjacencyCategory = categories.ENERGYPRODUCTION * (categories.TECH3 + categories.TECH2 + categories.TECH1),
                 BuildStructures = {
                     'T1AirFactory',
                 },
@@ -273,9 +247,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Factory Builders Expansions',
         BuilderConditions = {
             { UCBC, 'UnitsLessAtLocation', { 'LocationType', 4, categories.STRUCTURE * categories.FACTORY * categories.AIR}},
 
-            { EBC, 'GreaterThanEconStorageRatio', { 0.20, 0.45 } },  
-
-            { EBC, 'MassToFactoryRatioBaseCheck', { 'LocationType' } },           
+            { EBC, 'GreaterThanEconStorageRatio', { 0.20, 0.45 } },           
 
             { UCBC, 'CheckBuildPlattonDelay', { 'Factories' }},
         },
@@ -283,7 +255,6 @@ BuilderGroup { BuilderGroupName = 'Swarm Factory Builders Expansions',
         BuilderData = {
             Construction = {
                 Location = 'LocationType',
-                AdjacencyCategory = categories.ENERGYPRODUCTION * (categories.TECH3 + categories.TECH2 + categories.TECH1),
                 BuildStructures = {
                     'T1AirFactory',
                 },
@@ -849,6 +820,8 @@ BuilderGroup { BuilderGroupName = 'Swarm Gate Builders',                        
             { UCBC, 'HaveGreaterThanUnitsWithCategory', { 1, categories.STRUCTURE * categories.ENERGYPRODUCTION * categories.TECH3 } },
 
             { UCBC, 'HaveGreaterThanUnitsWithCategory', { 2, categories.STRUCTURE * categories.GATE } },
+
+            { UCBC, 'HaveLessThanUnitsWithCategory', { 3, categories.STRUCTURE * categories.GATE } },
         },
         BuilderType = 'Any',
         BuilderData = {

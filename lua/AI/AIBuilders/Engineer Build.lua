@@ -233,7 +233,7 @@ BuilderGroup { BuilderGroupName = 'Swarm SACU Builder',
 
             { UCBC, 'HaveLessThanUnitsWithCategory', { 20, categories.RAMBOPRESET } },
 
-            { UCBC, 'HaveLessThanUnitsInCategoryBeingBuilt', { 1, categories.RAMBOPRESET }},
+            { UCBC, 'HaveLessThanUnitsInCategoryBeingBuilt', { 2, categories.RAMBOPRESET }},
         },
         BuilderType = 'Gate',
     },
@@ -244,6 +244,8 @@ BuilderGroup { BuilderGroupName = 'Swarm SACU Builder',
         BuilderConditions = {
             { EBC, 'GreaterThanEconStorageRatio', { 0.80, 0.85}},
 
+            { MIBC, 'FactionIndex', { 1, 2, 3, 5 }}, -- 1: UEF, 2: Aeon, 3: Cybran, 4: Seraphim, 5: Nomads 
+
             { UCBC, 'HaveLessThanUnitsWithCategory', { 50, categories.ENGINEERPRESET + categories.RASPRESET } },
 
             { UCBC, 'PoolLessAtLocation', { 'LocationType', 1, categories.ENGINEERPRESET + categories.RASPRESET } },
@@ -252,6 +254,23 @@ BuilderGroup { BuilderGroupName = 'Swarm SACU Builder',
         },
         BuilderType = 'Gate',
     },
+
+    Builder {
+        BuilderName = 'U3 SubCommander ENGINEER - Seraphim',
+        PlatoonTemplate = 'U3 SACU ENGINEER preset 12345',
+        Priority = 1020,
+        BuilderConditions = {
+        	{ MIBC, 'FactionIndex', { 4 }}, -- 1: UEF, 2: Aeon, 3: Cybran, 4: Seraphim, 5: Nomads
+
+            { UCBC, 'HaveLessThanUnitsWithCategory', { 50, categories.ENGINEERPRESET + categories.RASPRESET } },
+
+            { UCBC, 'PoolLessAtLocation', { 'LocationType', 1, categories.ENGINEERPRESET + categories.RASPRESET } },
+
+            { UCBC, 'LocationFactoriesBuildingLess', { 'LocationType', 10, categories.ENGINEERPRESET + categories.RASPRESET} },
+        },
+        BuilderType = 'Gate',
+    },
+     
     Builder {
         BuilderName = 'U3 SubCommander RAS',
         PlatoonTemplate = 'U3 SACU RAS preset 123x5',
@@ -261,7 +280,7 @@ BuilderGroup { BuilderGroupName = 'Swarm SACU Builder',
 
             { UCBC, 'PoolLessAtLocation', { 'LocationType', 1, categories.ENGINEERPRESET + categories.RASPRESET } },
 
-            { UCBC, 'LocationFactoriesBuildingLess', { 'LocationType', 2, categories.ENGINEERPRESET + categories.RASPRESET} },
+            { UCBC, 'LocationFactoriesBuildingLess', { 'LocationType', 10, categories.ENGINEERPRESET + categories.RASPRESET} },
         },
         BuilderType = 'Gate',
     },

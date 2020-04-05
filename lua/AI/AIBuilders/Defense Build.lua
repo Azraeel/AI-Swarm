@@ -83,7 +83,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Shields Builder',                      
             -- Don't build it if...
             { UCBC, 'HaveLessThanUnitsInCategoryBeingBuilt', { 3, categories.STRUCTURE * categories.SHIELD}},
 
-            { UCBC, 'HaveLessThanUnitsWithCategory', { 30, categories.STRUCTURE * categories.SHIELD * categories.TECH3) }},
+            { UCBC, 'HaveLessThanUnitsWithCategory', { 30, categories.STRUCTURE * categories.SHIELD * categories.TECH3 }},
         },
         BuilderType = 'Any',
         BuilderData = {
@@ -104,7 +104,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Shields Builder',                      
     },
 
     Builder { BuilderName = 'U3 Shield Ratio - Reactive',
-        PlatoonTemplate = 'T3EngineerBuildernoSUB',
+        PlatoonTemplate = 'T3EngineerBuilderSUB',
         Priority = 1600,
         InstanceCount = 3,
         BuilderConditions = {
@@ -574,8 +574,11 @@ BuilderGroup { BuilderGroupName = 'Swarm Defense Anti Ground Builders',         
         BuilderName = 'U1 Ground Defense always',
         PlatoonTemplate = 'EngineerBuilder',
         Priority = 750,
+        InstanceCount = 1,
         BuilderConditions = {
             { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 0, categories.ENGINEER * categories.TECH1 }},
+
+            { EBC, 'GreaterThanEconTrend', { 0.0, 0.0 } },
 
             { EBC, 'GreaterThanEconStorageRatio', { 0.50, 0.65 } },        
 
@@ -583,11 +586,13 @@ BuilderGroup { BuilderGroupName = 'Swarm Defense Anti Ground Builders',         
         },
         BuilderType = 'Any',
         BuilderData = {
+            NumAssistees = 1,
             Construction = {
-                AdjacencyCategory = categories.STRUCTURE,
-                AvoidCategory = categories.STRUCTURE * categories.DEFENSE * categories.TECH1,
-                NumAssistees = 1,
                 BuildClose = false,
+                AdjacencyCategory = (categories.ENERGYPRODUCTION * categories.EXPERIMENTAL) + (categories.STRUCTURE * categories.FACTORY),
+                AvoidCategory = categories.STRUCTURE * categories.DEFENSE - categories.ANTIAIR,
+                maxUnits = 1,
+                maxRadius = 35,
                 BuildStructures = {
                     'T1GroundDefense',
                 },
@@ -604,6 +609,8 @@ BuilderGroup { BuilderGroupName = 'Swarm Defense Anti Ground Builders',         
         BuilderType = 'Any',
         BuilderConditions = {
             { UCBC, 'UnitsLessAtLocation', { 'LocationType', 10, categories.STRUCTURE * categories.ARTILLERY * categories.TECH2 }},
+
+            { EBC, 'GreaterThanEconTrend', { 0.0, 0.0 } },
 
             { EBC, 'GreaterThanEconStorageRatio', { 0.60, 0.70 }},
         },
@@ -622,19 +629,23 @@ BuilderGroup { BuilderGroupName = 'Swarm Defense Anti Ground Builders',         
         BuilderName = 'U2 Ground Defense always',
         PlatoonTemplate = 'T2EngineerBuilder',
         Priority = 950,
-        InstanceCount = 3,
+        InstanceCount = 2,
         BuilderConditions = {
             { EBC, 'GreaterThanEconStorageRatio', { 0.25, 0.35 } },   
+
+            { EBC, 'GreaterThanEconTrend', { 0.0, 0.0 } },
 
             { UCBC, 'UnitsLessAtLocation', { 'LocationType', 15, categories.STRUCTURE * categories.DEFENSE * categories.TECH2 - categories.ANTIAIR }},     
         },
         BuilderType = 'Any',
         BuilderData = {
-        	NumAssistees = 10,
+        	NumAssistees = 1,
             Construction = {
-            	AdjacencyCategory = categories.STRUCTURE,
-                AvoidCategory = categories.STRUCTURE * categories.DEFENSE * categories.TECH2,
                 BuildClose = false,
+                AdjacencyCategory = (categories.ENERGYPRODUCTION * categories.EXPERIMENTAL) + (categories.STRUCTURE * categories.FACTORY),
+                AvoidCategory = categories.STRUCTURE * categories.DEFENSE - categories.ANTIAIR,
+                maxUnits = 1,
+                maxRadius = 35,
                 BuildStructures = {
                     'T2GroundDefense',
                 },
@@ -646,24 +657,26 @@ BuilderGroup { BuilderGroupName = 'Swarm Defense Anti Ground Builders',         
         BuilderName = 'U3 Ground Defense always',
         PlatoonTemplate = 'T3EngineerBuildernoSUB',
         Priority = 1050,
-        InstanceCount = 3,
+        InstanceCount = 2,
         BuilderConditions = {
             { UCBC, 'UnitsGreaterAtEnemy', { 0 , categories.LAND * categories.EXPERIMENTAL } },
 
             { EBC, 'GreaterThanEconStorageRatio', { 0.25, 0.35 } },  
 
+            { EBC, 'GreaterThanEconTrend', { 0.0, 0.0 } },
+
             { UCBC, 'UnitsLessAtLocation', { 'LocationType', 15, categories.STRUCTURE * categories.DEFENSE * categories.TECH3 - categories.ANTIAIR }},
         },
         BuilderType = 'Any',
         BuilderData = {
-        	NumAssistees = 5,
+        	NumAssistees = 1,
             Construction = {
-            	AdjacencyCategory = categories.STRUCTURE,
-                AvoidCategory = categories.STRUCTURE * categories.DEFENSE * categories.TECH3,
-                DesiresAssist = true,
                 BuildClose = false,
+                AdjacencyCategory = (categories.ENERGYPRODUCTION * categories.EXPERIMENTAL) + (categories.STRUCTURE * categories.FACTORY),
+                AvoidCategory = categories.STRUCTURE * categories.DEFENSE - categories.ANTIAIR,
+                maxUnits = 1,
+                maxRadius = 35,
                 BuildStructures = {
-                    'T3GroundDefense',
                     'T3GroundDefense',
                 },
                 Location = 'LocationType',
