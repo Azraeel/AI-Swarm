@@ -17,7 +17,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Builders',
     -- ============ --
     Builder { BuilderName = 'U1 Engineer builder Cap',
         PlatoonTemplate = 'T1BuildEngineer',
-        Priority = 1000,
+        Priority = 1005,
         BuilderConditions = {
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
 
@@ -32,7 +32,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Builders',
 
     Builder { BuilderName = 'U1 Engineer builder - Excess Mass',
         PlatoonTemplate = 'T1BuildEngineer',
-        Priority = 1005,
+        Priority = 1010,
         BuilderConditions = {
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
 
@@ -52,7 +52,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Builders',
     -- ============ --
     Builder { BuilderName = 'U2 Engineer builder Cap',
         PlatoonTemplate = 'T2BuildEngineer',
-        Priority = 1010,
+        Priority = 1015,
         BuilderConditions = {
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
 
@@ -65,7 +65,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Builders',
 
     Builder { BuilderName = 'U2 Engineer builder - Excess Mass',
         PlatoonTemplate = 'T2BuildEngineer',
-        Priority = 1015,
+        Priority = 1020,
         BuilderConditions = {
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
 
@@ -85,7 +85,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Builders',
     -- ============ --
     Builder { BuilderName = 'U3 Engineer builder Cap',
         PlatoonTemplate = 'T3BuildEngineer',
-        Priority = 1020,
+        Priority = 1025,
         BuilderConditions = {
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
 
@@ -98,7 +98,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Builders',
 
     Builder { BuilderName = 'U3 Engineer builder - Excess Mass',
         PlatoonTemplate = 'T3BuildEngineer',
-        Priority = 1025,
+        Priority = 1030,
         BuilderConditions = {
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
 

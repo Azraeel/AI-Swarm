@@ -307,7 +307,7 @@ function EcoManagerThread(aiBrain)
                     break -- for _, unit in Engineers do
                 end
             -- We have negative eco. Check if we can switch something off
-            elseif aiBrain:GetEconomyTrend('MASS') < 0.0 or aiBrain:GetEconomyTrend('ENERGY') < 0.0 then
+            elseif aiBrain:GetEconomyStoredRatio('MASS') < 0.0 or aiBrain:GetEconomyStoredRatio('ENERGY') < 0.25 then
                 -- if this unit is already paused, continue with the next unit
                 if unit:IsPaused() then continue end
                 -- Emergency low eco energy, prevent shield colaps: disable everything
@@ -482,7 +482,7 @@ function EcoManagerThread(aiBrain)
                     bussy = true
                     break -- for _, unit in Engineers do
                 end
-            elseif aiBrain:GetEconomyStoredRatio('MASS') < 0.01 then
+            elseif aiBrain:GetEconomyStoredRatio('MASS') < 0.0 then
                 if unit:IsPaused() then continue end
                 if not EntityCategoryContains( categories.MASSEXTRACTION + ((categories.ENERGYPRODUCTION + categories.FACTORY + categories.MASSSTORAGE) * categories.TECH1) , unit.UnitBeingBuilt) then
                     unit:SetPaused( true )
@@ -526,7 +526,7 @@ function EcoManagerThread(aiBrain)
                     break -- for _, unit in Engineers do
                 end
             -- We have negative eco. Check if we can switch something off
-            elseif aiBrain:GetEconomyStoredRatio('MASS') < 0.01 or aiBrain:GetEconomyStoredRatio('ENERGY') < 0.75 then
+            elseif aiBrain:GetEconomyStoredRatio('MASS') < 0.00 or aiBrain:GetEconomyStoredRatio('ENERGY') < 0.25 then
                 if unit:IsPaused() or not unit:IsUnitState('Building') then continue end
                 if not unit.UnitBeingBuilt then continue end
                 if EntityCategoryContains(categories.ENGINEER + categories.TECH1, unit.UnitBeingBuilt) then continue end
