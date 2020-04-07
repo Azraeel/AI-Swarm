@@ -140,7 +140,7 @@ function EcoManagerThread(aiBrain)
             aiBrain.HasParagon = false
         end
         -- Cheatbuffs
-        if personality == 'uvesooverwhelm' then
+        if personality == 'swarmeternal' then
             -- Check every 30 seconds for new armyStats to change ECO
             if (GetGameTimeSeconds() > 60 * 1) and lastCall+10 < GetGameTimeSeconds() then
                 lastCall = GetGameTimeSeconds()
@@ -167,24 +167,24 @@ function EcoManagerThread(aiBrain)
                     MyArmyRatio = 100
                 end
 
-                -- Increase cheatfactor to +1.5 after 1 hour gametime
-                if GetGameTimeSeconds() > 60 * 60 then
+                -- Increase cheatfactor to +2 after 30 Minutes gametime
+                if GetGameTimeSeconds() > 60 * 30 then
                     CheatMult = CheatMult + 0.1
                     BuildMult = BuildMult + 0.1
                     if CheatMult < tonumber(CheatMultOption) then CheatMult = tonumber(CheatMultOption) end
                     if BuildMult < tonumber(BuildMultOption) then BuildMult = tonumber(BuildMultOption) end
-                    if CheatMult > tonumber(CheatMultOption) + 1.5 then CheatMult = tonumber(CheatMultOption) + 1.5 end
-                    if BuildMult > tonumber(BuildMultOption) + 1.5 then BuildMult = tonumber(BuildMultOption) + 1.5 end
+                    if CheatMult > tonumber(CheatMultOption) + 2 then CheatMult = tonumber(CheatMultOption) + 2 end
+                    if BuildMult > tonumber(BuildMultOption) + 2 then BuildMult = tonumber(BuildMultOption) + 2 end
                     --LOG('* ECO + ally('..allyScore..') enemy('..enemyScore..') - ArmyRatio: '..math.floor(MyArmyRatio)..'% - Build/CheatMult old: '..math.floor(tonumber(ScenarioInfo.Options.BuildMult)*10)..' '..math.floor(tonumber(ScenarioInfo.Options.CheatMult)*10)..' - new: '..math.floor(BuildMult*10)..' '..math.floor(CheatMult*10)..'')
                     SetArmyPoolBuff(aiBrain, CheatMult, BuildMult)
-                -- Increase cheatfactor to +0.6 after 1 hour gametime
-                elseif GetGameTimeSeconds() > 60 * 35 then
+                -- Increase cheatfactor to +1 after 30 hour gametime
+                elseif GetGameTimeSeconds() > 60 * 15 then
                     CheatMult = CheatMult + 0.1
                     BuildMult = BuildMult + 0.1
                     if CheatMult < tonumber(CheatMultOption) then CheatMult = tonumber(CheatMultOption) end
                     if BuildMult < tonumber(BuildMultOption) then BuildMult = tonumber(BuildMultOption) end
-                    if CheatMult > tonumber(CheatMultOption) + 0.6 then CheatMult = tonumber(CheatMultOption) + 0.6 end
-                    if BuildMult > tonumber(BuildMultOption) + 0.6 then BuildMult = tonumber(BuildMultOption) + 0.6 end
+                    if CheatMult > tonumber(CheatMultOption) + 1 then CheatMult = tonumber(CheatMultOption) + 1 end
+                    if BuildMult > tonumber(BuildMultOption) + 1 then BuildMult = tonumber(BuildMultOption) + 1 end
                     --LOG('* ECO + ally('..allyScore..') enemy('..enemyScore..') - ArmyRatio: '..math.floor(MyArmyRatio)..'% - Build/CheatMult old: '..math.floor(tonumber(ScenarioInfo.Options.BuildMult)*10)..' '..math.floor(tonumber(ScenarioInfo.Options.CheatMult)*10)..' - new: '..math.floor(BuildMult*10)..' '..math.floor(CheatMult*10)..'')
                     SetArmyPoolBuff(aiBrain, CheatMult, BuildMult)
                 -- Increase ECO if we have less than 40% of the enemy units

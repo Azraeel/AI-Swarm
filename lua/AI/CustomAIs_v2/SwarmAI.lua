@@ -21,6 +21,10 @@ AI = {
             name = "<LOC Swarm_0007>AIx: Swarm Terror",
         },
         {
+            key = 'swarmeternalcheat',
+            name = "AIx: Swarm Eternal",
+        },
+        {
             key = 'swarmtestcheat', -- This name will be used in the basetemplate "Swarm Test BaseTemplate.lua"
             name = "AIx: Swarm Test",
         },

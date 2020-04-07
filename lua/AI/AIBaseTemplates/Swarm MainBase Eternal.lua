@@ -1,49 +1,65 @@
-#***************************************************************************
-#*
-#**  File     :  /lua/ai/AIBaseTemplates/TurtleExpansion.lua
-#**
-#**  Summary  : Manage engineers for a location
-#**
-#**  Copyright © 2005 Gas Powered Games, Inc.  All rights reserved.
-#****************************************************************************
 
 BaseBuilderTemplate {
-    BaseTemplateName = 'SwarmExpansionAreaLarge',
+    BaseTemplateName = 'SwarmEternalTemplate',
     Builders = {
+        -----------------------------------------------------------------------------
+        -- ==== ACU ==== --
+        -----------------------------------------------------------------------------
+        -- Build Main Base (only once). Land/Air factory and basic Energy
+        'UC ACU Attack Former',
+        
+        -----------------------------------------------------------------------------
+        -- ==== Expansion Builders ==== --
+        -----------------------------------------------------------------------------
+        -- Build an Expansion
+        'Swarm Expansion Builder',
+
+        -----------------------------------------------------------------------------
+        -- ==== SCU ==== --
+        -----------------------------------------------------------------------------
+
         -----------------------------------------------------------------------------
         -- ==== Engineer ==== --
         -----------------------------------------------------------------------------
-        -- Build Engineers Tech 1,2,3 and SACU
-        'Swarm Engineer Builders',            -- Priority = 900
-        -- Assistees
+        -- Produce Engineers
+        'Swarm Engineer Builders',
+        'Swarm SACU Builder',
+        'Swarm Hive+Kennel Upgrade',
+
+        -- Engineer Tasks
         'Swarm Engineer Assistees',
-        -- Reclaim mass
         'Swarm Engineer Reclaim',
+        'Swarm Engineering Support Builder',
 
-        -----------------------------------------------------------------------------
-        -- ==== Energy ==== --
-        -----------------------------------------------------------------------------
+        -- Build MassExtractors / Creators
+        'U1 MassBuilders',
+        'U123 ExtractorUpgrades',
+        'U1 MassStorage Builder',
+
         -- Build Power Tech 1,2,3
-        'U123 Energy Builders',                       -- Priority = 1100
+        'U123 Energy Builders',
 
-        -----------------------------------------------------------------------------
-        -- ==== Factory ==== --
-        -----------------------------------------------------------------------------
         -- Build Land/Air Factories
-        'Swarm Factory Builders Expansions',
+        'Swarm ACU Initial Opener',
+        'Swarm Factory Builder',
+        'Swarm Gate Builders',
+        
         -- Upgrade Factories TECH1->TECH2 and TECH2->TECH3
         'Swarm Factory Upgrader Rush',
+        -- Build Air Staging Platform to refill and repair air units.
+        'Swarm Air Staging Platform Builders',
 
         -----------------------------------------------------------------------------
         -- ==== Land Units BUILDER ==== --
         -----------------------------------------------------------------------------
         'Swarm Land Builders Ratio',
-        'Swarm SACU Builder',
 
         -----------------------------------------------------------------------------
         -- ==== Land Units FORMER==== --
         -----------------------------------------------------------------------------
         'AISwarm Platoon Builder',
+        'AISwarm Platoon Builder Intercepter',
+        'S3 SACU Formers',
 
         -----------------------------------------------------------------------------
         -- ==== Air Units BUILDER ==== --
@@ -54,12 +70,13 @@ BaseBuilderTemplate {
         -- ==== Air Units FORMER==== --
         -----------------------------------------------------------------------------
         'Swarm Air Formers',
-        
+
         -----------------------------------------------------------------------------
         -- ==== EXPERIMENTALS BUILDER ==== --
         -----------------------------------------------------------------------------
         'Swarm Land Experimental Builders',
         'Swarm Air Experimental Builders',
+        'U4 Economic Experimental Builders',
         
         -----------------------------------------------------------------------------
         -- ==== EXPERIMENTALS FORMER ==== --
@@ -74,7 +91,7 @@ BaseBuilderTemplate {
         'Swarm Shields Upgrader',
 
         -----------------------------------------------------------------------------
-        -- ==== Defenses BUILDER ==== --
+        -- ==== Defense and Strategic BUILDERS ==== --
         -----------------------------------------------------------------------------
         'Swarm Strategic Builder',
         'Strategic Platoon Formers',
@@ -93,14 +110,6 @@ BaseBuilderTemplate {
         'Swarm Land Builders - Water Map',
         'Swarm Factory Builder - Water Map',
         'Swarm Amphibious Formers',
-
-        -----------------------------------------------------------------------------
-        -- ==== FireBase BUILDER ==== --
-        -----------------------------------------------------------------------------
-
-
-        
-        -- We need this even if we have Omni View to get target informations for experimentals attack.
         -----------------------------------------------------------------------------
         -- ==== Scout BUILDER ==== --
         -----------------------------------------------------------------------------
@@ -112,24 +121,35 @@ BaseBuilderTemplate {
         'Swarm Land Scout Formers',
         'Swarm Air Scout Formers', 
 
+        -----------------------------------------------------------------------------
+        -- ==== Intel/CounterIntel BUILDER ==== --
+        -----------------------------------------------------------------------------
+        'U1 Land Radar Builders',
+        'U1 Land Radar Upgrader',
+
+        'CounterIntelBuilders',
+
+        'AeonOptics',
+        'CybranOptics',
+
     },
-    -- We need intel in case the commander is dead.
+    -- Not used by Uveso's AI. We always need intel in case the commander is dead.
     NonCheatBuilders = {
 
     },
 
     BaseSettings = {
         FactoryCount = {
-            Land = 2,
-            Air = 2,
-            Sea = 1,
-            Gate = 0,
+            Land = 5,
+            Air = 5,
+            Sea = 2,
+            Gate = 4,
         },
         EngineerCount = {
-            Tech1 = 2,
-            Tech2 = 2,
-            Tech3 = 1,
-            SCU = 0,
+            Tech1 = 6,
+            Tech2 = 3,
+            Tech3 = 3,
+            SCU = 3,
         },
         MassToFactoryValues = {
             T1Value = 6,
@@ -138,14 +158,14 @@ BaseBuilderTemplate {
         },
     },
     ExpansionFunction = function(aiBrain, location, markerType)
-        if markerType ~= 'Large Expansion Area' then
-            return -1
-        end
+        return -1
+    end,
+    FirstBaseFunction = function(aiBrain)
         local personality = ScenarioInfo.ArmySetup[aiBrain.Name].AIPersonality
-        if personality == 'swarmgrowing' or personality == 'swarmgrowingcheat' 
-        or personality == 'swarmterror' or personality == 'swarmterrorcheat'
-        or personality == 'swarmeternal' or personality == 'swarmeternalcheat' then
-            return 5000, 'swarmterror'
+        if personality == 'swarmeternal' or personality == 'swarmeternalcheat' then
+            --LOG('### M-FirstBaseFunction '..personality)
+            return 2000, 'swarmeternal'
         end
+        return -1
     end,
 }

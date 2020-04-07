@@ -136,7 +136,7 @@ BaseBuilderTemplate {
         local personality = ScenarioInfo.ArmySetup[aiBrain.Name].AIPersonality
         if personality == 'swarmgrowing' or personality == 'swarmgrowingcheat' 
         or personality == 'swarmterror' or personality == 'swarmterrorcheat' 
-        or personality == 'eternalswarm' or personality == 'eternalswarm' then 
+        or personality == 'swarmeternal' or personality == 'swarmeternalcheat' then 
             return 5000, 'swarmterror'
         end
     end,

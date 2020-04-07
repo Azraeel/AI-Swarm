@@ -46,6 +46,8 @@ BuilderGroup { BuilderGroupName = 'Swarm Shields Builder',                      
         Priority = 1250,
         InstanceCount = 2,
         BuilderConditions = {
+            { MIBC, 'FactionIndex', { 1, 2, 4, 5 }}, -- 1: UEF, 2: Aeon, 3: Cybran, 4: Seraphim, 5: Nomads
+
         	{ UCBC, 'HaveGreaterThanUnitsWithCategory', { 1, categories.ENERGYPRODUCTION * categories.TECH3 } },
             -- Have we the eco to build it ?
             { EBC, 'GreaterThanEconStorageRatio', { 0.20, 0.40 } },             -- Ratio from 0 to 1. (1=100%)
@@ -77,6 +79,8 @@ BuilderGroup { BuilderGroupName = 'Swarm Shields Builder',                      
         Priority = 1250,
         InstanceCount = 2,
         BuilderConditions = {
+            { MIBC, 'FactionIndex', { 1, 2, 4, 5 }}, -- 1: UEF, 2: Aeon, 3: Cybran, 4: Seraphim, 5: Nomads
+
         	{ UCBC, 'HaveGreaterThanUnitsWithCategory', { 1, categories.ENERGYPRODUCTION * categories.TECH3 } },
             -- Have we the eco to build it ?
             { EBC, 'GreaterThanEconStorageRatio', { 0.20, 0.40 } },             -- Ratio from 0 to 1. (1=100%)
@@ -108,6 +112,8 @@ BuilderGroup { BuilderGroupName = 'Swarm Shields Builder',                      
         Priority = 1600,
         InstanceCount = 3,
         BuilderConditions = {
+            { MIBC, 'FactionIndex', { 1, 2, 4, 5 }}, -- 1: UEF, 2: Aeon, 3: Cybran, 4: Seraphim, 5: Nomads
+
         	{ UCBC, 'HaveGreaterThanUnitsWithCategory', { 1, categories.ENERGYPRODUCTION * categories.TECH3 } },
             -- Have we the eco to build it ?
             { EBC, 'GreaterThanEconStorageRatio', { 0.20, 0.40 } },             -- Ratio from 0 to 1. (1=100%)
@@ -141,6 +147,8 @@ BuilderGroup { BuilderGroupName = 'Swarm Shields Builder',                      
         Priority = 1000,
         InstanceCount = 2,
         BuilderConditions = {
+            { MIBC, 'FactionIndex', { 2 }}, -- 1: UEF, 2: Aeon, 3: Cybran, 4: Seraphim, 5: Nomads
+
         	{ UCBC, 'HaveGreaterThanUnitsWithCategory', { 2, categories.ENERGYPRODUCTION * categories.TECH3 } },
             -- When do we want to build this ?
             { UCBC, 'HasParagon', {} },
