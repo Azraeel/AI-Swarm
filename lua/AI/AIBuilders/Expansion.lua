@@ -120,7 +120,7 @@ BuilderGroup {
         BuilderName = 'U1 Vacant Expansion Area trans',                               -- Random Builder Name.
         PlatoonTemplate = 'EngineerBuilder',                                    -- Template Name. These units will be formed. See: "\lua\AI\PlatoonTemplates\"
         Priority = 500,                                                        -- Priority. Higher priotity will be build more often then lower priotity.
-        InstanceCount = 1,                                                      -- Number of plattons that will be formed with this template.
+        InstanceCount = 2,                                                      -- Number of plattons that will be formed with this template.
         BuilderConditions = {
             { UCBC, 'ExpansionBaseCheck', { } },
 
@@ -156,7 +156,7 @@ BuilderGroup {
         BuilderName = 'U1 Naval Builder',                                       -- Random Builder Name.
         PlatoonTemplate = 'EngineerBuilder',                                    -- Template Name. These units will be formed. See: "\lua\AI\PlatoonTemplates\"
         Priority = 500,                                                        -- Priority. Higher priotity will be build more often then lower priotity.
-        InstanceCount = 1,                                                      -- Number of plattons that will be formed with this template.
+        InstanceCount = 2,                                                      -- Number of plattons that will be formed with this template.
         BuilderConditions = {
             -- When do we want to build this ?
             { UCBC, 'NavalBaseCheck', { } },

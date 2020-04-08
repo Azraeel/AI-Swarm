@@ -872,11 +872,11 @@ BuilderGroup { BuilderGroupName = 'Swarm Gate Builders',                        
         PlatoonTemplate = 'T3EngineerBuilder',
         Priority = 1300,
         BuilderConditions = {
-        	{ EBC, 'GreaterThanEconStorageRatio', { 0.25, 0.50 } },
+        	{ EBC, 'GreaterThanEconStorageRatio', { 0.35, 0.50 } },
 
             { UCBC, 'HaveGreaterThanUnitsWithCategory', { 1, categories.STRUCTURE * categories.ENERGYPRODUCTION * categories.TECH3 } },
 
-            { UCBC, 'HaveGreaterThanUnitsWithCategory', { 2, categories.STRUCTURE * categories.GATE } },
+            { UCBC, 'BuildOnlyOnLocation', { 'LocationType', 'Blank Marker' } },
 
             { UCBC, 'HaveLessThanUnitsWithCategory', { 16, categories.STRUCTURE * categories.GATE } },
         },

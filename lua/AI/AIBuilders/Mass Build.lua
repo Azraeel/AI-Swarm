@@ -80,7 +80,6 @@ BuilderGroup {
         },
         BuilderType = 'Any',
         BuilderData = {
-            RequireTransport = true,                           -- If this is true, the unit is forced to use a transport, even if it has a valid path to the destination.
             Construction = {
                 BuildStructures = {
                     'T1Resource',
@@ -107,7 +106,6 @@ BuilderGroup {
         },
         BuilderType = 'Any',
         BuilderData = {
-            RequireTransport = true,                           -- If this is true, the unit is forced to use a transport, even if it has a valid path to the destination.
             Construction = {
                 BuildStructures = {
                     'T1Resource',
@@ -134,7 +132,6 @@ BuilderGroup {
         },
         BuilderType = 'Any',
         BuilderData = {
-            RequireTransport = true,                           -- If this is true, the unit is forced to use a transport, even if it has a valid path to the destination.
             Construction = {
                 BuildStructures = {
                     'T1Resource',
