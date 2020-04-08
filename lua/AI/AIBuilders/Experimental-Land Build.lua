@@ -111,7 +111,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Experimental Formers',            
             GetTargetsFromBase = false,                                         -- Get targets from base position (true) or platoon position (false)
             AggressiveMove = true,                                              -- If true, the unit will attack everything while moving to the target.
             AttackEnemyStrength = 100,                                       -- Compare platoon to enemy strenght. 100 will attack equal, 50 weaker and 150 stronger enemies.
-            TargetSearchCategory = categories.ALLUNITS,                                  -- Only find targets matching these categories.
+            TargetSearchCategory = categories.ALLUNITS - categories.WALL - categories.NAVAL,                                  -- Only find targets matching these categories.
             MoveToCategories = {                                                -- Move to targets
                 categories.STRUCTURE * categories.EXPERIMENTAL * categories.ECONOMIC,
                 categories.STRUCTURE * categories.EXPERIMENTAL* categories.SHIELD,
@@ -140,7 +140,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Experimental Formers',            
             GetTargetsFromBase = false,                                         -- Get targets from base position (true) or platoon position (false)
             AggressiveMove = true,                                              -- If true, the unit will attack everything while moving to the target.
             AttackEnemyStrength = 100,                                       -- Compare platoon to enemy strenght. 100 will attack equal, 50 weaker and 150 stronger enemies.
-            TargetSearchCategory = categories.ALLUNITS,                                  -- Only find targets matching these categories.
+            TargetSearchCategory = categories.ALLUNITS - categories.WALL - categories.NAVAL,                                  -- Only find targets matching these categories.
             MoveToCategories = {                                                -- Move to targets
                 categories.STRUCTURE * categories.EXPERIMENTAL * categories.ECONOMIC,
                 categories.STRUCTURE * categories.EXPERIMENTAL* categories.SHIELD,
@@ -169,7 +169,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Experimental Formers',            
             GetTargetsFromBase = false,                                         -- Get targets from base position (true) or platoon position (false)
             AggressiveMove = true,                                              -- If true, the unit will attack everything while moving to the target.
             AttackEnemyStrength = 100000,                                       -- Compare platoon to enemy strenght. 100 will attack equal, 50 weaker and 150 stronger enemies.
-            TargetSearchCategory = categories.ALLUNITS,                                  -- Only find targets matching these categories.
+            TargetSearchCategory = categories.ALLUNITS - categories.WALL - categories.NAVAL,                                  -- Only find targets matching these categories.
             MoveToCategories = {                                                -- Move to targets
                 categories.STRUCTURE * categories.EXPERIMENTAL * categories.ECONOMIC,
                 categories.STRUCTURE * categories.EXPERIMENTAL* categories.SHIELD,

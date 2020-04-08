@@ -878,7 +878,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Gate Builders',                        
 
             { UCBC, 'HaveGreaterThanUnitsWithCategory', { 2, categories.STRUCTURE * categories.GATE } },
 
-            { UCBC, 'HaveLessThanUnitsWithCategory', { 3, categories.STRUCTURE * categories.GATE } },
+            { UCBC, 'HaveLessThanUnitsWithCategory', { 16, categories.STRUCTURE * categories.GATE } },
         },
         BuilderType = 'Any',
         BuilderData = {
