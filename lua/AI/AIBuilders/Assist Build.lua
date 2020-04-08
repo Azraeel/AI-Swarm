@@ -26,7 +26,6 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
                 PermanentAssist = false,
                 AssisteeType = 'Engineer',
                 AssistUntilFinished = true,
-                Time = 0,
             },
         }
     },
@@ -46,7 +45,6 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
                 AssistRange = 200,
                 BeingBuiltCategories = {'STRUCTURE LAND FACTORY TECH2'},        -- Unitcategories must be type string
                 AssistUntilFinished = true,
-                Time = 0,
             },
         }
     },
@@ -65,7 +63,6 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
                 AssistRange = 200,
                 BeingBuiltCategories = {'STRUCTURE LAND FACTORY TECH3'},        -- Unitcategories must be type string
                 AssistUntilFinished = true,
-                Time = 0,
             },
         }
     },
@@ -84,7 +81,6 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
                 AssistRange = 200,
                 BeingBuiltCategories = {'STRUCTURE LAND FACTORY TECH3'},        -- Unitcategories must be type string
                 AssistUntilFinished = true,
-                Time = 0,
             },
         }
     },
@@ -104,7 +100,6 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
                 AssistClosestUnit = true,                                       -- Assist the closest unit instead unit with the least number of assisters
                 BeingBuiltCategories = {'STRUCTURE FACTORY'},                   -- Unitcategories must be type string
                 AssistUntilFinished = true,
-                Time = 0,
             },
         }
     },
@@ -127,7 +122,6 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
                 BeingBuiltCategories = {'STRUCTURE FACTORY'},                   -- Unitcategories must be type string
                 AssistClosestUnit = false,                                       -- Assist the closest unit instead unit with the least number of assisters
                 AssistUntilFinished = true,
-                Time = 0,
             },
         }
     },
@@ -149,7 +143,6 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
                 BeingBuiltCategories = {'STRUCTURE FACTORY'},                   -- Unitcategories must be type string
                 AssistClosestUnit = true,                                       -- Assist the closest unit instead unit with the least number of assisters
                 AssistUntilFinished = true,
-                Time = 0,
             },
         }
     },
@@ -171,7 +164,6 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
                 AssistRange = 200,
                 BeingBuiltCategories = {'STRUCTURE ENERGYPRODUCTION TECH2', 'STRUCTURE ENERGYPRODUCTION TECH3'},-- Unitcategories must be type string
                 AssistUntilFinished = true,
-                Time = 0,
             },
         }
     },
@@ -191,7 +183,6 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
                 AssistClosestUnit = true,                                       -- Assist the closest unit instead unit with the least number of assisters
                 BeingBuiltCategories = {'STRUCTURE ENERGYPRODUCTION TECH2', 'STRUCTURE ENERGYPRODUCTION TECH3'},-- Unitcategories must be type string
                 AssistUntilFinished = true,
-                Time = 0,
             },
         }
     },
@@ -211,7 +202,6 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
                 AssistClosestUnit = true,                                       -- Assist the closest unit instead unit with the least number of assisters
                 BeingBuiltCategories = {'STRUCTURE ENERGYPRODUCTION TECH2', 'STRUCTURE ENERGYPRODUCTION TECH3'},-- Unitcategories must be type string
                 AssistUntilFinished = true,
-                Time = 0,
             },
         }
     },
@@ -231,7 +221,6 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
                 AssistClosestUnit = true,                                       -- Assist the closest unit instead unit with the least number of assisters
                 BeingBuiltCategories = {'STRUCTURE ENERGYPRODUCTION TECH2', 'STRUCTURE ENERGYPRODUCTION TECH3'},-- Unitcategories must be type string
                 AssistUntilFinished = true,
-                Time = 0,
             },
         }
     },
@@ -251,7 +240,6 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
                 AssistClosestUnit = true,                                       -- Assist the closest unit instead unit with the least number of assisters
                 BeingBuiltCategories = {'HYDROCARBON'},-- Unitcategories must be type string
                 AssistUntilFinished = true,
-                Time = 0,
             },
         }
     },
@@ -275,7 +263,6 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
                 AssistRange = 300,
                 BeingBuiltCategories = {'EXPERIMENTAL ECONOMIC'},               -- Unitcategories must be type string
                 AssistUntilFinished = true,
-                Time = 0,
             },
         }
     },
@@ -296,7 +283,6 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
                 AssistRange = 300,
                 BeingBuiltCategories = {'EXPERIMENTAL ECONOMIC'},               -- Unitcategories must be type string
                 AssistUntilFinished = true,
-                Time = 0,
             },
         }
     },
@@ -317,7 +303,6 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
                 AssistRange = 300,
                 BeingBuiltCategories = {'EXPERIMENTAL ECONOMIC'},               -- Unitcategories must be type string
                 AssistUntilFinished = true,
-                Time = 0,
             },
         }
     },
@@ -340,7 +325,6 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
                 AssistClosestUnit = true,                                       -- Assist the closest unit instead unit with the least number of assisters
                 BeingBuiltCategories = {'EXPERIMENTAL'},                        -- Unitcategories must be type string
                 AssistUntilFinished = true,
-                Time = 0,
             },
         }
     },
@@ -360,7 +344,6 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
                 AssistClosestUnit = true,                                       -- Assist the closest unit instead unit with the least number of assisters
                 BeingBuiltCategories = {'EXPERIMENTAL ECONOMIC, EXPERIMENTAL SHIELD, EXPERIMENTAL MOBILE'},-- Unitcategories must be type string
                 AssistUntilFinished = true,
-                Time = 0,
             },
         }
     },
@@ -380,7 +363,6 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
                 AssistClosestUnit = true,                                       -- Assist the closest unit instead unit with the least number of assisters
                 BeingBuiltCategories = {'EXPERIMENTAL ECONOMIC, EXPERIMENTAL SHIELD, EXPERIMENTAL MOBILE'},-- Unitcategories must be type string
                 AssistUntilFinished = true,
-                Time = 0,
             },
         }
     },
@@ -400,7 +382,6 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
                 AssistClosestUnit = true,                                       -- Assist the closest unit instead unit with the least number of assisters
                 BeingBuiltCategories = {'EXPERIMENTAL ECONOMIC, EXPERIMENTAL SHIELD, EXPERIMENTAL MOBILE'},-- Unitcategories must be type string
                 AssistUntilFinished = true,
-                Time = 0,
             },
         }
     },
@@ -425,7 +406,6 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
                 AssistClosestUnit = true,                                       -- Assist the closest unit instead unit with the least number of assisters
                 BeingBuiltCategories = {'ANTIMISSILE SILO'},-- Unitcategories must be type string
                 AssistUntilFinished = true,
-                Time = 0,
             },
         }
     },
@@ -446,14 +426,13 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
                 AssistClosestUnit = true,                                       -- Assist the closest unit instead unit with the least number of assisters
                 BeingBuiltCategories = {'ANTIMISSILE SILO'},-- Unitcategories must be type string
                 AssistUntilFinished = true,
-                Time = 0,
             },
         }
     },
 
     Builder { BuilderName = 'Z4 Assist SML',
         PlatoonTemplate = 'T2EngineerAssist',
-        Priority = 1400,
+        Priority = 1500,
         InstanceCount = 30,
         BuilderConditions = {
             { EBC, 'GreaterThanEconIncome', { 4.5, 100 } },
@@ -467,14 +446,13 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
                 AssistClosestUnit = true,                                       -- Assist the closest unit instead unit with the least number of assisters
                 BeingBuiltCategories = {'STRATEGIC NUKE'},-- Unitcategories must be type string
                 AssistUntilFinished = true,
-                Time = 0,
             },
         }
     },
 
     Builder { BuilderName = 'Z4 Assist SML',
         PlatoonTemplate = 'T3EngineerAssistnoSUB',
-        Priority = 1400,
+        Priority = 1500,
         InstanceCount = 30,
         BuilderConditions = {
             { EBC, 'GreaterThanEconIncome', { 8.5, 200 } },
@@ -488,14 +466,13 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
                 AssistClosestUnit = true,                                       -- Assist the closest unit instead unit with the least number of assisters
                 BeingBuiltCategories = {'STRATEGIC NUKE'},-- Unitcategories must be type string
                 AssistUntilFinished = true,
-                Time = 0,
             },
         }
     },
 
     Builder { BuilderName = 'Z4 Assist SML',
         PlatoonTemplate = 'T3EngineerAssistSUB',
-        Priority = 1400,
+        Priority = 1500,
         InstanceCount = 30,
         BuilderConditions = {
             { EBC, 'GreaterThanEconIncome', { 8.5, 200 } },
@@ -509,7 +486,6 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
                 AssistClosestUnit = true,                                       -- Assist the closest unit instead unit with the least number of assisters
                 BeingBuiltCategories = {'STRATEGIC NUKE'},-- Unitcategories must be type string
                 AssistUntilFinished = true,
-                Time = 0,
             },
         }
     },
@@ -517,7 +493,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
     Builder { BuilderName = 'Z5 Assist T3-T4 Artillery',
         PlatoonTemplate = 'T2EngineerAssist',
         Priority = 1400,
-        InstanceCount = 150,
+        InstanceCount = 30,
         BuilderConditions = {
             { EBC, 'GreaterThanEconIncome', { 8.5, 200 } },
         },
@@ -530,7 +506,6 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
                 AssistClosestUnit = true,                                       -- Assist the closest unit instead unit with the least number of assisters
                 BeingBuiltCategories = {'STRATEGIC ARTILLERY'},-- Unitcategories must be type string
                 AssistUntilFinished = true,
-                Time = 0,
             },
         }
     },
@@ -538,7 +513,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
     Builder { BuilderName = 'Z5 Assist T3-T4 Artillery',
         PlatoonTemplate = 'T3EngineerAssistnoSUB',
         Priority = 1400,
-        InstanceCount = 150,
+        InstanceCount = 30,
         BuilderConditions = {
             { EBC, 'GreaterThanEconIncome', { 8.5, 200 } },
         },
@@ -550,8 +525,6 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
                 AssistRange = 700,
                 AssistClosestUnit = true,                                       -- Assist the closest unit instead unit with the least number of assisters
                 BeingBuiltCategories = {'STRATEGIC ARTILLERY'},-- Unitcategories must be type string
-                AssistUntilFinished = true,
-                Time = 0,
             },
         }
     },
@@ -559,7 +532,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
     Builder { BuilderName = 'Z5 Assist T3-T4 Artillery',
         PlatoonTemplate = 'T3EngineerAssistSUB',
         Priority = 1400,
-        InstanceCount = 150,
+        InstanceCount = 30,
         BuilderConditions = {
             { EBC, 'GreaterThanEconIncome', { 8.5, 200 } },
         },
@@ -572,7 +545,28 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
                 AssistClosestUnit = true,                                       -- Assist the closest unit instead unit with the least number of assisters
                 BeingBuiltCategories = {'STRATEGIC ARTILLERY'},-- Unitcategories must be type string
                 AssistUntilFinished = true,
-                Time = 0,
+            },
+        }
+    },
+
+    Builder {
+        BuilderName = 'S3 Engineer Assist Build Nuke Missile',
+        PlatoonTemplate = 'T3EngineerAssistnoSUB',
+        Priority = 850,
+        InstanceCount = 14,
+        BuilderConditions = {
+            { UCBC, 'UnitsGreaterAtLocation', { 'LocationType', 0, 'NUKE STRUCTURE'}},
+
+            { EBC, 'GreaterThanEconIncome', { 8.5, 200 } },
+        },
+        BuilderType = 'Any',
+        BuilderData = {
+            Assist = {
+                AssistLocation = 'LocationType',
+                AssisteeType = 'NonUnitBuildingStructure',
+                AssistRange = 500,
+                AssisteeCategory = 'STRUCTURE NUKE',
+                AssistUntilFinished = true,
             },
         }
     },
@@ -597,7 +591,26 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
                 AssistRange = 250,
                 AssistClosestUnit = true,                                       -- Assist the closest unit instead unit with the least number of assisters
                 AssistUntilFinished = true,
-                Time = 0,
+            },
+        }
+    },
+
+    Builder { BuilderName = 'U1 Assist Shield',
+        PlatoonTemplate = 'T2EngineerAssist',
+        Priority = 350,
+        InstanceCount = 10,
+        BuilderConditions = {
+            { EBC, 'GreaterThanEconIncome', { .8, 4 } },
+        },
+        BuilderType = 'Any',
+        BuilderData = {
+            Assist = {
+                AssistLocation = 'LocationType',
+                BeingBuiltCategories = {'STRUCTURE SHIELD'},                    -- Unitcategories must be type string
+                AssisteeType = 'Structure',
+                AssistRange = 250,
+                AssistClosestUnit = true,                                       -- Assist the closest unit instead unit with the least number of assisters
+                AssistUntilFinished = true,
             },
         }
     },

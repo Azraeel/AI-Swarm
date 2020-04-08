@@ -63,7 +63,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Strategic Builder',
     },
 
     Builder {
-        BuilderName = 'U3 SML Rush',
+        BuilderName = 'Swarm SML Rush',
         PlatoonTemplate = 'T3EngineerBuildernoSUB',
         Priority = 900,
         DelayEqualBuildPlattons = {'NukeBuilder', 3},
@@ -100,7 +100,46 @@ BuilderGroup { BuilderGroupName = 'Swarm Strategic Builder',
     },
 
     Builder {
-        BuilderName = 'U3 SML Overwhelm',
+        BuilderName = 'Swarm SML Normal',
+        PlatoonTemplate = 'T3EngineerBuildernoSUB',
+        Priority = 870,
+        DelayEqualBuildPlattons = {'NukeBuilder', 3},
+        InstanceCount = 1, 
+        BuilderConditions = {
+            { UCBC, 'HaveGreaterThanUnitsWithCategory', { 2, categories.ENERGYPRODUCTION * categories.TECH3 } },
+
+            { UCBC, 'HaveGreaterThanUnitsWithCategory', { 0, categories.STRUCTURE * categories.NUKE * categories.TECH3}},
+
+            { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 0, categories.ENGINEER * categories.TECH3}},
+
+            { EBC, 'GreaterThanEconStorageRatio', { 0.45, 0.60 } },
+
+            { UCBC, 'CheckBuildPlattonDelay', { 'NukeBuilder' }},
+
+            { EBC, 'GreaterThanEconIncome',  { 8, 200}}, 
+
+            { UCBC, 'HaveLessThanUnitsInCategoryBeingBuilt', { 1, categories.NUKE * categories.STRUCTURE}},
+        },
+        BuilderType = 'Any',
+        BuilderData = {
+        	NumAssistees = 35,
+            Construction = {
+                DesiresAssist = true,
+                BuildClose = false,
+                AdjacencyCategory = categories.STRUCTURE * categories.SHIELD,
+                AvoidCategory = categories.STRUCTURE * categories.NUKE,
+                maxUnits = 1,
+                maxRadius = 20,
+                LocationType = 'LocationType',
+                BuildStructures = {
+                    'T3StrategicMissile',
+                },
+            }
+        }
+    },
+
+    Builder {
+        BuilderName = 'Swarm SML Overwhelm',
         PlatoonTemplate = 'T3EngineerBuilderSUB',
         Priority = 850,
         DelayEqualBuildPlattons = {'NukeBuilder', 3},
@@ -139,42 +178,21 @@ BuilderGroup { BuilderGroupName = 'Swarm Strategic Builder',
     },
 
     Builder {
-        BuilderName = 'U3 Artillery',
-        PlatoonTemplate = 'T3EngineerBuilderSUB',
-        Priority = 1100,
-        InstanceCount = 1,
-        BuilderConditions = {
-            { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 0, categories.ENGINEER * categories.TECH3}},
-
-            { EBC, 'GreaterThanEconStorageRatio', { 0.60, 0.70 }}, 
-
-            { UCBC, 'HaveLessThanUnitsInCategoryBeingBuilt', { 1, categories.STRUCTURE * categories.ARTILLERY * categories.TECH3 } },
-        },
-        BuilderType = 'Any',
-        BuilderData = {
-        	NumAssistees = 40,
-            Construction = {
-                DesiresAssist = true,
-                BuildClose = true,
-                BuildStructures = {
-                    'T3Artillery',
-                },
-                Location = 'LocationType',
-            }
-        }
-    },
-
-    Builder {
-        BuilderName = 'U3 RapidArtillery',
+        BuilderName = 'Swarm RapidArtillery',
         PlatoonTemplate = 'T3EngineerBuilderSUB',
         Priority = 1000,
+        DelayEqualBuildPlattons = {'Artillery', 3},
         InstanceCount = 1,
         BuilderConditions = {
+        	{ UCBC, 'HaveGreaterThanUnitsWithCategory', { 2, categories.EXPERIMENTAL}},
+
             { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 0, categories.ENGINEER * categories.TECH3}},
+
+            { UCBC, 'CheckBuildPlattonDelay', { 'Artillery' }},
 
             { EBC, 'GreaterThanEconStorageRatio', { 0.60, 0.70 }},
 
-            { UCBC, 'HaveLessThanUnitsInCategoryBeingBuilt', { 1, categories.STRUCTURE * categories.ARTILLERY * categories.TECH3 } },
+            { UCBC, 'HaveLessThanUnitsInCategoryBeingBuilt', { 1, categories.STRUCTURE * categories.ARTILLERY * (categories.TECH3 + categories.EXPERIMENTAL) } },
         },
         BuilderType = 'Any',
         BuilderData = {
@@ -191,18 +209,21 @@ BuilderGroup { BuilderGroupName = 'Swarm Strategic Builder',
     },
 
     Builder {
-        BuilderName = 'Swarm Artillery',
+        BuilderName = 'Swarm T4 Artillery',
         PlatoonTemplate = 'T3EngineerBuilderSUB',
         Priority = 1000,
+        DelayEqualBuildPlattons = {'Artillery', 3},
         InstanceCount = 1,
         BuilderConditions = {
             { UCBC, 'HaveGreaterThanUnitsWithCategory', { 2, categories.EXPERIMENTAL}},
 
             { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 0, categories.ENGINEER * categories.TECH3}},
 
+            { UCBC, 'CheckBuildPlattonDelay', { 'Artillery' }},
+
             { EBC, 'GreaterThanEconStorageRatio', { 0.65, 0.70 }}, 
 
-            { UCBC, 'HaveLessThanUnitsInCategoryBeingBuilt', { 2, categories.STRUCTURE * categories.ARTILLERY * categories.EXPERIMENTAL } },
+            { UCBC, 'HaveLessThanUnitsInCategoryBeingBuilt', { 1, categories.STRUCTURE * categories.ARTILLERY * (categories.TECH3 + categories.EXPERIMENTAL) } },
         },
         BuilderType = 'Any',
         BuilderData = {
@@ -212,6 +233,37 @@ BuilderGroup { BuilderGroupName = 'Swarm Strategic Builder',
                 BuildClose = true,
                 BuildStructures = {
                     'T4Artillery',
+                },
+                Location = 'LocationType',
+            }
+        }
+    },
+
+    Builder {
+        BuilderName = 'Swarm T3 Artillery',
+        PlatoonTemplate = 'T3EngineerBuilderSUB',
+        Priority = 1000,
+        DelayEqualBuildPlattons = {'Artillery', 3},
+        InstanceCount = 1,
+        BuilderConditions = {
+            { UCBC, 'HaveGreaterThanUnitsWithCategory', { 2, categories.EXPERIMENTAL}},
+
+            { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 0, categories.ENGINEER * categories.TECH3}},
+
+            { UCBC, 'CheckBuildPlattonDelay', { 'Artillery' }},
+
+            { EBC, 'GreaterThanEconStorageRatio', { 0.65, 0.70 }}, 
+
+            { UCBC, 'HaveLessThanUnitsInCategoryBeingBuilt', { 1, categories.STRUCTURE * categories.ARTILLERY * (categories.TECH3 + categories.EXPERIMENTAL) } },
+        },
+        BuilderType = 'Any',
+        BuilderData = {
+        	NumAssistees = 40,
+            Construction = {
+                DesiresAssist = true,
+                BuildClose = true,
+                BuildStructures = {
+                    'T3Artillery',
                 },
                 Location = 'LocationType',
             }

@@ -15,7 +15,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Experimental Builders',           
         Priority = 1000,
         InstanceCount = 1,
         BuilderConditions = {
-        	{ UCBC, 'HaveLessThanUnitsInCategoryBeingBuilt', { 2, categories.EXPERIMENTAL * categories.LAND}},   	
+        	{ UCBC, 'HaveLessThanUnitsInCategoryBeingBuilt', { 1, categories.EXPERIMENTAL * categories.LAND}},   	
 
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
 
@@ -43,7 +43,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Experimental Builders',           
         BuilderConditions = {
             { MIBC, 'FactionIndex', { 1, 2, 4, 5 }}, -- 1: UEF, 2: Aeon, 3: Cybran, 4: Seraphim, 5: Nomads 
 
-        	{ UCBC, 'HaveLessThanUnitsInCategoryBeingBuilt', { 2, categories.EXPERIMENTAL * categories.LAND}},
+        	{ UCBC, 'HaveLessThanUnitsInCategoryBeingBuilt', { 1, categories.EXPERIMENTAL * categories.LAND}},
 
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
 
@@ -69,7 +69,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Experimental Builders',           
         Priority = 1000,
         InstanceCount = 1,
         BuilderConditions = {
-        	{ UCBC, 'HaveLessThanUnitsInCategoryBeingBuilt', { 2, categories.EXPERIMENTAL * categories.LAND}},
+        	{ UCBC, 'HaveLessThanUnitsInCategoryBeingBuilt', { 1, categories.EXPERIMENTAL * categories.LAND}},
 
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
 
