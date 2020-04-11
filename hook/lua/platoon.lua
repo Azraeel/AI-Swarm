@@ -9,6 +9,8 @@ local GetPlatoonUnits = moho.platoon_methods.GetPlatoonUnits
 local IsUnitState = moho.unit_methods.IsUnitState
 local AssignUnitsToPlatoon = moho.aibrain_methods.AssignUnitsToPlatoon
 local GetPlatoonPosition = moho.platoon_methods.GetPlatoonPosition
+local GetBrain = moho.platoon_methods.GetBrain
+local PlatoonCategoryCount = moho.platoon_methods.PlatoonCategoryCount
 
 local SWARMCOPY = table.copy
 local SWARMSORT = table.sort
