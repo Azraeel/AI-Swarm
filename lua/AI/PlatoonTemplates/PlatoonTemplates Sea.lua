@@ -1,6 +1,6 @@
 PlatoonTemplate {
     Name = 'Swarm Sea Attack',
-    Plan = 'NavalAttackAIUveso',
+    Plan = 'NavalAttackAISwarm',
     GlobalSquads = {
         { categories.MOBILE * categories.NAVAL - categories.EXPERIMENTAL - categories.CARRIER - categories.ENGINEER - categories.NUKE, 1, 100, 'Attack', 'none' }
     },
@@ -15,8 +15,8 @@ PlatoonTemplate {
 }
 
 PlatoonTemplate {
-    Name = 'U4-ExperimentalSea 1 1',
-    Plan = 'NavalAttackAIUveso',
+    Name = 'S4-ExperimentalSea 1 1',
+    Plan = 'NavalAttackAISwarm',
     GlobalSquads = {
         { categories.EXPERIMENTAL * categories.NAVAL * categories.MOBILE - categories.ENGINEER, 1, 1, 'attack', 'none' }
     },

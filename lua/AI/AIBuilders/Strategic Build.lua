@@ -10,7 +10,7 @@ local MaxCapStructure = 0.12
 BuilderGroup { BuilderGroupName = 'Swarm Strategic Builder',
     BuildersType = 'EngineerBuilder',
     Builder {
-        BuilderName = 'U2 TML Minimum',
+        BuilderName = 'S2 TML Minimum',
         PlatoonTemplate = 'T2EngineerBuilder',
         Priority = 1000,
         BuilderConditions = {
@@ -38,7 +38,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Strategic Builder',
     },
                             
     Builder {
-        BuilderName = 'U2 TML Maximum',
+        BuilderName = 'S2 TML Maximum',
         PlatoonTemplate = 'T2EngineerBuilder',
         Priority = 1000,
         BuilderConditions = {
@@ -153,7 +153,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Strategic Builder',
 
             { UCBC, 'CheckBuildPlattonDelay', { 'NukeBuilder' }},
 
-            { UCBC, 'HaveUnitRatioVersusEnemy', { 2, categories.STRUCTURE * categories.NUKE * categories.TECH3, '<=', categories.STRUCTURE * categories.DEFENSE * categories.ANTIMISSILE * categories.TECH3 } },
+            { UCBC, 'HaveUnitRatioVersusEnemySwarm', { 2, categories.STRUCTURE * categories.NUKE * categories.TECH3, '<=', categories.STRUCTURE * categories.DEFENSE * categories.ANTIMISSILE * categories.TECH3 } },
 
             { UCBC, 'HaveLessThanUnitsInCategoryBeingBuilt', { 1, categories.NUKE * categories.STRUCTURE}},
 
@@ -282,39 +282,39 @@ BuilderGroup {
         FormRadius = 10000,
         BuilderConditions = {
             -- When do we want to build this ?
-            { UCBC, 'HaveGreaterThanArmyPoolWithCategory', { 0, (categories.STRUCTURE * categories.ARTILLERY * ( categories.TECH3 + categories.EXPERIMENTAL )) + categories.SATELLITE } },
+            { UCBC, 'HaveGreaterThanArmyPoolWithCategorySwarm', { 0, (categories.STRUCTURE * categories.ARTILLERY * ( categories.TECH3 + categories.EXPERIMENTAL )) + categories.SATELLITE } },
             -- Do we need additional conditions to build it ?
             -- Have we the eco to build it ?
             -- Don't build it if...
         },
         BuilderData = {
-            AIPlan = 'U34ArtilleryAI',
+            AIPlan = 'S34ArtilleryAI',
         },
         BuilderType = 'Any',
     },
 
     Builder {
-        BuilderName = 'NukePlatoonAI',
+        BuilderName = 'NukePlatoonAISwarm',
         PlatoonTemplate = 'AddToNukePlatoon',
         Priority = 4000,
         InstanceCount = 1,
         FormRadius = 10000,
         BuilderConditions = {
-            { UCBC, 'HaveGreaterThanArmyPoolWithCategory', { 0, categories.STRUCTURE * categories.NUKE * (categories.TECH2 + categories.TECH3 + categories.EXPERIMENTAL) } },
+            { UCBC, 'HaveGreaterThanArmyPoolWithCategorySwarm', { 0, categories.STRUCTURE * categories.NUKE * (categories.TECH2 + categories.TECH3 + categories.EXPERIMENTAL) } },
         },
         BuilderData = {
-            AIPlan = 'NukePlatoonAI',
+            AIPlan = 'NukePlatoonAISwarm',
         },
         BuilderType = 'Any',
     },
 
     Builder {
-        BuilderName = 'U2 TML AI',
+        BuilderName = 'S2 TML AI',
         PlatoonTemplate = 'T2TacticalLauncherSwarm',
         Priority = 18000,
         InstanceCount = 20,
         BuilderConditions = {
-            { UCBC, 'HaveGreaterThanArmyPoolWithCategory', { 0, categories.STRUCTURE * categories.TACTICALMISSILEPLATFORM * categories.TECH2} },
+            { UCBC, 'HaveGreaterThanArmyPoolWithCategorySwarm', { 0, categories.STRUCTURE * categories.TACTICALMISSILEPLATFORM * categories.TECH2} },
         },
         BuilderData = {
             LocationType = 'LocationType',

@@ -1,5 +1,4 @@
 
--- Some PlatoonTemplate are only available with AI-Uveso mod!
 
 BuilderGroup { BuilderGroupName = 'Swarm Land Attack Formers',                                -- BuilderGroupName, initalized from AIBaseTemplates in "\lua\AI\AIBaseTemplates\"
     BuildersType = 'PlatoonFormBuilder',

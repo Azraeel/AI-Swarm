@@ -27,15 +27,15 @@ BaseBuilderTemplate {
         -- ==== Mass ==== --
         -----------------------------------------------------------------------------
         -- Build MassExtractors / Creators
-        'U1 MassBuilders',
+        'S1 MassBuilders',
         -- Build Mass Storage (Adjacency)
-        'U1 MassStorage Builder',
+        'S1 MassStorage Builder',
 
         -----------------------------------------------------------------------------
         -- ==== Energy ==== --
         -----------------------------------------------------------------------------
         -- Build Power Tech 1,2,3
-        'U123 Energy Builders',                       -- Priority = 1100
+        'S123 Energy Builders',                       -- Priority = 1100
 
         -----------------------------------------------------------------------------
         -- ==== Factory ==== --
@@ -73,7 +73,7 @@ BaseBuilderTemplate {
         -----------------------------------------------------------------------------
         'Swarm Land Experimental Builders',
         'Swarm Air Experimental Builders',
-        'U4 Economic Experimental Builders',
+        'S4 Economic Experimental Builders',
         
         -----------------------------------------------------------------------------
         -- ==== EXPERIMENTALS FORMER ==== --

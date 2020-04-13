@@ -1,6 +1,6 @@
 -- hook for additional build conditions used from AIBuilders
 
-local BASEPOSTITIONS = {}
+local BASEPOSTITIONSSWARM = {}
 local mapSizeX, mapSizeZ = GetMapSize()
 
 --{ UCBC, 'ReturnTrue', {} },
@@ -15,17 +15,17 @@ function ReturnFalse(aiBrain)
     return false
 end
 
---{ UCBC, 'CanBuildCategory', { categories.RADAR * categories.TECH1 } },
+--{ UCBC, 'CanBuildCategorySwarm', { categories.RADAR * categories.TECH1 } },
 local FactionIndexToCategory = {[1] = categories.UEF, [2] = categories.AEON, [3] = categories.CYBRAN, [4] = categories.SERAPHIM, [5] = categories.NOMADS }
-function CanBuildCategory(aiBrain,category)
+function CanBuildCategorySwarm(aiBrain,category)
     -- convert text categories like 'MOBILE AIR' to 'categories.MOBILE * categories.AIR'
     local FactionCat = FactionIndexToCategory[aiBrain:GetFactionIndex()] or categories.ALLUNITS
     local numBuildableUnits = table.getn(EntityCategoryGetUnitList(category * FactionCat)) or -1
-    --LOG('* CanBuildCategory: FactionIndex: ('..repr(aiBrain:GetFactionIndex())..') numBuildableUnits:'..numBuildableUnits..' - '..repr( EntityCategoryGetUnitList(category * FactionCat) ))
+    --LOG('* CanBuildCategorySwarm: FactionIndex: ('..repr(aiBrain:GetFactionIndex())..') numBuildableUnits:'..numBuildableUnits..' - '..repr( EntityCategoryGetUnitList(category * FactionCat) ))
     return numBuildableUnits > 0
 end
 
---            { UCBC, 'HaveLessThanUnitsInCategoryBeingUpgrade', { 1, categories.RADAR * categories.TECH1 }},
+--            { UCBC, 'HaveLessThanUnitsInCategoryBeingUpgradeSwarm', { 1, categories.RADAR * categories.TECH1 }},
 function HaveUnitsInCategoryBeingUpgrade(aiBrain, numunits, category, compareType)
     -- get all units matching 'category'
     local unitsBuilding = aiBrain:GetListOfUnits(category, false)
@@ -41,10 +41,10 @@ function HaveUnitsInCategoryBeingUpgrade(aiBrain, numunits, category, compareTyp
     --LOG(aiBrain:GetArmyIndex()..' HaveUnitsInCategoryBeingUpgrade ( '..numBuilding..' '..compareType..' '..numunits..' ) --  return '..repr(CompareBody(numBuilding, numunits, compareType))..' ')
     return CompareBody(numBuilding, numunits, compareType)
 end
-function HaveLessThanUnitsInCategoryBeingUpgrade(aiBrain, numunits, category)
+function HaveLessThanUnitsInCategoryBeingUpgradeSwarm(aiBrain, numunits, category)
     return HaveUnitsInCategoryBeingUpgrade(aiBrain, numunits, category, '<')
 end
-function HaveGreaterThanUnitsInCategoryBeingUpgrade(aiBrain, numunits, category)
+function HaveGreaterThanUnitsInCategoryBeingUpgradeSwarm(aiBrain, numunits, category)
     return HaveUnitsInCategoryBeingUpgrade(aiBrain, numunits, category, '>')
 end
 
@@ -64,18 +64,18 @@ function LessThanGameTimeSeconds(aiBrain, num)
     return false
 end
 
---            { UCBC, 'HaveUnitRatioVersusCap', { 0.024, '<=', categories.STRUCTURE * categories.FACTORY * categories.LAND } }, -- Maximal 3 factories at 125 unitcap, 12 factories at 500 unitcap...
-function HaveUnitRatioVersusCap(aiBrain, ratio, compareType, categoryOwn)
+--            { UCBC, 'HaveUnitRatioVersusCapSwarm', { 0.024, '<=', categories.STRUCTURE * categories.FACTORY * categories.LAND } }, -- Maximal 3 factories at 125 unitcap, 12 factories at 500 unitcap...
+function HaveUnitRatioVersusCapSwarm(aiBrain, ratio, compareType, categoryOwn)
     local numOwnUnits = aiBrain:GetCurrentUnits(categoryOwn)
     local cap = GetArmyUnitCap(aiBrain:GetArmyIndex())
     --LOG(aiBrain:GetArmyIndex()..' CompareBody {World} ( '..numOwnUnits..' '..compareType..' '..cap..' ) -- ['..ratio..'] -- '..repr(DEBUG)..' :: '..(numOwnUnits / cap)..' '..compareType..' '..cap..' return '..repr(CompareBody(numOwnUnits / cap, ratio, compareType)))
     return CompareBody(numOwnUnits / cap, ratio, compareType)
 end
 
-function HaveUnitRatioVersusEnemy(aiBrain, ratio, categoryOwn, compareType, categoryEnemy)
+function HaveUnitRatioVersusEnemySwarm(aiBrain, ratio, categoryOwn, compareType, categoryEnemy)
     -- in case we don't have omni view, return always true. We cant count units without omni
     if not aiBrain.CheatEnabled or ScenarioInfo.Options.OmniCheat ~= "on" then
-        --LOG('* HaveUnitRatioVersusEnemy: AI is not Cheating or Omni is Off')
+        --LOG('* HaveUnitRatioVersusEnemySwarm: AI is not Cheating or Omni is Off')
         return true
     end
     local numOwnUnits = aiBrain:GetCurrentUnits(categoryOwn)
@@ -84,24 +84,24 @@ function HaveUnitRatioVersusEnemy(aiBrain, ratio, categoryOwn, compareType, cate
     return CompareBody(numOwnUnits / numEnemyUnits, ratio, compareType)
 end
 
-function HaveUnitRatioAtLocation(aiBrain, locType, ratio, categoryNeed, compareType, categoryHave)
+function HaveUnitRatioAtLocationSwarm(aiBrain, locType, ratio, categoryNeed, compareType, categoryHave)
     local AIName = ArmyBrains[aiBrain:GetArmyIndex()].Nickname
     local baseposition, radius
-    if BASEPOSTITIONS[AIName][locType] then
-        baseposition = BASEPOSTITIONS[AIName][locType].Pos
-        radius = BASEPOSTITIONS[AIName][locType].Rad
+    if BASEPOSTITIONSSWARM[AIName][locType] then
+        baseposition = BASEPOSTITIONSSWARM[AIName][locType].Pos
+        radius = BASEPOSTITIONSSWARM[AIName][locType].Rad
     elseif aiBrain.BuilderManagers[locType] then
         baseposition = aiBrain.BuilderManagers[locType].FactoryManager.Location
         radius = aiBrain.BuilderManagers[locType].FactoryManager:GetLocationRadius()
-        BASEPOSTITIONS[AIName] = BASEPOSTITIONS[AIName] or {} 
-        BASEPOSTITIONS[AIName][locType] = {Pos=baseposition, Rad=radius}
+        BASEPOSTITIONSSWARM[AIName] = BASEPOSTITIONSSWARM[AIName] or {} 
+        BASEPOSTITIONSSWARM[AIName][locType] = {Pos=baseposition, Rad=radius}
     elseif aiBrain:PBMHasPlatoonList() then
         for k,v in aiBrain.PBM.Locations do
             if v.LocationType == locType then
                 baseposition = v.Location
                 radius = v.Radius
-                BASEPOSTITIONS[AIName] = BASEPOSTITIONS[AIName] or {} 
-                BASEPOSTITIONS[AIName][locType] = {baseposition, radius}
+                BASEPOSTITIONSSWARM[AIName] = BASEPOSTITIONSSWARM[AIName] or {} 
+                BASEPOSTITIONSSWARM[AIName][locType] = {baseposition, radius}
                 break
             end
         end
@@ -115,25 +115,25 @@ function HaveUnitRatioAtLocation(aiBrain, locType, ratio, categoryNeed, compareT
     return CompareBody(numNeedUnits / numHaveUnits, ratio, compareType)
 end
 
---{ UCBC, 'HaveUnitRatioAtLocationRadiusVersusEnemy', { 1.50, 'LocationType', 90, 'STRUCTURE DEFENSE ANTIMISSILE TECH3', '<','SILO NUKE TECH3' } },
-function HaveUnitRatioAtLocationRadiusVersusEnemy(aiBrain, ratio, locType, radius, categoryOwn, compareType, categoryEnemy)
+--{ UCBC, 'HaveUnitRatioAtLocationSwarmRadiusVersusEnemy', { 1.50, 'LocationType', 90, 'STRUCTURE DEFENSE ANTIMISSILE TECH3', '<','SILO NUKE TECH3' } },
+function HaveUnitRatioAtLocationSwarmRadiusVersusEnemy(aiBrain, ratio, locType, radius, categoryOwn, compareType, categoryEnemy)
     local AIName = ArmyBrains[aiBrain:GetArmyIndex()].Nickname
     local baseposition, radius
-    if BASEPOSTITIONS[AIName][locType] then
-        baseposition = BASEPOSTITIONS[AIName][locType].Pos
-        radius = BASEPOSTITIONS[AIName][locType].Rad
+    if BASEPOSTITIONSSWARM[AIName][locType] then
+        baseposition = BASEPOSTITIONSSWARM[AIName][locType].Pos
+        radius = BASEPOSTITIONSSWARM[AIName][locType].Rad
     elseif aiBrain.BuilderManagers[locType] then
         baseposition = aiBrain.BuilderManagers[locType].FactoryManager.Location
         radius = aiBrain.BuilderManagers[locType].FactoryManager:GetLocationRadius()
-        BASEPOSTITIONS[AIName] = BASEPOSTITIONS[AIName] or {} 
-        BASEPOSTITIONS[AIName][locType] = {Pos=baseposition, Rad=radius}
+        BASEPOSTITIONSSWARM[AIName] = BASEPOSTITIONSSWARM[AIName] or {} 
+        BASEPOSTITIONSSWARM[AIName][locType] = {Pos=baseposition, Rad=radius}
     elseif aiBrain:PBMHasPlatoonList() then
         for k,v in aiBrain.PBM.Locations do
             if v.LocationType == locType then
                 baseposition = v.Location
                 radius = v.Radius
-                BASEPOSTITIONS[AIName] = BASEPOSTITIONS[AIName] or {} 
-                BASEPOSTITIONS[AIName][locType] = {baseposition, radius}
+                BASEPOSTITIONSSWARM[AIName] = BASEPOSTITIONSSWARM[AIName] or {} 
+                BASEPOSTITIONSSWARM[AIName][locType] = {baseposition, radius}
                 break
             end
         end
@@ -146,43 +146,20 @@ function HaveUnitRatioAtLocationRadiusVersusEnemy(aiBrain, ratio, locType, radiu
     return CompareBody(numNeedUnits / numEnemyUnits, ratio, compareType)
 end
 
---            { UCBC, 'HaveGreaterThanArmyPoolWithCategory', { 0, categories.MASSEXTRACTION} },
+--            { UCBC, 'HaveGreaterThanArmyPoolWithCategorySwarm', { 0, categories.MASSEXTRACTION} },
 function HavePoolUnitInArmy(aiBrain, unitCount, unitCategory, compareType)
     local poolPlatoon = aiBrain:GetPlatoonUniquelyNamed('ArmyPool')
     local numUnits = poolPlatoon:GetNumCategoryUnits(unitCategory)
     --LOG('* HavePoolUnitInArmy: numUnits= '..numUnits) 
     return CompareBody(numUnits, unitCount, compareType)
 end
-function HaveLessThanArmyPoolWithCategory(aiBrain, unitCount, unitCategory)
+function HaveLessThanArmyPoolWithCategorySwarm(aiBrain, unitCount, unitCategory)
     return HavePoolUnitInArmy(aiBrain, unitCount, unitCategory, '<')
 end
-function HaveGreaterThanArmyPoolWithCategory(aiBrain, unitCount, unitCategory)
+function HaveGreaterThanArmyPoolWithCategorySwarm(aiBrain, unitCount, unitCategory)
     return HavePoolUnitInArmy(aiBrain, unitCount, unitCategory, '>')
 end
 
-function ReclaimableMassInArea(aiBrain, locType)
-    local ents = AIUtils.AIGetReclaimablesAroundLocation(aiBrain, locType)
-    if ents and table.getn(ents) > 0 then
-        for _, p in ents do
-            if p.MaxMassReclaim and p.MaxMassReclaim > 1 then
-                return true
-            end
-        end
-    end
-    return false
-end
-
-function ReclaimableEnergyInArea(aiBrain, locType)
-    local ents = AIUtils.AIGetReclaimablesAroundLocation(aiBrain, locType)
-    if ents and table.getn(ents) > 0 then
-        for _, p in ents do
-            if p.MaxEnergyReclaim and p.MaxEnergyReclaim > 1 then
-                return true
-            end
-        end
-    end
-    return false
-end
 
 function HaveEnemyUnitAtLocation(aiBrain, radius, locationType, unitCount, categoryEnemy, compareType)
     if not aiBrain.BuilderManagers[locationType] then
@@ -193,85 +170,73 @@ function HaveEnemyUnitAtLocation(aiBrain, radius, locationType, unitCount, categ
     --LOG(aiBrain:GetArmyIndex()..' CompareBody {World} radius:['..radius..'] '..repr(DEBUG)..' ['..numEnemyUnits..'] '..compareType..' ['..unitCount..'] return '..repr(CompareBody(numEnemyUnits, unitCount, compareType)))
     return CompareBody(numEnemyUnits, unitCount, compareType)
 end
---            { UCBC, 'EnemyUnitsGreaterAtLocationRadius', {  BasePanicZone, 'LocationType', 0, categories.MOBILE * categories.LAND }}, -- radius, LocationType, unitCount, categoryEnemy
-function EnemyUnitsGreaterAtLocationRadius(aiBrain, radius, locationType, unitCount, categoryEnemy)
+--            { UCBC, 'EnemyUnitsGreaterAtLocationRadiusSwarm', {  BasePanicZone, 'LocationType', 0, categories.MOBILE * categories.LAND }}, -- radius, LocationType, unitCount, categoryEnemy
+function EnemyUnitsGreaterAtLocationRadiusSwarm(aiBrain, radius, locationType, unitCount, categoryEnemy)
     return HaveEnemyUnitAtLocation(aiBrain, radius, locationType, unitCount, categoryEnemy, '>')
 end
---            { UCBC, 'EnemyUnitsLessAtLocationRadius', {  BasePanicZone, 'LocationType', 1, categories.MOBILE * categories.LAND }}, -- radius, LocationType, unitCount, categoryEnemy
-function EnemyUnitsLessAtLocationRadius(aiBrain, radius, locationType, unitCount, categoryEnemy)
+--            { UCBC, 'EnemyUnitsLessAtLocationRadiusSwarm', {  BasePanicZone, 'LocationType', 1, categories.MOBILE * categories.LAND }}, -- radius, LocationType, unitCount, categoryEnemy
+function EnemyUnitsLessAtLocationRadiusSwarm(aiBrain, radius, locationType, unitCount, categoryEnemy)
     return HaveEnemyUnitAtLocation(aiBrain, radius, locationType, unitCount, categoryEnemy, '<')
 end
 
---            { UCBC, 'UnitsLessAtEnemy', { 1 , 'MOBILE EXPERIMENTAL' } },
---            { UCBC, 'UnitsGreaterAtEnemy', { 1 , 'MOBILE EXPERIMENTAL' } },
+--            { UCBC, 'UnitsLessAtEnemySwarm', { 1 , 'MOBILE EXPERIMENTAL' } },
+--            { UCBC, 'UnitsGreaterAtEnemySwarm', { 1 , 'MOBILE EXPERIMENTAL' } },
 function GetEnemyUnits(aiBrain, unitCount, categoryEnemy, compareType)
     local numEnemyUnits = aiBrain:GetNumUnitsAroundPoint(categoryEnemy, Vector(mapSizeX/2,0,mapSizeZ/2), mapSizeX+mapSizeZ , 'Enemy')
     --LOG(aiBrain:GetArmyIndex()..' CompareBody {World} '..categoryEnemy..' ['..numEnemyUnits..'] '..compareType..' ['..unitCount..'] return '..repr(CompareBody(numEnemyUnits, unitCount, compareType)))
     return CompareBody(numEnemyUnits, unitCount, compareType)
 end
-function UnitsLessAtEnemy(aiBrain, unitCount, categoryEnemy)
+function UnitsLessAtEnemySwarm(aiBrain, unitCount, categoryEnemy)
     return GetEnemyUnits(aiBrain, unitCount, categoryEnemy, '<')
 end
-function UnitsGreaterAtEnemy(aiBrain, unitCount, categoryEnemy)
+function UnitsGreaterAtEnemySwarm(aiBrain, unitCount, categoryEnemy)
     return GetEnemyUnits(aiBrain, unitCount, categoryEnemy, '>')
 end
 
---            { UCBC, 'EngineerManagerUnitsAtLocation', { 'MAIN', '<=', 100,  'ENGINEER TECH3' } },
-function EngineerManagerUnitsAtLocation(aiBrain, LocationType, compareType, numUnits, category)
+--            { UCBC, 'EngineerManagerUnitsAtLocationSwarm', { 'MAIN', '<=', 100,  'ENGINEER TECH3' } },
+function EngineerManagerUnitsAtLocationSwarm(aiBrain, LocationType, compareType, numUnits, category)
     local numEngineers = aiBrain.BuilderManagers[LocationType].EngineerManager:GetNumCategoryUnits('Engineers', category)
-    --LOG('* EngineerManagerUnitsAtLocation: '..LocationType..' ( engineers: '..numEngineers..' '..compareType..' '..numUnits..' ) -- '..category..' return '..repr(CompareBody( numEngineers, numUnits, compareType )) )
+    --LOG('* EngineerManagerUnitsAtLocationSwarm: '..LocationType..' ( engineers: '..numEngineers..' '..compareType..' '..numUnits..' ) -- '..category..' return '..repr(CompareBody( numEngineers, numUnits, compareType )) )
     return CompareBody( numEngineers, numUnits, compareType )
 end
 
---            { UCBC, 'BuildOnlyOnLocation', { 'LocationType', 'MAIN' } },
-function BuildOnlyOnLocation(aiBrain, LocationType, AllowedLocationType)
-    --LOG('* BuildOnlyOnLocation: we are on location '..LocationType..', Allowed locations are: '..AllowedLocationType..'')
+--            { UCBC, 'BuildOnlyOnLocationSwarm', { 'LocationType', 'MAIN' } },
+function BuildOnlyOnLocationSwarm(aiBrain, LocationType, AllowedLocationType)
+    --LOG('* BuildOnlyOnLocationSwarm: we are on location '..LocationType..', Allowed locations are: '..AllowedLocationType..'')
     if string.find(LocationType, AllowedLocationType) then
         return true
     end
     return false
 end
---            { UCBC, 'BuildNotOnLocation', { 'LocationType', 'MAIN' } },
-function BuildNotOnLocation(aiBrain, LocationType, ForbiddenLocationType)
+--            { UCBC, 'BuildNotOnLocationSwarm', { 'LocationType', 'MAIN' } },
+function BuildNotOnLocationSwarm(aiBrain, LocationType, ForbiddenLocationType)
     if string.find(LocationType, ForbiddenLocationType) then
-        --LOG('* BuildOnlyOnLocation: we are on location '..LocationType..', forbidden locations are: '..ForbiddenLocationType..'. return false (don\'t build it)')
+        --LOG('* BuildOnlyOnLocationSwarm: we are on location '..LocationType..', forbidden locations are: '..ForbiddenLocationType..'. return false (don\'t build it)')
         return false
     end
-    --LOG('* BuildOnlyOnLocation: we are on location '..LocationType..', forbidden locations are: '..ForbiddenLocationType..'. return true (OK, build it)')
+    --LOG('* BuildOnlyOnLocationSwarm: we are on location '..LocationType..', forbidden locations are: '..ForbiddenLocationType..'. return true (OK, build it)')
     return true
 end
 
-function HaveGreaterThanUnitsInCategoryBeingBuiltAtLocation(aiBrain, locationType, numReq, category, constructionCat)
-    local numUnits
-    if constructionCat then
-        numUnits = table.getn( GetUnitsBeingBuiltLocation(aiBrain, locationType, category, category + (categories.ENGINEER * categories.MOBILE - categories.STATIONASSISTPOD) + constructionCat) or {} )
-    else
-        numUnits = table.getn( GetUnitsBeingBuiltLocation(aiBrain,locationType, category, category + (categories.ENGINEER * categories.MOBILE - categories.STATIONASSISTPOD) ) or {} )
-    end
-    if numUnits > numReq then
-        return true
-    end
-    return false
-end
 
-function GetUnitsBeingBuiltLocation(aiBrain, locType, buildingCategory, builderCategory)
+function GetUnitsBeingBuiltLocationSwarm(aiBrain, locType, buildingCategory, builderCategory)
     local AIName = ArmyBrains[aiBrain:GetArmyIndex()].Nickname
     local baseposition, radius
-    if BASEPOSTITIONS[AIName][locType] then
-        baseposition = BASEPOSTITIONS[AIName][locType].Pos
-        radius = BASEPOSTITIONS[AIName][locType].Rad
+    if BASEPOSTITIONSSWARM[AIName][locType] then
+        baseposition = BASEPOSTITIONSSWARM[AIName][locType].Pos
+        radius = BASEPOSTITIONSSWARM[AIName][locType].Rad
     elseif aiBrain.BuilderManagers[locType] then
         baseposition = aiBrain.BuilderManagers[locType].FactoryManager.Location
         radius = aiBrain.BuilderManagers[locType].FactoryManager:GetLocationRadius()
-        BASEPOSTITIONS[AIName] = BASEPOSTITIONS[AIName] or {} 
-        BASEPOSTITIONS[AIName][locType] = {Pos=baseposition, Rad=radius}
+        BASEPOSTITIONSSWARM[AIName] = BASEPOSTITIONSSWARM[AIName] or {} 
+        BASEPOSTITIONSSWARM[AIName][locType] = {Pos=baseposition, Rad=radius}
     elseif aiBrain:PBMHasPlatoonList() then
         for k,v in aiBrain.PBM.Locations do
             if v.LocationType == locType then
                 baseposition = v.Location
                 radius = v.Radius
-                BASEPOSTITIONS[AIName] = BASEPOSTITIONS[AIName] or {} 
-                BASEPOSTITIONS[AIName][locType] = {baseposition, radius}
+                BASEPOSTITIONSSWARM[AIName] = BASEPOSTITIONSSWARM[AIName] or {} 
+                BASEPOSTITIONSSWARM[AIName][locType] = {baseposition, radius}
                 break
             end
         end
@@ -279,7 +244,7 @@ function GetUnitsBeingBuiltLocation(aiBrain, locType, buildingCategory, builderC
     if not baseposition then
         return false
     end
-    local filterUnits = GetOwnUnitsAroundLocation(aiBrain, builderCategory, baseposition, radius)
+    local filterUnits = GetOwnUnitsAroundLocationSwarm(aiBrain, builderCategory, baseposition, radius)
     local retUnits = {}
     for k,v in filterUnits do
         -- Only assist if allowed
@@ -303,7 +268,7 @@ function GetUnitsBeingBuiltLocation(aiBrain, locType, buildingCategory, builderC
     return retUnits
 end
 
-function GetOwnUnitsAroundLocation(aiBrain, category, location, radius)
+function GetOwnUnitsAroundLocationSwarm(aiBrain, category, location, radius)
     local units = aiBrain:GetUnitsAroundPoint(category, location, radius, 'Ally')
     local index = aiBrain:GetArmyIndex()
     local retUnits = {}
@@ -315,49 +280,10 @@ function GetOwnUnitsAroundLocation(aiBrain, category, location, radius)
     return retUnits
 end
 
-function HaveLessThanIdleEngineers(aiBrain, count, tech)
-    local ENGINEER = aiBrain:GetListOfUnits(categories.ENGINEER - categories.STATIONASSISTPOD, true, false)
-    local engineers = {}
-    engineers[5] = EntityCategoryFilterDown(categories.SUBCOMMANDER, ENGINEER)
-    engineers[4] = EntityCategoryFilterDown(categories.TECH3 - categories.SUBCOMMANDER, ENGINEER)
-    engineers[3] = EntityCategoryFilterDown(categories.FIELDENGINEER, ENGINEER)
-    engineers[2] = EntityCategoryFilterDown(categories.TECH2 - categories.FIELDENGINEER, ENGINEER)
-    engineers[1] = EntityCategoryFilterDown(categories.TECH1 - categories.COMMAND, ENGINEER)
-    local c = 0
-    for _, v in engineers[tech] do
-        if v:IsIdleState() then
-            c=c+1
-        end
-    end
-    --LOG('tech '..tech..' - Eng='..table.getn(engineers[tech])..' - idle='..c..' == '..repr(c < count))
-    return c < count
-end
 
---            { UCBC, 'NavalBaseWithLeastUnits', {  60, 'LocationType', categories.STRUCTURE * categories.FACTORY * categories.NAVAL }}, -- radius, LocationType, categoryUnits
-function NavalBaseWithLeastUnits(aiBrain, radius, locationType, unitCategory)
-    local navalMarkers = AIUtils.AIGetMarkerLocations(aiBrain, 'Naval Area')
-    local lowloc
-    local lownum
-    for baseLocation, managers in aiBrain.BuilderManagers do
-        for index, marker in navalMarkers do
-            if marker.Name == baseLocation then
-                local pos = aiBrain.BuilderManagers[baseLocation].EngineerManager.Location
-                local numUnits = aiBrain:GetNumUnitsAroundPoint(unitCategory, pos, radius , 'Ally')
-                local numFactory = aiBrain:GetNumUnitsAroundPoint(categories.STRUCTURE * categories.FACTORY * categories.NAVAL, pos, radius , 'Ally')
-                if numFactory < 1 then continue end
-                if not lownum or lownum > numUnits then
-                    lowloc = baseLocation
-                    lownum = numUnits
-                end
-            end
-        end
-    end
-    --LOG('Checking location: '..repr(locationType)..' - Location with lowest units: '..repr(lowloc))
-    return locationType == lowloc
-end
 
---            { UCBC, 'CanPathNavalBaseToNavalTargets', {  'LocationType', categories.STRUCTURE * categories.FACTORY * categories.NAVAL }}, -- LocationType, categoryUnits
-function CanPathNavalBaseToNavalTargets(aiBrain, locationType, unitCategory)
+--            { UCBC, 'CanPathNavalBaseToNavalTargetsSwarm', {  'LocationType', categories.STRUCTURE * categories.FACTORY * categories.NAVAL }}, -- LocationType, categoryUnits
+function CanPathNavalBaseToNavalTargetsSwarm(aiBrain, locationType, unitCategory)
     local AIAttackUtils = import('/lua/AI/aiattackutilities.lua')
     baseposition = aiBrain.BuilderManagers[locationType].FactoryManager.Location
     --LOG('Searching water path from base ['..locationType..'] position '..repr(baseposition))
@@ -378,11 +304,11 @@ function CanPathNavalBaseToNavalTargets(aiBrain, locationType, unitCategory)
     return false
 end
 
---            { UCBC, 'UnfinishedUnitsAtLocation', { 'LocationType' }},
-function UnfinishedUnitsAtLocation(aiBrain, locationType)
+--            { UCBC, 'UnfinishedUnitsAtLocationSwarm', { 'LocationType' }},
+function UnfinishedUnitsAtLocationSwarm(aiBrain, locationType)
     local engineerManager = aiBrain.BuilderManagers[locationType].EngineerManager
     if not engineerManager then
-        --WARN('*AI WARNING: UnfinishedUnitsAtLocation: Invalid location - ' .. locationType)
+        --WARN('*AI WARNING: UnfinishedUnitsAtLocationSwarm: Invalid location - ' .. locationType)
         return false
     end
     local unfinishedUnits = aiBrain:GetUnitsAroundPoint(categories.STRUCTURE + categories.EXPERIMENTAL, engineerManager.Location, engineerManager.Radius, 'Ally')
@@ -395,24 +321,6 @@ function UnfinishedUnitsAtLocation(aiBrain, locationType)
     return false
 end
 
---            { UCBC, 'UnitsLessInPlatoon', {} },
-function UnitsLessInPlatoon(aiBrain,PlatoonPlan, num)
-    local PlatoonList = aiBrain:GetPlatoonsList()
-    local NumPlatoonUnits = 0
-    for _,Platoon in PlatoonList do
-        if Platoon:GetPlan() == PlatoonPlan then
-            NumPlatoonUnits = table.getn(Platoon:GetPlatoonUnits() or 0)
-            break
-        end
-        --LOG('* PlatoonMerger: Found '..repr(Platoon:GetPlan()))
-    end
-    if NumPlatoonUnits < num then
-        --LOG('* UnitsLessInPlatoon: TRUE Units in platoon ('..PlatoonPlan..'): '..NumPlatoonUnits..'/'..num)
-        return true
-    end
-    --LOG('* UnitsLessInPlatoon: FALSE Units in platoon('..PlatoonPlan..'): '..NumPlatoonUnits..'/'..num)
-    return false
-end
 
 -----------------------------------------------------------------------------------------------------------------------------------
 -----------------------------------------------------------------------------------------------------------------------------------
@@ -423,24 +331,6 @@ end
 -----------------------------------------------------------------------------------------------------------------------------------
 -----------------------------------------------------------------------------------------------------------------------------------
 -----------------------------------------------------------------------------------------------------------------------------------
-
-local timedilatation = false
-function IsGameSimSpeedLow(aiBrain)
-    local SystemTime = GetSystemTimeSecondsOnlyForProfileUse()
-    local GameTime = GetGameTimeSeconds()
-    if not timedilatation then
-        timedilatation = GetSystemTimeSecondsOnlyForProfileUse() - GetGameTimeSeconds()
-    end
-        
-    LOG('** SystemTime'..SystemTime)
-    LOG('** timedilatation'..timedilatation)
-    LOG('** SystemTimedilatation'..(GetSystemTimeSecondsOnlyForProfileUse()-timedilatation))
-    LOG('** GameTime'..GameTime)
-    
-    
-    LOG('** true')
-    return true
-end
 -----------------------------------------------------------------------------------------------------------------------------------
 -----------------------------------------------------------------------------------------------------------------------------------
 -----------------------------------------------------------------------------------------------------------------------------------
@@ -451,49 +341,12 @@ end
 -----------------------------------------------------------------------------------------------------------------------------------
 -----------------------------------------------------------------------------------------------------------------------------------
 -- For debug printing
---             { UCBC, 'HaveUnitRatioUveso', { 0.75, 'MASSEXTRACTION TECH1', '<=','MASSEXTRACTION TECH2',true } },
-function HaveUnitRatioUveso(aiBrain, ratio, categoryOne, compareType, categoryTwo)
+--             { UCBC, 'HaveUnitRatioSwarm', { 0.75, 'MASSEXTRACTION TECH1', '<=','MASSEXTRACTION TECH2',true } },
+function HaveUnitRatioSwarm(aiBrain, ratio, categoryOne, compareType, categoryTwo)
     local numOne = aiBrain:GetCurrentUnits(categoryOne)
     local numTwo = aiBrain:GetCurrentUnits(categoryTwo)
     --LOG(aiBrain:GetArmyIndex()..' CompareBody {World} ( '..numOne..' '..compareType..' '..numTwo..' ) -- ['..ratio..'] -- '..categoryOne..' '..compareType..' '..categoryTwo..' ('..(numOne / numTwo)..' '..compareType..' '..ratio..' ?) return '..repr(CompareBody(numOne / numTwo, ratio, compareType)))
     return CompareBody(numOne / numTwo, ratio, compareType)
-end
-
---             { UCBC, 'HaveLessUnitsInLayer', { 'AIR' } },
-function HaveLessUnitsInLayer(aiBrain, layer)
-    local LANDSTRUCTURE = aiBrain:GetCurrentUnits(categories.LAND * categories.STRUCTURE)
-    local LANDMOBILE = aiBrain:GetCurrentUnits(categories.LAND * categories.MOBILE - categories.ENGINEER)
-    local AIRSTRUCTURE = aiBrain:GetCurrentUnits(categories.AIR * categories.STRUCTURE)
-    local AIRMOBILE = aiBrain:GetCurrentUnits(categories.AIR * categories.MOBILE - categories.SCOUT - categories.TRANSPORTFOCUS)
-    local NAVALSTRUCTURE = aiBrain:GetCurrentUnits(categories.NAVAL * categories.STRUCTURE)
-    local NAVALMOBILE = aiBrain:GetCurrentUnits(categories.NAVAL * categories.MOBILE)
-    local LAND = LANDSTRUCTURE > 0
-    local AIR = AIRSTRUCTURE > 0
-    local NAVAL = NAVALSTRUCTURE > 0
-    if layer == 'LAND' then
-        if AIR and LANDMOBILE > AIRMOBILE then
-            return false
-        end
-        if NAVAL and LANDMOBILE > NAVALMOBILE then
-            return false
-        end
-    elseif layer == 'AIR' then
-        if LAND and AIRMOBILE > LANDMOBILE then
-            return false
-        end
-        if NAVAL and AIRMOBILE > NAVALMOBILE then
-            return false
-        end
-    elseif layer == 'NAVAL' then
-        if LAND and NAVALMOBILE > LANDMOBILE then
-            return false
-        end
-        if AIR and NAVALMOBILE > AIRMOBILE then
-            return false
-        end
-    end
-    LOG('Less Units in layer: '..layer..'. Land:('..LANDMOBILE..') Air:('..AIRMOBILE..') Naval:('..NAVALMOBILE..')')
-    return true
 end
 
 --            { UCBC, 'HasParagon', {} },

@@ -9,7 +9,7 @@ local BasePanicZone, BaseMilitaryZone, BaseEnemyZone = import('/mods/AI-Swarm/lu
 BuilderGroup { BuilderGroupName = 'Swarm Naval Experimental Builders',                               -- BuilderGroupName, initalized from AIBaseTemplates in "\lua\AI\AIBaseTemplates\"
     BuildersType = 'EngineerBuilder',
     
-    Builder { BuilderName = 'U4 NavalExp1 Minimum',
+    Builder { BuilderName = 'S4 NavalExp1 Minimum',
         PlatoonTemplate = 'T3EngineerBuildernoSUB',
         Priority = 160,
         InstanceCount = 1,
@@ -38,7 +38,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Naval Experimental Builders',          
         }
     },
     
-    Builder { BuilderName = 'U4 SeaExperimental1',
+    Builder { BuilderName = 'S4 SeaExperimental1',
         PlatoonTemplate = 'T3EngineerBuildernoSUB',
         Priority = 150,
         InstanceCount = 3,
@@ -48,7 +48,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Naval Experimental Builders',          
             -- Do we need additional conditions to build it ?
             { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 2, categories.ENGINEER * categories.TECH3 }},
             { UCBC, 'HaveGreaterThanUnitsWithCategory', { 1, categories.STRUCTURE * categories.FACTORY * categories.NAVAL } },
-            { UCBC, 'CanBuildCategory', { categories.MOBILE * categories.NAVAL * categories.EXPERIMENTAL } },
+            { UCBC, 'CanBuildCategorySwarm', { categories.MOBILE * categories.NAVAL * categories.EXPERIMENTAL } },
             -- Have we the eco to build it ?
             { EBC, 'GreaterThanEconIncome', { 7.0, 600.0 }},                    -- Base income
             { EBC, 'GreaterThanEconStorageRatio', { 0.95, 0.95 } },             -- Ratio from 0 to 1. (1=100%)
@@ -80,8 +80,8 @@ BuilderGroup { BuilderGroupName = 'Swarm Naval Experimental Builders',          
 BuilderGroup { BuilderGroupName = 'Swarm Naval Experimental Formers PanicZone',                   -- BuilderGroupName, initalized from AIBaseTemplates in "\lua\AI\AIBaseTemplates\"
     BuildersType = 'PlatoonFormBuilder',
     
-    Builder { BuilderName = 'U4 BasePanicZone SEA',                                   -- Random Builder Name.
-        PlatoonTemplate = 'U4-ExperimentalSea 1 1',                     -- Template Name. These units will be formed. See: "\lua\AI\PlatoonTemplates"
+    Builder { BuilderName = 'S4 BasePanicZone SEA',                                   -- Random Builder Name.
+        PlatoonTemplate = 'S4-ExperimentalSea 1 1',                     -- Template Name. These units will be formed. See: "\lua\AI\PlatoonTemplates"
         --PlatoonAddPlans = {'NameUnitsSorian'},
         Priority = 90,                                                          -- Priority. 1000 is normal.
         InstanceCount = 5,                                                      -- Number of plattons that will be formed.
@@ -99,7 +99,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Naval Experimental Formers PanicZone', 
             },
         },
         BuilderConditions = {                                                   -- platoon will be formed if all conditions are true
-            { UCBC, 'EnemyUnitsGreaterAtLocationRadius', {  BasePanicZone, 'LocationType', 0, categories.MOBILE }}, -- radius, LocationType, unitCount, categoryEnemy
+            { UCBC, 'EnemyUnitsGreaterAtLocationRadiusSwarm', {  BasePanicZone, 'LocationType', 0, categories.MOBILE }}, -- radius, LocationType, unitCount, categoryEnemy
         },
         BuilderType = 'Any',                                                    -- Build with "Land" "Air" "Sea" "Gate" or "All" Factories. - "Any" forms a Platoon.
     },
@@ -111,8 +111,8 @@ BuilderGroup { BuilderGroupName = 'Swarm Naval Experimental Formers PanicZone', 
 BuilderGroup { BuilderGroupName = 'Swarm Naval Experimental Formers MilitaryZone',                -- BuilderGroupName, initalized from AIBaseTemplates in "\lua\AI\AIBaseTemplates\"
     BuildersType = 'PlatoonFormBuilder',
     
-    Builder { BuilderName = 'U4 BaseMilitaryZone Sea',                                -- Random Builder Name.
-        PlatoonTemplate = 'U4-ExperimentalSea 1 1',                             -- Template Name. These units will be formed. See: "\lua\AI\PlatoonTemplates"
+    Builder { BuilderName = 'S4 BaseMilitaryZone Sea',                                -- Random Builder Name.
+        PlatoonTemplate = 'S4-ExperimentalSea 1 1',                             -- Template Name. These units will be formed. See: "\lua\AI\PlatoonTemplates"
         --PlatoonAddPlans = {'NameUnitsSorian'},
         Priority = 80,                                                          -- Priority. 1000 is normal.
         InstanceCount = 3,                                                      -- Number of plattons that will be formed.
@@ -130,7 +130,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Naval Experimental Formers MilitaryZone
             },
         },
         BuilderConditions = {                                                   -- platoon will be formed if all conditions are true
-            { UCBC, 'EnemyUnitsGreaterAtLocationRadius', {  BasePanicZone, 'LocationType', 0, categories.MOBILE }}, -- radius, LocationType, unitCount, categoryEnemy
+            { UCBC, 'EnemyUnitsGreaterAtLocationRadiusSwarm', {  BasePanicZone, 'LocationType', 0, categories.MOBILE }}, -- radius, LocationType, unitCount, categoryEnemy
         },
         BuilderType = 'Any',                                                    -- Build with "Land" "Air" "Sea" "Gate" or "All" Factories. - "Any" forms a Platoon.
     },
@@ -142,8 +142,8 @@ BuilderGroup { BuilderGroupName = 'Swarm Naval Experimental Formers MilitaryZone
 BuilderGroup { BuilderGroupName = 'Swarm Naval Experimental Formers EnemyZone',              -- BuilderGroupName, initalized from AIBaseTemplates in "\lua\AI\AIBaseTemplates\"
     BuildersType = 'PlatoonFormBuilder',
     
-    Builder { BuilderName = 'U4 EnemyZone Sea',                                       -- Random Builder Name.
-        PlatoonTemplate = 'U4-ExperimentalSea 1 1',                             -- Template Name. These units will be formed. See: "\lua\AI\PlatoonTemplates"
+    Builder { BuilderName = 'S4 EnemyZone Sea',                                       -- Random Builder Name.
+        PlatoonTemplate = 'S4-ExperimentalSea 1 1',                             -- Template Name. These units will be formed. See: "\lua\AI\PlatoonTemplates"
         --PlatoonAddPlans = {'NameUnitsSorian'},
         Priority = 70,                                                          -- Priority. 1000 is normal.
         InstanceCount = 3,                                                      -- Number of plattons that will be formed.
@@ -178,9 +178,9 @@ BuilderGroup { BuilderGroupName = 'Swarm Naval Experimental Formers EnemyZone', 
 BuilderGroup { BuilderGroupName = 'Swarm Naval Experimental Formers Trasher',                           -- BuilderGroupName, initalized from AIBaseTemplates in "\lua\AI\AIBaseTemplates\"
     BuildersType = 'PlatoonFormBuilder',
     
-    Builder { BuilderName = 'U4 SEA Trasher',                                         -- Random Builder Name.
+    Builder { BuilderName = 'S4 SEA Trasher',                                         -- Random Builder Name.
         --PlatoonAddPlans = {'NameUnitsSorian'},
-        PlatoonTemplate = 'U4-ExperimentalSea 1 1',                             -- Template Name. These units will be formed. See: "\lua\AI\PlatoonTemplates"
+        PlatoonTemplate = 'S4-ExperimentalSea 1 1',                             -- Template Name. These units will be formed. See: "\lua\AI\PlatoonTemplates"
         Priority = 60,                                                          -- Priority. 1000 is normal.
         InstanceCount = 5,                                                      -- Number of plattons that will be formed.
         FormRadius = 10000,
@@ -199,7 +199,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Naval Experimental Formers Trasher',   
             -- When do we want to form this ?
             { UCBC, 'UnitCapCheckGreater', { 0.90 } },
             { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 1, categories.EXPERIMENTAL * categories.MOBILE } },
-            { UCBC, 'EnemyUnitsLessAtLocationRadius', {  BasePanicZone, 'LocationType', 0, categories.ALLUNITS - categories.SCOUT }}, -- radius, LocationType, unitCount, categoryEnemy
+            { UCBC, 'EnemyUnitsLessAtLocationRadiusSwarm', {  BasePanicZone, 'LocationType', 0, categories.ALLUNITS - categories.SCOUT }}, -- radius, LocationType, unitCount, categoryEnemy
         },
         BuilderType = 'Any',                                                    -- Build with "Land" "Air" "Sea" "Gate" or "All" Factories. - "Any" forms a Platoon.
     },

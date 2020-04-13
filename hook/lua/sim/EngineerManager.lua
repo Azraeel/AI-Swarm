@@ -1,4 +1,3 @@
--- Don't disable units on low energy/mass for AI-Uveso
 
 TheOldEngineerManager = EngineerManager
 EngineerManager = Class(TheOldEngineerManager) {
@@ -195,18 +194,18 @@ EngineerManager = Class(TheOldEngineerManager) {
         self:DelayAssign(unit, 50)
     end,
 
-    -- Hook For AI-Uveso. Don't need this, we have our own ecomanagement
+    -- Hook For AI-Swarm. Don't need this, we have our own ecomanagement
     LowMass = function(self)
-        -- Only use this with AI-Uveso
-        if not self.Brain.Uveso then
+        -- Only use this with AI-Swarm
+        if not self.Brain.Swarm then
             return TheOldEngineerManager.LowMass(self)
         end
     end,
 
-    -- Hook For AI-Uveso. Don't need this, we have our own ecomanagement
+    -- Hook For AI-Swarm. Don't need this, we have our own ecomanagement
     LowEnergy = function(self)
-        -- Only use this with AI-Uveso
-        if not self.Brain.Uveso then
+        -- Only use this with AI-Swarm
+        if not self.Brain.Swarm then
             return TheOldEngineerManager.LowEnergy(self)
         end
     end,

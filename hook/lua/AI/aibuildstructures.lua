@@ -1,11 +1,11 @@
 
--- AI-Uveso: Hook for Replace factory buildtemplate to find a better buildplace not too close to the center of the base
+-- AI-Swarm: Hook for Replace factory buildtemplate to find a better buildplace not too close to the center of the base
 local AntiSpamList = {}
-UvesoAIExecuteBuildStructure = AIExecuteBuildStructure
+SwarmAIExecuteBuildStructure = AIExecuteBuildStructure
 function AIExecuteBuildStructure(aiBrain, builder, buildingType, closeToBuilder, relative, buildingTemplate, baseTemplate, reference, NearMarkerType)
-    -- Only use this with AI-Uveso
-    if not aiBrain.Uveso then
-        return UvesoAIExecuteBuildStructure(aiBrain, builder, buildingType, closeToBuilder, relative, buildingTemplate, baseTemplate, reference, NearMarkerType)
+    -- Only use this with AI-Swarm
+    if not aiBrain.Swarm then
+        return SwarmAIExecuteBuildStructure(aiBrain, builder, buildingType, closeToBuilder, relative, buildingTemplate, baseTemplate, reference, NearMarkerType)
     end
     local factionIndex = aiBrain:GetFactionIndex()
     local whatToBuild = aiBrain:DecideWhatToBuild(builder, buildingType, buildingTemplate)
@@ -202,6 +202,6 @@ function AIExecuteBuildStructure(aiBrain, builder, buildingType, closeToBuilder,
         return true
     end
     -- At this point we're out of options, so move on to the next thing
-    WARN('*AIExecuteBuildStructure: c-function FindPlaceToBuild() failed! AI-faction: index('..factionIndex..') '..repr(AIFactionName)..', Building Type: '..repr(buildingType)..', engineer-faction: '..repr(builder.factionCategory))
+    --WARN('*AIExecuteBuildStructure: c-function FindPlaceToBuild() failed! AI-faction: index('..factionIndex..') '..repr(AIFactionName)..', Building Type: '..repr(buildingType)..', engineer-faction: '..repr(builder.factionCategory))
     return false
 end

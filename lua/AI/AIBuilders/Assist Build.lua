@@ -30,7 +30,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
         }
     },
 
-    Builder { BuilderName = 'U1 Assist 1st T2 Factory Upgrade',
+    Builder { BuilderName = 'S1 Assist 1st T2 Factory Upgrade',
         PlatoonTemplate = 'EngineerAssist',
         Priority = 150,
         InstanceCount = 20,
@@ -48,7 +48,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
             },
         }
     },
-    Builder { BuilderName = 'U1 Assist 1st T3 Factory Upgrade',
+    Builder { BuilderName = 'S1 Assist 1st T3 Factory Upgrade',
         PlatoonTemplate = 'EngineerAssist',
         Priority = 200,
         InstanceCount = 20,
@@ -66,7 +66,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
             },
         }
     },
-    Builder { BuilderName = 'U2 Assist 1st T3 Factory Upgrade',
+    Builder { BuilderName = 'S2 Assist 1st T3 Factory Upgrade',
         PlatoonTemplate = 'T2EngineerAssist',
         Priority = 210,
         InstanceCount = 5,
@@ -84,7 +84,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
             },
         }
     },
-    Builder { BuilderName = 'U2 Assist Factory Upgrade',
+    Builder { BuilderName = 'S2 Assist Factory Upgrade',
         PlatoonTemplate = 'T2EngineerAssist',
         Priority = 250,
         InstanceCount = 20,
@@ -150,7 +150,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
     -- ============ --
     --    ENERGY    --
     -- ============ --
-    Builder { BuilderName = 'UC Assist Energy',
+    Builder { BuilderName = 'SC Assist Energy',
         PlatoonTemplate = 'CommanderAssist',
         Priority = 16300,
         BuilderConditions = {
@@ -167,7 +167,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
             },
         }
     },
-    Builder { BuilderName = 'U1 Assist Energy Turbo',
+    Builder { BuilderName = 'S1 Assist Energy Turbo',
         PlatoonTemplate = 'EngineerAssist',
         Priority = 570,
         InstanceCount = 10,
@@ -186,7 +186,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
             },
         }
     },
-    Builder { BuilderName = 'U2 Assist Energy Turbo',
+    Builder { BuilderName = 'S2 Assist Energy Turbo',
         PlatoonTemplate = 'T2EngineerAssist',
         Priority = 605,
         InstanceCount = 15,
@@ -205,7 +205,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
             },
         }
     },
-    Builder { BuilderName = 'U3 Assist Energy Turbo',
+    Builder { BuilderName = 'S3 Assist Energy Turbo',
         PlatoonTemplate = 'T3EngineerAssistnoSUB',
         Priority = 650,
         InstanceCount = 20,
@@ -224,7 +224,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
             },
         }
     },
-    Builder { BuilderName = 'U1 Assist HYDROCARBON Turbo',
+    Builder { BuilderName = 'S1 Assist HYDROCARBON Turbo',
         PlatoonTemplate = 'EngineerAssist',
         Priority = 565,
         InstanceCount = 10,
@@ -246,7 +246,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
     -- ============ --
     --    Paragon   --
     -- ============ --
-    Builder { BuilderName = 'U1 Assist PARA',
+    Builder { BuilderName = 'S1 Assist PARA',
         PlatoonTemplate = 'EngineerAssist',
         Priority = 1000,
         InstanceCount = 50,
@@ -266,7 +266,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
             },
         }
     },
-    Builder { BuilderName = 'U2 Assist PARA',
+    Builder { BuilderName = 'S2 Assist PARA',
         PlatoonTemplate = 'T2EngineerAssist',
         Priority = 1010,
         InstanceCount = 50,
@@ -286,7 +286,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
             },
         }
     },
-    Builder { BuilderName = 'U3 Assist PARA',
+    Builder { BuilderName = 'S3 Assist PARA',
         PlatoonTemplate = 'T3EngineerAssistnoSUB',
         Priority = 1015,
         InstanceCount = 30,
@@ -309,7 +309,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
     -- =================== --
     --    Experimentals    --
     -- =================== --
-    Builder { BuilderName = 'U1 Assist Experimental',
+    Builder { BuilderName = 'S1 Assist Experimental',
         PlatoonTemplate = 'EngineerAssist',
         Priority = 1500,
         InstanceCount = 100,
@@ -328,7 +328,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
             },
         }
     },
-    Builder { BuilderName = 'U2 Assist Experimental',
+    Builder { BuilderName = 'S2 Assist Experimental',
         PlatoonTemplate = 'T2EngineerAssist',
         Priority = 1500,
         InstanceCount = 100,
@@ -347,7 +347,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
             },
         }
     },
-    Builder { BuilderName = 'U3 Assist Experimental',
+    Builder { BuilderName = 'S3 Assist Experimental',
         PlatoonTemplate = 'T3EngineerAssistnoSUB',
         Priority = 1500,
         InstanceCount = 100,
@@ -366,7 +366,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
             },
         }
     },
-    Builder { BuilderName = 'U3 Assist Experimental',
+    Builder { BuilderName = 'S3 Assist Experimental2',
         PlatoonTemplate = 'T3EngineerAssistSUB',
         Priority = 1500,
         InstanceCount = 100,
@@ -410,7 +410,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
         }
     },
 
-    Builder { BuilderName = 'Z3 Assist SMD',
+    Builder { BuilderName = 'Z3 Assist SMD2',
         PlatoonTemplate = 'T3EngineerAssistnoSUB',
         Priority = 1500,
         InstanceCount = 30,
@@ -450,7 +450,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
         }
     },
 
-    Builder { BuilderName = 'Z4 Assist SML',
+    Builder { BuilderName = 'Z4 Assist SML2',
         PlatoonTemplate = 'T3EngineerAssistnoSUB',
         Priority = 1500,
         InstanceCount = 30,
@@ -470,7 +470,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
         }
     },
 
-    Builder { BuilderName = 'Z4 Assist SML',
+    Builder { BuilderName = 'Z4 Assist SML3',
         PlatoonTemplate = 'T3EngineerAssistSUB',
         Priority = 1500,
         InstanceCount = 30,
@@ -510,7 +510,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
         }
     },
 
-    Builder { BuilderName = 'Z5 Assist T3-T4 Artillery',
+    Builder { BuilderName = 'Z5 Assist T3-T4 Artillery2',
         PlatoonTemplate = 'T3EngineerAssistnoSUB',
         Priority = 1400,
         InstanceCount = 30,
@@ -529,7 +529,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
         }
     },
 
-    Builder { BuilderName = 'Z5 Assist T3-T4 Artillery',
+    Builder { BuilderName = 'Z5 Assist T3-T4 Artillery3',
         PlatoonTemplate = 'T3EngineerAssistSUB',
         Priority = 1400,
         InstanceCount = 30,
@@ -575,7 +575,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
     -- ============== --
     --    Shields     --
     -- ============== --
-    Builder { BuilderName = 'U1 Assist Shield',
+    Builder { BuilderName = 'S1 Assist Shield',
         PlatoonTemplate = 'EngineerAssist',
         Priority = 310,
         InstanceCount = 10,
@@ -595,7 +595,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
         }
     },
 
-    Builder { BuilderName = 'U1 Assist Shield',
+    Builder { BuilderName = 'S1 Assist Shield2',
         PlatoonTemplate = 'T2EngineerAssist',
         Priority = 350,
         InstanceCount = 10,
@@ -617,14 +617,14 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
     -- =============== --
     --    Finisher     --
     -- =============== --
-    Builder { BuilderName = 'U1 Finisher',
+    Builder { BuilderName = 'S1 Finisher',
         PlatoonTemplate = 'EngineerBuilder',
-        PlatoonAIPlan = 'FinisherAI',
+        PlatoonAIPlan = 'FinisherAISwarm',
         Priority = 750,
         InstanceCount = 10,
         BuilderConditions = {
             -- When do we want to build this ?
-            { UCBC, 'UnfinishedUnitsAtLocation', { 'LocationType' }},
+            { UCBC, 'UnfinishedUnitsAtLocationSwarm', { 'LocationType' }},
             -- Have we the eco to build it ?
             { EBC, 'GreaterThanEconStorageRatio', { 0.25, 0.25}}, -- Ratio from 0 to 1. (1=100%)
             -- Don't build it if...
@@ -634,14 +634,14 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
         },
         BuilderType = 'Any',
     },
-    Builder { BuilderName = 'U2 Finisher',
+    Builder { BuilderName = 'S2 Finisher',
         PlatoonTemplate = 'T2EngineerBuilder',
-        PlatoonAIPlan = 'FinisherAI',
+        PlatoonAIPlan = 'FinisherAISwarm',
         Priority = 760,
         InstanceCount = 10,
         BuilderConditions = {
             -- When do we want to build this ?
-            { UCBC, 'UnfinishedUnitsAtLocation', { 'LocationType' }},
+            { UCBC, 'UnfinishedUnitsAtLocationSwarm', { 'LocationType' }},
             -- Have we the eco to build it ?
             { EBC, 'GreaterThanEconStorageRatio', { 0.25, 0.25}}, -- Ratio from 0 to 1. (1=100%)
             -- Don't build it if...
@@ -654,7 +654,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
     -- =============== --
     --    Repair     --
     -- =============== --
-    Builder { BuilderName = 'U1 Engineer Repair',
+    Builder { BuilderName = 'S1 Engineer Repair',
         PlatoonTemplate = 'EngineerBuilder',
         PlatoonAIPlan = 'RepairAI',
         Priority = 60,
@@ -670,7 +670,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
         },
         BuilderType = 'Any',
     },
-    Builder { BuilderName = 'U2 Engineer Repair',
+    Builder { BuilderName = 'S2 Engineer Repair',
         PlatoonTemplate = 'T2EngineerBuilder',
         PlatoonAIPlan = 'RepairAI',
         Priority = 60,
@@ -693,8 +693,8 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
 -- ============== --
 BuilderGroup { BuilderGroupName = 'Swarm Engineer Reclaim',                                -- BuilderGroupName, initalized from AIBaseTemplates in "\lua\AI\AIBaseTemplates\"
     BuildersType = 'PlatoonFormBuilder',
-    Builder { BuilderName = 'U1 Reclaim RECOVER mass',
-        PlatoonTemplate = 'U1Reclaim',
+    Builder { BuilderName = 'S1 Reclaim RECOVER mass',
+        PlatoonTemplate = 'S1Reclaim',
         Priority = 350,
         InstanceCount = 4,
         BuilderConditions = {
@@ -711,8 +711,8 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Reclaim',                     
         },
         BuilderType = 'Any',
     },
-    Builder { BuilderName = 'U1 Reclaim RECOVER energy',
-        PlatoonTemplate = 'U1Reclaim',
+    Builder { BuilderName = 'S1 Reclaim RECOVER energy',
+        PlatoonTemplate = 'S1Reclaim',
         Priority = 350,
         InstanceCount = 4,
         BuilderConditions = {
@@ -729,8 +729,8 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Reclaim',                     
         },
         BuilderType = 'Any',
     },
-    Builder { BuilderName = 'U1 Reclaim Resource 1',
-        PlatoonTemplate = 'U1Reclaim',
+    Builder { BuilderName = 'S1 Reclaim Resource 1',
+        PlatoonTemplate = 'S1Reclaim',
         Priority = 350,
         InstanceCount = 4,
         BuilderConditions = {
@@ -746,8 +746,8 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Reclaim',                     
         },
         BuilderType = 'Any',
     },
-    Builder { BuilderName = 'U1 Reclaim Resource 2',
-        PlatoonTemplate = 'U1Reclaim',
+    Builder { BuilderName = 'S1 Reclaim Resource 2',
+        PlatoonTemplate = 'S1Reclaim',
         Priority = 350,
         InstanceCount = 4,
         BuilderConditions = {
@@ -755,7 +755,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Reclaim',                     
             { UCBC, 'HaveGreaterThanUnitsWithCategory', { 9, categories.MOBILE * categories.ENGINEER}},
             -- Do we need additional conditions to build it ?
             { EBC, 'LessThanEconStorageRatio', { 0.7, 1}}, -- Ratio from 0 to 1. (1=100%)
-            { UCBC, 'BuildOnlyOnLocation', { 'LocationType', 'MAIN' } },
+            { UCBC, 'BuildOnlyOnLocationSwarm', { 'LocationType', 'MAIN' } },
             -- Have we the eco to build it ?
             -- Don't build it if...
         },
@@ -764,8 +764,8 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Reclaim',                     
         },
         BuilderType = 'Any',
     },
-    Builder { BuilderName = 'U1 Reclaim Resource 3',
-        PlatoonTemplate = 'U1Reclaim',
+    Builder { BuilderName = 'S1 Reclaim Resource 3',
+        PlatoonTemplate = 'S1Reclaim',
         Priority = 350,
         InstanceCount = 4,
         BuilderConditions = {
@@ -773,7 +773,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Reclaim',                     
             { UCBC, 'HaveGreaterThanUnitsWithCategory', { 0, categories.MOBILE * categories.ENGINEER * categories.TECH2}},
             -- Do we need additional conditions to build it ?
             { EBC, 'LessThanEconStorageRatio', { 0.7, 1}}, -- Ratio from 0 to 1. (1=100%)
-            { UCBC, 'BuildOnlyOnLocation', { 'LocationType', 'MAIN' } },
+            { UCBC, 'BuildOnlyOnLocationSwarm', { 'LocationType', 'MAIN' } },
             -- Have we the eco to build it ?
             -- Don't build it if...
         },
@@ -782,8 +782,8 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Reclaim',                     
         },
         BuilderType = 'Any',
     },
-    Builder { BuilderName = 'U1 Reclaim Resource 4',
-        PlatoonTemplate = 'U1Reclaim',
+    Builder { BuilderName = 'S1 Reclaim Resource 4',
+        PlatoonTemplate = 'S1Reclaim',
         Priority = 350,
         InstanceCount = 6,
         BuilderConditions = {
@@ -791,7 +791,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Reclaim',                     
             { UCBC, 'HaveGreaterThanUnitsWithCategory', { 0, categories.MOBILE * categories.ENGINEER * categories.TECH3}},
             -- Do we need additional conditions to build it ?
             { EBC, 'LessThanEconStorageRatio', { 0.7, 1}}, -- Ratio from 0 to 1. (1=100%)
-            { UCBC, 'BuildOnlyOnLocation', { 'LocationType', 'MAIN' } },
+            { UCBC, 'BuildOnlyOnLocationSwarm', { 'LocationType', 'MAIN' } },
             -- Have we the eco to build it ?
             -- Don't build it if...
         },

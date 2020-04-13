@@ -7,10 +7,10 @@ local MaxCapStructure = 0.12                                                    
 -- ==                                        Radar T1 T3 builder                                             == --
 -- ===================================================-======================================================== --
 BuilderGroup {
-    BuilderGroupName = 'U1 Land Radar Builders',                               -- BuilderGroupName, initalized from AIBaseTemplates in "\lua\AI\AIBaseTemplates\"
+    BuilderGroupName = 'S1 Land Radar Builders',                               -- BuilderGroupName, initalized from AIBaseTemplates in "\lua\AI\AIBaseTemplates\"
     BuildersType = 'EngineerBuilder',
     Builder {
-        BuilderName = 'U1 Radar',
+        BuilderName = 'S1 Radar',
         PlatoonTemplate = 'EngineerBuilder',
         Priority = 600,
         BuilderConditions = {
@@ -36,7 +36,7 @@ BuilderGroup {
         }
     },
     Builder {
-        BuilderName = 'U3 Radar',
+        BuilderName = 'S3 Radar',
         PlatoonTemplate = 'T3EngineerBuildernoSUB',
         Priority = 1000,
         BuilderConditions = {
@@ -65,7 +65,7 @@ BuilderGroup {
         }
     },
     Builder {
-        BuilderName = 'U1 Reclaim T1+T2 Radar',
+        BuilderName = 'S1 Reclaim T1+T2 Radar',
         PlatoonTemplate = 'EngineerBuilder',
         PlatoonAIPlan = 'ReclaimStructuresAI',
         Priority = 790,
@@ -90,10 +90,10 @@ BuilderGroup {
 -- ==                                    Radar T1 Upgrade Land+Air                                           == --
 -- ===================================================-======================================================== --
 BuilderGroup {
-    BuilderGroupName = 'U1 Land Radar Upgrader',                               -- BuilderGroupName, initalized from AIBaseTemplates in "\lua\AI\AIBaseTemplates\"
+    BuilderGroupName = 'S1 Land Radar Upgrader',                               -- BuilderGroupName, initalized from AIBaseTemplates in "\lua\AI\AIBaseTemplates\"
     BuildersType = 'PlatoonFormBuilder',
     Builder {
-        BuilderName = 'U1 Radar Upgrade',
+        BuilderName = 'S1 Radar Upgrade',
         PlatoonTemplate = 'T1RadarUpgrade',
         Priority = 10000,
         BuilderConditions = {
@@ -103,13 +103,13 @@ BuilderGroup {
             -- Have we the eco to build it ?
             { EBC, 'GreaterThanEconTrend', { 0.0, 0.0 } }, -- relative income
             -- Don't build it if...
-            { UCBC, 'HaveLessThanUnitsInCategoryBeingUpgrade', { 1, categories.RADAR * categories.TECH1 }},
+            { UCBC, 'HaveLessThanUnitsInCategoryBeingUpgradeSwarm', { 1, categories.RADAR * categories.TECH1 }},
             -- Respect UnitCap
         },
         BuilderType = 'Any',
     },
     Builder {
-        BuilderName = 'U2 Radar Upgrade',
+        BuilderName = 'S2 Radar Upgrade',
         PlatoonTemplate = 'T2RadarUpgrade',
         Priority = 1000,
         BuilderConditions = {
@@ -120,7 +120,7 @@ BuilderGroup {
             -- Have we the eco to build it ?
             { EBC, 'GreaterThanEconTrend', { 0.0, 0.0 } }, -- relative income
             -- Don't build it if...
-            { UCBC, 'HaveLessThanUnitsInCategoryBeingUpgrade', { 1, categories.RADAR * categories.TECH2 }},
+            { UCBC, 'HaveLessThanUnitsInCategoryBeingUpgradeSwarm', { 1, categories.RADAR * categories.TECH2 }},
             -- Respect UnitCap
         },
         BuilderType = 'Any',
@@ -134,7 +134,7 @@ BuilderGroup {
     BuilderGroupName = 'AeonOptics',
     BuildersType = 'EngineerBuilder',
     Builder {
-        BuilderName = 'U3 Optics Construction Aeon',
+        BuilderName = 'S3 Optics Construction Aeon',
         PlatoonTemplate = 'AeonT3EngineerBuilder',
         Priority = 750,
         BuilderConditions = {
@@ -142,7 +142,7 @@ BuilderGroup {
             { EBC, 'GreaterThanEconIncome', { 12, 1500}},
             { EBC, 'GreaterThanEconTrend', { 0.0, 0.0 } }, -- relative income
             { EBC, 'GreaterThanEconStorageRatio', { 0.95, 1.00 } },             -- Ratio from 0 to 1. (1=100%)
-            { UCBC, 'HaveUnitRatioVersusCap', { MaxCapStructure , '<', categories.STRUCTURE - categories.MASSEXTRACTION - categories.DEFENSE - categories.FACTORY } },
+            { UCBC, 'HaveUnitRatioVersusCapSwarm', { MaxCapStructure , '<', categories.STRUCTURE - categories.MASSEXTRACTION - categories.DEFENSE - categories.FACTORY } },
         },
         BuilderType = 'Any',
         BuilderData = {
@@ -163,7 +163,7 @@ BuilderGroup {
     BuilderGroupName = 'CybranOptics',
     BuildersType = 'EngineerBuilder',
     Builder {
-        BuilderName = 'U3 Optics Construction Cybran',
+        BuilderName = 'S3 Optics Construction Cybran',
         PlatoonTemplate = 'CybranT3EngineerBuilder',
         Priority = 750,
         BuilderConditions = {
@@ -171,7 +171,7 @@ BuilderGroup {
             { EBC, 'GreaterThanEconIncome', { 12, 1500}},
             { EBC, 'GreaterThanEconStorageRatio', { 0.95, 1.00 } },             -- Ratio from 0 to 1. (1=100%)
             { EBC, 'GreaterThanEconTrend', { 0.0, 0.0 } }, -- relative income
-            { UCBC, 'HaveUnitRatioVersusCap', { MaxCapStructure , '<', categories.STRUCTURE - categories.MASSEXTRACTION - categories.DEFENSE - categories.FACTORY } },
+            { UCBC, 'HaveUnitRatioVersusCapSwarm', { MaxCapStructure , '<', categories.STRUCTURE - categories.MASSEXTRACTION - categories.DEFENSE - categories.FACTORY } },
         },
         BuilderType = 'Any',
         BuilderData = {

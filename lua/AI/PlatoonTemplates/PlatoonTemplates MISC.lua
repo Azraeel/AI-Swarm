@@ -1,7 +1,7 @@
 
 PlatoonTemplate {
     Name = 'AddToMassExtractorUpgradePlatoon',
-    Plan = 'PlatoonMerger',
+    Plan = 'SwarmPlatoonMerger',
     GlobalSquads = {
         { categories.MASSEXTRACTION * (categories.TECH1 + categories.TECH2 + categories.TECH3) , 1, 300, 'support', 'none' }
     },
@@ -9,7 +9,7 @@ PlatoonTemplate {
 
 PlatoonTemplate {
     Name = 'AddToNukePlatoon',
-    Plan = 'PlatoonMerger',
+    Plan = 'SwarmPlatoonMerger',
     GlobalSquads = {
         { categories.STRUCTURE * categories.NUKE * (categories.TECH2 + categories.TECH3 + categories.EXPERIMENTAL) , 1, 300, 'support', 'none' }
     },
@@ -17,7 +17,7 @@ PlatoonTemplate {
 
 PlatoonTemplate {
     Name = 'AddToAntiNukePlatoon',
-    Plan = 'PlatoonMerger',
+    Plan = 'SwarmPlatoonMerger',
     GlobalSquads = {
         { categories.STRUCTURE * categories.DEFENSE * categories.ANTIMISSILE * categories.TECH3 , 1, 300, 'support', 'none' }
     },
@@ -25,39 +25,39 @@ PlatoonTemplate {
 
 PlatoonTemplate {
     Name = 'AddToArtilleryPlatoon',
-    Plan = 'PlatoonMerger',
+    Plan = 'SwarmPlatoonMerger',
     GlobalSquads = {
         { (categories.STRUCTURE * categories.ARTILLERY * ( categories.TECH3 + categories.EXPERIMENTAL )) + categories.SATELLITE , 1, 300, 'support', 'none' }
     },
 }
 
 PlatoonTemplate {
-    Name = 'U1EngineerTransfer',
-    Plan = 'TransferAIUveso',
+    Name = 'S1EngineerTransfer',
+    Plan = 'TransferAISwarm',
     GlobalSquads = {
         { categories.MOBILE * categories.ENGINEER * categories.TECH1, 1, 1, 'support', 'none' },
     },
 }
 
 PlatoonTemplate {
-    Name = 'U2EngineerTransfer',
-    Plan = 'TransferAIUveso',
+    Name = 'S2EngineerTransfer',
+    Plan = 'TransferAISwarm',
     GlobalSquads = {
         { categories.MOBILE * categories.ENGINEER * categories.TECH2, 1, 1, 'support', 'none' },
     },
 }
 
 PlatoonTemplate {
-    Name = 'U3EngineerTransfer',
-    Plan = 'TransferAIUveso',
+    Name = 'S3EngineerTransfer',
+    Plan = 'TransferAISwarm',
     GlobalSquads = {
         { categories.MOBILE * categories.ENGINEER * categories.TECH3, 1, 1, 'support', 'none' },
     },
 }
 
 PlatoonTemplate {
-    Name = 'U1Reclaim',
-    Plan = 'ReclaimAIUveso',
+    Name = 'S1Reclaim',
+    Plan = 'ReclaimAISwarm',
     GlobalSquads = {
         { categories.ENGINEER * categories.TECH1, 1, 1, "support", "None" }
     },

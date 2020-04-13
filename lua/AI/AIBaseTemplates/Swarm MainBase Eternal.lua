@@ -6,7 +6,7 @@ BaseBuilderTemplate {
         -- ==== ACU ==== --
         -----------------------------------------------------------------------------
         -- Build Main Base (only once). Land/Air factory and basic Energy
-        'UC ACU Attack Former',
+        'SC ACU Attack Former',
         
         -----------------------------------------------------------------------------
         -- ==== Expansion Builders ==== --
@@ -32,12 +32,12 @@ BaseBuilderTemplate {
         'Swarm Engineering Support Builder',
 
         -- Build MassExtractors / Creators
-        'U1 MassBuilders',
-        'U123 ExtractorUpgrades',
-        'U1 MassStorage Builder',
+        'S1 MassBuilders',
+        'S123 ExtractorUpgrades',
+        'S1 MassStorage Builder',
 
         -- Build Power Tech 1,2,3
-        'U123 Energy Builders',
+        'S123 Energy Builders',
 
         -- Build Land/Air Factories
         'Swarm ACU Initial Opener',
@@ -76,7 +76,7 @@ BaseBuilderTemplate {
         -----------------------------------------------------------------------------
         'Swarm Land Experimental Builders',
         'Swarm Air Experimental Builders',
-        'U4 Economic Experimental Builders',
+        'S4 Economic Experimental Builders',
         
         -----------------------------------------------------------------------------
         -- ==== EXPERIMENTALS FORMER ==== --
@@ -124,8 +124,8 @@ BaseBuilderTemplate {
         -----------------------------------------------------------------------------
         -- ==== Intel/CounterIntel BUILDER ==== --
         -----------------------------------------------------------------------------
-        'U1 Land Radar Builders',
-        'U1 Land Radar Upgrader',
+        'S1 Land Radar Builders',
+        'S1 Land Radar Upgrader',
 
         'CounterIntelBuilders',
 
@@ -133,7 +133,7 @@ BaseBuilderTemplate {
         'CybranOptics',
 
     },
-    -- Not used by Uveso's AI. We always need intel in case the commander is dead.
+    -- Not used by Swarm AI. We always need intel in case the commander is dead.
     NonCheatBuilders = {
 
     },
