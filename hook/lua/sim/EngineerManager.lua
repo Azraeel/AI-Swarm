@@ -1,6 +1,6 @@
 
-TheOldEngineerManager = EngineerManager
-EngineerManager = Class(TheOldEngineerManager) {
+SwarmEngineerManager = EngineerManager
+EngineerManager = Class(SwarmEngineerManager) {
 
 -- For AI Patch V8 self:ForkEngineerTask(unit)
     AddUnit = function(self, unit, dontAssign)
@@ -69,12 +69,12 @@ EngineerManager = Class(TheOldEngineerManager) {
         end
     end,
 -- For AI Patch V8 self:ForkEngineerTask(unit)
-    TaskFinished = function(self, unit)
+    TaskFinished = function(manager, unit)
         --LOG('+ TaskFinished')
-        if VDist3(self.Location, unit:GetPosition()) > self.Radius and not EntityCategoryContains(categories.COMMAND, unit) then
-            self:ReassignUnit(unit)
+        if VDist3(manager.Location, unit:GetPosition()) > manager.Radius and not EntityCategoryContains(categories.COMMAND, unit) then
+            manager:ReassignUnit(unit)
         else
-            self:ForkEngineerTask(unit)
+            manager:ForkEngineerTask(unit)
         end
     end,
 -- For AI Patch V8 KillThread
@@ -198,7 +198,7 @@ EngineerManager = Class(TheOldEngineerManager) {
     LowMass = function(self)
         -- Only use this with AI-Swarm
         if not self.Brain.Swarm then
-            return TheOldEngineerManager.LowMass(self)
+            return SwarmEngineerManager.LowMass(self)
         end
     end,
 
@@ -206,7 +206,7 @@ EngineerManager = Class(TheOldEngineerManager) {
     LowEnergy = function(self)
         -- Only use this with AI-Swarm
         if not self.Brain.Swarm then
-            return TheOldEngineerManager.LowEnergy(self)
+            return SwarmEngineerManager.LowEnergy(self)
         end
     end,
 
