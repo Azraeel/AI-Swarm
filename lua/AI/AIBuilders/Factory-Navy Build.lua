@@ -43,16 +43,15 @@ BuilderGroup {
         BuilderName = 'Swarm Naval Factory',
         PlatoonTemplate = 'EngineerBuilder',
         Priority = 600,
+        InstanceCount = 2,
         DelayEqualBuildPlattons = {'Factories', 3},
         BuilderConditions = {
             -- When do we want to build this ?
-            { EBC, 'GreaterThanEconStorageRatio', { 0.25, 0.40}},
+            { EBC, 'GreaterThanEconStorageRatio', { 0.15, 0.35}},
 
             { UCBC, 'CheckBuildPlattonDelay', { 'Factories' }},
 
-            { UCBC, 'HaveLessThanUnitsWithCategory', { 17, categories.STRUCTURE * categories.FACTORY * categories.NAVAL * (categories.TECH1 + categories.TECH2 + categories.TECH3) }},
-
-            { EBC, 'MassToFactoryRatioBaseCheck', { 'LocationType' } },
+            { UCBC, 'HaveLessThanUnitsWithCategory', { 25, categories.STRUCTURE * categories.FACTORY * categories.NAVAL * (categories.TECH1 + categories.TECH2 + categories.TECH3) }},
         },
         BuilderType = 'Any',
         BuilderData = {

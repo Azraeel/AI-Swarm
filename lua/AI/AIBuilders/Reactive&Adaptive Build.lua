@@ -137,26 +137,20 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders - Water Map',            
 BuilderGroup { BuilderGroupName = 'Swarm Factory Builder - Water Map',
     BuildersType = 'EngineerBuilder',
     Builder {
-        BuilderName = 'Swarm Commander Factory Builder Land - Water Map',
+        BuilderName = 'Swarm Commander Factory Builder Land - Watermap',
         PlatoonTemplate = 'CommanderBuilder',
-        Priority = 590,
-        DelayEqualBuildPlattons = {'Factories', 3},
+        Priority = 600,
         BuilderConditions = {
-            { UCBC, 'CheckBuildPlattonDelay', { 'Factories' }},
-
-            { EBC, 'GreaterThanEconStorageRatio', { 0.15, 0.30}}, 
+            { EBC, 'GreaterThanEconStorageRatio', { 0.20, 0.30}}, 
 
             { MIBC, 'CanPathToCurrentEnemySwarm', { false } },
 
-            { EBC, 'MassToFactoryRatioBaseCheck', { 'LocationType' } },
-
-            { UCBC, 'HaveLessThanUnitsWithCategory', { 1, categories.STRUCTURE * categories.FACTORY * categories.LAND * (categories.TECH1 + categories.TECH2 + categories.TECH3) }},
+            { UCBC, 'HaveLessThanUnitsWithCategory', { 2, categories.STRUCTURE * categories.FACTORY * categories.LAND * (categories.TECH1 + categories.TECH2 + categories.TECH3) }},
         },
         BuilderType = 'Any',
         BuilderData = {
             Construction = {
             	DesiresAssist = true,
-            	AdjacencyCategory = categories.MASSEXTRACTION * (categories.TECH3 + categories.TECH2 + categories.TECH1),
                 Location = 'LocationType',
                 BuildStructures = {
                    'T1LandFactory',
@@ -166,26 +160,20 @@ BuilderGroup { BuilderGroupName = 'Swarm Factory Builder - Water Map',
     },
 
     Builder {
-        BuilderName = 'Swarm Commander Factory Builder Air - Water Map',
+        BuilderName = 'Swarm Commander Factory Builder Air - Watermap',
         PlatoonTemplate = 'CommanderBuilder',
-        Priority = 600,
-        DelayEqualBuildPlattons = {'Factories', 3},
+        Priority = 575,
         BuilderConditions = {
-            { UCBC, 'CheckBuildPlattonDelay', { 'Factories' }},
-
             { EBC, 'GreaterThanEconStorageRatio', { 0.15, 0.40}}, 
 
             { MIBC, 'CanPathToCurrentEnemySwarm', { false } },
 
-            { EBC, 'MassToFactoryRatioBaseCheck', { 'LocationType' } },
-
-            { UCBC, 'HaveLessThanUnitsWithCategory', { 2, categories.STRUCTURE * categories.AIR * categories.FACTORY * (categories.TECH1 + categories.TECH2 + categories.TECH3)  }},
+            { UCBC, 'HaveLessThanUnitsWithCategory', { 1, categories.STRUCTURE * categories.AIR * categories.FACTORY * (categories.TECH1 + categories.TECH2 + categories.TECH3)  }},
         },
         BuilderType = 'Any',
         BuilderData = {
             Construction = {
             	DesiresAssist = true,
-                AdjacencyCategory = categories.MASSEXTRACTION * (categories.TECH3 + categories.TECH2 + categories.TECH1),
                 Location = 'LocationType',
                 BuildStructures = {
                    'T1AirFactory',
@@ -195,26 +183,20 @@ BuilderGroup { BuilderGroupName = 'Swarm Factory Builder - Water Map',
     },
 
     Builder {
-        BuilderName = 'Swarm Factory Builder Land - Water Map',
+        BuilderName = 'Swarm Factory Builder Land - Watermap',
         PlatoonTemplate = 'EngineerBuilder',
-        Priority = 605,
-        DelayEqualBuildPlattons = {'Factories', 3},
+        Priority = 600,
         BuilderConditions = {
-            { UCBC, 'CheckBuildPlattonDelay', { 'Factories' }},
+            { EBC, 'GreaterThanEconStorageRatio', { 0.13, 0.30}},
 
-            { EBC, 'GreaterThanEconStorageRatio', { 0.25, 0.40}}, 
+            { MIBC, 'CanPathToCurrentEnemySwarm', { false } }, 
 
-            { MIBC, 'CanPathToCurrentEnemySwarm', { false } },
-
-            { EBC, 'MassToFactoryRatioBaseCheck', { 'LocationType' } },
-
-            { UCBC, 'HaveLessThanUnitsWithCategory', { 3, categories.STRUCTURE * categories.FACTORY * categories.LAND * (categories.TECH1 + categories.TECH2 + categories.TECH3) }},
+            { UCBC, 'HaveLessThanUnitsWithCategory', { 2, categories.STRUCTURE * categories.FACTORY * categories.LAND * (categories.TECH1 + categories.TECH2 + categories.TECH3) }},
         },
         BuilderType = 'Any',
         BuilderData = {
             Construction = {
             	DesiresAssist = true,
-            	AdjacencyCategory = categories.MASSEXTRACTION * (categories.TECH3 + categories.TECH2 + categories.TECH1),
                 Location = 'LocationType',
                 BuildStructures = {
                    'T1LandFactory',
@@ -224,18 +206,60 @@ BuilderGroup { BuilderGroupName = 'Swarm Factory Builder - Water Map',
     },
 
     Builder {
-        BuilderName = 'Swarm Factory Builder Air - Water Map',
-        PlatoonTemplate = 'EngineerBuilder',
-        Priority = 610,
-        DelayEqualBuildPlattons = {'Factories', 3},
+        BuilderName = 'Swarm Factory Builder Land - Watermap - T2',
+        PlatoonTemplate = 'T2EngineerBuilder',
+        Priority = 605,
         BuilderConditions = {
-            { UCBC, 'CheckBuildPlattonDelay', { 'Factories' }},
+            { EBC, 'GreaterThanEconStorageRatio', { 0.13, 0.30}},
 
+            { MIBC, 'CanPathToCurrentEnemySwarm', { false } }, 
+
+            { UCBC, 'HaveLessThanUnitsWithCategory', { 6, categories.STRUCTURE * categories.FACTORY * categories.LAND * (categories.TECH1 + categories.TECH2 + categories.TECH3) }},
+        },
+        BuilderType = 'Any',
+        BuilderData = {
+            Construction = {
+            	DesiresAssist = true,
+                Location = 'LocationType',
+                BuildStructures = {
+                   'T1LandFactory',
+                },
+            }
+        }
+    },
+
+    Builder {
+        BuilderName = 'Swarm Factory Builder Air - First - Watermap',
+        PlatoonTemplate = 'EngineerBuilder',
+        Priority = 650,
+        BuilderConditions = {
+            { MIBC, 'CanPathToCurrentEnemySwarm', { false } },
+
+            { EBC, 'GreaterThanEconStorageRatio', { 0.20, 0.80}},
+
+            { UCBC, 'HaveLessThanUnitsInCategoryBeingBuilt', { 1, categories.STRUCTURE * categories.FACTORY * categories.AIR * categories.TECH1 }},
+
+            { UCBC, 'HaveLessThanUnitsWithCategory', { 1, categories.STRUCTURE * categories.FACTORY * categories.AIR * (categories.TECH1 + categories.TECH2 + categories.TECH3) }},
+        },
+        BuilderType = 'Any',
+        BuilderData = {
+            Construction = {
+                Location = 'LocationType',
+                BuildStructures = {
+                    'T1AirFactory',
+                },
+            }
+        }
+    },
+
+    Builder {
+        BuilderName = 'Swarm Factory Builder Air - Watermap',
+        PlatoonTemplate = 'EngineerBuilder',
+        Priority = 600,
+        BuilderConditions = {
             { EBC, 'GreaterThanEconStorageRatio', { 0.25, 0.40}},
 
             { MIBC, 'CanPathToCurrentEnemySwarm', { false } },
-
-            { EBC, 'MassToFactoryRatioBaseCheck', { 'LocationType' } },
 
             { UCBC, 'HaveLessThanUnitsInCategoryBeingBuilt', { 1, categories.STRUCTURE * categories.FACTORY * categories.AIR * categories.TECH1 }},
 
@@ -245,7 +269,30 @@ BuilderGroup { BuilderGroupName = 'Swarm Factory Builder - Water Map',
         BuilderData = {
             Construction = {
                 Location = 'LocationType',
-                AdjacencyCategory = categories.ENERGYPRODUCTION * (categories.TECH3 + categories.TECH2 + categories.TECH1),
+                BuildStructures = {
+                    'T1AirFactory',
+                },
+            }
+        }
+    },
+
+    Builder {
+        BuilderName = 'Swarm Factory Builder Air - Watermap - T2',
+        PlatoonTemplate = 'T2EngineerBuilder',
+        Priority = 600,
+        BuilderConditions = {
+            { EBC, 'GreaterThanEconStorageRatio', { 0.25, 0.40}},
+
+            { MIBC, 'CanPathToCurrentEnemySwarm', { false } },
+
+            { UCBC, 'HaveLessThanUnitsInCategoryBeingBuilt', { 1, categories.STRUCTURE * categories.FACTORY * categories.AIR * categories.TECH1 }},
+
+            { UCBC, 'HaveLessThanUnitsWithCategory', { 9, categories.STRUCTURE * categories.FACTORY * categories.AIR * (categories.TECH1 + categories.TECH2 + categories.TECH3) }},
+        },
+        BuilderType = 'Any',
+        BuilderData = {
+            Construction = {
+                Location = 'LocationType',
                 BuildStructures = {
                     'T1AirFactory',
                 },

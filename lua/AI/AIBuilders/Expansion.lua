@@ -164,7 +164,7 @@ BuilderGroup {
             { UCBC, 'NavalAreaNeedsEngineer', { 'LocationType', 750, -1000, 100, 1, 'AntiSurface' } },
             -- Have we the eco to build it ?
             { EBC, 'GreaterThanEconIncome',  { 1.0, 6.0}},
-            { EBC, 'GreaterThanEconStorageRatio', { 0.30, 0.70 } },
+            { EBC, 'GreaterThanEconStorageRatio', { 0.25, 0.50 } },
             -- Don't build it if...
             -- Respect UnitCap
         },

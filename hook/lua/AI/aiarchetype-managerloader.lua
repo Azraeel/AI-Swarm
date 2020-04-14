@@ -519,19 +519,19 @@ function EcoManagerThread(aiBrain)
             continue -- while true do
         end
 
-        if aiBrain:GetEconomyStoredRatio('MASS') < 0.01 and not aiBrain.HasParagon then
+        if aiBrain:GetEconomyStoredRatio('MASS') < 0.0 and not aiBrain.HasParagon then
             -- Emergency Low Mass
-            if aiBrain:GetEconomyStoredRatio('MASS') < 0.01 then
+            if aiBrain:GetEconomyStoredRatio('MASS') < 0.0 then
                 -- Disable AntiNuke
                 if DisableUnits(aiBrain, categories.STRUCTURE * categories.ANTIMISSILE * categories.SILO * categories.TECH3, 'AntiNuke') then bussy = true
                 end
-            elseif aiBrain:GetEconomyStoredRatio('MASS') < 0.50 then
+            elseif aiBrain:GetEconomyStoredRatio('MASS') < 0.01 then
                 -- Disable Nuke
                 if DisableUnits(aiBrain, categories.STRUCTURE * categories.NUKE * (categories.TECH3 + categories.EXPERIMENTAL), 'Nuke') then bussy = true
                 end
             end
-        elseif aiBrain:GetEconomyStoredRatio('ENERGY') > 0.95 then
-            if aiBrain:GetEconomyStoredRatio('MASS') > 0.50 or aiBrain.HasParagon then
+        elseif aiBrain:GetEconomyStoredRatio('ENERGY') > 0.50 then
+            if aiBrain:GetEconomyStoredRatio('MASS') > 0.01 or aiBrain.HasParagon then
                 -- Enable NormalShields
                 if EnableUnits(aiBrain, categories.STRUCTURE * categories.SHIELD - categories.EXPERIMENTAL, 'NormalShields') then bussy = true
                 -- Enable ExperimentalShields

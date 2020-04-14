@@ -250,7 +250,7 @@ BuilderGroup {
         InstanceCount = 1,
         FormRadius = 10000,
         BuilderConditions = {
-        	{ UCBC, 'GreaterThanGameTimeSeconds', { 360 } },
+        	{ MIBC, 'GreaterThanGameTime', { 360 } },
             -- When do we want to build this ?
             { UCBC, 'HaveGreaterThanArmyPoolWithCategorySwarm', { 0, categories.MASSEXTRACTION} },
             -- Do we need additional conditions to build it ?
@@ -270,7 +270,7 @@ BuilderGroup {
         InstanceCount = 1,
         FormRadius = 10000,
         BuilderConditions = {
-        	{ UCBC, 'GreaterThanGameTimeSeconds', { 360 } },
+        	{ MIBC, 'GreaterThanGameTime', { 360 } },
             -- When do we want to build this ?
             { UCBC, 'HaveGreaterThanArmyPoolWithCategorySwarm', { 0, categories.MASSEXTRACTION} },
             -- Do we need additional conditions to build it ?
@@ -290,7 +290,7 @@ BuilderGroup {
         InstanceCount = 1,
         FormRadius = 10000,
         BuilderConditions = {
-        	{ UCBC, 'GreaterThanGameTimeSeconds', { 360 } },
+        	{ MIBC, 'GreaterThanGameTime', { 360 } },
             -- When do we want to build this ?
             { UCBC, 'HaveGreaterThanArmyPoolWithCategorySwarm', { 0, categories.MASSEXTRACTION} },
             -- Do we need additional conditions to build it ?
@@ -314,7 +314,7 @@ BuilderGroup {
         InstanceCount = 1,
         FormRadius = 10000,
         BuilderConditions = {
-        	{ UCBC, 'GreaterThanGameTimeSeconds', { 360 } },
+        	{ MIBC, 'GreaterThanGameTime', { 360 } },
             -- When do we want to build this ?
             { UCBC, 'HaveGreaterThanArmyPoolWithCategorySwarm', { 0, categories.MASSEXTRACTION} },
             -- Do we need additional conditions to build it ?
@@ -334,7 +334,7 @@ BuilderGroup {
         InstanceCount = 1,
         FormRadius = 10000,
         BuilderConditions = {
-        	{ UCBC, 'GreaterThanGameTimeSeconds', { 360 } },
+        	{ MIBC, 'GreaterThanGameTime', { 360 } },
             -- When do we want to build this ?
             { UCBC, 'HaveGreaterThanArmyPoolWithCategorySwarm', { 0, categories.MASSEXTRACTION} },
             -- Do we need additional conditions to build it ?

@@ -238,6 +238,42 @@ BuilderGroup {
             }
         }
     },
+
+    Builder {
+        BuilderName = 'S3 Power minimum - 2',
+        PlatoonTemplate = 'T3EngineerBuildernoSUB',
+        Priority = 2500,
+        DelayEqualBuildPlattons = {'Energy', 10},
+        InstanceCount = 1,
+        BuilderConditions = {
+        	{ EBC, 'GreaterThanEconStorageRatio', { 0.10, 0.30 } }, 
+
+            { UCBC, 'HaveLessThanUnitsWithCategory', { 2, categories.ENERGYPRODUCTION * categories.TECH3 } },
+
+            { UCBC, 'CheckBuildPlattonDelay', { 'Energy' }},
+
+            { UCBC, 'HaveLessThanUnitsInCategoryBeingBuilt', { 1, categories.STRUCTURE * categories.ENERGYPRODUCTION * categories.TECH3 }},
+
+            { UCBC, 'HaveGreaterThanUnitsWithCategory', { 0, categories.ENERGYPRODUCTION * categories.TECH3 } },
+        },
+        BuilderType = 'Any',
+        BuilderData = {
+            NumAssistees = 40,
+            Construction = {
+                DesiresAssist = true,
+                BuildClose = false,
+                AdjacencyCategory = (categories.STRUCTURE * categories.SHIELD) + (categories.FACTORY * (categories.TECH3 + categories.TECH2 + categories.TECH1)),
+                AvoidCategory = categories.ENERGYPRODUCTION * categories.TECH3,
+                maxUnits = 1,
+                maxRadius = 15,
+                LocationType = 'LocationType',
+                BuildStructures = {
+                    'T3EnergyProduction',
+                },
+            }
+        }
+    },
+
     Builder {
         BuilderName = 'S3 Power0',
         PlatoonTemplate = 'T3EngineerBuildernoSUB',
