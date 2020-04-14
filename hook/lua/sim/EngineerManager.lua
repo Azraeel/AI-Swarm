@@ -1,7 +1,6 @@
--- Don't disable units on low energy/mass for AI-Uveso
 
-TheOldEngineerManager = EngineerManager
-EngineerManager = Class(TheOldEngineerManager) {
+SwarmEngineerManager = EngineerManager
+EngineerManager = Class(SwarmEngineerManager) {
 
 -- For AI Patch V8 self:ForkEngineerTask(unit)
     AddUnit = function(self, unit, dontAssign)
@@ -70,12 +69,12 @@ EngineerManager = Class(TheOldEngineerManager) {
         end
     end,
 -- For AI Patch V8 self:ForkEngineerTask(unit)
-    TaskFinished = function(self, unit)
+    TaskFinished = function(manager, unit)
         --LOG('+ TaskFinished')
-        if VDist3(self.Location, unit:GetPosition()) > self.Radius and not EntityCategoryContains(categories.COMMAND, unit) then
-            self:ReassignUnit(unit)
+        if VDist3(manager.Location, unit:GetPosition()) > manager.Radius and not EntityCategoryContains(categories.COMMAND, unit) then
+            manager:ReassignUnit(unit)
         else
-            self:ForkEngineerTask(unit)
+            manager:ForkEngineerTask(unit)
         end
     end,
 -- For AI Patch V8 KillThread
@@ -195,19 +194,19 @@ EngineerManager = Class(TheOldEngineerManager) {
         self:DelayAssign(unit, 50)
     end,
 
-    -- Hook For AI-Uveso. Don't need this, we have our own ecomanagement
+    -- Hook For AI-Swarm. Don't need this, we have our own ecomanagement
     LowMass = function(self)
-        -- Only use this with AI-Uveso
-        if not self.Brain.Uveso then
-            return TheOldEngineerManager.LowMass(self)
+        -- Only use this with AI-Swarm
+        if not self.Brain.Swarm then
+            return SwarmEngineerManager.LowMass(self)
         end
     end,
 
-    -- Hook For AI-Uveso. Don't need this, we have our own ecomanagement
+    -- Hook For AI-Swarm. Don't need this, we have our own ecomanagement
     LowEnergy = function(self)
-        -- Only use this with AI-Uveso
-        if not self.Brain.Uveso then
-            return TheOldEngineerManager.LowEnergy(self)
+        -- Only use this with AI-Swarm
+        if not self.Brain.Swarm then
+            return SwarmEngineerManager.LowEnergy(self)
         end
     end,
 

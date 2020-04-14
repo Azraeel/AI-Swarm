@@ -4,23 +4,23 @@ if not categories.FLOATING then categories.FLOATING = categories.HOVER end
 -- ==== Global Form platoons ==== --
 
 PlatoonTemplate {
-    Name = 'U123 Hover 1 10',
-    Plan = 'InterceptorAIUveso',
+    Name = 'S123 Hover 1 10',
+    Plan = 'InterceptorAISwarm',
     GlobalSquads = {
         { categories.MOBILE * categories.HOVER * categories.FLOATING - categories.EXPERIMENTAL - categories.ENGINEER - categories.SCOUT - categories.COMMAND - categories.SUBCOMMANDER, 1, 100, 'Attack', 'none' }
     }
 }
 
 PlatoonTemplate {
-    Name = 'U123 Amphibious 1 10',
-    Plan = 'InterceptorAIUveso',
+    Name = 'S123 Amphibious 1 10',
+    Plan = 'InterceptorAISwarm',
     GlobalSquads = {
         { categories.MOBILE * categories.AMPHIBIOUS - categories.EXPERIMENTAL - categories.ENGINEER - categories.SCOUT - categories.COMMAND - categories.SUBCOMMANDER, 1, 100, 'Attack', 'none' }
     }
 }
 
 PlatoonTemplate {
-    Name = 'U1 LandSquads Amphibious',
+    Name = 'S1 LandSquads Amphibious',
     FactionSquads = {
         UEF = {
 --            { 'abc0000', 1, 1, 'attack', 'none' }
@@ -41,7 +41,7 @@ PlatoonTemplate {
 }
 
 PlatoonTemplate {
-    Name = 'U2 LandSquads Amphibious',
+    Name = 'S2 LandSquads Amphibious',
     FactionSquads = {
         UEF = {
             { 'uel0203', 1, 1, 'attack', 'none' }
@@ -63,7 +63,7 @@ PlatoonTemplate {
 }
 
 PlatoonTemplate {
-    Name = 'U3 LandSquads Amphibious',
+    Name = 'S3 LandSquads Amphibious',
     FactionSquads = {
         UEF = {
             { 'xel0305', 1, 1, 'attack', 'none' }

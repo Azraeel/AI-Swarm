@@ -7,7 +7,7 @@ local BasePanicZone, BaseMilitaryZone, BaseEnemyZone = import('/mods/AI-Swarm/lu
 BuilderGroup { BuilderGroupName = 'Swarm Transports - Water Map',                               -- BuilderGroupName, initalized from AIBaseTemplates in "\lua\AI\AIBaseTemplates\"
     BuildersType = 'FactoryBuilder',
 
-    Builder { BuilderName = 'U1 Air Transport - Water Map',
+    Builder { BuilderName = 'S1 Air Transport - Water Map',
         PlatoonTemplate = 'T1AirTransport',
         Priority = 550, 
         BuilderConditions = {
@@ -19,7 +19,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Transports - Water Map',               
 
             { MIBC, 'ArmyNeedsTransports', {} },
 
-            { MIBC, 'CanPathToCurrentEnemy', { false } },
+            { MIBC, 'CanPathToCurrentEnemySwarm', { false } },
 
             { UCBC, 'LocationFactoriesBuildingLess', { 'LocationType', 1, categories.AIR * categories.TRANSPORTATION} },
 
@@ -29,7 +29,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Transports - Water Map',               
     },
 
 
-    Builder { BuilderName = 'U2 Air Transport - Water Map',
+    Builder { BuilderName = 'S2 Air Transport - Water Map',
         PlatoonTemplate = 'T2AirTransport',
         Priority = 650,
         BuilderConditions = {
@@ -41,7 +41,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Transports - Water Map',               
 
             { MIBC, 'ArmyNeedsTransports', {} },
 
-            { MIBC, 'CanPathToCurrentEnemy', { false } },
+            { MIBC, 'CanPathToCurrentEnemySwarm', { false } },
 
             { UCBC, 'LocationFactoriesBuildingLess', { 'LocationType', 1, categories.AIR * categories.TRANSPORTATION} },
 
@@ -51,7 +51,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Transports - Water Map',               
     },
 
 
-    Builder { BuilderName = 'U3 Air Transport - Water Map',
+    Builder { BuilderName = 'S3 Air Transport - Water Map',
         PlatoonTemplate = 'T3AirTransport',
         Priority = 750,
         BuilderConditions = {
@@ -63,7 +63,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Transports - Water Map',               
 
             { MIBC, 'ArmyNeedsTransports', {} },
 
-            { MIBC, 'CanPathToCurrentEnemy', { false } },
+            { MIBC, 'CanPathToCurrentEnemySwarm', { false } },
 
             { UCBC, 'LocationFactoriesBuildingLess', { 'LocationType', 1, categories.AIR * categories.TRANSPORTATION} },
 
@@ -77,14 +77,14 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders - Water Map',            
     BuildersType = 'FactoryBuilder',
 
     Builder { BuilderName = 'Swarm LandSquads Amphibious 1',
-        PlatoonTemplate = 'U1 LandSquads Amphibious',
+        PlatoonTemplate = 'S1 LandSquads Amphibious',
         Priority = 500,
         BuilderConditions = {
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
 
             { EBC, 'GreaterThanEconIncome', { 0.2, 2 } },
 
-            { MIBC, 'CanPathToCurrentEnemy', { false } },
+            { MIBC, 'CanPathToCurrentEnemySwarm', { false } },
 
             { UCBC, 'PoolLessAtLocation', { 'LocationType', 5, categories.LAND * categories.TECH1 * (categories.DIRECTFIRE + categories.INDIRECTFIRE)}},
 
@@ -97,14 +97,14 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders - Water Map',            
     --    TECH 2    --
     -- ============ --
     Builder { BuilderName = 'Swarm LandSquads Amphibious 2',
-        PlatoonTemplate = 'U2 LandSquads Amphibious',
+        PlatoonTemplate = 'S2 LandSquads Amphibious',
         Priority = 700,
         BuilderConditions = {
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
 
             { EBC, 'GreaterThanEconIncome', { 1, 20 } },
 
-            { MIBC, 'CanPathToCurrentEnemy', { false } },
+            { MIBC, 'CanPathToCurrentEnemySwarm', { false } },
 
             { UCBC, 'PoolLessAtLocation', { 'LocationType', 5, categories.LAND * categories.TECH2 * (categories.DIRECTFIRE + categories.INDIRECTFIRE)}},
 
@@ -117,14 +117,14 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders - Water Map',            
     --    TECH 3    --
     -- ============ --
     Builder { BuilderName = 'Swarm LandSquads Amphibious 3',
-        PlatoonTemplate = 'U3 LandSquads Amphibious',
+        PlatoonTemplate = 'S3 LandSquads Amphibious',
         Priority = 900,
         BuilderConditions = {
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
 
             { EBC, 'GreaterThanEconIncome', { 3.5, 100 } },
 
-            { MIBC, 'CanPathToCurrentEnemy', { false } },
+            { MIBC, 'CanPathToCurrentEnemySwarm', { false } },
 
             { UCBC, 'PoolLessAtLocation', { 'LocationType', 8, categories.LAND * categories.TECH3 * (categories.DIRECTFIRE + categories.INDIRECTFIRE)}},
 
@@ -146,7 +146,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Factory Builder - Water Map',
 
             { EBC, 'GreaterThanEconStorageRatio', { 0.15, 0.30}}, 
 
-            { MIBC, 'CanPathToCurrentEnemy', { false } },
+            { MIBC, 'CanPathToCurrentEnemySwarm', { false } },
 
             { EBC, 'MassToFactoryRatioBaseCheck', { 'LocationType' } },
 
@@ -175,7 +175,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Factory Builder - Water Map',
 
             { EBC, 'GreaterThanEconStorageRatio', { 0.15, 0.40}}, 
 
-            { MIBC, 'CanPathToCurrentEnemy', { false } },
+            { MIBC, 'CanPathToCurrentEnemySwarm', { false } },
 
             { EBC, 'MassToFactoryRatioBaseCheck', { 'LocationType' } },
 
@@ -204,7 +204,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Factory Builder - Water Map',
 
             { EBC, 'GreaterThanEconStorageRatio', { 0.25, 0.40}}, 
 
-            { MIBC, 'CanPathToCurrentEnemy', { false } },
+            { MIBC, 'CanPathToCurrentEnemySwarm', { false } },
 
             { EBC, 'MassToFactoryRatioBaseCheck', { 'LocationType' } },
 
@@ -233,7 +233,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Factory Builder - Water Map',
 
             { EBC, 'GreaterThanEconStorageRatio', { 0.25, 0.40}},
 
-            { MIBC, 'CanPathToCurrentEnemy', { false } },
+            { MIBC, 'CanPathToCurrentEnemySwarm', { false } },
 
             { EBC, 'MassToFactoryRatioBaseCheck', { 'LocationType' } },
 
@@ -258,8 +258,8 @@ BuilderGroup {
     BuilderGroupName = 'Swarm Amphibious Formers',                     -- BuilderGroupName, initalized from AIBaseTemplates in "\lua\AI\AIBaseTemplates\"
     BuildersType = 'PlatoonFormBuilder',                                        -- BuilderTypes are: EngineerBuilder, FactoryBuilder, PlatoonFormBuilder.
     Builder {
-        BuilderName = 'U123 Amphibious PANIC 1 10',                             -- Random Builder Name.
-        PlatoonTemplate = 'U123 Amphibious 1 10',                               -- Template Name. These units will be formed. See: "UvesoPlatoonTemplatesLand.lua"
+        BuilderName = 'S123 Amphibious PANIC 1 10',                             -- Random Builder Name.
+        PlatoonTemplate = 'S123 Amphibious 1 10',                               -- Template Name. These units will be formed. 
         Priority = 100,                                                       -- Priority. Higher priotity will be build more often then lower priotity.
         InstanceCount = 12,                                                      -- Number of plattons that will be formed with this template.
         BuilderData = {
@@ -277,14 +277,14 @@ BuilderGroup {
         },
         BuilderConditions = {                                                   -- platoon will be formed if all conditions are true
             -- When do we want to form this ?
-            { UCBC, 'EnemyUnitsGreaterAtLocationRadius', {  BasePanicZone, 'LocationType', 0, categories.STRUCTURE}}, -- radius, LocationType, unitCount, categoryEnemy
+            { UCBC, 'EnemyUnitsGreaterAtLocationRadiusSwarm', {  BasePanicZone, 'LocationType', 0, categories.STRUCTURE}}, -- radius, LocationType, unitCount, categoryEnemy
         },
         BuilderType = 'Any',                                                    -- Build with "Land" "Air" "Sea" "Gate" or "All" Factories. - "Any" forms a Platoon.
     },
                                        
     Builder {
-        BuilderName = 'U123 Amphibious Military 1 10',                          -- Random Builder Name.
-        PlatoonTemplate = 'U123 Amphibious 1 10',                               -- Template Name. These units will be formed. See: "UvesoPlatoonTemplatesLand.lua"
+        BuilderName = 'S123 Amphibious Military 1 10',                          -- Random Builder Name.
+        PlatoonTemplate = 'S123 Amphibious 1 10',                               -- Template Name. These units will be formed. 
         Priority = 90,                                                          -- Priority. 1000 is normal.
         InstanceCount = 4,                                                      -- Number of plattons that will be formed.
         BuilderData = {
@@ -306,15 +306,15 @@ BuilderGroup {
         },
         BuilderConditions = {                                                   -- platoon will be formed if all conditions are true
             -- When do we want to form this ?
-            { MIBC, 'CanPathToCurrentEnemy', { false } },
-            { UCBC, 'EnemyUnitsGreaterAtLocationRadius', {  BaseMilitaryZone, 'LocationType', 0, categories.STRUCTURE}}, -- radius, LocationType, unitCount, categoryEnemy
+            { MIBC, 'CanPathToCurrentEnemySwarm', { false } },
+            { UCBC, 'EnemyUnitsGreaterAtLocationRadiusSwarm', {  BaseMilitaryZone, 'LocationType', 0, categories.STRUCTURE}}, -- radius, LocationType, unitCount, categoryEnemy
         },
         BuilderType = 'Any',                                                    -- Build with "Land" "Air" "Sea" "Gate" or "All" Factories. - "Any" forms a Platoon.
     },
 
     Builder {
-        BuilderName = 'U123 Amphibious Enemy 1 10',                             -- Random Builder Name.
-        PlatoonTemplate = 'U123 Amphibious 1 10',                               -- Template Name. These units will be formed. See: "UvesoPlatoonTemplatesLand.lua"
+        BuilderName = 'S123 Amphibious Enemy 1 10',                             -- Random Builder Name.
+        PlatoonTemplate = 'S123 Amphibious 1 10',                               -- Template Name. These units will be formed. 
         Priority = 80,                                                        -- Priority. 1000 is normal.
         InstanceCount = 4,                                                      -- Number of plattons that will be formed.
         BuilderData = {
@@ -338,15 +338,15 @@ BuilderGroup {
         },
         BuilderConditions = {                                                   -- platoon will be formed if all conditions are true
             -- When do we want to form this ?
-            { MIBC, 'CanPathToCurrentEnemy', { false } },
-            { UCBC, 'EnemyUnitsGreaterAtLocationRadius', {  BaseEnemyZone, 'LocationType', 0, categories.STRUCTURE}}, -- radius, LocationType, unitCount, categoryEnemy
+            { MIBC, 'CanPathToCurrentEnemySwarm', { false } },
+            { UCBC, 'EnemyUnitsGreaterAtLocationRadiusSwarm', {  BaseEnemyZone, 'LocationType', 0, categories.STRUCTURE}}, -- radius, LocationType, unitCount, categoryEnemy
         },
         BuilderType = 'Any',                                                    -- Build with "Land" "Air" "Sea" "Gate" or "All" Factories. - "Any" forms a Platoon.
     },
 
     Builder {
-        BuilderName = 'U123 Hover PANIC 1 10',                                  -- Random Builder Name.
-        PlatoonTemplate = 'U123 Hover 1 10',                                    -- Template Name. These units will be formed. See: "UvesoPlatoonTemplatesLand.lua"
+        BuilderName = 'S123 Hover PANIC 1 10',                                  -- Random Builder Name.
+        PlatoonTemplate = 'S123 Hover 1 10',                                    -- Template Name. These units will be formed. 
         Priority = 90,                                                          -- Priority. Higher priotity will be build more often then lower priotity.
         InstanceCount = 6,                                                      -- Number of plattons that will be formed with this template.
         BuilderData = {
@@ -364,14 +364,14 @@ BuilderGroup {
         },
         BuilderConditions = {                                                   -- platoon will be formed if all conditions are true
             -- When do we want to form this ?
-            { UCBC, 'EnemyUnitsGreaterAtLocationRadius', {  BasePanicZone, 'LocationType', 0, categories.MOBILE }}, -- radius, LocationType, unitCount, categoryEnemy
+            { UCBC, 'EnemyUnitsGreaterAtLocationRadiusSwarm', {  BasePanicZone, 'LocationType', 0, categories.MOBILE }}, -- radius, LocationType, unitCount, categoryEnemy
         },
         BuilderType = 'Any',                                                    -- Build with "Land" "Air" "Sea" "Gate" or "All" Factories. - "Any" forms a Platoon.
     },
 
     Builder {
-        BuilderName = 'U123 Hover Military 1 100',                              -- Random Builder Name.
-        PlatoonTemplate = 'U123 Hover 1 10',                                    -- Template Name. These units will be formed. See: "UvesoPlatoonTemplatesLand.lua"
+        BuilderName = 'S123 Hover Military 1 100',                              -- Random Builder Name.
+        PlatoonTemplate = 'S123 Hover 1 10',                                    -- Template Name. These units will be formed. 
         Priority = 80,                                                        -- Priority. 1000 is normal.
         InstanceCount = 4,                                                      -- Number of plattons that will be formed.
         BuilderData = {
@@ -393,14 +393,14 @@ BuilderGroup {
         },
         BuilderConditions = {                                                   -- platoon will be formed if all conditions are true
             -- When do we want to form this ?
-            { UCBC, 'EnemyUnitsGreaterAtLocationRadius', {  BaseMilitaryZone, 'LocationType', 0, categories.LAND + categories.NAVAL }}, -- radius, LocationType, unitCount, categoryEnemy
+            { UCBC, 'EnemyUnitsGreaterAtLocationRadiusSwarm', {  BaseMilitaryZone, 'LocationType', 0, categories.LAND + categories.NAVAL }}, -- radius, LocationType, unitCount, categoryEnemy
         },
         BuilderType = 'Any',                                                    -- Build with "Land" "Air" "Sea" "Gate" or "All" Factories. - "Any" forms a Platoon.
     },
 
     Builder {
-        BuilderName = 'U123 Hover Enemy 1 100',                                 -- Random Builder Name.
-        PlatoonTemplate = 'U123 Hover 1 10',                                    -- Template Name. These units will be formed. See: "UvesoPlatoonTemplatesLand.lua"
+        BuilderName = 'S123 Hover Enemy 1 100',                                 -- Random Builder Name.
+        PlatoonTemplate = 'S123 Hover 1 10',                                    -- Template Name. These units will be formed. 
         Priority = 70,                                                        -- Priority. 1000 is normal.
         InstanceCount = 4,                                                      -- Number of plattons that will be formed.
         BuilderData = {
@@ -417,7 +417,7 @@ BuilderGroup {
         },
         BuilderConditions = {                                                   -- platoon will be formed if all conditions are true
             -- When do we want to form this ?
-            { UCBC, 'EnemyUnitsGreaterAtLocationRadius', {  BaseMilitaryZone, 'LocationType', 0, categories.LAND + categories.NAVAL }}, -- radius, LocationType, unitCount, categoryEnemy
+            { UCBC, 'EnemyUnitsGreaterAtLocationRadiusSwarm', {  BaseMilitaryZone, 'LocationType', 0, categories.LAND + categories.NAVAL }}, -- radius, LocationType, unitCount, categoryEnemy
         },
         BuilderType = 'Any',                                                    -- Build with "Land" "Air" "Sea" "Gate" or "All" Factories. - "Any" forms a Platoon.
     },

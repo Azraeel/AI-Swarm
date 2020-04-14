@@ -15,7 +15,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Builders',
     -- ============ --
     --    TECH 1    --
     -- ============ --
-    Builder { BuilderName = 'U1 Engineer builder Cap',
+    Builder { BuilderName = 'S1 Engineer builder Cap',
         PlatoonTemplate = 'T1BuildEngineer',
         Priority = 1005,
         BuilderConditions = {
@@ -30,7 +30,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Builders',
         BuilderType = 'All',
     },
 
-    Builder { BuilderName = 'U1 Engineer builder - Excess Mass',
+    Builder { BuilderName = 'S1 Engineer builder - Excess Mass',
         PlatoonTemplate = 'T1BuildEngineer',
         Priority = 1010,
         BuilderConditions = {
@@ -50,7 +50,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Builders',
     -- ============ --
     --    TECH 2    --
     -- ============ --
-    Builder { BuilderName = 'U2 Engineer builder Cap',
+    Builder { BuilderName = 'S2 Engineer builder Cap',
         PlatoonTemplate = 'T2BuildEngineer',
         Priority = 1015,
         BuilderConditions = {
@@ -63,7 +63,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Builders',
         BuilderType = 'All',
     },
 
-    Builder { BuilderName = 'U2 Engineer builder - Excess Mass',
+    Builder { BuilderName = 'S2 Engineer builder - Excess Mass',
         PlatoonTemplate = 'T2BuildEngineer',
         Priority = 1020,
         BuilderConditions = {
@@ -83,7 +83,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Builders',
     -- ============ --
     --    TECH 3    --
     -- ============ --
-    Builder { BuilderName = 'U3 Engineer builder Cap',
+    Builder { BuilderName = 'S3 Engineer builder Cap',
         PlatoonTemplate = 'T3BuildEngineer',
         Priority = 1025,
         BuilderConditions = {
@@ -96,7 +96,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Builders',
         BuilderType = 'All',
     },
 
-    Builder { BuilderName = 'U3 Engineer builder - Excess Mass',
+    Builder { BuilderName = 'S3 Engineer builder - Excess Mass',
         PlatoonTemplate = 'T3BuildEngineer',
         Priority = 1030,
         BuilderConditions = {
@@ -183,7 +183,7 @@ BuilderGroup {
 
             { EBC, 'GreaterThanEconStorageRatio', { 0.25, 0.99 } }, 
 
-            { UCBC, 'HaveLessThanUnitsInCategoryBeingUpgrade', { 3, categories.ENGINEERSTATION }},
+            { UCBC, 'HaveLessThanUnitsInCategoryBeingUpgradeSwarm', { 3, categories.ENGINEERSTATION }},
         },
         BuilderType = 'Any',
     },
@@ -198,7 +198,7 @@ BuilderGroup {
 
             { EBC, 'GreaterThanEconStorageRatio', { 0.25, 0.99 } },   
 
-            { UCBC, 'HaveLessThanUnitsInCategoryBeingUpgrade', { 3, categories.ENGINEERSTATION }},
+            { UCBC, 'HaveLessThanUnitsInCategoryBeingUpgradeSwarm', { 3, categories.ENGINEERSTATION }},
         },
         BuilderType = 'Any',
     },
@@ -213,7 +213,7 @@ BuilderGroup {
 
             { EBC, 'GreaterThanEconStorageRatio', { 0.30, 0.99 } },        
 
-            { UCBC, 'HaveLessThanUnitsInCategoryBeingUpgrade', { 3, categories.ENGINEERSTATION }},
+            { UCBC, 'HaveLessThanUnitsInCategoryBeingUpgradeSwarm', { 3, categories.ENGINEERSTATION }},
         },
         BuilderType = 'Any',
     },
@@ -225,8 +225,8 @@ BuilderGroup { BuilderGroupName = 'Swarm SACU Builder',
 
 
     Builder {
-        BuilderName = 'U3 SubCommander RAMBO',
-        PlatoonTemplate = 'U3 SACU RAMBO preset 12345',
+        BuilderName = 'S3 SubCommander RAMBO',
+        PlatoonTemplate = 'S3 SACU RAMBO preset 12345',
         Priority = 1017,
         BuilderConditions = { 
             { EBC, 'GreaterThanEconStorageRatio', { 0.30, 0.50}}, 
@@ -238,8 +238,8 @@ BuilderGroup { BuilderGroupName = 'Swarm SACU Builder',
         BuilderType = 'Gate',
     },
     Builder {
-        BuilderName = 'U3 SubCommander ENGINEER',
-        PlatoonTemplate = 'U3 SACU ENGINEER preset 12345',
+        BuilderName = 'S3 SubCommander ENGINEER',
+        PlatoonTemplate = 'S3 SACU ENGINEER preset 12345',
         Priority = 1020,
         BuilderConditions = {
             { EBC, 'GreaterThanEconStorageRatio', { 0.80, 0.85}},
@@ -256,8 +256,8 @@ BuilderGroup { BuilderGroupName = 'Swarm SACU Builder',
     },
 
     Builder {
-        BuilderName = 'U3 SubCommander ENGINEER - Seraphim',
-        PlatoonTemplate = 'U3 SACU ENGINEER preset 12345',
+        BuilderName = 'S3 SubCommander ENGINEER - Seraphim',
+        PlatoonTemplate = 'S3 SACU ENGINEER preset 12345',
         Priority = 1020,
         BuilderConditions = {
         	{ MIBC, 'FactionIndex', { 4 }}, -- 1: UEF, 2: Aeon, 3: Cybran, 4: Seraphim, 5: Nomads
@@ -272,8 +272,8 @@ BuilderGroup { BuilderGroupName = 'Swarm SACU Builder',
     },
      
     Builder {
-        BuilderName = 'U3 SubCommander RAS',
-        PlatoonTemplate = 'U3 SACU RAS preset 123x5',
+        BuilderName = 'S3 SubCommander RAS',
+        PlatoonTemplate = 'S3 SACU RAS preset 123x5',
         Priority = 1020,
         BuilderConditions = {
             { UCBC, 'HaveLessThanUnitsWithCategory', { 50, categories.ENGINEERPRESET + categories.RASPRESET } },
@@ -295,14 +295,14 @@ BuilderGroup { BuilderGroupName = 'Swarm SACU Builder',
     --    Transfer from LocationType to MainBase    --
     -- ============================================ --
 
-    Builder { BuilderName = 'U1 Engi Trans to MainBase',
-        PlatoonTemplate = 'U1EngineerTransfer',
+    Builder { BuilderName = 'S1 Engi Trans to MainBase',
+        PlatoonTemplate = 'S1EngineerTransfer',
         Priority = 650,
         InstanceCount = 3,
         BuilderConditions = {
             { UCBC, 'GreaterThanGameTimeSeconds', { 60 } },
-            { UCBC, 'BuildNotOnLocation', { 'LocationType', 'MAIN' } },
-            { UCBC, 'EngineerManagerUnitsAtLocation', { 'LocationType', '>', 3,  categories.MOBILE * categories.TECH1 } },
+            { UCBC, 'BuildNotOnLocationSwarm', { 'LocationType', 'MAIN' } },
+            { UCBC, 'EngineerManagerUnitsAtLocationSwarm', { 'LocationType', '>', 3,  categories.MOBILE * categories.TECH1 } },
         },
         BuilderData = {
             MoveToLocationType = 'MAIN',
@@ -311,14 +311,14 @@ BuilderGroup { BuilderGroupName = 'Swarm SACU Builder',
     },
 
 
-    Builder { BuilderName = 'U2 Engi Trans to MainBase',
-        PlatoonTemplate = 'U2EngineerTransfer',
+    Builder { BuilderName = 'S2 Engi Trans to MainBase',
+        PlatoonTemplate = 'S2EngineerTransfer',
         Priority = 750,
         InstanceCount = 3,
         BuilderConditions = {
             { UCBC, 'GreaterThanGameTimeSeconds', { 90 } },
-            { UCBC, 'BuildNotOnLocation', { 'LocationType', 'MAIN' } },
-            { UCBC, 'EngineerManagerUnitsAtLocation', { 'LocationType', '>', 3,  categories.MOBILE * categories.TECH2 } },
+            { UCBC, 'BuildNotOnLocationSwarm', { 'LocationType', 'MAIN' } },
+            { UCBC, 'EngineerManagerUnitsAtLocationSwarm', { 'LocationType', '>', 3,  categories.MOBILE * categories.TECH2 } },
         },
         BuilderData = {
             MoveToLocationType = 'MAIN',
@@ -327,14 +327,14 @@ BuilderGroup { BuilderGroupName = 'Swarm SACU Builder',
     },
 
 
-    Builder { BuilderName = 'U3 Engi Trans to MainBase',
-        PlatoonTemplate = 'U3EngineerTransfer',
+    Builder { BuilderName = 'S3 Engi Trans to MainBase',
+        PlatoonTemplate = 'S3EngineerTransfer',
         Priority = 850,
         InstanceCount = 3,
         BuilderConditions = {
             { UCBC, 'GreaterThanGameTimeSeconds', { 120 } },
-            { UCBC, 'BuildNotOnLocation', { 'LocationType', 'MAIN' } },
-            { UCBC, 'EngineerManagerUnitsAtLocation', { 'LocationType', '>', 3,  categories.MOBILE * categories.TECH3 } },
+            { UCBC, 'BuildNotOnLocationSwarm', { 'LocationType', 'MAIN' } },
+            { UCBC, 'EngineerManagerUnitsAtLocationSwarm', { 'LocationType', '>', 3,  categories.MOBILE * categories.TECH3 } },
         },
         BuilderData = {
             MoveToLocationType = 'MAIN',

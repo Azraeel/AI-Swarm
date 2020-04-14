@@ -2,7 +2,7 @@
 -- ==== Global Form platoons ==== --
 PlatoonTemplate {
     Name = 'CDR Attack',
-    Plan = 'ACUAttackAIUveso',
+    Plan = 'ACUAttackAISwarm',
     GlobalSquads = {
         { categories.COMMAND, 1, 1, 'Attack', 'none' }
     }
@@ -10,7 +10,7 @@ PlatoonTemplate {
 
 PlatoonTemplate {
     Name = 'AISwarm LandAttack Intercept',
-    Plan = 'InterceptorAIUveso',
+    Plan = 'InterceptorAISwarm',
     GlobalSquads = {
         { categories.MOBILE * categories.LAND * categories.DIRECTFIRE - categories.ANTIAIR - categories.EXPERIMENTAL - categories.ENGINEER - categories.SCOUT, 1, 8, 'attack', 'none' },
         { categories.MOBILE * categories.LAND * categories.INDIRECTFIRE - categories.ANTIAIR - categories.EXPERIMENTAL - categories.ENGINEER - categories.SCOUT, 0, 3, 'artillery', 'none' },
@@ -19,7 +19,7 @@ PlatoonTemplate {
 
 PlatoonTemplate {
     Name = 'AISwarm LandAttack Micro Small',
-    Plan = 'LandAttackAIUveso',
+    Plan = 'LandAttackAISwarm',
     GlobalSquads = {
         { categories.MOBILE * categories.LAND * categories.DIRECTFIRE - categories.ANTIAIR - categories.EXPERIMENTAL - categories.ENGINEER - categories.SCOUT, 4, 20, 'attack', 'none' },
         { categories.MOBILE * categories.LAND - categories.EXPERIMENTAL - categories.ENGINEER - categories.SCOUT, 1, 4, 'attack', 'none' },
@@ -31,7 +31,7 @@ PlatoonTemplate {
 
 PlatoonTemplate {
     Name = 'AISwarm LandAttack Micro Big',
-    Plan = 'LandAttackAIUveso',
+    Plan = 'LandAttackAISwarm',
     GlobalSquads = {
         { categories.MOBILE * categories.LAND * categories.DIRECTFIRE - categories.ANTIAIR - categories.EXPERIMENTAL - categories.ENGINEER - categories.SCOUT, 8, 40, 'attack', 'none' },
         { categories.MOBILE * categories.LAND - categories.EXPERIMENTAL - categories.ENGINEER - categories.SCOUT, 1, 4, 'attack', 'none' },
@@ -43,7 +43,7 @@ PlatoonTemplate {
 
 PlatoonTemplate {
     Name = 'AISwarm LandAttack Micro Raid',
-    Plan = 'LandAttackAIUveso',
+    Plan = 'LandAttackAISwarm',
     GlobalSquads = {
         { categories.MOBILE * categories.LAND * categories.DIRECTFIRE - categories.ANTIAIR - categories.EXPERIMENTAL - categories.ENGINEER - categories.SCOUT, 3, 20, 'attack', 'none' },
         { categories.MOBILE * categories.LAND - categories.EXPERIMENTAL - categories.ENGINEER - categories.SCOUT, 0, 4, 'attack', 'none' },
@@ -63,7 +63,7 @@ PlatoonTemplate {
 
 PlatoonTemplate {
     Name = 'AISwarm LandAttack Experimental', 
-    Plan = 'LandAttackAIUveso',
+    Plan = 'LandAttackAISwarm',
     GlobalSquads = {
         { categories.MOBILE * categories.LAND * categories.EXPERIMENTAL - categories.ENGINEER - categories.SCOUT,
         1,
@@ -75,7 +75,7 @@ PlatoonTemplate {
 
 
 PlatoonTemplate {
-    Name = 'U1 LandDFBot',
+    Name = 'S1 LandDFBot',
     FactionSquads = {
         UEF = {
             { 'uel0106', 1, 1, 'attack', 'None' }

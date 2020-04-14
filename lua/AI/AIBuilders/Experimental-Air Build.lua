@@ -9,7 +9,7 @@ local BasePanicZone, BaseMilitaryZone, BaseEnemyZone = import('/mods/AI-Swarm/lu
 BuilderGroup { BuilderGroupName = 'Swarm Air Experimental Builders',                               -- BuilderGroupName, initalized from AIBaseTemplates in "\lua\AI\AIBaseTemplates\"
     BuildersType = 'EngineerBuilder',
         
-    Builder { BuilderName = 'U4 AirExp1',
+    Builder { BuilderName = 'S4 AirExp1',
         PlatoonTemplate = 'T3EngineerBuilderSUB',
         Priority = 950,
         InstanceCount = 1,
@@ -33,7 +33,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Experimental Builders',            
         }
     },
     
-    Builder { BuilderName = 'U4 Satellite',
+    Builder { BuilderName = 'S4 Satellite',
         PlatoonTemplate = 'T3EngineerBuilderSUB',
         Priority = 950,
         BuilderConditions = {

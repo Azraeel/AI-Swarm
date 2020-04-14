@@ -18,7 +18,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Naval Builders',                       
         PlatoonTemplate = 'T1SeaFrigate',
         Priority = 500,
         BuilderConditions = {
-            { UCBC, 'CanPathNavalBaseToNavalTargets', {  'LocationType', categories.STRUCTURE * categories.FACTORY * categories.NAVAL }},
+            { UCBC, 'CanPathNavalBaseToNavalTargetsSwarm', {  'LocationType', categories.STRUCTURE * categories.FACTORY * categories.NAVAL }},
 
             { EBC, 'GreaterThanEconTrend', { 0.0, 0.0 } },
 
@@ -35,7 +35,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Naval Builders',                       
         PlatoonTemplate = 'T1SeaSub',
         Priority = 500,
         BuilderConditions = {
-            { UCBC, 'CanPathNavalBaseToNavalTargets', {  'LocationType', categories.STRUCTURE * categories.FACTORY * categories.NAVAL }},
+            { UCBC, 'CanPathNavalBaseToNavalTargetsSwarm', {  'LocationType', categories.STRUCTURE * categories.FACTORY * categories.NAVAL }},
 
             { EBC, 'GreaterThanEconTrend', { 0.0, 0.0 } },
 
@@ -55,7 +55,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Naval Builders',                       
         PlatoonTemplate = 'T2SeaDestroyer',
         Priority = 600,
         BuilderConditions = {
-            { UCBC, 'CanPathNavalBaseToNavalTargets', {  'LocationType', categories.STRUCTURE * categories.FACTORY * categories.NAVAL }},
+            { UCBC, 'CanPathNavalBaseToNavalTargetsSwarm', {  'LocationType', categories.STRUCTURE * categories.FACTORY * categories.NAVAL }},
 
         	{ EBC, 'GreaterThanEconTrend', { 0.0, 0.0 } },
 
@@ -72,7 +72,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Naval Builders',                       
         PlatoonTemplate = 'T2SeaCruiser',
         Priority = 600,
         BuilderConditions = {
-            { UCBC, 'CanPathNavalBaseToNavalTargets', {  'LocationType', categories.STRUCTURE * categories.FACTORY * categories.NAVAL }},
+            { UCBC, 'CanPathNavalBaseToNavalTargetsSwarm', {  'LocationType', categories.STRUCTURE * categories.FACTORY * categories.NAVAL }},
 
             { EBC, 'GreaterThanEconTrend', { 0.0, 0.0 } },
 
@@ -89,9 +89,9 @@ BuilderGroup { BuilderGroupName = 'Swarm Naval Builders',                       
         PlatoonTemplate = 'T2SeaCruiser',
         Priority = 605,
         BuilderConditions = {
-            { UCBC, 'CanPathNavalBaseToNavalTargets', {  'LocationType', categories.STRUCTURE * categories.FACTORY * categories.NAVAL }},
+            { UCBC, 'CanPathNavalBaseToNavalTargetsSwarm', {  'LocationType', categories.STRUCTURE * categories.FACTORY * categories.NAVAL }},
 
-            { UCBC, 'EnemyUnitsGreaterAtLocationRadius', {  BaseMilitaryZone, 'LocationType', 5, categories.AIR * (categories.ANTINAVY + categories.GROUNDATTACK) }},
+            { UCBC, 'EnemyUnitsGreaterAtLocationRadiusSwarm', {  BaseMilitaryZone, 'LocationType', 5, categories.AIR * (categories.ANTINAVY + categories.GROUNDATTACK) }},
 
             { EBC, 'GreaterThanEconTrend', { 0.0, 0.0 } },
 
@@ -108,7 +108,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Naval Builders',                       
         PlatoonTemplate = 'T2SubKiller',
         Priority = 600,
         BuilderConditions = {
-            { UCBC, 'CanPathNavalBaseToNavalTargets', {  'LocationType', categories.STRUCTURE * categories.FACTORY * categories.NAVAL }},
+            { UCBC, 'CanPathNavalBaseToNavalTargetsSwarm', {  'LocationType', categories.STRUCTURE * categories.FACTORY * categories.NAVAL }},
 
             { EBC, 'GreaterThanEconTrend', { 0.0, 0.0 } },
 
@@ -125,7 +125,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Naval Builders',                       
         PlatoonTemplate = 'T2ShieldBoat',
         Priority = 600,
         BuilderConditions = {
-            { UCBC, 'CanPathNavalBaseToNavalTargets', {  'LocationType', categories.STRUCTURE * categories.FACTORY * categories.NAVAL }},
+            { UCBC, 'CanPathNavalBaseToNavalTargetsSwarm', {  'LocationType', categories.STRUCTURE * categories.FACTORY * categories.NAVAL }},
 
             { EBC, 'GreaterThanEconTrend', { 0.0, 0.0 } },
 
@@ -142,7 +142,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Naval Builders',                       
         PlatoonTemplate = 'T2CounterIntelBoat',
         Priority = 600,
         BuilderConditions = {
-            { UCBC, 'CanPathNavalBaseToNavalTargets', {  'LocationType', categories.STRUCTURE * categories.FACTORY * categories.NAVAL }},
+            { UCBC, 'CanPathNavalBaseToNavalTargetsSwarm', {  'LocationType', categories.STRUCTURE * categories.FACTORY * categories.NAVAL }},
 
             { EBC, 'GreaterThanEconTrend', { 0.0, 0.0 } },
 
@@ -162,7 +162,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Naval Builders',                       
         PlatoonTemplate = 'T3SeaBattleship',
         Priority = 750,
         BuilderConditions = {
-            { UCBC, 'CanPathNavalBaseToNavalTargets', {  'LocationType', categories.STRUCTURE * categories.FACTORY * categories.NAVAL }},
+            { UCBC, 'CanPathNavalBaseToNavalTargetsSwarm', {  'LocationType', categories.STRUCTURE * categories.FACTORY * categories.NAVAL }},
 
         	{ EBC, 'GreaterThanEconTrend', { 0.0, 0.0 } },
 
@@ -179,7 +179,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Naval Builders',                       
         PlatoonTemplate = 'T3Battlecruiser',
         Priority = 750,
         BuilderConditions = {
-            { UCBC, 'CanPathNavalBaseToNavalTargets', {  'LocationType', categories.STRUCTURE * categories.FACTORY * categories.NAVAL }},
+            { UCBC, 'CanPathNavalBaseToNavalTargetsSwarm', {  'LocationType', categories.STRUCTURE * categories.FACTORY * categories.NAVAL }},
 
             { EBC, 'GreaterThanEconTrend', { 0.0, 0.0 } },
 
@@ -196,9 +196,9 @@ BuilderGroup { BuilderGroupName = 'Swarm Naval Builders',                       
         PlatoonTemplate = 'T2SeaCruiser',
         Priority = 755,
         BuilderConditions = {
-            { UCBC, 'CanPathNavalBaseToNavalTargets', {  'LocationType', categories.STRUCTURE * categories.FACTORY * categories.NAVAL }},
+            { UCBC, 'CanPathNavalBaseToNavalTargetsSwarm', {  'LocationType', categories.STRUCTURE * categories.FACTORY * categories.NAVAL }},
 
-            { UCBC, 'EnemyUnitsGreaterAtLocationRadius', {  BaseMilitaryZone, 'LocationType', 5, categories.AIR * (categories.ANTINAVY + categories.GROUNDATTACK) }},
+            { UCBC, 'EnemyUnitsGreaterAtLocationRadiusSwarm', {  BaseMilitaryZone, 'LocationType', 5, categories.AIR * (categories.ANTINAVY + categories.GROUNDATTACK) }},
 
             { UCBC, 'HaveGreaterThanUnitsWithCategory', { 0, categories.STRUCTURE * categories.FACTORY * categories.NAVAL * categories.TECH3 } },
 
@@ -217,7 +217,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Naval Builders',                       
         PlatoonTemplate = 'T3SubKiller',
         Priority = 750,
         BuilderConditions = {
-            { UCBC, 'CanPathNavalBaseToNavalTargets', {  'LocationType', categories.STRUCTURE * categories.FACTORY * categories.NAVAL }},
+            { UCBC, 'CanPathNavalBaseToNavalTargetsSwarm', {  'LocationType', categories.STRUCTURE * categories.FACTORY * categories.NAVAL }},
 
             { EBC, 'GreaterThanEconTrend', { 0.0, 0.0 } },
 
@@ -234,7 +234,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Naval Builders',                       
         PlatoonTemplate = 'T3MissileBoat',
         Priority = 750,
         BuilderConditions = {
-            { UCBC, 'CanPathNavalBaseToNavalTargets', {  'LocationType', categories.STRUCTURE * categories.FACTORY * categories.NAVAL }},
+            { UCBC, 'CanPathNavalBaseToNavalTargetsSwarm', {  'LocationType', categories.STRUCTURE * categories.FACTORY * categories.NAVAL }},
 
             { EBC, 'GreaterThanEconTrend', { 0.0, 0.0 } },
 
@@ -251,7 +251,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Naval Builders',                       
         PlatoonTemplate = 'T3SeaNukeSub',
         Priority = 750,
         BuilderConditions = {
-            { UCBC, 'CanPathNavalBaseToNavalTargets', {  'LocationType', categories.STRUCTURE * categories.FACTORY * categories.NAVAL }},
+            { UCBC, 'CanPathNavalBaseToNavalTargetsSwarm', {  'LocationType', categories.STRUCTURE * categories.FACTORY * categories.NAVAL }},
 
             { EBC, 'GreaterThanEconTrend', { 0.0, 0.0 } },
 
@@ -273,7 +273,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Naval Builders',                       
 BuilderGroup { BuilderGroupName = 'Swarm Sonar Builders',                               -- BuilderGroupName, initalized from AIBaseTemplates in "\lua\AI\AIBaseTemplates\"
     BuildersType = 'EngineerBuilder',
     
-    Builder { BuilderName = 'U1 Sonar',
+    Builder { BuilderName = 'S1 Sonar',
         PlatoonTemplate = 'EngineerBuilder',
         Priority = 17500,
         BuilderConditions = {
@@ -304,7 +304,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Sonar Builders',                       
 BuilderGroup { BuilderGroupName = 'Swarm Sonar Upgraders',                               -- BuilderGroupName, initalized from AIBaseTemplates in "\lua\AI\AIBaseTemplates\"
     BuildersType = 'PlatoonFormBuilder',
     
-    Builder { BuilderName = 'U1 Sonar Upgrade',
+    Builder { BuilderName = 'S1 Sonar Upgrade',
         PlatoonTemplate = 'T1SonarUpgrade',
         Priority = 200,
         BuilderConditions = {
@@ -320,7 +320,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Sonar Upgraders',                      
         BuilderType = 'Any',
     },
     
-    Builder { BuilderName = 'U2 Sonar Upgrade',
+    Builder { BuilderName = 'S2 Sonar Upgrade',
         PlatoonTemplate = 'T2SonarUpgrade',
         Priority = 300,
         BuilderConditions = {
@@ -362,7 +362,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Naval Formers',
             },
         },
         BuilderConditions = {                                                  
-            { UCBC, 'EnemyUnitsGreaterAtLocationRadius', {  BasePanicZone, 'LocationType', 0, categories.MOBILE }}, 
+            { UCBC, 'EnemyUnitsGreaterAtLocationRadiusSwarm', {  BasePanicZone, 'LocationType', 0, categories.MOBILE }}, 
         },
         BuilderType = 'Any',                                                 
     },
@@ -384,7 +384,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Naval Formers',
             },
         },
         BuilderConditions = {                                                   
-            { UCBC, 'EnemyUnitsGreaterAtLocationRadius', {  BaseMilitaryZone, 'LocationType', 0, categories.MOBILE }}, 
+            { UCBC, 'EnemyUnitsGreaterAtLocationRadiusSwarm', {  BaseMilitaryZone, 'LocationType', 0, categories.MOBILE }}, 
             { UCBC, 'UnitsGreaterAtLocation', { 'LocationType', 6, categories.MOBILE * categories.NAVAL } },
         },
         BuilderType = 'Any',                                                    
@@ -429,7 +429,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Naval Formers',
         },
         BuilderConditions = {                                                  
             { UCBC, 'UnitsGreaterAtLocation', { 'LocationType', 15, categories.MOBILE * categories.NAVAL } },
-            { UCBC, 'UnitsGreaterAtEnemy', { 1 , categories.STRUCTURE * categories.NAVAL } },
+            { UCBC, 'UnitsGreaterAtEnemySwarm', { 1 , categories.STRUCTURE * categories.NAVAL } },
         },
         BuilderType = 'Any',
     },
@@ -450,7 +450,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Naval Formers',
         },
         BuilderConditions = {                                                  
             { UCBC, 'UnitsGreaterAtLocation', { 'LocationType', 15, categories.MOBILE * categories.NAVAL } },
-            { UCBC, 'UnitsGreaterAtEnemy', { 1 , categories.MOBILE * categories.NAVAL } },
+            { UCBC, 'UnitsGreaterAtEnemySwarm', { 1 , categories.MOBILE * categories.NAVAL } },
         },
         BuilderType = 'Any',
     },
@@ -471,7 +471,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Naval Formers',
         },
         BuilderConditions = {                                                  
             { UCBC, 'UnitsGreaterAtLocation', { 'LocationType', 10, categories.MOBILE * categories.NAVAL } },
-            { UCBC, 'UnitsGreaterAtEnemy', { 1 , categories.STRUCTURE * categories.FACTORY * categories.NAVAL } },
+            { UCBC, 'UnitsGreaterAtEnemySwarm', { 1 , categories.STRUCTURE * categories.FACTORY * categories.NAVAL } },
         },
         BuilderType = 'Any',
     },
@@ -479,7 +479,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Naval Formers',
     Builder {
         BuilderName = 'Nuke Submarine Active NukeAI',
         PlatoonTemplate = 'Swarm SeaNuke',
-        PlatoonAddPlans = { 'NukePlatoonAI', },
+        PlatoonAddPlans = { 'NukePlatoonAISwarm', },
         Priority = 100,
         InstanceCount = 20,
         BuilderType = 'Any',

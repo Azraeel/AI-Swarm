@@ -10,13 +10,13 @@ local MaxCapStructure = 0.12                                                    
 -- ===================================================-======================================================== --
 BuilderGroup {
     -- Build Power TECH 1,2,3
-    BuilderGroupName = 'U123 Energy Builders',                               -- BuilderGroupName, initalized from AIBaseTemplates in "\lua\AI\AIBaseTemplates\"
+    BuilderGroupName = 'S123 Energy Builders',                               -- BuilderGroupName, initalized from AIBaseTemplates in "\lua\AI\AIBaseTemplates\"
     BuildersType = 'EngineerBuilder',
     -- ============ --
     --    TECH 1    --
     -- ============ --
     Builder {
-        BuilderName = 'U1 Power low trend',
+        BuilderName = 'S1 Power low trend',
         PlatoonTemplate = 'EngineerBuilder',
         Priority = 650,
         InstanceCount = 2,                                                      -- Number of plattons that will be formed with this template.
@@ -48,7 +48,7 @@ BuilderGroup {
     },
 
     Builder {
-        BuilderName = 'U1 Power low trend - Overbuild',
+        BuilderName = 'S1 Power low trend - Overbuild',
         PlatoonTemplate = 'EngineerBuilder',
         Priority = 650,
         InstanceCount = 2,                                                      -- Number of plattons that will be formed with this template.
@@ -80,7 +80,7 @@ BuilderGroup {
     },
 
     Builder {
-        BuilderName = 'UC Power low trend',
+        BuilderName = 'SC Power low trend',
         PlatoonTemplate = 'CommanderBuilder',
         Priority = 650,
         BuilderConditions = {
@@ -107,14 +107,14 @@ BuilderGroup {
         }
     },
     Builder {
-        BuilderName = 'U1 Power Hydrocarbon',
+        BuilderName = 'S1 Power Hydrocarbon',
         PlatoonTemplate = 'EngineerBuilder',
         Priority = 595,
         DelayEqualBuildPlattons = {'Energy', 1},
         InstanceCount = 1,
         BuilderConditions = {
             -- When do we want to build this ?
-            { MABC, 'CanBuildOnHydro', { 'LocationType', 90, -1000, 100, 1, 'AntiSurface', 1 }},            -- Do we need additional conditions to build it ?
+            { MABC, 'CanBuildOnHydroSwarm', { 'LocationType', 90, -1000, 100, 1, 'AntiSurface', 1 }},            -- Do we need additional conditions to build it ?
 
             { UCBC, 'HasNotParagon', {} },
 
@@ -122,7 +122,7 @@ BuilderGroup {
 
             { UCBC, 'CheckBuildPlattonDelay', { 'Energy' }},
 
-            { UCBC, 'HaveUnitRatioVersusCap', { MaxCapStructure , '<', categories.STRUCTURE - categories.MASSEXTRACTION - categories.DEFENSE - categories.FACTORY } },
+            { UCBC, 'HaveUnitRatioVersusCapSwarm', { MaxCapStructure , '<', categories.STRUCTURE - categories.MASSEXTRACTION - categories.DEFENSE - categories.FACTORY } },
         },
         BuilderType = 'Any',
         BuilderData = {
@@ -137,7 +137,7 @@ BuilderGroup {
     --    TECH 2    --
     -- ============ --
     Builder {
-        BuilderName = 'U2 Power minimum',
+        BuilderName = 'S2 Power minimum',
         PlatoonTemplate = 'T2EngineerBuilder',
         Priority = 1250,
         DelayEqualBuildPlattons = {'Energy', 20},
@@ -169,7 +169,7 @@ BuilderGroup {
         }
     },
     Builder {
-        BuilderName = 'U2 Power',
+        BuilderName = 'S2 Power',
         PlatoonTemplate = 'T2EngineerBuilder',
         Priority = 1000,
         InstanceCount = 1,
@@ -203,7 +203,7 @@ BuilderGroup {
     --    TECH 3    --
     -- ============ --
     Builder {
-        BuilderName = 'U3 Power minimum',
+        BuilderName = 'S3 Power minimum',
         PlatoonTemplate = 'T3EngineerBuildernoSUB',
         Priority = 2625,
         DelayEqualBuildPlattons = {'Energy', 10},
@@ -233,7 +233,7 @@ BuilderGroup {
         }
     },
     Builder {
-        BuilderName = 'U3 Power0',
+        BuilderName = 'S3 Power0',
         PlatoonTemplate = 'T3EngineerBuildernoSUB',
         Priority = 2000,
         DelayEqualBuildPlattons = {'Energy', 10},
@@ -264,7 +264,7 @@ BuilderGroup {
     },
 
     Builder {
-        BuilderName = 'U3 Power1',
+        BuilderName = 'S3 Power1',
         PlatoonTemplate = 'T3EngineerBuilderSUB',
         Priority = 2000,
         DelayEqualBuildPlattons = {'Energy', 10},
@@ -344,7 +344,7 @@ BuilderGroup {
     --    Reclaim Buildings    --
     -- ======================= --
     Builder {
-        BuilderName = 'U1 Reclaim T1 Pgens',
+        BuilderName = 'S1 Reclaim T1 Pgens',
         PlatoonTemplate = 'EngineerBuilder',
         PlatoonAIPlan = 'ReclaimStructuresAI',
         Priority = 790,
@@ -360,7 +360,7 @@ BuilderGroup {
         BuilderType = 'Any',
     },
     Builder {
-        BuilderName = 'U1 Reclaim T1 Pgens cap',
+        BuilderName = 'S1 Reclaim T1 Pgens cap',
         PlatoonTemplate = 'EngineerBuilder',
         PlatoonAIPlan = 'ReclaimStructuresAI',
         Priority = 790,
@@ -378,7 +378,7 @@ BuilderGroup {
         BuilderType = 'Any',
     },
     Builder {
-        BuilderName = 'U1 Reclaim T2 Pgens',
+        BuilderName = 'S1 Reclaim T2 Pgens',
         PlatoonTemplate = 'EngineerBuilder',
         PlatoonAIPlan = 'ReclaimStructuresAI',
         Priority = 790,
@@ -394,7 +394,7 @@ BuilderGroup {
         BuilderType = 'Any',
     },
     Builder {
-        BuilderName = 'U1 Reclaim T2 Pgens cap',
+        BuilderName = 'S1 Reclaim T2 Pgens cap',
         PlatoonTemplate = 'EngineerBuilder',
         PlatoonAIPlan = 'ReclaimStructuresAI',
         Priority = 790,
@@ -412,7 +412,7 @@ BuilderGroup {
         BuilderType = 'Any',
     },
     Builder {
-        BuilderName = 'U1 Reclaim E storage cap',
+        BuilderName = 'S1 Reclaim E storage cap',
         PlatoonTemplate = 'EngineerBuilder',
         PlatoonAIPlan = 'ReclaimStructuresAI',
         Priority = 790,

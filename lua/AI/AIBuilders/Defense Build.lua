@@ -11,7 +11,7 @@ local MaxCapStructure = 0.12                                                    
 -- ===================================================-======================================================== --
 BuilderGroup { BuilderGroupName = 'Swarm Shields Builder',                               -- BuilderGroupName, initalized from AIBaseTemplates in "\lua\AI\AIBaseTemplates\"
     BuildersType = 'EngineerBuilder',
-    Builder { BuilderName = 'U2 Shield Ratio',
+    Builder { BuilderName = 'S2 Shield Ratio',
         PlatoonTemplate = 'T2EngineerBuilder',
         Priority = 850,
         InstanceCount = 2,
@@ -41,7 +41,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Shields Builder',                      
         },
     },
     
-    Builder { BuilderName = 'U3 Shield Ratio',
+    Builder { BuilderName = 'S3 Shield Ratio',
         PlatoonTemplate = 'T3EngineerBuildernoSUB',
         Priority = 1250,
         InstanceCount = 2,
@@ -74,7 +74,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Shields Builder',                      
         }
     },
 
-    Builder { BuilderName = 'U3 Shield Ratio',
+    Builder { BuilderName = 'S3 Shield Ratio2',
         PlatoonTemplate = 'T3EngineerBuilderSUB',
         Priority = 1250,
         InstanceCount = 2,
@@ -107,7 +107,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Shields Builder',                      
         }
     },
 
-    Builder { BuilderName = 'U3 Shield Ratio - Reactive',
+    Builder { BuilderName = 'S3 Shield Ratio - Reactive',
         PlatoonTemplate = 'T3EngineerBuilderSUB',
         Priority = 1600,
         InstanceCount = 3,
@@ -118,7 +118,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Shields Builder',                      
             -- Have we the eco to build it ?
             { EBC, 'GreaterThanEconStorageRatio', { 0.20, 0.40 } },             -- Ratio from 0 to 1. (1=100%)
 
-            { UCBC, 'UnitsGreaterAtEnemy', { 0 , categories.STRUCTURE * categories.TECH3 * categories.ARTILLERY } },
+            { UCBC, 'UnitsGreaterAtEnemySwarm', { 0 , categories.STRUCTURE * categories.TECH3 * categories.ARTILLERY } },
             -- Don't build it if...
             { UCBC, 'HaveLessThanUnitsInCategoryBeingBuilt', { 3, categories.STRUCTURE * categories.SHIELD}},
 
@@ -142,7 +142,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Shields Builder',                      
         }
     },
     
-    Builder { BuilderName = 'U3 Paragon Shield',
+    Builder { BuilderName = 'S3 Paragon Shield',
         PlatoonTemplate = 'T3EngineerBuildernoSUB',
         Priority = 1000,
         InstanceCount = 2,
@@ -176,7 +176,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Shields Builder',                      
     -- ===================== --
     --    Reclaim Shields    --
     -- ===================== --
-    Builder { BuilderName = 'U1 Reclaim T1-T2 Shields',
+    Builder { BuilderName = 'S1 Reclaim T1-T2 Shields',
         PlatoonTemplate = 'EngineerBuilder',
         PlatoonAIPlan = 'ReclaimStructuresAI',
         Priority = 500,
@@ -199,7 +199,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Shields Builder',                      
         BuilderType = 'Any',
     },
     
-    Builder { BuilderName = 'U1 Reclaim T1-T2-T3 Shields',
+    Builder { BuilderName = 'S1 Reclaim T1-T2-T3 Shields',
         PlatoonTemplate = 'EngineerBuilder',
         PlatoonAIPlan = 'ReclaimStructuresAI',
         Priority = 500,
@@ -231,7 +231,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Shields Upgrader',                     
     BuildersType = 'PlatoonFormBuilder',
     
     Builder {
-        BuilderName = 'U2 Shield Cybran 1',
+        BuilderName = 'S2 Shield Cybran 1',
         PlatoonTemplate = 'T2Shield1',
         Priority = 1000,
         DelayEqualBuildPlattons = {'Shield', 2},
@@ -239,13 +239,13 @@ BuilderGroup { BuilderGroupName = 'Swarm Shields Upgrader',                     
         BuilderConditions = {
             { EBC, 'GreaterThanEconStorageRatio', { 0.25, 0.50}}, -- Ratio from 0 to 1. (1=100%)
             { UCBC, 'UnitsGreaterAtLocation', { 'LocationType', 0, categories.TECH3 * categories.ENERGYPRODUCTION}},
-            { UCBC, 'HaveLessThanUnitsInCategoryBeingUpgrade', { 3, categories.STRUCTURE * categories.SHIELD }},
+            { UCBC, 'HaveLessThanUnitsInCategoryBeingUpgradeSwarm', { 3, categories.STRUCTURE * categories.SHIELD }},
             { UCBC, 'CheckBuildPlattonDelay', { 'Shield' }},
         },
         BuilderType = 'Any',
     },
     Builder {
-        BuilderName = 'U2 Shield Cybran 2',
+        BuilderName = 'S2 Shield Cybran 2',
         PlatoonTemplate = 'T2Shield2',
         Priority = 1000,
         DelayEqualBuildPlattons = {'Shield', 2},
@@ -253,13 +253,13 @@ BuilderGroup { BuilderGroupName = 'Swarm Shields Upgrader',                     
         BuilderConditions = {
             { EBC, 'GreaterThanEconStorageRatio', { 0.25, 0.50}}, -- Ratio from 0 to 1. (1=100%)
             { UCBC, 'UnitsGreaterAtLocation', { 'LocationType', 0, categories.TECH3 * categories.ENERGYPRODUCTION}},
-            { UCBC, 'HaveLessThanUnitsInCategoryBeingUpgrade', { 3, categories.STRUCTURE * categories.SHIELD }},
+            { UCBC, 'HaveLessThanUnitsInCategoryBeingUpgradeSwarm', { 3, categories.STRUCTURE * categories.SHIELD }},
             { UCBC, 'CheckBuildPlattonDelay', { 'Shield' }},
         },
         BuilderType = 'Any',
     },
     Builder {
-        BuilderName = 'U2 Shield Cybran 3',
+        BuilderName = 'S2 Shield Cybran 3',
         PlatoonTemplate = 'T2Shield3',
         Priority = 1000,
         DelayEqualBuildPlattons = {'Shield', 2},
@@ -267,13 +267,13 @@ BuilderGroup { BuilderGroupName = 'Swarm Shields Upgrader',                     
         BuilderConditions = {
             { EBC, 'GreaterThanEconStorageRatio', { 0.25, 0.50}}, -- Ratio from 0 to 1. (1=100%)
             { UCBC, 'UnitsGreaterAtLocation', { 'LocationType', 0, categories.TECH3 * categories.ENERGYPRODUCTION}},
-            { UCBC, 'HaveLessThanUnitsInCategoryBeingUpgrade', { 3, categories.STRUCTURE * categories.SHIELD }},
+            { UCBC, 'HaveLessThanUnitsInCategoryBeingUpgradeSwarm', { 3, categories.STRUCTURE * categories.SHIELD }},
             { UCBC, 'CheckBuildPlattonDelay', { 'Shield' }},
         },
         BuilderType = 'Any',
     },
     Builder {
-        BuilderName = 'U2 Shield Cybran 4',
+        BuilderName = 'S2 Shield Cybran 4',
         PlatoonTemplate = 'T2Shield4',
         Priority = 1000,
         DelayEqualBuildPlattons = {'Shield', 2},
@@ -281,13 +281,13 @@ BuilderGroup { BuilderGroupName = 'Swarm Shields Upgrader',                     
         BuilderConditions = {
             { EBC, 'GreaterThanEconStorageRatio', { 0.25, 0.50}}, -- Ratio from 0 to 1. (1=100%)
             { UCBC, 'UnitsGreaterAtLocation', { 'LocationType', 1, categories.TECH3 * categories.ENERGYPRODUCTION}},
-            { UCBC, 'HaveLessThanUnitsInCategoryBeingUpgrade', { 3, categories.STRUCTURE * categories.SHIELD }},
+            { UCBC, 'HaveLessThanUnitsInCategoryBeingUpgradeSwarm', { 3, categories.STRUCTURE * categories.SHIELD }},
             { UCBC, 'CheckBuildPlattonDelay', { 'Shield' }},
         },
         BuilderType = 'Any',
     },
     Builder {
-        BuilderName = 'U2 Shield UEF Seraphim',
+        BuilderName = 'S2 Shield UEF Seraphim',
         PlatoonTemplate = 'T2Shield',
         Priority = 1000,
         DelayEqualBuildPlattons = {'Shield', 2},
@@ -295,7 +295,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Shields Upgrader',                     
         BuilderConditions = {
             { EBC, 'GreaterThanEconStorageRatio', { 0.25, 0.50}}, -- Ratio from 0 to 1. (1=100%)
             { UCBC, 'UnitsGreaterAtLocation', { 'LocationType', 1, categories.TECH3 * categories.ENERGYPRODUCTION}},
-            { UCBC, 'HaveLessThanUnitsInCategoryBeingUpgrade', { 3, categories.STRUCTURE * categories.SHIELD }},
+            { UCBC, 'HaveLessThanUnitsInCategoryBeingUpgradeSwarm', { 3, categories.STRUCTURE * categories.SHIELD }},
             { UCBC, 'CheckBuildPlattonDelay', { 'Shield' }},
         },
         BuilderType = 'Any',
@@ -308,11 +308,11 @@ BuilderGroup { BuilderGroupName = 'Swarm Shields Upgrader',                     
 BuilderGroup { BuilderGroupName = 'Swarm T2 Tactical Missile Defenses Builder',                               
     BuildersType = 'EngineerBuilder',
     Builder {
-        BuilderName = 'U2 TMD Panic 1',
+        BuilderName = 'S2 TMD Panic 1',
         PlatoonTemplate = 'T2EngineerBuilder',
         Priority = 10000,
         BuilderConditions = {
-            { UCBC, 'EnemyUnitsGreaterAtLocationRadius', {  280, 'LocationType', 0, categories.TACTICALMISSILEPLATFORM }}, 
+            { UCBC, 'EnemyUnitsGreaterAtLocationRadiusSwarm', {  280, 'LocationType', 0, categories.TACTICALMISSILEPLATFORM }}, 
 
             { UCBC, 'UnitsLessAtLocation', { 'LocationType', 3, categories.STRUCTURE * categories.DEFENSE * categories.ANTIMISSILE * categories.TECH2 }},
         },
@@ -334,11 +334,11 @@ BuilderGroup { BuilderGroupName = 'Swarm T2 Tactical Missile Defenses Builder',
         }
     },
     Builder {
-        BuilderName = 'U2 TMD Panic 2',
+        BuilderName = 'S2 TMD Panic 2',
         PlatoonTemplate = 'T2EngineerBuilder',
         Priority = 10000,
         BuilderConditions = {
-            { UCBC, 'EnemyUnitsGreaterAtLocationRadius', {  280, 'LocationType', 3, categories.TACTICALMISSILEPLATFORM }}, 
+            { UCBC, 'EnemyUnitsGreaterAtLocationRadiusSwarm', {  280, 'LocationType', 3, categories.TACTICALMISSILEPLATFORM }}, 
 
             { UCBC, 'UnitsLessAtLocation', { 'LocationType', 6, categories.STRUCTURE * categories.DEFENSE * categories.ANTIMISSILE * categories.TECH2 }},
         },
@@ -360,11 +360,11 @@ BuilderGroup { BuilderGroupName = 'Swarm T2 Tactical Missile Defenses Builder',
         }
     },
     Builder {
-        BuilderName = 'U2 TMD Panic 3',
+        BuilderName = 'S2 TMD Panic 3',
         PlatoonTemplate = 'T2EngineerBuilder',
         Priority = 10000,
         BuilderConditions = {
-            { UCBC, 'EnemyUnitsGreaterAtLocationRadius', {  280, 'LocationType', 6, categories.TACTICALMISSILEPLATFORM }}, 
+            { UCBC, 'EnemyUnitsGreaterAtLocationRadiusSwarm', {  280, 'LocationType', 6, categories.TACTICALMISSILEPLATFORM }}, 
 
             { UCBC, 'UnitsLessAtLocation', { 'LocationType', 9, categories.STRUCTURE * categories.DEFENSE * categories.ANTIMISSILE * categories.TECH2 }},
         },
@@ -386,7 +386,7 @@ BuilderGroup { BuilderGroupName = 'Swarm T2 Tactical Missile Defenses Builder',
         }
     },
     Builder {
-        BuilderName = 'U2 TMD',
+        BuilderName = 'S2 TMD',
         PlatoonTemplate = 'T2EngineerBuilder',
         Priority = 10000,
         BuilderConditions = {
@@ -394,7 +394,7 @@ BuilderGroup { BuilderGroupName = 'Swarm T2 Tactical Missile Defenses Builder',
 
             { UCBC, 'UnitsLessAtLocation', { 'LocationType', 3, categories.STRUCTURE * categories.DEFENSE * categories.ANTIMISSILE * categories.TECH2 }}, 
 
-            { UCBC, 'HaveUnitRatioAtLocation', { 'LocationType', 0.5, categories.STRUCTURE * categories.DEFENSE * categories.ANTIMISSILE * categories.TECH2, '<',categories.STRUCTURE * categories.FACTORY } },
+            { UCBC, 'HaveUnitRatioAtLocationSwarm', { 'LocationType', 0.5, categories.STRUCTURE * categories.DEFENSE * categories.ANTIMISSILE * categories.TECH2, '<',categories.STRUCTURE * categories.FACTORY } },
             
             { UCBC, 'HaveGreaterThanUnitsWithCategory', { 0, categories.ENERGYPRODUCTION * (categories.TECH2 + categories.TECH3) } },
         },
@@ -424,7 +424,7 @@ BuilderGroup { BuilderGroupName = 'Swarm T2 Tactical Missile Defenses Builder',
 BuilderGroup { BuilderGroupName = 'Swarm SMD Builder',                              
     BuildersType = 'EngineerBuilder',
     Builder {
-        BuilderName = 'U3 SMD 1st Main',
+        BuilderName = 'S3 SMD 1st Main',
         PlatoonTemplate = 'T3EngineerBuildernoSUB',
         Priority = 1600,
         BuilderConditions = {
@@ -434,7 +434,7 @@ BuilderGroup { BuilderGroupName = 'Swarm SMD Builder',
 
             { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 0, categories.ENGINEER * categories.TECH3}},
 
-            { UCBC, 'BuildOnlyOnLocation', { 'LocationType', 'MAIN' } },
+            { UCBC, 'BuildOnlyOnLocationSwarm', { 'LocationType', 'MAIN' } },
 
             { EBC, 'GreaterThanEconStorageRatio', { 0.00, 0.00 } },        
         },
@@ -456,17 +456,17 @@ BuilderGroup { BuilderGroupName = 'Swarm SMD Builder',
     },
 
     Builder {
-        BuilderName = 'U3 SMD Enemy Main',
+        BuilderName = 'S3 SMD Enemy Main',
         PlatoonTemplate = 'T3EngineerBuildernoSUB',
         Priority = 1275,
         BuilderConditions = {
         	{ UCBC, 'HaveGreaterThanUnitsWithCategory', { 2, categories.ENERGYPRODUCTION * categories.TECH3 } },
 
-            { UCBC, 'HaveUnitRatioAtLocationRadiusVersusEnemy', { 1.20, 'LocationType', 90, categories.STRUCTURE * categories.DEFENSE * categories.ANTIMISSILE * categories.TECH3, '<', categories.SILO * categories.NUKE * (categories.TECH3 + categories.EXPERIMENTAL) } },
+            { UCBC, 'HaveUnitRatioAtLocationSwarmRadiusVersusEnemy', { 1.20, 'LocationType', 90, categories.STRUCTURE * categories.DEFENSE * categories.ANTIMISSILE * categories.TECH3, '<', categories.SILO * categories.NUKE * (categories.TECH3 + categories.EXPERIMENTAL) } },
 
             { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 0, categories.ENGINEER * categories.TECH3}},
 
-            { UCBC, 'BuildOnlyOnLocation', { 'LocationType', 'MAIN' } },
+            { UCBC, 'BuildOnlyOnLocationSwarm', { 'LocationType', 'MAIN' } },
 
             { EBC, 'GreaterThanEconStorageRatio', { 0.35, 0.50 } }, 
         },
@@ -488,17 +488,17 @@ BuilderGroup { BuilderGroupName = 'Swarm SMD Builder',
     },
 
     Builder {
-        BuilderName = 'U3 SMD Enemy Yolona Oss',
+        BuilderName = 'S3 SMD Enemy Yolona Oss',
         PlatoonTemplate = 'T3EngineerBuildernoSUB',
         Priority = 2000,
         BuilderConditions = {
         	{ UCBC, 'HaveGreaterThanUnitsWithCategory', { 2, categories.ENERGYPRODUCTION * categories.TECH3 } },
 
-            { UCBC, 'HaveUnitRatioAtLocationRadiusVersusEnemy', { 3.00, 'LocationType', 90, categories.STRUCTURE * categories.DEFENSE * categories.ANTIMISSILE * categories.TECH3, '<', categories.SILO * categories.NUKE * categories.EXPERIMENTAL * categories.SERAPHIM } },
+            { UCBC, 'HaveUnitRatioAtLocationSwarmRadiusVersusEnemy', { 3.00, 'LocationType', 90, categories.STRUCTURE * categories.DEFENSE * categories.ANTIMISSILE * categories.TECH3, '<', categories.SILO * categories.NUKE * categories.EXPERIMENTAL * categories.SERAPHIM } },
 
             { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 0, categories.ENGINEER * categories.TECH3}},
 
-            { UCBC, 'BuildOnlyOnLocation', { 'LocationType', 'MAIN' } },
+            { UCBC, 'BuildOnlyOnLocationSwarm', { 'LocationType', 'MAIN' } },
 
             { EBC, 'GreaterThanEconStorageRatio', { 0.35, 0.50 } },   
         },
@@ -520,17 +520,17 @@ BuilderGroup { BuilderGroupName = 'Swarm SMD Builder',
     },
 
     Builder {
-        BuilderName = 'U3 SMD Enemy Expansion',
+        BuilderName = 'S3 SMD Enemy Expansion',
         PlatoonTemplate = 'T3EngineerBuildernoSUB',
         Priority = 1150,
         BuilderConditions = {
         	{ UCBC, 'HaveGreaterThanUnitsWithCategory', { 2, categories.ENERGYPRODUCTION * categories.TECH3 } },
         	
-            { UCBC, 'HaveUnitRatioAtLocationRadiusVersusEnemy', { 1.50, 'LocationType', 90, categories.STRUCTURE * categories.DEFENSE * categories.ANTIMISSILE * categories.TECH3, '<',categories.SILO * categories.NUKE * (categories.TECH3 + categories.EXPERIMENTAL) } },
+            { UCBC, 'HaveUnitRatioAtLocationSwarmRadiusVersusEnemy', { 1.50, 'LocationType', 90, categories.STRUCTURE * categories.DEFENSE * categories.ANTIMISSILE * categories.TECH3, '<',categories.SILO * categories.NUKE * (categories.TECH3 + categories.EXPERIMENTAL) } },
 
             { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 0, categories.ENGINEER * categories.TECH3}},
 
-            { UCBC, 'BuildNotOnLocation', { 'LocationType', 'MAIN' } },
+            { UCBC, 'BuildNotOnLocationSwarm', { 'LocationType', 'MAIN' } },
 
             { EBC, 'GreaterThanEconStorageRatio', { 0.35, 0.50 } },       
 
@@ -555,19 +555,19 @@ BuilderGroup { BuilderGroupName = 'Swarm SMD Builder',
     },
 
     Builder {
-        BuilderName = 'U3AntiNukeAI',
+        BuilderName = 'S3AntiNukeAI',
         PlatoonTemplate = 'AddToAntiNukePlatoon',
         Priority = 4000,
         FormRadius = 10000,
         BuilderConditions = {
             -- When do we want to build this ?
-            { UCBC, 'HaveGreaterThanArmyPoolWithCategory', { 0, categories.STRUCTURE * categories.DEFENSE * categories.ANTIMISSILE * categories.TECH3 } },
+            { UCBC, 'HaveGreaterThanArmyPoolWithCategorySwarm', { 0, categories.STRUCTURE * categories.DEFENSE * categories.ANTIMISSILE * categories.TECH3 } },
             -- Do we need additional conditions to build it ?
             -- Have we the eco to build it ?
             -- Don't build it if...
         },
         BuilderData = {
-            AIPlan = 'U3AntiNukeAI',
+            AIPlan = 'S3AntiNukeAI',
         },
         BuilderType = 'Any',
     },
@@ -579,7 +579,7 @@ BuilderGroup { BuilderGroupName = 'Swarm SMD Builder',
 BuilderGroup { BuilderGroupName = 'Swarm Defense Anti Ground Builders',                               -- BuilderGroupName, initalized from AIBaseTemplates in "\lua\AI\AIBaseTemplates\"
     BuildersType = 'EngineerBuilder',
     Builder {
-        BuilderName = 'U1 Ground Defense always',
+        BuilderName = 'S1 Ground Defense always',
         PlatoonTemplate = 'EngineerBuilder',
         Priority = 750,
         InstanceCount = 1,
@@ -610,7 +610,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Defense Anti Ground Builders',         
     }, 
 
     Builder {
-        BuilderName = 'U2 Artillery',
+        BuilderName = 'S2 Artillery',
         PlatoonTemplate = 'T2EngineerBuilder',
         Priority = 500,
         InstanceCount = 3,
@@ -634,7 +634,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Defense Anti Ground Builders',         
     },
     
     Builder {
-        BuilderName = 'U2 Ground Defense always',
+        BuilderName = 'S2 Ground Defense always',
         PlatoonTemplate = 'T2EngineerBuilder',
         Priority = 950,
         InstanceCount = 2,
@@ -662,12 +662,12 @@ BuilderGroup { BuilderGroupName = 'Swarm Defense Anti Ground Builders',         
         }
     },
     Builder {
-        BuilderName = 'U3 Ground Defense always',
+        BuilderName = 'S3 Ground Defense always',
         PlatoonTemplate = 'T3EngineerBuildernoSUB',
         Priority = 1050,
         InstanceCount = 2,
         BuilderConditions = {
-            { UCBC, 'UnitsGreaterAtEnemy', { 0 , categories.LAND * categories.EXPERIMENTAL } },
+            { UCBC, 'UnitsGreaterAtEnemySwarm', { 0 , categories.LAND * categories.EXPERIMENTAL } },
 
             { EBC, 'GreaterThanEconStorageRatio', { 0.25, 0.35 } },  
 
@@ -781,14 +781,14 @@ BuilderGroup { BuilderGroupName = 'Swarm Defense Anti Ground Builders',         
     --    Reclaim Ground Defense    --
     -- ============================ --
     Builder {
-        BuilderName = 'U1 Reclaim T1+T2 PD',
+        BuilderName = 'S1 Reclaim T1+T2 PD',
         PlatoonTemplate = 'EngineerBuilder',
         PlatoonAIPlan = 'ReclaimStructuresAI',
         Priority = 250,
         InstanceCount = 1,
         BuilderConditions = {
             -- When do we want to build this ?
-            { UCBC, 'HaveUnitRatioVersusCap', { MaxDefense, '>', categories.STRUCTURE * categories.DEFENSE } },
+            { UCBC, 'HaveUnitRatioVersusCapSwarm', { MaxDefense, '>', categories.STRUCTURE * categories.DEFENSE } },
             -- Do we need additional conditions to build it ?
             { UCBC, 'HaveGreaterThanUnitsWithCategory', { 0, categories.STRUCTURE * categories.DEFENSE * categories.TECH3 * ( categories.DIRECTFIRE + categories.INDIRECTFIRE ) - categories.ANTIAIR }},
             { UCBC, 'HaveGreaterThanUnitsWithCategory', { 0, categories.STRUCTURE * categories.DEFENSE * (categories.TECH1 + categories.TECH2) * ( categories.DIRECTFIRE + categories.INDIRECTFIRE ) - categories.ANTIAIR }},
@@ -812,7 +812,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Defense Anti Ground Builders',         
 BuilderGroup { BuilderGroupName = 'Swarm Defense Anti Air Builders',                              
     BuildersType = 'EngineerBuilder',
     --[[ Builder {
-        BuilderName = 'U1 AA',
+        BuilderName = 'S1 AA',
         PlatoonTemplate = 'EngineerBuilder',
         Priority = 500,
         InstanceCount = 1,                                     
@@ -838,7 +838,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Defense Anti Air Builders',
         }
     }, ]]--
     Builder {
-        BuilderName = 'U2 AA',
+        BuilderName = 'S2 AA',
         PlatoonTemplate = 'T2EngineerBuilder',
         Priority = 905,
         InstanceCount = 2,                                      
@@ -864,7 +864,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Defense Anti Air Builders',
         }
     },
     Builder {
-        BuilderName = 'U3 AA',
+        BuilderName = 'S3 AA',
         PlatoonTemplate = 'T3EngineerBuildernoSUB',
         Priority = 1025,
         InstanceCount = 3,                                      
@@ -893,14 +893,14 @@ BuilderGroup { BuilderGroupName = 'Swarm Defense Anti Air Builders',
     --    Reclaim AA    --
     -- ================ --
     Builder {
-        BuilderName = 'U1 Reclaim T1+T2 AA',
+        BuilderName = 'S1 Reclaim T1+T2 AA',
         PlatoonTemplate = 'EngineerBuilder',
         PlatoonAIPlan = 'ReclaimStructuresAI',
         Priority = 500,
         InstanceCount = 1,
         BuilderConditions = {
             -- When do we want to build this ?
-            { UCBC, 'HaveUnitRatioVersusCap', { MaxDefense, '>', categories.STRUCTURE * categories.DEFENSE } },
+            { UCBC, 'HaveUnitRatioVersusCapSwarm', { MaxDefense, '>', categories.STRUCTURE * categories.DEFENSE } },
             -- Do we need additional conditions to build it ?
             { UCBC, 'HaveGreaterThanUnitsWithCategory', { 0, categories.STRUCTURE * categories.DEFENSE * categories.TECH3 * categories.ANTIAIR }},
             { UCBC, 'HaveGreaterThanUnitsWithCategory', { 0, categories.STRUCTURE * categories.DEFENSE * (categories.TECH1 + categories.TECH2) * categories.ANTIAIR }},
