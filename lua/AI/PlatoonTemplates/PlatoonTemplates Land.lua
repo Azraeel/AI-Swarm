@@ -9,8 +9,25 @@ PlatoonTemplate {
 }
 
 PlatoonTemplate {
+    Name = 'AISwarm LandAttack Mini Raids',
+    Plan = 'LandAttackAIUveso',
+    GlobalSquads = {
+        { categories.MOBILE * categories.LAND * categories.DIRECTFIRE - categories.ANTIAIR - categories.EXPERIMENTAL - categories.ENGINEER - categories.SCOUT, 3, 5, 'attack', 'none' },
+    },
+}
+
+PlatoonTemplate {
     Name = 'AISwarm LandAttack Intercept',
     Plan = 'InterceptorAISwarm',
+    GlobalSquads = {
+        { categories.MOBILE * categories.LAND * categories.DIRECTFIRE - categories.ANTIAIR - categories.EXPERIMENTAL - categories.ENGINEER - categories.SCOUT, 1, 8, 'attack', 'none' },
+        { categories.MOBILE * categories.LAND * categories.INDIRECTFIRE - categories.ANTIAIR - categories.EXPERIMENTAL - categories.ENGINEER - categories.SCOUT, 0, 3, 'artillery', 'none' },
+    },
+}
+
+PlatoonTemplate {
+    Name = 'AISwarm LandAttack Anti-Raid',
+    Plan = 'LandAttackAIUveso',
     GlobalSquads = {
         { categories.MOBILE * categories.LAND * categories.DIRECTFIRE - categories.ANTIAIR - categories.EXPERIMENTAL - categories.ENGINEER - categories.SCOUT, 1, 8, 'attack', 'none' },
         { categories.MOBILE * categories.LAND * categories.INDIRECTFIRE - categories.ANTIAIR - categories.EXPERIMENTAL - categories.ENGINEER - categories.SCOUT, 0, 3, 'artillery', 'none' },

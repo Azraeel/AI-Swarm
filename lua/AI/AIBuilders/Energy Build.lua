@@ -16,13 +16,13 @@ BuilderGroup {
     --    TECH 1    --
     -- ============ --
     Builder {
-        BuilderName = 'S1 Power low trend',
+        BuilderName = 'Swarm Power low trend',
         PlatoonTemplate = 'EngineerBuilder',
         Priority = 650,
         InstanceCount = 2,                                                      -- Number of plattons that will be formed with this template.
         DelayEqualBuildPlattons = {'Energy', 3},
         BuilderConditions = {
-            { EBC, 'LessThanEconStorageRatio', { 1, 0.40 } },             -- Ratio from 0 to 1. (1=100%)
+            { EBC, 'LessThanEnergyTrend', { 0.0 } },             -- Ratio from 0 to 1. (1=100%)
 
             { UCBC, 'HaveLessThanUnitsWithCategory', { 1, categories.ENERGYPRODUCTION * categories.TECH2 } },
 
@@ -30,7 +30,9 @@ BuilderGroup {
 
             { EBC, 'GreaterThanEconIncome',  { 0.5, 0.0}}, -- Absolut Base income
 
-            { MIBC, 'GreaterThanGameTime', { 260 } },
+            { UCBC, 'GreaterThanGameTimeSeconds', { 260 } },
+
+            { UCBC, 'CheckBuildPlattonDelay', { 'Energy' }},
         },
         BuilderType = 'Any',
         BuilderData = {
@@ -48,13 +50,15 @@ BuilderGroup {
     },
 
     Builder {
-        BuilderName = 'S1 Power low trend - Overbuild',
+        BuilderName = 'Swarm Power low trend - Overbuild',
         PlatoonTemplate = 'EngineerBuilder',
         Priority = 650,
         InstanceCount = 2,                                                      -- Number of plattons that will be formed with this template.
         DelayEqualBuildPlattons = {'Energy', 3},
         BuilderConditions = {
-            { EBC, 'LessThanEconStorageRatio', { 1, 0.80 } },             -- Ratio from 0 to 1. (1=100%)
+            { UCBC, 'CheckBuildPlattonDelay', { 'Energy' }},
+
+            { EBC, 'LessThanEnergyTrend', { 7.5 } },
 
             { UCBC, 'HaveLessThanUnitsWithCategory', { 1, categories.ENERGYPRODUCTION * categories.TECH2 } },
 
@@ -62,7 +66,7 @@ BuilderGroup {
 
             { EBC, 'GreaterThanEconIncome',  { 0.5, 0.0}}, -- Absolut Base income
 
-            { MIBC, 'GreaterThanGameTime', { 260 } },
+            { UCBC, 'GreaterThanGameTimeSeconds', { 260 } },
         },
         BuilderType = 'Any',
         BuilderData = {
@@ -80,15 +84,17 @@ BuilderGroup {
     },
 
     Builder {
-        BuilderName = 'SC Power low trend',
+        BuilderName = 'Swarm Power low trend',
         PlatoonTemplate = 'CommanderBuilder',
         Priority = 650,
         BuilderConditions = {
-            { EBC, 'LessThanEconStorageRatio', { 1, 0.30 } },             -- Ratio from 0 to 1. (1=100%)
+            { EBC, 'LessThanEnergyTrend', { 7.5 } },
 
             { UCBC, 'HaveLessThanUnitsWithCategory', { 1, categories.ENERGYPRODUCTION * categories.TECH2 } },
 
             { UCBC, 'HasNotParagon', {} },
+
+            { UCBC, 'GreaterThanGameTimeSeconds', { 2 } },
 
             { EBC, 'GreaterThanEconIncome',  { 0.5, 0.0}}, -- Absolut Base income
         },
@@ -102,27 +108,27 @@ BuilderGroup {
                 LocationType = 'LocationType',
                 BuildStructures = {
                     'T1EnergyProduction',
+                    'T1EnergyProduction',
+                    'T1EnergyProduction',
                 },
             }
         }
     },
     Builder {
-        BuilderName = 'S1 Power Hydrocarbon',
+        BuilderName = 'Swarm Power Hydrocarbon',
         PlatoonTemplate = 'EngineerBuilder',
         Priority = 595,
         DelayEqualBuildPlattons = {'Energy', 1},
         InstanceCount = 1,
         BuilderConditions = {
             -- When do we want to build this ?
-            { MABC, 'CanBuildOnHydroSwarm', { 'LocationType', 90, -1000, 100, 1, 'AntiSurface', 1 }},            -- Do we need additional conditions to build it ?
+            { MABC, 'CanBuildOnHydro', { 'LocationType', 90, -1000, 100, 1, 'AntiSurface', 1 }},            -- Do we need additional conditions to build it ?
 
             { UCBC, 'HasNotParagon', {} },
 
-            { EBC, 'GreaterThanEconIncome',  { 0.4, 2.0}}, -- Absolut Base income 4 60
+            { EBC, 'GreaterThanEconIncome',  { 0.2, 2.0}}, -- Absolut Base income 4 60
 
             { UCBC, 'CheckBuildPlattonDelay', { 'Energy' }},
-
-            { UCBC, 'HaveUnitRatioVersusCapSwarm', { MaxCapStructure , '<', categories.STRUCTURE - categories.MASSEXTRACTION - categories.DEFENSE - categories.FACTORY } },
         },
         BuilderType = 'Any',
         BuilderData = {
@@ -143,9 +149,9 @@ BuilderGroup {
         DelayEqualBuildPlattons = {'Energy', 20},
         InstanceCount = 1,
         BuilderConditions = {
-            { UCBC, 'HaveLessThanUnitsWithCategory', { 2, categories.ENERGYPRODUCTION * categories.TECH3 } },
+            { UCBC, 'HaveLessThanUnitsWithCategory', { 1, categories.ENERGYPRODUCTION * categories.TECH3 } },
             
-            { UCBC, 'HaveLessThanUnitsWithCategory', { 2, categories.ENERGYPRODUCTION * categories.TECH2 } },
+            { UCBC, 'HaveLessThanUnitsWithCategory', { 1, categories.ENERGYPRODUCTION * categories.TECH2 } },
 
             { UCBC, 'CheckBuildPlattonDelay', { 'Energy' }},
 
@@ -153,7 +159,7 @@ BuilderGroup {
         },
         BuilderType = 'Any',
         BuilderData = {
-        	NumAssistees = 25,
+            NumAssistees = 25,
             Construction = {
                 DesiresAssist = true,
                 BuildClose = false,
@@ -174,17 +180,17 @@ BuilderGroup {
         Priority = 1000,
         InstanceCount = 1,
         BuilderConditions = {
-        	{ UCBC, 'HaveLessThanUnitsWithCategory', { 1, categories.ENERGYPRODUCTION * categories.TECH3 } },
+            { UCBC, 'HaveLessThanUnitsWithCategory', { 1, categories.ENERGYPRODUCTION * categories.TECH3 } },
 
-            { UCBC, 'HaveGreaterThanUnitsWithCategory', { 1, categories.ENERGYPRODUCTION * categories.TECH2 } },
-        	
+            { UCBC, 'HaveGreaterThanUnitsWithCategory', { 0, categories.ENERGYPRODUCTION * categories.TECH2 } },
+            
             { EBC, 'LessThanEconStorageRatio', { 1, 0.45 } },             -- Ratio from 0 to 1. (1=100%)
 
             { UCBC, 'HaveLessThanUnitsInCategoryBeingBuilt', { 1, categories.STRUCTURE * categories.ENERGYPRODUCTION * categories.TECH2 }},
         },
         BuilderType = 'Any',
         BuilderData = {
-        	NumAssistees = 25,
+            NumAssistees = 25,
             Construction = {
                 DesiresAssist = true,
                 BuildClose = false,
@@ -209,7 +215,7 @@ BuilderGroup {
         DelayEqualBuildPlattons = {'Energy', 10},
         InstanceCount = 1,
         BuilderConditions = {
-            { UCBC, 'HaveLessThanUnitsWithCategory', { 2, categories.ENERGYPRODUCTION * categories.TECH3 } },
+            { UCBC, 'HaveLessThanUnitsWithCategory', { 1, categories.ENERGYPRODUCTION * categories.TECH3 } },
 
             { UCBC, 'CheckBuildPlattonDelay', { 'Energy' }},
 
@@ -217,7 +223,7 @@ BuilderGroup {
         },
         BuilderType = 'Any',
         BuilderData = {
-        	NumAssistees = 40,
+            NumAssistees = 40,
             Construction = {
                 DesiresAssist = true,
                 BuildClose = false,
@@ -239,15 +245,15 @@ BuilderGroup {
         DelayEqualBuildPlattons = {'Energy', 10},
         InstanceCount = 1,
         BuilderConditions = {
-            { UCBC, 'HaveGreaterThanUnitsWithCategory', { 1, categories.ENERGYPRODUCTION * categories.TECH3 } },
+            { UCBC, 'HaveGreaterThanUnitsWithCategory', { 0, categories.ENERGYPRODUCTION * categories.TECH3 } },
 
             { UCBC, 'CheckBuildPlattonDelay', { 'Energy' }},
 
-            { EBC, 'LessThanEconStorageRatio', { 1, 0.45 } },             -- Ratio from 0 to 1. (1=100%)
+            { EBC, 'LessThanEconStorageRatio', { 1, 0.50 } },             -- Ratio from 0 to 1. (1=100%)
         },
         BuilderType = 'Any',
         BuilderData = {
-        	NumAssistees = 40,
+            NumAssistees = 40,
             Construction = {
                 DesiresAssist = true,
                 BuildClose = false,
@@ -270,7 +276,7 @@ BuilderGroup {
         DelayEqualBuildPlattons = {'Energy', 10},
         InstanceCount = 1,
         BuilderConditions = {
-            { UCBC, 'HaveGreaterThanUnitsWithCategory', { 2, categories.ENERGYPRODUCTION * categories.TECH3 } },
+            { UCBC, 'HaveGreaterThanUnitsWithCategory', { 1, categories.ENERGYPRODUCTION * categories.TECH3 } },
 
             { EBC, 'LessThanEconStorageRatio', { 1, 0.45 } },             -- Ratio from 0 to 1. (1=100%)
 
@@ -282,7 +288,7 @@ BuilderGroup {
         },
         BuilderType = 'Any',
         BuilderData = {
-        	NumAssistees = 40,
+            NumAssistees = 40,
             Construction = {
                 DesiresAssist = true,
                 BuildClose = false,
@@ -308,7 +314,6 @@ BuilderGroup {
             { MIBC, 'GreaterThanGameTime', { 300 } },
             { UCBC, 'UnitCapCheckLess', { .7 } },
             { UCBC, 'HaveLessThanUnitsWithCategory', { 1, 'ENERGYSTORAGE' }},
-            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.0, 1.1 }},
         },
         BuilderType = 'Any',
         BuilderData = {
@@ -327,7 +332,7 @@ BuilderGroup {
         BuilderConditions = {
             { MIBC, 'GreaterThanGameTime', { 600 } },
             { UCBC, 'UnitCapCheckLess', { .7 } },
-            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.0, 1.1 }},
+            { EBC, 'GreaterThanEconStorageRatio', { 0.20, 0.30 } },             -- Ratio from 0 to 1. (1=100%)
             { UCBC, 'HaveLessThanUnitsWithCategory', { 9, 'ENERGYSTORAGE' }},
         },
         BuilderType = 'Any',

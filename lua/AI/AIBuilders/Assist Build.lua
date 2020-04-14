@@ -702,7 +702,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Reclaim',                     
             { UCBC, 'HaveLessThanUnitsWithCategory', { 1, categories.MOBILE * categories.COMMAND }},
             -- Do we need additional conditions to build it ?
             { UCBC, 'HaveLessThanUnitsWithCategory', { 1, categories.STRUCTURE * categories.MASSEXTRACTION } },
-            { EBC, 'LessThanEconStorageRatio', { 0.4, 1}}, -- Ratio from 0 to 1. (1=100%)
+            { EBC, 'LessThanEconStorageRatio', { 0.9, 1}}, -- Ratio from 0 to 1. (1=100%)
             -- Have we the eco to build it ?
             -- Don't build it if...
         },
@@ -720,7 +720,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Reclaim',                     
             { UCBC, 'HaveLessThanUnitsWithCategory', { 1, categories.MOBILE * categories.COMMAND }},
             -- Do we need additional conditions to build it ?
             { UCBC, 'HaveLessThanUnitsWithCategory', { 1, categories.STRUCTURE * categories.ENERGYPRODUCTION } },
-            { EBC, 'LessThanEconStorageRatio', { 0.7, 0.6}}, -- Ratio from 0 to 1. (1=100%)
+            { EBC, 'LessThanEconStorageRatio', { 0.9, 0.9}}, -- Ratio from 0 to 1. (1=100%)
             -- Have we the eco to build it ?
             -- Don't build it if...
         },
@@ -736,7 +736,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Reclaim',                     
         BuilderConditions = {
             -- When do we want to build this ?
             { UCBC, 'HaveGreaterThanUnitsWithCategory', { 3, categories.MOBILE * categories.ENGINEER}},
-            { EBC, 'LessThanEconStorageRatio', { 0.7, 1}}, -- Ratio from 0 to 1. (1=100%)
+            { EBC, 'LessThanEconStorageRatio', { 0.9, 1}}, -- Ratio from 0 to 1. (1=100%)
             -- Do we need additional conditions to build it ?
             -- Have we the eco to build it ?
             -- Don't build it if...
@@ -754,7 +754,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Reclaim',                     
             -- When do we want to build this ?
             { UCBC, 'HaveGreaterThanUnitsWithCategory', { 9, categories.MOBILE * categories.ENGINEER}},
             -- Do we need additional conditions to build it ?
-            { EBC, 'LessThanEconStorageRatio', { 0.7, 1}}, -- Ratio from 0 to 1. (1=100%)
+            { EBC, 'LessThanEconStorageRatio', { 0.9, 1}}, -- Ratio from 0 to 1. (1=100%)
             { UCBC, 'BuildOnlyOnLocationSwarm', { 'LocationType', 'MAIN' } },
             -- Have we the eco to build it ?
             -- Don't build it if...
@@ -772,7 +772,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Reclaim',                     
             -- When do we want to build this ?
             { UCBC, 'HaveGreaterThanUnitsWithCategory', { 0, categories.MOBILE * categories.ENGINEER * categories.TECH2}},
             -- Do we need additional conditions to build it ?
-            { EBC, 'LessThanEconStorageRatio', { 0.7, 1}}, -- Ratio from 0 to 1. (1=100%)
+            { EBC, 'LessThanEconStorageRatio', { 0.9, 1}}, -- Ratio from 0 to 1. (1=100%)
             { UCBC, 'BuildOnlyOnLocationSwarm', { 'LocationType', 'MAIN' } },
             -- Have we the eco to build it ?
             -- Don't build it if...
@@ -790,7 +790,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Reclaim',                     
             -- When do we want to build this ?
             { UCBC, 'HaveGreaterThanUnitsWithCategory', { 0, categories.MOBILE * categories.ENGINEER * categories.TECH3}},
             -- Do we need additional conditions to build it ?
-            { EBC, 'LessThanEconStorageRatio', { 0.7, 1}}, -- Ratio from 0 to 1. (1=100%)
+            { EBC, 'LessThanEconStorageRatio', { 0.9, 1}}, -- Ratio from 0 to 1. (1=100%)
             { UCBC, 'BuildOnlyOnLocationSwarm', { 'LocationType', 'MAIN' } },
             -- Have we the eco to build it ?
             -- Don't build it if...

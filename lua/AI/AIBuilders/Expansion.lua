@@ -18,7 +18,7 @@ BuilderGroup {
 
             { UCBC, 'StartLocationNeedsEngineer', { 'LocationType', 1000, -1000, 100, 1, 'StructuresNotMex' } },
 
-            { EBC, 'GreaterThanEconStorageRatio', { 0.30, 0.45 } },             -- Ratio from 0 to 1. (1=100%)
+            { EBC, 'GreaterThanEconStorageRatio', { 0.25, 0.45 } },             -- Ratio from 0 to 1. (1=100%)
         },
         BuilderType = 'Any',
         BuilderData = {
@@ -39,7 +39,7 @@ BuilderGroup {
                     'T1LandFactory',
                     'T1Radar',
                     'T1GroundDefense',
-                    'T1AADefense',
+                    'T1LandFactory',
                 }
             },
         }
@@ -75,7 +75,7 @@ BuilderGroup {
                     'T1LandFactory',
                     'T1Radar',
                     'T1GroundDefense',
-                    'T1AADefense',
+                    'T1LandFactory',
                 }
             },
         }
@@ -90,7 +90,7 @@ BuilderGroup {
 
             { UCBC, 'StartLocationNeedsEngineer', { 'LocationType', 1000, -1000, 100, 1, 'StructuresNotMex' } },
 
-            { EBC, 'GreaterThanEconStorageRatio', { 0.30, 0.45 } },             -- Ratio from 0 to 1. (1=100%)
+            { EBC, 'GreaterThanEconStorageRatio', { 0.25, 0.45 } },             -- Ratio from 0 to 1. (1=100%)
         },
         BuilderType = 'Any',
         BuilderData = {
@@ -111,7 +111,7 @@ BuilderGroup {
                     'T1LandFactory',
                     'T1Radar',
                     'T1GroundDefense',
-                    'T1AADefense',
+                    'T1LandFactory',
                 }
             },
         }
@@ -147,7 +147,7 @@ BuilderGroup {
                     'T1LandFactory',
                     'T1Radar',
                     'T1GroundDefense',
-                    'T1AADefense',
+                    'T1LandFactory',
                 }
             },
         }

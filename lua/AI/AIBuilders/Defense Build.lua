@@ -428,15 +428,17 @@ BuilderGroup { BuilderGroupName = 'Swarm SMD Builder',
         PlatoonTemplate = 'T3EngineerBuildernoSUB',
         Priority = 1600,
         BuilderConditions = {
-        	{ UCBC, 'HaveGreaterThanUnitsWithCategory', { 1, categories.ENERGYPRODUCTION * categories.TECH3 } },
+        	{ UCBC, 'HaveGreaterThanUnitsWithCategory', { 0, categories.ENERGYPRODUCTION * categories.TECH3 } },
 
             { UCBC, 'HaveLessThanUnitsWithCategory', { 1, categories.STRUCTURE * categories.DEFENSE * categories.ANTIMISSILE * categories.TECH3 } },
 
             { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 0, categories.ENGINEER * categories.TECH3}},
 
-            { UCBC, 'BuildOnlyOnLocationSwarm', { 'LocationType', 'MAIN' } },
+            { UCBC, 'BuildOnlyOnLocation', { 'LocationType', 'MAIN' } },
 
-            { EBC, 'GreaterThanEconStorageRatio', { 0.00, 0.00 } },        
+            { MIBC, 'GreaterThanGameTime', { 1680 } },
+
+            { EBC, 'GreaterThanEconStorageRatio', { 0.0, 0.0 } },        
         },
         BuilderType = 'Any',
         BuilderData = {

@@ -13,11 +13,11 @@ if not categories.STEALTHFIELD then categories.STEALTHFIELD = categories.SHIELD 
 BuilderGroup { BuilderGroupName = 'Swarm Land Scout Builders',                               -- BuilderGroupName, initalized from AIBaseTemplates in "\lua\AI\AIBaseTemplates\"
     BuildersType = 'FactoryBuilder',
     
-    Builder { BuilderName = 'S1R Land Scout',
+    Builder { BuilderName = 'U1R Land Scout',
         PlatoonTemplate = 'T1LandScout',
-        Priority = 1001,
+        Priority = 1010,
         BuilderConditions = {
-            { UCBC, 'LessThanGameTimeSeconds', { 120 } }, 
+            { UCBC, 'LessThanGameTimeSeconds', { 260 } }, 
 
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
 
@@ -352,18 +352,53 @@ BuilderGroup {
     BuildersType = 'PlatoonFormBuilder', -- A PlatoonFormBuilder is for builder groups of units.
 
     Builder {
+        BuilderName = 'Microed Small Land Attack - Anti-Raid',
+        PlatoonTemplate = 'AISwarm LandAttack Micro Small', 
+        Priority = 100,
+        InstanceCount = 1,
+        BuilderType = 'Any',
+        BuilderConditions = { 
+            { UCBC, 'EnemyUnitsGreaterAtLocationRadius', {  BasePanicZone, 'LocationType', 0, categories.LAND - categories.SCOUT }},
+        },
+        BuilderData = {
+            AttackEnemyStrength = 200,
+            SearchRadius = BasePanicZone,
+            GetTargetsFromBase = true,
+            TargetSearchCategory = categories.ALLUNITS - categories.AIR,                         
+            MoveToCategories = {
+                categories.MOBILE * categories.LAND * categories.INDIRECTFIRE,
+                categories.MOBILE * categories.LAND * categories.DIRECTFIRE,
+                categories.MOBILE * categories.LAND * categories.ANTIAIR,
+                categories.STRUCTURE * categories.MASSEXTRACTION, 
+                categories.STRUCTURE * categories.ENERGYPRODUCTION,  
+                categories.STRUCTURE,                                             
+                categories.ALLUNITS, 
+            },
+            WeaponTargetCategories = {                                          
+                categories.EXPERIMENTAL,
+                categories.COMMAND,
+                categories.INDIRECTFIRE,
+                categories.DIRECTFIRE,
+                categories.ANTIAIR,
+                categories.MOBILE,
+                categories.ALLUNITS,
+            },
+        },        
+    },
+
+    Builder {
         BuilderName = 'Microed Small Land Attack - Panic',
         PlatoonTemplate = 'AISwarm LandAttack Micro Small', 
         Priority = 100,
         InstanceCount = 4,
         BuilderType = 'Any',
         BuilderConditions = { 
-        	{ UCBC, 'EnemyUnitsGreaterAtLocationRadiusSwarm', {  BasePanicZone, 'LocationType', 1, categories.LAND - categories.SCOUT }},
+            { UCBC, 'EnemyUnitsGreaterAtLocationRadius', {  BasePanicZone, 'LocationType', 1, categories.LAND - categories.SCOUT }},
         },
         BuilderData = {
             AttackEnemyStrength = 100,
             SearchRadius = BasePanicZone,
-            GetTargetsFromBase = false,
+            GetTargetsFromBase = true,
             TargetSearchCategory = categories.ALLUNITS - categories.AIR,                         
             MoveToCategories = {
                 categories.MOBILE * categories.LAND * categories.INDIRECTFIRE,
@@ -395,7 +430,7 @@ BuilderGroup {
         BuilderConditions = { 
             { UCBC, 'LessThanGameTimeSeconds', { 1500 } },
 
-            { UCBC, 'EnemyUnitsGreaterAtLocationRadiusSwarm', {  BaseMilitaryZone, 'LocationType', 1, categories.LAND - categories.SCOUT }},
+            { UCBC, 'EnemyUnitsGreaterAtLocationRadius', {  BaseMilitaryZone, 'LocationType', 1, categories.LAND - categories.SCOUT }},
         },
         BuilderData = {
             AttackEnemyStrength = 100,
@@ -432,7 +467,7 @@ BuilderGroup {
         BuilderConditions = { 
             { UCBC, 'LessThanGameTimeSeconds', { 1500 } },
 
-            { UCBC, 'EnemyUnitsGreaterAtLocationRadiusSwarm', {  BaseEnemyZone, 'LocationType', 1, categories.STRUCTURE - categories.SCOUT }},
+            { UCBC, 'EnemyUnitsGreaterAtLocationRadius', {  BaseEnemyZone, 'LocationType', 1, categories.STRUCTURE - categories.SCOUT }},
         },
         BuilderData = {
             AttackEnemyStrength = 100,
@@ -469,7 +504,7 @@ BuilderGroup {
         BuilderConditions = { 
             { UCBC, 'GreaterThanGameTimeSeconds', { 1500 } },
 
-            { UCBC, 'EnemyUnitsGreaterAtLocationRadiusSwarm', {  BaseMilitaryZone, 'LocationType', 1, categories.LAND - categories.SCOUT }},
+            { UCBC, 'EnemyUnitsGreaterAtLocationRadius', {  BaseMilitaryZone, 'LocationType', 1, categories.LAND - categories.SCOUT }},
         },
         BuilderData = {
             AttackEnemyStrength = 100,
@@ -506,7 +541,7 @@ BuilderGroup {
         BuilderConditions = { 
             { UCBC, 'GreaterThanGameTimeSeconds', { 1500 } },
 
-            { UCBC, 'EnemyUnitsGreaterAtLocationRadiusSwarm', {  BaseEnemyZone, 'LocationType', 1, categories.STRUCTURE - categories.SCOUT }},
+            { UCBC, 'EnemyUnitsGreaterAtLocationRadius', {  BaseEnemyZone, 'LocationType', 1, categories.STRUCTURE - categories.SCOUT }},
         },
         BuilderData = {
             AttackEnemyStrength = 100,
@@ -563,14 +598,14 @@ BuilderGroup {
             },
         },
         BuilderConditions = {                                                  
-            { UCBC, 'EnemyUnitsGreaterAtLocationRadiusSwarm', {  BaseMilitaryZone, 'LocationType', 0, categories.STRUCTURE - categories.NAVAL}}, 
+            { UCBC, 'EnemyUnitsGreaterAtLocationRadius', {  BaseMilitaryZone, 'LocationType', 0, categories.STRUCTURE - categories.NAVAL}}, 
         },
         BuilderType = 'Any',                                                  
     },
 
     Builder {
         BuilderName = 'Microed Raid Structure&Engineer - Enemy',                              
-        PlatoonTemplate = 'AISwarm LandAttack Micro Raid',                           
+        PlatoonTemplate = 'AISwarm LandAttack Mini Raids',                           
         Priority = 100,                                                       
         InstanceCount = 2,                                                     
         BuilderData = {
@@ -594,7 +629,40 @@ BuilderGroup {
                 categories.ALLUNITS,
             },
         },
-        BuilderConditions = {                                                   
+        BuilderConditions = { 
+            { UCBC, 'EnemyUnitsGreaterAtLocationRadius', {  BaseEnemyZone, 'LocationType', 0, categories.STRUCTURE - categories.NAVAL}},                                                  
+        },
+        BuilderType = 'Any',                                                    
+    },
+
+    Builder {
+        BuilderName = 'Microed Raid Mex&Engineer - Enemy - Early',                              
+        PlatoonTemplate = 'AISwarm LandAttack Micro Raid',                           
+        Priority = 100,                                                       
+        InstanceCount = 3,                                                     
+        BuilderData = {
+            SearchRadius = BaseEnemyZone,                                      
+            GetTargetsFromBase = false,                                        
+            RequireTransport = false,                                           
+            AggressiveMove = true,                                             
+            AttackEnemyStrength = 0,                                            
+            TargetSearchCategory = categories.MASSEXTRACTION + categories.ENGINEER,                      
+            MoveToCategories = {                                              
+                categories.ENGINEER,
+                categories.MASSEXTRACTION,
+                categories.STRUCTURE * categories.EXPERIMENTAL* categories.SHIELD,
+                categories.STRUCTURE * categories.ARTILLERY,
+                categories.STRUCTURE * categories.NUKE,
+                categories.STRUCTURE * categories.ENERGYPRODUCTION,
+                categories.STRUCTURE * categories.EXPERIMENTAL,
+                categories.STRUCTURE * categories.ANTIMISSILE * categories.TECH3,
+                categories.STRUCTURE * categories.DEFENSE * categories.TECH3,
+                categories.FACTORY * categories.TECH3,
+                categories.ALLUNITS,
+            },
+        },
+        BuilderConditions = {   
+            { UCBC, 'EnemyUnitsGreaterAtLocationRadius', {  BaseEnemyZone, 'LocationType', 0, categories.STRUCTURE - categories.NAVAL}},                                                
         },
         BuilderType = 'Any',                                                    
     },
@@ -623,7 +691,7 @@ BuilderGroup {
             },
         },
         BuilderConditions = {                                               
-            { UCBC, 'UnitsGreaterAtEnemySwarm', { 0 , categories.MASSEXTRACTION + categories.DEFENSE } },
+            { UCBC, 'UnitsGreaterAtEnemy', { 0 , categories.MASSEXTRACTION + categories.DEFENSE } },
         },
         BuilderType = 'Any',                                                    
     },
