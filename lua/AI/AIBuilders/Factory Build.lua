@@ -47,7 +47,7 @@ BuilderGroup { BuilderGroupName = 'Swarm ACU Initial Opener',
         PlatoonTemplate = 'CommanderBuilder',
         Priority = 4900,
         BuilderConditions = {
-            { MABC, 'CanBuildOnMass', { 'LocationType', 12, -500, 1, 0, 'AntiSurface', 1 }}, -- LocationType, distance, threatMin, threatMax, threatRadius, threatType, maxNum
+            { MABC, 'CanBuildOnMassSwarm', { 'LocationType', 12, -500, 1, 0, 'AntiSurface', 1 }}, -- LocationType, distance, threatMin, threatMax, threatRadius, threatType, maxNum
             { UCBC, 'HaveLessThanUnitsWithCategory', { 2, categories.STRUCTURE * categories.MASSEXTRACTION }},
         },
         BuilderType = 'Any',

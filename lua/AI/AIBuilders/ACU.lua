@@ -33,7 +33,7 @@ BuilderGroup {
             -- When do we want to build this ?
             { UCBC, 'GreaterThanGameTimeSeconds', { 60*2 } },
             -- Do we need additional conditions to build it ?
-            { UCBC, 'EnemyUnitsGreaterAtLocationRadius', {  200, 'LocationType', 0, categories.ALLUNITS - (categories.ENGINEER * categories.TECH1 * categories.TECH2) - categories.AIR - categories.SCOUT }}, -- radius, LocationType, unitCount, categoryEnemy
+            { UCBC, 'EnemyUnitsGreaterAtLocationRadiusSwarm', {  200, 'LocationType', 0, categories.ALLUNITS - (categories.ENGINEER * categories.TECH1 * categories.TECH2) - categories.AIR - categories.SCOUT }}, -- radius, LocationType, unitCount, categoryEnemy
             -- Don't build it if...
             { UCBC, 'HaveGreaterThanUnitsWithCategory', { 0, categories.STRUCTURE * categories.FACTORY * categories.LAND - categories.SUPPORTFACTORY } },
         },
@@ -64,7 +64,7 @@ BuilderGroup {
             -- When do we want to build this ?
             { UCBC, 'GreaterThanGameTimeSeconds', { 60*3 } },
             -- Do we need additional conditions to build it ?
-            { UCBC, 'EnemyUnitsGreaterAtLocationRadius', {  400, 'LocationType', 0, categories.ALLUNITS - (categories.ENGINEER * categories.TECH1 * categories.TECH2) - categories.AIR - categories.SCOUT }}, -- radius, LocationType, unitCount, categoryEnemy
+            { UCBC, 'EnemyUnitsGreaterAtLocationRadiusSwarm', {  400, 'LocationType', 0, categories.ALLUNITS - (categories.ENGINEER * categories.TECH1 * categories.TECH2) - categories.AIR - categories.SCOUT }}, -- radius, LocationType, unitCount, categoryEnemy
             -- Don't build it if...
             { UCBC, 'HaveGreaterThanUnitsWithCategory', { 0, categories.STRUCTURE * categories.FACTORY * categories.LAND - categories.SUPPORTFACTORY } },
         },

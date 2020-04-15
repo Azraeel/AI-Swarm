@@ -122,7 +122,7 @@ BuilderGroup {
         InstanceCount = 1,
         BuilderConditions = {
             -- When do we want to build this ?
-            { MABC, 'CanBuildOnHydro', { 'LocationType', 90, -1000, 100, 1, 'AntiSurface', 1 }},            -- Do we need additional conditions to build it ?
+            { MABC, 'CanBuildOnHydroSwarm', { 'LocationType', 90, -1000, 100, 1, 'AntiSurface', 1 }},            -- Do we need additional conditions to build it ?
 
             { UCBC, 'HasNotParagon', {} },
 

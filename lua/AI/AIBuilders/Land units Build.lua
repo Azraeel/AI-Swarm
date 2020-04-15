@@ -358,7 +358,7 @@ BuilderGroup {
         InstanceCount = 1,
         BuilderType = 'Any',
         BuilderConditions = { 
-            { UCBC, 'EnemyUnitsGreaterAtLocationRadius', {  BasePanicZone, 'LocationType', 0, categories.LAND - categories.SCOUT }},
+            { UCBC, 'EnemyUnitsGreaterAtLocationRadiusSwarm', {  BasePanicZone, 'LocationType', 0, categories.LAND - categories.SCOUT }},
         },
         BuilderData = {
             AttackEnemyStrength = 200,
@@ -393,7 +393,7 @@ BuilderGroup {
         InstanceCount = 4,
         BuilderType = 'Any',
         BuilderConditions = { 
-            { UCBC, 'EnemyUnitsGreaterAtLocationRadius', {  BasePanicZone, 'LocationType', 1, categories.LAND - categories.SCOUT }},
+            { UCBC, 'EnemyUnitsGreaterAtLocationRadiusSwarm', {  BasePanicZone, 'LocationType', 1, categories.LAND - categories.SCOUT }},
         },
         BuilderData = {
             AttackEnemyStrength = 100,
@@ -430,7 +430,7 @@ BuilderGroup {
         BuilderConditions = { 
             { UCBC, 'LessThanGameTimeSeconds', { 1500 } },
 
-            { UCBC, 'EnemyUnitsGreaterAtLocationRadius', {  BaseMilitaryZone, 'LocationType', 1, categories.LAND - categories.SCOUT }},
+            { UCBC, 'EnemyUnitsGreaterAtLocationRadiusSwarm', {  BaseMilitaryZone, 'LocationType', 1, categories.LAND - categories.SCOUT }},
         },
         BuilderData = {
             AttackEnemyStrength = 100,
@@ -467,7 +467,7 @@ BuilderGroup {
         BuilderConditions = { 
             { UCBC, 'LessThanGameTimeSeconds', { 1500 } },
 
-            { UCBC, 'EnemyUnitsGreaterAtLocationRadius', {  BaseEnemyZone, 'LocationType', 1, categories.STRUCTURE - categories.SCOUT }},
+            { UCBC, 'EnemyUnitsGreaterAtLocationRadiusSwarm', {  BaseEnemyZone, 'LocationType', 1, categories.STRUCTURE - categories.SCOUT }},
         },
         BuilderData = {
             AttackEnemyStrength = 100,
@@ -504,7 +504,7 @@ BuilderGroup {
         BuilderConditions = { 
             { UCBC, 'GreaterThanGameTimeSeconds', { 1500 } },
 
-            { UCBC, 'EnemyUnitsGreaterAtLocationRadius', {  BaseMilitaryZone, 'LocationType', 1, categories.LAND - categories.SCOUT }},
+            { UCBC, 'EnemyUnitsGreaterAtLocationRadiusSwarm', {  BaseMilitaryZone, 'LocationType', 1, categories.LAND - categories.SCOUT }},
         },
         BuilderData = {
             AttackEnemyStrength = 100,
@@ -541,7 +541,7 @@ BuilderGroup {
         BuilderConditions = { 
             { UCBC, 'GreaterThanGameTimeSeconds', { 1500 } },
 
-            { UCBC, 'EnemyUnitsGreaterAtLocationRadius', {  BaseEnemyZone, 'LocationType', 1, categories.STRUCTURE - categories.SCOUT }},
+            { UCBC, 'EnemyUnitsGreaterAtLocationRadiusSwarm', {  BaseEnemyZone, 'LocationType', 1, categories.STRUCTURE - categories.SCOUT }},
         },
         BuilderData = {
             AttackEnemyStrength = 100,
@@ -598,7 +598,7 @@ BuilderGroup {
             },
         },
         BuilderConditions = {                                                  
-            { UCBC, 'EnemyUnitsGreaterAtLocationRadius', {  BaseMilitaryZone, 'LocationType', 0, categories.STRUCTURE - categories.NAVAL}}, 
+            { UCBC, 'EnemyUnitsGreaterAtLocationRadiusSwarm', {  BaseMilitaryZone, 'LocationType', 0, categories.STRUCTURE - categories.NAVAL}}, 
         },
         BuilderType = 'Any',                                                  
     },
@@ -630,7 +630,7 @@ BuilderGroup {
             },
         },
         BuilderConditions = { 
-            { UCBC, 'EnemyUnitsGreaterAtLocationRadius', {  BaseEnemyZone, 'LocationType', 0, categories.STRUCTURE - categories.NAVAL}},                                                  
+            { UCBC, 'EnemyUnitsGreaterAtLocationRadiusSwarm', {  BaseEnemyZone, 'LocationType', 0, categories.STRUCTURE - categories.NAVAL}},                                                  
         },
         BuilderType = 'Any',                                                    
     },
@@ -662,7 +662,7 @@ BuilderGroup {
             },
         },
         BuilderConditions = {   
-            { UCBC, 'EnemyUnitsGreaterAtLocationRadius', {  BaseEnemyZone, 'LocationType', 0, categories.STRUCTURE - categories.NAVAL}},                                                
+            { UCBC, 'EnemyUnitsGreaterAtLocationRadiusSwarm', {  BaseEnemyZone, 'LocationType', 0, categories.STRUCTURE - categories.NAVAL}},                                                
         },
         BuilderType = 'Any',                                                    
     },
@@ -691,7 +691,7 @@ BuilderGroup {
             },
         },
         BuilderConditions = {                                               
-            { UCBC, 'UnitsGreaterAtEnemy', { 0 , categories.MASSEXTRACTION + categories.DEFENSE } },
+            { UCBC, 'UnitsGreaterAtEnemySwarm', { 0 , categories.MASSEXTRACTION + categories.DEFENSE } },
         },
         BuilderType = 'Any',                                                    
     },
