@@ -553,7 +553,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
         BuilderName = 'S3 Engineer Assist Build Nuke Missile',
         PlatoonTemplate = 'T3EngineerAssistnoSUB',
         Priority = 850,
-        InstanceCount = 14,
+        InstanceCount = 6,
         BuilderConditions = {
             { UCBC, 'UnitsGreaterAtLocation', { 'LocationType', 0, 'NUKE STRUCTURE'}},
 
@@ -563,7 +563,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
         BuilderData = {
             Assist = {
                 AssistLocation = 'LocationType',
-                AssisteeType = 'NonUnitBuildingStructure',
+                AssisteeType = 'Factory',
                 AssistRange = 500,
                 AssisteeCategory = 'STRUCTURE NUKE',
                 AssistUntilFinished = true,

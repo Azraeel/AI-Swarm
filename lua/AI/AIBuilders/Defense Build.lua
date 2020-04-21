@@ -434,7 +434,7 @@ BuilderGroup { BuilderGroupName = 'Swarm SMD Builder',
 
             { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 0, categories.ENGINEER * categories.TECH3}},
 
-            { UCBC, 'BuildOnlyOnLocation', { 'LocationType', 'MAIN' } },
+            { UCBC, 'BuildOnlyOnLocationSwarm', { 'LocationType', 'MAIN' } },
 
             { MIBC, 'GreaterThanGameTime', { 1680 } },
 

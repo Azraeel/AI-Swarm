@@ -1,6 +1,7 @@
 --WARN('['..string.gsub(debug.getinfo(1).source, ".*\\(.*.lua)", "%1")..', line:'..debug.getinfo(1).currentline..'] * AI-Swarm: offset aiarchetype-managerloader.lua' )
 
 local Buff = import('/lua/sim/Buff.lua')
+local HighestThread = {}
 
 
 -- This hook is for debug-option Platoon-Names. Hook for all AI's
@@ -8,15 +9,15 @@ SwarmExecutePlanFunction = ExecutePlan
 function ExecutePlan(aiBrain)
    -- enable ecomanager
     if aiBrain.Swarm then
-        aiBrain:ForkThread(EcoManagerThreadSwarm, aiBrain)
+        aiBrain:ForkThread(EcoManagerThread, aiBrain)
     end
     return SwarmExecutePlanFunction(aiBrain)
 end
 
-function SetArmyPoolBuffSwarm(aiBrain, CheatMult, BuildMult)
+function SetArmyPoolBuff(aiBrain, CheatMult, BuildMult)
     -- Store the new mult inside options, so new builded units get the new mult automatically
     if tostring(CheatMult) == tostring(ScenarioInfo.Options.CheatMult) and tostring(BuildMult) == tostring(ScenarioInfo.Options.BuildMult) then
-        --LOG('* SetArmyPoolBuffSwarm: CheatMult+BuildMult not changed. No buffing needed!')
+        --LOG('* SetArmyPoolBuff: CheatMult+BuildMult not changed. No buffing needed!')
         return
     end
     ScenarioInfo.Options.CheatMult = tostring(CheatMult)
@@ -41,7 +42,7 @@ function SetArmyPoolBuffSwarm(aiBrain, CheatMult, BuildMult)
     end
 end
 
-function EcoManagerThreadSwarm(aiBrain)
+function EcoManagerThread(aiBrain)
     while GetGameTimeSeconds() < 15 + aiBrain:GetArmyIndex() do
         WaitTicks(10)
     end
@@ -56,7 +57,7 @@ function EcoManagerThreadSwarm(aiBrain)
         ScenarioInfo.Options.CheatMult = tostring(CheatMultOption)
         ScenarioInfo.Options.BuildMult = tostring(BuildMultOption)
     end
-    --LOG('* AI-Swarm: Function EcoManagerThreadSwarm() started! CheatFactor:('..repr(CheatMultOption)..') - BuildFactor:('..repr(BuildMultOption)..') ['..aiBrain.Nickname..']')
+    --LOG('* AI-Swarm: Function EcoManagerThread() started! CheatFactor:('..repr(CheatMultOption)..') - BuildFactor:('..repr(BuildMultOption)..') ['..aiBrain.Nickname..']')
     local Engineers = {}
     local paragons = {}
     local Factories = {}
@@ -67,7 +68,7 @@ function EcoManagerThreadSwarm(aiBrain)
     local MyArmyRatio
     local bussy
     while aiBrain.Result ~= "defeat" do
-        --LOG('* AI-Swarm: Function EcoManagerThreadSwarm() beat. ['..aiBrain.Nickname..']')
+        --LOG('* AI-Swarm: Function EcoManagerThread() beat. ['..aiBrain.Nickname..']')
         WaitTicks(5)
         Engineers = aiBrain:GetListOfUnits(categories.ENGINEER - categories.STATIONASSISTPOD - categories.COMMAND - categories.SUBCOMMANDER, false, false) -- also gets unbuilded units (planed to build)
         StationPods = aiBrain:GetListOfUnits(categories.STATIONASSISTPOD, false, false) -- also gets unbuilded units (planed to build)
@@ -122,7 +123,7 @@ function EcoManagerThreadSwarm(aiBrain)
                     if CheatMult > tonumber(CheatMultOption) + 3 then CheatMult = tonumber(CheatMultOption) + 3 end
                     if BuildMult > tonumber(BuildMultOption) + 3 then BuildMult = tonumber(BuildMultOption) + 3 end
                     --LOG('* ECO + ally('..allyScore..') enemy('..enemyScore..') - ArmyRatio: '..math.floor(MyArmyRatio)..'% - Build/CheatMult old: '..math.floor(tonumber(ScenarioInfo.Options.BuildMult)*10)..' '..math.floor(tonumber(ScenarioInfo.Options.CheatMult)*10)..' - new: '..math.floor(BuildMult*10)..' '..math.floor(CheatMult*10)..'')
-                    SetArmyPoolBuffSwarm(aiBrain, CheatMult, BuildMult)
+                    SetArmyPoolBuff(aiBrain, CheatMult, BuildMult)
                 -- Increase cheatfactor to +2 after 30 hour gametime
                 elseif GetGameTimeSeconds() > 60 * 10 then
                     CheatMult = CheatMult + 0.1
@@ -132,7 +133,7 @@ function EcoManagerThreadSwarm(aiBrain)
                     if CheatMult > tonumber(CheatMultOption) + 2 then CheatMult = tonumber(CheatMultOption) + 2 end
                     if BuildMult > tonumber(BuildMultOption) + 2 then BuildMult = tonumber(BuildMultOption) + 2 end
                     --LOG('* ECO + ally('..allyScore..') enemy('..enemyScore..') - ArmyRatio: '..math.floor(MyArmyRatio)..'% - Build/CheatMult old: '..math.floor(tonumber(ScenarioInfo.Options.BuildMult)*10)..' '..math.floor(tonumber(ScenarioInfo.Options.CheatMult)*10)..' - new: '..math.floor(BuildMult*10)..' '..math.floor(CheatMult*10)..'')
-                    SetArmyPoolBuffSwarm(aiBrain, CheatMult, BuildMult)
+                    SetArmyPoolBuff(aiBrain, CheatMult, BuildMult)
                 -- Increase ECO if we have less than 40% of the enemy units
                 elseif MyArmyRatio < 35 then
                     CheatMult = CheatMult + 0.4
@@ -140,27 +141,27 @@ function EcoManagerThreadSwarm(aiBrain)
                     if CheatMult > tonumber(CheatMultOption) + 8 then CheatMult = tonumber(CheatMultOption) + 8 end
                     if BuildMult > tonumber(BuildMultOption) + 8 then BuildMult = tonumber(BuildMultOption) + 8 end
                     --LOG('* ECO + ally('..allyScore..') enemy('..enemyScore..') - ArmyRatio: '..math.floor(MyArmyRatio)..'% - Build/CheatMult old: '..math.floor(tonumber(ScenarioInfo.Options.BuildMult)*10)..' '..math.floor(tonumber(ScenarioInfo.Options.CheatMult)*10)..' - new: '..math.floor(BuildMult*10)..' '..math.floor(CheatMult*10)..'')
-                    SetArmyPoolBuffSwarm(aiBrain, CheatMult, BuildMult)
+                    SetArmyPoolBuff(aiBrain, CheatMult, BuildMult)
                 elseif MyArmyRatio < 55 then
                     CheatMult = CheatMult + 0.3
                     if CheatMult > tonumber(CheatMultOption) + 6 then CheatMult = tonumber(CheatMultOption) + 6 end
                     if BuildMult ~= tonumber(BuildMultOption) then BuildMult = tonumber(BuildMultOption) end
                     --LOG('* ECO + ally('..allyScore..') enemy('..enemyScore..') - ArmyRatio: '..math.floor(MyArmyRatio)..'% - Build/CheatMult old: '..math.floor(tonumber(ScenarioInfo.Options.BuildMult)*10)..' '..math.floor(tonumber(ScenarioInfo.Options.CheatMult)*10)..' - new: '..math.floor(BuildMult*10)..' '..math.floor(CheatMult*10)..'')
-                    SetArmyPoolBuffSwarm(aiBrain, CheatMult, BuildMult)
+                    SetArmyPoolBuff(aiBrain, CheatMult, BuildMult)
                 -- Increase ECO if we have less than 85% of the enemy units
                 elseif MyArmyRatio < 75 then
                     CheatMult = CheatMult + 0.2
                     if CheatMult > tonumber(CheatMultOption) + 4 then CheatMult = tonumber(CheatMultOption) + 4 end
                     if BuildMult ~= tonumber(BuildMultOption) then BuildMult = tonumber(BuildMultOption) end
                     --LOG('* ECO + ally('..allyScore..') enemy('..enemyScore..') - ArmyRatio: '..math.floor(MyArmyRatio)..'% - Build/CheatMult old: '..math.floor(tonumber(ScenarioInfo.Options.BuildMult)*10)..' '..math.floor(tonumber(ScenarioInfo.Options.CheatMult)*10)..' - new: '..math.floor(BuildMult*10)..' '..math.floor(CheatMult*10)..'')
-                    SetArmyPoolBuffSwarm(aiBrain, CheatMult, BuildMult)
+                    SetArmyPoolBuff(aiBrain, CheatMult, BuildMult)
                 -- Decrease ECO if we have to much units
                 elseif MyArmyRatio < 95 then
                     CheatMult = CheatMult + 0.1
                     if CheatMult > tonumber(CheatMultOption) + 3 then CheatMult = tonumber(CheatMultOption) + 3 end
                     if BuildMult ~= tonumber(BuildMultOption) then BuildMult = tonumber(BuildMultOption) end
                     --LOG('* ECO + ally('..allyScore..') enemy('..enemyScore..') - ArmyRatio: '..math.floor(MyArmyRatio)..'% - Build/CheatMult old: '..math.floor(tonumber(ScenarioInfo.Options.BuildMult)*10)..' '..math.floor(tonumber(ScenarioInfo.Options.CheatMult)*10)..' - new: '..math.floor(BuildMult*10)..' '..math.floor(CheatMult*10)..'')
-                    SetArmyPoolBuffSwarm(aiBrain, CheatMult, BuildMult)
+                    SetArmyPoolBuff(aiBrain, CheatMult, BuildMult)
                 -- Decrease ECO if we have to much units
                 elseif MyArmyRatio > 125 then
                     CheatMult = CheatMult - 0.5
@@ -168,13 +169,13 @@ function EcoManagerThreadSwarm(aiBrain)
                     if CheatMult < 0.9 then CheatMult = 0.9 end
                     if BuildMult < 0.9 then BuildMult = 0.9 end
                     --LOG('* ECO + ally('..allyScore..') enemy('..enemyScore..') - ArmyRatio: '..math.floor(MyArmyRatio)..'% - Build/CheatMult old: '..math.floor(tonumber(ScenarioInfo.Options.BuildMult)*10)..' '..math.floor(tonumber(ScenarioInfo.Options.CheatMult)*10)..' - new: '..math.floor(BuildMult*10)..' '..math.floor(CheatMult*10)..'')
-                    SetArmyPoolBuffSwarm(aiBrain, CheatMult, BuildMult)
+                    SetArmyPoolBuff(aiBrain, CheatMult, BuildMult)
                 elseif MyArmyRatio > 105 then
                     CheatMult = CheatMult - 0.1
                     if CheatMult < 1.0 then CheatMult = 1.0 end
                     if BuildMult ~= tonumber(BuildMultOption) then BuildMult = tonumber(BuildMultOption) end
                     --LOG('* ECO + ally('..allyScore..') enemy('..enemyScore..') - ArmyRatio: '..math.floor(MyArmyRatio)..'% - Build/CheatMult old: '..math.floor(tonumber(ScenarioInfo.Options.BuildMult)*10)..' '..math.floor(tonumber(ScenarioInfo.Options.CheatMult)*10)..' - new: '..math.floor(BuildMult*10)..' '..math.floor(CheatMult*10)..'')
-                    SetArmyPoolBuffSwarm(aiBrain, CheatMult, BuildMult)
+                    SetArmyPoolBuff(aiBrain, CheatMult, BuildMult)
                 -- Normal ECO
                 else -- MyArmyRatio > 85  MyArmyRatio <= 100
                     if CheatMult > CheatMultOption then
@@ -192,7 +193,7 @@ function EcoManagerThreadSwarm(aiBrain)
                         if BuildMult > tonumber(BuildMultOption) then BuildMult = tonumber(BuildMultOption) end
                     end
                     --LOG('* ECO + ally('..allyScore..') enemy('..enemyScore..') - ArmyRatio: '..math.floor(MyArmyRatio)..'% - Build/CheatMult old: '..math.floor(tonumber(ScenarioInfo.Options.BuildMult)*10)..' '..math.floor(tonumber(ScenarioInfo.Options.CheatMult)*10)..' - new: '..math.floor(BuildMult*10)..' '..math.floor(CheatMult*10)..'')
-                    SetArmyPoolBuffSwarm(aiBrain, CheatMult, BuildMult)
+                    SetArmyPoolBuff(aiBrain, CheatMult, BuildMult)
                 end
             end
         end
@@ -496,20 +497,20 @@ function EcoManagerThreadSwarm(aiBrain)
             -- Emergency Low Energy
             if aiBrain:GetEconomyStoredRatio('ENERGY') < 0.01 then
                 -- Disable Nuke
-                if DisableUnitsSwarm(aiBrain, categories.STRUCTURE * categories.MASSFABRICATION, 'MassFab') then bussy = true
+                if DisableUnits(aiBrain, categories.STRUCTURE * categories.MASSFABRICATION, 'MassFab') then bussy = true
                 -- Disable AntiNuke
-                elseif DisableUnitsSwarm(aiBrain, categories.STRUCTURE * categories.NUKE * (categories.TECH3 + categories.EXPERIMENTAL), 'Nuke') then bussy = true
+                elseif DisableUnits(aiBrain, categories.STRUCTURE * categories.NUKE * (categories.TECH3 + categories.EXPERIMENTAL), 'Nuke') then bussy = true
                 -- Disable Massfabricators
-                elseif DisableUnitsSwarm(aiBrain, categories.STRUCTURE * categories.ANTIMISSILE * categories.SILO * categories.TECH3, 'AntiNuke') then bussy = true
+                elseif DisableUnits(aiBrain, categories.STRUCTURE * categories.ANTIMISSILE * categories.SILO * categories.TECH3, 'AntiNuke') then bussy = true
                 -- Disable Intel
-                elseif DisableUnitsSwarm(aiBrain, categories.RADAR + categories.OMNI + categories.SONAR, 'Intel') then bussy = true
+                elseif DisableUnits(aiBrain, categories.RADAR + categories.OMNI + categories.SONAR, 'Intel') then bussy = true
                 -- Disable ExperimentalShields
-                elseif DisableUnitsSwarm(aiBrain, categories.STRUCTURE * categories.SHIELD * categories.EXPERIMENTAL, 'ExperimentalShields') then bussy = true
+                elseif DisableUnits(aiBrain, categories.STRUCTURE * categories.SHIELD * categories.EXPERIMENTAL, 'ExperimentalShields') then bussy = true
                 -- Disable NormalShields
-                elseif DisableUnitsSwarm(aiBrain, categories.STRUCTURE * categories.SHIELD - categories.EXPERIMENTAL, 'NormalShields') then bussy = true
+                elseif DisableUnits(aiBrain, categories.STRUCTURE * categories.SHIELD - categories.EXPERIMENTAL, 'NormalShields') then bussy = true
                 end
             elseif aiBrain:GetEconomyStoredRatio('ENERGY') < 0.95 then
-                if DisableUnitsSwarm(aiBrain, categories.STRUCTURE * categories.MASSFABRICATION, 'MassFab') then bussy = true
+                if DisableUnits(aiBrain, categories.STRUCTURE * categories.MASSFABRICATION, 'MassFab') then bussy = true
                 end
             end
         end
@@ -522,49 +523,49 @@ function EcoManagerThreadSwarm(aiBrain)
             -- Emergency Low Mass
             if aiBrain:GetEconomyStoredRatio('MASS') < 0.0 then
                 -- Disable AntiNuke
-                if DisableUnitsSwarm(aiBrain, categories.STRUCTURE * categories.ANTIMISSILE * categories.SILO * categories.TECH3, 'AntiNuke') then bussy = true
+                if DisableUnits(aiBrain, categories.STRUCTURE * categories.ANTIMISSILE * categories.SILO * categories.TECH3, 'AntiNuke') then bussy = true
                 end
             elseif aiBrain:GetEconomyStoredRatio('MASS') < 0.01 then
                 -- Disable Nuke
-                if DisableUnitsSwarm(aiBrain, categories.STRUCTURE * categories.NUKE * (categories.TECH3 + categories.EXPERIMENTAL), 'Nuke') then bussy = true
+                if DisableUnits(aiBrain, categories.STRUCTURE * categories.NUKE * (categories.TECH3 + categories.EXPERIMENTAL), 'Nuke') then bussy = true
                 end
             end
         elseif aiBrain:GetEconomyStoredRatio('ENERGY') > 0.50 then
             if aiBrain:GetEconomyStoredRatio('MASS') > 0.01 or aiBrain.HasParagon then
                 -- Enable NormalShields
-                if EnableUnitsSwarm(aiBrain, categories.STRUCTURE * categories.SHIELD - categories.EXPERIMENTAL, 'NormalShields') then bussy = true
+                if EnableUnits(aiBrain, categories.STRUCTURE * categories.SHIELD - categories.EXPERIMENTAL, 'NormalShields') then bussy = true
                 -- Enable ExperimentalShields
-                elseif EnableUnitsSwarm(aiBrain, categories.STRUCTURE * categories.SHIELD * categories.EXPERIMENTAL, 'ExperimentalShields') then bussy = true
+                elseif EnableUnits(aiBrain, categories.STRUCTURE * categories.SHIELD * categories.EXPERIMENTAL, 'ExperimentalShields') then bussy = true
                 -- Enable Intel
-                elseif EnableUnitsSwarm(aiBrain, categories.RADAR + categories.OMNI + categories.SONAR, 'Intel') then bussy = true
+                elseif EnableUnits(aiBrain, categories.RADAR + categories.OMNI + categories.SONAR, 'Intel') then bussy = true
                 -- Enable AntiNuke
-                elseif EnableUnitsSwarm(aiBrain, categories.STRUCTURE * categories.ANTIMISSILE * categories.SILO * categories.TECH3, 'AntiNuke') then bussy = true
+                elseif EnableUnits(aiBrain, categories.STRUCTURE * categories.ANTIMISSILE * categories.SILO * categories.TECH3, 'AntiNuke') then bussy = true
                 -- Enable massfabricators
-                elseif EnableUnitsSwarm(aiBrain, categories.STRUCTURE * categories.MASSFABRICATION, 'MassFab') then bussy = true
+                elseif EnableUnits(aiBrain, categories.STRUCTURE * categories.MASSFABRICATION, 'MassFab') then bussy = true
                 -- Enable Nuke
-                elseif EnableUnitsSwarm(aiBrain, categories.STRUCTURE * categories.NUKE * (categories.TECH3 + categories.EXPERIMENTAL), 'Nuke') then bussy = true
+                elseif EnableUnits(aiBrain, categories.STRUCTURE * categories.NUKE * (categories.TECH3 + categories.EXPERIMENTAL), 'Nuke') then bussy = true
                 end
             elseif aiBrain:GetEconomyStoredRatio('MASS') > 0.25 or aiBrain.HasParagon then
                 -- Enable NormalShields
-                if EnableUnitsSwarm(aiBrain, categories.STRUCTURE * categories.SHIELD - categories.EXPERIMENTAL, 'NormalShields') then bussy = true
+                if EnableUnits(aiBrain, categories.STRUCTURE * categories.SHIELD - categories.EXPERIMENTAL, 'NormalShields') then bussy = true
                 -- Enable ExperimentalShields
-                elseif EnableUnitsSwarm(aiBrain, categories.STRUCTURE * categories.SHIELD * categories.EXPERIMENTAL, 'ExperimentalShields') then bussy = true
+                elseif EnableUnits(aiBrain, categories.STRUCTURE * categories.SHIELD * categories.EXPERIMENTAL, 'ExperimentalShields') then bussy = true
                 -- Enable Intel
-                elseif EnableUnitsSwarm(aiBrain, categories.RADAR + categories.OMNI + categories.SONAR, 'Intel') then bussy = true
+                elseif EnableUnits(aiBrain, categories.RADAR + categories.OMNI + categories.SONAR, 'Intel') then bussy = true
                 -- Enable AntiNuke
-                elseif EnableUnitsSwarm(aiBrain, categories.STRUCTURE * categories.ANTIMISSILE * categories.SILO * categories.TECH3, 'AntiNuke') then bussy = true
+                elseif EnableUnits(aiBrain, categories.STRUCTURE * categories.ANTIMISSILE * categories.SILO * categories.TECH3, 'AntiNuke') then bussy = true
                 -- Enable massfabricators
-                elseif EnableUnitsSwarm(aiBrain, categories.STRUCTURE * categories.MASSFABRICATION, 'MassFab') then bussy = true
+                elseif EnableUnits(aiBrain, categories.STRUCTURE * categories.MASSFABRICATION, 'MassFab') then bussy = true
                 end
             else
                 -- Enable NormalShields
-                if EnableUnitsSwarm(aiBrain, categories.STRUCTURE * categories.SHIELD - categories.EXPERIMENTAL, 'NormalShields') then bussy = true
+                if EnableUnits(aiBrain, categories.STRUCTURE * categories.SHIELD - categories.EXPERIMENTAL, 'NormalShields') then bussy = true
                 -- Enable ExperimentalShields
-                elseif EnableUnitsSwarm(aiBrain, categories.STRUCTURE * categories.SHIELD * categories.EXPERIMENTAL, 'ExperimentalShields') then bussy = true
+                elseif EnableUnits(aiBrain, categories.STRUCTURE * categories.SHIELD * categories.EXPERIMENTAL, 'ExperimentalShields') then bussy = true
                 -- Enable Intel
-                elseif EnableUnitsSwarm(aiBrain, categories.RADAR + categories.OMNI + categories.SONAR, 'Intel') then bussy = true
+                elseif EnableUnits(aiBrain, categories.RADAR + categories.OMNI + categories.SONAR, 'Intel') then bussy = true
                 -- Enable massfabricators
-                elseif EnableUnitsSwarm(aiBrain, categories.STRUCTURE * categories.MASSFABRICATION, 'MassFab') then bussy = true
+                elseif EnableUnits(aiBrain, categories.STRUCTURE * categories.MASSFABRICATION, 'MassFab') then bussy = true
                 end
             end
         end
@@ -578,7 +579,7 @@ function EcoManagerThreadSwarm(aiBrain)
    end
 end
 
-function DisableUnitsSwarm(aiBrain, Category, UnitType)
+function DisableUnits(aiBrain, Category, UnitType)
     local Units = aiBrain:GetListOfUnits(Category, false, false) -- also gets unbuilded units (planed to build)
     for _, unit in Units do
         if unit.Dead then continue end
@@ -586,7 +587,7 @@ function DisableUnitsSwarm(aiBrain, Category, UnitType)
         -- Units that only needs to be set on pause
         if UnitType == 'Nuke' or UnitType == 'AntiNuke' then
             if not unit:IsPaused() then
-                --LOG('*DisableUnitsSwarm: Unit :SetPaused true'..UnitType..' - '..unit:GetBlueprint().BlueprintId..' - '..aiBrain.Name)
+                --LOG('*DisableUnits: Unit :SetPaused true'..UnitType..' - '..unit:GetBlueprint().BlueprintId..' - '..aiBrain.Name)
                 unit:SetPaused( true )
                 -- now return, we only want do disable one unit per loop
                 return true
@@ -595,20 +596,20 @@ function DisableUnitsSwarm(aiBrain, Category, UnitType)
         -- Maintenance -- for units that are usually "on": radar, mass extractors, etc.
         if unit.MaintenanceConsumption == true then
             unit:OnProductionPaused()
-            --LOG('*DisableUnitsSwarm: Unit OnProductionPaused '..UnitType..' - '..unit:GetBlueprint().BlueprintId..' - '..aiBrain.Name)
+            --LOG('*DisableUnits: Unit OnProductionPaused '..UnitType..' - '..unit:GetBlueprint().BlueprintId..' - '..aiBrain.Name)
             return true
         end
         -- Active -- when upgrading, constructing, or something similar.
         if unit.ActiveConsumption == true then
             unit:SetActiveConsumptionInactive()
-            --LOG('*DisableUnitsSwarm: Unit SetActiveConsumptionInactive '..UnitType..' - '..unit:GetBlueprint().BlueprintId..' - '..aiBrain.Name)
+            --LOG('*DisableUnits: Unit SetActiveConsumptionInactive '..UnitType..' - '..unit:GetBlueprint().BlueprintId..' - '..aiBrain.Name)
             return true
         end
     end
     return false
 end
 
-function EnableUnitsSwarm(aiBrain, Category, UnitType)
+function EnableUnits(aiBrain, Category, UnitType)
     local Units = aiBrain:GetListOfUnits(Category, false, false) -- also gets unbuilded units (planed to build)
     for _, unit in Units do
         if unit.Dead then continue end
@@ -616,7 +617,7 @@ function EnableUnitsSwarm(aiBrain, Category, UnitType)
         -- Units that only needs to be set on pause
         if UnitType == 'Nuke' or UnitType == 'AntiNuke' then
             if unit:IsPaused() then
-                --LOG('*EnableUnitsSwarm: Unit :SetPaused false '..UnitType..' - '..unit:GetBlueprint().BlueprintId..' - '..aiBrain.Name)
+                --LOG('*EnableUnits: Unit :SetPaused false '..UnitType..' - '..unit:GetBlueprint().BlueprintId..' - '..aiBrain.Name)
                 unit:SetPaused( false )
                 -- now return, we only want do disable one unit per loop
                 return true
@@ -625,13 +626,13 @@ function EnableUnitsSwarm(aiBrain, Category, UnitType)
         -- Maintenance -- for units that are usually "on": radar, mass extractors, etc.
         if unit.MaintenanceConsumption == false then
             unit:OnProductionUnpaused()
-            --LOG('*EnableUnitsSwarm: Unit OnProductionUnpaused '..UnitType..' - '..unit:GetBlueprint().BlueprintId..' - '..aiBrain.Name)
+            --LOG('*EnableUnits: Unit OnProductionUnpaused '..UnitType..' - '..unit:GetBlueprint().BlueprintId..' - '..aiBrain.Name)
             return true
         end
         -- Active -- when upgrading, constructing, or something similar.
         if unit.ActiveConsumption == false then
             unit:SetActiveConsumptionActive()
-            --LOG('*EnableUnitsSwarm: Unit SetActiveConsumptionActive '..UnitType..' - '..unit:GetBlueprint().BlueprintId..' - '..aiBrain.Name)
+            --LOG('*EnableUnits: Unit SetActiveConsumptionActive '..UnitType..' - '..unit:GetBlueprint().BlueprintId..' - '..aiBrain.Name)
             return true
         end
     end
