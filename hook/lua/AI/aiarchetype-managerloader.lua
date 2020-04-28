@@ -1,6 +1,6 @@
 --WARN('['..string.gsub(debug.getinfo(1).source, ".*\\(.*.lua)", "%1")..', line:'..debug.getinfo(1).currentline..'] * AI-Swarm: offset aiarchetype-managerloader.lua' )
 
-local Buff = import('/lua/sim/Buff.lua')
+local BuffSwarm = import('/lua/sim/Buff.lua')
 
 
 -- This hook is for debug-option Platoon-Names. Hook for all AI's
@@ -33,11 +33,11 @@ function SetArmyPoolBuffSwarm(aiBrain, CheatMult, BuildMult)
     allUnits = aiBrain:GetListOfUnits(categories.ALLUNITS, false, false)
     for _, unit in allUnits do
         -- Remove old build rate and income buffs
-        Buff.RemoveBuff(unit, 'CheatIncome', true) -- true = removeAllCounts
-        Buff.RemoveBuff(unit, 'CheatBuildRate', true) -- true = removeAllCounts
+        BuffSwarm.RemoveBuff(unit, 'CheatIncome', true) -- true = removeAllCounts
+        BuffSwarm.RemoveBuff(unit, 'CheatBuildRate', true) -- true = removeAllCounts
         -- Apply new build rate and income buffs
-        Buff.ApplyBuff(unit, 'CheatIncome')
-        Buff.ApplyBuff(unit, 'CheatBuildRate')
+        BuffSwarm.ApplyBuff(unit, 'CheatIncome')
+        BuffSwarm.ApplyBuff(unit, 'CheatBuildRate')
     end
 end
 
