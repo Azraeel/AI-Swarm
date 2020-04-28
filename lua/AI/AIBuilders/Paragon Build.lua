@@ -15,7 +15,7 @@ BuilderGroup {
         BuilderConditions = {
             -- When do we want to build this ?
             { UCBC, 'HasNotParagon', {} },
-            { UCBC, 'GreaterThanGameTimeSeconds', { 60*30 } },
+            { UCBC, 'GreaterThanGameTimeSeconds', { 60*60 } },
             -- Do we need additional conditions to build it ?
             { UCBC, 'CanBuildCategorySwarm', { categories.STRUCTURE * categories.EXPERIMENTAL * categories.ECONOMIC } },
             { UCBC, 'BuildOnlyOnLocationSwarm', { 'LocationType', 'MAIN' } },
@@ -53,7 +53,7 @@ BuilderGroup {
         BuilderConditions = {
             -- When do we want to build this ?
             { UCBC, 'HasNotParagon', {} },
-            { UCBC, 'GreaterThanGameTimeSeconds', { 60*35 } },
+            { UCBC, 'GreaterThanGameTimeSeconds', { 60*60 } },
             -- Do we need additional conditions to build it ?
             { UCBC, 'CanBuildCategorySwarm', { categories.STRUCTURE * categories.EXPERIMENTAL * categories.ECONOMIC } },
             { UCBC, 'BuildOnlyOnLocationSwarm', { 'LocationType', 'MAIN' } },
@@ -89,7 +89,7 @@ BuilderGroup {
         BuilderConditions = {
             -- When do we want to build this ?
             { UCBC, 'HasNotParagon', {} },
-            { UCBC, 'GreaterThanGameTimeSeconds', { 60*30 } },
+            { UCBC, 'GreaterThanGameTimeSeconds', { 60*60 } },
             { EBC, 'GreaterThanEconTrend', { 18.0, 270.0 } },                      -- relative income
             -- Do we need additional conditions to build it ?
             { UCBC, 'CanBuildCategorySwarm', { categories.STRUCTURE * categories.EXPERIMENTAL * categories.ECONOMIC } },
@@ -126,6 +126,7 @@ BuilderGroup {
             -- When do we want to build this ?
             { UCBC, 'HasParagon', {} },
             { UCBC, 'HaveLessThanUnitsWithCategory', { 2, categories.STRUCTURE * categories.EXPERIMENTAL * categories.ECONOMIC}},
+            { UCBC, 'GreaterThanGameTimeSeconds', { 60*60 } },
             -- Do we need additional conditions to build it ?
             { UCBC, 'CanBuildCategorySwarm', { categories.STRUCTURE * categories.EXPERIMENTAL * categories.ECONOMIC } },
             { UCBC, 'BuildOnlyOnLocationSwarm', { 'LocationType', 'MAIN' } },
@@ -160,6 +161,7 @@ BuilderGroup {
         BuilderConditions = {
             -- When do we want to build this ?
             { UCBC, 'HasParagon', {} },
+            { UCBC, 'GreaterThanGameTimeSeconds', { 60*60 } },
             { UCBC, 'HaveLessThanUnitsWithCategory', { 3, categories.STRUCTURE * categories.EXPERIMENTAL * categories.ECONOMIC}},
             -- Do we need additional conditions to build it ?
             { UCBC, 'CanBuildCategorySwarm', { categories.STRUCTURE * categories.EXPERIMENTAL * categories.ECONOMIC } },

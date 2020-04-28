@@ -214,7 +214,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Factory Builder - Water Map',
 
             { MIBC, 'CanPathToCurrentEnemySwarm', { false } }, 
 
-            { UCBC, 'HaveLessThanUnitsWithCategory', { 6, categories.STRUCTURE * categories.FACTORY * categories.LAND * (categories.TECH1 + categories.TECH2 + categories.TECH3) }},
+            { UCBC, 'HaveLessThanUnitsWithCategory', { 4, categories.STRUCTURE * categories.FACTORY * categories.LAND * (categories.TECH1 + categories.TECH2 + categories.TECH3) }},
         },
         BuilderType = 'Any',
         BuilderData = {
