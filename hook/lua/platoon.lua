@@ -1,6 +1,6 @@
 --WARN('['..string.gsub(debug.getinfo(1).source, ".*\\(.*.lua)", "%1")..', line:'..debug.getinfo(1).currentline..'] * AI-Swarm: offset platoon.lua' )
 
-local SUtils = import('/mods/AI-Swarm/lua/AI/Swarmutilities.lua')
+local SwarmUtils = import('/mods/AI-Swarm/lua/AI/Swarmutilities.lua')
 
 
 
@@ -32,7 +32,7 @@ local KillThread = KillThread
 SwarmPlatoonClass = Platoon
 Platoon = Class(SwarmPlatoonClass) {
 
--- For AI Patch V8 if eng:IsUnitState('BlockCommandQueue') then
+-- For AI Patch V8 (Patched) if eng:IsUnitState('BlockCommandQueue') then
     ProcessBuildCommand = function(eng, removeLastBuild)
         if not eng or eng.Dead or not eng.PlatoonHandle then
             return
@@ -60,12 +60,6 @@ Platoon = Class(SwarmPlatoonClass) {
         IssueClearCommands({eng})
         local commandDone = false
         while not eng.Dead and not commandDone and table.getn(eng.EngineerBuildQueue) > 0  do
-            if eng:IsUnitState('BlockCommandQueue') then
-                while not eng.Dead and eng:IsUnitState('BlockCommandQueue') do
-                    --LOG('* AI-DEBUG: ProcessBuildCommand: Unit BlockCommandQueue is true, delaying build')
-                    coroutine.yield(1)
-                end
-            end
             local whatToBuild = eng.EngineerBuildQueue[1][1]
             local buildLocation = {eng.EngineerBuildQueue[1][2][1], 0, eng.EngineerBuildQueue[1][2][2]}
             local buildRelative = eng.EngineerBuildQueue[1][3]
@@ -81,15 +75,13 @@ Platoon = Class(SwarmPlatoonClass) {
                 end
 
                 -- check to see if we need to reclaim or capture...
-                if not AIUtils.EngineerTryReclaimCaptureArea(aiBrain, eng, buildLocation) then
+                AIUtils.EngineerTryReclaimCaptureArea(aiBrain, eng, buildLocation)
                     -- check to see if we can repair
-                    if not AIUtils.EngineerTryRepair(aiBrain, eng, whatToBuild, buildLocation) then
+                AIUtils.EngineerTryRepair(aiBrain, eng, whatToBuild, buildLocation)
                         -- otherwise, go ahead and build the next structure there
-                        aiBrain:BuildStructure(eng, whatToBuild, {buildLocation[1], buildLocation[3], 0}, buildRelative)
-                        if not eng.NotBuildingThread then
-                            eng.NotBuildingThread = eng:ForkThread(eng.PlatoonHandle.WatchForNotBuilding)
-                        end
-                    end
+                aiBrain:BuildStructure(eng, whatToBuild, {buildLocation[1], buildLocation[3], 0}, buildRelative)
+                if not eng.NotBuildingThread then
+                    eng.NotBuildingThread = eng:ForkThread(eng.PlatoonHandle.WatchForNotBuilding)
                 end
                 commandDone = true
             else
@@ -108,18 +100,13 @@ Platoon = Class(SwarmPlatoonClass) {
         end
         if eng then eng.ProcessBuild = nil end
     end,
--- For AI Patch V8 fixed issue with AI cdr not building at game start
+-- For AI Patch V8 (Patched) fixed issue with AI cdr not building at game start
     WatchForNotBuilding = function(eng)
-        WaitTicks(5)
+        coroutine.yield(10)
         local aiBrain = eng:GetAIBrain()
 
-        while not eng.Dead
-            and eng.GoingHome
-            or eng.UnitBeingBuiltBehavior
-            or eng.ProcessBuild != nil
-            or not eng:IsIdleState()
-        do
-            WaitTicks(30)
+        while not eng.Dead and (eng.GoingHome or eng.UnitBeingBuiltBehavior or eng.ProcessBuild != nil or not eng:IsIdleState()) do
+            coroutine.yield(30)
         end
 
         eng.NotBuildingThread = nil
@@ -644,11 +631,11 @@ Platoon = Class(SwarmPlatoonClass) {
             -- leave the loop and disband this platton in time
             if ReturnToBaseAfterGameTime and ReturnToBaseAfterGameTime < GetGameTimeSeconds()/60 then
                 --LOG('* AI-Swarm: * ACUAttackAISwarm: ReturnToBaseAfterGameTime:'..ReturnToBaseAfterGameTime..' >= '..GetGameTimeSeconds()/60)
-                SUtils.CDRParkingHome(self,cdr)
+                SwarmUtils.CDRParkingHome(self,cdr)
                 break
             end
             -- the maximum radis that the ACU can be away from base
-            maxRadius = (SUtils.ComHealth(cdr)-65)*7 -- If the comanders health is 100% then we have a maxtange of ~250 = (100-65)*7
+            maxRadius = (SwarmUtils.ComHealth(cdr)-65)*7 -- If the comanders health is 100% then we have a maxtange of ~250 = (100-65)*7
             maxTimeRadius = 240 - GetGameTimeSeconds()/60*6 -- reduce the radius by 6 map units per minute. After 30 minutes it's (240-180) = 60
             if maxRadius > maxTimeRadius then 
                 maxRadius = math.max( 60, maxTimeRadius ) -- IF maxTimeRadius < 60 THEN maxTimeRadius = 60
@@ -665,7 +652,7 @@ Platoon = Class(SwarmPlatoonClass) {
             ----------------------------------------------
             --- This is the start of the main ACU loop ---
             ----------------------------------------------
-            if aiBrain:GetEconomyStoredRatio('ENERGY') > 0.95 and SUtils.ComHealth(cdr) < 100 then
+            if aiBrain:GetEconomyStoredRatio('ENERGY') > 0.95 and SwarmUtils.ComHealth(cdr) < 100 then
                 cdr:SetAutoOvercharge(true)
             else
                 cdr:SetAutoOvercharge(false)
@@ -677,15 +664,15 @@ Platoon = Class(SwarmPlatoonClass) {
                 self:PlatoonDisband()
                 return
             -- check if we are further away from base then the closest enemy
-            elseif SUtils.CDRRunHomeEnemyNearBase(self,cdr,UnitsInACUBaseRange) then
+            elseif SwarmUtils.CDRRunHomeEnemyNearBase(self,cdr,UnitsInACUBaseRange) then
                 --LOG('* AI-Swarm: * ACUAttackAISwarm: CDRRunHomeEnemyNearBase')
                 TargetUnit = false
             -- check if we get actual damage, then move home
-            elseif SUtils.CDRRunHomeAtDamage(self,cdr) then
+            elseif SwarmUtils.CDRRunHomeAtDamage(self,cdr) then
                 --LOG('* AI-Swarm: * ACUAttackAISwarm: CDRRunHomeAtDamage')
                 TargetUnit = false
             -- check how much % health we have and go closer to our base
-            elseif SUtils.CDRRunHomeHealthRange(self,cdr,maxRadius) then
+            elseif SwarmUtils.CDRRunHomeHealthRange(self,cdr,maxRadius) then
                 --LOG('* AI-Swarm: * ACUAttackAISwarm: CDRRunHomeHealthRange')
                 TargetUnit = false
             -- can we upgrade ?
@@ -714,7 +701,7 @@ Platoon = Class(SwarmPlatoonClass) {
                         end
                     end
                 -- if we have no target, move to base. If we are at base, dance. (random moves)
-                elseif SUtils.CDRForceRunHome(self,cdr) then
+                elseif SwarmUtils.CDRForceRunHome(self,cdr) then
                     --LOG('* AI-Swarm: * ACUAttackAISwarm: CDRForceRunHome true. we are running home')
                 -- we are at home, dance if we have nothing to do.
                 else
@@ -846,7 +833,7 @@ Platoon = Class(SwarmPlatoonClass) {
             IssueScript({cdr}, order)
         end
         while not cdr.Dead and not cdr:HasEnhancement(enhancement) do
-            if SUtils.ComHealth(cdr) < 60 then
+            if SwarmUtils.ComHealth(cdr) < 60 then
                 --LOG('* AI-Swarm: * ACUAttackAISwarm: BuildEnhancementSwarm: '..platoon:GetBrain().Nickname..' Emergency!!! low health, canceling Enhancement '..enhancement)
                 IssueStop({cdr})
                 IssueClearCommands({cdr})
@@ -1211,7 +1198,7 @@ Platoon = Class(SwarmPlatoonClass) {
         end
         if eng then
             eng.UnitBeingBuilt = eng
-            SUtils.ReclaimAIThreadSwarm(self,eng,aiBrain)
+            SwarmUtils.ReclaimAIThreadSwarm(self,eng,aiBrain)
             eng.UnitBeingBuilt = nil
         end
         self:PlatoonDisband()
@@ -1312,22 +1299,22 @@ Platoon = Class(SwarmPlatoonClass) {
             local platoonUnits = self:GetPlatoonUnits()
             local MassExtractorUnitList = aiBrain:GetListOfUnits(categories.MASSEXTRACTION * (categories.TECH1 + categories.TECH2 + categories.TECH3), false, false)
             -- Check if we can pause/unpause TECH3 Extractors (for more energy)
-            if not SUtils.ExtractorPauseSwarm( self, aiBrain, MassExtractorUnitList, ratio, 'TECH3') then
+            if not SwarmUtils.ExtractorPauseSwarm( self, aiBrain, MassExtractorUnitList, ratio, 'TECH3') then
                 -- Check if we can pause/unpause TECH2 Extractors
-                if not SUtils.ExtractorPauseSwarm( self, aiBrain, MassExtractorUnitList, ratio, 'TECH2') then
+                if not SwarmUtils.ExtractorPauseSwarm( self, aiBrain, MassExtractorUnitList, ratio, 'TECH2') then
                     -- Check if we can pause/unpause TECH1 Extractors
-                    if not SUtils.ExtractorPauseSwarm( self, aiBrain, MassExtractorUnitList, ratio, 'TECH1') then
+                    if not SwarmUtils.ExtractorPauseSwarm( self, aiBrain, MassExtractorUnitList, ratio, 'TECH1') then
                         -- We have nothing to pause or unpause, lets upgrade more extractors
                         -- if we have 10% TECH1 extractors left (and 90% TECH2), then upgrade TECH2 to TECH3
-                        if SUtils.HaveUnitRatio( aiBrain, 0.90, categories.MASSEXTRACTION * categories.TECH1, '<=', categories.MASSEXTRACTION * categories.TECH2 ) then
+                        if SwarmUtils.HaveUnitRatio( aiBrain, 0.90, categories.MASSEXTRACTION * categories.TECH1, '<=', categories.MASSEXTRACTION * categories.TECH2 ) then
                             -- Try to upgrade a TECH2 extractor.
-                            if not SUtils.ExtractorUpgradeSwarm(self, aiBrain, MassExtractorUnitList, ratio, 'TECH2', UnitUpgradeTemplates, StructureUpgradeTemplates) then
+                            if not SwarmUtils.ExtractorUpgradeSwarm(self, aiBrain, MassExtractorUnitList, ratio, 'TECH2', UnitUpgradeTemplates, StructureUpgradeTemplates) then
                                 -- We can't upgrade a TECH2 extractor. Try to upgrade from TECH1 to TECH2
-                                SUtils.ExtractorUpgradeSwarm(self, aiBrain, MassExtractorUnitList, ratio, 'TECH1', UnitUpgradeTemplates, StructureUpgradeTemplates)
+                                SwarmUtils.ExtractorUpgradeSwarm(self, aiBrain, MassExtractorUnitList, ratio, 'TECH1', UnitUpgradeTemplates, StructureUpgradeTemplates)
                             end
                         else
                             -- We have less than 90% TECH2 extractors compared to TECH1. Upgrade more TECH1
-                            SUtils.ExtractorUpgradeSwarm(self, aiBrain, MassExtractorUnitList, ratio, 'TECH1', UnitUpgradeTemplates, StructureUpgradeTemplates)
+                            SwarmUtils.ExtractorUpgradeSwarm(self, aiBrain, MassExtractorUnitList, ratio, 'TECH1', UnitUpgradeTemplates, StructureUpgradeTemplates)
                         end
                     end
                 end
@@ -2206,7 +2193,7 @@ Platoon = Class(SwarmPlatoonClass) {
                     end
                     --IssueStop({unit})
                     WaitTicks(2)
-                    IssueTeleport({unit}, SUtils.RandomizePosition(TargetPosition))
+                    IssueTeleport({unit}, SwarmUtils.RandomizePosition(TargetPosition))
                 end
             end
         else

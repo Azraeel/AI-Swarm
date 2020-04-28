@@ -1,6 +1,6 @@
 name = "AI-Swarm"
-uid = "a13ac591-b2d9-4d94-0173-3d4b3cce6b97"
-version = 173
+uid = "a13ac591-b2d9-4d94-0174-3d4b3cce6b97"
+version = 174
 copyright = "2020 Azraeel"
 description = "Welcome to Swarm. What is Swarm? Swarm is a AI Improvement Mod, Swarm wants to make the AI; Smart and Tough to be beat with the goal of reaching a level of truly Competitive AI. That Can Teach New Players and Help Everyone Get Better. REQUIRES AI-Uveso for Map Marker Generator!!!!"
 author = "Azraeel"

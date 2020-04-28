@@ -18,6 +18,9 @@ function AIExecuteBuildStructure(aiBrain, builder, buildingType, closeToBuilder,
         end
         SPEW('*AIExecuteBuildStructure: c-function DecideWhatToBuild() failed! - AI-faction: index('..factionIndex..') '..AIFactionName..', Building Type: '..repr(buildingType)..', engineer-faction: '..repr(builder.factionCategory))
         -- Get the UnitId for the actual buildingType
+        if not buildingTemplate then
+            WARN('*AIExecuteBuildStructure: Function was called without a buildingTemplate!')
+        end
         local BuildUnitWithID
         for Key, Data in buildingTemplate do
             if Data[1] and Data[2] and Data[1] == buildingType then
@@ -198,6 +201,7 @@ function AIExecuteBuildStructure(aiBrain, builder, buildingType, closeToBuilder,
             relativeLoc = {relativeLoc[1] + relativeTo[1], relativeLoc[2] + relativeTo[2], relativeLoc[3] + relativeTo[3]}
         end
         -- put in build queue.. but will be removed afterwards... just so that it can iteratively find new spots to build
+        --LOG('*AIExecuteBuildStructure: AI-faction: index('..factionIndex..') '..repr(AIFactionName)..', Building Type: '..repr(buildingType)..', engineer-faction: '..repr(builder.factionCategory))
         AddToBuildQueue(aiBrain, builder, whatToBuild, NormalToBuildLocation(relativeLoc), false)
         return true
     end

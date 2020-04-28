@@ -87,7 +87,7 @@ function ExtractorPauseSwarm(self, aiBrain, MassExtractorUnitList, ratio, techLe
         end
     end
     -- Check for positive Mass/Upgrade ratio
-    local MassRatioCheckPositive = GlobalMassUpgradeCostVsGlobalMassIncomeRatio( self, aiBrain, ratio, techLevel, '<' )
+    local MassRatioCheckPositive = GlobalMassUpgradeCostVsGlobalMassIncomeRatioSwarm( self, aiBrain, ratio, techLevel, '<' )
     -- Did we found a paused unit ?
     if PausedUpgradingBuilding then
         if MassRatioCheckPositive then
@@ -104,7 +104,7 @@ function ExtractorPauseSwarm(self, aiBrain, MassExtractorUnitList, ratio, techLe
         end
     end
     -- Check for negative Mass/Upgrade ratio
-    local MassRatioCheckNegative = GlobalMassUpgradeCostVsGlobalMassIncomeRatio( self, aiBrain, ratio, techLevel, '>=')
+    local MassRatioCheckNegative = GlobalMassUpgradeCostVsGlobalMassIncomeRatioSwarm( self, aiBrain, ratio, techLevel, '>=')
     --LOG('* ExtractorPauseSwarm 2 MassRatioCheckNegative >: '..repr(MassRatioCheckNegative)..' - IF this is true , we have bad eco and we should pause.')
     if MassRatioCheckNegative then
         if UpgradingBuildingNum > 1 then
@@ -135,7 +135,7 @@ end
 -- ExtractorUpgradeSwarm is upgrading the nearest building to our own main base instead of a random building.
 function ExtractorUpgradeSwarm(self, aiBrain, MassExtractorUnitList, ratio, techLevel, UnitUpgradeTemplates, StructureUpgradeTemplates)
     -- Do we have the eco to upgrade ?
-    local MassRatioCheckPositive = GlobalMassUpgradeCostVsGlobalMassIncomeRatio(self, aiBrain, ratio, techLevel, '<' )
+    local MassRatioCheckPositive = GlobalMassUpgradeCostVsGlobalMassIncomeRatioSwarm(self, aiBrain, ratio, techLevel, '<' )
     local aiBrain = self:GetBrain()
     -- search for the neares building to the base for upgrade.
     local BasePosition = aiBrain.BuilderManagers['MAIN'].Position
@@ -213,7 +213,7 @@ function ExtractorUpgradeSwarm(self, aiBrain, MassExtractorUnitList, ratio, tech
 end
 
 -- Helperfunction fro ExtractorUpgradeAISwarm. 
-function GlobalMassUpgradeCostVsGlobalMassIncomeRatio(self, aiBrain, ratio, techLevel, compareType)
+function GlobalMassUpgradeCostVsGlobalMassIncomeRatioSwarm(self, aiBrain, ratio, techLevel, compareType)
     local GlobalUpgradeCost = 0
     -- get all units matching 'category'
     local unitsBuilding = aiBrain:GetListOfUnits(categories.MASSEXTRACTION * (categories.TECH1 + categories.TECH2), true)

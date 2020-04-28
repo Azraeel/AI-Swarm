@@ -333,26 +333,6 @@ function AIFindNearestCategoryTeleportLocationSwarm(aiBrain, position, maxRange,
     return TargetUnit
 end
 
-function RandomLocation(x, z)
-    local finalX = x + Random(-30, 30)
-    while finalX <= 0 or finalX >= ScenarioInfo.size[1] do
-        finalX = x + Random(-30, 30)
-    end
-
-    local finalZ = z + Random(-30, 30)
-    while finalZ <= 0 or finalZ >= ScenarioInfo.size[2] do
-        finalZ = z + Random(-30, 30)
-    end
-
-    local movePos = {finalX, 0, finalZ}
-    local height = GetTerrainHeight(movePos[1], movePos[3])
-    if GetSurfaceHeight(movePos[1], movePos[3]) > height then
-        height = GetSurfaceHeight(movePos[1], movePos[3])
-    end
-    movePos[2] = height
-
-    return movePos
-end
 
 function points(original,radius,num)
     local nnn=0
