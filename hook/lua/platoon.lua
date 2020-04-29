@@ -375,7 +375,7 @@ Platoon = Class(SwarmPlatoonClass) {
 
             if mystrength <= (OriginalSurfaceThreat * .40) then
 					self.MergeIntoNearbyPlatoons( self, aiBrain, 'LandAttackAISwarm', 100, false)
-					return self:SetAIPlan('ReturnToBaseAI',aiBrain)
+					return self:SetAIPlan('ReturnToBaseAISwarm',aiBrain)
 				end	
 
             PlatoonPos = self:GetPlatoonPosition()
@@ -2766,7 +2766,7 @@ Platoon = Class(SwarmPlatoonClass) {
         
     end,
 
-    ReturnToBaseAI = function( self, aiBrain )
+    ReturnToBaseAISwarm = function( self, aiBrain )
 	
 		-- since RTB always deals with MOBILE units we use the Entity based GetPosition
 		local GetPosition = moho.entity_methods.GetPosition
