@@ -65,3 +65,23 @@ function CanPathToCurrentEnemySwarm(aiBrain, bool)
     return false == bool
 end
 
+function MapGreaterThanSwarm(aiBrain, sizeX, sizeZ)
+    local mapSizeX, mapSizeZ = GetMapSize()
+    if mapSizeX > sizeX or mapSizeZ > sizeZ then
+        --LOG('*AI DEBUG: MapGreaterThan returned True SizeX: ' .. sizeX .. ' sizeZ: ' .. sizeZ)
+        return true
+    end
+    --LOG('*AI DEBUG: MapGreaterThan returned False SizeX: ' .. sizeX .. ' sizeZ: ' .. sizeZ)
+    return false
+end
+
+function MapLessThanSwarm(aiBrain, sizeX, sizeZ)
+    local mapSizeX, mapSizeZ = GetMapSize()
+    if mapSizeX < sizeX and mapSizeZ < sizeZ then
+        --LOG('*AI DEBUG: MapLessThan returned True SizeX: ' .. sizeX .. ' sizeZ: ' .. sizeZ)
+        return true
+    end
+    --LOG('*AI DEBUG: MapLessThan returned False SizeX: ' .. sizeX .. ' sizeZ: ' .. sizeZ)
+    return false
+end
+
