@@ -150,6 +150,26 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
     -- ============ --
     --    ENERGY    --
     -- ============ --
+    Builder {
+        BuilderName = 'SC Assist Hydro',
+        PlatoonTemplate = 'CommanderAssist',
+        Priority = 19100,
+        BuilderConditions = {
+            { UCBC, 'HaveGreaterThanUnitsInCategoryBeingBuiltAtLocation', { 'LocationType', 0, categories.STRUCTURE * categories.HYDROCARBON }},
+        },
+        BuilderType = 'Any',
+        BuilderData = {
+            Assist = {
+                AssistLocation = 'LocationType',
+                AssisteeType = 'Structure',
+                AssistRange = 75,
+                BeingBuiltCategories = {'STRUCTURE HYDROCARBON'},
+                AssistUntilFinished = true,
+                Time = 0,
+            },
+        }
+    },
+
     Builder { BuilderName = 'SC Assist Energy',
         PlatoonTemplate = 'CommanderAssist',
         Priority = 16300,

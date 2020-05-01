@@ -86,9 +86,9 @@ BuilderGroup {
     Builder {
         BuilderName = 'Swarm Power low trend',
         PlatoonTemplate = 'CommanderBuilder',
-        Priority = 650,
+        Priority = 645,
         BuilderConditions = {
-            { EBC, 'LessThanEnergyTrend', { 7.5 } },
+            { EBC, 'LessThanEnergyTrend', { 0.0 } },             -- Ratio from 0 to 1. (1=100%)
 
             { UCBC, 'HaveLessThanUnitsWithCategory', { 1, categories.ENERGYPRODUCTION * categories.TECH2 } },
 
@@ -108,16 +108,45 @@ BuilderGroup {
                 LocationType = 'LocationType',
                 BuildStructures = {
                     'T1EnergyProduction',
-                    'T1EnergyProduction',
+                },
+            }
+        }
+    },
+
+    Builder {
+        BuilderName = 'Swarm Power MassRatio',
+        PlatoonTemplate = 'CommanderBuilder',
+        Priority = 650,
+        BuilderConditions = {
+            { EBC, 'EnergyToMassRatioIncome', { 10.0, '<=' } },  -- True if we have less than 10 times more Energy then Mass income ( 100 <= 10 = true )
+
+            { UCBC, 'HaveLessThanUnitsWithCategory', { 1, categories.ENERGYPRODUCTION * categories.TECH2 } },
+
+            { UCBC, 'HasNotParagon', {} },
+
+            { UCBC, 'LessThanGameTimeSeconds', { 300 } },
+
+            { EBC, 'GreaterThanEconIncome',  { 0.5, 0.0}}, -- Absolut Base income
+        },
+        InstanceCount = 1,
+        BuilderType = 'Any',
+        BuilderData = {
+            Construction = {
+                AdjacencyCategory = categories.STRUCTURE * categories.FACTORY * (categories.LAND + categories.AIR),
+                AdjacencyDistance = 50,
+                BuildClose = true,
+                LocationType = 'LocationType',
+                BuildStructures = {
                     'T1EnergyProduction',
                 },
             }
         }
     },
+
     Builder {
         BuilderName = 'Swarm Power Hydrocarbon',
         PlatoonTemplate = 'EngineerBuilder',
-        Priority = 595,
+        Priority = 600,
         DelayEqualBuildPlattons = {'Energy', 1},
         InstanceCount = 1,
         BuilderConditions = {

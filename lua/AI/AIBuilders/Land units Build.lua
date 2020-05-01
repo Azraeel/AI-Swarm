@@ -396,7 +396,7 @@ BuilderGroup {
             { UCBC, 'EnemyUnitsGreaterAtLocationRadiusSwarm', {  BasePanicZone, 'LocationType', 1, categories.LAND - categories.SCOUT }},
         },
         BuilderData = {
-            AttackEnemyStrength = 100,
+            AttackEnemyStrength = 200,
             SearchRadius = BasePanicZone,
             GetTargetsFromBase = true,
             TargetSearchCategory = categories.ALLUNITS - categories.AIR,                         
@@ -468,9 +468,11 @@ BuilderGroup {
             { UCBC, 'LessThanGameTimeSeconds', { 1500 } },
 
             { UCBC, 'EnemyUnitsGreaterAtLocationRadiusSwarm', {  BaseEnemyZone, 'LocationType', 1, categories.STRUCTURE - categories.SCOUT }},
+
+            { UCBC, 'EnemyUnitsLessAtLocationRadiusSwarm', {  BaseMilitaryZone, 'LocationType', 1, categories.MOBILE * categories.LAND - categories.SCOUT }},
         },
         BuilderData = {
-            AttackEnemyStrength = 100,
+            AttackEnemyStrength = 90,
             SearchRadius = BaseEnemyZone,
             GetTargetsFromBase = false,
             TargetSearchCategory = categories.ALLUNITS - categories.AIR,                         
@@ -542,9 +544,11 @@ BuilderGroup {
             { UCBC, 'GreaterThanGameTimeSeconds', { 1500 } },
 
             { UCBC, 'EnemyUnitsGreaterAtLocationRadiusSwarm', {  BaseEnemyZone, 'LocationType', 1, categories.STRUCTURE - categories.SCOUT }},
+
+            { UCBC, 'EnemyUnitsLessAtLocationRadiusSwarm', {  BaseMilitaryZone, 'LocationType', 1, categories.MOBILE * categories.LAND - categories.SCOUT }},
         },
         BuilderData = {
-            AttackEnemyStrength = 100,
+            AttackEnemyStrength = 90,
             SearchRadius = BaseEnemyZone,
             GetTargetsFromBase = false,
             TargetSearchCategory = categories.ALLUNITS - categories.AIR,                         
@@ -677,7 +681,7 @@ BuilderGroup {
             GetTargetsFromBase = false,                                        
             RequireTransport = false,                                            
             AggressiveMove = true,                                              
-            AttackEnemyStrength = 80,                                          
+            AttackEnemyStrength = 60,                                          
             TargetSearchCategory = categories.MASSEXTRACTION + categories.DEFENSE, 
             MoveToCategories = {                                                
                 categories.MASSEXTRACTION,

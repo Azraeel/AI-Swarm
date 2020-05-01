@@ -113,7 +113,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Factory Builder',
     Builder {
         BuilderName = 'Swarm Factory Builder Land',
         PlatoonTemplate = 'EngineerBuilder',
-        Priority = 600,
+        Priority = 620,
         BuilderConditions = {
             { EBC, 'GreaterThanEconStorageRatio', { 0.5, 0.30}},
 
@@ -183,7 +183,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Factory Builder',
     Builder {
         BuilderName = 'Swarm Factory Builder Air',
         PlatoonTemplate = 'EngineerBuilder',
-        Priority = 600,
+        Priority = 610,
         BuilderConditions = {
             { EBC, 'GreaterThanEconStorageRatio', { 0.10, 0.40}},
 
@@ -942,7 +942,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Gate Builders',                        
 
             { UCBC, 'HaveGreaterThanUnitsWithCategory', { 1, categories.STRUCTURE * categories.ENERGYPRODUCTION * categories.TECH3 } },
 
-            { UCBC, 'BuildOnlyOnLocationSwarm', { 'LocationType', 'Blank Marker' } },
+            { UCBC, 'BuildNotOnLocationSwarm', { 'LocationType', 'MAIN' } },
 
             { UCBC, 'HaveLessThanUnitsWithCategory', { 16, categories.STRUCTURE * categories.GATE } },
         },
