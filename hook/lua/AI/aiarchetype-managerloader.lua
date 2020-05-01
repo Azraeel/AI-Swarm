@@ -113,24 +113,24 @@ function EcoManagerThreadSwarm(aiBrain)
                     MyArmyRatio = 100
                 end
 
-                -- Increase cheatfactor to +3 after 30 Minutes gametime
-                if GetGameTimeSeconds() > 60 * 25 then
+                -- Increase cheatfactor to +1.5 after 50 Minute gametime
+                if GetGameTimeSeconds() > 60 * 50 then
                     CheatMult = CheatMult + 0.1
                     BuildMult = BuildMult + 0.1
                     if CheatMult < tonumber(CheatMultOption) then CheatMult = tonumber(CheatMultOption) end
                     if BuildMult < tonumber(BuildMultOption) then BuildMult = tonumber(BuildMultOption) end
-                    if CheatMult > tonumber(CheatMultOption) + 3 then CheatMult = tonumber(CheatMultOption) + 3 end
-                    if BuildMult > tonumber(BuildMultOption) + 3 then BuildMult = tonumber(BuildMultOption) + 3 end
+                    if CheatMult > tonumber(CheatMultOption) + 1.5 then CheatMult = tonumber(CheatMultOption) + 1.5 end
+                    if BuildMult > tonumber(BuildMultOption) + 1.5 then BuildMult = tonumber(BuildMultOption) + 1.5 end
                     --LOG('* ECO + ally('..allyScore..') enemy('..enemyScore..') - ArmyRatio: '..math.floor(MyArmyRatio)..'% - Build/CheatMult old: '..math.floor(tonumber(ScenarioInfo.Options.BuildMult)*10)..' '..math.floor(tonumber(ScenarioInfo.Options.CheatMult)*10)..' - new: '..math.floor(BuildMult*10)..' '..math.floor(CheatMult*10)..'')
                     SetArmyPoolBuffSwarm(aiBrain, CheatMult, BuildMult)
-                -- Increase cheatfactor to +2 after 30 hour gametime
-                elseif GetGameTimeSeconds() > 60 * 10 then
+                -- Increase cheatfactor to +0.2 after 8 Minute gametime
+                elseif GetGameTimeSeconds() > 60 * 8 then
                     CheatMult = CheatMult + 0.1
                     BuildMult = BuildMult + 0.1
                     if CheatMult < tonumber(CheatMultOption) then CheatMult = tonumber(CheatMultOption) end
                     if BuildMult < tonumber(BuildMultOption) then BuildMult = tonumber(BuildMultOption) end
-                    if CheatMult > tonumber(CheatMultOption) + 2 then CheatMult = tonumber(CheatMultOption) + 2 end
-                    if BuildMult > tonumber(BuildMultOption) + 2 then BuildMult = tonumber(BuildMultOption) + 2 end
+                    if CheatMult > tonumber(CheatMultOption) + 0.2 then CheatMult = tonumber(CheatMultOption) + 0.2 end
+                    if BuildMult > tonumber(BuildMultOption) + 0.2 then BuildMult = tonumber(BuildMultOption) + 0.2 end
                     --LOG('* ECO + ally('..allyScore..') enemy('..enemyScore..') - ArmyRatio: '..math.floor(MyArmyRatio)..'% - Build/CheatMult old: '..math.floor(tonumber(ScenarioInfo.Options.BuildMult)*10)..' '..math.floor(tonumber(ScenarioInfo.Options.CheatMult)*10)..' - new: '..math.floor(BuildMult*10)..' '..math.floor(CheatMult*10)..'')
                     SetArmyPoolBuffSwarm(aiBrain, CheatMult, BuildMult)
                 -- Increase ECO if we have less than 40% of the enemy units
