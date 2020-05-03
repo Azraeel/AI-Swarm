@@ -9,6 +9,15 @@ PlatoonTemplate {
 }
 
 PlatoonTemplate {
+    Name = 'AISwarm Early Guard Marker',
+    Plan = 'GuardMarkerSwarm',    
+    GlobalSquads = {
+        { categories.TECH1 * categories.LAND * categories.MOBILE * categories.DIRECTFIRE - categories.SCOUT - categories.ENGINEER - categories.EXPERIMENTAL, 3, 10, 'attack', 'none' },
+        { categories.LAND * categories.SCOUT, 0, 1, 'Guard', 'none' },
+    }
+}
+
+PlatoonTemplate {
     Name = 'AISwarm LandAttack Mini Raids',
     Plan = 'LandAttackAISwarm',
     GlobalSquads = {
@@ -67,6 +76,14 @@ PlatoonTemplate {
         { categories.MOBILE * categories.LAND * categories.INDIRECTFIRE - categories.ANTIAIR - categories.EXPERIMENTAL - categories.ENGINEER - categories.SCOUT, 0, 5, 'artillery', 'none' },
         { categories.MOBILE * categories.LAND * categories.ANTIAIR - categories.EXPERIMENTAL - categories.ENGINEER - categories.SCOUT, 0, 4, 'guard', 'none' },
         -- { categories.LAND * categories.SCOUT, 0, 1, 'scout', 'none' },
+    },
+}
+
+PlatoonTemplate {
+    Name = 'T1EngineerGuardSwarm',
+    Plan = 'None',
+    GlobalSquads = {
+        { categories.DIRECTFIRE * categories.TECH1 * categories.LAND * categories.MOBILE - categories.SCOUT - categories.ENGINEER, 1, 3, 'guard', 'None' }
     },
 }
 

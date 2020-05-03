@@ -15,13 +15,13 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Scout Builders',                  
     
     Builder { BuilderName = 'U1R Land Scout',
         PlatoonTemplate = 'T1LandScout',
-        Priority = 1010,
+        Priority = 1012,
         BuilderConditions = {
             { UCBC, 'LessThanGameTimeSeconds', { 260 } }, 
 
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
 
-            { EBC, 'GreaterThanEconIncome', { 0.2, 2 } },
+            { EBC, 'GreaterThanEconIncomeSwarm', { 0.2, 2 } },
 
             { UCBC, 'HaveLessThanUnitsWithCategory', { 2, categories.LAND * categories.MOBILE * categories.SCOUT - categories.ENGINEER }},
         },
@@ -38,23 +38,21 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',                  
     -- ============ --
     --    TECH 1    --
     -- ============ --
-    Builder { BuilderName = 'T1LandDFTank - Swarm - Early Game',
-        PlatoonTemplate = 'T1LandDFTank',
-        Priority = 1005, -- Early Game Unit Coverage
+    Builder { BuilderName = 'T1 Land Opening Queue',
+        PlatoonTemplate = 'T1LandOpeningQueue',
+        Priority = 1010, -- Early Game Unit Coverage
         BuilderConditions = {
-            { UCBC, 'LessThanGameTimeSeconds', { 420 } }, -- don't build after 7 minutes
+            { UCBC, 'LessThanGameTimeSeconds', { 60 * 3 } }, -- don't build after 3 minutes
 
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
 
-            { EBC, 'GreaterThanEconIncome', { 0.2, 2 } },
+            { EBC, 'GreaterThanEconIncomeSwarm', { 0.2, 2 } },
 
             { MIBC, 'CanPathToCurrentEnemySwarm', { true } },
 
-            { UCBC, 'HaveGreaterThanUnitsWithCategory', { 4, categories.MOBILE * categories.ENGINEER}},
-
-            { UCBC, 'HaveLessThanUnitsWithCategory', { 2, categories.LAND * categories.MOBILE * categories.DIRECTFIRE - categories.ENGINEER }},
+            { UCBC, 'HaveGreaterThanUnitsWithCategory', { 2, categories.MOBILE * categories.ENGINEER }},
         },
-        BuilderType = 'Land',
+        BuilderType = 'Land', 
     },
 
     Builder { BuilderName = 'T1LandDFTank - Swarm',
@@ -63,7 +61,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',                  
         BuilderConditions = {
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
 
-            { EBC, 'GreaterThanEconIncome', { 0.2, 2 } },
+            { EBC, 'GreaterThanEconIncomeSwarm', { 0.2, 2 } },
 
             { MIBC, 'CanPathToCurrentEnemySwarm', { true } },
 
@@ -78,11 +76,13 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',                  
         BuilderConditions = {
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
 
-            { EBC, 'GreaterThanEconIncome', { 0.2, 2 } },
+            { EBC, 'GreaterThanEconIncomeSwarm', { 0.2, 2 } },
 
             { MIBC, 'CanPathToCurrentEnemySwarm', { true } },
 
             { UCBC, 'PoolLessAtLocation', { 'LocationType', 3, categories.INDIRECTFIRE * categories.LAND }},
+
+            { UCBC, 'HaveGreaterThanUnitsWithCategory', { 5, categories.LAND * categories.MOBILE * categories.DIRECTFIRE - categories.ENGINEER }},
         },
         BuilderType = 'Land',
     },
@@ -93,11 +93,15 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',                  
         BuilderConditions = {
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
 
-            { EBC, 'GreaterThanEconIncome', { 0.2, 2 } },
+            { EBC, 'GreaterThanEconIncomeSwarm', { 0.2, 2 } },
 
             { MIBC, 'CanPathToCurrentEnemySwarm', { true } },
 
             { UCBC, 'PoolLessAtLocation', { 'LocationType', 1, categories.LAND * categories.MOBILE * categories.ANTIAIR }},
+
+            { UCBC, 'EnemyUnitsGreaterAtLocationRadiusSwarm', {  BaseMilitaryZone, 'LocationType', 0, categories.AIR * (categories.BOMBER + categories.GROUNDATTACK) }},
+
+            { UCBC, 'HaveLessThanUnitsWithCategory', { 1, categories.MOBILE * categories.AIR * categories.ANTIAIR } },
         },
         BuilderType = 'Land',
     },
@@ -108,7 +112,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',                  
         BuilderConditions = {
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
 
-            { EBC, 'GreaterThanEconIncome', { 0.2, 2 } },
+            { EBC, 'GreaterThanEconIncomeSwarm', { 0.2, 2 } },
 
             { MIBC, 'CanPathToCurrentEnemySwarm', { true } },
 
@@ -128,7 +132,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',                  
         BuilderConditions = {
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
 
-            { EBC, 'GreaterThanEconIncome', { 1, 20 } },
+            { EBC, 'GreaterThanEconIncomeSwarm', { 1, 20 } },
 
             { MIBC, 'CanPathToCurrentEnemySwarm', { true } },
 
@@ -143,7 +147,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',                  
         BuilderConditions = {
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
 
-            { EBC, 'GreaterThanEconIncome', { 1, 20 } },
+            { EBC, 'GreaterThanEconIncomeSwarm', { 1, 20 } },
 
             { MIBC, 'CanPathToCurrentEnemySwarm', { true } },
 
@@ -158,11 +162,13 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',                  
         BuilderConditions = {
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
 
-            { EBC, 'GreaterThanEconIncome', { 1, 20 } },
+            { EBC, 'GreaterThanEconIncomeSwarm', { 1, 20 } },
 
             { MIBC, 'CanPathToCurrentEnemySwarm', { true } },
 
             { UCBC, 'PoolLessAtLocation', { 'LocationType', 1, categories.INDIRECTFIRE * categories.LAND * categories.TECH2 }},
+
+            { UCBC, 'HaveGreaterThanUnitsWithCategory', { 5, categories.LAND * categories.MOBILE * categories.DIRECTFIRE * categories.TECH2 - categories.ENGINEER }},
         },
         BuilderType = 'Land',
     },
@@ -173,9 +179,11 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',                  
         BuilderConditions = {
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
 
-            { EBC, 'GreaterThanEconIncome', { 1, 20 } },
+            { EBC, 'GreaterThanEconIncomeSwarm', { 1, 20 } },
 
             { MIBC, 'CanPathToCurrentEnemySwarm', { true } },
+
+            { UCBC, 'HaveGreaterThanUnitsWithCategory', { 5, categories.LAND * categories.MOBILE * categories.DIRECTFIRE * categories.TECH2 - categories.ENGINEER }},
 
             { UCBC, 'PoolLessAtLocation', { 'LocationType', 2, categories.MOBILE * categories.LAND * categories.SHIELD }},
         },
@@ -188,11 +196,15 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',                  
         BuilderConditions = {
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
 
-            { EBC, 'GreaterThanEconIncome', { 1, 20 } },
+            { EBC, 'GreaterThanEconIncomeSwarm', { 1, 20 } },
 
             { MIBC, 'CanPathToCurrentEnemySwarm', { true } },
 
             { UCBC, 'PoolLessAtLocation', { 'LocationType', 1, categories.LAND * categories.MOBILE * categories.ANTIAIR * categories.TECH2 }},
+
+            { UCBC, 'EnemyUnitsGreaterAtLocationRadiusSwarm', {  BaseMilitaryZone, 'LocationType', 0, categories.AIR * (categories.BOMBER + categories.GROUNDATTACK) }},
+
+            { UCBC, 'HaveLessThanUnitsWithCategory', { 8, categories.MOBILE * categories.AIR * categories.ANTIAIR } },
         },
         BuilderType = 'Land',
     },
@@ -203,13 +215,15 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',                  
         BuilderConditions = {
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
 
-            { EBC, 'GreaterThanEconIncome', { 1, 20 } },
+            { EBC, 'GreaterThanEconIncomeSwarm', { 1, 20 } },
 
             { MIBC, 'CanPathToCurrentEnemySwarm', { true } },
 
             { UCBC, 'EnemyUnitsGreaterAtLocationRadiusSwarm', {  BaseMilitaryZone, 'LocationType', 5, categories.AIR * (categories.BOMBER + categories.GROUNDATTACK) }},
 
             { UCBC, 'PoolLessAtLocation', { 'LocationType', 2, categories.LAND * categories.MOBILE * categories.ANTIAIR * categories.TECH2 }},
+
+            { UCBC, 'HaveLessThanUnitsWithCategory', { 8, categories.MOBILE * categories.AIR * categories.ANTIAIR } },
         },
         BuilderType = 'Land',
     },
@@ -223,7 +237,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',                  
         BuilderConditions = {
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
 
-            { EBC, 'GreaterThanEconIncome', { 3.5, 100 } },
+            { EBC, 'GreaterThanEconIncomeSwarm', { 3.5, 100 } },
 
             { MIBC, 'CanPathToCurrentEnemySwarm', { true } },
 
@@ -238,7 +252,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',                  
         BuilderConditions = {
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
 
-            { EBC, 'GreaterThanEconIncome', { 3.5, 100 } },
+            { EBC, 'GreaterThanEconIncomeSwarm', { 3.5, 100 } },
 
             { MIBC, 'CanPathToCurrentEnemySwarm', { true } },
 
@@ -253,11 +267,13 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',                  
         BuilderConditions = {
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
 
-            { EBC, 'GreaterThanEconIncome', { 3.5, 100 } },
+            { EBC, 'GreaterThanEconIncomeSwarm', { 3.5, 100 } },
 
             { MIBC, 'CanPathToCurrentEnemySwarm', { true } },
 
             { UCBC, 'PoolLessAtLocation', { 'LocationType', 2, categories.DIRECTFIRE * categories.LAND * categories.SNIPER * categories.TECH3 }},
+
+            { UCBC, 'HaveGreaterThanUnitsWithCategory', { 5, categories.LAND * categories.MOBILE * categories.DIRECTFIRE * categories.TECH3 - categories.ENGINEER }},
         },
         BuilderType = 'Land',
     },
@@ -268,11 +284,13 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',                  
         BuilderConditions = {
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
 
-            { EBC, 'GreaterThanEconIncome', { 3.5, 100 } },
+            { EBC, 'GreaterThanEconIncomeSwarm', { 3.5, 100 } },
 
             { MIBC, 'CanPathToCurrentEnemySwarm', { true } },
 
             { UCBC, 'PoolLessAtLocation', { 'LocationType', 2, categories.INDIRECTFIRE * categories.LAND * categories.TECH3 }},
+
+            { UCBC, 'HaveGreaterThanUnitsWithCategory', { 5, categories.LAND * categories.MOBILE * categories.DIRECTFIRE * categories.TECH3 - categories.ENGINEER }},
         },
         BuilderType = 'Land',
     },
@@ -283,11 +301,13 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',                  
         BuilderConditions = {
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
 
-            { EBC, 'GreaterThanEconIncome', { 3.5, 100 } },
+            { EBC, 'GreaterThanEconIncomeSwarm', { 3.5, 100 } },
 
             { MIBC, 'CanPathToCurrentEnemySwarm', { true } },
 
             { UCBC, 'PoolLessAtLocation', { 'LocationType', 1, categories.INDIRECTFIRE * categories.LAND * categories.TECH3 }},
+
+            { UCBC, 'HaveGreaterThanUnitsWithCategory', { 5, categories.LAND * categories.MOBILE * categories.DIRECTFIRE * categories.TECH3 - categories.ENGINEER }},
         },
         BuilderType = 'Land',
     },
@@ -298,11 +318,15 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',                  
         BuilderConditions = {
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
 
-            { EBC, 'GreaterThanEconIncome', { 3.5, 100 } },
+            { EBC, 'GreaterThanEconIncomeSwarm', { 3.5, 100 } },
 
             { MIBC, 'CanPathToCurrentEnemySwarm', { true } },
 
             { UCBC, 'PoolLessAtLocation', { 'LocationType', 1, categories.LAND * categories.MOBILE * categories.ANTIAIR * categories.TECH3 }},
+
+            { UCBC, 'EnemyUnitsGreaterAtLocationRadiusSwarm', {  BaseMilitaryZone, 'LocationType', 0, categories.AIR * (categories.BOMBER + categories.GROUNDATTACK) }},
+
+            { UCBC, 'HaveLessThanUnitsWithCategory', { 5, categories.MOBILE * categories.AIR * categories.ANTIAIR * categories.TECH3 } },
         },
         BuilderType = 'Land',
     },
@@ -313,13 +337,15 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',                  
         BuilderConditions = {
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
 
-            { EBC, 'GreaterThanEconIncome', { 3.5, 100 } },
+            { EBC, 'GreaterThanEconIncomeSwarm', { 3.5, 100 } },
 
             { MIBC, 'CanPathToCurrentEnemySwarm', { true } },
 
             { UCBC, 'EnemyUnitsGreaterAtLocationRadiusSwarm', {  BaseMilitaryZone, 'LocationType', 5, categories.AIR * (categories.BOMBER + categories.GROUNDATTACK) }},
 
             { UCBC, 'PoolLessAtLocation', { 'LocationType', 3, categories.LAND * categories.MOBILE * categories.ANTIAIR * categories.TECH3 }},
+
+            { UCBC, 'HaveLessThanUnitsWithCategory', { 5, categories.MOBILE * categories.AIR * categories.ANTIAIR * categories.TECH3 } },
         },
         BuilderType = 'Land',
     },
@@ -354,7 +380,7 @@ BuilderGroup {
     Builder {
         BuilderName = 'Microed Small Land Attack - Anti-Raid',
         PlatoonTemplate = 'AISwarm LandAttack Micro Small', 
-        Priority = 100,
+        Priority = 250,
         InstanceCount = 1,
         BuilderType = 'Any',
         BuilderConditions = { 
@@ -389,7 +415,7 @@ BuilderGroup {
     Builder {
         BuilderName = 'Microed Small Land Attack - Panic',
         PlatoonTemplate = 'AISwarm LandAttack Micro Small', 
-        Priority = 100,
+        Priority = 200,
         InstanceCount = 4,
         BuilderType = 'Any',
         BuilderConditions = { 
@@ -435,7 +461,7 @@ BuilderGroup {
         BuilderData = {
             AttackEnemyStrength = 100,
             SearchRadius = BaseMilitaryZone,
-            GetTargetsFromBase = false,
+            GetTargetsFromBase = true,
             TargetSearchCategory = categories.ALLUNITS - categories.AIR,                         
             MoveToCategories = {
                 categories.MOBILE * categories.LAND * categories.INDIRECTFIRE,
@@ -511,7 +537,7 @@ BuilderGroup {
         BuilderData = {
             AttackEnemyStrength = 100,
             SearchRadius = BaseMilitaryZone,
-            GetTargetsFromBase = false,
+            GetTargetsFromBase = true,
             TargetSearchCategory = categories.ALLUNITS - categories.AIR,                         
             MoveToCategories = {
                 categories.MOBILE * categories.LAND * categories.INDIRECTFIRE,
@@ -583,9 +609,12 @@ BuilderGroup {
             GetTargetsFromBase = false,                                       
             RequireTransport = false,                                            
             AggressiveMove = true,                                             
-            AttackEnemyStrength = 200,                                          
+            AttackEnemyStrength = 70,                                          
             TargetSearchCategory = categories.STRUCTURE - categories.NAVAL,    
-            MoveToCategories = {                                                
+            MoveToCategories = {      
+                categories.STRUCTURE, 
+                categories.MASSEXTRACTION,
+                categories.ENGINEER,                                         
                 categories.EXPERIMENTAL,
                 categories.INDIRECTFIRE,
                 categories.DIRECTFIRE,
@@ -617,7 +646,7 @@ BuilderGroup {
             GetTargetsFromBase = false,                                        
             RequireTransport = false,                                           
             AggressiveMove = false,                                             
-            AttackEnemyStrength = 0,                                            
+            AttackEnemyStrength = 20,                                            
             TargetSearchCategory = categories.STRUCTURE + categories.ENGINEER,                      
             MoveToCategories = {                                              
                 categories.MASSEXTRACTION,
@@ -642,14 +671,14 @@ BuilderGroup {
     Builder {
         BuilderName = 'Microed Raid Mex&Engineer - Enemy - Early',                              
         PlatoonTemplate = 'AISwarm LandAttack Micro Raid',                           
-        Priority = 100,                                                       
+        Priority = 500,                                                       
         InstanceCount = 3,                                                     
         BuilderData = {
             SearchRadius = BaseEnemyZone,                                      
             GetTargetsFromBase = false,                                        
             RequireTransport = false,                                           
             AggressiveMove = true,                                             
-            AttackEnemyStrength = 0,                                            
+            AttackEnemyStrength = 20,                                            
             TargetSearchCategory = categories.MASSEXTRACTION + categories.ENGINEER,                      
             MoveToCategories = {                                              
                 categories.ENGINEER,
@@ -666,7 +695,9 @@ BuilderGroup {
             },
         },
         BuilderConditions = {   
-            { UCBC, 'EnemyUnitsGreaterAtLocationRadiusSwarm', {  BaseEnemyZone, 'LocationType', 0, categories.STRUCTURE - categories.NAVAL}},                                                
+            { UCBC, 'EnemyUnitsGreaterAtLocationRadiusSwarm', {  BaseEnemyZone, 'LocationType', 0, categories.STRUCTURE - categories.NAVAL}},           
+            
+            { UCBC, 'LessThanGameTimeSeconds', { 60 * 3 } },
         },
         BuilderType = 'Any',                                                    
     },
@@ -681,7 +712,7 @@ BuilderGroup {
             GetTargetsFromBase = false,                                        
             RequireTransport = false,                                            
             AggressiveMove = true,                                              
-            AttackEnemyStrength = 60,                                          
+            AttackEnemyStrength = 40,                                          
             TargetSearchCategory = categories.MASSEXTRACTION + categories.DEFENSE, 
             MoveToCategories = {                                                
                 categories.MASSEXTRACTION,
@@ -788,7 +819,7 @@ BuilderGroup {
         BuilderConditions = {
             { MIBC, 'FactionIndex', { 2, 4 }}, -- 1: UEF, 2: Aeon, 3: Cybran, 4: Seraphim, 5: Nomads 
 
-            { EBC, 'GreaterThanEconTrend', { 0.0, 1000.0 } }, -- relative income (wee need 10000 energy for a teleport. x3 SACU's
+            { EBC, 'GreaterThanEconTrendSwarm', { 0.0, 1000.0 } }, -- relative income (wee need 10000 energy for a teleport. x3 SACU's
 
             { UCBC, 'HaveGreaterThanArmyPoolWithCategorySwarm', { 0, categories.SUBCOMMANDER} },
 
@@ -827,7 +858,7 @@ BuilderGroup {
         BuilderConditions = {
             { MIBC, 'FactionIndex', { 2, 4 }}, -- 1: UEF, 2: Aeon, 3: Cybran, 4: Seraphim, 5: Nomads 
 
-            { EBC, 'GreaterThanEconTrend', { 0.0, 3000.0 } }, -- relative income (wee need 10000 energy for a teleport. x3 SACU's
+            { EBC, 'GreaterThanEconTrendSwarm', { 0.0, 3000.0 } }, -- relative income (wee need 10000 energy for a teleport. x3 SACU's
 
             { UCBC, 'HaveGreaterThanArmyPoolWithCategorySwarm', { 3, categories.SUBCOMMANDER} },
 
@@ -860,6 +891,50 @@ BuilderGroup {
         },
         BuilderConditions = {
             { UCBC, 'HaveGreaterThanArmyPoolWithCategorySwarm', { 3, categories.SUBCOMMANDER} },
+        },
+        BuilderType = 'Any',
+    },
+}
+
+BuilderGroup {
+    BuilderGroupName = 'Swarm AI Defense Formers',                         
+    BuildersType = 'PlatoonFormBuilder',                                        
+    Builder {
+        BuilderName = 'AISwarm Early Raid Denial',
+        PlatoonTemplate = 'AISwarm Early Guard Marker',
+        Priority = 500,
+        BuilderConditions = {
+            },
+        BuilderData = {
+            MarkerType = 'Mass',
+            MoveFirst = 'Random',
+            MoveNext = 'Threat',
+            ThreatType = 'Economy', 		    
+            FindHighestThreat = false, 		
+            MaxThreatThreshold = 2900, 		
+            MinThreatThreshold = 1000, 		
+            AvoidBases = true,
+            AvoidBasesRadius = 50,
+            AggressiveMove = true,
+            AvoidClosestRadius = 20,
+            GuardTimer = 60
+        },
+        InstanceCount = 3,
+        BuilderType = 'Any',
+    },
+
+    Builder {
+        BuilderName = 'AISwarm Deny Engineer Raiding',
+        PlatoonTemplate = 'T1EngineerGuardSwarm',
+        PlatoonAIPlan = 'GuardEngineer',
+        Priority = 450,
+        InstanceCount = 2,
+        BuilderData = {
+        },
+        BuilderConditions = {
+            { MIBC, 'MapLessThanSwarm', { 1023, 1023 }},
+
+            { UCBC, 'EngineersNeedGuard', { 'LocationType' } },
         },
         BuilderType = 'Any',
     },

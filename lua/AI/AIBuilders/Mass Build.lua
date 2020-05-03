@@ -20,11 +20,13 @@ BuilderGroup {
         PlatoonTemplate = 'EngineerBuilder',
         Priority = 600,
         InstanceCount = 2,
+        DelayEqualBuildPlattons = {'MASSEXTRACTION', 3},
         BuilderConditions = {
             -- When do we want to build this ?
             { MABC, 'CanBuildOnMassSwarm', { 'LocationType', 30, -500, 1, 0, 'AntiSurface', 1 }}, -- LocationType, distance, threatMin, threatMax, threatRadius, threatType, maxNum
             -- Do we need additional conditions to build it ?
             { UCBC, 'HasNotParagon', {} },
+            { UCBC, 'CheckBuildPlattonDelay', { 'MASSEXTRACTION' }},
             -- Have we the eco to build it ?
             -- Don't build it if...
             { UCBC, 'HaveUnitRatioVersusCapSwarm', { MaxCapMass , '<', categories.STRUCTURE * categories.MASSEXTRACTION } },
@@ -32,6 +34,7 @@ BuilderGroup {
         BuilderType = 'Any',
         BuilderData = {
             Construction = {
+                RepeatBuild = true,
                 BuildStructures = {
                     'T1Resource',
                 }
@@ -43,11 +46,13 @@ BuilderGroup {
         PlatoonTemplate = 'EngineerBuilder',
         Priority = 585,
         InstanceCount = 2,
+        DelayEqualBuildPlattons = {'MASSEXTRACTION', 3},
         BuilderConditions = {
             -- When do we want to build this ?
             { MABC, 'CanBuildOnMassSwarm', { 'LocationType', 60, -500, 1, 0, 'AntiSurface', 1 }}, -- LocationType, distance, threatMin, threatMax, threatRadius, threatType, maxNum
             -- Do we need additional conditions to build it ?
             { UCBC, 'HasNotParagon', {} },
+            { UCBC, 'CheckBuildPlattonDelay', { 'MASSEXTRACTION' }},
             -- Have we the eco to build it ?
             -- Don't build it if...
             { UCBC, 'HaveUnitRatioVersusCapSwarm', { MaxCapMass , '<', categories.STRUCTURE * categories.MASSEXTRACTION } },
@@ -55,6 +60,7 @@ BuilderGroup {
         BuilderType = 'Any',
         BuilderData = {
             Construction = {
+                RepeatBuild = true,
                 BuildStructures = {
                     'T1Resource',
                 }
@@ -65,7 +71,7 @@ BuilderGroup {
         BuilderName = 'S1 Mass 1000 6+',
         PlatoonTemplate = 'EngineerBuilder',
         Priority = 575,
-        DelayEqualBuildPlattons = {'MASSEXTRACTION', 1},
+        DelayEqualBuildPlattons = {'MASSEXTRACTION', 3},
         InstanceCount = 2,
         BuilderConditions = {
             -- When do we want to build this ?
@@ -91,7 +97,7 @@ BuilderGroup {
         BuilderName = 'S1 Mass 1000 8+',
         PlatoonTemplate = 'EngineerBuilder',
         Priority = 565,
-        DelayEqualBuildPlattons = {'MASSEXTRACTION', 1},
+        DelayEqualBuildPlattons = {'MASSEXTRACTION', 3},
         InstanceCount = 2,
         BuilderConditions = {
             -- When do we want to build this ?
@@ -117,7 +123,7 @@ BuilderGroup {
         BuilderName = 'S1 Mass 1000 10+',
         PlatoonTemplate = 'EngineerBuilder',
         Priority = 555,
-        DelayEqualBuildPlattons = {'MASSEXTRACTION', 1},
+        DelayEqualBuildPlattons = {'MASSEXTRACTION', 3},
         InstanceCount = 2,
         BuilderConditions = {
             -- When do we want to build this ?
@@ -195,9 +201,9 @@ BuilderGroup {
         BuilderConditions = {
             { UCBC, 'HasNotParagon', {} },
 
-            { EBC, 'GreaterThanEconTrend', { 0, 10000 } }, -- relative income
+            { EBC, 'GreaterThanEconTrendSwarm', { 0, 10000 } }, -- relative income
 
-            { EBC, 'GreaterThanEconStorageRatio', { 0.40, 1.00}}, -- Ratio from 0 to 1. (1=100%)
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.40, 1.00}}, -- Ratio from 0 to 1. (1=100%)
             -- Don't build it if...
             { UCBC, 'HaveLessThanUnitsInCategoryBeingBuilt', { 1, categories.STRUCTURE * categories.MASSFABRICATION * categories.TECH3 } },
         },
@@ -255,7 +261,7 @@ BuilderGroup {
             { UCBC, 'HaveGreaterThanArmyPoolWithCategorySwarm', { 0, categories.MASSEXTRACTION} },
             -- Do we need additional conditions to build it ?
             -- Have we the eco to build it ?
-            { EBC, 'GreaterThanEconIncome',  { 4.0, -0.0}}, -- Absolut Base income
+            { EBC, 'GreaterThanEconIncomeSwarm',  { 4.0, -0.0}}, -- Absolut Base income
             -- Don't build it if...
         },
         BuilderData = {
@@ -319,7 +325,7 @@ BuilderGroup {
             { UCBC, 'HaveGreaterThanArmyPoolWithCategorySwarm', { 0, categories.MASSEXTRACTION} },
             -- Do we need additional conditions to build it ?
             -- Have we the eco to build it ?
-            { EBC, 'GreaterThanEconIncome',  { 4.0, -0.0}}, -- Absolut Base income
+            { EBC, 'GreaterThanEconIncomeSwarm',  { 4.0, -0.0}}, -- Absolut Base income
             -- Don't build it if...
         },
         BuilderData = {
@@ -340,7 +346,7 @@ BuilderGroup {
             -- Do we need additional conditions to build it ?
             { UCBC, 'UnitsGreaterAtEnemySwarm', { 0 , categories.MASSEXTRACTION * (categories.TECH2 + categories.TECH3) } },            -- Don't build it if...
             -- Have we the eco to build it ?
-            { EBC, 'GreaterThanEconIncome',  { 4.0, -0.0}}, -- Absolut Base income
+            { EBC, 'GreaterThanEconIncomeSwarm',  { 4.0, -0.0}}, -- Absolut Base income
             -- Don't build it if...
         },
         BuilderData = {
@@ -367,6 +373,10 @@ BuilderGroup {
             -- Do we need additional conditions to build it ?
             { UCBC, 'GreaterThanGameTimeSeconds', { 60 * 10 } },
 
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.15, 0.95 } },
+
+            { UCBC, 'GreaterThanMassTrend', { 0.0 } },
+
             { UCBC, 'HasNotParagon', {} },
 
             { UCBC, 'HaveLessThanUnitsInCategoryBeingBuilt', { 4,  categories.STRUCTURE * categories.MASSSTORAGE }},
@@ -392,7 +402,11 @@ BuilderGroup {
             -- When do we want to build this ?
             { UCBC, 'AdjacencyCheck', { 'LocationType', categories.STRUCTURE * categories.MASSEXTRACTION * (categories.TECH1 + categories.TECH2 + categories.TECH3), 100, 'ueb1106' } },
             -- Do we need additional conditions to build it ?
-            { UCBC, 'GreaterThanGameTimeSeconds', { 60 * 25 } },
+            { UCBC, 'GreaterThanGameTimeSeconds', { 60 * 30 } },
+
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.15, 0.95 } }, 
+
+            { UCBC, 'GreaterThanMassTrend', { 0.0 } },
 
             { UCBC, 'HasNotParagon', {} },
 

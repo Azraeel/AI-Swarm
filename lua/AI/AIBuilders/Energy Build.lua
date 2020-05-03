@@ -28,7 +28,7 @@ BuilderGroup {
 
             { UCBC, 'HasNotParagon', {} },
 
-            { EBC, 'GreaterThanEconIncome',  { 0.5, 0.0}}, -- Absolut Base income
+            { EBC, 'GreaterThanEconIncomeSwarm',  { 0.5, 0.0}}, -- Absolut Base income
 
             { UCBC, 'GreaterThanGameTimeSeconds', { 260 } },
 
@@ -64,7 +64,7 @@ BuilderGroup {
 
             { UCBC, 'HasNotParagon', {} },
 
-            { EBC, 'GreaterThanEconIncome',  { 0.5, 0.0}}, -- Absolut Base income
+            { EBC, 'GreaterThanEconIncomeSwarm',  { 0.5, 0.0}}, -- Absolut Base income
 
             { UCBC, 'GreaterThanGameTimeSeconds', { 260 } },
         },
@@ -96,7 +96,7 @@ BuilderGroup {
 
             { UCBC, 'GreaterThanGameTimeSeconds', { 2 } },
 
-            { EBC, 'GreaterThanEconIncome',  { 0.5, 0.0}}, -- Absolut Base income
+            { EBC, 'GreaterThanEconIncomeSwarm',  { 0.5, 0.0}}, -- Absolut Base income
         },
         InstanceCount = 1,
         BuilderType = 'Any',
@@ -126,7 +126,7 @@ BuilderGroup {
 
             { UCBC, 'LessThanGameTimeSeconds', { 300 } },
 
-            { EBC, 'GreaterThanEconIncome',  { 0.5, 0.0}}, -- Absolut Base income
+            { EBC, 'GreaterThanEconIncomeSwarm',  { 0.5, 0.0}}, -- Absolut Base income
         },
         InstanceCount = 1,
         BuilderType = 'Any',
@@ -155,7 +155,7 @@ BuilderGroup {
 
             { UCBC, 'HasNotParagon', {} },
 
-            { EBC, 'GreaterThanEconIncome',  { 0.2, 2.0}}, -- Absolut Base income 4 60
+            { EBC, 'GreaterThanEconIncomeSwarm',  { 0.2, 2.0}}, -- Absolut Base income 4 60
 
             { UCBC, 'CheckBuildPlattonDelay', { 'Energy' }},
         },
@@ -275,7 +275,7 @@ BuilderGroup {
         DelayEqualBuildPlattons = {'Energy', 10},
         InstanceCount = 1,
         BuilderConditions = {
-        	{ EBC, 'GreaterThanEconStorageRatio', { 0.10, 0.30 } }, 
+        	{ EBC, 'GreaterThanEconStorageRatioSwarm', { 0.10, 0.30 } }, 
 
             { UCBC, 'HaveLessThanUnitsWithCategory', { 2, categories.ENERGYPRODUCTION * categories.TECH3 } },
 
@@ -349,7 +349,7 @@ BuilderGroup {
 
             { UCBC, 'HasNotParagon', {} },
 
-            { EBC, 'GreaterThanEconIncome',  { 0.5, 0.0}}, -- Absolut Base income
+            { EBC, 'GreaterThanEconIncomeSwarm',  { 0.5, 0.0}}, -- Absolut Base income
         },
         BuilderType = 'Any',
         BuilderData = {
@@ -397,7 +397,7 @@ BuilderGroup {
         BuilderConditions = {
             { MIBC, 'GreaterThanGameTime', { 600 } },
             { UCBC, 'UnitCapCheckLess', { .7 } },
-            { EBC, 'GreaterThanEconStorageRatio', { 0.20, 0.30 } },             -- Ratio from 0 to 1. (1=100%)
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.20, 0.30 } },             -- Ratio from 0 to 1. (1=100%)
             { UCBC, 'HaveLessThanUnitsWithCategory', { 9, 'ENERGYSTORAGE' }},
         },
         BuilderType = 'Any',
@@ -436,7 +436,7 @@ BuilderGroup {
         Priority = 790,
         InstanceCount = 2,
         BuilderConditions = {
-            { EBC, 'GreaterThanEconTrend', { 0.0, 1.0 } }, -- relative income
+            { EBC, 'GreaterThanEconTrendSwarm', { 0.0, 1.0 } }, -- relative income
             { UCBC, 'HaveGreaterThanUnitsWithCategory', { 0, categories.STRUCTURE * categories.ENERGYPRODUCTION * (categories.TECH2 + categories.TECH3) }},
             { UCBC, 'UnitsGreaterAtLocation', { 'LocationType', 0, categories.STRUCTURE * categories.TECH1 * categories.ENERGYPRODUCTION - categories.HYDROCARBON }},
             { UCBC, 'UnitCapCheckGreater', { 0.95 } },
@@ -470,7 +470,7 @@ BuilderGroup {
         Priority = 790,
         InstanceCount = 2,
         BuilderConditions = {
-            { EBC, 'GreaterThanEconTrend', { 0.0, 50.0 } }, -- relative income
+            { EBC, 'GreaterThanEconTrendSwarm', { 0.0, 50.0 } }, -- relative income
             { UCBC, 'HaveGreaterThanUnitsWithCategory', { 0, categories.STRUCTURE * categories.ENERGYPRODUCTION * categories.TECH3 }},
             { UCBC, 'UnitsGreaterAtLocation', { 'LocationType', 0, categories.STRUCTURE * categories.TECH2 * categories.ENERGYPRODUCTION - categories.HYDROCARBON }},
             { UCBC, 'UnitCapCheckGreater', { 0.95 } },

@@ -333,7 +333,6 @@ function AIFindNearestCategoryTeleportLocationSwarm(aiBrain, position, maxRange,
     return TargetUnit
 end
 
-
 function points(original,radius,num)
     local nnn=0
     local coords = {}

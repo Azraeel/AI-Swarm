@@ -1,40 +1,36 @@
-PlatoonTemplate { Name = 'T1LandDefaultQueue',
+PlatoonTemplate { Name = 'T1LandOpeningQueue',
     FactionSquads = {
         UEF = {
             { 'uel0201', 1, 3, 'Attack', 'none' },		-- Striker Medium Tank
-            { 'uel0105', 1, 1, 'support', 'None' },     -- Engineer
+            { 'uel0105', 1, 2, 'support', 'None' },     -- Engineer
 			{ 'uel0103', 1, 2, 'Artillery', 'none' },	-- artillery
             { 'uel0201', 1, 3, 'Attack', 'none' },      -- Striker Medium Tank
             { 'uel0105', 1, 2, 'support', 'None' },     -- Engineer
-            { 'uel0104', 1, 1, 'Guard', 'none' },		-- AA
-            { 'xsl0201', 1, 2, 'Attack', 'none' },      -- Medium Tank
-         },
+            { 'uel0201', 1, 3, 'Attack', 'none' },      -- Striker Medium Tank
+        },
         Aeon = {
             { 'ual0201', 1, 4, 'Attack', 'none' },		-- Light Hover tank
-            { 'ual0105', 1, 1, 'support', 'None' },     -- Engineer
+            { 'ual0105', 1, 2, 'support', 'None' },     -- Engineer
 			{ 'ual0103', 1, 2, 'Artillery', 'none' },	-- artillery
             { 'ual0201', 1, 3, 'Attack', 'none' },      -- Light Hover tank
             { 'ual0105', 1, 2, 'support', 'None' },     -- Engineer
-            { 'ual0104', 1, 1, 'Guard', 'none' },		-- AA
-            { 'xsl0201', 1, 2, 'Attack', 'none' },      -- Medium Tank
+            { 'ual0201', 1, 3, 'Attack', 'none' },      -- Light Hover tank
         },
         Cybran = {
             { 'url0107', 1, 3, 'Attack', 'none' },		-- Mantis
-            { 'url0105', 1, 1, 'support', 'None' },     -- Engineer
+            { 'url0105', 1, 2, 'support', 'None' },     -- Engineer
 			{ 'url0103', 1, 2, 'Artillery', 'none' },	-- arty
             { 'url0107', 1, 3, 'Attack', 'none' },      -- Mantis
             { 'url0105', 1, 2, 'support', 'None' },     -- Engineer
-            { 'url0104', 1, 1, 'Guard', 'none' },		-- AA
-            { 'xsl0201', 1, 2, 'Attack', 'none' },      -- Medium Tank
+            { 'url0107', 1, 3, 'Attack', 'none' },      -- Mantis
         },
         Seraphim = {
             { 'xsl0201', 1, 3, 'Attack', 'none' },		-- Medium Tank
-            { 'xsl0105', 1, 1, 'support', 'None' },     -- Engineer
+            { 'xsl0105', 1, 2, 'support', 'None' },     -- Engineer
 			{ 'xsl0103', 1, 2, 'Artillery', 'none' },	-- artillery
             { 'xsl0201', 1, 3, 'Attack', 'none' },      -- Medium Tank
             { 'xsl0105', 1, 2, 'support', 'None' },     -- Engineer
-            { 'xsl0104', 1, 1, 'Guard', 'none' },		-- AA
-            { 'xsl0201', 1, 2, 'Attack', 'none' },      -- Medium Tank
+            { 'xsl0201', 1, 3, 'Attack', 'none' },      -- Medium Tank
         },
     }
 }
@@ -47,7 +43,7 @@ PlatoonTemplate { Name = 'T2LandDefaultQueue',
             { 'uel0111', 1, 1, 'Artillery', 'none' },   -- MML
             { 'uel0205', 1, 2, 'Guard', 'none' },       -- AA
             { 'uel0307', 1, 1, 'Guard', 'none' },       -- Mobile Shield
-         },
+        },
         Aeon = {
             { 'ual0202', 1, 6, 'Attack', 'none' },      -- Heavy Tank
             { 'ual0111', 1, 2, 'Artillery', 'none' },   -- MML
@@ -77,7 +73,7 @@ PlatoonTemplate { Name = 'T3LandDefaultQueue',
             { 'uel0304', 1, 2, 'Artillery', 'none' },   -- artillery
             { 'xel0306', 1, 2, 'Artillery', 'none' },   -- artillery
             { 'delk002', 1, 2, 'Guard', 'none' },       -- AA
-         },
+        },
         Aeon = {
             { 'ual0303', 1, 8, 'Attack', 'none' },      -- Heavy Assault Bot
             { 'xal0305', 1, 2, 'Attack', 'none' },      -- Sniper Bot

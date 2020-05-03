@@ -73,11 +73,6 @@ function HaveUnitRatioVersusCapSwarm(aiBrain, ratio, compareType, categoryOwn)
 end
 
 function HaveUnitRatioVersusEnemySwarm(aiBrain, ratio, categoryOwn, compareType, categoryEnemy)
-    -- in case we don't have omni view, return always true. We cant count units without omni
-    if not aiBrain.CheatEnabled or ScenarioInfo.Options.OmniCheat ~= "on" then
-        --LOG('* HaveUnitRatioVersusEnemySwarm: AI is not Cheating or Omni is Off')
-        return true
-    end
     local numOwnUnits = aiBrain:GetCurrentUnits(categoryOwn)
     local numEnemyUnits = aiBrain:GetNumUnitsAroundPoint(categoryEnemy, Vector(mapSizeX/2,0,mapSizeZ/2), mapSizeX+mapSizeZ , 'Enemy')
     --LOG(aiBrain:GetArmyIndex()..' CompareBody {World} ( '..numOwnUnits..' '..compareType..' '..numEnemyUnits..' ) -- ['..ratio..'] -- return '..repr(CompareBody(numOwnUnits / numEnemyUnits, ratio, compareType)))
@@ -216,6 +211,19 @@ function BuildNotOnLocationSwarm(aiBrain, LocationType, ForbiddenLocationType)
     end
     --LOG('* BuildOnlyOnLocationSwarm: we are on location '..LocationType..', forbidden locations are: '..ForbiddenLocationType..'. return true (OK, build it)')
     return true
+end
+
+function HaveGreaterThanUnitsInCategoryBeingBuiltAtLocationSwarm(aiBrain, locationType, numReq, category, constructionCat)
+    local numUnits
+    if constructionCat then
+        numUnits = table.getn( GetUnitsBeingBuiltLocation(aiBrain, locationType, category, category + (categories.ENGINEER * categories.MOBILE - categories.STATIONASSISTPOD) + constructionCat) or {} )
+    else
+        numUnits = table.getn( GetUnitsBeingBuiltLocation(aiBrain,locationType, category, category + (categories.ENGINEER * categories.MOBILE - categories.STATIONASSISTPOD) ) or {} )
+    end
+    if numUnits > numReq then
+        return true
+    end
+    return false
 end
 
 

@@ -19,7 +19,9 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Experimental Builders',           
 
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
 
-            { EBC, 'GreaterThanEconIncome', { 10, 300 } },
+            { UCBC, 'GreaterThanMassTrend', { 0.0 } },
+
+            { EBC, 'GreaterThanEconIncomeSwarm', { 10, 300 } },
         },
         BuilderType = 'Any',
         BuilderData = {
@@ -47,7 +49,9 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Experimental Builders',           
 
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
 
-            { EBC, 'GreaterThanEconIncome', { 10, 300 } },
+            { UCBC, 'GreaterThanMassTrend', { 0.0 } },
+
+            { EBC, 'GreaterThanEconIncomeSwarm', { 10, 300 } },
         },
         BuilderType = 'Any',
         BuilderData = {
@@ -73,7 +77,9 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Experimental Builders',           
 
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
 
-            { EBC, 'GreaterThanEconIncome', { 10, 300 } },
+            { UCBC, 'GreaterThanMassTrend', { 0.0 } },
+
+            { EBC, 'GreaterThanEconIncomeSwarm', { 10, 300 } },
         },
         BuilderType = 'Any',
         BuilderData = {
@@ -110,7 +116,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Experimental Formers',            
             SearchRadius = BaseEnemyZone,                                       -- Searchradius for new target.
             GetTargetsFromBase = false,                                         -- Get targets from base position (true) or platoon position (false)
             AggressiveMove = true,                                              -- If true, the unit will attack everything while moving to the target.
-            AttackEnemyStrength = 100,                                       -- Compare platoon to enemy strenght. 100 will attack equal, 50 weaker and 150 stronger enemies.
+            AttackEnemyStrength = 250,                                       -- Compare platoon to enemy strenght. 100 will attack equal, 50 weaker and 150 stronger enemies.
             TargetSearchCategory = categories.ALLUNITS - categories.WALL - categories.NAVAL,                                  -- Only find targets matching these categories.
             MoveToCategories = {                                                -- Move to targets
                 categories.STRUCTURE * categories.EXPERIMENTAL * categories.ECONOMIC,
@@ -139,7 +145,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Experimental Formers',            
             SearchRadius = BaseMilitaryZone,                                       -- Searchradius for new target.
             GetTargetsFromBase = false,                                         -- Get targets from base position (true) or platoon position (false)
             AggressiveMove = true,                                              -- If true, the unit will attack everything while moving to the target.
-            AttackEnemyStrength = 100,                                       -- Compare platoon to enemy strenght. 100 will attack equal, 50 weaker and 150 stronger enemies.
+            AttackEnemyStrength = 250,                                       -- Compare platoon to enemy strenght. 100 will attack equal, 50 weaker and 150 stronger enemies.
             TargetSearchCategory = categories.ALLUNITS - categories.WALL - categories.NAVAL,                                  -- Only find targets matching these categories.
             MoveToCategories = {                                                -- Move to targets
                 categories.STRUCTURE * categories.EXPERIMENTAL * categories.ECONOMIC,

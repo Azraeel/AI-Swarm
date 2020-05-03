@@ -19,8 +19,8 @@ BuilderGroup { BuilderGroupName = 'Swarm Naval Experimental Builders',          
             -- Do we need additional conditions to build it ?
             { UCBC, 'HaveGreaterThanUnitsWithCategory', { 1, categories.STRUCTURE * categories.FACTORY * categories.NAVAL } },
             -- Have we the eco to build it ?
-            { EBC, 'GreaterThanEconIncome', { 7.0, 600.0 }},                    -- Base income
-            { EBC, 'GreaterThanEconStorageRatio', { 0.40, 0.95 } },             -- Ratio from 0 to 1. (1=100%)
+            { EBC, 'GreaterThanEconIncomeSwarm', { 7.0, 600.0 }},                    -- Base income
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.40, 0.95 } },             -- Ratio from 0 to 1. (1=100%)
             -- Don't build it if...
             { UCBC, 'HaveLessThanUnitsInCategoryBeingBuilt', { 1, categories.MOBILE * categories.EXPERIMENTAL }},
         },
@@ -50,8 +50,8 @@ BuilderGroup { BuilderGroupName = 'Swarm Naval Experimental Builders',          
             { UCBC, 'HaveGreaterThanUnitsWithCategory', { 1, categories.STRUCTURE * categories.FACTORY * categories.NAVAL } },
             { UCBC, 'CanBuildCategorySwarm', { categories.MOBILE * categories.NAVAL * categories.EXPERIMENTAL } },
             -- Have we the eco to build it ?
-            { EBC, 'GreaterThanEconIncome', { 7.0, 600.0 }},                    -- Base income
-            { EBC, 'GreaterThanEconStorageRatio', { 0.95, 0.95 } },             -- Ratio from 0 to 1. (1=100%)
+            { EBC, 'GreaterThanEconIncomeSwarm', { 7.0, 600.0 }},                    -- Base income
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.95, 0.95 } },             -- Ratio from 0 to 1. (1=100%)
             -- Don't build it if...
             { UCBC, 'UnitCapCheckLess', { 0.99 } },
         },

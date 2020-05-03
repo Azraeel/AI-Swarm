@@ -15,17 +15,32 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Builders',
     -- ============ --
     --    TECH 1    --
     -- ============ --
+    Builder { BuilderName = 'S1 Engineer builder - Opener',
+        PlatoonTemplate = 'T1BuildEngineer',
+        Priority = 1100,
+        BuilderConditions = {
+            { UCBC, 'UnitCapCheckLess', { 0.95 } },
+
+            { EBC, 'GreaterThanEconIncomeSwarm', { 0, 0 } },
+
+            { UCBC, 'HaveLessThanUnitsWithCategory', { 3, categories.MOBILE * categories.ENGINEER } },
+         },
+        BuilderType = 'All',
+    },
+
     Builder { BuilderName = 'S1 Engineer builder Cap',
         PlatoonTemplate = 'T1BuildEngineer',
         Priority = 1005,
         BuilderConditions = {
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
 
-            { EBC, 'GreaterThanEconIncome', { 0, 0 } },
+            { EBC, 'GreaterThanEconIncomeSwarm', { 0, 0 } },
 
             { UCBC, 'PoolLessAtLocation', { 'LocationType', 1, categories.MOBILE * categories.ENGINEER * categories.TECH1 } },
 
             { UCBC, 'LocationFactoriesBuildingLess', { 'LocationType', 1, categories.MOBILE * categories.ENGINEER * categories.TECH1} },
+
+            { UCBC, 'GreaterThanGameTimeSeconds', { 120 } },
          },
         BuilderType = 'All',
     },
@@ -36,9 +51,9 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Builders',
         BuilderConditions = {
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
 
-            { EBC, 'GreaterThanEconIncome', { 0, 0 } },
+            { EBC, 'GreaterThanEconIncomeSwarm', { 0, 0 } },
 
-            { EBC, 'GreaterThanEconStorageRatio', { 0.98, 0.50 } }, 
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.98, 0.50 } }, 
 
             { UCBC, 'PoolLessAtLocation', { 'LocationType', 2, categories.MOBILE * categories.ENGINEER * categories.TECH1 } },
 
@@ -69,9 +84,9 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Builders',
         BuilderConditions = {
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
 
-            { EBC, 'GreaterThanEconIncome', { 0, 0 } },
+            { EBC, 'GreaterThanEconIncomeSwarm', { 0, 0 } },
 
-            { EBC, 'GreaterThanEconStorageRatio', { 0.98, 0.50 } }, 
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.98, 0.50 } }, 
 
             { UCBC, 'PoolLessAtLocation', { 'LocationType', 2, categories.MOBILE * categories.ENGINEER * categories.TECH2 } },
 
@@ -102,9 +117,9 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Builders',
         BuilderConditions = {
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
 
-            { EBC, 'GreaterThanEconIncome', { 0, 0 } },
+            { EBC, 'GreaterThanEconIncomeSwarm', { 0, 0 } },
 
-            { EBC, 'GreaterThanEconStorageRatio', { 0.98, 0.50 } }, 
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.98, 0.50 } }, 
 
             { UCBC, 'PoolLessAtLocation', { 'LocationType', 2, categories.MOBILE * categories.ENGINEER * categories.TECH3 } },
 
@@ -126,7 +141,7 @@ BuilderGroup {
 
             { UCBC, 'EngineerGreaterAtLocation', { 'LocationType', 1, 'ENGINEER TECH2' } },
 
-            { EBC, 'GreaterThanEconIncome',  { 10, 100}},
+            { EBC, 'GreaterThanEconIncomeSwarm',  { 10, 100}},
 
             { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.95, 1.4 }},
         },
@@ -151,7 +166,7 @@ BuilderGroup {
 
             { UCBC, 'EngineerGreaterAtLocation', { 'LocationType', 1, 'ENGINEER TECH2' } },
 
-            { EBC, 'GreaterThanEconIncome',  { 10, 100}},
+            { EBC, 'GreaterThanEconIncomeSwarm',  { 10, 100}},
 
             { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.95, 1.4 }},
         },
@@ -179,9 +194,9 @@ BuilderGroup {
         BuilderConditions = {
             { MIBC, 'FactionIndex', { 1 }}, 
 
-            { EBC, 'GreaterThanEconTrend', { 0.0, 0.0 } }, 
+            { EBC, 'GreaterThanEconTrendSwarm', { 0.0, 0.0 } }, 
 
-            { EBC, 'GreaterThanEconStorageRatio', { 0.25, 0.99 } }, 
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.25, 0.99 } }, 
 
             { UCBC, 'HaveLessThanUnitsInCategoryBeingUpgradeSwarm', { 3, categories.ENGINEERSTATION }},
         },
@@ -194,9 +209,9 @@ BuilderGroup {
         BuilderConditions = {
             { MIBC, 'FactionIndex', { 3 }},
 
-            { EBC, 'GreaterThanEconTrend', { 0.0, 0.0 } },
+            { EBC, 'GreaterThanEconTrendSwarm', { 0.0, 0.0 } },
 
-            { EBC, 'GreaterThanEconStorageRatio', { 0.25, 0.99 } },   
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.25, 0.99 } },   
 
             { UCBC, 'HaveLessThanUnitsInCategoryBeingUpgradeSwarm', { 3, categories.ENGINEERSTATION }},
         },
@@ -209,9 +224,9 @@ BuilderGroup {
         BuilderConditions = {
             { MIBC, 'FactionIndex', { 3 }}, 
 
-            { EBC, 'GreaterThanEconTrend', { 0.0, 0.0 } },
+            { EBC, 'GreaterThanEconTrendSwarm', { 0.0, 0.0 } },
 
-            { EBC, 'GreaterThanEconStorageRatio', { 0.30, 0.99 } },        
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.30, 0.99 } },        
 
             { UCBC, 'HaveLessThanUnitsInCategoryBeingUpgradeSwarm', { 3, categories.ENGINEERSTATION }},
         },
@@ -229,7 +244,7 @@ BuilderGroup { BuilderGroupName = 'Swarm SACU Builder',
         PlatoonTemplate = 'S3 SACU RAMBO preset 12345',
         Priority = 1017,
         BuilderConditions = { 
-            { EBC, 'GreaterThanEconStorageRatio', { 0.30, 0.50}}, 
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.30, 0.50}}, 
 
             { UCBC, 'HaveLessThanUnitsWithCategory', { 20, categories.RAMBOPRESET } },
 
@@ -242,7 +257,7 @@ BuilderGroup { BuilderGroupName = 'Swarm SACU Builder',
         PlatoonTemplate = 'S3 SACU ENGINEER preset 12345',
         Priority = 1020,
         BuilderConditions = {
-            { EBC, 'GreaterThanEconStorageRatio', { 0.80, 0.85}},
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.80, 0.85}},
 
             { MIBC, 'FactionIndex', { 1, 2, 3, 5 }}, -- 1: UEF, 2: Aeon, 3: Cybran, 4: Seraphim, 5: Nomads 
 

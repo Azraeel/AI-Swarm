@@ -1,6 +1,6 @@
 
 OldGreaterThanEconStorageRatioFunction = GreaterThanEconStorageRatio
-function GreaterThanEconStorageRatio(aiBrain, mStorageRatio, eStorageRatio)
+function GreaterThanEconStorageRatioSwarm(aiBrain, mStorageRatio, eStorageRatio)
    -- Only use this with AI-Swarm
     if not aiBrain.Swarm then
         return OldGreaterThanEconStorageRatioFunction(aiBrain, mStorageRatio, eStorageRatio)
@@ -16,7 +16,7 @@ function GreaterThanEconStorageRatio(aiBrain, mStorageRatio, eStorageRatio)
 end
 
 OldGreaterThanEconTrendFunction = GreaterThanEconTrend
-function GreaterThanEconTrend(aiBrain, MassTrend, EnergyTrend)
+function GreaterThanEconTrendSwarm(aiBrain, MassTrend, EnergyTrend)
    -- Only use this with AI-Swarm
     if not aiBrain.Swarm then
         return OldGreaterThanEconTrendFunction(aiBrain, MassTrend, EnergyTrend)
@@ -32,7 +32,7 @@ function GreaterThanEconTrend(aiBrain, MassTrend, EnergyTrend)
 end
 
 OldGreaterThanEconIncomeFunction = GreaterThanEconIncome
-function GreaterThanEconIncome(aiBrain, MassIncome, EnergyIncome)
+function GreaterThanEconIncomeSwarm(aiBrain, MassIncome, EnergyIncome)
    -- Only use this with AI-Swarm
     if not aiBrain.Swarm then
         return OldGreaterThanEconIncomeFunction(aiBrain, MassIncome, EnergyIncome)

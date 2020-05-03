@@ -17,7 +17,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Shields Builder',                      
         InstanceCount = 2,
         BuilderConditions = {
             -- Have we the eco to build it ?
-            { EBC, 'GreaterThanEconStorageRatio', { 0.30, 0.50 } },             -- Ratio from 0 to 1. (1=100%)
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.30, 0.50 } },             -- Ratio from 0 to 1. (1=100%)
             -- Don't build it if...
             { UCBC, 'HaveLessThanUnitsInCategoryBeingBuilt', { 3, categories.STRUCTURE * categories.SHIELD}},
 
@@ -50,7 +50,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Shields Builder',                      
 
         	{ UCBC, 'HaveGreaterThanUnitsWithCategory', { 1, categories.ENERGYPRODUCTION * categories.TECH3 } },
             -- Have we the eco to build it ?
-            { EBC, 'GreaterThanEconStorageRatio', { 0.20, 0.40 } },             -- Ratio from 0 to 1. (1=100%)
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.20, 0.40 } },             -- Ratio from 0 to 1. (1=100%)
             -- Don't build it if...
             { UCBC, 'HaveLessThanUnitsInCategoryBeingBuilt', { 3, categories.STRUCTURE * categories.SHIELD}},
 
@@ -83,7 +83,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Shields Builder',                      
 
         	{ UCBC, 'HaveGreaterThanUnitsWithCategory', { 1, categories.ENERGYPRODUCTION * categories.TECH3 } },
             -- Have we the eco to build it ?
-            { EBC, 'GreaterThanEconStorageRatio', { 0.20, 0.40 } },             -- Ratio from 0 to 1. (1=100%)
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.20, 0.40 } },             -- Ratio from 0 to 1. (1=100%)
             -- Don't build it if...
             { UCBC, 'HaveLessThanUnitsInCategoryBeingBuilt', { 3, categories.STRUCTURE * categories.SHIELD}},
 
@@ -116,7 +116,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Shields Builder',                      
 
         	{ UCBC, 'HaveGreaterThanUnitsWithCategory', { 1, categories.ENERGYPRODUCTION * categories.TECH3 } },
             -- Have we the eco to build it ?
-            { EBC, 'GreaterThanEconStorageRatio', { 0.20, 0.40 } },             -- Ratio from 0 to 1. (1=100%)
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.20, 0.40 } },             -- Ratio from 0 to 1. (1=100%)
 
             { UCBC, 'UnitsGreaterAtEnemySwarm', { 0 , categories.STRUCTURE * categories.TECH3 * categories.ARTILLERY } },
             -- Don't build it if...
@@ -237,7 +237,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Shields Upgrader',                     
         DelayEqualBuildPlattons = {'Shield', 2},
         InstanceCount = 10,
         BuilderConditions = {
-            { EBC, 'GreaterThanEconStorageRatio', { 0.25, 0.50}}, -- Ratio from 0 to 1. (1=100%)
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.25, 0.50}}, -- Ratio from 0 to 1. (1=100%)
             { UCBC, 'UnitsGreaterAtLocation', { 'LocationType', 0, categories.TECH3 * categories.ENERGYPRODUCTION}},
             { UCBC, 'HaveLessThanUnitsInCategoryBeingUpgradeSwarm', { 3, categories.STRUCTURE * categories.SHIELD }},
             { UCBC, 'CheckBuildPlattonDelay', { 'Shield' }},
@@ -251,7 +251,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Shields Upgrader',                     
         DelayEqualBuildPlattons = {'Shield', 2},
         InstanceCount = 10,
         BuilderConditions = {
-            { EBC, 'GreaterThanEconStorageRatio', { 0.25, 0.50}}, -- Ratio from 0 to 1. (1=100%)
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.25, 0.50}}, -- Ratio from 0 to 1. (1=100%)
             { UCBC, 'UnitsGreaterAtLocation', { 'LocationType', 0, categories.TECH3 * categories.ENERGYPRODUCTION}},
             { UCBC, 'HaveLessThanUnitsInCategoryBeingUpgradeSwarm', { 3, categories.STRUCTURE * categories.SHIELD }},
             { UCBC, 'CheckBuildPlattonDelay', { 'Shield' }},
@@ -265,7 +265,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Shields Upgrader',                     
         DelayEqualBuildPlattons = {'Shield', 2},
         InstanceCount = 10,
         BuilderConditions = {
-            { EBC, 'GreaterThanEconStorageRatio', { 0.25, 0.50}}, -- Ratio from 0 to 1. (1=100%)
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.25, 0.50}}, -- Ratio from 0 to 1. (1=100%)
             { UCBC, 'UnitsGreaterAtLocation', { 'LocationType', 0, categories.TECH3 * categories.ENERGYPRODUCTION}},
             { UCBC, 'HaveLessThanUnitsInCategoryBeingUpgradeSwarm', { 3, categories.STRUCTURE * categories.SHIELD }},
             { UCBC, 'CheckBuildPlattonDelay', { 'Shield' }},
@@ -279,7 +279,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Shields Upgrader',                     
         DelayEqualBuildPlattons = {'Shield', 2},
         InstanceCount = 10,
         BuilderConditions = {
-            { EBC, 'GreaterThanEconStorageRatio', { 0.25, 0.50}}, -- Ratio from 0 to 1. (1=100%)
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.25, 0.50}}, -- Ratio from 0 to 1. (1=100%)
             { UCBC, 'UnitsGreaterAtLocation', { 'LocationType', 1, categories.TECH3 * categories.ENERGYPRODUCTION}},
             { UCBC, 'HaveLessThanUnitsInCategoryBeingUpgradeSwarm', { 3, categories.STRUCTURE * categories.SHIELD }},
             { UCBC, 'CheckBuildPlattonDelay', { 'Shield' }},
@@ -293,7 +293,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Shields Upgrader',                     
         DelayEqualBuildPlattons = {'Shield', 2},
         InstanceCount = 10,
         BuilderConditions = {
-            { EBC, 'GreaterThanEconStorageRatio', { 0.25, 0.50}}, -- Ratio from 0 to 1. (1=100%)
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.25, 0.50}}, -- Ratio from 0 to 1. (1=100%)
             { UCBC, 'UnitsGreaterAtLocation', { 'LocationType', 1, categories.TECH3 * categories.ENERGYPRODUCTION}},
             { UCBC, 'HaveLessThanUnitsInCategoryBeingUpgradeSwarm', { 3, categories.STRUCTURE * categories.SHIELD }},
             { UCBC, 'CheckBuildPlattonDelay', { 'Shield' }},
@@ -390,7 +390,7 @@ BuilderGroup { BuilderGroupName = 'Swarm T2 Tactical Missile Defenses Builder',
         PlatoonTemplate = 'T2EngineerBuilder',
         Priority = 10000,
         BuilderConditions = {
-            { EBC, 'GreaterThanEconStorageRatio', { 0.50, 0.60 } },             -- Ratio from 0 to 1. (1=100%)
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.50, 0.60 } },             -- Ratio from 0 to 1. (1=100%)
 
             { UCBC, 'UnitsLessAtLocation', { 'LocationType', 3, categories.STRUCTURE * categories.DEFENSE * categories.ANTIMISSILE * categories.TECH2 }}, 
 
@@ -438,7 +438,7 @@ BuilderGroup { BuilderGroupName = 'Swarm SMD Builder',
 
             { MIBC, 'GreaterThanGameTime', { 1680 } },
 
-            { EBC, 'GreaterThanEconStorageRatio', { 0.0, 0.0 } },        
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.0, 0.0 } },        
         },
         BuilderType = 'Any',
         BuilderData = {
@@ -470,7 +470,7 @@ BuilderGroup { BuilderGroupName = 'Swarm SMD Builder',
 
             { UCBC, 'BuildOnlyOnLocationSwarm', { 'LocationType', 'MAIN' } },
 
-            { EBC, 'GreaterThanEconStorageRatio', { 0.35, 0.50 } }, 
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.35, 0.50 } }, 
         },
         BuilderType = 'Any',
         BuilderData = {
@@ -502,7 +502,7 @@ BuilderGroup { BuilderGroupName = 'Swarm SMD Builder',
 
             { UCBC, 'BuildOnlyOnLocationSwarm', { 'LocationType', 'MAIN' } },
 
-            { EBC, 'GreaterThanEconStorageRatio', { 0.35, 0.50 } },   
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.35, 0.50 } },   
         },
         BuilderType = 'Any',
         BuilderData = {
@@ -534,7 +534,7 @@ BuilderGroup { BuilderGroupName = 'Swarm SMD Builder',
 
             { UCBC, 'BuildNotOnLocationSwarm', { 'LocationType', 'MAIN' } },
 
-            { EBC, 'GreaterThanEconStorageRatio', { 0.35, 0.50 } },       
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.35, 0.50 } },       
 
             { UCBC, 'HaveLessThanUnitsInCategoryBeingBuilt', { 1, categories.STRUCTURE * categories.DEFENSE * categories.ANTIMISSILE * (categories.TECH3 + categories.EXPERIMENTAL) } },
         },
@@ -588,9 +588,9 @@ BuilderGroup { BuilderGroupName = 'Swarm Defense Anti Ground Builders',         
         BuilderConditions = {
             { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 0, categories.ENGINEER * categories.TECH1 }},
 
-            { EBC, 'GreaterThanEconTrend', { 0.0, 0.0 } },
+            { EBC, 'GreaterThanEconTrendSwarm', { 0.0, 0.0 } },
 
-            { EBC, 'GreaterThanEconStorageRatio', { 0.50, 0.65 } },        
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.50, 0.65 } },        
 
             { UCBC, 'UnitsLessAtLocation', { 'LocationType', 5, categories.STRUCTURE * categories.DEFENSE - categories.ANTIAIR }},
         },
@@ -620,9 +620,9 @@ BuilderGroup { BuilderGroupName = 'Swarm Defense Anti Ground Builders',         
         BuilderConditions = {
             { UCBC, 'UnitsLessAtLocation', { 'LocationType', 10, categories.STRUCTURE * categories.ARTILLERY * categories.TECH2 }},
 
-            { EBC, 'GreaterThanEconTrend', { 0.0, 0.0 } },
+            { EBC, 'GreaterThanEconTrendSwarm', { 0.0, 0.0 } },
 
-            { EBC, 'GreaterThanEconStorageRatio', { 0.60, 0.70 }},
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.60, 0.70 }},
         },
         BuilderData = {
             NumAssistees = 2,
@@ -641,9 +641,9 @@ BuilderGroup { BuilderGroupName = 'Swarm Defense Anti Ground Builders',         
         Priority = 950,
         InstanceCount = 2,
         BuilderConditions = {
-            { EBC, 'GreaterThanEconStorageRatio', { 0.25, 0.35 } },   
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.25, 0.35 } },   
 
-            { EBC, 'GreaterThanEconTrend', { 0.0, 0.0 } },
+            { EBC, 'GreaterThanEconTrendSwarm', { 0.0, 0.0 } },
 
             { UCBC, 'UnitsLessAtLocation', { 'LocationType', 15, categories.STRUCTURE * categories.DEFENSE * categories.TECH2 - categories.ANTIAIR }},     
         },
@@ -671,9 +671,9 @@ BuilderGroup { BuilderGroupName = 'Swarm Defense Anti Ground Builders',         
         BuilderConditions = {
             { UCBC, 'UnitsGreaterAtEnemySwarm', { 0 , categories.LAND * categories.EXPERIMENTAL } },
 
-            { EBC, 'GreaterThanEconStorageRatio', { 0.25, 0.35 } },  
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.25, 0.35 } },  
 
-            { EBC, 'GreaterThanEconTrend', { 0.0, 0.0 } },
+            { EBC, 'GreaterThanEconTrendSwarm', { 0.0, 0.0 } },
 
             { UCBC, 'UnitsLessAtLocation', { 'LocationType', 15, categories.STRUCTURE * categories.DEFENSE * categories.TECH3 - categories.ANTIAIR }},
         },
@@ -699,7 +699,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Defense Anti Ground Builders',         
         PlatoonTemplate = 'EngineerBuilder',
         Priority = 535,
         BuilderConditions = {
-            { EBC, 'GreaterThanEconStorageRatio', { 0.35, 0.40 } },   
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.35, 0.40 } },   
         },
         BuilderType = 'Any',
         BuilderData = {
@@ -720,7 +720,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Defense Anti Ground Builders',         
         PlatoonTemplate = 'T2EngineerBuilder',
         Priority = 950,
         BuilderConditions = {
-            { EBC, 'GreaterThanEconStorageRatio', { 0.25, 0.35 } },
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.25, 0.35 } },
         },
         BuilderType = 'Any',
         BuilderData = {
@@ -752,7 +752,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Defense Anti Ground Builders',         
         PlatoonTemplate = 'T3EngineerBuildernoSUB',
         Priority = 1000,
         BuilderConditions = {
-            { EBC, 'GreaterThanEconStorageRatio', { 0.25, 0.35 } },
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.25, 0.35 } },
         },
         BuilderType = 'Any',
         BuilderData = {
@@ -819,7 +819,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Defense Anti Air Builders',
         Priority = 500,
         InstanceCount = 1,                                     
         BuilderConditions = {
-            { EBC, 'GreaterThanEconStorageRatio', { 0.25, 0.35 }},
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.25, 0.35 }},
 
             { UCBC, 'UnitsLessAtLocation', { 'LocationType', 4, categories.STRUCTURE * categories.DEFENSE * categories.ANTIAIR * categories.TECH1 }},
         },
@@ -845,7 +845,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Defense Anti Air Builders',
         Priority = 905,
         InstanceCount = 2,                                      
         BuilderConditions = {
-            { EBC, 'GreaterThanEconStorageRatio', { 0.25, 0.45 }}, 
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.25, 0.45 }}, 
 
             { UCBC, 'UnitsLessAtLocation', { 'LocationType', 13, categories.STRUCTURE * categories.DEFENSE * categories.ANTIAIR * categories.TECH2 }},
         },
@@ -871,7 +871,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Defense Anti Air Builders',
         Priority = 1025,
         InstanceCount = 3,                                      
         BuilderConditions = {
-            { EBC, 'GreaterThanEconStorageRatio', { 0.25, 0.45}}, 
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.25, 0.45}}, 
 
             { UCBC, 'UnitsLessAtLocation', { 'LocationType', 19, categories.STRUCTURE * categories.DEFENSE * categories.ANTIAIR * categories.TECH3 }},
         },

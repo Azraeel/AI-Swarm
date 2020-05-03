@@ -14,18 +14,18 @@ BuilderGroup {
         PlatoonTemplate = 'EngineerBuilder',
         Priority = 600,
         BuilderConditions = {
-            -- When do we want to build this ?
             { UCBC, 'UnitsLessAtLocation', { 'LocationType', 1, (categories.RADAR + categories.OMNI) * categories.STRUCTURE}},
-            -- Do we need additional conditions to build it ?
+
             { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 0, categories.ENGINEER * categories.TECH1 }},
+
             { UCBC, 'HaveGreaterThanUnitsWithCategory', { 1, categories.STRUCTURE * categories.FACTORY * categories.LAND } },
-            -- Have we the eco to build it ?
-            -- Don't build it if...
-            -- Respect UnitCap
+
+            { EBC, 'GreaterThanEconTrendSwarm', { 0.0, 5.0 }},
         },
         BuilderType = 'Any',
         BuilderData = {
             Construction = {
+                BuildClose = false,
                 AdjacencyCategory = categories.STRUCTURE * categories.ENERGYPRODUCTION,
                 AdjacencyDistance = 50,
                 BuildStructures = {
@@ -35,22 +35,51 @@ BuilderGroup {
             }
         }
     },
+
+    Builder {
+        BuilderName = 'S1 Radar - Field Radars',
+        PlatoonTemplate = 'EngineerBuilder',
+        Priority = 600,
+        BuilderConditions = {
+            { UCBC, 'UnitsLessAtLocation', { 'LocationType', 1, (categories.RADAR + categories.OMNI) * categories.STRUCTURE}},
+
+            { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 0, categories.ENGINEER * categories.TECH1 }},
+
+            { UCBC, 'HaveGreaterThanUnitsWithCategory', { 1, categories.STRUCTURE * categories.FACTORY * categories.LAND } },
+
+            { EBC, 'GreaterThanEconTrendSwarm', { 0.0, 5.0 }},
+        },
+        BuilderType = 'Any',
+        BuilderData = {
+            Construction = {
+                BuildClose = true,
+                AdjacencyCategory = categories.STRUCTURE * categories.MASSEXTRACTION,
+                AdjacencyDistance = 500,
+                BuildStructures = {
+                    'T1Radar',
+                },
+                Location = 'LocationType',
+            }
+        }
+    },
+
     Builder {
         BuilderName = 'S3 Radar',
         PlatoonTemplate = 'T3EngineerBuildernoSUB',
         Priority = 1000,
         BuilderConditions = {
-            -- When do we want to build this ?
+
             { UCBC, 'HaveLessThanUnitsWithCategory', { 1, categories.OMNI * categories.STRUCTURE }},
-            -- Do we need additional conditions to build it ?
+
             { UCBC, 'HaveGreaterThanUnitsWithCategory', { 0, categories.STRUCTURE * categories.ENERGYPRODUCTION * categories.TECH3 }},
-            -- Have we the eco to build it ?
-            { EBC, 'GreaterThanEconTrend', { 0.0, 0.0 } }, -- relative income
-            { EBC, 'GreaterThanEconTrend', { 5.2, 400.0 } }, -- relative income
-            -- Don't build it if...
+
+            { EBC, 'GreaterThanEconTrendSwarm', { 0.0, 0.0 } }, -- relative income
+
+            { EBC, 'GreaterThanEconTrendSwarm', { 5.2, 400.0 } }, -- relative income
+
             { UCBC, 'UnitsLessAtLocation', { 'LocationType', 1, categories.OMNI * categories.STRUCTURE } },
+
             { UCBC, 'HaveLessThanUnitsInCategoryBeingBuilt', { 1, categories.OMNI * categories.STRUCTURE } },
-            -- Respect UnitCap
         },
         BuilderType = 'Any',
         BuilderData = {
@@ -64,6 +93,7 @@ BuilderGroup {
             }
         }
     },
+
     Builder {
         BuilderName = 'S1 Reclaim T1+T2 Radar',
         PlatoonTemplate = 'EngineerBuilder',
@@ -101,7 +131,7 @@ BuilderGroup {
             { UCBC, 'HaveGreaterThanUnitsWithCategory', { 1, categories.STRUCTURE * categories.ENERGYPRODUCTION * categories.TECH3 } },
             -- Do we need additional conditions to build it ?
             -- Have we the eco to build it ?
-            { EBC, 'GreaterThanEconTrend', { 0.0, 0.0 } }, -- relative income
+            { EBC, 'GreaterThanEconTrendSwarm', { 0.0, 0.0 } }, -- relative income
             -- Don't build it if...
             { UCBC, 'HaveLessThanUnitsInCategoryBeingUpgradeSwarm', { 1, categories.RADAR * categories.TECH1 }},
             -- Respect UnitCap
@@ -118,7 +148,7 @@ BuilderGroup {
             -- Do we need additional conditions to build it ?
             { UCBC, 'HaveLessThanUnitsWithCategory', { 1, categories.OMNI * categories.STRUCTURE }},
             -- Have we the eco to build it ?
-            { EBC, 'GreaterThanEconTrend', { 0.0, 0.0 } }, -- relative income
+            { EBC, 'GreaterThanEconTrendSwarm', { 0.0, 0.0 } }, -- relative income
             -- Don't build it if...
             { UCBC, 'HaveLessThanUnitsInCategoryBeingUpgradeSwarm', { 1, categories.RADAR * categories.TECH2 }},
             -- Respect UnitCap
@@ -139,9 +169,9 @@ BuilderGroup {
         Priority = 750,
         BuilderConditions = {
             { UCBC, 'HaveLessThanUnitsWithCategory', { 1, categories.OPTICS * categories.AEON}},
-            { EBC, 'GreaterThanEconIncome', { 12, 1500}},
-            { EBC, 'GreaterThanEconTrend', { 0.0, 0.0 } }, -- relative income
-            { EBC, 'GreaterThanEconStorageRatio', { 0.95, 1.00 } },             -- Ratio from 0 to 1. (1=100%)
+            { EBC, 'GreaterThanEconIncomeSwarm', { 12, 1500}},
+            { EBC, 'GreaterThanEconTrendSwarm', { 0.0, 0.0 } }, -- relative income
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.95, 1.00 } },             -- Ratio from 0 to 1. (1=100%)
             { UCBC, 'HaveUnitRatioVersusCapSwarm', { MaxCapStructure , '<', categories.STRUCTURE - categories.MASSEXTRACTION - categories.DEFENSE - categories.FACTORY } },
         },
         BuilderType = 'Any',
@@ -168,9 +198,9 @@ BuilderGroup {
         Priority = 750,
         BuilderConditions = {
             { UCBC, 'HaveLessThanUnitsWithCategory', { 1, categories.OPTICS * categories.CYBRAN}},
-            { EBC, 'GreaterThanEconIncome', { 12, 1500}},
-            { EBC, 'GreaterThanEconStorageRatio', { 0.95, 1.00 } },             -- Ratio from 0 to 1. (1=100%)
-            { EBC, 'GreaterThanEconTrend', { 0.0, 0.0 } }, -- relative income
+            { EBC, 'GreaterThanEconIncomeSwarm', { 12, 1500}},
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.95, 1.00 } },             -- Ratio from 0 to 1. (1=100%)
+            { EBC, 'GreaterThanEconTrendSwarm', { 0.0, 0.0 } }, -- relative income
             { UCBC, 'HaveUnitRatioVersusCapSwarm', { MaxCapStructure , '<', categories.STRUCTURE - categories.MASSEXTRACTION - categories.DEFENSE - categories.FACTORY } },
         },
         BuilderType = 'Any',

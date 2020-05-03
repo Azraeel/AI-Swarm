@@ -16,7 +16,9 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Experimental Builders',            
         BuilderConditions = {
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
 
-            { EBC, 'GreaterThanEconIncome', { 10, 400 } },
+            { UCBC, 'GreaterThanMassTrend', { 0.0 } },
+
+            { EBC, 'GreaterThanEconIncomeSwarm', { 10, 400 } },
        },
         BuilderType = 'Any',
         BuilderData = {
@@ -39,7 +41,9 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Experimental Builders',            
         BuilderConditions = {
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
 
-            { EBC, 'GreaterThanEconIncome', { 10, 400 } },
+            { UCBC, 'GreaterThanMassTrend', { 0.0 } },
+
+            { EBC, 'GreaterThanEconIncomeSwarm', { 10, 400 } },
 
             { MIBC, 'GreaterThanGameTime', { 3600 } },
         },
@@ -76,7 +80,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Experimental Formers',             
             SearchRadius = BasePanicZone,                                       -- Searchradius for new target.
             GetTargetsFromBase = false,                                         -- Get targets from base position (true) or platoon position (false)
             AggressiveMove = false,                                             -- If true, the unit will attack everything while moving to the target.
-            AttackEnemyStrength = 200,                                            -- Compare platoon to enemy strenght. 100 will attack equal, 50 weaker and 150 stronger enemies.
+            AttackEnemyStrength = 10000,                                            -- Compare platoon to enemy strenght. 100 will attack equal, 50 weaker and 150 stronger enemies.
             IgnorePathing = true,                                               -- If true, the platoon will not use AI pathmarkers and move directly to the target
             TargetSearchCategory = categories.STRUCTURE + categories.MOBILE,                                 -- Only find targets matching these categories.
             MoveToCategories = {                                                -- Move to targets
@@ -106,7 +110,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Experimental Formers',             
             SearchRadius = BaseMilitaryZone,                                       -- Searchradius for new target.
             GetTargetsFromBase = false,                                         -- Get targets from base position (true) or platoon position (false)
             AggressiveMove = false,                                             -- If true, the unit will attack everything while moving to the target.
-            AttackEnemyStrength = 200,                                            -- Compare platoon to enemy strenght. 100 will attack equal, 50 weaker and 150 stronger enemies.
+            AttackEnemyStrength = 500,                                            -- Compare platoon to enemy strenght. 100 will attack equal, 50 weaker and 150 stronger enemies.
             IgnorePathing = true,                                               -- If true, the platoon will not use AI pathmarkers and move directly to the target
             TargetSearchCategory = categories.STRUCTURE - categories.WALL,                                 -- Only find targets matching these categories.
             MoveToCategories = {                                                -- Move to targets
@@ -136,7 +140,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Experimental Formers',             
             SearchRadius = BaseEnemyZone,                                       -- Searchradius for new target.
             GetTargetsFromBase = false,                                         -- Get targets from base position (true) or platoon position (false)
             AggressiveMove = false,                                             -- If true, the unit will attack everything while moving to the target.
-            AttackEnemyStrength = 200,                                            -- Compare platoon to enemy strenght. 100 will attack equal, 50 weaker and 150 stronger enemies.
+            AttackEnemyStrength = 500,                                            -- Compare platoon to enemy strenght. 100 will attack equal, 50 weaker and 150 stronger enemies.
             IgnorePathing = true,                                               -- If true, the platoon will not use AI pathmarkers and move directly to the target
             TargetSearchCategory = categories.STRUCTURE - categories.WALL,                                 -- Only find targets matching these categories.
             MoveToCategories = {                                                -- Move to targets

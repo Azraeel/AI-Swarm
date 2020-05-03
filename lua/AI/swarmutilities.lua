@@ -420,8 +420,8 @@ function ReclaimAIThreadSwarm(platoon,self,aiBrain)
                 scanrange = 25
             end
             IssueClearCommands({self})
-            IssuePatrol({self}, self:GetPosition())
-            IssuePatrol({self}, self:GetPosition())
+            IssueAggressiveMove({self}, self:GetPosition())
+            IssueAggressiveMove({self}, self:GetPosition())
         else
             --LOG('Storage Full')
             local HomeDist = VDist2(SelfPos[1], SelfPos[3], basePosition[1], basePosition[3])

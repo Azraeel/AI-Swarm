@@ -69,11 +69,11 @@ BuilderGroup { BuilderGroupName = 'Swarm Factory Builder',
         PlatoonTemplate = 'CommanderBuilder',
         Priority = 600,
         BuilderConditions = {
-            { EBC, 'GreaterThanEconStorageRatio', { 0.05, 0.30}}, 
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.05, 0.30}}, 
 
             { MIBC, 'CanPathToCurrentEnemySwarm', { true } },
 
-            { UCBC, 'HaveLessThanUnitsWithCategory', { 10, categories.STRUCTURE * categories.FACTORY * categories.LAND * (categories.TECH1 + categories.TECH2 + categories.TECH3) }},
+            { UCBC, 'HaveLessThanUnitsWithCategory', { 3, categories.STRUCTURE * categories.FACTORY * categories.LAND * (categories.TECH1 + categories.TECH2 + categories.TECH3) }},
         },
         BuilderType = 'Any',
         BuilderData = {
@@ -92,7 +92,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Factory Builder',
         PlatoonTemplate = 'CommanderBuilder',
         Priority = 575,
         BuilderConditions = {
-            { EBC, 'GreaterThanEconStorageRatio', { 0.15, 0.40}}, 
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.05, 0.30}}, 
 
             { MIBC, 'CanPathToCurrentEnemySwarm', { true } },
 
@@ -115,7 +115,9 @@ BuilderGroup { BuilderGroupName = 'Swarm Factory Builder',
         PlatoonTemplate = 'EngineerBuilder',
         Priority = 620,
         BuilderConditions = {
-            { EBC, 'GreaterThanEconStorageRatio', { 0.5, 0.30}},
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.25, 0.95}},
+
+            { UCBC, 'GreaterThanMassTrend', { 0.0 } },
 
             { MIBC, 'CanPathToCurrentEnemySwarm', { true } }, 
 
@@ -138,7 +140,9 @@ BuilderGroup { BuilderGroupName = 'Swarm Factory Builder',
         PlatoonTemplate = 'T2EngineerBuilder',
         Priority = 605,
         BuilderConditions = {
-            { EBC, 'GreaterThanEconStorageRatio', { 0.5, 0.30}},
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.25, 0.95}},
+
+            { UCBC, 'GreaterThanMassTrend', { 0.0 } },
 
             { MIBC, 'CanPathToCurrentEnemySwarm', { true } }, 
 
@@ -163,7 +167,9 @@ BuilderGroup { BuilderGroupName = 'Swarm Factory Builder',
         BuilderConditions = {
             { MIBC, 'CanPathToCurrentEnemySwarm', { true } },
 
-            { EBC, 'GreaterThanEconStorageRatio', { 0.10, 0.60}},
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.10, 0.60}},
+
+            { UCBC, 'GreaterThanMassTrend', { 0.0 } },
 
             { UCBC, 'HaveLessThanUnitsInCategoryBeingBuilt', { 1, categories.STRUCTURE * categories.FACTORY * categories.AIR * categories.TECH1 }},
 
@@ -185,9 +191,11 @@ BuilderGroup { BuilderGroupName = 'Swarm Factory Builder',
         PlatoonTemplate = 'EngineerBuilder',
         Priority = 610,
         BuilderConditions = {
-            { EBC, 'GreaterThanEconStorageRatio', { 0.10, 0.40}},
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.25, 1.00}},
 
             { MIBC, 'CanPathToCurrentEnemySwarm', { true } },
+
+            { UCBC, 'GreaterThanMassTrend', { 0.0 } },
 
             { UCBC, 'HaveLessThanUnitsInCategoryBeingBuilt', { 1, categories.STRUCTURE * categories.FACTORY * categories.AIR * categories.TECH1 }},
 
@@ -209,9 +217,11 @@ BuilderGroup { BuilderGroupName = 'Swarm Factory Builder',
         PlatoonTemplate = 'T2EngineerBuilder',
         Priority = 600,
         BuilderConditions = {
-            { EBC, 'GreaterThanEconStorageRatio', { 0.10, 0.40}},
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.25, 1.00}},
 
             { MIBC, 'CanPathToCurrentEnemySwarm', { true } },
+
+            { UCBC, 'GreaterThanMassTrend', { 0.0 } },
 
             { UCBC, 'HaveLessThanUnitsInCategoryBeingBuilt', { 1, categories.STRUCTURE * categories.FACTORY * categories.AIR * categories.TECH1 }},
 
@@ -243,7 +253,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Factory Builders Expansions',
             -- When do we want to build this ?
             { UCBC, 'UnitsLessAtLocation', { 'LocationType', 5, categories.STRUCTURE * categories.FACTORY * categories.LAND}},
  
-            { EBC, 'GreaterThanEconStorageRatio', { 0.10, 0.35 } },             -- Ratio from 0 to 1. (1=100%)
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.40, 0.95 } },             -- Ratio from 0 to 1. (1=100%)
 
             { UCBC, 'CheckBuildPlattonDelay', { 'Factories' }},
         },
@@ -267,7 +277,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Factory Builders Expansions',
             -- When do we want to build this ?
             { UCBC, 'UnitsLessAtLocation', { 'LocationType', 5, categories.STRUCTURE * categories.FACTORY * categories.LAND}},
  
-            { EBC, 'GreaterThanEconStorageRatio', { 0.15, 0.35 } },             -- Ratio from 0 to 1. (1=100%)
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.40, 0.95 } },             -- Ratio from 0 to 1. (1=100%)
 
             { UCBC, 'CheckBuildPlattonDelay', { 'Factories' }},
         },
@@ -290,7 +300,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Factory Builders Expansions',
         BuilderConditions = {
             { UCBC, 'UnitsLessAtLocation', { 'LocationType', 4, categories.STRUCTURE * categories.FACTORY * categories.AIR}},
 
-            { EBC, 'GreaterThanEconStorageRatio', { 0.20, 0.45 } },         
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.40, 1.00 } },         
 
             { UCBC, 'CheckBuildPlattonDelay', { 'Factories' }},
         },
@@ -313,7 +323,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Factory Builders Expansions',
         BuilderConditions = {
             { UCBC, 'UnitsLessAtLocation', { 'LocationType', 4, categories.STRUCTURE * categories.FACTORY * categories.AIR}},
 
-            { EBC, 'GreaterThanEconStorageRatio', { 0.20, 0.45 } },           
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.40, 1.00 } },           
 
             { UCBC, 'CheckBuildPlattonDelay', { 'Factories' }},
         },
@@ -346,9 +356,10 @@ BuilderGroup { BuilderGroupName = 'Swarm Factory Upgrader Rush',                
             { UCBC, 'HaveLessThanUnitsWithCategory', { 1, categories.STRUCTURE * categories.FACTORY * categories.LAND * (categories.TECH2 + categories.TECH3) - categories.SUPPORTFACTORY } },
             -- Do we need additional conditions to build it ?
             { UCBC, 'UnitsGreaterAtEnemySwarm', { 0 , categories.STRUCTURE * categories.FACTORY * (categories.TECH2 + categories.TECH3) } },
+            { UCBC, 'UnitsGreaterAtEnemySwarm', { 0 , categories.MOBILE * categories.LAND * (categories.TECH2 + categories.TECH3) } },
             { UCBC, 'BuildOnlyOnLocationSwarm', { 'LocationType', 'MAIN' } },
-            { EBC, 'GreaterThanEconStorageRatio', { 0.50, 0.50 } },
-            { EBC, 'GreaterThanEconTrend', { 1.03, 1.03 } },
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.30, 0.50 } },
+            { EBC, 'GreaterThanEconTrendSwarm', { 1.03, 1.03 } },
             -- Don't build it if...
             { UCBC, 'HaveLessThanUnitsInCategoryBeingUpgradeSwarm', { 1, categories.STRUCTURE * categories.FACTORY * categories.TECH1 }},
             { UCBC, 'CheckBuildPlattonDelay', { 'FactoryUpgrade' }},
@@ -366,9 +377,9 @@ BuilderGroup { BuilderGroupName = 'Swarm Factory Upgrader Rush',                
             { UCBC, 'HaveLessThanUnitsWithCategory', { 1, categories.STRUCTURE * categories.FACTORY * categories.LAND * (categories.TECH2 + categories.TECH3) - categories.SUPPORTFACTORY } },
             -- Do we need additional conditions to build it ?
             { UCBC, 'BuildOnlyOnLocationSwarm', { 'LocationType', 'MAIN' } },
-            { EBC, 'GreaterThanEconTrend', { 0.0, 0.0 } },
+            { EBC, 'GreaterThanEconTrendSwarm', { 0.0, 0.0 } },
             -- Have we the eco to build it ?
-            { EBC, 'GreaterThanEconStorageRatio', { 0.15, 0.50 } },
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.25, 0.95 } },
             -- Don't build it if...
             { UCBC, 'CheckBuildPlattonDelay', { 'FactoryUpgrade' }},
         },
@@ -385,7 +396,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Factory Upgrader Rush',                
             -- Do we need additional conditions to build it ?
             { UCBC, 'GreaterThanGameTimeSeconds', { 840 } },
             { UCBC, 'BuildOnlyOnLocationSwarm', { 'LocationType', 'MAIN' } },
-            { EBC, 'GreaterThanEconStorageRatio', { 0.15, 0.50 } },
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.15, 0.50 } },
             -- Don't build it if...
             { UCBC, 'HaveLessThanUnitsInCategoryBeingUpgradeSwarm', { 1, categories.STRUCTURE * categories.FACTORY * categories.TECH1 }},
             { UCBC, 'CheckBuildPlattonDelay', { 'FactoryUpgrade' }},
@@ -399,13 +410,13 @@ BuilderGroup { BuilderGroupName = 'Swarm Factory Upgrader Rush',                
         DelayEqualBuildPlattons = {'FactoryUpgrade', 3},
         BuilderConditions = {
             -- When do we want to build this ?
-            { EBC, 'GreaterThanEconIncome',  { 0.1, 100.0 }},
+            { EBC, 'GreaterThanEconIncomeSwarm',  { 0.1, 100.0 }},
             { UCBC, 'HaveGreaterThanUnitsWithCategory', { 1, categories.STRUCTURE * categories.FACTORY } },
             -- Do we need additional conditions to build it ?
             { UCBC, 'HaveLessThanUnitsWithCategory', { 1, categories.STRUCTURE * categories.FACTORY * categories.LAND * (categories.TECH2 + categories.TECH3) - categories.SUPPORTFACTORY } },
             { UCBC, 'BuildOnlyOnLocationSwarm', { 'LocationType', 'MAIN' } },
-            { EBC, 'GreaterThanEconStorageRatio', { 0.50, 0.50 } },
-            { EBC, 'GreaterThanEconTrend', { 1.03, 1.03 } },
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.50, 0.50 } },
+            { EBC, 'GreaterThanEconTrendSwarm', { 1.03, 1.03 } },
             -- Have we the eco to build it ?
             -- Don't build it if...
             { UCBC, 'HaveLessThanUnitsInCategoryBeingUpgradeSwarm', { 1, categories.STRUCTURE * categories.FACTORY * categories.TECH1 }},
@@ -423,10 +434,11 @@ BuilderGroup { BuilderGroupName = 'Swarm Factory Upgrader Rush',                
             { UCBC, 'HaveLessThanUnitsWithCategory', { 1, categories.STRUCTURE * categories.FACTORY * categories.LAND * categories.TECH3 - categories.SUPPORTFACTORY } },
             -- Do we need additional conditions to build it ?
             { UCBC, 'UnitsGreaterAtEnemySwarm', { 0 , categories.STRUCTURE * categories.FACTORY * categories.TECH3 } },
+            { UCBC, 'UnitsGreaterAtEnemySwarm', { 0 , categories.MOBILE * categories.LAND * categories.TECH3 } },
             { UCBC, 'BuildOnlyOnLocationSwarm', { 'LocationType', 'MAIN' } },
-            { EBC, 'GreaterThanEconTrend', { 1.03, 1.03 } },
+            { EBC, 'GreaterThanEconTrendSwarm', { 1.03, 1.03 } },
             -- Have we the eco to build it ?
-            { EBC, 'GreaterThanEconStorageRatio', { 0.50, 0.50 } },
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.50, 0.50 } },
             -- Don't build it if...
             { UCBC, 'CheckBuildPlattonDelay', { 'FactoryUpgrade' }},
         },
@@ -443,9 +455,9 @@ BuilderGroup { BuilderGroupName = 'Swarm Factory Upgrader Rush',                
             { UCBC, 'HaveLessThanUnitsWithCategory', { 1, categories.STRUCTURE * categories.FACTORY * categories.LAND * categories.TECH3 - categories.SUPPORTFACTORY } },
             -- Do we need additional conditions to build it ?
             { UCBC, 'BuildOnlyOnLocationSwarm', { 'LocationType', 'MAIN' } },
-            { EBC, 'GreaterThanEconTrend', { 0.0, 0.0 } },
+            { EBC, 'GreaterThanEconTrendSwarm', { 0.0, 0.0 } },
             -- Have we the eco to build it ?
-            { EBC, 'GreaterThanEconStorageRatio', { 0.15, 0.50 } },
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.30, 0.95 } },
             -- Don't build it if...
             { UCBC, 'CheckBuildPlattonDelay', { 'FactoryUpgrade' }},
         },
@@ -463,7 +475,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Factory Upgrader Rush',                
             { UCBC, 'GreaterThanGameTimeSeconds', { 1560 } },
             { UCBC, 'BuildOnlyOnLocationSwarm', { 'LocationType', 'MAIN' } },
             -- Have we the eco to build it ?
-            { EBC, 'GreaterThanEconStorageRatio', { 0.15, 0.50 } },
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.15, 0.50 } },
             -- Don't build it if...
             { UCBC, 'CheckBuildPlattonDelay', { 'FactoryUpgrade' }},
         },
@@ -479,8 +491,8 @@ BuilderGroup { BuilderGroupName = 'Swarm Factory Upgrader Rush',                
             { UCBC, 'HaveGreaterThanUnitsWithCategory', { 1, categories.STRUCTURE * categories.FACTORY * categories.TECH3 } }, -- minimum 2 Tech3 factories
             -- Do we need additional conditions to build it ?
             -- Have we the eco to build it ?
-            { EBC, 'GreaterThanEconStorageRatio', { 0.50, 0.50 } },
-            { EBC, 'GreaterThanEconTrend', { 1.03, 1.03 } },
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.50, 0.50 } },
+            { EBC, 'GreaterThanEconTrendSwarm', { 1.03, 1.03 } },
             -- Don't build it if...
             { UCBC, 'HaveLessThanUnitsInCategoryBeingUpgradeSwarm', { 2, categories.STRUCTURE * categories.FACTORY * categories.TECH2 }},
             { UCBC, 'CheckBuildPlattonDelay', { 'FactoryUpgrade' }},
@@ -500,7 +512,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Factory Upgrader Rush',                
             { UCBC, 'HaveGreaterThanUnitsWithCategory', { 0, categories.STRUCTURE * categories.FACTORY * categories.LAND * ( categories.TECH2 + categories.TECH3 ) - categories.SUPPORTFACTORY } },
             -- Do we need additional conditions to build it ?
             -- Have we the eco to build it ?
-            { EBC, 'GreaterThanEconStorageRatio', { 0.15, 0.50 } },
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.15, 0.50 } },
             -- Don't build it if...
             { UCBC, 'CheckBuildPlattonDelay', { 'FactoryUpgrade' }},
             { UCBC, 'HaveLessThanUnitsInCategoryBeingUpgradeSwarm', { 3, categories.STRUCTURE * categories.FACTORY * categories.TECH1 }},
@@ -521,7 +533,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Factory Upgrader Rush',                
             -- Do we need additional conditions to build it ?
             { UCBC, 'HaveGreaterThanUnitsWithCategory', { 0, categories.UEF * categories.SUPPORTFACTORY * categories.LAND * categories.TECH2 }},
             -- Have we the eco to build it ?
-            { EBC, 'GreaterThanEconStorageRatio', { 0.15, 0.50 } },
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.15, 0.50 } },
             -- Don't build it if...
             { UCBC, 'CheckBuildPlattonDelay', { 'FactoryUpgrade' }},
             { UCBC, 'HaveLessThanUnitsInCategoryBeingUpgradeSwarm', { 2, categories.STRUCTURE * categories.FACTORY * categories.TECH1 }},
@@ -541,7 +553,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Factory Upgrader Rush',                
             -- Do we need additional conditions to build it ?
             { UCBC, 'HaveGreaterThanUnitsWithCategory', { 0, categories.AEON * categories.SUPPORTFACTORY * categories.LAND * categories.TECH2 }},
             -- Have we the eco to build it ?
-            { EBC, 'GreaterThanEconStorageRatio', { 0.15, 0.50 } },
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.15, 0.50 } },
             -- Don't build it if...
             { UCBC, 'CheckBuildPlattonDelay', { 'FactoryUpgrade' }},
             { UCBC, 'HaveLessThanUnitsInCategoryBeingUpgradeSwarm', { 2, categories.STRUCTURE * categories.FACTORY * categories.TECH1 }},
@@ -561,7 +573,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Factory Upgrader Rush',                
             -- Do we need additional conditions to build it ?
             { UCBC, 'HaveGreaterThanUnitsWithCategory', { 0, categories.CYBRAN * categories.SUPPORTFACTORY * categories.LAND * categories.TECH2 }},
             -- Have we the eco to build it ?
-            { EBC, 'GreaterThanEconStorageRatio', { 0.15, 0.50 } },
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.15, 0.50 } },
             -- Don't build it if...
             { UCBC, 'CheckBuildPlattonDelay', { 'FactoryUpgrade' }},
             { UCBC, 'HaveLessThanUnitsInCategoryBeingUpgradeSwarm', { 2, categories.STRUCTURE * categories.FACTORY * categories.TECH1 }},
@@ -581,7 +593,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Factory Upgrader Rush',                
             -- Do we need additional conditions to build it ?
             { UCBC, 'HaveGreaterThanUnitsWithCategory', { 0, categories.SERAPHIM * categories.SUPPORTFACTORY * categories.LAND * categories.TECH2 }},
             -- Have we the eco to build it ?
-            { EBC, 'GreaterThanEconStorageRatio', { 0.15, 0.50 } },
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.15, 0.50 } },
             -- Don't build it if...
             { UCBC, 'CheckBuildPlattonDelay', { 'FactoryUpgrade' }},
             { UCBC, 'HaveLessThanUnitsInCategoryBeingUpgradeSwarm', { 2, categories.STRUCTURE * categories.FACTORY * categories.TECH1 }},
@@ -601,7 +613,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Factory Upgrader Rush',                
             -- Do we need additional conditions to build it ?
             { UCBC, 'HaveGreaterThanUnitsWithCategory', { 0, categories.SUPPORTFACTORY * categories.TECH2 * categories.LAND - categories.SERAPHIM - categories.CYBRAN - categories.AEON - categories.UEF }},
             -- Have we the eco to build it ?
-            { EBC, 'GreaterThanEconStorageRatio', { 0.15, 0.50 } },
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.15, 0.50 } },
             -- Don't build it if...
             { UCBC, 'CheckBuildPlattonDelay', { 'FactoryUpgrade' }},
             { UCBC, 'HaveLessThanUnitsInCategoryBeingUpgradeSwarm', { 2, categories.STRUCTURE * categories.FACTORY * categories.TECH1 }},
@@ -622,8 +634,8 @@ BuilderGroup { BuilderGroupName = 'Swarm Factory Upgrader Rush',                
             { UCBC, 'HaveGreaterThanUnitsWithCategory', { 0, categories.STRUCTURE * categories.FACTORY * categories.LAND * categories.TECH2 } },
             { UCBC, 'BuildOnlyOnLocationSwarm', { 'LocationType', 'MAIN' } },
             -- Have we the eco to build it ?
-            { EBC, 'GreaterThanEconStorageRatio', { 0.50, 0.50 } },
-            { EBC, 'GreaterThanEconTrend', { 1.03, 1.03 } },
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.50, 0.50 } },
+            { EBC, 'GreaterThanEconTrendSwarm', { 1.03, 1.03 } },
             -- Don't build it if...
             { UCBC, 'CheckBuildPlattonDelay', { 'FactoryUpgrade' }},
             { UCBC, 'HaveLessThanUnitsInCategoryBeingUpgradeSwarm', { 3, categories.STRUCTURE * categories.FACTORY * categories.TECH1 }},
@@ -641,9 +653,9 @@ BuilderGroup { BuilderGroupName = 'Swarm Factory Upgrader Rush',                
             { UCBC, 'HaveLessThanUnitsWithCategory', { 1, categories.STRUCTURE * categories.FACTORY * categories.AIR * (categories.TECH2 + categories.TECH3) - categories.SUPPORTFACTORY } },
             -- Do we need additional conditions to build it ?
             { UCBC, 'BuildOnlyOnLocationSwarm', { 'LocationType', 'MAIN' } },
-            { EBC, 'GreaterThanEconTrend', { 0.0, 0.0 } },
+            { EBC, 'GreaterThanEconTrendSwarm', { 0.0, 0.0 } },
             -- Have we the eco to build it ?
-            { EBC, 'GreaterThanEconStorageRatio', { 0.10, 0.60 } },
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.30, 1.00 } },
             -- Don't build it if...
             { UCBC, 'CheckBuildPlattonDelay', { 'FactoryUpgrade' }},
         },
@@ -659,9 +671,10 @@ BuilderGroup { BuilderGroupName = 'Swarm Factory Upgrader Rush',                
             { UCBC, 'HaveLessThanUnitsWithCategory', { 1, categories.STRUCTURE * categories.FACTORY * categories.AIR * (categories.TECH2 + categories.TECH3) - categories.SUPPORTFACTORY } },
             -- Do we need additional conditions to build it ?
             { UCBC, 'UnitsGreaterAtEnemySwarm', { 0 , categories.STRUCTURE * categories.FACTORY * (categories.TECH2 + categories.TECH3) } },
+            { UCBC, 'UnitsGreaterAtEnemySwarm', { 0 , categories.MOBILE * categories.AIR * (categories.TECH2 + categories.TECH3) } },
             { UCBC, 'BuildOnlyOnLocationSwarm', { 'LocationType', 'MAIN' } },
-            { EBC, 'GreaterThanEconStorageRatio', { 0.50, 0.50 } },
-            { EBC, 'GreaterThanEconTrend', { 1.03, 1.03 } },
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.50, 0.50 } },
+            { EBC, 'GreaterThanEconTrendSwarm', { 1.03, 1.03 } },
             -- Don't build it if...
             { UCBC, 'HaveLessThanUnitsInCategoryBeingUpgradeSwarm', { 1, categories.STRUCTURE * categories.FACTORY * categories.TECH1 }},
             { UCBC, 'CheckBuildPlattonDelay', { 'FactoryUpgrade' }},
@@ -680,7 +693,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Factory Upgrader Rush',                
             { UCBC, 'GreaterThanGameTimeSeconds', { 960 } },
             { UCBC, 'BuildOnlyOnLocationSwarm', { 'LocationType', 'MAIN' } },
             -- Have we the eco to build it ?
-            { EBC, 'GreaterThanEconStorageRatio', { 0.15, 0.50 } },
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.15, 0.50 } },
             -- Don't build it if...
             { UCBC, 'CheckBuildPlattonDelay', { 'FactoryUpgrade' }},
             { UCBC, 'HaveLessThanUnitsInCategoryBeingUpgradeSwarm', { 3, categories.STRUCTURE * categories.FACTORY * categories.TECH1 }},
@@ -699,8 +712,8 @@ BuilderGroup { BuilderGroupName = 'Swarm Factory Upgrader Rush',                
             { UCBC, 'HaveGreaterThanUnitsWithCategory', { 0, categories.STRUCTURE * categories.FACTORY * categories.LAND * categories.TECH3 } },
             { UCBC, 'BuildOnlyOnLocationSwarm', { 'LocationType', 'MAIN' } },
             -- Have we the eco to build it ?
-            { EBC, 'GreaterThanEconStorageRatio', { 0.50, 0.50 } },
-            { EBC, 'GreaterThanEconTrend', { 1.03, 1.03 } },
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.50, 0.50 } },
+            { EBC, 'GreaterThanEconTrendSwarm', { 1.03, 1.03 } },
             -- Don't build it if...
             { UCBC, 'CheckBuildPlattonDelay', { 'FactoryUpgrade' }},
             { UCBC, 'HaveLessThanUnitsInCategoryBeingUpgradeSwarm', { 1, categories.STRUCTURE * categories.FACTORY * categories.TECH2 }},
@@ -718,9 +731,9 @@ BuilderGroup { BuilderGroupName = 'Swarm Factory Upgrader Rush',                
             { UCBC, 'HaveLessThanUnitsWithCategory', { 1, categories.STRUCTURE * categories.FACTORY * categories.AIR * categories.TECH3 - categories.SUPPORTFACTORY } },
             -- Do we need additional conditions to build it ?
             { UCBC, 'BuildOnlyOnLocationSwarm', { 'LocationType', 'MAIN' } },
-            { EBC, 'GreaterThanEconTrend', { 0.0, 0.0 } },
+            { EBC, 'GreaterThanEconTrendSwarm', { 0.0, 0.0 } },
             -- Have we the eco to build it ?
-            { EBC, 'GreaterThanEconStorageRatio', { 0.10, 0.60 } },
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.35, 1.00 } },
             -- Don't build it if...
             { UCBC, 'CheckBuildPlattonDelay', { 'FactoryUpgrade' }},
         },
@@ -736,10 +749,11 @@ BuilderGroup { BuilderGroupName = 'Swarm Factory Upgrader Rush',                
             { UCBC, 'HaveLessThanUnitsWithCategory', { 1, categories.STRUCTURE * categories.FACTORY * categories.AIR * categories.TECH3 - categories.SUPPORTFACTORY } },
             -- Do we need additional conditions to build it ?
             { UCBC, 'UnitsGreaterAtEnemySwarm', { 0 , categories.STRUCTURE * categories.FACTORY * categories.TECH3 } },
+            { UCBC, 'UnitsGreaterAtEnemySwarm', { 0 , categories.MOBILE * categories.AIR * categories.TECH3 } },
             { UCBC, 'BuildOnlyOnLocationSwarm', { 'LocationType', 'MAIN' } },
-            { EBC, 'GreaterThanEconTrend', { 1.03, 1.03 } },
+            { EBC, 'GreaterThanEconTrendSwarm', { 1.03, 1.03 } },
             -- Have we the eco to build it ?
-            { EBC, 'GreaterThanEconStorageRatio', { 0.50, 0.50 } },
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.50, 0.50 } },
             -- Don't build it if...
             { UCBC, 'CheckBuildPlattonDelay', { 'FactoryUpgrade' }},
         },
@@ -757,7 +771,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Factory Upgrader Rush',                
             { UCBC, 'GreaterThanGameTimeSeconds', { 1680 } },
             { UCBC, 'BuildOnlyOnLocationSwarm', { 'LocationType', 'MAIN' } },
             -- Have we the eco to build it ?
-            { EBC, 'GreaterThanEconStorageRatio', { 0.15, 0.50 } },
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.15, 0.50 } },
             -- Don't build it if...
             { UCBC, 'CheckBuildPlattonDelay', { 'FactoryUpgrade' }},
             { UCBC, 'HaveLessThanUnitsInCategoryBeingUpgradeSwarm', { 1, categories.STRUCTURE * categories.FACTORY * categories.TECH2 }},
@@ -774,8 +788,8 @@ BuilderGroup { BuilderGroupName = 'Swarm Factory Upgrader Rush',                
             { UCBC, 'HaveGreaterThanUnitsWithCategory', { 1, categories.STRUCTURE * categories.FACTORY * categories.AIR * categories.TECH3 } }, -- minimum 2 Tech3 factories
             -- Do we need additional conditions to build it ?
             -- Have we the eco to build it ?
-            { EBC, 'GreaterThanEconStorageRatio', { 0.50, 0.50 } },
-            { EBC, 'GreaterThanEconTrend', { 1.03, 1.03 } },
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.50, 0.50 } },
+            { EBC, 'GreaterThanEconTrendSwarm', { 1.03, 1.03 } },
             -- Don't build it if...
             { UCBC, 'CheckBuildPlattonDelay', { 'FactoryUpgrade' }},
             { UCBC, 'HaveLessThanUnitsInCategoryBeingUpgradeSwarm', { 2, categories.STRUCTURE * categories.FACTORY * categories.TECH2 }},
@@ -795,7 +809,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Factory Upgrader Rush',                
             { UCBC, 'HaveGreaterThanUnitsWithCategory', { 0, categories.STRUCTURE * categories.FACTORY * categories.AIR * ( categories.TECH2 + categories.TECH3 ) - categories.SUPPORTFACTORY } },
             -- Do we need additional conditions to build it ?
             -- Have we the eco to build it ?
-            { EBC, 'GreaterThanEconStorageRatio', { 0.35, 0.50 } },
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.35, 0.50 } },
             -- Don't build it if...
             { UCBC, 'CheckBuildPlattonDelay', { 'FactoryUpgrade' }},
             { UCBC, 'HaveLessThanUnitsInCategoryBeingUpgradeSwarm', { 3, categories.STRUCTURE * categories.FACTORY * categories.TECH1 }},
@@ -816,7 +830,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Factory Upgrader Rush',                
             -- Do we need additional conditions to build it ?
             { UCBC, 'HaveGreaterThanUnitsWithCategory', { 0, categories.UEF * categories.AIR * categories.SUPPORTFACTORY * categories.TECH2 }},
             -- Have we the eco to build it ?
-            { EBC, 'GreaterThanEconStorageRatio', { 0.35, 0.50 } },
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.35, 0.50 } },
             -- Don't build it if...
             { UCBC, 'CheckBuildPlattonDelay', { 'FactoryUpgrade' }},
             { UCBC, 'HaveLessThanUnitsInCategoryBeingUpgradeSwarm', { 4, categories.STRUCTURE * categories.FACTORY * categories.TECH1 }},
@@ -836,7 +850,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Factory Upgrader Rush',                
             -- Do we need additional conditions to build it ?
             { UCBC, 'HaveGreaterThanUnitsWithCategory', { 0, categories.AEON * categories.AIR * categories.SUPPORTFACTORY * categories.TECH2 }},
             -- Have we the eco to build it ?
-            { EBC, 'GreaterThanEconStorageRatio', { 0.35, 0.50 } },
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.35, 0.50 } },
             -- Don't build it if...
             { UCBC, 'CheckBuildPlattonDelay', { 'FactoryUpgrade' }},
             { UCBC, 'HaveLessThanUnitsInCategoryBeingUpgradeSwarm', { 4, categories.STRUCTURE * categories.FACTORY * categories.TECH1 }},
@@ -856,7 +870,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Factory Upgrader Rush',                
             -- Do we need additional conditions to build it ?
             { UCBC, 'HaveGreaterThanUnitsWithCategory', { 0, categories.CYBRAN * categories.AIR * categories.SUPPORTFACTORY * categories.TECH2 }},
             -- Have we the eco to build it ?
-            { EBC, 'GreaterThanEconStorageRatio', { 0.35, 0.50 } },
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.35, 0.50 } },
             -- Don't build it if...
             { UCBC, 'CheckBuildPlattonDelay', { 'FactoryUpgrade' }},
             { UCBC, 'HaveLessThanUnitsInCategoryBeingUpgradeSwarm', { 4, categories.STRUCTURE * categories.FACTORY * categories.TECH1 }},
@@ -876,7 +890,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Factory Upgrader Rush',                
             -- Do we need additional conditions to build it ?
             { UCBC, 'HaveGreaterThanUnitsWithCategory', { 0, categories.SERAPHIM * categories.AIR * categories.SUPPORTFACTORY * categories.TECH2 }},
             -- Have we the eco to build it ?
-            { EBC, 'GreaterThanEconStorageRatio', { 0.35, 0.50 } },
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.35, 0.50 } },
             { UCBC, 'CheckBuildPlattonDelay', { 'FactoryUpgrade' }},
             { UCBC, 'HaveLessThanUnitsInCategoryBeingUpgradeSwarm', { 4, categories.STRUCTURE * categories.FACTORY * categories.TECH1 }},
         },
@@ -895,7 +909,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Factory Upgrader Rush',                
             -- Do we need additional conditions to build it ?
             { UCBC, 'HaveGreaterThanUnitsWithCategory', { 0, categories.SUPPORTFACTORY * categories.TECH2 * categories.AIR - categories.SERAPHIM - categories.CYBRAN - categories.AEON - categories.UEF }},
             -- Have we the eco to build it ?
-            { EBC, 'GreaterThanEconStorageRatio', { 0.35, 0.50 } },
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.35, 0.50 } },
             { UCBC, 'CheckBuildPlattonDelay', { 'FactoryUpgrade' }},
             { UCBC, 'HaveLessThanUnitsInCategoryBeingUpgradeSwarm', { 2, categories.STRUCTURE * categories.FACTORY * categories.TECH1 }},
         },
@@ -913,7 +927,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Gate Builders',                        
         PlatoonTemplate = 'T3EngineerBuilder',
         Priority = 1350,
         BuilderConditions = {
-        	{ EBC, 'GreaterThanEconStorageRatio', { 0.15, 0.50 } },
+        	{ EBC, 'GreaterThanEconStorageRatioSwarm', { 0.15, 0.50 } },
 
             { UCBC, 'HaveGreaterThanUnitsWithCategory', { 1, categories.STRUCTURE * categories.ENERGYPRODUCTION * categories.TECH3 } },
 
@@ -938,7 +952,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Gate Builders',                        
         PlatoonTemplate = 'T3EngineerBuilder',
         Priority = 1300,
         BuilderConditions = {
-        	{ EBC, 'GreaterThanEconStorageRatio', { 0.35, 0.50 } },
+        	{ EBC, 'GreaterThanEconStorageRatioSwarm', { 0.35, 0.50 } },
 
             { UCBC, 'HaveGreaterThanUnitsWithCategory', { 1, categories.STRUCTURE * categories.ENERGYPRODUCTION * categories.TECH3 } },
 
@@ -1001,8 +1015,8 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Staging Platform Builders',        
             -- Do we need additional conditions to build it ?
             { UCBC, 'HaveGreaterThanUnitsWithCategory', { 1, categories.STRUCTURE * categories.ENERGYPRODUCTION * (categories.TECH2 + categories.TECH3) } },
             -- Have we the eco to build it ?
-            { EBC, 'GreaterThanEconTrend', { 0.0, 0.0 } }, -- relative income
-            { EBC, 'GreaterThanEconStorageRatio', { 0.30, 0.99}}, -- Ratio from 0 to 1. (1=100%)
+            { EBC, 'GreaterThanEconTrendSwarm', { 0.0, 0.0 } }, -- relative income
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.30, 0.99}}, -- Ratio from 0 to 1. (1=100%)
             -- Don't build it if...
             { UCBC, 'HaveLessThanUnitsInCategoryBeingBuilt', { 1, categories.STRUCTURE * categories.AIRSTAGINGPLATFORM }},
         },
@@ -1027,8 +1041,8 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Staging Platform Builders',        
             { UCBC, 'HaveLessThanUnitsWithCategory', { 10, categories.STRUCTURE * categories.AIRSTAGINGPLATFORM }},
             -- Do we need additional conditions to build it ?
             -- Have we the eco to build it ?
-            { EBC, 'GreaterThanEconTrend', { 0.0, 0.0 } }, -- relative income
-            { EBC, 'GreaterThanEconStorageRatio', { 0.75, 0.99}}, -- Ratio from 0 to 1. (1=100%)
+            { EBC, 'GreaterThanEconTrendSwarm', { 0.0, 0.0 } }, -- relative income
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.75, 0.99}}, -- Ratio from 0 to 1. (1=100%)
             -- Don't build it if...
             { UCBC, 'HaveLessThanUnitsInCategoryBeingBuilt', { 1, categories.STRUCTURE * categories.AIRSTAGINGPLATFORM }},
 

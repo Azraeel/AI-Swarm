@@ -14,9 +14,9 @@ BuilderGroup { BuilderGroupName = 'Swarm Strategic Builder',
         PlatoonTemplate = 'T2EngineerBuilder',
         Priority = 1000,
         BuilderConditions = {
-            { EBC, 'GreaterThanEconStorageRatio', { 0.50, 0.60 } }, 
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.50, 0.60 } }, 
 
-            { EBC, 'GreaterThanEconTrend', { 0.0, 0.0 } }, 
+            { EBC, 'GreaterThanEconTrendSwarm', { 0.0, 0.0 } }, 
 
             { UCBC, 'UnitsLessAtLocation', { 'LocationType', 1, categories.TACTICALMISSILEPLATFORM}},
         },
@@ -42,7 +42,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Strategic Builder',
         PlatoonTemplate = 'T2EngineerBuilder',
         Priority = 1000,
         BuilderConditions = {
-            { EBC, 'GreaterThanEconStorageRatio', { 0.50, 0.60 } },       
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.50, 0.60 } },       
 
             { UCBC, 'UnitsLessAtLocation', { 'LocationType', 1, categories.STRUCTURE * categories.TACTICALMISSILEPLATFORM}},
 
@@ -77,7 +77,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Strategic Builder',
 
             { UCBC, 'CheckBuildPlattonDelay', { 'NukeBuilder' }},
 
-            { EBC, 'GreaterThanEconIncome',  { 4, 200}}, 
+            { EBC, 'GreaterThanEconIncomeSwarm',  { 4, 200}}, 
 
             { UCBC, 'HaveLessThanUnitsInCategoryBeingBuilt', { 1, categories.NUKE * categories.STRUCTURE}},
         },
@@ -112,11 +112,11 @@ BuilderGroup { BuilderGroupName = 'Swarm Strategic Builder',
 
             { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 0, categories.ENGINEER * categories.TECH3}},
 
-            { EBC, 'GreaterThanEconStorageRatio', { 0.45, 0.60 } },
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.45, 0.60 } },
 
             { UCBC, 'CheckBuildPlattonDelay', { 'NukeBuilder' }},
 
-            { EBC, 'GreaterThanEconIncome',  { 8, 200}}, 
+            { EBC, 'GreaterThanEconIncomeSwarm',  { 8, 200}}, 
 
             { UCBC, 'HaveLessThanUnitsInCategoryBeingBuilt', { 1, categories.NUKE * categories.STRUCTURE}},
         },
@@ -147,7 +147,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Strategic Builder',
         BuilderConditions = {
         	{ UCBC, 'HaveGreaterThanUnitsWithCategory', { 4, categories.ENERGYPRODUCTION * categories.TECH3 } },
 
-            { EBC, 'GreaterThanEconStorageRatio', { 0.85, 0.85 } },         
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.85, 0.85 } },         
 
             { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 0, categories.ENGINEER * categories.TECH3 }},
 
@@ -190,7 +190,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Strategic Builder',
 
             { UCBC, 'CheckBuildPlattonDelay', { 'Artillery' }},
 
-            { EBC, 'GreaterThanEconStorageRatio', { 0.60, 0.70 }},
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.60, 0.70 }},
 
             { UCBC, 'HaveLessThanUnitsInCategoryBeingBuilt', { 1, categories.STRUCTURE * categories.ARTILLERY * (categories.TECH3 + categories.EXPERIMENTAL) } },
         },
@@ -221,7 +221,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Strategic Builder',
 
             { UCBC, 'CheckBuildPlattonDelay', { 'Artillery' }},
 
-            { EBC, 'GreaterThanEconStorageRatio', { 0.65, 0.70 }}, 
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.65, 0.70 }}, 
 
             { UCBC, 'HaveLessThanUnitsInCategoryBeingBuilt', { 1, categories.STRUCTURE * categories.ARTILLERY * (categories.TECH3 + categories.EXPERIMENTAL) } },
         },
@@ -252,7 +252,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Strategic Builder',
 
             { UCBC, 'CheckBuildPlattonDelay', { 'Artillery' }},
 
-            { EBC, 'GreaterThanEconStorageRatio', { 0.65, 0.70 }}, 
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.65, 0.70 }}, 
 
             { UCBC, 'HaveLessThanUnitsInCategoryBeingBuilt', { 1, categories.STRUCTURE * categories.ARTILLERY * (categories.TECH3 + categories.EXPERIMENTAL) } },
         },

@@ -18,7 +18,9 @@ BuilderGroup {
 
             { UCBC, 'StartLocationNeedsEngineer', { 'LocationType', 1000, -1000, 100, 1, 'StructuresNotMex' } },
 
-            { EBC, 'GreaterThanEconStorageRatio', { 0.25, 0.45 } },             -- Ratio from 0 to 1. (1=100%)
+            { EBC, 'GreaterThanEconTrendSwarm', { 0.0, 0.0 } }, -- relative income
+
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.25, 0.45 } },             -- Ratio from 0 to 1. (1=100%)
         },
         BuilderType = 'Any',
         BuilderData = {
@@ -54,7 +56,9 @@ BuilderGroup {
 
             { UCBC, 'StartLocationNeedsEngineer', { 'LocationType', 1000, -1000, 100, 1, 'StructuresNotMex' } },
 
-            { EBC, 'GreaterThanEconStorageRatio', { 0.45, 0.45 } },             -- Ratio from 0 to 1. (1=100%)
+            { EBC, 'GreaterThanEconTrendSwarm', { 0.0, 0.0 } }, -- relative income
+
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.45, 0.45 } },             -- Ratio from 0 to 1. (1=100%)
         },
         BuilderType = 'Any',
         BuilderData = {
@@ -90,7 +94,9 @@ BuilderGroup {
 
             { UCBC, 'StartLocationNeedsEngineer', { 'LocationType', 1000, -1000, 100, 1, 'StructuresNotMex' } },
 
-            { EBC, 'GreaterThanEconStorageRatio', { 0.25, 0.45 } },             -- Ratio from 0 to 1. (1=100%)
+            { EBC, 'GreaterThanEconTrendSwarm', { 0.0, 0.0 } }, -- relative income
+
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.25, 0.45 } },             -- Ratio from 0 to 1. (1=100%)
         },
         BuilderType = 'Any',
         BuilderData = {
@@ -126,7 +132,9 @@ BuilderGroup {
 
             { UCBC, 'StartLocationNeedsEngineer', { 'LocationType', 1000, -1000, 100, 1, 'StructuresNotMex' } },
 
-            { EBC, 'GreaterThanEconStorageRatio', { 0.45, 0.45 } },             -- Ratio from 0 to 1. (1=100%)
+            { EBC, 'GreaterThanEconTrendSwarm', { 0.0, 0.0 } }, -- relative income
+
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.45, 0.45 } },             -- Ratio from 0 to 1. (1=100%)
         },
         BuilderType = 'Any',
         BuilderData = {
@@ -163,8 +171,8 @@ BuilderGroup {
             -- Do we need additional conditions to build it ?
             { UCBC, 'NavalAreaNeedsEngineer', { 'LocationType', 750, -1000, 100, 1, 'AntiSurface' } },
             -- Have we the eco to build it ?
-            { EBC, 'GreaterThanEconIncome',  { 1.0, 6.0}},
-            { EBC, 'GreaterThanEconStorageRatio', { 0.25, 0.50 } },
+            { EBC, 'GreaterThanEconIncomeSwarm',  { 1.0, 6.0}},
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.25, 0.50 } },
             -- Don't build it if...
             -- Respect UnitCap
         },

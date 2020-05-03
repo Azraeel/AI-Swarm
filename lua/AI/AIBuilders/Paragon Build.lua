@@ -21,7 +21,7 @@ BuilderGroup {
             { UCBC, 'BuildOnlyOnLocationSwarm', { 'LocationType', 'MAIN' } },
             { UCBC, 'HaveGreaterThanUnitsWithCategory', { 0, categories.EXPERIMENTAL}},
             -- Have we the eco to build it ?
-            { EBC, 'GreaterThanEconStorageRatio', { 0.40, 0.90}}, -- Ratio from 0 to 1. (1=100%)
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.40, 0.90}}, -- Ratio from 0 to 1. (1=100%)
             -- Don't build it if...
             { UCBC, 'CheckBuildPlattonDelay', { 'Paragon' }},
             { UCBC, 'HaveLessThanUnitsInCategoryBeingBuilt', { 1, categories.STRUCTURE * categories.EXPERIMENTAL * categories.ECONOMIC }},
@@ -90,7 +90,7 @@ BuilderGroup {
             -- When do we want to build this ?
             { UCBC, 'HasNotParagon', {} },
             { UCBC, 'GreaterThanGameTimeSeconds', { 60*60 } },
-            { EBC, 'GreaterThanEconTrend', { 18.0, 270.0 } },                      -- relative income
+            { EBC, 'GreaterThanEconTrendSwarm', { 18.0, 270.0 } },                      -- relative income
             -- Do we need additional conditions to build it ?
             { UCBC, 'CanBuildCategorySwarm', { categories.STRUCTURE * categories.EXPERIMENTAL * categories.ECONOMIC } },
             { UCBC, 'BuildOnlyOnLocationSwarm', { 'LocationType', 'MAIN' } },

@@ -61,6 +61,8 @@ BaseBuilderTemplate {
         'AISwarm Platoon Builder Intercepter',
         'S3 SACU Formers',
 
+        'Swarm AI Defense Formers',
+
         -----------------------------------------------------------------------------
         -- ==== Air Units BUILDER ==== --
         -----------------------------------------------------------------------------
@@ -104,12 +106,15 @@ BaseBuilderTemplate {
         'Swarm Defense Anti Ground Builders',
 
         -----------------------------------------------------------------------------
-        -- ==== Reactive BUILDERS ==== --
+        -- ==== Reactive & Adaptive BUILDERS ==== --
         -----------------------------------------------------------------------------
         'Swarm Transports - Water Map',
         'Swarm Land Builders - Water Map',
         'Swarm Factory Builder - Water Map',
         'Swarm Amphibious Formers',
+
+
+        'T1 Phase Adaptiveness',
         -----------------------------------------------------------------------------
         -- ==== Scout BUILDER ==== --
         -----------------------------------------------------------------------------
