@@ -375,7 +375,7 @@ BuilderGroup {
 
             { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.15, 0.95 } },
 
-            { UCBC, 'GreaterThanMassTrend', { 0.0 } },
+            { EBC, 'GreaterThanMassTrendSwarm', { 0.0 } },
 
             { UCBC, 'HasNotParagon', {} },
 
@@ -406,7 +406,7 @@ BuilderGroup {
 
             { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.15, 0.95 } }, 
 
-            { UCBC, 'GreaterThanMassTrend', { 0.0 } },
+            { EBC, 'GreaterThanMassTrendSwarm', { 0.0 } },
 
             { UCBC, 'HasNotParagon', {} },
 

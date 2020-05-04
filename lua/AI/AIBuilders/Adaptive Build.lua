@@ -128,7 +128,7 @@ BuilderGroup { BuilderGroupName = 'T1 Phase Adaptiveness',
             Construction = {
                 Location = 'LocationType',
                 BuildStructures = {
-                    'T1LandFactory',  
+                    'T1AirFactory',  
                 },
             }
         }

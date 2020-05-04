@@ -117,7 +117,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Factory Builder',
         BuilderConditions = {
             { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.25, 0.95}},
 
-            { UCBC, 'GreaterThanMassTrend', { 0.0 } },
+            { EBC, 'GreaterThanMassTrendSwarm', { 0.0 } },
 
             { MIBC, 'CanPathToCurrentEnemySwarm', { true } }, 
 
@@ -142,7 +142,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Factory Builder',
         BuilderConditions = {
             { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.25, 0.95}},
 
-            { UCBC, 'GreaterThanMassTrend', { 0.0 } },
+            { EBC, 'GreaterThanMassTrendSwarm', { 0.0 } },
 
             { MIBC, 'CanPathToCurrentEnemySwarm', { true } }, 
 
@@ -169,7 +169,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Factory Builder',
 
             { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.10, 0.60}},
 
-            { UCBC, 'GreaterThanMassTrend', { 0.0 } },
+            { EBC, 'GreaterThanMassTrendSwarm', { 0.0 } },
 
             { UCBC, 'HaveLessThanUnitsInCategoryBeingBuilt', { 1, categories.STRUCTURE * categories.FACTORY * categories.AIR * categories.TECH1 }},
 
@@ -195,7 +195,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Factory Builder',
 
             { MIBC, 'CanPathToCurrentEnemySwarm', { true } },
 
-            { UCBC, 'GreaterThanMassTrend', { 0.0 } },
+            { EBC, 'GreaterThanMassTrendSwarm', { 0.0 } },
 
             { UCBC, 'HaveLessThanUnitsInCategoryBeingBuilt', { 1, categories.STRUCTURE * categories.FACTORY * categories.AIR * categories.TECH1 }},
 
@@ -221,7 +221,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Factory Builder',
 
             { MIBC, 'CanPathToCurrentEnemySwarm', { true } },
 
-            { UCBC, 'GreaterThanMassTrend', { 0.0 } },
+            { EBC, 'GreaterThanMassTrendSwarm', { 0.0 } },
 
             { UCBC, 'HaveLessThanUnitsInCategoryBeingBuilt', { 1, categories.STRUCTURE * categories.FACTORY * categories.AIR * categories.TECH1 }},
 
