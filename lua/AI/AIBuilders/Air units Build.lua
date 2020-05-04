@@ -43,7 +43,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Builders',
     },
 
     Builder {
-        BuilderName = 'T1AirFighter > Bomber/Gunship',
+        BuilderName = 'T1AirFighter > Enemy',
         PlatoonTemplate = 'T1AirFighter',
         Priority = 750,
         BuilderConditions = {
@@ -53,7 +53,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Builders',
 
             { UCBC, 'HaveLessThanUnitsWithCategory', { 2, categories.MOBILE * categories.AIR * categories.TECH3 - categories.ENGINEER }},
 
-            { UCBC, 'HaveUnitRatioSwarm', { 2.50, categories.MOBILE * categories.AIR * categories.ANTIAIR - categories.GROUNDATTACK, '<=',categories.MOBILE * categories.AIR * (categories.GROUNDATTACK * categories.BOMBER) - categories.HIGHALTAIR } },
+            { UCBC, 'HaveUnitRatioVersusEnemySwarm', { 1.00, categories.MOBILE * categories.AIR * categories.ANTIAIR, '<',categories.MOBILE * categories.AIR * categories.ANTIAIR } },
         },
         BuilderType = 'Air',
     },
@@ -69,8 +69,6 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Builders',
             { UCBC, 'HaveUnitRatioVersusCapSwarm', { MaxAttackForce , '<=', categories.MOBILE - categories.ENGINEER } },
 
             { UCBC, 'HaveLessThanUnitsInCategoryBeingBuilt', { 2, categories.MOBILE * categories.AIR  * categories.GROUNDATTACK }},
-
-            { UCBC, 'HaveUnitRatioSwarm', { 0.7, categories.MOBILE * categories.AIR * categories.BOMBER, '<',categories.MOBILE * categories.AIR * categories.HIGHALTAIR * categories.ANTIAIR } },
         },
         BuilderType = 'Air',
     },
@@ -86,8 +84,6 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Builders',
             { UCBC, 'HaveUnitRatioVersusCapSwarm', { MaxAttackForce , '<=', categories.MOBILE - categories.ENGINEER } },
 
             { UCBC, 'HaveLessThanUnitsInCategoryBeingBuilt', { 2, categories.MOBILE * categories.AIR  * categories.BOMBER }},
-
-            { UCBC, 'HaveUnitRatioSwarm', { 0.7, categories.MOBILE * categories.AIR * categories.GROUNDATTACK, '<',categories.MOBILE * categories.AIR * categories.HIGHALTAIR * categories.ANTIAIR } },
         },
         BuilderType = 'Air',
     },
