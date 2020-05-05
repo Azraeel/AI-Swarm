@@ -162,7 +162,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
             Assist = {
                 AssistLocation = 'LocationType',
                 AssisteeType = 'Structure',
-                AssistRange = 75,
+                AssistRange = 50,
                 BeingBuiltCategories = {'STRUCTURE HYDROCARBON'},
                 AssistUntilFinished = true,
             },

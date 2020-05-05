@@ -16,7 +16,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Builders',
     -- ============ --
     Builder { BuilderName = 'T1AirScout - Swarm',
         PlatoonTemplate = 'T1AirScout',
-        Priority = 525,
+        Priority = 765,
         BuilderConditions = {
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
 
@@ -29,25 +29,28 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Builders',
         BuilderType = 'Air',
     },
 
-    Builder { BuilderName = 'T1AirFighter - Swarm - Minimum',
+    Builder {
+        BuilderName = 'T1-T2AirFighter - Swarm - Constant',
         PlatoonTemplate = 'T1AirFighter',
-        Priority = 520,
+        Priority = 760,
         BuilderConditions = {
-            { EBC, 'GreaterThanEconIncomeSwarm', { 0.2, 2 } },
+            { UCBC, 'HaveGreaterThanUnitsWithCategory', { 1, categories.MOBILE * categories.ENGINEER - categories.STATIONASSISTPOD}},
 
-            { UCBC, 'HaveLessThanUnitsWithCategory', { 2, categories.MOBILE * categories.AIR * categories.ANTIAIR }},
+            { UCBC, 'HaveGreaterThanUnitsWithCategory', { 0, categories.STRUCTURE * categories.LAND * categories.FACTORY * categories.TECH1 }},
 
             { UCBC, 'HaveLessThanUnitsWithCategory', { 2, categories.MOBILE * categories.AIR * categories.TECH3 - categories.ENGINEER }},
+
+            { UCBC, 'LocationFactoriesBuildingLess', { 'LocationType', 1, categories.ANTIAIR * categories.AIR - categories.BOMBER } },
         },
         BuilderType = 'Air',
     },
 
     Builder {
-        BuilderName = 'T1AirFighter > Enemy',
+        BuilderName = 'T1-T2AirFighter - Swarm - Reactionary',
         PlatoonTemplate = 'T1AirFighter',
-        Priority = 750,
+        Priority = 755,
         BuilderConditions = {
-            { UCBC, 'HaveGreaterThanUnitsWithCategory', { 2, categories.MOBILE * categories.ENGINEER - categories.STATIONASSISTPOD}},
+            { UCBC, 'HaveGreaterThanUnitsWithCategory', { 1, categories.MOBILE * categories.ENGINEER - categories.STATIONASSISTPOD}},
 
             { UCBC, 'HaveGreaterThanUnitsWithCategory', { 0, categories.STRUCTURE * categories.LAND * categories.FACTORY * categories.TECH1 }},
 
