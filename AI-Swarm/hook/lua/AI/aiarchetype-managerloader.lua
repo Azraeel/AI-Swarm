@@ -43,7 +43,7 @@ end
 
 function EcoManagerThreadSwarm(aiBrain)
     while GetGameTimeSeconds() < 15 + aiBrain:GetArmyIndex() do
-        WaitTicks(10)
+        coroutine.yield(10)
     end
     local personality = ScenarioInfo.ArmySetup[aiBrain.Name].AIPersonality
     local CheatMultOption = tonumber(ScenarioInfo.Options.CheatMult)
@@ -68,7 +68,7 @@ function EcoManagerThreadSwarm(aiBrain)
     local bussy
     while aiBrain.Result ~= "defeat" do
         --LOG('* AI-Swarm: Function EcoManagerThreadSwarm() beat. ['..aiBrain.Nickname..']')
-        WaitTicks(5)
+        coroutine.yield(5)
         Engineers = aiBrain:GetListOfUnits(categories.ENGINEER - categories.STATIONASSISTPOD - categories.COMMAND - categories.SUBCOMMANDER, false, false) -- also gets unbuilded units (planed to build)
         StationPods = aiBrain:GetListOfUnits(categories.STATIONASSISTPOD, false, false) -- also gets unbuilded units (planed to build)
         paragons = aiBrain:GetListOfUnits(categories.STRUCTURE * categories.EXPERIMENTAL * categories.ECONOMIC * categories.ENERGYPRODUCTION * categories.MASSPRODUCTION, false, false)

@@ -48,6 +48,34 @@ function GreaterThanEconIncomeSwarm(aiBrain, MassIncome, EnergyIncome)
     return false
 end
 
+function GreaterThanMassTrendSwarm(aiBrain, mTrend, DEBUG)
+    local econ = AIUtils.AIGetEconomyNumbers(aiBrain)
+    if DEBUG then
+        --LOG('Current Energy Trend is : ', econ.MassTrend)
+    end
+    if econ.MassTrend < mTrend then
+        --LOG('Less Than Mass Trend Returning True : '..econ.MassTrend)
+        return true
+    else
+        --LOG('Less Than Mass Trend Returning False : '..econ.MassTrend)
+        return false
+    end
+end
+
+function GreaterThanEnergyTrendSwarm(aiBrain, eTrend, DEBUG)
+    local econ = AIUtils.AIGetEconomyNumbers(aiBrain)
+    if DEBUG then
+        --LOG('Current Energy Trend is : ', econ.EnergyTrend)
+    end
+    if econ.EnergyTrend > eTrend then
+        --LOG('Greater than Energy Trend Returning True : '..econ.EnergyTrend)
+        return true
+    else
+        --LOG('Greater than Energy Trend Returning False : '..econ.EnergyTrend)
+        return false
+    end
+end
+
 --            { UCBC, 'LessThanMassTrend', { 50.0 } },
 function LessThanMassTrend(aiBrain, mTrend)
     local econ = AIUtils.AIGetEconomyNumbers(aiBrain)

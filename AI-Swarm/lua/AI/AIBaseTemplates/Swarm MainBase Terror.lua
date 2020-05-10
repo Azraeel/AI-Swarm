@@ -58,10 +58,10 @@ BaseBuilderTemplate {
         -- ==== Land Units FORMER==== --
         -----------------------------------------------------------------------------
         'AISwarm Platoon Builder',
-        'AISwarm Platoon Builder Intercepter',
         'S3 SACU Formers',
 
         'Swarm AI Defense Formers',
+        'Swarm AI United Land Formers', 
 
         -----------------------------------------------------------------------------
         -- ==== Air Units BUILDER ==== --
@@ -99,6 +99,7 @@ BaseBuilderTemplate {
         'Strategic Platoon Formers',
         'Swarm T2 Tactical Missile Defenses Builder',
         'Swarm SMD Builder',
+        'Swarm Defense Plus Builders',
         
         -- Build Anti Air near AirFactories
         'Swarm Defense Anti Air Builders',

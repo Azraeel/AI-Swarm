@@ -19,7 +19,9 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Experimental Builders',           
 
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
 
-            { UCBC, 'GreaterThanMassTrend', { 0.0 } },
+            { EBC, 'GreaterThanMassTrendSwarm', { 0.0 } },
+
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.3, 1.4 }},
 
             { EBC, 'GreaterThanEconIncomeSwarm', { 10, 300 } },
         },
@@ -49,7 +51,9 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Experimental Builders',           
 
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
 
-            { UCBC, 'GreaterThanMassTrend', { 0.0 } },
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.3, 1.4 }},
+
+            { EBC, 'GreaterThanMassTrendSwarm', { 0.0 } },
 
             { EBC, 'GreaterThanEconIncomeSwarm', { 10, 300 } },
         },
@@ -76,8 +80,10 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Experimental Builders',           
         	{ UCBC, 'HaveLessThanUnitsInCategoryBeingBuilt', { 1, categories.EXPERIMENTAL * categories.LAND}},
 
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
+            
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.3, 1.4 }},
 
-            { UCBC, 'GreaterThanMassTrend', { 0.0 } },
+            { EBC, 'GreaterThanMassTrendSwarm', { 0.0 } },
 
             { EBC, 'GreaterThanEconIncomeSwarm', { 10, 300 } },
         },
@@ -97,28 +103,21 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Experimental Builders',           
     },
 }
 
--- ===================================================-======================================================== --
--- ==                                  Experimental Attack FormBuilder                                       == --
--- ===================================================-======================================================== --
--- =============== --
---    PanicZone    --
--- =============== --
-BuilderGroup { BuilderGroupName = 'Swarm Land Experimental Formers',              -- BuilderGroupName, initalized from AIBaseTemplates in "\lua\AI\AIBaseTemplates\"
+BuilderGroup { BuilderGroupName = 'Swarm Land Experimental Formers',         
     BuildersType = 'PlatoonFormBuilder',   
     Builder {
-        BuilderName = 'AISwarm LandAttack EZ Experimental',                                  -- Random Builder Name.
-        --PlatoonAddPlans = {'NameUnitsSorian'},
-        PlatoonTemplate = 'AISwarm LandAttack Experimental',                            -- Template Name. These units will be formed. See: "\lua\AI\PlatoonTemplates"
-        Priority = 100,                                                          -- Priority. 1000 is normal.
-        InstanceCount = 10,                                                      -- Number of plattons that will be formed
+        BuilderName = 'AISwarm - Experimental Group - EZ',                                 
+        PlatoonTemplate = 'AISwarm - Experimental - Group',                           
+        Priority = 100,                                                       
+        InstanceCount = 2,                                                 
         FormRadius = 10000,
         BuilderData = {
-            SearchRadius = BaseEnemyZone,                                       -- Searchradius for new target.
-            GetTargetsFromBase = false,                                         -- Get targets from base position (true) or platoon position (false)
-            AggressiveMove = true,                                              -- If true, the unit will attack everything while moving to the target.
-            AttackEnemyStrength = 250,                                       -- Compare platoon to enemy strenght. 100 will attack equal, 50 weaker and 150 stronger enemies.
-            TargetSearchCategory = categories.ALLUNITS - categories.WALL - categories.NAVAL,                                  -- Only find targets matching these categories.
-            MoveToCategories = {                                                -- Move to targets
+            SearchRadius = BaseEnemyZone,                                 
+            GetTargetsFromBase = false,                                    
+            AggressiveMove = true,                                            
+            AttackEnemyStrength = 250,                                    
+            TargetSearchCategory = categories.ALLUNITS - categories.WALL - categories.NAVAL,                                 
+            MoveToCategories = {                                            
                 categories.STRUCTURE * categories.EXPERIMENTAL * categories.ECONOMIC,
                 categories.STRUCTURE * categories.EXPERIMENTAL* categories.SHIELD,
                 categories.STRUCTURE * categories.ARTILLERY,
@@ -134,49 +133,20 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Experimental Formers',            
         BuilderConditions = { },
         BuilderType = 'Any',                                                    
     },
+
     Builder {
-        BuilderName = 'AISwarm LandAttack MZ Experimental',                                  -- Random Builder Name.
-        --PlatoonAddPlans = {'NameUnitsSorian'},
-        PlatoonTemplate = 'AISwarm LandAttack Experimental',                            -- Template Name. These units will be formed. See: "\lua\AI\PlatoonTemplates"
-        Priority = 100,                                                          -- Priority. 1000 is normal.
-        InstanceCount = 10,
-        FormRadius = 10000,                                                      -- Number of plattons that will be formed
+        BuilderName = 'AISwarm - Experimental Group - MZ',                           
+        PlatoonTemplate = 'AISwarm - Experimental - Group',                        
+        Priority = 100,                                                     
+        InstanceCount = 2,
+        FormRadius = 10000,                                                   
         BuilderData = {
-            SearchRadius = BaseMilitaryZone,                                       -- Searchradius for new target.
-            GetTargetsFromBase = false,                                         -- Get targets from base position (true) or platoon position (false)
-            AggressiveMove = true,                                              -- If true, the unit will attack everything while moving to the target.
-            AttackEnemyStrength = 250,                                       -- Compare platoon to enemy strenght. 100 will attack equal, 50 weaker and 150 stronger enemies.
-            TargetSearchCategory = categories.ALLUNITS - categories.WALL - categories.NAVAL,                                  -- Only find targets matching these categories.
-            MoveToCategories = {                                                -- Move to targets
-                categories.STRUCTURE * categories.EXPERIMENTAL * categories.ECONOMIC,
-                categories.STRUCTURE * categories.EXPERIMENTAL* categories.SHIELD,
-                categories.STRUCTURE * categories.ARTILLERY,
-                categories.STRUCTURE * categories.NUKE,
-                categories.STRUCTURE * categories.ENERGYPRODUCTION,
-                categories.STRUCTURE * categories.EXPERIMENTAL,
-                categories.STRUCTURE * categories.ANTIMISSILE * categories.TECH3,
-                categories.STRUCTURE * categories.DEFENSE * categories.TECH3,
-                categories.STRUCTURE * categories.FACTORY * categories.TECH3,
-                categories.ALLUNITS,
-            },
-        },
-        BuilderConditions = { },
-        BuilderType = 'Any',                                                    
-    },
-    Builder {
-        BuilderName = 'AISwarm LandAttack PZ Experimental',                                  -- Random Builder Name.
-        --PlatoonAddPlans = {'NameUnitsSorian'},
-        PlatoonTemplate = 'AISwarm LandAttack Experimental',                            -- Template Name. These units will be formed. See: "\lua\AI\PlatoonTemplates"
-        Priority = 100,                                                          -- Priority. 1000 is normal.
-        InstanceCount = 10,
-        FormRadius = 100,                                                      -- Number of plattons that will be formed
-        BuilderData = {
-            SearchRadius = BasePanicZone,                                       -- Searchradius for new target.
-            GetTargetsFromBase = false,                                         -- Get targets from base position (true) or platoon position (false)
-            AggressiveMove = true,                                              -- If true, the unit will attack everything while moving to the target.
-            AttackEnemyStrength = 100000,                                       -- Compare platoon to enemy strenght. 100 will attack equal, 50 weaker and 150 stronger enemies.
-            TargetSearchCategory = categories.ALLUNITS - categories.WALL - categories.NAVAL,                                  -- Only find targets matching these categories.
-            MoveToCategories = {                                                -- Move to targets
+            SearchRadius = BaseMilitaryZone,                                  
+            GetTargetsFromBase = false,                                       
+            AggressiveMove = true,                                            
+            AttackEnemyStrength = 250,                                       
+            TargetSearchCategory = categories.ALLUNITS - categories.WALL - categories.NAVAL,                                  
+            MoveToCategories = {                                                
                 categories.STRUCTURE * categories.EXPERIMENTAL * categories.ECONOMIC,
                 categories.STRUCTURE * categories.EXPERIMENTAL* categories.SHIELD,
                 categories.STRUCTURE * categories.ARTILLERY,

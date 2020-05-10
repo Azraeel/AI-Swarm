@@ -137,7 +137,7 @@ function AIFindNearestCategoryTargetInRangeSwarm(aiBrain, platoon, squad, positi
                         --LOG('PlatoonStrength / 100 * AttackEnemyStrength <= '..(PlatoonStrength / 100 * AttackEnemyStrength)..' || EnemyStrength = '..EnemyStrength)
                         -- Only attack if we have a chance to win
                         if PlatoonStrength / 100 * AttackEnemyStrength < EnemyStrength then continue end
-                        --WaitTicks(1)
+                        --coroutine.yield(1)
                         --LOG('* AIFindNearestCategoryTargetInRangeSwarm: PlatoonGenerateSafePathTo ')
                         path, reason = AIAttackUtils.PlatoonGenerateSafePathTo(aiBrain, platoon.MovementLayer, position, TargetPosition, platoon.PlatoonData.NodeWeight or 10 )
                         -- Check if we found a path with markers
@@ -154,7 +154,7 @@ function AIFindNearestCategoryTargetInRangeSwarm(aiBrain, platoon, squad, positi
                                 --LOG('* AIFindNearestCategoryTargetInRangeSwarm: Possible target no path. distance '..distance..'  ')
                             -- NoGraph means we have no Map markers. Lets try to path with c-engine command CanPathTo()
                             elseif reason == 'NoGraph' then
-                                --WaitTicks(1)
+                                --coroutine.yield(1)
                                 local success, bestGoalPos = AIAttackUtils.CheckPlatoonPathingEx(platoon, TargetPosition)
                                 -- check if we found a path with c-engine command.
                                 if success then
@@ -175,7 +175,7 @@ function AIFindNearestCategoryTargetInRangeSwarm(aiBrain, platoon, squad, positi
                 end
                 count = count + 1
                 if count > 300 then -- 300 
-                    WaitTicks(1)
+                    coroutine.yield(1)
                     count = 0
                 end
                 -- DEBUG; use the first target if we can path to it.
@@ -255,9 +255,9 @@ function AIFindNearestCategoryTargetInRangeSwarmCDRSwarm(aiBrain, position, maxR
             if TargetUnit then
                 return TargetUnit
             end
-           WaitTicks(10)
+           coroutine.yield(10)
         end
-        WaitTicks(1)
+        coroutine.yield(1)
     end
     return TargetUnit
 end
@@ -328,7 +328,7 @@ function AIFindNearestCategoryTeleportLocationSwarm(aiBrain, position, maxRange,
         if TargetUnit then
             return TargetUnit
         end
-       WaitTicks(10)
+       coroutine.yield(10)
     end
     return TargetUnit
 end

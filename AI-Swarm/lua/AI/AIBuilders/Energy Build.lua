@@ -146,7 +146,7 @@ BuilderGroup {
     Builder {
         BuilderName = 'Swarm Power Hydrocarbon',
         PlatoonTemplate = 'EngineerBuilder',
-        Priority = 600,
+        Priority = 610,
         DelayEqualBuildPlattons = {'Energy', 1},
         InstanceCount = 1,
         BuilderConditions = {
@@ -213,7 +213,7 @@ BuilderGroup {
 
             { UCBC, 'HaveGreaterThanUnitsWithCategory', { 0, categories.ENERGYPRODUCTION * categories.TECH2 } },
             
-            { EBC, 'LessThanEconStorageRatio', { 1, 0.45 } },             -- Ratio from 0 to 1. (1=100%)
+            { EBC, 'LessThanEnergyTrend', { 0.0 } },              -- Ratio from 0 to 1. (1=100%)
 
             { UCBC, 'HaveLessThanUnitsInCategoryBeingBuilt', { 1, categories.STRUCTURE * categories.ENERGYPRODUCTION * categories.TECH2 }},
         },
@@ -314,7 +314,7 @@ BuilderGroup {
 
             { UCBC, 'CheckBuildPlattonDelay', { 'Energy' }},
 
-            { EBC, 'LessThanEconStorageRatio', { 1, 0.50 } },             -- Ratio from 0 to 1. (1=100%)
+            { EBC, 'LessThanEnergyTrend', { 0.0 } },              -- Ratio from 0 to 1. (1=100%)
         },
         BuilderType = 'Any',
         BuilderData = {
@@ -343,7 +343,7 @@ BuilderGroup {
         BuilderConditions = {
             { UCBC, 'HaveGreaterThanUnitsWithCategory', { 1, categories.ENERGYPRODUCTION * categories.TECH3 } },
 
-            { EBC, 'LessThanEconStorageRatio', { 1, 0.45 } },             -- Ratio from 0 to 1. (1=100%)
+            { EBC, 'LessThanEnergyTrend', { 0.0 } },              -- Ratio from 0 to 1. (1=100%)
 
             { UCBC, 'CheckBuildPlattonDelay', { 'Energy' }},
 

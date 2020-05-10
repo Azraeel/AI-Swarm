@@ -123,6 +123,30 @@ PlatoonTemplate {
     Name = 'EngineerAssistALLTECH',
     Plan = 'ManagerEngineerAssistAI',
     GlobalSquads = {
-        { categories.ENGINEER * categories.TECH1 * categories.TECH2 * categories.TECH3, 1, 1, 'support', 'None' }
+        { categories.ENGINEER * (categories.TECH1 + categories.TECH2 + categories.TECH3), 1, 1, 'support', 'None' }
+    },
+}
+
+PlatoonTemplate {
+    Name = 'EngineerBuilderALLTECH',
+    Plan = 'EngineerBuildAI',
+    GlobalSquads = {
+        { categories.ENGINEER * (categories.TECH1 + categories.TECH2 + categories.TECH3), 1, 1, 'support', 'None' }
+    },
+}
+
+PlatoonTemplate {
+    Name = 'EngineerBuilderT2T3',
+    Plan = 'EngineerBuildAI',
+    GlobalSquads = {
+        { categories.ENGINEER * (categories.TECH2 + categories.TECH3), 1, 1, 'support', 'None' }
+    },
+}
+
+PlatoonTemplate {
+    Name = 'EngineerBuilderT3&SUB',
+    Plan = 'EngineerBuildAI',
+    GlobalSquads = {
+        { categories.ENGINEER * (categories.TECH3 + categories.RASPRESET + categories.ENGINEERPRESET), 1, 1, 'support', 'None' }
     },
 }
