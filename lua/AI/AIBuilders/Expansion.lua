@@ -8,6 +8,50 @@ local MaxCapStructure = 0.12                                                    
 BuilderGroup {
     BuilderGroupName = 'Swarm Expansion Builder',                            -- BuilderGroupName, initalized from AIBaseTemplates in "\lua\AI\AIBaseTemplates\"
     BuildersType = 'EngineerBuilder',                                           -- BuilderTypes are: EngineerBuilder, FactoryBuilder, PlatoonFormBuilder.
+
+    --ACU Building Expansions --EXTREMELY EXPERIMENTAL--
+
+    --[[ Builder {
+        BuilderName = 'SC - Expand To Start Location',                               -- Random Builder Name.
+        PlatoonTemplate = 'CommanderBuilder',                                    -- Template Name. These units will be formed. See: "\lua\AI\PlatoonTemplates\"
+        Priority = 620,                                                        -- Priority. Higher priotity will be build more often then lower priotity.
+        InstanceCount = 1,                                                      -- Number of plattons that will be formed with this template.
+        BuilderConditions = {
+            { UCBC, 'ExpansionBaseCheck', { } },
+
+            { UCBC, 'StartLocationNeedsEngineer', { 'LocationType', 1000, -1000, 100, 1, 'StructuresNotMex' } },
+
+            { EBC, 'GreaterThanEconTrendSwarm', { 0.0, 0.0 } }, -- relative income
+
+            { MIBC, 'CanPathToCurrentEnemySwarm', { true } },
+
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.1, 1.0 }},
+
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.20, 0.95 } },             -- Ratio from 0 to 1. (1=100%)
+        },
+        BuilderType = 'Any',
+        BuilderData = {
+            RequireTransport = false,
+            Construction = {
+                BuildClose = false,
+                BaseTemplate = 'ExpansionBaseTemplates',
+                ExpansionBase = true,
+                NearMarkerType = 'Start Location',
+                LocationRadius = 1000,
+                LocationType = 'LocationType',
+                ThreatMin = -1000,
+                ThreatMax = 10000,
+                ThreatRings = 1,
+                ThreatType = 'StructuresNotMex',
+                ExpansionRadius = 100,
+                BuildStructures = {
+                    'T1LandFactory',
+                    'T1LandFactory',
+                }
+            },
+        }
+    }, ]]--
+    
     Builder {
         BuilderName = 'S1 Vacant Start Location',                               -- Random Builder Name.
         PlatoonTemplate = 'EngineerBuilder',                                    -- Template Name. These units will be formed. See: "\lua\AI\PlatoonTemplates\"
@@ -33,7 +77,7 @@ BuilderGroup {
                 LocationRadius = 1000,
                 LocationType = 'LocationType',
                 ThreatMin = -1000,
-                ThreatMax = 100,
+                ThreatMax = 5000,
                 ThreatRings = 1,
                 ThreatType = 'StructuresNotMex',
                 ExpansionRadius = 100,
@@ -71,7 +115,7 @@ BuilderGroup {
                 LocationRadius = 1000,
                 LocationType = 'LocationType',
                 ThreatMin = -1000,
-                ThreatMax = 100,
+                ThreatMax = 5000,
                 ThreatRings = 1,
                 ThreatType = 'StructuresNotMex',
                 ExpansionRadius = 100,
@@ -109,7 +153,7 @@ BuilderGroup {
                 LocationRadius = 1000,
                 LocationType = 'LocationType',
                 ThreatMin = -1000,
-                ThreatMax = 100,
+                ThreatMax = 5000,
                 ThreatRings = 1,
                 ThreatType = 'StructuresNotMex',
                 ExpansionRadius = 100,
@@ -147,7 +191,7 @@ BuilderGroup {
                 LocationRadius = 1000,
                 LocationType = 'LocationType',
                 ThreatMin = -1000,
-                ThreatMax = 100,
+                ThreatMax = 5000,
                 ThreatRings = 1,
                 ThreatType = 'StructuresNotMex',
                 ExpansionRadius = 100,

@@ -19,7 +19,7 @@ BuilderGroup {
         BuilderName = 'S1 Mass 30',
         PlatoonTemplate = 'EngineerBuilder',
         Priority = 600,
-        InstanceCount = 2,
+        InstanceCount = 4,
         DelayEqualBuildPlattons = {'MASSEXTRACTION', 3},
         BuilderConditions = {
             -- When do we want to build this ?
@@ -45,7 +45,7 @@ BuilderGroup {
         BuilderName = 'S1 Mass 60',
         PlatoonTemplate = 'EngineerBuilder',
         Priority = 585,
-        InstanceCount = 2,
+        InstanceCount = 4,
         DelayEqualBuildPlattons = {'MASSEXTRACTION', 3},
         BuilderConditions = {
             -- When do we want to build this ?
@@ -72,7 +72,7 @@ BuilderGroup {
         PlatoonTemplate = 'EngineerBuilder',
         Priority = 575,
         DelayEqualBuildPlattons = {'MASSEXTRACTION', 3},
-        InstanceCount = 2,
+        InstanceCount = 4,
         BuilderConditions = {
             -- When do we want to build this ?
             { MABC, 'CanBuildOnMassSwarm', { 'LocationType', 1000, -500, 1, 0, 'AntiSurface', 1 }}, -- LocationType, distance, threatMin, threatMax, threatRadius, threatType, maxNum
@@ -98,7 +98,7 @@ BuilderGroup {
         PlatoonTemplate = 'EngineerBuilder',
         Priority = 565,
         DelayEqualBuildPlattons = {'MASSEXTRACTION', 3},
-        InstanceCount = 2,
+        InstanceCount = 4,
         BuilderConditions = {
             -- When do we want to build this ?
             { MABC, 'CanBuildOnMassSwarm', { 'LocationType', 1000, -500, 1, 0, 'AntiSurface', 1 }}, -- LocationType, distance, threatMin, threatMax, threatRadius, threatType, maxNum
@@ -124,7 +124,7 @@ BuilderGroup {
         PlatoonTemplate = 'EngineerBuilder',
         Priority = 555,
         DelayEqualBuildPlattons = {'MASSEXTRACTION', 3},
-        InstanceCount = 2,
+        InstanceCount = 4,
         BuilderConditions = {
             -- When do we want to build this ?
             { MABC, 'CanBuildOnMassSwarm', { 'LocationType', 1000, -500, 1, 0, 'AntiSurface', 1 }}, -- LocationType, distance, threatMin, threatMax, threatRadius, threatType, maxNum
@@ -256,7 +256,7 @@ BuilderGroup {
         InstanceCount = 1,
         FormRadius = 10000,
         BuilderConditions = {
-        	{ MIBC, 'GreaterThanGameTime', { 360 } },
+        	{ MIBC, 'GreaterThanGameTime', { 420 } },
             -- When do we want to build this ?
             { UCBC, 'HaveGreaterThanArmyPoolWithCategorySwarm', { 0, categories.MASSEXTRACTION} },
             -- Do we need additional conditions to build it ?
@@ -276,7 +276,7 @@ BuilderGroup {
         InstanceCount = 1,
         FormRadius = 10000,
         BuilderConditions = {
-        	{ MIBC, 'GreaterThanGameTime', { 360 } },
+        	{ MIBC, 'GreaterThanGameTime', { 420 } },
             -- When do we want to build this ?
             { UCBC, 'HaveGreaterThanArmyPoolWithCategorySwarm', { 0, categories.MASSEXTRACTION} },
             -- Do we need additional conditions to build it ?
@@ -296,7 +296,7 @@ BuilderGroup {
         InstanceCount = 1,
         FormRadius = 10000,
         BuilderConditions = {
-        	{ MIBC, 'GreaterThanGameTime', { 360 } },
+        	{ MIBC, 'GreaterThanGameTime', { 420 } },
             -- When do we want to build this ?
             { UCBC, 'HaveGreaterThanArmyPoolWithCategorySwarm', { 0, categories.MASSEXTRACTION} },
             -- Do we need additional conditions to build it ?
@@ -320,7 +320,7 @@ BuilderGroup {
         InstanceCount = 1,
         FormRadius = 10000,
         BuilderConditions = {
-        	{ MIBC, 'GreaterThanGameTime', { 360 } },
+        	{ MIBC, 'GreaterThanGameTime', { 420 } },
             -- When do we want to build this ?
             { UCBC, 'HaveGreaterThanArmyPoolWithCategorySwarm', { 0, categories.MASSEXTRACTION} },
             -- Do we need additional conditions to build it ?
@@ -340,7 +340,7 @@ BuilderGroup {
         InstanceCount = 1,
         FormRadius = 10000,
         BuilderConditions = {
-        	{ MIBC, 'GreaterThanGameTime', { 360 } },
+        	{ MIBC, 'GreaterThanGameTime', { 420 } },
             -- When do we want to build this ?
             { UCBC, 'HaveGreaterThanArmyPoolWithCategorySwarm', { 0, categories.MASSEXTRACTION} },
             -- Do we need additional conditions to build it ?

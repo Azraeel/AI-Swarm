@@ -15,7 +15,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
         Priority = 1000,
         InstanceCount = 75,
         BuilderConditions = {
-            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.35, 0.40 } },
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.10, 0.95 } },
 
             { EBC, 'GreaterThanEconIncomeSwarm', { 1.4, 20 } },
         },
@@ -162,7 +162,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
             Assist = {
                 AssistLocation = 'LocationType',
                 AssisteeType = 'Structure',
-                AssistRange = 50,
+                AssistRange = 75,
                 BeingBuiltCategories = {'STRUCTURE HYDROCARBON'},
                 AssistUntilFinished = true,
             },

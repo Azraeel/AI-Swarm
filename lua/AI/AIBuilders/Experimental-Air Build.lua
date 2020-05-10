@@ -16,6 +16,8 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Experimental Builders',            
         BuilderConditions = {
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
 
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.3, 1.4 }},
+            
             { EBC, 'GreaterThanMassTrendSwarm', { 0.0 } },
 
             { EBC, 'GreaterThanEconIncomeSwarm', { 10, 400 } },
@@ -40,6 +42,8 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Experimental Builders',            
         Priority = 950,
         BuilderConditions = {
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
+
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.3, 1.4 }},
 
             { EBC, 'GreaterThanMassTrendSwarm', { 0.0 } },
 

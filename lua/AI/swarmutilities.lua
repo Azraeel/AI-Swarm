@@ -1,3 +1,4 @@
+local ScenarioUtils = import('/lua/sim/ScenarioUtilities.lua')
 
 function ExtractorPauseSwarm(self, aiBrain, MassExtractorUnitList, ratio, techLevel)
     local UpgradingBuilding = nil
@@ -206,7 +207,7 @@ function ExtractorUpgradeSwarm(self, aiBrain, MassExtractorUnitList, ratio, tech
     if upgradeID and upgradeBuilding then
         --LOG('* ExtractorUpgradeSwarm: Upgrading Building in DistanceToBase '..(LowestDistanceToBase or 'Unknown ???')..' '..techLevel..' - UnitId '..upgradeBuilding:GetUnitId()..' - upgradeID '..upgradeID..' - GlobalUpgrading '..techLevel..': '..(UpgradingBuilding + 1) )
         IssueUpgrade({upgradeBuilding}, upgradeID)
-        WaitTicks(10)
+        coroutine.yield(10)
         return true
     end
     return false
@@ -411,11 +412,11 @@ function ReclaimAIThreadSwarm(platoon,self,aiBrain)
                     StartMoveDestination(self, NearestWreckPos)
                 end
             end 
-            WaitTicks(10)
+            coroutine.yield(10)
             if not self.Dead and self:IsUnitState("Moving") then
                 --LOG('Moving to Wreckage.')
                 while self and not self.Dead and self:IsUnitState("Moving") do
-                    WaitTicks(10)
+                    coroutine.yield(10)
                 end
                 scanrange = 25
             end
@@ -428,13 +429,13 @@ function ReclaimAIThreadSwarm(platoon,self,aiBrain)
             if HomeDist > 36 then
                 --LOG('full, moving home')
                 StartMoveDestination(self, {basePosition[1], basePosition[2], basePosition[3]})
-                WaitTicks(10)
+                coroutine.yield(10)
                 if not self.Dead and self:IsUnitState("Moving") then
                     while self and not self.Dead and self:IsUnitState("Moving") and (MassStorageRatio == 1 or EnergyStorageRatio == 1) and HomeDist > 30 do
                         MassStorageRatio = aiBrain:GetEconomyStoredRatio('MASS')
                         EnergyStorageRatio = aiBrain:GetEconomyStoredRatio('ENERGY')
                         HomeDist = VDist2(SelfPos[1], SelfPos[3], basePosition[1], basePosition[3])
-                        WaitTicks(30)
+                        coroutine.yield(30)
                     end
                     IssueClearCommands({self})
                     scanrange = 25
@@ -444,7 +445,7 @@ function ReclaimAIThreadSwarm(platoon,self,aiBrain)
                 return
             end
         end
-        WaitTicks(10)
+        coroutine.yield(10)
     end
 end
 
@@ -457,7 +458,7 @@ function StartMoveDestination(self,destination)
         count = count + 1
         IssueClearCommands({self})
         IssueMove( {self}, destination )
-        WaitTicks(10)
+        coroutine.yield(10)
     end
 end
 
@@ -496,9 +497,9 @@ function CDRRunHomeEnemyNearBase(platoon,cdr,UnitsInBasePanicZone)
             cdrNewPos[2] = cdr.CDRHome[2]
             cdrNewPos[3] = cdr.CDRHome[3] + Random(-6, 6)
             platoon:Stop()
-            WaitTicks(1)
+            coroutine.yield(1)
             platoon:MoveToLocation(cdrNewPos, false)
-            WaitTicks(50)
+            coroutine.yield(50)
             return true
         end
     end
@@ -512,9 +513,9 @@ function CDRRunHomeHealthRange(platoon,cdr,maxRadius)
         cdrNewPos[2] = cdr.CDRHome[2]
         cdrNewPos[3] = cdr.CDRHome[3] + Random(-6, 6)
         platoon:Stop()
-        WaitTicks(1)
+        coroutine.yield(1)
         platoon:MoveToLocation(cdrNewPos, false)
-        WaitTicks(50)
+        coroutine.yield(50)
         return true
     end
     return false
@@ -530,9 +531,9 @@ function CDRRunHomeAtDamage(platoon,cdr)
         cdrNewPos[2] = cdr.CDRHome[2]
         cdrNewPos[3] = cdr.CDRHome[3] + Random(-6, 6)
         platoon:Stop()
-        WaitTicks(1)
+        coroutine.yield(1)
         platoon:MoveToLocation(cdrNewPos, false)
-        WaitTicks(10)
+        coroutine.yield(10)
         cdr.HealthOLD = CDRHealth
         return true
     end    
@@ -546,9 +547,9 @@ function CDRForceRunHome(platoon,cdr)
     cdrNewPos[2] = cdr.CDRHome[2]
     cdrNewPos[3] = cdr.CDRHome[3] + Random(-6, 6)
     platoon:Stop()
-    WaitTicks(1)
+    coroutine.yield(1)
     platoon:MoveToLocation(cdrNewPos, false)
-    WaitTicks(30)
+    coroutine.yield(30)
     if VDist2(cdr.position[1], cdr.position[3], cdr.CDRHome[1], cdr.CDRHome[3]) > 20 then
         return true
     end
@@ -563,9 +564,9 @@ function CDRParkingHome(platoon,cdr)
         cdrNewPos[2] = cdr.CDRHome[2]
         cdrNewPos[3] = cdr.CDRHome[3] + Random(-6, 6)
         platoon:Stop()
-        WaitTicks(1)
+        coroutine.yield(1)
         platoon:MoveToLocation(cdrNewPos, false)
-        WaitTicks(30)
+        coroutine.yield(30)
     end
     return
 end
@@ -700,12 +701,12 @@ function AirScoutPatrolSwarmAIThread(self, aiBrain)
                     break
                 end
 
-                WaitTicks(50)
+                coroutine.yield(50)
             end
         else
-            WaitTicks(10)
+            coroutine.yield(10)
         end
-        WaitTicks(5)
+        coroutine.yield(5)
     end
 end
 
@@ -808,5 +809,32 @@ function DisperseUnitsToRallyPoints( aiBrain, units, position, rallypointtable )
 
     return
     
+end
+
+function AIGetMassMarkerLocations(aiBrain, includeWater, waterOnly)
+    local markerList = {}
+        local markers = ScenarioUtils.GetMarkers()
+        if markers then
+            for k, v in markers do
+                if v.type == 'Mass' then
+                    if waterOnly then
+                        if PositionInWater(v.position) then
+                            table.insert(markerList, {Position = v.position, Name = k})
+                        end
+                    elseif includeWater then
+                        table.insert(markerList, {Position = v.position, Name = k})
+                    else
+                        if not PositionInWater(v.position) then
+                            table.insert(markerList, {Position = v.position, Name = k})
+                        end
+                    end
+                end
+            end
+        end
+    return markerList
+end
+
+function PositionInWater(pos)
+	return GetTerrainHeight(pos[1], pos[3]) < GetSurfaceHeight(pos[1], pos[3])
 end
 

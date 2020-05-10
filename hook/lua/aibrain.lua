@@ -12,33 +12,12 @@ AIBrain = Class(SwarmAIBrainClass) {
         end
     end,
 
-    BaseMonitorThread = function(self)
-       -- Only use this with AI-Swarm
-        if not self.Swarm then
-            return SwarmAIBrainClass.BaseMonitorThread(self)
-        end
-        WaitTicks(10)
-        -- We are leaving this forked thread here because we don't need it.
-        KillThread(CurrentThread())
-    end,
-
-    EconomyMonitor = function(self)
-        -- Only use this with AI-Swarm
-        if not self.Swarm then
-            return SwarmAIBrainClass.EconomyMonitor(self)
-        end
-        WaitTicks(10)
-        -- We are leaving this forked thread here because we don't need it.
-        KillThread(self.EconomyMonitorThread)
-        self.EconomyMonitorThread = nil
-    end,
-
    ExpansionHelpThread = function(self)
        -- Only use this with AI-Swarm
         if not self.Swarm then
             return SwarmAIBrainClass.ExpansionHelpThread(self)
         end
-        WaitTicks(10)
+        coroutine.yield(10)
         -- We are leaving this forked thread here because we don't need it.
         KillThread(CurrentThread())
     end,
@@ -62,7 +41,7 @@ AIBrain = Class(SwarmAIBrainClass) {
         if not self.Swarm then
             return SwarmAIBrainClass.SetupAttackVectorsThread(self)
         end
-        WaitTicks(10)
+        coroutine.yield(10)
         -- We are leaving this forked thread here because we don't need it.
         KillThread(CurrentThread())
     end,
@@ -72,9 +51,8 @@ AIBrain = Class(SwarmAIBrainClass) {
         if not self.Swarm then
             return SwarmAIBrainClass.ParseIntelThread(self)
         end
-        WaitTicks(10)
+        coroutine.yield(10)
         -- We are leaving this forked thread here because we don't need it.
         KillThread(CurrentThread())
     end,
-
 }
