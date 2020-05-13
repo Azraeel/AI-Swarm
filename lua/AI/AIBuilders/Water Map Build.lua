@@ -3,6 +3,8 @@ local EBC = '/lua/editor/EconomyBuildConditions.lua'
 local MIBC = '/lua/editor/MiscBuildConditions.lua'
 local BasePanicZone, BaseMilitaryZone, BaseEnemyZone = import('/mods/AI-Swarm/lua/AI/swarmutilities.lua').GetDangerZoneRadii(true)
 
+local MaxCapFactory = 0.5 -- 0.5% of all units can be factories (STRUCTURE * FACTORY)
+
 
 BuilderGroup { BuilderGroupName = 'Swarm Transports - Water Map',                               -- BuilderGroupName, initalized from AIBaseTemplates in "\lua\AI\AIBaseTemplates\"
     BuildersType = 'FactoryBuilder',
@@ -12,6 +14,8 @@ BuilderGroup { BuilderGroupName = 'Swarm Transports - Water Map',               
         Priority = 550, 
         BuilderConditions = {
             { EBC, 'GreaterThanEconTrendSwarm', { 0.0, 0.0 } },
+
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.1, 1.12 }},
 
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
 
@@ -37,6 +41,8 @@ BuilderGroup { BuilderGroupName = 'Swarm Transports - Water Map',               
         BuilderConditions = {
             { EBC, 'GreaterThanEconTrendSwarm', { 0.0, 0.0 } },
 
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.15, 1.2 }},
+
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
 
             { EBC, 'GreaterThanEconIncomeSwarm', { 1, 20 } },
@@ -60,6 +66,8 @@ BuilderGroup { BuilderGroupName = 'Swarm Transports - Water Map',               
         Priority = 750,
         BuilderConditions = {
             { EBC, 'GreaterThanEconTrendSwarm', { 0.0, 0.0 } },
+
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.2, 1.25 }},
 
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
 
@@ -90,6 +98,10 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders - Water Map',            
 
             { EBC, 'GreaterThanEconIncomeSwarm', { 0.2, 2 } },
 
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.6, 0.8 }},
+
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.02, 0.1}},
+
             { MIBC, 'CanPathToCurrentEnemySwarm', { false } },
 
             { MIBC, 'MapGreaterThanSwarm', { 1023, 1023 }},
@@ -111,6 +123,10 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders - Water Map',            
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
 
             { EBC, 'GreaterThanEconIncomeSwarm', { 1, 20 } },
+
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.85, 0.9 }},
+
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.05, 0.1}},
 
             { MIBC, 'CanPathToCurrentEnemySwarm', { false } },
 
@@ -134,6 +150,10 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders - Water Map',            
 
             { EBC, 'GreaterThanEconIncomeSwarm', { 3.5, 100 } },
 
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.0, 1.1 }},
+
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.07, 0.1}},
+
             { MIBC, 'CanPathToCurrentEnemySwarm', { false } },
 
             { MIBC, 'MapGreaterThanSwarm', { 1023, 1023 }},
@@ -153,7 +173,9 @@ BuilderGroup { BuilderGroupName = 'Swarm Factory Builder - Water Map',
         PlatoonTemplate = 'CommanderBuilder',
         Priority = 600,
         BuilderConditions = {
-            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.20, 0.30}}, 
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.05, 0.50}},
+
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.75, 0.9 }},
 
             { MIBC, 'CanPathToCurrentEnemySwarm', { false } },
 
@@ -178,7 +200,9 @@ BuilderGroup { BuilderGroupName = 'Swarm Factory Builder - Water Map',
         PlatoonTemplate = 'CommanderBuilder',
         Priority = 575,
         BuilderConditions = {
-            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.15, 0.40}}, 
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.05, 0.50}},
+
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.75, 0.9 }},
 
             { MIBC, 'CanPathToCurrentEnemySwarm', { false } },
 
@@ -200,10 +224,12 @@ BuilderGroup { BuilderGroupName = 'Swarm Factory Builder - Water Map',
 
     Builder {
         BuilderName = 'Swarm Factory Builder Land - Watermap - 20km',
-        PlatoonTemplate = 'EngineerBuilder',
+        PlatoonTemplate = 'EngineerBuilderALLTECH',
         Priority = 600,
         BuilderConditions = {
-            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.13, 0.30}},
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.05, 0.50}},
+
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.75, 0.9 }},
 
             { MIBC, 'CanPathToCurrentEnemySwarm', { false } }, 
 
@@ -224,38 +250,13 @@ BuilderGroup { BuilderGroupName = 'Swarm Factory Builder - Water Map',
     },
 
     Builder {
-        BuilderName = 'Swarm Factory Builder Land - Watermap - T2 - 20km',
-        PlatoonTemplate = 'T2EngineerBuilder',
-        Priority = 605,
-        BuilderConditions = {
-            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.13, 0.30}},
-
-            { MIBC, 'CanPathToCurrentEnemySwarm', { false } }, 
-
-            { MIBC, 'MapGreaterThanSwarm', { 1023, 1023 }},
-
-            { UCBC, 'HaveLessThanUnitsWithCategory', { 4, categories.STRUCTURE * categories.FACTORY * categories.LAND * (categories.TECH1 + categories.TECH2 + categories.TECH3) }},
-        },
-        BuilderType = 'Any',
-        BuilderData = {
-            Construction = {
-            	DesiresAssist = true,
-                Location = 'LocationType',
-                BuildStructures = {
-                   'T1LandFactory',
-                },
-            }
-        }
-    },
-
-    Builder {
         BuilderName = 'Swarm Factory Builder Air - First - Watermap - 20km',
         PlatoonTemplate = 'EngineerBuilder',
         Priority = 650,
         BuilderConditions = {
             { MIBC, 'CanPathToCurrentEnemySwarm', { false } },
 
-            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.20, 0.80}},
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.05, 0.50}},
 
             { MIBC, 'MapGreaterThanSwarm', { 1023, 1023 }},
 
@@ -276,10 +277,12 @@ BuilderGroup { BuilderGroupName = 'Swarm Factory Builder - Water Map',
 
     Builder {
         BuilderName = 'Swarm Factory Builder Air - Watermap - 20km',
-        PlatoonTemplate = 'EngineerBuilder',
+        PlatoonTemplate = 'EngineerBuilderALLTECH',
         Priority = 600,
         BuilderConditions = {
-            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.25, 0.40}},
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.05, 0.50}},
+
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.75, 0.9 }},
 
             { MIBC, 'CanPathToCurrentEnemySwarm', { false } },
 
@@ -287,33 +290,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Factory Builder - Water Map',
 
             { UCBC, 'HaveLessThanUnitsInCategoryBeingBuilt', { 1, categories.STRUCTURE * categories.FACTORY * categories.AIR * categories.TECH1 }},
 
-            { UCBC, 'HaveLessThanUnitsWithCategory', { 7, categories.STRUCTURE * categories.FACTORY * categories.AIR * (categories.TECH1 + categories.TECH2 + categories.TECH3) }},
-        },
-        BuilderType = 'Any',
-        BuilderData = {
-            Construction = {
-                Location = 'LocationType',
-                BuildStructures = {
-                    'T1AirFactory',
-                },
-            }
-        }
-    },
-
-    Builder {
-        BuilderName = 'Swarm Factory Builder Air - Watermap - T2 - 20km',
-        PlatoonTemplate = 'T2EngineerBuilder',
-        Priority = 600,
-        BuilderConditions = {
-            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.25, 0.40}},
-
-            { MIBC, 'CanPathToCurrentEnemySwarm', { false } },
-
-            { MIBC, 'MapGreaterThanSwarm', { 1023, 1023 }},
-
-            { UCBC, 'HaveLessThanUnitsInCategoryBeingBuilt', { 1, categories.STRUCTURE * categories.FACTORY * categories.AIR * categories.TECH1 }},
-
-            { UCBC, 'HaveLessThanUnitsWithCategory', { 9, categories.STRUCTURE * categories.FACTORY * categories.AIR * (categories.TECH1 + categories.TECH2 + categories.TECH3) }},
+            { UCBC, 'HaveUnitRatioVersusCapSwarm', { MaxCapFactory , '<', categories.STRUCTURE * categories.FACTORY * categories.AIR } }, 
         },
         BuilderType = 'Any',
         BuilderData = {
@@ -340,7 +317,7 @@ BuilderGroup {
             GetTargetsFromBase = true,                                          -- Get targets from base position (true) or platoon position (false)
             RequireTransport = false,                                           -- If this is true, the unit is forced to use a transport, even if it has a valid path to the destination.
             AggressiveMove = true,                                              -- If true, the unit will attack everything while moving to the target.
-            AttackEnemyStrength = 100000000,                                    -- Compare platoon to enemy strenght. 100 will attack equal, 50 weaker and 150 stronger enemies.
+            AttackEnemyStrength = 1000,                                    -- Compare platoon to enemy strenght. 100 will attack equal, 50 weaker and 150 stronger enemies.
             IgnorePathing = true,                                               -- If true, the platoon will not use AI pathmarkers and move directly to the target
             TargetSearchCategory = categories.MOBILE - categories.SCOUT,        -- Only find targets matching these categories.
             MoveToCategories = {                                                -- Move to targets
@@ -366,7 +343,7 @@ BuilderGroup {
             GetTargetsFromBase = false,                                         -- Get targets from base position (true) or platoon position (false)
             RequireTransport = false,                                           -- If this is true, the unit is forced to use a transport, even if it has a valid path to the destination.
             AggressiveMove = true,                                              -- If true, the unit will attack everything while moving to the target.
-            AttackEnemyStrength = 300,                                          -- Compare platoon to enemy strenght. 100 will attack equal, 50 weaker and 150 stronger enemies.
+            AttackEnemyStrength = 80,                                          -- Compare platoon to enemy strenght. 100 will attack equal, 50 weaker and 150 stronger enemies.
             TargetSearchCategory = categories.STRUCTURE + categories.MOBILE,    -- Only find targets matching these categories.
             MoveToCategories = {                                                -- Move to targets
                 categories.MOBILE * categories.NAVAL * categories.EXPERIMENTAL,
@@ -396,7 +373,7 @@ BuilderGroup {
             GetTargetsFromBase = false,                                         -- Get targets from base position (true) or platoon position (false)
             RequireTransport = false,                                           -- If this is true, the unit is forced to use a transport, even if it has a valid path to the destination.
             AggressiveMove = true,                                              -- If true, the unit will attack everything while moving to the target.
-            AttackEnemyStrength = 500,                                          -- Compare platoon to enemy strenght. 100 will attack equal, 50 weaker and 150 stronger enemies.
+            AttackEnemyStrength = 75,                                          -- Compare platoon to enemy strenght. 100 will attack equal, 50 weaker and 150 stronger enemies.
             TargetSearchCategory = categories.STRUCTURE + categories.MOBILE,    -- Only find targets matching these categories.
             MoveToCategories = {                                                -- Move to targets
                 categories.MOBILE * categories.NAVAL * categories.EXPERIMENTAL,
@@ -428,7 +405,7 @@ BuilderGroup {
             GetTargetsFromBase = true,                                          -- Get targets from base position (true) or platoon position (false)
             RequireTransport = false,                                           -- If this is true, the unit is forced to use a transport, even if it has a valid path to the destination.
             AggressiveMove = true,                                              -- If true, the unit will attack everything while moving to the target.
-            AttackEnemyStrength = 100000000,                                    -- Compare platoon to enemy strenght. 100 will attack equal, 50 weaker and 150 stronger enemies.
+            AttackEnemyStrength = 1000,                                    -- Compare platoon to enemy strenght. 100 will attack equal, 50 weaker and 150 stronger enemies.
             IgnorePathing = true,                                               -- If true, the platoon will not use AI pathmarkers and move directly to the target
             TargetSearchCategory = categories.MOBILE,                           -- Only find targets matching these categories.
             MoveToCategories = {                                                -- Move to targets
@@ -454,7 +431,7 @@ BuilderGroup {
             GetTargetsFromBase = false,                                         -- Get targets from base position (true) or platoon position (false)
             RequireTransport = false,                                           -- If this is true, the unit is forced to use a transport, even if it has a valid path to the destination.
             AggressiveMove = true,                                              -- If true, the unit will attack everything while moving to the target.
-            AttackEnemyStrength = 200,                                          -- Compare platoon to enemy strenght. 100 will attack equal, 50 weaker and 150 stronger enemies.
+            AttackEnemyStrength = 80,                                          -- Compare platoon to enemy strenght. 100 will attack equal, 50 weaker and 150 stronger enemies.
             TargetSearchCategory = categories.LAND + categories.NAVAL,          -- Only find targets matching these categories.
             MoveToCategories = {                                                -- Move to targets
                 categories.EXPERIMENTAL,
@@ -484,7 +461,7 @@ BuilderGroup {
             GetTargetsFromBase = false,                                         -- Get targets from base position (true) or platoon position (false)
             RequireTransport = false,                                           -- If this is true, the unit is forced to use a transport, even if it has a valid path to the destination.
             AggressiveMove = true,                                              -- If true, the unit will attack everything while moving to the target.
-            AttackEnemyStrength = 200,                                          -- Compare platoon to enemy strenght. 100 will attack equal, 50 weaker and 150 stronger enemies.
+            AttackEnemyStrength = 75,                                          -- Compare platoon to enemy strenght. 100 will attack equal, 50 weaker and 150 stronger enemies.
             TargetSearchCategory = categories.LAND + categories.NAVAL,          -- Only find targets matching these categories.
             MoveToCategories = {                                                -- Move to targets
                 categories.EXPERIMENTAL,

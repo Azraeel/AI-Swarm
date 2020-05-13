@@ -21,7 +21,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Experimental Builders',           
 
             { EBC, 'GreaterThanMassTrendSwarm', { 0.0 } },
 
-            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.3, 1.4 }},
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.15, 1.2 }},
 
             { EBC, 'GreaterThanEconIncomeSwarm', { 10, 300 } },
         },
@@ -51,7 +51,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Experimental Builders',           
 
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
 
-            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.3, 1.4 }},
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.15, 1.2 }},
 
             { EBC, 'GreaterThanMassTrendSwarm', { 0.0 } },
 
@@ -81,7 +81,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Experimental Builders',           
 
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
             
-            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.3, 1.4 }},
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.15, 1.2 }},
 
             { EBC, 'GreaterThanMassTrendSwarm', { 0.0 } },
 

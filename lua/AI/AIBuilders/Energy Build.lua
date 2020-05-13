@@ -171,7 +171,7 @@ BuilderGroup {
     -- ============ --
     --    TECH 2    --
     -- ============ --
-    Builder {
+    --[[ Builder {
         BuilderName = 'S2 Power minimum',
         PlatoonTemplate = 'T2EngineerBuilder',
         Priority = 1250,
@@ -202,7 +202,8 @@ BuilderGroup {
                 },
             }
         }
-    },
+    }, ]]--
+
     Builder {
         BuilderName = 'S2 Power',
         PlatoonTemplate = 'T2EngineerBuilder',
@@ -210,8 +211,6 @@ BuilderGroup {
         InstanceCount = 1,
         BuilderConditions = {
             { UCBC, 'HaveLessThanUnitsWithCategory', { 1, categories.ENERGYPRODUCTION * categories.TECH3 } },
-
-            { UCBC, 'HaveGreaterThanUnitsWithCategory', { 0, categories.ENERGYPRODUCTION * categories.TECH2 } },
             
             { EBC, 'LessThanEnergyTrend', { 0.0 } },              -- Ratio from 0 to 1. (1=100%)
 
@@ -237,7 +236,7 @@ BuilderGroup {
     -- ============ --
     --    TECH 3    --
     -- ============ --
-    Builder {
+    --[[Builder {
         BuilderName = 'S3 Power minimum',
         PlatoonTemplate = 'T3EngineerBuildernoSUB',
         Priority = 2625,
@@ -301,55 +300,18 @@ BuilderGroup {
                 },
             }
         }
-    },
+    }, ]]--
 
     Builder {
         BuilderName = 'S3 Power0',
-        PlatoonTemplate = 'T3EngineerBuildernoSUB',
-        Priority = 2000,
+        PlatoonTemplate = 'EngineerBuilderT3&SUB',
+        Priority = 2700,
         DelayEqualBuildPlattons = {'Energy', 10},
         InstanceCount = 1,
         BuilderConditions = {
-            { UCBC, 'HaveGreaterThanUnitsWithCategory', { 0, categories.ENERGYPRODUCTION * categories.TECH3 } },
-
             { UCBC, 'CheckBuildPlattonDelay', { 'Energy' }},
 
             { EBC, 'LessThanEnergyTrend', { 0.0 } },              -- Ratio from 0 to 1. (1=100%)
-        },
-        BuilderType = 'Any',
-        BuilderData = {
-            NumAssistees = 40,
-            Construction = {
-                DesiresAssist = true,
-                BuildClose = false,
-                AdjacencyCategory = (categories.STRUCTURE * categories.SHIELD) + (categories.FACTORY * (categories.TECH3 + categories.TECH2 + categories.TECH1)),
-                AvoidCategory = categories.ENERGYPRODUCTION * categories.TECH3,
-                maxUnits = 1,
-                maxRadius = 15,
-                LocationType = 'LocationType',
-                BuildStructures = {
-                    'T3EnergyProduction',
-                },
-            }
-        }
-    },
-
-    Builder {
-        BuilderName = 'S3 Power1',
-        PlatoonTemplate = 'T3EngineerBuilderSUB',
-        Priority = 2000,
-        DelayEqualBuildPlattons = {'Energy', 10},
-        InstanceCount = 1,
-        BuilderConditions = {
-            { UCBC, 'HaveGreaterThanUnitsWithCategory', { 1, categories.ENERGYPRODUCTION * categories.TECH3 } },
-
-            { EBC, 'LessThanEnergyTrend', { 0.0 } },              -- Ratio from 0 to 1. (1=100%)
-
-            { UCBC, 'CheckBuildPlattonDelay', { 'Energy' }},
-
-            { UCBC, 'HasNotParagon', {} },
-
-            { EBC, 'GreaterThanEconIncomeSwarm',  { 0.5, 0.0}}, -- Absolut Base income
         },
         BuilderType = 'Any',
         BuilderData = {

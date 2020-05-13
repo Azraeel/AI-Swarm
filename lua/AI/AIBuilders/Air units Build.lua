@@ -125,8 +125,6 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Builders',
         BuilderConditions = {
             { UCBC, 'HaveLessThanUnitsWithCategory', { 10, categories.MOBILE * categories.AIR * categories.HIGHALTAIR * categories.ANTIAIR * categories.TECH3 }},
 
-            { UCBC, 'HaveGreaterThanUnitsWithCategory', { 0, categories.ENERGYPRODUCTION * categories.TECH2 }},
-
             { UCBC, 'HaveUnitRatioVersusCapSwarm', { MaxAttackForce , '<=', categories.MOBILE - categories.ENGINEER } },
 
             { EBC, 'GreaterThanEconIncomeSwarm', { 1, 20 } },
@@ -143,8 +141,6 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Builders',
         PlatoonTemplate = 'T2AirTorpedoBomber',
         Priority = 700,
         BuilderConditions = {
-            { UCBC, 'HaveGreaterThanUnitsWithCategory', { 0, categories.ENERGYPRODUCTION * categories.TECH2 }},
-
             { UCBC, 'UnitsGreaterAtEnemySwarm', { 0 , categories.NAVAL * categories.FACTORY } },
 
             { UCBC, 'HaveLessThanUnitsWithCategory', { 20, categories.MOBILE * categories.AIR * categories.ANTINAVY }},
@@ -169,8 +165,6 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Builders',
         BuilderConditions = {
             { MIBC, 'CanPathToCurrentEnemySwarm', { false } },
 
-            { UCBC, 'HaveGreaterThanUnitsWithCategory', { 0, categories.ENERGYPRODUCTION * categories.TECH2 }},
-
             { UCBC, 'HaveLessThanUnitsWithCategory', { 80, categories.MOBILE * categories.AIR * categories.ANTINAVY }},
 
             { UCBC, 'HaveLessThanUnitsWithCategory', { 1, categories.MOBILE * categories.AIR * categories.ANTINAVY * categories.TECH3 }},
@@ -192,8 +186,6 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Builders',
         Priority = 750,
         BuilderConditions = {
             { UCBC, 'HaveLessThanUnitsWithCategory', { 1, categories.MOBILE * categories.AIR * categories.GROUNDATTACK * categories.TECH3 }},
-
-            { UCBC, 'HaveGreaterThanUnitsWithCategory', { 0, categories.ENERGYPRODUCTION * categories.TECH2 }},
             -- Respect UnitCap
             { UCBC, 'HaveUnitRatioVersusCapSwarm', { MaxAttackForce , '<=', categories.MOBILE - categories.ENGINEER } },
 
@@ -222,7 +214,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Builders',
 
             { UCBC, 'HaveLessThanUnitsWithCategory', { 20, categories.AIR * categories.MOBILE * categories.SCOUT * categories.TECH3 } },
             
-            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.1, 1.5 }},
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.15, 1.25 }},
 
             { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.07, 0.1}},
         },
@@ -240,7 +232,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Builders',
 
             { UCBC, 'UnitCapCheckLess', { 0.98 } },
 
-            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.1, 1.5 }},
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.15, 1.25 }},
 
             { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.07, 0.1}},
         },
@@ -258,7 +250,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Builders',
 
             { UCBC, 'UnitCapCheckLess', { 0.98 } },
 
-            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.1, 1.5 }},
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.15, 1.25 }},
 
             { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.07, 0.1}},
         },
@@ -276,7 +268,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Builders',
 
             { UCBC, 'UnitCapCheckLess', { 0.98 } },
 
-            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.1, 1.5 }},
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.15, 1.25 }},
 
             { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.07, 0.1}},
         },
@@ -293,7 +285,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Builders',
 
             { UCBC, 'UnitCapCheckLess', { 0.98 } },
 
-            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.1, 1.5 }},
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.15, 1.25 }},
 
             { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.07, 0.1}},
         },
@@ -315,7 +307,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Builders',
             -- Respect UnitCap
             { UCBC, 'UnitCapCheckLess', { 0.98 } },
 
-            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.1, 1.5 }},
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.15, 1.25 }},
 
             { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.07, 0.1}},
         },
@@ -364,7 +356,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Builders',
             -- Respect UnitCap
             { UCBC, 'UnitCapCheckLess', { 0.98 } },
 
-            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.1, 1.5 }},
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.1, 1.25 }},
 
             { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.07, 0.1}},
         },
@@ -383,7 +375,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Builders',
             -- Respect UnitCap
             { UCBC, 'UnitCapCheckLess', { 0.98 } },
 
-            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.1, 1.5 }},
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.1, 1.25 }},
 
             { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.07, 0.1}},
         },
@@ -399,6 +391,8 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Builders',
         Priority = 510, 
         BuilderConditions = {
             { EBC, 'GreaterThanEconTrendSwarm', { 0.0, 0.0 } },
+
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.0, 1.12 }},
 
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
 
@@ -424,6 +418,8 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Builders',
         BuilderConditions = {
             { EBC, 'GreaterThanEconTrendSwarm', { 0.0, 0.0 } },
 
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.0, 1.15 }},
+
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
 
             { EBC, 'GreaterThanEconIncomeSwarm', { 2, 20 } },
@@ -447,6 +443,8 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Builders',
         Priority = 707,
         BuilderConditions = {
             { EBC, 'GreaterThanEconTrendSwarm', { 0.0, 0.0 } },
+
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.0, 1.22 }},
 
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
 

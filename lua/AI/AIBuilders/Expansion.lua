@@ -21,13 +21,13 @@ BuilderGroup {
 
             { UCBC, 'StartLocationNeedsEngineer', { 'LocationType', 1000, -1000, 100, 1, 'StructuresNotMex' } },
 
-            { EBC, 'GreaterThanEconTrendSwarm', { 0.0, 0.0 } }, -- relative income
+            { UCBC, 'HaveGreaterThanUnitsWithCategory', { 2, categories.FACTORY * categories.LAND } },
 
             { MIBC, 'CanPathToCurrentEnemySwarm', { true } },
 
-            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.1, 1.0 }},
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.6, 0.8 }},
 
-            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.20, 0.95 } },             -- Ratio from 0 to 1. (1=100%)
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.05, 0.40 } },             -- Ratio from 0 to 1. (1=100%)
         },
         BuilderType = 'Any',
         BuilderData = {
@@ -62,9 +62,11 @@ BuilderGroup {
 
             { UCBC, 'StartLocationNeedsEngineer', { 'LocationType', 1000, -1000, 100, 1, 'StructuresNotMex' } },
 
-            { EBC, 'GreaterThanEconTrendSwarm', { 0.0, 0.0 } }, -- relative income
+            { EBC, 'GreaterThanEconTrendSwarm', { 0.0, 0.0 } }, 
 
-            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.25, 0.45 } },             -- Ratio from 0 to 1. (1=100%)
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.05, 0.50}},
+
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.8, 0.9 }},
         },
         BuilderType = 'Any',
         BuilderData = {
@@ -100,9 +102,11 @@ BuilderGroup {
 
             { UCBC, 'StartLocationNeedsEngineer', { 'LocationType', 1000, -1000, 100, 1, 'StructuresNotMex' } },
 
-            { EBC, 'GreaterThanEconTrendSwarm', { 0.0, 0.0 } }, -- relative income
+            { EBC, 'GreaterThanEconTrendSwarm', { 0.0, 0.0 } }, 
 
-            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.45, 0.45 } },             -- Ratio from 0 to 1. (1=100%)
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.05, 0.50}},
+
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.8, 0.9 }},
         },
         BuilderType = 'Any',
         BuilderData = {
@@ -138,9 +142,11 @@ BuilderGroup {
 
             { UCBC, 'StartLocationNeedsEngineer', { 'LocationType', 1000, -1000, 100, 1, 'StructuresNotMex' } },
 
-            { EBC, 'GreaterThanEconTrendSwarm', { 0.0, 0.0 } }, -- relative income
+            { EBC, 'GreaterThanEconTrendSwarm', { 0.0, 0.0 } }, 
 
-            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.25, 0.45 } },             -- Ratio from 0 to 1. (1=100%)
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.05, 0.50}},
+
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.8, 0.9 }},
         },
         BuilderType = 'Any',
         BuilderData = {
@@ -176,9 +182,11 @@ BuilderGroup {
 
             { UCBC, 'StartLocationNeedsEngineer', { 'LocationType', 1000, -1000, 100, 1, 'StructuresNotMex' } },
 
-            { EBC, 'GreaterThanEconTrendSwarm', { 0.0, 0.0 } }, -- relative income
+            { EBC, 'GreaterThanEconTrendSwarm', { 0.0, 0.0 } }, 
 
-            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.45, 0.45 } },             -- Ratio from 0 to 1. (1=100%)
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.05, 0.50}},
+
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.8, 0.9 }},
         },
         BuilderType = 'Any',
         BuilderData = {
@@ -210,15 +218,15 @@ BuilderGroup {
         Priority = 500,                                                        -- Priority. Higher priotity will be build more often then lower priotity.
         InstanceCount = 2,                                                      -- Number of plattons that will be formed with this template.
         BuilderConditions = {
-            -- When do we want to build this ?
             { UCBC, 'NavalBaseCheck', { } },
-            -- Do we need additional conditions to build it ?
+
             { UCBC, 'NavalAreaNeedsEngineer', { 'LocationType', 750, -1000, 100, 1, 'AntiSurface' } },
-            -- Have we the eco to build it ?
-            { EBC, 'GreaterThanEconIncomeSwarm',  { 1.0, 6.0}},
-            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.25, 0.50 } },
-            -- Don't build it if...
-            -- Respect UnitCap
+
+            { EBC, 'GreaterThanEconTrendSwarm', { 0.0, 0.0 } }, 
+
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.05, 0.50}},
+
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.85, 0.9 }},
         },
         BuilderType = 'Any',
         BuilderData = {

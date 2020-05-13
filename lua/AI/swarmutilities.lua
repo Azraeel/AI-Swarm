@@ -524,7 +524,7 @@ end
 function CDRRunHomeAtDamage(platoon,cdr)
     local CDRHealth = ComHealth(cdr)
     local diff = CDRHealth - cdr.HealthOLD
-    if diff < -1 then
+    if diff < -10 then
         --LOG('Health diff = '..diff)
         local cdrNewPos = {}
         cdrNewPos[1] = cdr.CDRHome[1] + Random(-6, 6)

@@ -364,8 +364,8 @@ BuilderGroup {
     BuildersType = 'EngineerBuilder',
     Builder {
         BuilderName = 'Swarm Mass Adjacency Engineer',
-        PlatoonTemplate = 'EngineerBuilder',
-        Priority = 535,
+        PlatoonTemplate = 'EngineerBuilderALLTECH',
+        Priority = 900,
         BuilderConditions = {
             { UCBC, 'HaveGreaterThanUnitsWithCategory', { 4, categories.STRUCTURE * categories.MASSEXTRACTION * categories.TECH2}},
             -- When do we want to build this ?
@@ -373,7 +373,7 @@ BuilderGroup {
             -- Do we need additional conditions to build it ?
             { UCBC, 'GreaterThanGameTimeSeconds', { 60 * 10 } },
 
-            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.15, 0.95 } },
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.10, 0.95 } },
 
             { EBC, 'GreaterThanMassTrendSwarm', { 0.0 } },
 
@@ -395,8 +395,8 @@ BuilderGroup {
     },
     Builder {
         BuilderName = 'Swarm Mass Adjacency Engineer - Outter Mexes',
-        PlatoonTemplate = 'EngineerBuilder',
-        Priority = 750,
+        PlatoonTemplate = 'EngineerBuilderALLTECH',
+        Priority = 950,
         BuilderConditions = {
             { UCBC, 'HaveGreaterThanUnitsWithCategory', { 4, categories.STRUCTURE * categories.MASSEXTRACTION * categories.TECH2}},
             -- When do we want to build this ?

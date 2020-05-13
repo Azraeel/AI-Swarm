@@ -15,9 +15,9 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
         Priority = 1000,
         InstanceCount = 75,
         BuilderConditions = {
-            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.10, 0.95 } },
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.07, 0.01 } },
 
-            { EBC, 'GreaterThanEconIncomeSwarm', { 1.4, 20 } },
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.0, 1.0 }},
         },
         BuilderType = 'Any',
         BuilderData = {
@@ -35,7 +35,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
         Priority = 150,
         InstanceCount = 20,
         BuilderConditions = {
-            { EBC, 'GreaterThanEconIncomeSwarm', { 1.4, 20 } },
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.9, 1.0 }},
         },
         BuilderType = 'Any',
         BuilderData = {
@@ -53,7 +53,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
         Priority = 200,
         InstanceCount = 20,
         BuilderConditions = {
-            { EBC, 'GreaterThanEconIncomeSwarm', { 3, 40 } },
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.9, 1.0 }},
         },
         BuilderType = 'Any',
         BuilderData = {
@@ -71,7 +71,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
         Priority = 210,
         InstanceCount = 5,
         BuilderConditions = {
-            { EBC, 'GreaterThanEconIncomeSwarm', { 3.4, 50 } },
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.9, 1.0 }},
         },
         BuilderType = 'Any',
         BuilderData = {
@@ -89,7 +89,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
         Priority = 250,
         InstanceCount = 20,
         BuilderConditions = {
-            { EBC, 'GreaterThanEconIncomeSwarm', { 2.5, 30 } },
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.9, 1.0 }},
         },
         BuilderType = 'Any',
         BuilderData = {

@@ -14,7 +14,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Defense Plus Builders',
     Builder {
         BuilderName = 'AI-Swarm T1 Mass Adjacency Defense Engineer',
         PlatoonTemplate = 'EngineerBuilderALLTECH',
-        Priority = 825,
+        Priority = 800,
         BuilderConditions = {
             { UCBC, 'HaveGreaterThanUnitsWithCategory', { 0, 'MASSEXTRACTION TECH2, MASSEXTRACTION TECH3'}},
 
@@ -45,7 +45,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Defense Plus Builders',
     Builder {
         BuilderName = 'AI-Swarm T2 Mass Adjacency Defense Engineer',
         PlatoonTemplate = 'EngineerBuilderT2T3',
-        Priority = 950,
+        Priority = 900,
         BuilderConditions = {
             { UCBC, 'HaveGreaterThanUnitsWithCategory', { 2, 'MASSEXTRACTION TECH2, MASSEXTRACTION TECH3'}},
 
@@ -76,7 +76,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Defense Plus Builders',
     Builder {
         BuilderName = 'AI-Swarm T3 Mass Adjacency Defense Engineer',
         PlatoonTemplate = 'EngineerBuilderT3&SUB',
-        Priority = 1000,
+        Priority = 940,
         BuilderConditions = {
             { UCBC, 'HaveGreaterThanUnitsWithCategory', { 4, 'MASSEXTRACTION TECH2, MASSEXTRACTION TECH3'}},
 
@@ -247,7 +247,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Defense Plus Builders',
     Builder {
         BuilderName = 'AI-Swarm T3 Base D Engineer AA - Response',
         PlatoonTemplate = 'EngineerBuilderT3&SUB',
-        Priority = 948,
+        Priority = 945,
         BuilderConditions = {
             { UCBC, 'UnitsLessAtLocation', { 'LocationType', 6, 'DEFENSE TECH3 ANTIAIR STRUCTURE' }},
 

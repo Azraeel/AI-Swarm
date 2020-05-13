@@ -129,6 +129,52 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Builders',
     },
 }
 
+BuilderGroup { BuilderGroupName = 'Swarm Expansion Engineer Builders',
+    BuildersType = 'FactoryBuilder',
+
+    Builder { BuilderName = 'S1 Engineer builder - Expansion',
+        PlatoonTemplate = 'T1BuildEngineer',
+        Priority = 1010,
+        BuilderConditions = {
+            { UCBC, 'UnitCapCheckLess', { 0.95 } },
+
+            { EBC, 'GreaterThanEconIncomeSwarm', { 0, 0 } },
+
+            { UCBC, 'EngineerCapCheck', { 'LocationType', 'Tech1' } },
+         },
+        BuilderType = 'All',
+    },
+
+    Builder { BuilderName = 'S2 Engineer builder - Expansion',
+        PlatoonTemplate = 'T2BuildEngineer',
+        Priority = 1020,
+        BuilderConditions = {
+            { UCBC, 'UnitCapCheckLess', { 0.95 } },
+
+            { EBC, 'GreaterThanEconIncomeSwarm', { 0, 0 } },
+
+            { UCBC, 'EngineerCapCheck', { 'LocationType', 'Tech2' } },
+         },
+        BuilderType = 'All',
+    },
+
+    Builder { BuilderName = 'S3 Engineer builder - Expansion',
+        PlatoonTemplate = 'T3BuildEngineer',
+        Priority = 1030,
+        BuilderConditions = {
+            { UCBC, 'UnitCapCheckLess', { 0.95 } },
+
+            { EBC, 'GreaterThanEconIncomeSwarm', { 0, 0 } },
+
+            { UCBC, 'EngineerCapCheck', { 'LocationType', 'Tech3' } },
+         },
+        BuilderType = 'All',
+    },
+}
+
+
+
+
 BuilderGroup {
     BuilderGroupName = 'Swarm Engineering Support Builder',
     BuildersType = 'EngineerBuilder',
@@ -242,9 +288,11 @@ BuilderGroup { BuilderGroupName = 'Swarm SACU Builder',
     Builder {
         BuilderName = 'S3 SubCommander RAMBO',
         PlatoonTemplate = 'S3 SACU RAMBO preset 12345',
-        Priority = 1017,
+        Priority = 1010,
         BuilderConditions = { 
-            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.30, 0.50}}, 
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.35, 1.40 }},
+
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.07, 0.01}},
 
             { UCBC, 'HaveLessThanUnitsWithCategory', { 20, categories.RAMBOPRESET } },
 
@@ -255,9 +303,11 @@ BuilderGroup { BuilderGroupName = 'Swarm SACU Builder',
     Builder {
         BuilderName = 'S3 SubCommander ENGINEER',
         PlatoonTemplate = 'S3 SACU ENGINEER preset 12345',
-        Priority = 1020,
+        Priority = 1015,
         BuilderConditions = {
-            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.80, 0.85}},
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.25, 1.30 }},
+
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.05, 0.01}},
 
             { MIBC, 'FactionIndex', { 1, 2, 3, 5 }}, -- 1: UEF, 2: Aeon, 3: Cybran, 4: Seraphim, 5: Nomads 
 

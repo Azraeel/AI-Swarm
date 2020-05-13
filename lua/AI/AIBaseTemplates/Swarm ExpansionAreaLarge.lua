@@ -14,7 +14,7 @@ BaseBuilderTemplate {
         -- ==== Engineer ==== --
         -----------------------------------------------------------------------------
         -- Build Engineers Tech 1,2,3 and SACU
-        'Swarm Engineer Builders',            -- Priority = 900
+        'Swarm Expansion Engineer Builders',
         -- Assistees
         'Swarm Engineer Assistees',
         -- Reclaim mass
@@ -30,7 +30,7 @@ BaseBuilderTemplate {
         -- ==== Factory ==== --
         -----------------------------------------------------------------------------
         -- Build Land/Air Factories
-        'Swarm Factory Builders Expansions',
+        'T1 Phase Adaptiveness',
         -- Upgrade Factories TECH1->TECH2 and TECH2->TECH3
         'Swarm Factory Upgrader Rush',
 
@@ -120,16 +120,16 @@ BaseBuilderTemplate {
 
     BaseSettings = {
         FactoryCount = {
-            Land = 2,
-            Air = 2,
-            Sea = 1,
-            Gate = 0,
+            Land = 0,
+            Air = 0,
+            Sea = 0,
+            Gate = 1,
         },
         EngineerCount = {
-            Tech1 = 2,
-            Tech2 = 2,
-            Tech3 = 1,
-            SCU = 0,
+            Tech1 = 3,
+            Tech2 = 5,
+            Tech3 = 7,
+            SCU = 2,
         },
         MassToFactoryValues = {
             T1Value = 6,

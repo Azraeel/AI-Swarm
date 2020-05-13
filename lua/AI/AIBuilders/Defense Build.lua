@@ -395,8 +395,6 @@ BuilderGroup { BuilderGroupName = 'Swarm T2 Tactical Missile Defenses Builder',
             { UCBC, 'UnitsLessAtLocation', { 'LocationType', 3, categories.STRUCTURE * categories.DEFENSE * categories.ANTIMISSILE * categories.TECH2 }}, 
 
             { UCBC, 'HaveUnitRatioAtLocationSwarm', { 'LocationType', 0.5, categories.STRUCTURE * categories.DEFENSE * categories.ANTIMISSILE * categories.TECH2, '<',categories.STRUCTURE * categories.FACTORY } },
-            
-            { UCBC, 'HaveGreaterThanUnitsWithCategory', { 0, categories.ENERGYPRODUCTION * (categories.TECH2 + categories.TECH3) } },
         },
         BuilderType = 'Any',
         BuilderData = {
@@ -428,7 +426,7 @@ BuilderGroup { BuilderGroupName = 'Swarm SMD Builder',
         PlatoonTemplate = 'T3EngineerBuildernoSUB',
         Priority = 1600,
         BuilderConditions = {
-        	{ UCBC, 'HaveGreaterThanUnitsWithCategory', { 0, categories.ENERGYPRODUCTION * categories.TECH3 } },
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.4, 1.5 }},
 
             { UCBC, 'HaveLessThanUnitsWithCategory', { 1, categories.STRUCTURE * categories.DEFENSE * categories.ANTIMISSILE * categories.TECH3 } },
 
