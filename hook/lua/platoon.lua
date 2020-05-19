@@ -148,16 +148,6 @@ Platoon = Class(SwarmPlatoonClass) {
         SwarmPlatoonClass.PlatoonDisband(self)
     end,
 
-    BaseManagersDistressAI = function(self)
-       -- Only use this with AI-Swarm
-        if not self.Swarm then
-            return SwarmPlatoonClass.BaseManagersDistressAI(self)
-        end
-        coroutine.yield(10)
-        -- We are leaving this forked thread here because we don't need it.
-        KillThread(CurrentThread())
-    end,
-
     InterceptorAISwarm = function(self)
         AIAttackUtils.GetMostRestrictiveLayer(self) -- this will set self.MovementLayer to the platoon
         local aiBrain = self:GetBrain()
@@ -1276,21 +1266,21 @@ Platoon = Class(SwarmPlatoonClass) {
         local aiBrain = self:GetBrain()
         local personality = ScenarioInfo.ArmySetup[aiBrain.Name].AIPersonality
         while aiBrain:PlatoonExists(self) do
-            local ratio = 0.3
+            local ratio = 0.10
             if aiBrain.HasParagon then
                 -- if we have a paragon, upgrade mex as fast as possible. Mabye we lose the paragon and need mex again.
                 ratio = 1.0
-            elseif aiBrain:GetEconomyIncome('MASS') * 10 > 600 then
-                --LOG('* AI-Swarm: Mass over 200. Eco running with 30%')
-                ratio = 0.25
+            elseif aiBrain:GetEconomyIncome('MASS') > 500 then
+                --LOG('* AI-Swarm: Mass over 500. Eco running with 30%')
+                ratio = 0.30
             elseif GetGameTimeSeconds() > 1800 then -- 30 * 60
-                ratio = 0.25
-            elseif GetGameTimeSeconds() > 1200 then -- 20 * 60
                 ratio = 0.20
+            elseif GetGameTimeSeconds() > 1200 then -- 20 * 60
+                ratio = 0.15
             elseif GetGameTimeSeconds() > 900 then -- 15 * 60
-                ratio = 0.15
+                ratio = 0.10
             elseif GetGameTimeSeconds() > 600 then -- 10 * 60
-                ratio = 0.15
+                ratio = 0.10
             elseif GetGameTimeSeconds() > 360 then -- 6 * 60
                 ratio = 0.10
             elseif GetGameTimeSeconds() <= 360 then -- 6 * 60 run the first 6 minutes with 0% Eco and 100% Army

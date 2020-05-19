@@ -28,7 +28,7 @@ BuilderGroup { BuilderGroupName = 'T1 Phase Adaptiveness',
             
             { EBC, 'GreaterThanEconTrendSwarm', { 0.0, 0.0 } }, 
 
-            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.05, 0.50}},
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.07, 0.01}},
 
             { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.75, 0.9 }},          
             
@@ -60,7 +60,7 @@ BuilderGroup { BuilderGroupName = 'T1 Phase Adaptiveness',
             
             { EBC, 'GreaterThanEconTrendSwarm', { 0.0, 0.0 } }, 
 
-            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.05, 0.50}},
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.07, 0.01}},
 
             { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.75, 0.9 }},          
             
@@ -92,7 +92,7 @@ BuilderGroup { BuilderGroupName = 'T1 Phase Adaptiveness',
 
             { MIBC, 'CanPathToCurrentEnemySwarm', { true } },
 
-            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.05, 0.50}},
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.07, 0.01}},
 
             { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.75, 0.9 }},
 
@@ -122,7 +122,7 @@ BuilderGroup { BuilderGroupName = 'T1 Phase Adaptiveness',
 
             { EBC, 'GreaterThanEconTrendSwarm', { 0.0, 0.0 } }, -- relative income
 
-            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.05, 0.50}},
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.07, 0.01}},
 
             { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.75, 0.9 }},
 
@@ -154,7 +154,7 @@ BuilderGroup { BuilderGroupName = 'T1 Phase Adaptiveness',
 
             { EBC, 'GreaterThanEconTrendSwarm', { 0.0, 0.0 } }, -- relative income
 
-            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.05, 0.50}},
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.07, 0.01}},
 
             { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.75, 0.9 }},
 
@@ -184,7 +184,7 @@ BuilderGroup { BuilderGroupName = 'T1 Phase Adaptiveness',
 
             { EBC, 'GreaterThanEconTrendSwarm', { 0.0, 0.0 } }, -- relative income
 
-            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.05, 0.50}},
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.07, 0.01}},
 
             { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.75, 0.9 }},
 

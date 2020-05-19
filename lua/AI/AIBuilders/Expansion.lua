@@ -54,7 +54,7 @@ BuilderGroup {
     
     Builder {
         BuilderName = 'S1 Vacant Start Location',                               -- Random Builder Name.
-        PlatoonTemplate = 'EngineerBuilder',                                    -- Template Name. These units will be formed. See: "\lua\AI\PlatoonTemplates\"
+        PlatoonTemplate = 'EngineerBuilderALLTECH',                                    -- Template Name. These units will be formed. See: "\lua\AI\PlatoonTemplates\"
         Priority = 500,                                                        -- Priority. Higher priotity will be build more often then lower priotity.
         InstanceCount = 4,                                                      -- Number of plattons that will be formed with this template.
         BuilderConditions = {
@@ -94,7 +94,7 @@ BuilderGroup {
     },
     Builder {
         BuilderName = 'S1 Vacant Start Location trans',                               -- Random Builder Name.
-        PlatoonTemplate = 'EngineerBuilder',                                    -- Template Name. These units will be formed. See: "\lua\AI\PlatoonTemplates\"
+        PlatoonTemplate = 'EngineerBuilderALLTECH',                                    -- Template Name. These units will be formed. See: "\lua\AI\PlatoonTemplates\"
         Priority = 500,                                                        -- Priority. Higher priotity will be build more often then lower priotity.
         InstanceCount = 1,                                                      -- Number of plattons that will be formed with this template.
         BuilderConditions = {
@@ -134,7 +134,7 @@ BuilderGroup {
     },
     Builder {
         BuilderName = 'S1 Vacant Expansion Area',                               -- Random Builder Name.
-        PlatoonTemplate = 'EngineerBuilder',                                    -- Template Name. These units will be formed. See: "\lua\AI\PlatoonTemplates\"
+        PlatoonTemplate = 'EngineerBuilderALLTECH',                                    -- Template Name. These units will be formed. See: "\lua\AI\PlatoonTemplates\"
         Priority = 500,                                                        -- Priority. Higher priotity will be build more often then lower priotity.
         InstanceCount = 4,                                                      -- Number of plattons that will be formed with this template.
         BuilderConditions = {
@@ -174,7 +174,7 @@ BuilderGroup {
     },
     Builder {
         BuilderName = 'S1 Vacant Expansion Area trans',                               -- Random Builder Name.
-        PlatoonTemplate = 'EngineerBuilder',                                    -- Template Name. These units will be formed. See: "\lua\AI\PlatoonTemplates\"
+        PlatoonTemplate = 'EngineerBuilderALLTECH',                                    -- Template Name. These units will be formed. See: "\lua\AI\PlatoonTemplates\"
         Priority = 500,                                                        -- Priority. Higher priotity will be build more often then lower priotity.
         InstanceCount = 2,                                                      -- Number of plattons that will be formed with this template.
         BuilderConditions = {
@@ -214,7 +214,7 @@ BuilderGroup {
     },
     Builder {
         BuilderName = 'S1 Naval Builder',                                       -- Random Builder Name.
-        PlatoonTemplate = 'EngineerBuilder',                                    -- Template Name. These units will be formed. See: "\lua\AI\PlatoonTemplates\"
+        PlatoonTemplate = 'EngineerBuilderALLTECH',                                    -- Template Name. These units will be formed. See: "\lua\AI\PlatoonTemplates\"
         Priority = 500,                                                        -- Priority. Higher priotity will be build more often then lower priotity.
         InstanceCount = 2,                                                      -- Number of plattons that will be formed with this template.
         BuilderConditions = {

@@ -247,107 +247,18 @@ BuilderGroup {
 -- ============================================================================================================ --
 BuilderGroup {
     -- Upgrade MassExtractors from Tech 1 to 2 AND from Tech 2 to 3
-    BuilderGroupName = 'S123 ExtractorUpgrades',                               -- BuilderGroupName, initalized from AIBaseTemplates in "\lua\AI\AIBaseTemplates\"
-    BuildersType = 'PlatoonFormBuilder',
-    Builder {
-        BuilderName = 'Extractor upgrade >40 mass',
-        PlatoonTemplate = 'AddToMassExtractorUpgradePlatoon',
-        Priority = 18400,
-        InstanceCount = 1,
-        FormRadius = 10000,
-        BuilderConditions = {
-        	{ MIBC, 'GreaterThanGameTime', { 420 } },
-            -- When do we want to build this ?
-            { UCBC, 'HaveGreaterThanArmyPoolWithCategorySwarm', { 0, categories.MASSEXTRACTION} },
-            -- Do we need additional conditions to build it ?
-            -- Have we the eco to build it ?
-            { EBC, 'GreaterThanEconIncomeSwarm',  { 4.0, -0.0}}, -- Absolut Base income
-            -- Don't build it if...
-        },
-        BuilderData = {
-            AIPlan = 'ExtractorUpgradeAISwarm',
-        },
-        BuilderType = 'Any',
-    },
-    Builder {
-        BuilderName = 'Extractor upgrade >4 factories',
-        PlatoonTemplate = 'AddToMassExtractorUpgradePlatoon',
-        Priority = 18400,
-        InstanceCount = 1,
-        FormRadius = 10000,
-        BuilderConditions = {
-        	{ MIBC, 'GreaterThanGameTime', { 420 } },
-            -- When do we want to build this ?
-            { UCBC, 'HaveGreaterThanArmyPoolWithCategorySwarm', { 0, categories.MASSEXTRACTION} },
-            -- Do we need additional conditions to build it ?
-            { UCBC, 'HaveGreaterThanUnitsWithCategory', { 4, categories.STRUCTURE * categories.FACTORY} },
-            -- Have we the eco to build it ?
-            -- Don't build it if...
-        },
-        BuilderData = {
-            AIPlan = 'ExtractorUpgradeAISwarm',
-        },
-        BuilderType = 'Any',
-    },
-    Builder {
-        BuilderName = 'Extractor upgrade > 6 minutes',
-        PlatoonTemplate = 'AddToMassExtractorUpgradePlatoon',
-        Priority = 18400,
-        InstanceCount = 1,
-        FormRadius = 10000,
-        BuilderConditions = {
-        	{ MIBC, 'GreaterThanGameTime', { 420 } },
-            -- When do we want to build this ?
-            { UCBC, 'HaveGreaterThanArmyPoolWithCategorySwarm', { 0, categories.MASSEXTRACTION} },
-            -- Do we need additional conditions to build it ?
-            -- Have we the eco to build it ?
-            -- Don't build it if...
-        },
-        BuilderData = {
-            AIPlan = 'ExtractorUpgradeAISwarm',
-        },
-        BuilderType = 'Any',
-    },
-}
-BuilderGroup {
-    -- Upgrade MassExtractors from Tech 1 to 2 AND from Tech 2 to 3
     BuilderGroupName = 'S123 ExtractorUpgrades SWARM',                               -- BuilderGroupName, initalized from AIBaseTemplates in "\lua\AI\AIBaseTemplates\"
     BuildersType = 'PlatoonFormBuilder',
     Builder {
-        BuilderName = 'S1S Extractor upgrade >40 mass',
+        BuilderName = 'S1S Extractor upgrade',
         PlatoonTemplate = 'AddToMassExtractorUpgradePlatoon',
         Priority = 18400,
         InstanceCount = 1,
         FormRadius = 10000,
         BuilderConditions = {
-        	{ MIBC, 'GreaterThanGameTime', { 420 } },
-            -- When do we want to build this ?
             { UCBC, 'HaveGreaterThanArmyPoolWithCategorySwarm', { 0, categories.MASSEXTRACTION} },
-            -- Do we need additional conditions to build it ?
-            -- Have we the eco to build it ?
-            { EBC, 'GreaterThanEconIncomeSwarm',  { 4.0, -0.0}}, -- Absolut Base income
-            -- Don't build it if...
-        },
-        BuilderData = {
-            AIPlan = 'ExtractorUpgradeAISwarm',
-        },
-        BuilderType = 'Any',
-    },
-    Builder {
-        BuilderName = 'S1S Extractor enemy > T2',
-        PlatoonTemplate = 'AddToMassExtractorUpgradePlatoon',
-        Priority = 18400,
-        InstanceCount = 1,
-        FormRadius = 10000,
-        BuilderConditions = {
-        	{ MIBC, 'GreaterThanGameTime', { 420 } },
-            -- When do we want to build this ?
-            { UCBC, 'HaveGreaterThanArmyPoolWithCategorySwarm', { 0, categories.MASSEXTRACTION} },
-            -- Do we need additional conditions to build it ?
-            { UCBC, 'UnitsGreaterAtEnemySwarm', { 0 , categories.MASSEXTRACTION * (categories.TECH2 + categories.TECH3) } },            -- Don't build it if...
-            -- Have we the eco to build it ?
-            { EBC, 'GreaterThanEconIncomeSwarm',  { 4.0, -0.0}}, -- Absolut Base income
-            -- Don't build it if...
+
+            { UCBC, 'GreaterThanGameTimeSeconds', { 60 * 6 } },
         },
         BuilderData = {
             AIPlan = 'ExtractorUpgradeAISwarm',

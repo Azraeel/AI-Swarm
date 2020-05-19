@@ -175,6 +175,8 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
         Priority = 550,
         BuilderConditions = {
             { EBC, 'GreaterThanMassTrendSwarm', { 0.0 } },
+
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.0, 0.8 }},
         },
         BuilderType = 'Any',
         BuilderData = {
@@ -193,6 +195,8 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
         Priority = 16300,
         BuilderConditions = {
             { EBC, 'GreaterThanEconIncomeSwarm', { 2.0, 20 } },
+
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.0, 0.8 }},
         },
         BuilderType = 'Any',
         BuilderData = {
@@ -211,6 +215,8 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
         InstanceCount = 10,
         BuilderConditions = {
             { EBC, 'GreaterThanEconIncomeSwarm', { 2, 20 } },
+
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.0, 0.8 }},
         },
         BuilderType = 'Any',
         BuilderData = {
@@ -230,6 +236,8 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
         InstanceCount = 15,
         BuilderConditions = {
             { EBC, 'GreaterThanEconIncomeSwarm', { 2, 20 } },
+
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.0, 0.8 }},
         },
         BuilderType = 'Any',
         BuilderData = {
@@ -249,6 +257,8 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
         InstanceCount = 20,
         BuilderConditions = {
             { EBC, 'GreaterThanEconIncomeSwarm', { 4, 50 } },
+
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.0, 0.8 }},
         },
         BuilderType = 'Any',
         BuilderData = {
@@ -292,6 +302,8 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
             { EBC, 'GreaterThanEconTrendSwarm', { 0.0, 0.0 } },
 
             { EBC, 'GreaterThanEconIncomeSwarm', { 50, 900 } },
+
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.5, 1.2 }},
         },
         BuilderType = 'Any',
         BuilderData = {
@@ -312,6 +324,8 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
             { EBC, 'GreaterThanEconTrendSwarm', { 0.0, 0.0 } },
 
             { EBC, 'GreaterThanEconIncomeSwarm', { 50, 900 } },
+
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.5, 1.2 }},
         },
         BuilderType = 'Any',
         BuilderData = {
@@ -332,6 +346,8 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
             { EBC, 'GreaterThanEconTrendSwarm', { 0.0, 0.0 } },
 
             { EBC, 'GreaterThanEconIncomeSwarm', { 50, 900 } },
+
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.5, 1.2 }},
         },
         BuilderType = 'Any',
         BuilderData = {
@@ -354,6 +370,8 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
         BuilderConditions = {
             { EBC, 'GreaterThanEconIncomeSwarm', { 8.5, 200 } },
 
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.2, 1.1 }},
+
             { EBC, 'GreaterThanMassTrendSwarm', { 0.0 } },
         },
         BuilderType = 'Any',
@@ -374,6 +392,8 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
         InstanceCount = 100,
         BuilderConditions = {
             { EBC, 'GreaterThanEconIncomeSwarm', { 8.5, 200 } },
+
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.2, 1.1 }},
 
             { EBC, 'GreaterThanMassTrendSwarm', { 0.0 } },
         },
@@ -396,6 +416,8 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
         BuilderConditions = {
             { EBC, 'GreaterThanEconIncomeSwarm', { 8.5, 200 } },
 
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.2, 1.1 }},
+
             { EBC, 'GreaterThanMassTrendSwarm', { 0.0 } },
         },
         BuilderType = 'Any',
@@ -416,6 +438,8 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
         InstanceCount = 100,
         BuilderConditions = {
             { EBC, 'GreaterThanEconIncomeSwarm', { 8.5, 200 } },
+
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.2, 1.1 }},
 
             { EBC, 'GreaterThanMassTrendSwarm', { 0.0 } },
         },
@@ -443,6 +467,8 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
         BuilderConditions = {
             { EBC, 'GreaterThanEconIncomeSwarm', { 4.5, 50 } },
 
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.15, 1.1 }},
+
             { EBC, 'GreaterThanMassTrendSwarm', { 0.0 } },
         },
         BuilderType = 'Any',
@@ -464,6 +490,8 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
         InstanceCount = 30,
         BuilderConditions = {
             { EBC, 'GreaterThanEconIncomeSwarm', { 8.5, 200 } },
+
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.15, 1.1 }},
 
             { EBC, 'GreaterThanMassTrendSwarm', { 0.0 } },
         },
@@ -487,6 +515,8 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
         BuilderConditions = {
             { EBC, 'GreaterThanEconIncomeSwarm', { 4.5, 100 } },
 
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.15, 1.1 }},
+
             { EBC, 'GreaterThanMassTrendSwarm', { 0.0 } },
         },
         BuilderType = 'Any',
@@ -508,6 +538,8 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
         InstanceCount = 30,
         BuilderConditions = {
             { EBC, 'GreaterThanEconIncomeSwarm', { 8.5, 200 } },
+
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.15, 1.1 }},
 
             { EBC, 'GreaterThanMassTrendSwarm', { 0.0 } },
         },
@@ -531,6 +563,8 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
         BuilderConditions = {
             { EBC, 'GreaterThanEconIncomeSwarm', { 8.5, 200 } },
 
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.15, 1.1 }},
+
             { EBC, 'GreaterThanMassTrendSwarm', { 0.0 } },
         },
         BuilderType = 'Any',
@@ -552,6 +586,8 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
         InstanceCount = 30,
         BuilderConditions = {
             { EBC, 'GreaterThanEconIncomeSwarm', { 8.5, 200 } },
+
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.25, 1.1 }},
 
             { EBC, 'GreaterThanMassTrendSwarm', { 0.0 } },
         },
@@ -575,6 +611,8 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
         BuilderConditions = {
             { EBC, 'GreaterThanEconIncomeSwarm', { 8.5, 200 } },
 
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.25, 1.1 }},
+
             { EBC, 'GreaterThanMassTrendSwarm', { 0.0 } },
         },
         BuilderType = 'Any',
@@ -595,6 +633,8 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
         InstanceCount = 30,
         BuilderConditions = {
             { EBC, 'GreaterThanEconIncomeSwarm', { 8.5, 200 } },
+
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.25, 1.1 }},
 
             { EBC, 'GreaterThanMassTrendSwarm', { 0.0 } },
         },
