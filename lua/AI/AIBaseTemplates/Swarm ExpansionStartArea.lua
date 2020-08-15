@@ -95,6 +95,7 @@ BaseBuilderTemplate {
         'Swarm T2 Tactical Missile Defenses Builder',
         'Swarm SMD Builder',
         'Swarm Defense Plus Builders',
+        'Swarm Defense Plus Builders Expansion',
         
         -- Build Anti Air near AirFactories
         'Swarm Defense Anti Air Builders',

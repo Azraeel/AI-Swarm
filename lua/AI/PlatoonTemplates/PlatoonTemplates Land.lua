@@ -20,7 +20,15 @@ PlatoonTemplate {
     Name = 'AISwarm LandAttack Micro - Standard',
     Plan = 'LandAttackAISwarm',
     GlobalSquads = {
-        { categories.MOBILE * categories.LAND - categories.ANTIAIR - categories.EXPERIMENTAL - categories.ENGINEER - categories.SCOUT, 3, 20, 'attack', 'none' },
+        { categories.MOBILE * categories.LAND - categories.ANTIAIR - categories.EXPERIMENTAL - categories.ENGINEER - categories.SCOUT, 4, 50, 'attack', 'none' },
+    },
+}
+
+PlatoonTemplate {
+    Name = 'Swarm Hero 10 35',
+    Plan = 'HeroFightPlatoonSwarm',
+    GlobalSquads = {
+        { categories.MOBILE * categories.LAND - categories.ANTIAIR - categories.EXPERIMENTAL - categories.ENGINEER - categories.SCOUT - categories.COMMAND - categories.SUBCOMMANDER, 10, 35, 'Attack', 'none' }
     },
 }
 

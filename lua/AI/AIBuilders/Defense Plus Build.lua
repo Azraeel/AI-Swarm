@@ -20,7 +20,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Defense Plus Builders',
 
             { MABC, 'MarkerLessThanDistance',  { 'Mass', 600, -1, 0, 0}},
 
-            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.0, 1.2 }},
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.25, 1.2 }},
 
             { UCBC, 'AdjacencyCheck', { 'LocationType', 'MASSEXTRACTION', 600, 'ueb2101' } },
         },
@@ -51,7 +51,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Defense Plus Builders',
 
             { MABC, 'MarkerLessThanDistance',  { 'Mass', 600, -1, 0, 0}},
 
-            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.0, 1.2 }},
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.25, 1.2 }},
 
             { UCBC, 'AdjacencyCheck', { 'LocationType', 'MASSEXTRACTION', 600, 'ueb2101' } },
         },
@@ -82,7 +82,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Defense Plus Builders',
 
             { MABC, 'MarkerLessThanDistance',  { 'Mass', 600, -1, 0, 0}},
 
-            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.2, 1.3 }},
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.25, 1.3 }},
 
             { UCBC, 'AdjacencyCheck', { 'LocationType', 'MASSEXTRACTION', 600, 'ueb2101' } },
         },
@@ -104,6 +104,10 @@ BuilderGroup { BuilderGroupName = 'Swarm Defense Plus Builders',
             }
         }
     },
+}
+
+BuilderGroup { BuilderGroupName = 'Swarm Defense Plus Builders Expansion',                               
+    BuildersType = 'EngineerBuilder',
 
     Builder {
         BuilderName = 'AI-Swarm T1 Base D AA Engineer - Response',
@@ -114,7 +118,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Defense Plus Builders',
 
             { TBC, 'EnemyThreatGreaterThanValueAtBase', { 'LocationType', 1, 'Air' } },
 
-            { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.9, 1.2 }},
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.3, 1.2 }},
 
             { UCBC, 'LocationEngineersBuildingLess', { 'LocationType', 1, categories.DEFENSE * categories.TECH1 * categories.STRUCTURE - categories.SHIELD - categories.ANTIMISSILE } },
         },
@@ -142,7 +146,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Defense Plus Builders',
 
             { TBC, 'EnemyThreatGreaterThanValueAtBase', { 'LocationType', 1, 'Land' } },
 
-            { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.9, 1.2 }},
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.3, 1.2 }},
 
             { UCBC, 'LocationEngineersBuildingLess', { 'LocationType', 1, categories.DEFENSE * categories.TECH1 * categories.STRUCTURE - categories.SHIELD - categories.ANTIMISSILE } },
         },
@@ -170,7 +174,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Defense Plus Builders',
 
             { TBC, 'EnemyThreatGreaterThanValueAtBase', { 'LocationType', 1, 'Air' } },
 
-            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.0, 1.2 }},
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.25, 1.2 }},
 
             { UCBC, 'LocationEngineersBuildingLess', { 'LocationType', 1, categories.DEFENSE * categories.TECH2 * categories.STRUCTURE - categories.SHIELD - categories.ANTIMISSILE } },
         },
@@ -198,7 +202,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Defense Plus Builders',
 
             { TBC, 'EnemyThreatGreaterThanValueAtBase', { 'LocationType', 1, 'Land' } },
 
-            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.0, 1.2 }},
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.25, 1.2 }},
 
             { UCBC, 'LocationEngineersBuildingLess', { 'LocationType', 1, categories.DEFENSE * categories.TECH2 * categories.STRUCTURE - categories.SHIELD - categories.ANTIMISSILE } },
         },
@@ -253,7 +257,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Defense Plus Builders',
 
             { TBC, 'EnemyThreatGreaterThanValueAtBase', { 'LocationType', 3, 'Air' } },
 
-            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.1, 1.2 }},
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.15, 1.2 }},
 
             { UCBC, 'LocationEngineersBuildingLess', { 'LocationType', 1, categories.DEFENSE * categories.TECH3 * categories.STRUCTURE * (categories.ANTIAIR + categories.DIRECTFIRE) } },
         },

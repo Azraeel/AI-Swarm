@@ -21,7 +21,9 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Experimental Builders',           
 
             { EBC, 'GreaterThanMassTrendSwarm', { 0.0 } },
 
-            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.15, 1.2 }},
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.12, 1.1 }},
+
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.03, 0.1}},
 
             { EBC, 'GreaterThanEconIncomeSwarm', { 10, 300 } },
         },
@@ -51,9 +53,11 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Experimental Builders',           
 
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
 
-            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.15, 1.2 }},
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.13, 1.1 }},
 
             { EBC, 'GreaterThanMassTrendSwarm', { 0.0 } },
+
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.03, 0.1}},
 
             { EBC, 'GreaterThanEconIncomeSwarm', { 10, 300 } },
         },
@@ -81,9 +85,11 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Experimental Builders',           
 
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
             
-            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.15, 1.2 }},
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.14, 1.1 }},
 
             { EBC, 'GreaterThanMassTrendSwarm', { 0.0 } },
+
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.03, 0.1}},
 
             { EBC, 'GreaterThanEconIncomeSwarm', { 10, 300 } },
         },
@@ -109,7 +115,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Experimental Formers',
         BuilderName = 'AISwarm - Experimental Group - EZ',                                 
         PlatoonTemplate = 'AISwarm - Experimental - Group',                           
         Priority = 100,                                                       
-        InstanceCount = 2,                                                 
+        InstanceCount = 4,                                                 
         FormRadius = 10000,
         BuilderData = {
             SearchRadius = BaseEnemyZone,                                 
@@ -138,7 +144,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Experimental Formers',
         BuilderName = 'AISwarm - Experimental Group - MZ',                           
         PlatoonTemplate = 'AISwarm - Experimental - Group',                        
         Priority = 100,                                                     
-        InstanceCount = 2,
+        InstanceCount = 4,
         FormRadius = 10000,                                                   
         BuilderData = {
             SearchRadius = BaseMilitaryZone,                                  

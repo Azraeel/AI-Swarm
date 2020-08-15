@@ -41,7 +41,13 @@ PlatoonTemplate {
     },
 }
 
-PlatoonTemplate {
+-----------------------
+
+-- Archived As This is Mainly for Sorian Edit AI Mod Now --
+
+-----------------------
+
+--[[ PlatoonTemplate {
     Name = 'AI-Swarm Attack Force - United Land - Small',
     Plan = 'AttackForceAISwarm',    
     GlobalSquads = {
@@ -71,7 +77,7 @@ PlatoonTemplate {
 
         { categories.LAND * categories.MOBILE - categories.SCOUT - categories.ENGINEER - categories.EXPERIMENTAL, 3, 9, 'support', 'none' },
     },
-}
+} ]]--
 
 PlatoonTemplate {
     Name = 'AISwarm - Experimental - Group', 
@@ -79,7 +85,7 @@ PlatoonTemplate {
     GlobalSquads = {
         { categories.MOBILE * categories.LAND * categories.EXPERIMENTAL - categories.ENGINEER - categories.SCOUT,
         2,
-        10,
+        15,
         'attack',
         'GrowthFormation' },
     },

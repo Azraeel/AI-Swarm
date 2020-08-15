@@ -56,7 +56,7 @@ BuilderGroup {
         BuilderName = 'S1 Vacant Start Location',                               -- Random Builder Name.
         PlatoonTemplate = 'EngineerBuilderALLTECH',                                    -- Template Name. These units will be formed. See: "\lua\AI\PlatoonTemplates\"
         Priority = 500,                                                        -- Priority. Higher priotity will be build more often then lower priotity.
-        InstanceCount = 4,                                                      -- Number of plattons that will be formed with this template.
+        InstanceCount = 2,                                                      -- Number of plattons that will be formed with this template.
         BuilderConditions = {
             { UCBC, 'ExpansionBaseCheck', { } },
 
@@ -66,7 +66,7 @@ BuilderGroup {
 
             { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.05, 0.50}},
 
-            { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.8, 0.9 }},
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.0, 1.0 }},
         },
         BuilderType = 'Any',
         BuilderData = {
@@ -86,8 +86,6 @@ BuilderGroup {
                 BuildStructures = {
                     'T1LandFactory',
                     'T1Radar',
-                    'T1GroundDefense',
-                    'T1LandFactory',
                 }
             },
         }
@@ -106,7 +104,7 @@ BuilderGroup {
 
             { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.05, 0.50}},
 
-            { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.8, 0.9 }},
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.0, 1.0 }},
         },
         BuilderType = 'Any',
         BuilderData = {
@@ -126,8 +124,6 @@ BuilderGroup {
                 BuildStructures = {
                     'T1LandFactory',
                     'T1Radar',
-                    'T1GroundDefense',
-                    'T1LandFactory',
                 }
             },
         }
@@ -136,7 +132,7 @@ BuilderGroup {
         BuilderName = 'S1 Vacant Expansion Area',                               -- Random Builder Name.
         PlatoonTemplate = 'EngineerBuilderALLTECH',                                    -- Template Name. These units will be formed. See: "\lua\AI\PlatoonTemplates\"
         Priority = 500,                                                        -- Priority. Higher priotity will be build more often then lower priotity.
-        InstanceCount = 4,                                                      -- Number of plattons that will be formed with this template.
+        InstanceCount = 2,                                                      -- Number of plattons that will be formed with this template.
         BuilderConditions = {
             { UCBC, 'ExpansionBaseCheck', { } },
 
@@ -146,7 +142,7 @@ BuilderGroup {
 
             { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.05, 0.50}},
 
-            { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.8, 0.9 }},
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.0, 1.0 }},
         },
         BuilderType = 'Any',
         BuilderData = {
@@ -166,8 +162,6 @@ BuilderGroup {
                 BuildStructures = {
                     'T1LandFactory',
                     'T1Radar',
-                    'T1GroundDefense',
-                    'T1LandFactory',
                 }
             },
         }
@@ -176,7 +170,7 @@ BuilderGroup {
         BuilderName = 'S1 Vacant Expansion Area trans',                               -- Random Builder Name.
         PlatoonTemplate = 'EngineerBuilderALLTECH',                                    -- Template Name. These units will be formed. See: "\lua\AI\PlatoonTemplates\"
         Priority = 500,                                                        -- Priority. Higher priotity will be build more often then lower priotity.
-        InstanceCount = 2,                                                      -- Number of plattons that will be formed with this template.
+        InstanceCount = 1,                                                      -- Number of plattons that will be formed with this template.
         BuilderConditions = {
             { UCBC, 'ExpansionBaseCheck', { } },
 
@@ -186,7 +180,7 @@ BuilderGroup {
 
             { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.05, 0.50}},
 
-            { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.8, 0.9 }},
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.0, 1.0 }},
         },
         BuilderType = 'Any',
         BuilderData = {
@@ -206,8 +200,6 @@ BuilderGroup {
                 BuildStructures = {
                     'T1LandFactory',
                     'T1Radar',
-                    'T1GroundDefense',
-                    'T1LandFactory',
                 }
             },
         }

@@ -6,22 +6,24 @@ local BasePanicZone, BaseMilitaryZone, BaseEnemyZone = import('/mods/AI-Swarm/lu
 -- ===================================================-======================================================== --
 -- ==                                 Mobile Experimental Land/Air/Sea                                       == --
 -- ===================================================-======================================================== --
-BuilderGroup { BuilderGroupName = 'Swarm Naval Experimental Builders',                               -- BuilderGroupName, initalized from AIBaseTemplates in "\lua\AI\AIBaseTemplates\"
+BuilderGroup { BuilderGroupName = 'Swarm Naval Experimental Builders',                         
     BuildersType = 'EngineerBuilder',
     
     Builder { BuilderName = 'S4 NavalExp1 Minimum',
         PlatoonTemplate = 'T3EngineerBuildernoSUB',
-        Priority = 160,
+        Priority = 450,
         InstanceCount = 1,
         BuilderConditions = {
-            { UCBC, 'GreaterThanGameTimeSeconds', { 60*20 } },
-            -- When do we want to build this ?
-            -- Do we need additional conditions to build it ?
             { UCBC, 'HaveGreaterThanUnitsWithCategory', { 1, categories.STRUCTURE * categories.FACTORY * categories.NAVAL } },
-            -- Have we the eco to build it ?
-            { EBC, 'GreaterThanEconIncomeSwarm', { 7.0, 600.0 }},                    -- Base income
-            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.40, 0.95 } },             -- Ratio from 0 to 1. (1=100%)
-            -- Don't build it if...
+
+            { EBC, 'GreaterThanEconIncomeSwarm', { 10, 300 } },                  
+
+            { EBC, 'GreaterThanMassTrendSwarm', { 0.0 } },
+
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.12, 1.1 }},
+
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.05, 0.1}},           
+
             { UCBC, 'HaveLessThanUnitsInCategoryBeingBuilt', { 1, categories.MOBILE * categories.EXPERIMENTAL }},
         },
         BuilderType = 'Any',
@@ -40,19 +42,25 @@ BuilderGroup { BuilderGroupName = 'Swarm Naval Experimental Builders',          
     
     Builder { BuilderName = 'S4 SeaExperimental1',
         PlatoonTemplate = 'T3EngineerBuildernoSUB',
-        Priority = 150,
-        InstanceCount = 3,
+        Priority = 500,
+        InstanceCount = 1,
         BuilderConditions = {
-            -- When do we want to build this ?
             { UCBC, 'HaveGreaterThanUnitsWithCategory', { 0, categories.MOBILE * categories.LAND * categories.EXPERIMENTAL }},
-            -- Do we need additional conditions to build it ?
+
             { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 2, categories.ENGINEER * categories.TECH3 }},
+
             { UCBC, 'HaveGreaterThanUnitsWithCategory', { 1, categories.STRUCTURE * categories.FACTORY * categories.NAVAL } },
+
             { UCBC, 'CanBuildCategorySwarm', { categories.MOBILE * categories.NAVAL * categories.EXPERIMENTAL } },
-            -- Have we the eco to build it ?
-            { EBC, 'GreaterThanEconIncomeSwarm', { 7.0, 600.0 }},                    -- Base income
-            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.95, 0.95 } },             -- Ratio from 0 to 1. (1=100%)
-            -- Don't build it if...
+
+            { EBC, 'GreaterThanEconIncomeSwarm', { 10, 300 } },                  
+
+            { EBC, 'GreaterThanMassTrendSwarm', { 0.0 } },
+
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.13, 1.15 }},
+
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.065, 0.1}}, 
+
             { UCBC, 'UnitCapCheckLess', { 0.99 } },
         },
         BuilderType = 'Any',

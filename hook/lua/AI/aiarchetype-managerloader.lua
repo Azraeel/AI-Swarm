@@ -211,11 +211,11 @@ function EcoManagerThreadSwarm(aiBrain)
                     break -- for _, unit in Engineers do
                 end
             -- We have negative eco. Check if we can switch something off
-            elseif aiBrain:GetEconomyTrend('MASS') < 0.0 or aiBrain:GetEconomyTrend('ENERGY') < 0.0 then
+            elseif aiBrain:GetEconomyStoredRatio('MASS') < 0.05 or aiBrain:GetEconomyStoredRatio('ENERGY') < 0.50 then
                 -- if this unit is already paused, continue with the next unit
                 if unit:IsPaused() then continue end
                 -- Low eco, disable all pods
-                if aiBrain:GetEconomyStoredRatio('MASS') < 0.35 or aiBrain:GetEconomyStoredRatio('ENERGY') < 0.90 then
+                if aiBrain:GetEconomyStoredRatio('MASS') < 0.05 or aiBrain:GetEconomyStoredRatio('ENERGY') < 0.50 then
                     unit:SetPaused( true )
                     bussy = true
                     break -- for _, unit in Engineers do
@@ -224,7 +224,7 @@ function EcoManagerThreadSwarm(aiBrain)
             elseif aiBrain:GetEconomyTrend('MASS') >= 0.0 and aiBrain:GetEconomyTrend('ENERGY') >= 0.0 then
                 -- if this unit is paused, continue with the next unit
                 if not unit:IsPaused() then continue end
-                if aiBrain:GetEconomyStoredRatio('MASS') >= 0.35 and aiBrain:GetEconomyStoredRatio('ENERGY') >= 0.90 then
+                if aiBrain:GetEconomyStoredRatio('MASS') >= 0.055 and aiBrain:GetEconomyStoredRatio('ENERGY') >= 0.55 then
                     unit:SetPaused( false )
                     bussy = true
                     break -- for _, unit in Engineers do
@@ -237,7 +237,7 @@ function EcoManagerThreadSwarm(aiBrain)
 
 -- ECO for Assisting engineers
         -- loop over assisting engineers and manage pause / unpause
-        for _, unit in Engineers do
+        --[[ for _, unit in Engineers do
             -- if the unit is dead, continue with the next unit
             if unit.Dead then continue end
             -- Only Check units that are assisting
@@ -253,7 +253,7 @@ function EcoManagerThreadSwarm(aiBrain)
                     break -- for _, unit in Engineers do
                 end
             -- We have negative eco. Check if we can switch something off
-            elseif aiBrain:GetEconomyStoredRatio('MASS') < 0.0 or aiBrain:GetEconomyStoredRatio('ENERGY') < 0.25 then
+            elseif aiBrain:GetEconomyStoredRatio('MASS') < 0.0 or aiBrain:GetEconomyStoredRatio('ENERGY') < 0.0 then
                 -- if this unit is already paused, continue with the next unit
                 if unit:IsPaused() then continue end
                 -- Emergency low eco energy, prevent shield colaps: disable everything
@@ -489,7 +489,7 @@ function EcoManagerThreadSwarm(aiBrain)
         end
         if bussy then
             continue -- while true do
-        end
+        end ]]--
 
 -- ECO for STRUCTURES
         if aiBrain:GetEconomyStoredRatio('ENERGY') < 0.01 and not aiBrain.HasParagon then

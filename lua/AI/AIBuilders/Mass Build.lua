@@ -258,7 +258,7 @@ BuilderGroup {
         BuilderConditions = {
             { UCBC, 'HaveGreaterThanArmyPoolWithCategorySwarm', { 0, categories.MASSEXTRACTION} },
 
-            { UCBC, 'GreaterThanGameTimeSeconds', { 60 * 6 } },
+            { UCBC, 'GreaterThanGameTimeSeconds', { 240 } },
         },
         BuilderData = {
             AIPlan = 'ExtractorUpgradeAISwarm',
@@ -276,15 +276,20 @@ BuilderGroup {
     Builder {
         BuilderName = 'Swarm Mass Adjacency Engineer',
         PlatoonTemplate = 'EngineerBuilderALLTECH',
-        Priority = 900,
+        Priority = 1005,
+        InstanceCount = 4,
         BuilderConditions = {
-            { UCBC, 'HaveGreaterThanUnitsWithCategory', { 4, categories.STRUCTURE * categories.MASSEXTRACTION * categories.TECH2}},
+            { UCBC, 'HaveGreaterThanUnitsWithCategory', { 4, categories.STRUCTURE * categories.MASSEXTRACTION * (categories.TECH2 + categories.TECH3) }},
             -- When do we want to build this ?
-            { UCBC, 'AdjacencyCheck', { 'LocationType', categories.STRUCTURE * categories.MASSEXTRACTION * (categories.TECH1 + categories.TECH2 + categories.TECH3), 100, 'ueb1106' } },
+            { UCBC, 'AdjacencyCheck', { 'LocationType', categories.STRUCTURE * categories.MASSEXTRACTION * (categories.TECH2 + categories.TECH3), 250, 'ueb1106' } },
             -- Do we need additional conditions to build it ?
             { UCBC, 'GreaterThanGameTimeSeconds', { 60 * 10 } },
 
-            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.10, 0.95 } },
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.05, 0.60 } },
+
+            { MABC, 'MarkerLessThanDistance',  { 'Mass', 275, -3, 0, 0}},
+
+            { UCBC, 'UnitCapCheckLess', { .8 } },
 
             { EBC, 'GreaterThanMassTrendSwarm', { 0.0 } },
 
@@ -294,8 +299,11 @@ BuilderGroup {
         },
         BuilderData = {
             Construction = {
-                AdjacencyCategory = categories.STRUCTURE * categories.MASSEXTRACTION * (categories.TECH1 + categories.TECH2 + categories.TECH3),
-                AdjacencyDistance = 175,
+                AdjacencyCategory = categories.STRUCTURE * categories.MASSEXTRACTION * (categories.TECH2 + categories.TECH3),
+                AdjacencyDistance = 250,
+                ThreatMin = -3,
+                ThreatMax = 0,
+                ThreatRings = 0,
                 BuildClose = false,
                 BuildStructures = {
                     'MassStorage',
@@ -307,15 +315,20 @@ BuilderGroup {
     Builder {
         BuilderName = 'Swarm Mass Adjacency Engineer - Outter Mexes',
         PlatoonTemplate = 'EngineerBuilderALLTECH',
-        Priority = 950,
+        Priority = 1025,
+        InstanceCount = 5,
         BuilderConditions = {
-            { UCBC, 'HaveGreaterThanUnitsWithCategory', { 4, categories.STRUCTURE * categories.MASSEXTRACTION * categories.TECH2}},
+            { UCBC, 'HaveGreaterThanUnitsWithCategory', { 8, categories.STRUCTURE * categories.MASSEXTRACTION * (categories.TECH2 + categories.TECH3) }},
             -- When do we want to build this ?
-            { UCBC, 'AdjacencyCheck', { 'LocationType', categories.STRUCTURE * categories.MASSEXTRACTION * (categories.TECH1 + categories.TECH2 + categories.TECH3), 100, 'ueb1106' } },
+            { UCBC, 'AdjacencyCheck', { 'LocationType', categories.STRUCTURE * categories.MASSEXTRACTION * (categories.TECH2 + categories.TECH3), 750, 'ueb1106' } },
             -- Do we need additional conditions to build it ?
-            { UCBC, 'GreaterThanGameTimeSeconds', { 60 * 30 } },
+            { UCBC, 'GreaterThanGameTimeSeconds', { 60 * 15 } },
 
-            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.15, 0.95 } }, 
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.05, 0.60 } }, 
+
+            { MABC, 'MarkerLessThanDistance',  { 'Mass', 775, -3, 0, 0}},
+
+            { UCBC, 'UnitCapCheckLess', { .8 } },
 
             { EBC, 'GreaterThanMassTrendSwarm', { 0.0 } },
 
@@ -325,8 +338,11 @@ BuilderGroup {
         },
         BuilderData = {
             Construction = {
-                AdjacencyCategory = categories.STRUCTURE * categories.MASSEXTRACTION * (categories.TECH1 + categories.TECH2 + categories.TECH3),
-                AdjacencyDistance = 350,
+                AdjacencyCategory = categories.STRUCTURE * categories.MASSEXTRACTION * (categories.TECH2 + categories.TECH3),
+                AdjacencyDistance = 750,
+                ThreatMin = -3,
+                ThreatMax = 0,
+                ThreatRings = 0,
                 BuildClose = false,
                 BuildStructures = {
                     'MassStorage',

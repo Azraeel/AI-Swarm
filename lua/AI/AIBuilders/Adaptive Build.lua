@@ -17,7 +17,7 @@ BuilderGroup { BuilderGroupName = 'T1 Phase Adaptiveness',
     BuildersType = 'EngineerBuilder',
 
     Builder {
-        BuilderName = 'Swarm Land Factory Mass > 0.7',
+        BuilderName = 'Swarm Land Factory Mass > 0.4',
         PlatoonTemplate = 'EngineerBuilderALLTECH',
         Priority = 600,
         DelayEqualBuildPlattons = {'Factories', 3},
@@ -28,13 +28,13 @@ BuilderGroup { BuilderGroupName = 'T1 Phase Adaptiveness',
             
             { EBC, 'GreaterThanEconTrendSwarm', { 0.0, 0.0 } }, 
 
-            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.07, 0.01}},
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.04, 0.01}},
 
             { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.75, 0.9 }},          
             
             { UCBC, 'HaveLessThanUnitsInCategoryBeingBuilt', { 2, categories.STRUCTURE * categories.FACTORY * categories.TECH1 }},
            
-            { UCBC, 'HaveUnitRatioVersusCapSwarm', { MaxCapFactory , '<', categories.STRUCTURE * categories.FACTORY * categories.LAND } }, 
+            { UCBC, 'HaveLessThanUnitsWithCategory', { 12, categories.STRUCTURE * categories.FACTORY * categories.LAND * (categories.TECH1 + categories.TECH2 + categories.TECH3) }},
         },
         BuilderType = 'Any',
         BuilderData = {
@@ -49,7 +49,7 @@ BuilderGroup { BuilderGroupName = 'T1 Phase Adaptiveness',
     },
 
     Builder {
-        BuilderName = 'SC Land Factory Mass > 0.8',
+        BuilderName = 'SC Land Factory Mass > 0.4',
         PlatoonTemplate = 'CommanderBuilder',
         Priority = 650,
         DelayEqualBuildPlattons = {'Factories', 3},
@@ -60,13 +60,13 @@ BuilderGroup { BuilderGroupName = 'T1 Phase Adaptiveness',
             
             { EBC, 'GreaterThanEconTrendSwarm', { 0.0, 0.0 } }, 
 
-            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.07, 0.01}},
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.045, 0.01}},
 
             { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.75, 0.9 }},          
             
             { UCBC, 'HaveLessThanUnitsInCategoryBeingBuilt', { 2, categories.STRUCTURE * categories.FACTORY * categories.TECH1 }},
            
-            { UCBC, 'HaveUnitRatioVersusCapSwarm', { MaxCapFactory , '<', categories.STRUCTURE * categories.FACTORY * categories.LAND } }, 
+            { UCBC, 'HaveLessThanUnitsWithCategory', { 12, categories.STRUCTURE * categories.FACTORY * categories.LAND * (categories.TECH1 + categories.TECH2 + categories.TECH3) }},
         },
         BuilderType = 'Any',
         BuilderData = {
@@ -92,7 +92,7 @@ BuilderGroup { BuilderGroupName = 'T1 Phase Adaptiveness',
 
             { MIBC, 'CanPathToCurrentEnemySwarm', { true } },
 
-            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.07, 0.01}},
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.04, 0.01}},
 
             { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.75, 0.9 }},
 
@@ -122,7 +122,7 @@ BuilderGroup { BuilderGroupName = 'T1 Phase Adaptiveness',
 
             { EBC, 'GreaterThanEconTrendSwarm', { 0.0, 0.0 } }, -- relative income
 
-            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.07, 0.01}},
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.04, 0.01}},
 
             { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.75, 0.9 }},
 
@@ -154,7 +154,7 @@ BuilderGroup { BuilderGroupName = 'T1 Phase Adaptiveness',
 
             { EBC, 'GreaterThanEconTrendSwarm', { 0.0, 0.0 } }, -- relative income
 
-            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.07, 0.01}},
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.06, 0.01}},
 
             { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.75, 0.9 }},
 
@@ -184,7 +184,7 @@ BuilderGroup { BuilderGroupName = 'T1 Phase Adaptiveness',
 
             { EBC, 'GreaterThanEconTrendSwarm', { 0.0, 0.0 } }, -- relative income
 
-            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.07, 0.01}},
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.06, 0.01}},
 
             { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.75, 0.9 }},
 
@@ -214,13 +214,15 @@ BuilderGroup { BuilderGroupName = 'T1 Phase Adaptiveness',
 
             { MIBC, 'CanPathToCurrentEnemySwarm', { true } },
 
-            { EBC, 'GreaterThanEconStorageRatio', { 0.05, 0.30}},
+            { EBC, 'GreaterThanEconStorageRatio', { 0.05, 0.01}},
+
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.75, 0.9 }},
 
             { EBC, 'GreaterThanEconTrendSwarm', { 0.0, 0.0 } }, -- relative income
 
             { UCBC, 'HaveLessThanUnitsWithCategory', { 1, categories.STRUCTURE * categories.FACTORY * categories.AIR - categories.SUPPORTFACTORY } },
 
-            { UCBC, 'HaveGreaterThanUnitsWithCategory', { 3, categories.STRUCTURE * categories.FACTORY * categories.LAND } },
+            { UCBC, 'HaveGreaterThanUnitsWithCategory', { 1, categories.STRUCTURE * categories.FACTORY * categories.LAND } },
 
             { UCBC, 'HaveLessThanUnitsInCategoryBeingBuilt', { 1, categories.STRUCTURE * categories.FACTORY * categories.AIR * categories.TECH1 }},
         },
@@ -245,7 +247,9 @@ BuilderGroup { BuilderGroupName = 'T1 Phase Adaptiveness',
 
             { MIBC, 'CanPathToCurrentEnemySwarm', { true } },
 
-            { EBC, 'GreaterThanEconStorageRatio', { 0.05, 0.30}},
+            { EBC, 'GreaterThanEconStorageRatio', { 0.06, 0.75}},
+
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.75, 0.9 }},
 
             { EBC, 'GreaterThanEconTrendSwarm', { 0.0, 0.0 } }, -- relative income
 

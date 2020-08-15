@@ -171,7 +171,7 @@ BuilderGroup {
     -- ============ --
     --    TECH 2    --
     -- ============ --
-    --[[ Builder {
+    Builder {
         BuilderName = 'S2 Power minimum',
         PlatoonTemplate = 'T2EngineerBuilder',
         Priority = 1250,
@@ -202,7 +202,7 @@ BuilderGroup {
                 },
             }
         }
-    }, ]]--
+    }, 
 
     Builder {
         BuilderName = 'S2 Power',
@@ -213,6 +213,38 @@ BuilderGroup {
             { UCBC, 'HaveLessThanUnitsWithCategory', { 1, categories.ENERGYPRODUCTION * categories.TECH3 } },
             
             { EBC, 'LessThanEnergyTrend', { 0.0 } },              -- Ratio from 0 to 1. (1=100%)
+
+            { UCBC, 'HaveLessThanUnitsInCategoryBeingBuilt', { 1, categories.STRUCTURE * categories.ENERGYPRODUCTION * categories.TECH2 }},
+        },
+        BuilderType = 'Any',
+        BuilderData = {
+            NumAssistees = 25,
+            Construction = {
+                DesiresAssist = true,
+                BuildClose = false,
+                AdjacencyCategory = (categories.STRUCTURE * categories.SHIELD) + (categories.FACTORY * (categories.TECH3 + categories.TECH2 + categories.TECH1)),
+                AvoidCategory = categories.ENERGYPRODUCTION * categories.TECH2,
+                maxUnits = 1,
+                maxRadius = 10,
+                LocationType = 'LocationType',
+                BuildStructures = {
+                    'T2EnergyProduction',
+                },
+            }
+        }
+    },
+
+    Builder {
+        BuilderName = 'S2 Power - Overbuild',
+        PlatoonTemplate = 'T2EngineerBuilder',
+        Priority = 1000,
+        InstanceCount = 1,
+        BuilderConditions = {
+            { UCBC, 'HaveLessThanUnitsWithCategory', { 1, categories.ENERGYPRODUCTION * categories.TECH3 } },
+
+            { EBC, 'GreaterThanEconStorageRatio', { 0.10, 0.00 } },             -- Ratio from 0 to 1. (1=100%)
+            
+            { EBC, 'LessThanEnergyTrend', { 100.0 } },              -- Ratio from 0 to 1. (1=100%)
 
             { UCBC, 'HaveLessThanUnitsInCategoryBeingBuilt', { 1, categories.STRUCTURE * categories.ENERGYPRODUCTION * categories.TECH2 }},
         },
