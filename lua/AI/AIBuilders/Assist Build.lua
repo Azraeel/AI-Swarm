@@ -110,7 +110,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
     Builder {
         BuilderName = 'SC Assist Hydro',
         PlatoonTemplate = 'CommanderAssist',
-        Priority = 19100,
+        Priority = 750,
         BuilderConditions = {
             { UCBC, 'HaveGreaterThanUnitsInCategoryBeingBuiltAtLocationSwarm', { 'LocationType', 0, categories.STRUCTURE * categories.HYDROCARBON }},
         },
@@ -150,7 +150,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
 
     Builder { BuilderName = 'SC Assist Energy',
         PlatoonTemplate = 'CommanderAssist',
-        Priority = 16300,
+        Priority = 650,
         BuilderConditions = {
             { EBC, 'GreaterThanEconIncomeSwarm', { 2.0, 20 } },
 
@@ -336,6 +336,34 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
                 PermanentAssist = false,
                 AssistClosestUnit = true,                                       -- Assist the closest unit instead unit with the least number of assisters
                 BeingBuiltCategories = {'EXPERIMENTAL'},                        -- Unitcategories must be type string
+                Time = 40,
+            },
+        }
+    },
+
+    -- ================== --
+    --    Quantum Gate    --
+    -- ================== --
+    Builder { BuilderName = 'All Assist Quantum Gate',
+        PlatoonTemplate = 'EngineerAssistALLTECH',
+        Priority = 1500,
+        InstanceCount = 65,
+        BuilderConditions = {
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.01, 0.1}},
+
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.05, 1.05 }},
+
+            { EBC, 'GreaterThanMassTrendSwarm', { 0.0 } },
+        },
+        BuilderType = 'Any',
+        BuilderData = {
+            Assist = {
+                AssistLocation = 'LocationType',
+                AssisteeType = 'Structure',
+                AssistRange = 700,
+                PermanentAssist = false,
+                AssistClosestUnit = true,                                       -- Assist the closest unit instead unit with the least number of assisters
+                BeingBuiltCategories = {'GATE FACTORY'},                                -- Unitcategories must be type string
                 Time = 40,
             },
         }

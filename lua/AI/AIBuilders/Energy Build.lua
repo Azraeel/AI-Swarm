@@ -146,7 +146,7 @@ BuilderGroup {
     Builder {
         BuilderName = 'Swarm Power Hydrocarbon',
         PlatoonTemplate = 'EngineerBuilder',
-        Priority = 610,
+        Priority = 675,
         DelayEqualBuildPlattons = {'Energy', 1},
         InstanceCount = 1,
         BuilderConditions = {

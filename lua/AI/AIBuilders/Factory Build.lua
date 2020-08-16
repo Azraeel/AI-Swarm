@@ -978,7 +978,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Gate Builders',                        
 
             { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.03, 0.1}},
 
-            { UCBC, 'HaveGreaterThanUnitsWithCategory', { 1, categories.STRUCTURE * categories.ENERGYPRODUCTION * categories.TECH3 } },
+            { UCBC, 'HaveGreaterThanUnitsWithCategory', { 0, categories.STRUCTURE * categories.ENERGYPRODUCTION * categories.TECH3 } },
 
             { UCBC, 'FactoryCapCheck', { 'LocationType', 'Gate' } },
 
@@ -1005,7 +1005,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Gate Builders',                        
 
             { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.05, 0.1}},
 
-            { UCBC, 'HaveGreaterThanUnitsWithCategory', { 1, categories.STRUCTURE * categories.ENERGYPRODUCTION * categories.TECH3 } },
+            { UCBC, 'HaveGreaterThanUnitsWithCategory', { 0, categories.STRUCTURE * categories.ENERGYPRODUCTION * categories.TECH3 } },
 
             { UCBC, 'BuildNotOnLocationSwarm', { 'LocationType', 'MAIN' } },
 
@@ -1034,14 +1034,14 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Staging Platform Builders',        
         PlatoonTemplate = 'T2EngineerBuilder',
         Priority = 15300,
         BuilderConditions = {
-            -- When do we want to build this ?
             { UCBC, 'HaveLessThanUnitsWithCategory', { 1, categories.STRUCTURE * categories.AIRSTAGINGPLATFORM }},
-            -- Do we need additional conditions to build it ?
+          
             { UCBC, 'HaveGreaterThanUnitsWithCategory', { 1, categories.STRUCTURE * categories.ENERGYPRODUCTION * (categories.TECH2 + categories.TECH3) } },
-            -- Have we the eco to build it ?
-            { EBC, 'GreaterThanEconTrendSwarm', { 0.0, 0.0 } }, -- relative income
-            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.30, 0.99}}, -- Ratio from 0 to 1. (1=100%)
-            -- Don't build it if...
+            
+            { EBC, 'GreaterThanEconTrendSwarm', { 0.0, 0.0 } }, 
+
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.30, 0.99}},
+           
             { UCBC, 'HaveLessThanUnitsInCategoryBeingBuilt', { 1, categories.STRUCTURE * categories.AIRSTAGINGPLATFORM }},
         },
         BuilderType = 'Any',
@@ -1060,18 +1060,18 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Staging Platform Builders',        
         PlatoonTemplate = 'T2EngineerBuilder',
         Priority = 15300,
         BuilderConditions = {
-            -- When do we want to build this ?
             { UCBC, 'HaveUnitRatioVersusEnemySwarm', { 0.05, categories.STRUCTURE * categories.AIRSTAGINGPLATFORM, '<', categories.MOBILE * categories.AIR } },
+
             { UCBC, 'HaveLessThanUnitsWithCategory', { 10, categories.STRUCTURE * categories.AIRSTAGINGPLATFORM }},
-            -- Do we need additional conditions to build it ?
-            -- Have we the eco to build it ?
-            { EBC, 'GreaterThanEconTrendSwarm', { 0.0, 0.0 } }, -- relative income
-            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.75, 0.99}}, -- Ratio from 0 to 1. (1=100%)
-            -- Don't build it if...
+
+            { EBC, 'GreaterThanEconTrendSwarm', { 0.0, 0.0 } },
+
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.75, 0.99}}, 
+
             { UCBC, 'HaveLessThanUnitsInCategoryBeingBuilt', { 1, categories.STRUCTURE * categories.AIRSTAGINGPLATFORM }},
 
             { UCBC, 'HaveLessThanUnitsWithCategory', { 2, categories.STRUCTURE * categories.AIRSTAGINGPLATFORM  }},
-            -- Respect UnitCap
+           
             { UCBC, 'HaveUnitRatioVersusCapSwarm', { MaxCapStructure , '<', categories.STRUCTURE - categories.MASSEXTRACTION - categories.DEFENSE - categories.FACTORY } },
         },
         BuilderType = 'Any',

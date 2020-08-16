@@ -274,26 +274,24 @@ BuilderGroup {
     BuilderGroupName = 'S1 MassStorage Builder',                               -- BuilderGroupName, initalized from AIBaseTemplates in "\lua\AI\AIBaseTemplates\"
     BuildersType = 'EngineerBuilder',
     Builder {
-        BuilderName = 'Swarm Mass Adjacency Engineer',
+        BuilderName = 'Swarm Mass Adjacency Engineer - Ring',
         PlatoonTemplate = 'EngineerBuilderALLTECH',
         Priority = 1005,
         InstanceCount = 4,
         BuilderConditions = {
             { UCBC, 'HaveGreaterThanUnitsWithCategory', { 4, categories.STRUCTURE * categories.MASSEXTRACTION * (categories.TECH2 + categories.TECH3) }},
-            -- When do we want to build this ?
+            
             { UCBC, 'AdjacencyCheck', { 'LocationType', categories.STRUCTURE * categories.MASSEXTRACTION * (categories.TECH2 + categories.TECH3), 250, 'ueb1106' } },
-            -- Do we need additional conditions to build it ?
+            
             { UCBC, 'GreaterThanGameTimeSeconds', { 60 * 10 } },
 
-            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.05, 0.60 } },
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.01, 0.50 } },
 
             { MABC, 'MarkerLessThanDistance',  { 'Mass', 275, -3, 0, 0}},
 
             { UCBC, 'UnitCapCheckLess', { .8 } },
 
             { EBC, 'GreaterThanMassTrendSwarm', { 0.0 } },
-
-            { UCBC, 'HasNotParagon', {} },
 
             { UCBC, 'HaveLessThanUnitsInCategoryBeingBuilt', { 4,  categories.STRUCTURE * categories.MASSSTORAGE }},
         },
@@ -313,26 +311,24 @@ BuilderGroup {
         BuilderType = 'Any'
     },
     Builder {
-        BuilderName = 'Swarm Mass Adjacency Engineer - Outter Mexes',
+        BuilderName = 'Swarm Mass Adjacency Engineer - Outter Mexes - Ring',
         PlatoonTemplate = 'EngineerBuilderALLTECH',
         Priority = 1025,
         InstanceCount = 5,
         BuilderConditions = {
             { UCBC, 'HaveGreaterThanUnitsWithCategory', { 8, categories.STRUCTURE * categories.MASSEXTRACTION * (categories.TECH2 + categories.TECH3) }},
-            -- When do we want to build this ?
+           
             { UCBC, 'AdjacencyCheck', { 'LocationType', categories.STRUCTURE * categories.MASSEXTRACTION * (categories.TECH2 + categories.TECH3), 750, 'ueb1106' } },
-            -- Do we need additional conditions to build it ?
+            
             { UCBC, 'GreaterThanGameTimeSeconds', { 60 * 15 } },
 
-            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.05, 0.60 } }, 
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.01, 0.50 } }, 
 
             { MABC, 'MarkerLessThanDistance',  { 'Mass', 775, -3, 0, 0}},
 
             { UCBC, 'UnitCapCheckLess', { .8 } },
 
             { EBC, 'GreaterThanMassTrendSwarm', { 0.0 } },
-
-            { UCBC, 'HasNotParagon', {} },
 
             { UCBC, 'HaveLessThanUnitsInCategoryBeingBuilt', { 4,  categories.STRUCTURE * categories.MASSSTORAGE }},
         },
