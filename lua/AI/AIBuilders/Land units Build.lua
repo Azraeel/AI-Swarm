@@ -115,9 +115,11 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',                  
 
             { UCBC, 'PoolLessAtLocation', { 'LocationType', 1, categories.LAND * categories.MOBILE * categories.ANTIAIR }},
 
-            { UCBC, 'EnemyUnitsGreaterAtLocationRadiusSwarm', {  BaseMilitaryZone, 'LocationType', 0, categories.AIR * (categories.BOMBER + categories.GROUNDATTACK) }},
+            { UCBC, 'EnemyUnitsGreaterAtLocationRadiusSwarm', {  BaseEnemyZone, 'LocationType', 0, categories.AIR * (categories.BOMBER + categories.GROUNDATTACK) }},
 
-            { UCBC, 'HaveLessThanUnitsWithCategory', { 1, categories.MOBILE * categories.AIR * categories.ANTIAIR } },
+            { UCBC, 'HaveGreaterThanUnitsWithCategory', { 3, categories.LAND * categories.MOBILE * categories.DIRECTFIRE - categories.ENGINEER }},
+
+            { UCBC, 'HaveLessThanUnitsWithCategory', { 10, categories.MOBILE * categories.AIR * categories.ANTIAIR } },
         },
         BuilderType = 'Land',
     },
@@ -137,6 +139,8 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',                  
             { MIBC, 'CanPathToCurrentEnemySwarm', { true } },
 
             { UCBC, 'EnemyUnitsGreaterAtLocationRadiusSwarm', {  BaseMilitaryZone, 'LocationType', 5, categories.AIR * (categories.BOMBER + categories.GROUNDATTACK) }},
+
+            { UCBC, 'HaveGreaterThanUnitsWithCategory', { 3, categories.LAND * categories.MOBILE * categories.DIRECTFIRE - categories.ENGINEER }},
 
             { UCBC, 'PoolLessAtLocation', { 'LocationType', 2, categories.LAND * categories.MOBILE * categories.ANTIAIR }},
         },
@@ -242,9 +246,11 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',                  
 
             { UCBC, 'PoolLessAtLocation', { 'LocationType', 1, categories.LAND * categories.MOBILE * categories.ANTIAIR * categories.TECH2 }},
 
-            { UCBC, 'EnemyUnitsGreaterAtLocationRadiusSwarm', {  BaseMilitaryZone, 'LocationType', 0, categories.AIR * (categories.BOMBER + categories.GROUNDATTACK) }},
+            { UCBC, 'HaveGreaterThanUnitsWithCategory', { 5, categories.LAND * categories.MOBILE * categories.DIRECTFIRE * categories.TECH2 - categories.ENGINEER }},
 
-            { UCBC, 'HaveLessThanUnitsWithCategory', { 8, categories.MOBILE * categories.AIR * categories.ANTIAIR } },
+            { UCBC, 'EnemyUnitsGreaterAtLocationRadiusSwarm', {  BaseEnemyZone, 'LocationType', 0, categories.AIR * (categories.BOMBER + categories.GROUNDATTACK) }},
+
+            { UCBC, 'HaveLessThanUnitsWithCategory', { 10, categories.MOBILE * categories.AIR * categories.ANTIAIR } },
         },
         BuilderType = 'Land',
     },
@@ -265,9 +271,11 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',                  
 
             { UCBC, 'EnemyUnitsGreaterAtLocationRadiusSwarm', {  BaseMilitaryZone, 'LocationType', 5, categories.AIR * (categories.BOMBER + categories.GROUNDATTACK) }},
 
+            { UCBC, 'HaveGreaterThanUnitsWithCategory', { 5, categories.LAND * categories.MOBILE * categories.DIRECTFIRE * categories.TECH2 - categories.ENGINEER }},
+
             { UCBC, 'PoolLessAtLocation', { 'LocationType', 2, categories.LAND * categories.MOBILE * categories.ANTIAIR * categories.TECH2 }},
 
-            { UCBC, 'HaveLessThanUnitsWithCategory', { 8, categories.MOBILE * categories.AIR * categories.ANTIAIR } },
+            { UCBC, 'HaveLessThanUnitsWithCategory', { 10, categories.MOBILE * categories.AIR * categories.ANTIAIR } },
         },
         BuilderType = 'Land',
     },
@@ -392,9 +400,11 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',                  
 
             { UCBC, 'PoolLessAtLocation', { 'LocationType', 1, categories.LAND * categories.MOBILE * categories.ANTIAIR * categories.TECH3 }},
 
-            { UCBC, 'EnemyUnitsGreaterAtLocationRadiusSwarm', {  BaseMilitaryZone, 'LocationType', 0, categories.AIR * (categories.BOMBER + categories.GROUNDATTACK) }},
+            { UCBC, 'EnemyUnitsGreaterAtLocationRadiusSwarm', {  BaseEnemyZone, 'LocationType', 0, categories.AIR * (categories.BOMBER + categories.GROUNDATTACK) }},
 
-            { UCBC, 'HaveLessThanUnitsWithCategory', { 5, categories.MOBILE * categories.AIR * categories.ANTIAIR * categories.TECH3 } },
+            { UCBC, 'HaveGreaterThanUnitsWithCategory', { 5, categories.LAND * categories.MOBILE * categories.DIRECTFIRE * categories.TECH3 - categories.ENGINEER }},
+
+            { UCBC, 'HaveLessThanUnitsWithCategory', { 10, categories.MOBILE * categories.AIR * categories.ANTIAIR * categories.TECH3 } },
         },
         BuilderType = 'Land',
     },
@@ -415,9 +425,11 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',                  
 
             { UCBC, 'EnemyUnitsGreaterAtLocationRadiusSwarm', {  BaseMilitaryZone, 'LocationType', 5, categories.AIR * (categories.BOMBER + categories.GROUNDATTACK) }},
 
-            { UCBC, 'PoolLessAtLocation', { 'LocationType', 3, categories.LAND * categories.MOBILE * categories.ANTIAIR * categories.TECH3 }},
+            { UCBC, 'PoolLessAtLocation', { 'LocationType', 2, categories.LAND * categories.MOBILE * categories.ANTIAIR * categories.TECH3 }},
 
-            { UCBC, 'HaveLessThanUnitsWithCategory', { 5, categories.MOBILE * categories.AIR * categories.ANTIAIR * categories.TECH3 } },
+            { UCBC, 'HaveGreaterThanUnitsWithCategory', { 5, categories.LAND * categories.MOBILE * categories.DIRECTFIRE * categories.TECH3 - categories.ENGINEER }},
+
+            { UCBC, 'HaveLessThanUnitsWithCategory', { 10, categories.MOBILE * categories.AIR * categories.ANTIAIR * categories.TECH3 } },
         },
         BuilderType = 'Land',
     },

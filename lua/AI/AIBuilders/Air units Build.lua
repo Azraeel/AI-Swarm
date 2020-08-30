@@ -44,7 +44,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Builders',
 
             { UCBC, 'HaveLessThanUnitsWithCategory', { 2, categories.MOBILE * categories.AIR * categories.TECH3 - categories.ENGINEER }},
 
-            { UCBC, 'LocationFactoriesBuildingLess', { 'LocationType', 1, categories.ANTIAIR * categories.AIR - categories.BOMBER } },
+            { UCBC, 'LocationFactoriesBuildingLess', { 'LocationType', 2, categories.ANTIAIR * categories.AIR - categories.BOMBER } },
 
             { EBC, 'GreaterThanEconIncomeSwarm', { 0.2, 2 } },
 
@@ -121,7 +121,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Builders',
     Builder {
         BuilderName = 'T2AirFighterBomber - Swarm',
         PlatoonTemplate = 'T2FighterBomber',
-        Priority = 700,
+        Priority = 750,
         BuilderConditions = {
             { UCBC, 'HaveLessThanUnitsWithCategory', { 10, categories.MOBILE * categories.AIR * categories.HIGHALTAIR * categories.ANTIAIR * categories.TECH3 }},
 
