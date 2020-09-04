@@ -55,28 +55,6 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Builders',
         BuilderType = 'Air',
     },
 
-    Builder {
-        BuilderName = 'T1-T2AirFighter - Swarm - Reactionary',
-        PlatoonTemplate = 'T1AirFighter',
-        Priority = 755,
-        BuilderConditions = {
-            { UCBC, 'HaveGreaterThanUnitsWithCategory', { 1, categories.MOBILE * categories.ENGINEER - categories.STATIONASSISTPOD}},
-
-            { UCBC, 'HaveGreaterThanUnitsWithCategory', { 0, categories.STRUCTURE * categories.LAND * categories.FACTORY * categories.TECH1 }},
-
-            { UCBC, 'HaveLessThanUnitsWithCategory', { 2, categories.MOBILE * categories.AIR * categories.TECH3 - categories.ENGINEER }},
-
-            { UCBC, 'HaveUnitRatioVersusEnemySwarm', { 1.00, categories.MOBILE * categories.AIR * categories.ANTIAIR, '<',categories.MOBILE * categories.AIR * categories.ANTIAIR } },
-
-            { EBC, 'GreaterThanEconIncomeSwarm', { 0.2, 2 } },
-
-            { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.7, 0.8 }},
-
-            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.01, 0.01}},
-        },
-        BuilderType = 'Air',
-    },
-
     Builder { BuilderName = 'T1AirBomber - Swarm',
         PlatoonTemplate = 'T1AirBomber',
         Priority = 500,
@@ -86,8 +64,6 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Builders',
             { EBC, 'GreaterThanEconIncomeSwarm', { 0.2, 2 } },
 
             { UCBC, 'HaveUnitRatioVersusCapSwarm', { MaxAttackForce , '<=', categories.MOBILE - categories.ENGINEER } },
-
-            { UCBC, 'HaveLessThanUnitsInCategoryBeingBuilt', { 2, categories.MOBILE * categories.AIR  * categories.GROUNDATTACK }},
 
             { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.7, 0.8 }},
 
@@ -105,8 +81,6 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Builders',
             { EBC, 'GreaterThanEconIncomeSwarm', { 0.2, 2 } },
 
             { UCBC, 'HaveUnitRatioVersusCapSwarm', { MaxAttackForce , '<=', categories.MOBILE - categories.ENGINEER } },
-
-            { UCBC, 'HaveLessThanUnitsInCategoryBeingBuilt', { 2, categories.MOBILE * categories.AIR  * categories.BOMBER }},
 
             { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.7, 0.8 }},
 

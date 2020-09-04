@@ -557,7 +557,7 @@ BuilderGroup {
         BuilderName = 'AI-Swarm Standard Land (80) E',
         PlatoonTemplate = 'AISwarm LandAttack Micro - Standard', 
         Priority = 650,
-        InstanceCount = 1,
+        InstanceCount = 4,
         BuilderType = 'Any',
         BuilderConditions = { 
             { MIBC, 'CanPathToCurrentEnemySwarm', { true } },
@@ -590,7 +590,7 @@ BuilderGroup {
         BuilderName = 'AI-Swarm Standard Land (120) E',
         PlatoonTemplate = 'AISwarm LandAttack Micro - Standard', 
         Priority = 650,
-        InstanceCount = 1,
+        InstanceCount = 4,
         BuilderType = 'Any',
         BuilderConditions = { 
             { MIBC, 'CanPathToCurrentEnemySwarm', { true } },
@@ -766,7 +766,7 @@ BuilderGroup {
         BuilderName = 'Swarm Mass Raid Large',                            
         PlatoonTemplate = 'AISwarm Mass Raid Large',                         
         Priority = 690,                                                      
-        InstanceCount = 3,                                                     
+        InstanceCount = 4,                                                     
         BuilderType = 'Any',
         BuilderConditions = {   
             { MIBC, 'CanPathToCurrentEnemySwarm', { true } },
