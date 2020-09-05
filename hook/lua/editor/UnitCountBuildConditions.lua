@@ -351,26 +351,6 @@ function UnfinishedUnitsAtLocationSwarm(aiBrain, locationType)
     return false
 end
 
-
------------------------------------------------------------------------------------------------------------------------------------
------------------------------------------------------------------------------------------------------------------------------------
------------------------------------------------------------------------------------------------------------------------------------
------------------------------------------------------------------------------------------------------------------------------------
--- In progess, next project, not working...
------------------------------------------------------------------------------------------------------------------------------------
------------------------------------------------------------------------------------------------------------------------------------
------------------------------------------------------------------------------------------------------------------------------------
------------------------------------------------------------------------------------------------------------------------------------
------------------------------------------------------------------------------------------------------------------------------------
------------------------------------------------------------------------------------------------------------------------------------
------------------------------------------------------------------------------------------------------------------------------------
------------------------------------------------------------------------------------------------------------------------------------
--- In progess, next project, not working...
------------------------------------------------------------------------------------------------------------------------------------
------------------------------------------------------------------------------------------------------------------------------------
------------------------------------------------------------------------------------------------------------------------------------
------------------------------------------------------------------------------------------------------------------------------------
--- For debug printing
 --             { UCBC, 'HaveUnitRatioSwarm', { 0.75, 'MASSEXTRACTION TECH1', '<=','MASSEXTRACTION TECH2',true } },
 function HaveUnitRatioSwarm(aiBrain, ratio, categoryOne, compareType, categoryTwo)
     local numOne = aiBrain:GetCurrentUnits(categoryOne)
@@ -391,6 +371,77 @@ end
 function HasNotParagon(aiBrain)
     if not aiBrain.HasParagon then
         return true
+    end
+    return false
+end
+
+function ScalePlatoonSizeSwarm(aiBrain, locationType, type, unitCategory)
+    -- Note to self, create a brain flag in the air superiority function that can assist with the AIR platoon sizing increase.
+    local currentTime = GetGameTimeSeconds()
+    if type == 'LAND' then
+        if currentTime < 240  then
+            if PoolGreaterAtLocation(aiBrain, locationType, 4, unitCategory) then
+                return true
+            end
+        elseif currentTime < 480 then
+            if PoolGreaterAtLocation(aiBrain, locationType, 6, unitCategory) then
+                return true
+            end
+        elseif currentTime < 720 then
+            if PoolGreaterAtLocation(aiBrain, locationType, 8, unitCategory) then
+                return true
+            end
+        elseif currentTime > 900 then
+            if PoolGreaterAtLocation(aiBrain, locationType, 10, unitCategory) then
+                return true
+            end
+        else
+            return false
+        end
+    elseif type == 'AIR' then
+        if currentTime < 480  then
+            if PoolGreaterAtLocation(aiBrain, locationType, 2, unitCategory) then
+                return true
+            end
+        elseif currentTime < 720 then
+            if PoolGreaterAtLocation(aiBrain, locationType, 4, unitCategory) then
+                return true
+            end
+        elseif currentTime < 900 then
+            if PoolGreaterAtLocation(aiBrain, locationType, 6, unitCategory) then
+                return true
+            end
+        elseif currentTime > 1200 then
+            if PoolGreaterAtLocation(aiBrain, locationType, 8, unitCategory) then
+                return true
+            end
+        elseif currentTime >= 480 then
+            if PoolGreaterAtLocation(aiBrain, locationType, 2, unitCategory) then
+                return true
+            end
+        else
+            return false
+        end
+    elseif type == 'NAVAL' then
+        if currentTime < 720  then
+            if PoolGreaterAtLocation(aiBrain, locationType, 2, unitCategory) then
+                return true
+            end
+        elseif currentTime < 960 then
+            if PoolGreaterAtLocation(aiBrain, locationType, 3, unitCategory) then
+                return true
+            end
+        elseif currentTime < 1200 then
+            if PoolGreaterAtLocation(aiBrain, locationType, 4, unitCategory) then
+                return true
+            end
+        elseif currentTime > 1800 then
+            if PoolGreaterAtLocation(aiBrain, locationType, 5, unitCategory) then
+                return true
+            end
+        else
+            return false
+        end
     end
     return false
 end

@@ -494,6 +494,8 @@ BuilderGroup {
         InstanceCount = 4,
         BuilderType = 'Any',
         BuilderConditions = { 
+            { UCBC, 'ScalePlatoonSizeSwarm', { 'LocationType', 'LAND', categories.MOBILE * categories.LAND - categories.ENGINEER - categories.EXPERIMENTAL } },
+
             { MIBC, 'CanPathToCurrentEnemySwarm', { true } },
 
             { UCBC, 'UnitsGreaterAtEnemy', { 0 , categories.MOBILE * categories.LAND - categories.SCOUT } },
@@ -527,6 +529,8 @@ BuilderGroup {
         InstanceCount = 4,
         BuilderType = 'Any',
         BuilderConditions = { 
+            { UCBC, 'ScalePlatoonSizeSwarm', { 'LocationType', 'LAND', categories.MOBILE * categories.LAND - categories.ENGINEER - categories.EXPERIMENTAL } },
+
             { MIBC, 'CanPathToCurrentEnemySwarm', { true } },
 
             { UCBC, 'UnitsGreaterAtEnemy', { 0 , categories.MOBILE * categories.LAND - categories.SCOUT } },
@@ -560,6 +564,8 @@ BuilderGroup {
         InstanceCount = 4,
         BuilderType = 'Any',
         BuilderConditions = { 
+            { UCBC, 'ScalePlatoonSizeSwarm', { 'LocationType', 'LAND', categories.MOBILE * categories.LAND - categories.ENGINEER - categories.EXPERIMENTAL } },
+
             { MIBC, 'CanPathToCurrentEnemySwarm', { true } },
 
             { UCBC, 'UnitsGreaterAtEnemy', { 0 , categories.MOBILE * categories.LAND - categories.SCOUT } },
@@ -593,6 +599,8 @@ BuilderGroup {
         InstanceCount = 4,
         BuilderType = 'Any',
         BuilderConditions = { 
+            { UCBC, 'ScalePlatoonSizeSwarm', { 'LocationType', 'LAND', categories.MOBILE * categories.LAND - categories.ENGINEER - categories.EXPERIMENTAL } },
+
             { MIBC, 'CanPathToCurrentEnemySwarm', { true } },
 
             { UCBC, 'UnitsGreaterAtEnemy', { 0 , categories.MOBILE * categories.LAND - categories.SCOUT } },
@@ -763,12 +771,14 @@ BuilderGroup {
     },
 
     Builder {
-        BuilderName = 'Swarm Mass Raid Large',                            
+        BuilderName = 'Swarm Mass Raid Standard',                            
         PlatoonTemplate = 'AISwarm Mass Raid Large',                         
         Priority = 690,                                                      
         InstanceCount = 4,                                                     
         BuilderType = 'Any',
         BuilderConditions = {   
+            { UCBC, 'ScalePlatoonSizeSwarm', { 'LocationType', 'LAND', categories.MOBILE * categories.LAND - categories.ENGINEER - categories.EXPERIMENTAL } },
+            
             { MIBC, 'CanPathToCurrentEnemySwarm', { true } },
 
             { UCBC, 'GreaterThanGameTimeSeconds', { 300 } },

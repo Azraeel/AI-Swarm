@@ -12,9 +12,34 @@ local MaxCapStructure = 0.25                                                    
 -- ==                                     Build MassExtractors / Creators                                    == --
 -- ============================================================================================================ --
 BuilderGroup {
-    -- Build MassExtractors / Creators 
-    BuilderGroupName = 'S1 MassBuilders',                               -- BuilderGroupName, initalized from AIBaseTemplates in "\lua\AI\AIBaseTemplates\"
+    BuilderGroupName = 'S1 MassBuilders',                       
     BuildersType = 'EngineerBuilder',
+    Builder {
+        BuilderName = 'S1 Mass 30 - Opener',
+        PlatoonTemplate = 'EngineerBuilder',
+        Priority = 600,
+        InstanceCount = 4,
+        DelayEqualBuildPlattons = {'MASSEXTRACTION', 3},
+        BuilderConditions = {
+            { MABC, 'CanBuildOnMassSwarm', { 'LocationType', 30, -500, 1, 0, 'AntiSurface', 1 }}, 
+            
+            { UCBC, 'HasNotParagon', {} },
+
+            { UCBC, 'CheckBuildPlattonDelay', { 'MASSEXTRACTION' }},
+
+            { UCBC, 'HaveUnitRatioVersusCapSwarm', { MaxCapMass , '<', categories.STRUCTURE * categories.MASSEXTRACTION } },
+        },
+        BuilderType = 'Any',
+        BuilderData = {
+            Construction = {
+                RepeatBuild = true,
+                BuildStructures = {
+                    'T1Resource',
+                }
+            }
+        }
+    },
+
     Builder {
         BuilderName = 'S1 Mass 30',
         PlatoonTemplate = 'EngineerBuilder',
@@ -22,13 +47,12 @@ BuilderGroup {
         InstanceCount = 4,
         DelayEqualBuildPlattons = {'MASSEXTRACTION', 3},
         BuilderConditions = {
-            -- When do we want to build this ?
-            { MABC, 'CanBuildOnMassSwarm', { 'LocationType', 30, -500, 1, 0, 'AntiSurface', 1 }}, -- LocationType, distance, threatMin, threatMax, threatRadius, threatType, maxNum
-            -- Do we need additional conditions to build it ?
+            { MABC, 'CanBuildOnMassSwarm', { 'LocationType', 30, -500, 1, 0, 'AntiSurface', 1 }},
+
             { UCBC, 'HasNotParagon', {} },
+
             { UCBC, 'CheckBuildPlattonDelay', { 'MASSEXTRACTION' }},
-            -- Have we the eco to build it ?
-            -- Don't build it if...
+
             { UCBC, 'HaveUnitRatioVersusCapSwarm', { MaxCapMass , '<', categories.STRUCTURE * categories.MASSEXTRACTION } },
         },
         BuilderType = 'Any',
@@ -48,13 +72,12 @@ BuilderGroup {
         InstanceCount = 4,
         DelayEqualBuildPlattons = {'MASSEXTRACTION', 3},
         BuilderConditions = {
-            -- When do we want to build this ?
-            { MABC, 'CanBuildOnMassSwarm', { 'LocationType', 60, -500, 1, 0, 'AntiSurface', 1 }}, -- LocationType, distance, threatMin, threatMax, threatRadius, threatType, maxNum
-            -- Do we need additional conditions to build it ?
+            { MABC, 'CanBuildOnMassSwarm', { 'LocationType', 60, -500, 1, 0, 'AntiSurface', 1 }},
+
             { UCBC, 'HasNotParagon', {} },
+
             { UCBC, 'CheckBuildPlattonDelay', { 'MASSEXTRACTION' }},
-            -- Have we the eco to build it ?
-            -- Don't build it if...
+
             { UCBC, 'HaveUnitRatioVersusCapSwarm', { MaxCapMass , '<', categories.STRUCTURE * categories.MASSEXTRACTION } },
         },
         BuilderType = 'Any',
@@ -74,14 +97,14 @@ BuilderGroup {
         DelayEqualBuildPlattons = {'MASSEXTRACTION', 3},
         InstanceCount = 4,
         BuilderConditions = {
-            -- When do we want to build this ?
-            { MABC, 'CanBuildOnMassSwarm', { 'LocationType', 1000, -500, 1, 0, 'AntiSurface', 1 }}, -- LocationType, distance, threatMin, threatMax, threatRadius, threatType, maxNum
-            -- Do we need additional conditions to build it ?
+            { MABC, 'CanBuildOnMassSwarm', { 'LocationType', 1000, -500, 1, 0, 'AntiSurface', 1 }},
+
             { UCBC, 'HaveGreaterThanUnitsWithCategory', { 5, categories.ENGINEER * categories.TECH1 }},
+
             { UCBC, 'HasNotParagon', {} },
-            -- Have we the eco to build it ?
-            -- Don't build it if...
+
             { UCBC, 'CheckBuildPlattonDelay', { 'MASSEXTRACTION' }},
+
             { UCBC, 'HaveUnitRatioVersusCapSwarm', { MaxCapMass , '<', categories.STRUCTURE * categories.MASSEXTRACTION } },
         },
         BuilderType = 'Any',
@@ -100,14 +123,14 @@ BuilderGroup {
         DelayEqualBuildPlattons = {'MASSEXTRACTION', 3},
         InstanceCount = 4,
         BuilderConditions = {
-            -- When do we want to build this ?
-            { MABC, 'CanBuildOnMassSwarm', { 'LocationType', 1000, -500, 1, 0, 'AntiSurface', 1 }}, -- LocationType, distance, threatMin, threatMax, threatRadius, threatType, maxNum
-            -- Do we need additional conditions to build it ?
+            { MABC, 'CanBuildOnMassSwarm', { 'LocationType', 1000, -500, 1, 0, 'AntiSurface', 1 }}, 
+            
             { UCBC, 'HaveGreaterThanUnitsWithCategory', { 7, categories.ENGINEER * categories.TECH1 }},
+
             { UCBC, 'HasNotParagon', {} },
-            -- Have we the eco to build it ?
-            -- Don't build it if...
+
             { UCBC, 'CheckBuildPlattonDelay', { 'MASSEXTRACTION' }},
+
             { UCBC, 'HaveUnitRatioVersusCapSwarm', { MaxCapMass , '<', categories.STRUCTURE * categories.MASSEXTRACTION } },
         },
         BuilderType = 'Any',
@@ -126,14 +149,14 @@ BuilderGroup {
         DelayEqualBuildPlattons = {'MASSEXTRACTION', 3},
         InstanceCount = 4,
         BuilderConditions = {
-            -- When do we want to build this ?
-            { MABC, 'CanBuildOnMassSwarm', { 'LocationType', 1000, -500, 1, 0, 'AntiSurface', 1 }}, -- LocationType, distance, threatMin, threatMax, threatRadius, threatType, maxNum
-            -- Do we need additional conditions to build it ?
+            { MABC, 'CanBuildOnMassSwarm', { 'LocationType', 1000, -500, 1, 0, 'AntiSurface', 1 }},
+
             { UCBC, 'HaveGreaterThanUnitsWithCategory', { 9, categories.ENGINEER * categories.TECH1 }},
+
             { UCBC, 'HasNotParagon', {} },
-            -- Have we the eco to build it ?
-            -- Don't build it if...
+
             { UCBC, 'CheckBuildPlattonDelay', { 'MASSEXTRACTION' }},
+
             { UCBC, 'HaveUnitRatioVersusCapSwarm', { MaxCapMass , '<', categories.STRUCTURE * categories.MASSEXTRACTION } },
         },
         BuilderType = 'Any',
@@ -150,14 +173,13 @@ BuilderGroup {
         PlatoonTemplate = 'CommanderBuilder',
         Priority = 150,
         BuilderConditions = {
-            -- When do we want to build this ?
             { UCBC, 'GreaterThanGameTimeSeconds', { 2*60 } },
+
             { UCBC, 'HaveLessThanUnitsWithCategory', { 1, categories.STRUCTURE * categories.MASSEXTRACTION } },
-            -- Do we need additional conditions to build it ?
-            { MABC, 'CanBuildOnMassSwarm', { 'LocationType', 60, -5000, 1, 0, 'AntiSurface', 1 }}, -- LocationType, distance, threatMin, threatMax, threatRings, threatType, maxNum
+
+            { MABC, 'CanBuildOnMassSwarm', { 'LocationType', 60, -5000, 1, 0, 'AntiSurface', 1 }},
+
             { UCBC, 'BuildOnlyOnLocationSwarm', { 'LocationType', 'MAIN' } },
-            -- Have we the eco to build it ?
-            -- Don't build it if...
         },
         BuilderType = 'Any',
         BuilderData = {
@@ -173,14 +195,13 @@ BuilderGroup {
         PlatoonTemplate = 'EngineerBuilder',
         Priority = 150,
         BuilderConditions = {
-            -- When do we want to build this ?
             { UCBC, 'GreaterThanGameTimeSeconds', { 2*60 } },
+
             { UCBC, 'HaveLessThanUnitsWithCategory', { 1, categories.STRUCTURE * categories.MASSEXTRACTION } },
-            -- Do we need additional conditions to build it ?
-            { MABC, 'CanBuildOnMassSwarm', { 'LocationType', 60, -5000, 1, 0, 'AntiSurface', 1 }}, -- LocationType, distance, threatMin, threatMax, threatRings, threatType, maxNum
+      
+            { MABC, 'CanBuildOnMassSwarm', { 'LocationType', 60, -5000, 1, 0, 'AntiSurface', 1 }}, 
+
             { UCBC, 'BuildOnlyOnLocationSwarm', { 'LocationType', 'MAIN' } },
-            -- Have we the eco to build it ?
-            -- Don't build it if...
         },
         BuilderType = 'Any',
         BuilderData = {
@@ -203,7 +224,7 @@ BuilderGroup {
 
             { EBC, 'GreaterThanEconTrendSwarm', { 0, 10000 } }, -- relative income
 
-            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.40, 1.00}}, -- Ratio from 0 to 1. (1=100%)
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.40, 1.00}}, 
             -- Don't build it if...
             { UCBC, 'HaveLessThanUnitsInCategoryBeingBuilt', { 1, categories.STRUCTURE * categories.MASSFABRICATION * categories.TECH3 } },
         },
@@ -233,6 +254,7 @@ BuilderGroup {
         InstanceCount = 2,
         BuilderConditions = {
             { UCBC, 'HaveGreaterThanUnitsWithCategory', { 20, categories.STRUCTURE * categories.MASSEXTRACTION }},
+
             { UCBC, 'UnitsGreaterAtLocation', { 'LocationType', 0, categories.STRUCTURE * categories.MASSFABRICATION * (categories.TECH1 + categories.TECH2) }},
         },
         BuilderData = {
@@ -258,7 +280,7 @@ BuilderGroup {
         BuilderConditions = {
             { UCBC, 'HaveGreaterThanArmyPoolWithCategorySwarm', { 0, categories.MASSEXTRACTION} },
 
-            { UCBC, 'GreaterThanGameTimeSeconds', { 240 } },
+            { UCBC, 'GreaterThanGameTimeSeconds', { 360 } },
         },
         BuilderData = {
             AIPlan = 'ExtractorUpgradeAISwarm',

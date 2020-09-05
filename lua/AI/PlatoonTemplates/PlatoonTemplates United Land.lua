@@ -11,7 +11,7 @@ PlatoonTemplate {
     Name = 'AISwarm Mass Raid Large',
     Plan = 'MassRaidSwarm',    
     GlobalSquads = {
-        { categories.TECH1 * categories.LAND * categories.MOBILE - categories.SCOUT - categories.ENGINEER - categories.EXPERIMENTAL, 6, 15, 'attack', 'none' },
+        { categories.TECH1 * categories.LAND * categories.MOBILE - categories.SCOUT - categories.ENGINEER - categories.EXPERIMENTAL, 4, 15, 'attack', 'none' },
         --{ categories.LAND * categories.SCOUT, 0, 1, 'Guard', 'none' },
     },
 }

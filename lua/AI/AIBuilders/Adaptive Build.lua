@@ -159,7 +159,7 @@ BuilderGroup { BuilderGroupName = 'T1 Phase Adaptiveness',
     BuildersType = 'EngineerBuilder',
 
     Builder {
-        BuilderName = 'Swarm Land Factory Mass > 0.4',
+        BuilderName = 'Swarm Land Factory Mass > 0.02',
         PlatoonTemplate = 'EngineerBuilderALLTECH',
         Priority = 600,
         DelayEqualBuildPlattons = {'Factories', 3},
@@ -170,7 +170,7 @@ BuilderGroup { BuilderGroupName = 'T1 Phase Adaptiveness',
             
             { EBC, 'GreaterThanEconTrendSwarm', { 0.0, 0.0 } }, 
 
-            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.04, 0.01}},
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.02, 0.01}},
 
             { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.75, 0.9 }},          
             
@@ -191,7 +191,7 @@ BuilderGroup { BuilderGroupName = 'T1 Phase Adaptiveness',
     },
 
     Builder {
-        BuilderName = 'SC Land Factory Mass > 0.4',
+        BuilderName = 'SC Land Factory Mass > 0.015',
         PlatoonTemplate = 'CommanderBuilder',
         Priority = 650,
         DelayEqualBuildPlattons = {'Factories', 3},
@@ -202,7 +202,7 @@ BuilderGroup { BuilderGroupName = 'T1 Phase Adaptiveness',
             
             { EBC, 'GreaterThanEconTrendSwarm', { 0.0, 0.0 } }, 
 
-            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.045, 0.01}},
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.015, 0.01}},
 
             { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.75, 0.9 }},          
             
@@ -234,7 +234,7 @@ BuilderGroup { BuilderGroupName = 'T1 Phase Adaptiveness',
 
             { UCBC, 'CanPathLandBaseToLandTargetsSwarm', {  'LocationType', categories.STRUCTURE * categories.FACTORY * categories.LAND }},
 
-            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.04, 0.01}},
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.035, 0.01}},
 
             { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.75, 0.9 }},
 
@@ -264,7 +264,7 @@ BuilderGroup { BuilderGroupName = 'T1 Phase Adaptiveness',
 
             { EBC, 'GreaterThanEconTrendSwarm', { 0.0, 0.0 } }, -- relative income
 
-            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.04, 0.01}},
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.035, 0.01}},
 
             { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.75, 0.9 }},
 
@@ -296,7 +296,7 @@ BuilderGroup { BuilderGroupName = 'T1 Phase Adaptiveness',
 
             { EBC, 'GreaterThanEconTrendSwarm', { 0.0, 0.0 } }, -- relative income
 
-            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.06, 0.01}},
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.03, 0.01}},
 
             { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.75, 0.9 }},
 
@@ -326,7 +326,7 @@ BuilderGroup { BuilderGroupName = 'T1 Phase Adaptiveness',
 
             { EBC, 'GreaterThanEconTrendSwarm', { 0.0, 0.0 } }, -- relative income
 
-            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.06, 0.01}},
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.03, 0.01}},
 
             { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.75, 0.9 }},
 
@@ -349,7 +349,7 @@ BuilderGroup { BuilderGroupName = 'T1 Phase Adaptiveness',
     Builder {
         BuilderName = 'Swarm Air Factory - Good Eco - No Air Factory',
         PlatoonTemplate = 'CommanderBuilder',
-        Priority = 650,
+        Priority = 655,
         DelayEqualBuildPlattons = {'Factories', 3},
         BuilderConditions = {
             { UCBC, 'CheckBuildPlattonDelay', { 'Factories' }},
@@ -358,15 +358,15 @@ BuilderGroup { BuilderGroupName = 'T1 Phase Adaptiveness',
 
             { EBC, 'GreaterThanEconTrendSwarm', { 0.0, 0.0 } }, -- relative income
 
-            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.065, 0.01}},
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.02, 0.01}},
 
-            { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.8, 0.9 }},
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.75, 0.9 }},
 
             { UCBC, 'HaveLessThanUnitsInCategoryBeingBuilt', { 2, categories.STRUCTURE * categories.FACTORY * categories.AIR * categories.TECH1 }},
         },
         BuilderType = 'Any',
         BuilderData = {
-            BuildClose = false,
+            BuildClose = true,
             Construction = {
                 Location = 'LocationType',
                 BuildStructures = {

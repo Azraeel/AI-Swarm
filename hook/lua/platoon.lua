@@ -149,10 +149,10 @@ Platoon = Class(SwarmPlatoonClass) {
     end,
 
     InterceptorAISwarm = function(self)
-        --[[ if 1==1 then
+        if 1==1 then
             self:HeroFightPlatoonSwarm()
             return
-        end ]]--
+        end 
         AIAttackUtils.GetMostRestrictiveLayer(self) -- this will set self.MovementLayer to the platoon
         local aiBrain = self:GetBrain()
         -- Search all platoon units and activate Stealth and Cloak (mostly Modded units)
@@ -301,10 +301,10 @@ Platoon = Class(SwarmPlatoonClass) {
     end,
 
     LandAttackAISwarm = function(self)
-        --[[ if 1==1 then
+        if 1==1 then
             self:HeroFightPlatoonSwarm()
             return
-        end ]]--
+        end 
         AIAttackUtils.GetMostRestrictiveLayer(self) -- this will set self.MovementLayer to the platoon
         -- Search all platoon units and activate Stealth and Cloak (mostly Modded units)
         local platoonUnits = self:GetPlatoonUnits()
@@ -448,10 +448,10 @@ Platoon = Class(SwarmPlatoonClass) {
     end,
 
     NavalAttackAISwarm = function(self)
-        --[[ if 1==1 then
+        if 1==1 then
             self:HeroFightPlatoonSwarm()
             return
-        end ]]--
+        end 
         AIAttackUtils.GetMostRestrictiveLayer(self) -- this will set self.MovementLayer to the platoon
         -- Search all platoon units and activate Stealth and Cloak (mostly Modded units)
         local platoonUnits = self:GetPlatoonUnits()
@@ -5357,7 +5357,7 @@ Platoon = Class(SwarmPlatoonClass) {
             end
             -- Search for a target
             if not target or target.Dead then
-                UnitWithPath, UnitNoPath, path, reason = AIUtils.AIFindNearestCategoryTargetInRange(aiBrain, self, 'Attack', PlatoonCenterPosition, maxRadius, MoveToCategories, TargetSearchCategory, false )
+                UnitWithPath, UnitNoPath, path, reason = AIUtils.AIFindNearestCategoryTargetInRangeSwarm(aiBrain, self, 'Attack', PlatoonCenterPosition, maxRadius, MoveToCategories, TargetSearchCategory, false )
                 target = UnitWithPath or UnitNoPath
             end
             -- remove target, if we are out of base range
@@ -5477,7 +5477,7 @@ Platoon = Class(SwarmPlatoonClass) {
                     return
                 end
                 -- get a target on every loop, so we can see targets that are moving closer
-                TargetInPlatoonRange = AIUtils.AIFindNearestCategoryTargetInCloseRange(aiBrain, PlatoonCenterPosition, MaxPlatoonWeaponRange + 30 , {categories.ALLUNITS - categories.SCOUT}, TargetSearchCategory, false)
+                TargetInPlatoonRange = AIUtils.AIFindNearestCategoryTargetInCloseRangeSwarm(aiBrain, PlatoonCenterPosition, MaxPlatoonWeaponRange + 30 , {categories.ALLUNITS - categories.SCOUT}, TargetSearchCategory, false)
                 if TargetInPlatoonRange and not TargetInPlatoonRange.Dead then
                     --LOG('* AI-Swarm: * HeroFightPlatoon: TargetInPlatoonRange: ['..repr(TargetInPlatoonRange.UnitId)..']')
                     LastTargetPos = TargetInPlatoonRange:GetPosition()
