@@ -41,7 +41,7 @@ BaseBuilderTemplate {
         -- ==== Factory ==== --
         -----------------------------------------------------------------------------
         -- Build Land/Air Factories
-        'T1 Phase Adaptiveness',
+        'Swarm Adaptive Factory Build',
         -- Upgrade Factories TECH1->TECH2 and TECH2->TECH3
         'Swarm Factory Upgrader Rush',
         'Swarm Gate Builders',
@@ -61,6 +61,7 @@ BaseBuilderTemplate {
         -- ==== Air Units BUILDER ==== --
         -----------------------------------------------------------------------------
         'Swarm Air Builders',
+        'Swarm Adaptive Air Build',
 
         -----------------------------------------------------------------------------
         -- ==== Air Units FORMER==== --

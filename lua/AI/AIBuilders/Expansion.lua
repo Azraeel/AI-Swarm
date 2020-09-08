@@ -60,13 +60,15 @@ BuilderGroup {
         BuilderConditions = {
             { UCBC, 'ExpansionBaseCheck', { } },
 
-            { UCBC, 'StartLocationNeedsEngineer', { 'LocationType', 1000, -1000, 100, 1, 'StructuresNotMex' } },
+            { UCBC, 'StartLocationNeedsEngineer', { 'LocationType', 1000, -1000, 100, 1, 'AntiSurface' } },
+
+            { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 0, categories.ENGINEER * categories.TECH1 - categories.COMMAND - categories.STATIONASSISTPOD }},
 
             { EBC, 'GreaterThanEconTrendSwarm', { 0.0, 0.0 } }, 
 
-            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.05, 0.50}},
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.05, 0.35}},
 
-            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.0, 1.0 }},
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.85, 0.9 }},
         },
         BuilderType = 'Any',
         BuilderData = {
@@ -98,13 +100,15 @@ BuilderGroup {
         BuilderConditions = {
             { UCBC, 'ExpansionBaseCheck', { } },
 
-            { UCBC, 'StartLocationNeedsEngineer', { 'LocationType', 1000, -1000, 100, 1, 'StructuresNotMex' } },
+            { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 0, categories.ENGINEER * categories.TECH1 - categories.COMMAND - categories.STATIONASSISTPOD }},
+
+            { UCBC, 'StartLocationNeedsEngineer', { 'LocationType', 1000, -1000, 100, 1, 'AntiSurface' } },
 
             { EBC, 'GreaterThanEconTrendSwarm', { 0.0, 0.0 } }, 
 
-            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.05, 0.50}},
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.05, 0.35}},
 
-            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.0, 1.0 }},
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.85, 0.9 }},
         },
         BuilderType = 'Any',
         BuilderData = {
@@ -136,13 +140,15 @@ BuilderGroup {
         BuilderConditions = {
             { UCBC, 'ExpansionBaseCheck', { } },
 
-            { UCBC, 'StartLocationNeedsEngineer', { 'LocationType', 1000, -1000, 100, 1, 'StructuresNotMex' } },
+            { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 0, categories.ENGINEER * categories.TECH1 - categories.COMMAND - categories.STATIONASSISTPOD }},
+
+            { UCBC, 'ExpansionAreaNeedsEngineer', { 'LocationType', 1000, -1000, 100, 1, 'AntiSurface' } },
 
             { EBC, 'GreaterThanEconTrendSwarm', { 0.0, 0.0 } }, 
 
-            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.05, 0.50}},
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.05, 0.35}},
 
-            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.0, 1.0 }},
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.85, 0.9 }},
         },
         BuilderType = 'Any',
         BuilderData = {
@@ -174,13 +180,15 @@ BuilderGroup {
         BuilderConditions = {
             { UCBC, 'ExpansionBaseCheck', { } },
 
-            { UCBC, 'StartLocationNeedsEngineer', { 'LocationType', 1000, -1000, 100, 1, 'StructuresNotMex' } },
+            { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 0, categories.ENGINEER * categories.TECH1 - categories.COMMAND - categories.STATIONASSISTPOD }},
+
+            { UCBC, 'ExpansionAreaNeedsEngineer', { 'LocationType', 1000, -1000, 100, 1, 'AntiSurface' } },
 
             { EBC, 'GreaterThanEconTrendSwarm', { 0.0, 0.0 } }, 
 
-            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.05, 0.50}},
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.05, 0.35}},
 
-            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.0, 1.0 }},
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.85, 0.9 }},
         },
         BuilderType = 'Any',
         BuilderData = {
@@ -211,6 +219,8 @@ BuilderGroup {
         InstanceCount = 2,                                                      -- Number of plattons that will be formed with this template.
         BuilderConditions = {
             { UCBC, 'NavalBaseCheck', { } },
+
+            { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 0, categories.ENGINEER * categories.TECH1 - categories.COMMAND - categories.STATIONASSISTPOD }},
 
             { UCBC, 'NavalAreaNeedsEngineer', { 'LocationType', 750, -1000, 100, 1, 'AntiSurface' } },
 

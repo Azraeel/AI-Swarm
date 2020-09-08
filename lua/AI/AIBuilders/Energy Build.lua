@@ -3,32 +3,28 @@ local UCBC = '/lua/editor/UnitCountBuildConditions.lua'
 local MIBC = '/lua/editor/MiscBuildConditions.lua'
 local MABC = '/lua/editor/MarkerBuildConditions.lua'
 
-local MaxCapStructure = 0.12                                                    -- 12% of all units can be structures (STRUCTURE -MASSEXTRACTION -DEFENSE -FACTORY)
+local MaxCapStructure = 0.12                                                   
 
 -- ===================================================-======================================================== --
 -- ==                                       Build Power TECH 1,2,3                                           == --
 -- ===================================================-======================================================== --
 BuilderGroup {
-    -- Build Power TECH 1,2,3
-    BuilderGroupName = 'S123 Energy Builders',                               -- BuilderGroupName, initalized from AIBaseTemplates in "\lua\AI\AIBaseTemplates\"
+    BuilderGroupName = 'S123 Energy Builders',                              
     BuildersType = 'EngineerBuilder',
-    -- ============ --
-    --    TECH 1    --
-    -- ============ --
     Builder {
         BuilderName = 'Swarm Power low trend',
         PlatoonTemplate = 'EngineerBuilder',
         Priority = 650,
-        InstanceCount = 2,                                                      -- Number of plattons that will be formed with this template.
+        InstanceCount = 2,                                                     
         DelayEqualBuildPlattons = {'Energy', 3},
         BuilderConditions = {
-            { EBC, 'LessThanEnergyTrend', { 0.0 } },             -- Ratio from 0 to 1. (1=100%)
+            { EBC, 'LessThanEnergyTrend', { 0.0 } },             
 
             { UCBC, 'HaveLessThanUnitsWithCategory', { 1, categories.ENERGYPRODUCTION * categories.TECH2 } },
 
             { UCBC, 'HasNotParagon', {} },
 
-            { EBC, 'GreaterThanEconIncomeSwarm',  { 0.5, 0.0}}, -- Absolut Base income
+            { EBC, 'GreaterThanEconIncomeSwarm',  { 0.5, 0.0}},
 
             { UCBC, 'GreaterThanGameTimeSeconds', { 260 } },
 
@@ -49,14 +45,20 @@ BuilderGroup {
         }
     },
 
+    --==========================--
+    --  Early Game Power Scale  --
+    --==========================--
+
     Builder {
-        BuilderName = 'Swarm Power low trend - Overbuild',
+        BuilderName = 'Swarm Power low trend - Scale Power',
         PlatoonTemplate = 'EngineerBuilder',
         Priority = 650,
         InstanceCount = 2,                                                      -- Number of plattons that will be formed with this template.
         DelayEqualBuildPlattons = {'Energy', 3},
         BuilderConditions = {
             { UCBC, 'CheckBuildPlattonDelay', { 'Energy' }},
+
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.015, 0}},
 
             { EBC, 'LessThanEnergyTrend', { 7.5 } },
 
@@ -82,6 +84,105 @@ BuilderGroup {
             }
         }
     },
+
+    Builder {
+        BuilderName = 'Swarm Engineer Power MassRatio 10',
+        PlatoonTemplate = 'EngineerBuilder',
+        Priority = 655,
+        InstanceCount = 2,
+        BuilderConditions = {
+            { EBC, 'EnergyToMassRatioIncome', { 10.0, '<=' } },  -- True if we have less than 10 times more Energy then Mass income ( 100 <= 10 = true )
+
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.15, 0}},
+
+            { UCBC, 'HaveLessThanUnitsWithCategory', { 1, categories.ENERGYPRODUCTION * categories.TECH2 } },
+
+            { UCBC, 'HasNotParagon', {} },
+
+            { EBC, 'GreaterThanEconIncomeSwarm',  { 0.5, 0.0}}, -- Absolut Base income
+
+            { UCBC, 'GreaterThanGameTimeSeconds', { 120 } },
+        },
+        InstanceCount = 1,
+        BuilderType = 'Any',
+        BuilderData = {
+            Construction = {
+                AdjacencyCategory = categories.STRUCTURE * categories.FACTORY * (categories.LAND + categories.AIR),
+                AdjacencyDistance = 50,
+                BuildClose = true,
+                LocationType = 'LocationType',
+                BuildStructures = {
+                    'T1EnergyProduction',
+                    'T1EnergyProduction',
+                    'T1EnergyProduction',
+                },
+            }
+        }
+    },
+
+    Builder {
+        BuilderName = 'Swarm Engineer Power MassRatio 5',
+        PlatoonTemplate = 'EngineerBuilder',
+        Priority = 655,
+        InstanceCount = 1,
+        BuilderConditions = {
+            { EBC, 'EnergyToMassRatioIncome', { 5.0, '<=' } },  -- True if we have less than 10 times more Energy then Mass income ( 100 <= 10 = true )
+
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.10, 0}},
+
+            { UCBC, 'HaveLessThanUnitsWithCategory', { 1, categories.ENERGYPRODUCTION * categories.TECH2 } },
+
+            { UCBC, 'HasNotParagon', {} },
+
+            { EBC, 'GreaterThanEconIncomeSwarm',  { 0.5, 0.0}}, -- Absolut Base income
+
+            { UCBC, 'GreaterThanGameTimeSeconds', { 180 } },
+        },
+        InstanceCount = 1,
+        BuilderType = 'Any',
+        BuilderData = {
+            Construction = {
+                AdjacencyCategory = categories.STRUCTURE * categories.FACTORY * (categories.LAND + categories.AIR),
+                AdjacencyDistance = 50,
+                BuildClose = true,
+                LocationType = 'LocationType',
+                BuildStructures = {
+                    'T1EnergyProduction',
+                    'T1EnergyProduction',
+                },
+            }
+        }
+    },
+
+    Builder {
+        BuilderName = 'Swarm Power Hydrocarbon',
+        PlatoonTemplate = 'EngineerBuilder',
+        Priority = 675,
+        DelayEqualBuildPlattons = {'Energy', 1},
+        InstanceCount = 1,
+        BuilderConditions = {
+            -- When do we want to build this ?
+            { MABC, 'CanBuildOnHydroSwarm', { 'LocationType', 50, -1000, 100, 1, 'AntiSurface', 1 }},            -- Do we need additional conditions to build it ?
+
+            { UCBC, 'HasNotParagon', {} },
+
+            { EBC, 'GreaterThanEconIncomeSwarm',  { 0.2, 2.0}}, -- Absolut Base income 4 60
+
+            { UCBC, 'CheckBuildPlattonDelay', { 'Energy' }},
+        },
+        BuilderType = 'Any',
+        BuilderData = {
+            Construction = {
+                BuildStructures = {
+                    'T1HydroCarbon',
+                }
+            }
+        }
+    },
+
+    --==========================--
+    -- Commander Energy Builders--
+    --==========================--
 
     Builder {
         BuilderName = 'Swarm Power low trend',
@@ -114,7 +215,7 @@ BuilderGroup {
     },
 
     Builder {
-        BuilderName = 'Swarm Power MassRatio',
+        BuilderName = 'Swarm Commander Power MassRatio 10',
         PlatoonTemplate = 'CommanderBuilder',
         Priority = 650,
         BuilderConditions = {
@@ -139,32 +240,6 @@ BuilderGroup {
                 BuildStructures = {
                     'T1EnergyProduction',
                 },
-            }
-        }
-    },
-
-    Builder {
-        BuilderName = 'Swarm Power Hydrocarbon',
-        PlatoonTemplate = 'EngineerBuilder',
-        Priority = 675,
-        DelayEqualBuildPlattons = {'Energy', 1},
-        InstanceCount = 1,
-        BuilderConditions = {
-            -- When do we want to build this ?
-            { MABC, 'CanBuildOnHydroSwarm', { 'LocationType', 50, -1000, 100, 1, 'AntiSurface', 1 }},            -- Do we need additional conditions to build it ?
-
-            { UCBC, 'HasNotParagon', {} },
-
-            { EBC, 'GreaterThanEconIncomeSwarm',  { 0.2, 2.0}}, -- Absolut Base income 4 60
-
-            { UCBC, 'CheckBuildPlattonDelay', { 'Energy' }},
-        },
-        BuilderType = 'Any',
-        BuilderData = {
-            Construction = {
-                BuildStructures = {
-                    'T1HydroCarbon',
-                }
             }
         }
     },

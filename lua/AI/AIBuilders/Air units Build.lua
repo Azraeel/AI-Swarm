@@ -34,7 +34,25 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Builders',
     },
 
     Builder {
-        BuilderName = 'T1-T2AirFighter - Swarm - Constant',
+        BuilderName = 'T1-T2AirFighter - Swarm - Minimum',
+        PlatoonTemplate = 'T1AirFighter',
+        Priority = 755,
+        BuilderConditions = {
+            { EBC, 'GreaterThanEconIncomeSwarm', { 2.5, 100 } },
+
+            { UCBC, 'HaveLessThanUnitsWithCategory', { 10, categories.MOBILE * categories.ANTIAIR * categories.AIR * categories.TECH1 - categories.GROUNDATTACK }},
+
+            { UCBC, 'UnitCapCheckLess', { 0.98 } },
+
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.9, 1.1 }},
+
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.01, 0.01}},
+        },
+        BuilderType = 'Air',
+    },
+
+    Builder {
+        BuilderName = 'T1-T2AirFighter - Swarm',
         PlatoonTemplate = 'T1AirFighter',
         Priority = 760,
         BuilderConditions = {
@@ -133,28 +151,6 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Builders',
     },
 
     Builder {
-        BuilderName = 'T2TorpedoBomber - Swarm - WaterMap',
-        PlatoonTemplate = 'T2AirTorpedoBomber',
-        Priority = 750,
-        BuilderConditions = {
-            { MIBC, 'CanPathToCurrentEnemySwarm', { false } },
-
-            { UCBC, 'HaveLessThanUnitsWithCategory', { 80, categories.MOBILE * categories.AIR * categories.ANTINAVY }},
-
-            { UCBC, 'HaveLessThanUnitsWithCategory', { 1, categories.MOBILE * categories.AIR * categories.ANTINAVY * categories.TECH3 }},
-            -- Respect UnitCap
-            { UCBC, 'HaveUnitRatioVersusCapSwarm', { MaxAttackForce , '<=', categories.MOBILE - categories.ENGINEER } },
-
-            { EBC, 'GreaterThanEconIncomeSwarm', { 1, 20 } },
-
-            { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.75, 1.0 }},
-
-            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.01, 0.01}},
-        },
-        BuilderType = 'Air',
-    },
-
-    Builder {
         BuilderName = 'T2AirGunship - Swarm',
         PlatoonTemplate = 'T2AirGunship',
         Priority = 750,
@@ -202,7 +198,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Builders',
         BuilderConditions = {
             { EBC, 'GreaterThanEconIncomeSwarm', { 2.5, 100 } },
 
-            { UCBC, 'HaveLessThanUnitsWithCategory', { 2, categories.MOBILE * categories.AIR * categories.HIGHALTAIR * categories.ANTIAIR * categories.TECH3 - categories.GROUNDATTACK }},
+            { UCBC, 'HaveLessThanUnitsWithCategory', { 10, categories.MOBILE * categories.AIR * categories.HIGHALTAIR * categories.ANTIAIR * categories.TECH3 - categories.GROUNDATTACK }},
 
             { UCBC, 'UnitCapCheckLess', { 0.98 } },
 
@@ -214,71 +210,18 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Builders',
     },
 
     Builder {
-        BuilderName = 'T3AirGunship - Swarm - Minimum',
-        PlatoonTemplate = 'T3AirGunship',
-        Priority = 950,
-        BuilderConditions = {
-            { EBC, 'GreaterThanEconIncomeSwarm', { 2.5, 100 } },
-
-            { UCBC, 'HaveLessThanUnitsWithCategory', { 2, categories.MOBILE * categories.AIR * categories.GROUNDATTACK * categories.TECH3 - categories.HIGHALTAIR }},
-
-            { UCBC, 'UnitCapCheckLess', { 0.98 } },
-
-            { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.9, 1.1 }},
-
-            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.01, 0.01}},
-        },
-        BuilderType = 'Air',
-    },
-
-    Builder {
-        BuilderName = 'T3AirFighter < Gunship - Swarm',
+        BuilderName = 'T3AirFighter - Swarm',
         PlatoonTemplate = 'T3AirFighter',
         Priority = 900,
         BuilderConditions = {
             { EBC, 'GreaterThanEconIncomeSwarm', { 2.5, 100 } },
 
-            { UCBC, 'HaveUnitRatioSwarm', { 2.50, categories.MOBILE * categories.AIR * categories.HIGHALTAIR * categories.ANTIAIR - categories.GROUNDATTACK, '<=',categories.MOBILE * categories.AIR * categories.GROUNDATTACK - categories.HIGHALTAIR } },
+            { UCBC, 'HaveGreaterThanUnitsWithCategory', { 1, categories.MOBILE * categories.ENGINEER - categories.STATIONASSISTPOD}},
 
-            { UCBC, 'UnitCapCheckLess', { 0.98 } },
+            { UCBC, 'LocationFactoriesBuildingLess', { 'LocationType', 2, categories.MOBILE * categories.ANTIAIR * categories.AIR * categories.TECH3 } },
 
-            { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.9, 1.1 }},
+            { UCBC, 'HaveGreaterThanUnitsWithCategory', { 0, categories.STRUCTURE * categories.LAND * categories.FACTORY * categories.TECH1 }},
 
-            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.01, 0.01}},
-        },
-        BuilderType = 'Air',
-    },
-    Builder {
-        BuilderName = 'T3AirGunship < Fighter - Swarm',
-        PlatoonTemplate = 'T3AirGunship',
-        Priority = 900,
-        BuilderConditions = {
-            { EBC, 'GreaterThanEconIncomeSwarm', { 2.5, 100 } },
-
-            { UCBC, 'HaveUnitRatioSwarm', { 2.50, categories.MOBILE * categories.AIR * categories.HIGHALTAIR * categories.ANTIAIR - categories.GROUNDATTACK, '>=',categories.MOBILE * categories.AIR * categories.GROUNDATTACK - categories.HIGHALTAIR } },
-
-            { UCBC, 'UnitCapCheckLess', { 0.98 } },
-
-            { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.9, 1.1 }},
-
-            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.01, 0.01}},
-        },
-        BuilderType = 'Air',
-    },
-
-    Builder {
-        BuilderName = 'T3AirBomber < 20 - Swarm',
-        PlatoonTemplate = 'T3AirBomber',
-        Priority = 900,
-        BuilderConditions = {
-            { EBC, 'GreaterThanEconIncomeSwarm', { 2.5, 100 } },
-
-            { UCBC, 'HaveLessThanUnitsWithCategory', { 20, categories.MOBILE * categories.AIR * categories.BOMBER }},
-
-            { UCBC, 'HaveGreaterThanUnitsWithCategory', { 0, categories.MOBILE * categories.EXPERIMENTAL }},
-
-            { UCBC, 'HaveLessThanUnitsInCategoryBeingBuilt', { 1, categories.MOBILE * categories.AIR  * categories.BOMBER }},
-            -- Respect UnitCap
             { UCBC, 'UnitCapCheckLess', { 0.98 } },
 
             { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.9, 1.1 }},

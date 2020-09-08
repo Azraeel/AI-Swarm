@@ -114,7 +114,8 @@ BaseBuilderTemplate {
         'Swarm Amphibious Formers',
 
 
-        'T1 Phase Adaptiveness',
+        'Swarm Adaptive Factory Build',
+        'Swarm Adaptive Air Build',
         -----------------------------------------------------------------------------
         -- ==== Scout BUILDER ==== --
         -----------------------------------------------------------------------------
