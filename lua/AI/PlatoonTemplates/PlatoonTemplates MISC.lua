@@ -5,7 +5,7 @@ PlatoonTemplate {
     GlobalSquads = {
         { categories.MASSEXTRACTION * (categories.TECH1 + categories.TECH2 + categories.TECH3) , 1, 300, 'support', 'none' }
     },
-}
+} 
 
 PlatoonTemplate {
     Name = 'AddToNukePlatoon',

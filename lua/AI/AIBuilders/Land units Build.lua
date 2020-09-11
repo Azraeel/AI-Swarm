@@ -59,8 +59,8 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',                  
         BuilderType = 'Land', 
     },
 
-    Builder { BuilderName = 'T1LandDFTank - Swarm',
-        PlatoonTemplate = 'T1LandDFTank',
+    Builder { BuilderName = 'Swarm-AI - T1 Land Standard Queue',
+        PlatoonTemplate = 'T1LandStandardQueue',
         Priority = 500,
         BuilderConditions = {
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
@@ -72,29 +72,6 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',                  
             { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.01, 0.1}},
 
             { MIBC, 'CanPathToCurrentEnemySwarm', { true } },
-
-            { UCBC, 'PoolLessAtLocation', { 'LocationType', 25, categories.DIRECTFIRE * categories.LAND }},
-        },
-        BuilderType = 'Land',
-    },
-
-    Builder { BuilderName = 'T1LandArtillery - Swarm',
-        PlatoonTemplate = 'T1LandArtillery',
-        Priority = 500,
-        BuilderConditions = {
-            { UCBC, 'UnitCapCheckLess', { 0.95 } },
-
-            { EBC, 'GreaterThanEconIncomeSwarm', { 0.2, 2 } },
-
-            { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.6, 0.8 }},
-
-            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.01, 0.1}},
-
-            { MIBC, 'CanPathToCurrentEnemySwarm', { true } },
-
-            { UCBC, 'PoolLessAtLocation', { 'LocationType', 5, categories.INDIRECTFIRE * categories.LAND }},
-
-            { UCBC, 'HaveGreaterThanUnitsWithCategory', { 3, categories.LAND * categories.MOBILE * categories.DIRECTFIRE - categories.ENGINEER }},
         },
         BuilderType = 'Land',
     },
@@ -561,7 +538,7 @@ BuilderGroup {
         BuilderName = 'AI-Swarm Standard Land (80) E',
         PlatoonTemplate = 'AISwarm LandAttack Micro - Standard', 
         Priority = 650,
-        InstanceCount = 4,
+        InstanceCount = 8,
         BuilderType = 'Any',
         BuilderConditions = { 
             { UCBC, 'ScalePlatoonSizeSwarm', { 'LocationType', 'LAND', categories.MOBILE * categories.LAND - categories.ENGINEER - categories.EXPERIMENTAL } },
@@ -596,7 +573,7 @@ BuilderGroup {
         BuilderName = 'AI-Swarm Standard Land (120) E',
         PlatoonTemplate = 'AISwarm LandAttack Micro - Standard', 
         Priority = 650,
-        InstanceCount = 4,
+        InstanceCount = 8,
         BuilderType = 'Any',
         BuilderConditions = { 
             { UCBC, 'ScalePlatoonSizeSwarm', { 'LocationType', 'LAND', categories.MOBILE * categories.LAND - categories.ENGINEER - categories.EXPERIMENTAL } },
@@ -850,7 +827,7 @@ BuilderGroup {
     BuilderGroupName = 'Swarm AI United Land Formers',                         
     BuildersType = 'PlatoonFormBuilder', 
 
-    --[[ Builder {
+    Builder {
         BuilderName = 'AI-Swarm Attack Force - United Land - Small',
         PlatoonTemplate = 'AI-Swarm Attack Force - United Land - Small',
         PlatoonAddPlans = {'PlatoonCallForHelpAISwarm', 'DistressResponseAISwarm'},
@@ -878,6 +855,8 @@ BuilderGroup {
             },
         },        
         BuilderConditions = {
+            { MIBC, 'GreaterThanGameTime', { 1800 } }, 
+
             { MIBC, 'CanPathToCurrentEnemySwarm', { true } },
         },
     },
@@ -910,8 +889,10 @@ BuilderGroup {
             },
         },        
         BuilderConditions = {
+            { MIBC, 'GreaterThanGameTime', { 1800 } }, 
+            
             { MIBC, 'CanPathToCurrentEnemySwarm', { true } },
         },
-    }, ]]--
+    }, 
 }
 

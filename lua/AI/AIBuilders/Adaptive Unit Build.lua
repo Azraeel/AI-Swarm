@@ -9,7 +9,7 @@ BuilderGroup {
     BuilderGroupName = 'Swarm Adaptive Air Build',
     BuildersType = 'FactoryBuilder',
 
-    Builder {
+    --[[ Builder {
         BuilderName = 'T1AirBomber - Crush Enemy - Swarm',
         PlatoonTemplate = 'T1AirBomber',
         Priority = 550,
@@ -181,5 +181,5 @@ BuilderGroup {
             { UCBC, 'HaveLessThanUnitsWithCategory', { 3, categories.FACTORY * categories.AIR * categories.TECH3 }},
         },
         BuilderType = 'Air',
-    },
+    }, ]]--
 }

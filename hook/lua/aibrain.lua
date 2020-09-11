@@ -12,7 +12,7 @@ AIBrain = Class(SwarmAIBrainClass) {
         end
     end,
 
-   ExpansionHelpThread = function(self)
+    ExpansionHelpThread = function(self)
        -- Only use this with AI-Swarm
         if not self.Swarm then
             return SwarmAIBrainClass.ExpansionHelpThread(self)

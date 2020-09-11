@@ -110,7 +110,7 @@ function ExtractorPauseSwarm(self, aiBrain, MassExtractorUnitList, ratio, techLe
     if MassRatioCheckNegative then
         if UpgradingBuildingNum > 1 then
             -- we don't have the eco to upgrade the extractor. Pause it!
-            if aiBrain:GetEconomyTrend('MASS') <= 0 and aiBrain:GetEconomyStored('MASS') <= 0.80  then
+            if aiBrain:GetEconomyTrend('MASS') <= 0 and aiBrain:GetEconomyStored('MASS') <= 0.10  then
                 UpgradingBuilding:SetPaused( true )
                 --UpgradingBuilding:SetCustomName('UpgradingBuilding paused')
                 --LOG('UpgradingBuilding paused')
@@ -118,7 +118,7 @@ function ExtractorPauseSwarm(self, aiBrain, MassExtractorUnitList, ratio, techLe
                 return true
             end
         end
-        if PausedUpgradingBuilding then
+        --[[ if PausedUpgradingBuilding then
             -- if we stall mass, then cancel the upgrade
             if aiBrain:GetEconomyTrend('MASS') <= 0 and aiBrain:GetEconomyStored('MASS') <= 0  then
                 IssueClearCommands({PausedUpgradingBuilding})
@@ -128,7 +128,7 @@ function ExtractorPauseSwarm(self, aiBrain, MassExtractorUnitList, ratio, techLe
                 --LOG('* ExtractorPauseSwarm: Cancel upgrading extractor')
                 return true
             end 
-        end
+        end ]]--
     end
     return false
 end

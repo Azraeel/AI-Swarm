@@ -354,6 +354,8 @@ BuilderGroup { BuilderGroupName = 'Swarm Adaptive Factory Build',
         BuilderConditions = {
             { UCBC, 'CheckBuildPlattonDelay', { 'Factories' }},
 
+            { UCBC, 'HaveLessThanUnitsWithCategory', { 1, categories.STRUCTURE * categories.FACTORY * categories.AIR } },
+
             { UCBC, 'HaveGreaterThanUnitsWithCategory', { 1, categories.STRUCTURE * categories.FACTORY * categories.LAND } },
 
             { EBC, 'GreaterThanEconTrendSwarm', { 0.0, 0.0 } }, -- relative income
@@ -362,7 +364,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Adaptive Factory Build',
 
             { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.75, 0.9 }},
 
-            { UCBC, 'HaveLessThanUnitsInCategoryBeingBuilt', { 2, categories.STRUCTURE * categories.FACTORY * categories.AIR * categories.TECH1 }},
+            { UCBC, 'HaveLessThanUnitsInCategoryBeingBuilt', { 1, categories.STRUCTURE * categories.FACTORY * categories.AIR * categories.TECH1 }},
         },
         BuilderType = 'Any',
         BuilderData = {
