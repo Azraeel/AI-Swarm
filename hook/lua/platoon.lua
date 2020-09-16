@@ -1283,19 +1283,19 @@ Platoon = Class(SwarmPlatoonClass) {
                 -- if we have a paragon, upgrade mex as fast as possible. Mabye we lose the paragon and need mex again.
                 ratio = 1.0
             elseif aiBrain:GetEconomyIncome('MASS') > 500 then
-                --LOG('* AI-Swarm: Mass over 500. Eco running with 30%')
-                ratio = 0.30
+                --LOG('* AI-Swarm: Mass over 500. Eco running with 50%')
+                ratio = 0.50
             elseif GetGameTimeSeconds() > 1800 then -- 30 * 60
-                ratio = 0.20
+                ratio = 0.35
             elseif GetGameTimeSeconds() > 1200 then -- 20 * 60
-                ratio = 0.15
+                ratio = 0.25
             elseif GetGameTimeSeconds() > 900 then -- 15 * 60
-                ratio = 0.10
+                ratio = 0.20
             elseif GetGameTimeSeconds() > 600 then -- 10 * 60
+                ratio = 0.15
+            elseif GetGameTimeSeconds() > 300 then -- 5 * 60
                 ratio = 0.10
-            elseif GetGameTimeSeconds() > 360 then -- 6 * 60
-                ratio = 0.10
-            elseif GetGameTimeSeconds() <= 360 then -- 6 * 60 run the first 6 minutes with 0% Eco and 100% Army
+            elseif GetGameTimeSeconds() <= 300 then -- 5 * 50 run the first 5 minutes with 0% Eco and 100% Army
                 ratio = 0.00
             end
             local platoonUnits = self:GetPlatoonUnits()

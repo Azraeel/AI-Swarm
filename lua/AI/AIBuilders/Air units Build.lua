@@ -16,8 +16,8 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Builders',
     -- ============ --
 
     Builder {
-        BuilderName = 'Swarm-AI - T1 Air Default Queue',
-        PlatoonTemplate = 'T1AirDefaultQueue',
+        BuilderName = 'Swarm-AI - T1 Air Fight Group',
+        PlatoonTemplate = 'SwarmAIFighterGroup',
         Priority = 500,
         BuilderConditions = {
             { UCBC, 'HaveGreaterThanUnitsWithCategory', { 0, categories.MOBILE * categories.ENGINEER - categories.STATIONASSISTPOD}},
@@ -31,6 +31,30 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Builders',
             { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.7, 0.8 }},
 
             { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.01, 0.01}},
+
+            { UCBC, 'AirStrengthRatioLessThan', { 1 } },
+        },
+        BuilderType = 'Air',
+    },
+
+    Builder {
+        BuilderName = 'Swarm-AI - T1 Air Attack Group',
+        PlatoonTemplate = 'SwarmAIT1AirAttack',
+        Priority = 450,
+        BuilderConditions = {
+            { UCBC, 'HaveGreaterThanUnitsWithCategory', { 0, categories.MOBILE * categories.ENGINEER - categories.STATIONASSISTPOD}},
+
+            { UCBC, 'HaveGreaterThanUnitsWithCategory', { 0, categories.STRUCTURE * categories.LAND * categories.FACTORY * categories.TECH1 }},
+
+            { UCBC, 'HaveLessThanUnitsWithCategory', { 2, categories.MOBILE * categories.AIR * categories.TECH3 - categories.ENGINEER }},
+
+            { EBC, 'GreaterThanEconIncomeSwarm', { 0.2, 2 } },
+
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.7, 0.8 }},
+
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.01, 0.01}},
+
+            { UCBC, 'AirStrengthRatioGreaterThan', { 1 } },
         },
         BuilderType = 'Air',
     },
@@ -39,8 +63,8 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Builders',
     --    TECH 2    --
     -- ============ --
     Builder {
-        BuilderName = 'Swarm-AI - T2 Air Default Queue',
-        PlatoonTemplate = 'T2AirDefaultQueue',
+        BuilderName = 'Swarm-AI - T2 Air Fighter Group',
+        PlatoonTemplate = 'SwarmAIFighterGroupT2',
         Priority = 750,
         BuilderConditions = {
             { UCBC, 'HaveUnitRatioVersusCapSwarm', { MaxAttackForce , '<=', categories.MOBILE - categories.ENGINEER } },
@@ -50,6 +74,26 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Builders',
             { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.75, 1.0 }},
 
             { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.01, 0.01}},
+
+            { UCBC, 'AirStrengthRatioLessThan', { 1 } },
+        },
+        BuilderType = 'Air',
+    },
+
+    Builder {
+        BuilderName = 'Swarm-AI - T2 Air Attack Group',
+        PlatoonTemplate = 'SwarmAIT2AirAttack',
+        Priority = 700,
+        BuilderConditions = {
+            { UCBC, 'HaveUnitRatioVersusCapSwarm', { MaxAttackForce , '<=', categories.MOBILE - categories.ENGINEER } },
+
+            { EBC, 'GreaterThanEconIncomeSwarm', { 1, 20 } },
+
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.75, 1.0 }},
+
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.01, 0.01}},
+
+            { UCBC, 'AirStrengthRatioGreaterThan', { 1 } },
         },
         BuilderType = 'Air',
     },
@@ -59,8 +103,8 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Builders',
     -- ============ --
 
     Builder {
-        BuilderName = 'Swarm-AI - T3 Air Default Queue',
-        PlatoonTemplate = 'T3AirDefaultQueue',
+        BuilderName = 'Swarm-AI - T3 Air Fighter Group',
+        PlatoonTemplate = 'SwarmAIT3AirFighterGroup',
         Priority = 950,
         BuilderConditions = {
             { EBC, 'GreaterThanEconIncomeSwarm', { 2.5, 100 } },
@@ -70,6 +114,26 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Builders',
             { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.9, 1.1 }},
 
             { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.01, 0.01}},
+
+            { UCBC, 'AirStrengthRatioLessThan', { 1 } },
+        },
+        BuilderType = 'Air',
+    },
+
+    Builder {
+        BuilderName = 'Swarm-AI - T3 Air Attack Group',
+        PlatoonTemplate = 'SwarmAIT3AirAttackQueue',
+        Priority = 900,
+        BuilderConditions = {
+            { EBC, 'GreaterThanEconIncomeSwarm', { 2.5, 100 } },
+
+            { UCBC, 'UnitCapCheckLess', { 0.98 } },
+
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.9, 1.1 }},
+
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.01, 0.01}},
+
+            { UCBC, 'AirStrengthRatioGreaterThan', { 1 } },
         },
         BuilderType = 'Air',
     },
@@ -702,6 +766,8 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Formers',
         },
         BuilderConditions = {                                                   
             { UCBC, 'EnemyUnitsLessAtLocationRadiusSwarm', {  BaseMilitaryZone, 'LocationType', 1, categories.MOBILE * categories.EXPERIMENTAL }}, 
+
+            { UCBC, 'AirStrengthRatioGreaterThan', { 1 } },
         },
         BuilderType = 'Any',                                                    
     },
@@ -732,6 +798,8 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Formers',
         },
         BuilderConditions = {                                                   
             { UCBC, 'EnemyUnitsLessAtLocationRadiusSwarm', {  BaseMilitaryZone, 'LocationType', 1, categories.MOBILE * categories.EXPERIMENTAL }}, 
+
+            { UCBC, 'AirStrengthRatioGreaterThan', { 1 } },
         },
         BuilderType = 'Any',                                                    
     },
@@ -779,6 +847,8 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Formers',
         },
         BuilderConditions = {                                                  
             { UCBC, 'EnemyUnitsLessAtLocationRadiusSwarm', {  BaseMilitaryZone, 'LocationType', 1, categories.MOBILE * categories.EXPERIMENTAL }}, 
+
+            { UCBC, 'AirStrengthRatioGreaterThan', { 1 } },
         },
         BuilderType = 'Any',                                                   
     },
@@ -826,6 +896,8 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Formers',
         },
         BuilderConditions = {                                                 
             { UCBC, 'EnemyUnitsLessAtLocationRadiusSwarm', {  BaseMilitaryZone, 'LocationType', 1, categories.MOBILE * categories.EXPERIMENTAL }}, 
+
+            { UCBC, 'AirStrengthRatioGreaterThan', { 1 } },
         },
         BuilderType = 'Any',                                                   
     },
@@ -869,8 +941,9 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Formers',
             },
         },
         BuilderConditions = {                                                   
-            { UCBC, 'EnemyUnitsLessAtLocationRadiusSwarm', {  BaseMilitaryZone, 'LocationType', 1, categories.MOBILE * categories.EXPERIMENTAL }}, 
-            { UCBC, 'HaveGreaterThanUnitsWithCategory', { 30, categories.MOBILE * categories.AIR * categories.BOMBER - categories.EXPERIMENTAL }},
+            { UCBC, 'EnemyUnitsLessAtLocationRadiusSwarm', {  BaseMilitaryZone, 'LocationType', 1, categories.MOBILE * categories.EXPERIMENTAL }},
+
+            { UCBC, 'AirStrengthRatioGreaterThan', { 1 } },
         },
         BuilderType = 'Any',                                                    
     },
@@ -916,7 +989,8 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Formers',
         },
         BuilderConditions = {                                                   
             { UCBC, 'EnemyUnitsLessAtLocationRadiusSwarm', {  BaseMilitaryZone, 'LocationType', 1, categories.MOBILE * categories.EXPERIMENTAL }}, 
-            { UCBC, 'HaveGreaterThanUnitsWithCategory', { 30, categories.MOBILE * categories.AIR * categories.GROUNDATTACK - categories.EXPERIMENTAL }},
+
+            { UCBC, 'AirStrengthRatioGreaterThan', { 1 } },
         },
         BuilderType = 'Any',                                               
     },
@@ -1001,6 +1075,8 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Formers',
         BuilderConditions = {                                                   -- platoon will be formed if all conditions are true
             -- When do we want to form this ?
             { UCBC, 'UnitsGreaterAtEnemySwarm', { 1 , categories.STRUCTURE + categories.MOBILE } },
+
+            { UCBC, 'AirStrengthRatioGreaterThan', { 1 } },
         },
         BuilderType = 'Any',
     },

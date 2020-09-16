@@ -728,6 +728,8 @@ BuilderGroup {
 
                 { UCBC, 'LessThanGameTimeSeconds', { 240 } },
 
+                --{ UCBC, 'NeedMassPointShare', {}},
+
                 { UCBC, 'HaveGreaterThanUnitsWithCategory', { 0, categories.MOBILE * categories.LAND }},      	
             },
         BuilderData = {
@@ -759,6 +761,8 @@ BuilderGroup {
             { MIBC, 'CanPathToCurrentEnemySwarm', { true } },
 
             { UCBC, 'GreaterThanGameTimeSeconds', { 300 } },
+
+            --{ UCBC, 'NeedMassPointShare', {}},
 
             { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 2, categories.MOBILE * categories.LAND - categories.ENGINEER } },
         },
@@ -857,6 +861,8 @@ BuilderGroup {
         BuilderConditions = {
             { MIBC, 'GreaterThanGameTime', { 1800 } }, 
 
+            { UCBC, 'LandStrengthRatioGreaterThan', { 1 } },
+
             { MIBC, 'CanPathToCurrentEnemySwarm', { true } },
         },
     },
@@ -890,6 +896,8 @@ BuilderGroup {
         },        
         BuilderConditions = {
             { MIBC, 'GreaterThanGameTime', { 1800 } }, 
+
+            { UCBC, 'LandStrengthRatioGreaterThan', { 1 } },
             
             { MIBC, 'CanPathToCurrentEnemySwarm', { true } },
         },

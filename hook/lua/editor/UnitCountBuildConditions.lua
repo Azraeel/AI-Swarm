@@ -2,6 +2,29 @@
 
 local BASEPOSTITIONSSWARM = {}
 local mapSizeX, mapSizeZ = GetMapSize()
+local PlatoonExists = moho.aibrain_methods.PlatoonExists
+local GetPlatoonUnits = moho.platoon_methods.GetPlatoonUnits
+local IsUnitState = moho.unit_methods.IsUnitState
+local AssignUnitsToPlatoon = moho.aibrain_methods.AssignUnitsToPlatoon
+local GetPlatoonPosition = moho.platoon_methods.GetPlatoonPosition
+local GetBrain = moho.platoon_methods.GetBrain
+local PlatoonCategoryCount = moho.platoon_methods.PlatoonCategoryCount
+
+local SWARMCOPY = table.copy
+local SWARMSORT = table.sort
+local SWARMTIME = GetGameTimeSeconds
+local SWARMFLOOR = math.floor
+local SWARMENTITY = EntityCategoryContains
+local SWARMINSERT = table.insert
+local SWARMCAT = table.cat
+
+local VDist2Sq = VDist2Sq
+local VDist3 = VDist3
+
+local ForkThread = ForkThread
+local ForkTo = ForkThread
+
+local KillThread = KillThread
 
 --{ UCBC, 'ReturnTrue', {} },
 function ReturnTrue(aiBrain)
@@ -375,6 +398,133 @@ function HasNotParagon(aiBrain)
     return false
 end
 
+function LessThanThreatAtEnemyBaseSwarm(aiBrain, ttype, number)
+    if aiBrain:GetCurrentEnemy() then
+        enemy = aiBrain:GetCurrentEnemy()
+        enemyIndex = aiBrain:GetCurrentEnemy():GetArmyIndex()
+    else
+        return false
+    end
+
+    local StartX, StartZ = enemy:GetArmyStartPos()
+
+    local enemyThreat = aiBrain:GetThreatAtPosition({StartX, 0, StartZ}, 1, true, ttype or 'Overall', enemyIndex)
+    if number < enemyThreat then
+        return true
+    end
+    return false
+end
+
+function HaveComparativeUnitsWithCategoryAndAllianceSwarm(aiBrain, greater, myCategory, eCategory, alliance)
+    if type(eCategory) == 'string' then
+        eCategory = ParseEntityCategory(eCategory)
+    end
+    if type(myCategory) == 'string' then
+        myCategory = ParseEntityCategory(myCategory)
+    end
+    local myUnits = aiBrain:GetCurrentUnits(myCategory)
+    local numUnits = aiBrain:GetNumUnitsAroundPoint(eCategory, Vector(0,0,0), 100000, alliance)
+    if alliance == 'Ally' then
+        numUnits = numUnits - aiBrain:GetCurrentUnits(myCategory)
+    end
+    if numUnits > myUnits and greater then
+        return true
+    elseif numUnits < myUnits and not greater then
+        return true
+    end
+    return false
+end
+
+function HasMassPointShare( aiBrain )
+
+	local SWARMGETN = table.getn
+
+    local ArmyCount = 0
+	local TeamCount = 0
+	
+    local MassMarker = ScenarioInfo.MassMarker
+    
+    for _,brain in ArmyBrains do
+		
+		local armyindex = brain.ArmyIndex
+	
+        if not brain:IsDefeated() and not ArmyIsCivilian(armyindex) then
+		
+			ArmyCount = ArmyCount + 1		-- number of players in the game
+			
+			if IsAlly( aiBrain.ArmyIndex, armyindex ) then
+				TeamCount = TeamCount + 1 	-- number of players on this team
+			end
+        end
+    end
+
+	local GetListOfUnits = moho.aibrain_methods.GetListOfUnits
+	
+    local extractorCount = SWARMGETN(GetListOfUnits(aiBrain,categories.MASSEXTRACTION, false))
+	local fabricatorCount = SWARMGETN(GetListOfUnits(aiBrain,categories.MASSFABRICATION * categories.TECH3, false))
+	local res_genCount = SWARMGETN(GetListOfUnits(aiBrain,categories.MASSFABRICATION * categories.EXPERIMENTAL, false))
+	
+	extractorCount = extractorCount + (fabricatorCount * .5) + (res_genCount * 3)
+	
+	return extractorCount >= SWARMFLOOR( (MassMarker/ ArmyCount)-1 )
+end
+
+function NeedMassPointShare( aiBrain )
+
+	local SWARMGETN = table.getn
+
+    local ArmyCount = 0
+	local TeamCount = 0
+    
+    for _,brain in ArmyBrains do
+		
+		local armyindex = brain.ArmyIndex
+	
+        if not brain:IsDefeated() and not ArmyIsCivilian(armyindex) then
+		
+			ArmyCount = ArmyCount + 1		-- number of players in the game
+			
+			if IsAlly( aiBrain.ArmyIndex, armyindex ) then
+				TeamCount = TeamCount + 1 	-- number of players on this team
+			end
+        end
+    end
+
+	local GetListOfUnits = moho.aibrain_methods.GetListOfUnits
+	
+    local extractorCount = SWARMGETN(GetListOfUnits(aiBrain,categories.MASSEXTRACTION, false))
+	local fabricatorCount = SWARMGETN(GetListOfUnits(aiBrain,categories.MASSFABRICATION * categories.TECH3, false))
+	local res_genCount = SWARMGETN(GetListOfUnits(aiBrain,categories.MASSFABRICATION * categories.EXPERIMENTAL, false))
+	
+	extractorCount = extractorCount + (fabricatorCount * .5) + (res_genCount * 3)
+	
+	return extractorCount <= SWARMFLOOR( (ScenarioInfo.MassMarker/ ArmyCount)-1 )	
+end
+
+function AirStrengthRatioGreaterThan( aiBrain, value )
+	return aiBrain.AirRatio >= value
+end
+
+function AirStrengthRatioLessThan ( aiBrain, value )
+	return aiBrain.AirRatio < value
+end
+
+function LandStrengthRatioGreaterThan( aiBrain, value )
+	return aiBrain.LandRatio >= value
+end
+
+function LandStrengthRatioLessThan ( aiBrain, value )
+	return aiBrain.LandRatio < value
+end
+
+function NavalStrengthRatioGreaterThan( aiBrain, value )
+	return aiBrain.MyNavalRatio >= value
+end
+
+function NavalStrengthRatioLessThan ( aiBrain, value )
+    return aiBrain.MyNavalRatio < value
+end
+
 function ScalePlatoonSizeSwarm(aiBrain, locationType, type, unitCategory)
     -- Note to self, create a brain flag in the air superiority function that can assist with the AIR platoon sizing increase.
     local currentTime = GetGameTimeSeconds()
@@ -442,43 +592,6 @@ function ScalePlatoonSizeSwarm(aiBrain, locationType, type, unitCategory)
         else
             return false
         end
-    end
-    return false
-end
-
-function LessThanThreatAtEnemyBaseSwarm(aiBrain, ttype, number)
-    if aiBrain:GetCurrentEnemy() then
-        enemy = aiBrain:GetCurrentEnemy()
-        enemyIndex = aiBrain:GetCurrentEnemy():GetArmyIndex()
-    else
-        return false
-    end
-
-    local StartX, StartZ = enemy:GetArmyStartPos()
-
-    local enemyThreat = aiBrain:GetThreatAtPosition({StartX, 0, StartZ}, 1, true, ttype or 'Overall', enemyIndex)
-    if number < enemyThreat then
-        return true
-    end
-    return false
-end
-
-function HaveComparativeUnitsWithCategoryAndAllianceSwarm(aiBrain, greater, myCategory, eCategory, alliance)
-    if type(eCategory) == 'string' then
-        eCategory = ParseEntityCategory(eCategory)
-    end
-    if type(myCategory) == 'string' then
-        myCategory = ParseEntityCategory(myCategory)
-    end
-    local myUnits = aiBrain:GetCurrentUnits(myCategory)
-    local numUnits = aiBrain:GetNumUnitsAroundPoint(eCategory, Vector(0,0,0), 100000, alliance)
-    if alliance == 'Ally' then
-        numUnits = numUnits - aiBrain:GetCurrentUnits(myCategory)
-    end
-    if numUnits > myUnits and greater then
-        return true
-    elseif numUnits < myUnits and not greater then
-        return true
     end
     return false
 end
