@@ -65,7 +65,7 @@ PlatoonTemplate {
 
 PlatoonTemplate {
     Name = 'T2TacticalLauncherSwarm',
-    Plan = 'TacticalAISwarm',
+    Plan = 'TMLAISwarm',
     GlobalSquads = {
         { categories.STRUCTURE * categories.TACTICALMISSILEPLATFORM, 1, 1, 'attack', 'none' },
     }

@@ -723,30 +723,30 @@ BuilderGroup {
         BuilderName = 'AISwarm Raid Early Game',
         PlatoonTemplate = 'AISwarm Mass Raid',
         Priority = 1000,
-        BuilderConditions = {  
-                { MIBC, 'CanPathToCurrentEnemySwarm', { true } },
-
-                { UCBC, 'LessThanGameTimeSeconds', { 240 } },
-
-                --{ UCBC, 'NeedMassPointShare', {}},
-
-                { UCBC, 'HaveGreaterThanUnitsWithCategory', { 0, categories.MOBILE * categories.LAND }},      	
-            },
-        BuilderData = {
-            MarkerType = 'Mass',            
-            MoveFirst = 'Random',
-            MoveNext = 'Threat',
-            ThreatType = 'Economy',			    -- Type of threat to use for gauging attacks
-            FindHighestThreat = true,			-- Don't find high threat targets
-            MaxThreatThreshold = 2900,			-- If threat is higher than this, do not attack
-            MinThreatThreshold = 1000,			-- If threat is lower than this, do not attack
-            AvoidBases = false,
-            AvoidBasesRadius = 75,
-            AggressiveMove = true,      
-            AvoidClosestRadius = 50,  
-        },    
         InstanceCount = 2,
         BuilderType = 'Any',
+        BuilderConditions = {  
+            { MIBC, 'CanPathToCurrentEnemySwarm', { true } },
+
+            { UCBC, 'LessThanGameTimeSeconds', { 240 } },
+
+            --{ UCBC, 'NeedMassPointShare', {}},
+
+            { UCBC, 'HaveGreaterThanUnitsWithCategory', { 0, categories.MOBILE * categories.LAND }},      	
+        },
+        BuilderData = {
+            IncludeWater = false,
+            IgnoreFriendlyBase = true,
+            MaxPathDistance = 512, 
+            FindHighestThreat = true,			
+            MaxThreatThreshold = 3000,		
+            MinThreatThreshold = 1000,		    
+            AvoidBases = true,
+            AvoidBasesRadius = 100,
+            AggressiveMove = true,      
+            AvoidClosestRadius = 100,
+            UseFormation = 'None',
+        },    
     },
 
     Builder {
@@ -769,12 +769,12 @@ BuilderGroup {
         BuilderData = {
             IncludeWater = false,
             IgnoreFriendlyBase = true,
-            MaxPathDistance = BaseEnemyZone, 
+            MaxPathDistance = 396, 
             FindHighestThreat = true,			
-            MaxThreatThreshold = 4900,		
+            MaxThreatThreshold = 5000,		
             MinThreatThreshold = 1000,		    
             AvoidBases = true,
-            AvoidBasesRadius = 75,
+            AvoidBasesRadius = 100,
             AggressiveMove = true,      
             AvoidClosestRadius = 100,
             UseFormation = 'None',

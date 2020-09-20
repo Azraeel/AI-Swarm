@@ -23,8 +23,8 @@ AIBrain = Class(SwarmAIBrainClass) {
                 table.insert(MassMarker, v)
             end
         end
-        local markerCount = table.getn(MassMarker)
-        self.BrainIntel.SelfThreat.MassMarker = markerCount
+        local MassMarker = table.getn(MassMarker)
+        self.BrainIntel.SelfThreat.MassMarker = MassMarker
     end,
 
     ExpansionHelpThread = function(self)

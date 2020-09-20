@@ -638,3 +638,228 @@ function EnableUnitsSwarm(aiBrain, Category, UnitType)
     return false
 end
 
+function BaseTargetManagerThreadSwarm(aiBrain)
+    --        LOG('location manager '..repr(aiBrain.NukedArea))
+    while GetGameTimeSeconds() < 25 + aiBrain:GetArmyIndex() do
+       coroutine.yield(10)
+    end
+    LOG('* AI-Swarm: Function BaseTargetManagerThread() started. ['..aiBrain.Nickname..']')
+    local BasePanicZone, BaseMilitaryZone, BaseEnemyZone = import('/mods/AI-Swarm/lua/AI/swarmutilities.lua').GetDangerZoneRadii()
+    local targets = {}
+    local baseposition, radius
+    local ClosestTarget
+    local distance
+    local armyIndex = aiBrain:GetArmyIndex()
+    while aiBrain.Result ~= "defeat" do
+        --LOG('* AI-Swarm: Function BaseTargetManagerThread() beat. ['..aiBrain.Nickname..']')
+        ClosestTarget = nil
+        distance = 8192
+        coroutine.yield(50)
+        if not baseposition then
+            if aiBrain:PBMHasPlatoonList() then
+                for k,v in aiBrain.PBM.Locations do
+                    if v.LocationType == 'MAIN' then
+                        baseposition = v.Location
+                        radius = v.Radius
+                        break
+                    end
+                end
+            elseif aiBrain.BuilderManagers['MAIN'] then
+                baseposition = aiBrain.BuilderManagers['MAIN'].FactoryManager.Location
+                radius = aiBrain.BuilderManagers['MAIN'].FactoryManager:GetLocationRadius()
+            end
+            if not baseposition then
+                    continue
+            end
+        end
+        -- Search for experimentals in BasePanicZone
+        targets = aiBrain:GetUnitsAroundPoint(categories.EXPERIMENTAL - categories.AIR - categories.INSIGNIFICANTUNIT, baseposition, 120, 'Enemy')
+        for _, unit in targets do
+            if not unit.Dead then
+                if not IsEnemy( aiBrain:GetArmyIndex(), unit:GetAIBrain():GetArmyIndex() ) then continue end
+                local TargetPosition = unit:GetPosition()
+                local targetRange = VDist2(baseposition[1], baseposition[3], TargetPosition[1], TargetPosition[3])
+                if targetRange < distance then
+                    distance = targetRange
+                    ClosestTarget = unit
+                end
+            end
+        end
+        coroutine.yield(1)
+        -- Search for experimentals in BaseMilitaryZone
+        if not ClosestTarget then
+            targets = aiBrain:GetUnitsAroundPoint(categories.EXPERIMENTAL - categories.AIR - categories.INSIGNIFICANTUNIT, baseposition, BaseMilitaryZone, 'Enemy')
+            for _, unit in targets do
+                if not unit.Dead then
+                    if not IsEnemy( aiBrain:GetArmyIndex(), unit:GetAIBrain():GetArmyIndex() ) then continue end
+                    local TargetPosition = unit:GetPosition()
+                    local targetRange = VDist2(baseposition[1], baseposition[3], TargetPosition[1], TargetPosition[3])
+                    if targetRange < distance then
+                        distance = targetRange
+                        ClosestTarget = unit
+                    end
+                end
+            end
+        end
+        coroutine.yield(1)
+        -- Search for Paragons in EnemyZone
+        if not ClosestTarget then
+            targets = aiBrain:GetUnitsAroundPoint(categories.EXPERIMENTAL * categories.ECONOMIC, baseposition, BaseEnemyZone, 'Enemy')
+            for _, unit in targets do
+                if not unit.Dead then
+                    if not IsEnemy( aiBrain:GetArmyIndex(), unit:GetAIBrain():GetArmyIndex() ) then continue end
+                    local TargetPosition = unit:GetPosition()
+                    local targetRange = VDist2(baseposition[1], baseposition[3], TargetPosition[1], TargetPosition[3])
+                    if targetRange < distance then
+                        distance = targetRange
+                        ClosestTarget = unit
+                    end
+                end
+            end
+        end
+        coroutine.yield(1)
+        -- Search for High Threat Area
+        if not ClosestTarget and HighestThreat[armyIndex].TargetLocation then
+            -- search for any unit in this area
+            targets = aiBrain:GetUnitsAroundPoint(categories.EXPERIMENTAL + categories.TECH3 + categories.ALLUNITS, HighestThreat[armyIndex].TargetLocation, 60, 'Enemy')
+            for _, unit in targets do
+                if not unit.Dead then
+                    if not IsEnemy( aiBrain:GetArmyIndex(), unit:GetAIBrain():GetArmyIndex() ) then continue end
+                    local TargetPosition = unit:GetPosition()
+                    local targetRange = VDist2(baseposition[1], baseposition[3], TargetPosition[1], TargetPosition[3])
+                    if targetRange < distance then
+                        distance = targetRange
+                        ClosestTarget = unit
+                        -- we only need a single unit for targeting this area
+                        --LOG('High Threat Area: '.. repr(HighestThreat[armyIndex].TargetThreat)..' - '..repr(HighestThreat[armyIndex].TargetLocation))
+                        break --for _, unit in targets do
+                    end
+                end
+            end
+        end
+        coroutine.yield(1)
+        -- Search for Shields in EnemyZone
+        if not ClosestTarget then
+            targets = aiBrain:GetUnitsAroundPoint(categories.STRUCTURE * categories.SHIELD, baseposition, BaseEnemyZone, 'Enemy')
+            for _, unit in targets do
+                if not unit.Dead then
+                    if not IsEnemy( aiBrain:GetArmyIndex(), unit:GetAIBrain():GetArmyIndex() ) then continue end
+                    local TargetPosition = unit:GetPosition()
+                    local targetRange = VDist2(baseposition[1], baseposition[3], TargetPosition[1], TargetPosition[3])
+                    if targetRange < distance then
+                        distance = targetRange
+                        ClosestTarget = unit
+                    end
+                end
+            end
+        end
+        coroutine.yield(1)
+        -- Search for experimentals in EnemyZone
+        if not ClosestTarget then
+            targets = aiBrain:GetUnitsAroundPoint(categories.EXPERIMENTAL - categories.AIR - categories.INSIGNIFICANTUNIT, baseposition, BaseEnemyZone, 'Enemy')
+            for _, unit in targets do
+                if not unit.Dead then
+                    if not IsEnemy( aiBrain:GetArmyIndex(), unit:GetAIBrain():GetArmyIndex() ) then continue end
+                    local TargetPosition = unit:GetPosition()
+                    local targetRange = VDist2(baseposition[1], baseposition[3], TargetPosition[1], TargetPosition[3])
+                    if targetRange < distance then
+                        distance = targetRange
+                        ClosestTarget = unit
+                    end
+                end
+            end
+        end
+        coroutine.yield(1)
+        -- Search for T3 Factories / Gates in EnemyZone
+        if not ClosestTarget then
+            targets = aiBrain:GetUnitsAroundPoint((categories.STRUCTURE * categories.GATE) + (categories.STRUCTURE * categories.FACTORY * categories.TECH3 - categories.SUPPORTFACTORY), baseposition, BaseEnemyZone, 'Enemy')
+            for _, unit in targets do
+                if not unit.Dead then
+                    if not IsEnemy( aiBrain:GetArmyIndex(), unit:GetAIBrain():GetArmyIndex() ) then continue end
+                    local TargetPosition = unit:GetPosition()
+                    local targetRange = VDist2(baseposition[1], baseposition[3], TargetPosition[1], TargetPosition[3])
+                    if targetRange < distance then
+                        distance = targetRange
+                        ClosestTarget = unit
+                    end
+                end
+            end
+        end
+        aiBrain.PrimaryTarget = ClosestTarget
+    end
+end
+
+--OLD: - Highest:0.023910 - Average:0.017244
+--NEW: - Highest:0.002929 - Average:0.002018
+function MarkerGridThreatManagerThreadSwarm(aiBrain)
+    while GetGameTimeSeconds() < 30 + aiBrain:GetArmyIndex() do
+        coroutine.yield(10)
+    end
+    LOG('* AI-Swarm: Function MarkerGridThreatManagerThread() started. ['..aiBrain.Nickname..']')
+    local AIAttackUtils = import('/lua/ai/aiattackutilities.lua')
+    local numTargetTECH123 = 0
+    local numTargetTECH4 = 0
+    local numTargetCOM = 0
+    local armyIndex = aiBrain:GetArmyIndex()
+    local PathGraphs = AIAttackUtils.GetPathGraphs()
+    local vector
+    if not (PathGraphs['Land'] or PathGraphs['Amphibious'] or PathGraphs['Air'] or PathGraphs['Water']) then
+        WARN('* AI-Swarm: Function MarkerGridThreatManagerThread() No AI path markers found on map. Threat handling diabled!  '..ScenarioInfo.ArmySetup[aiBrain.Name].AIPersonality)
+        -- end this forked thead
+        return
+    end
+    while aiBrain.Result ~= "defeat" do
+        HighestThreat[armyIndex] = HighestThreat[armyIndex] or {}
+        HighestThreat[armyIndex].ThreatCount = 0
+        --LOG('* AI-Swarm: Function MarkerGridThreatManagerThread() beat. ['..aiBrain.Nickname..']')
+        for Layer, LayerMarkers in PathGraphs do
+            for graph, GraphMarkers in LayerMarkers do
+                for nodename, markerInfo in GraphMarkers do
+-- possible options for GetThreatAtPosition
+--  Overall
+--  OverallNotAssigned
+--  StructuresNotMex
+--  Structures
+--  Naval
+--  Air
+--  Land
+--  Experimental
+--  Commander
+--  Artillery
+--  AntiAir
+--  AntiSurface
+--  AntiSub
+--  Economy
+--  Unknown
+                    local Threat = 0
+                    vector = Vector(markerInfo.position[1],markerInfo.position[2],markerInfo.position[3])
+                    if markerInfo.layer == 'Land' then
+                        Threat = aiBrain:GetThreatAtPosition(vector, 0, true, 'AntiSurface')
+                    elseif markerInfo.layer == 'Amphibious' then
+                        Threat = aiBrain:GetThreatAtPosition(vector, 0, true, 'AntiSurface')
+                        Threat = Threat + aiBrain:GetThreatAtPosition(vector, 0, true, 'AntiSub')
+                    elseif markerInfo.layer == 'Water' then
+                        Threat = aiBrain:GetThreatAtPosition(vector, 0, true, 'AntiSurface')
+                        Threat = Threat + aiBrain:GetThreatAtPosition(vector, 0, true, 'AntiSub')
+                    elseif markerInfo.layer == 'Air' then
+                        Threat = aiBrain:GetThreatAtPosition(vector, 1, true, 'AntiAir')
+                        Threat = Threat + aiBrain:GetThreatAtPosition(vector, 0, true, 'Structures')
+                    end
+                    --LOG('* MarkerGridThreatManagerThread: 1='..numTargetTECH1..'  2='..numTargetTECH2..'  3='..numTargetTECH123..'  4='..numTargetTECH4..' - Threat='..Threat..'.' )
+                    Scenario.MasterChain._MASTERCHAIN_.Markers[nodename][armyIndex] = Threat
+                    if Threat > HighestThreat[armyIndex].ThreatCount then
+                        HighestThreat[armyIndex].ThreatCount = Threat
+                        HighestThreat[armyIndex].Location = vector
+                    end
+                end
+            end
+            -- Wait after checking a layer, so we need 0.4 seconds for all 4 layers.
+            coroutine.yield(1)
+        end
+        if HighestThreat[armyIndex].ThreatCount > 1 then
+            HighestThreat[armyIndex].TargetThreat = HighestThreat[armyIndex].ThreatCount
+            HighestThreat[armyIndex].TargetLocation = HighestThreat[armyIndex].Location
+        end
+    end
+end
+

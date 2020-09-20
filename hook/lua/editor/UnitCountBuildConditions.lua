@@ -440,19 +440,18 @@ function HasMassPointShare( aiBrain )
 	local SWARMGETN = table.getn
 
     local ArmyCount = 0
-	local TeamCount = 0
-	
-    local MassMarker = ScenarioInfo.MassMarker
+    local TeamCount = 0
+    
+	local MassMarker = {}
+    local MassMarker = table.getn(MassMarker)
     
     for _,brain in ArmyBrains do
-		
-		local armyindex = brain.ArmyIndex
 	
-        if not brain:IsDefeated() and not ArmyIsCivilian(armyindex) then
+        if not brain:IsDefeated() and not ArmyIsCivilian(brain:GetArmyIndex()) then
 		
 			ArmyCount = ArmyCount + 1		-- number of players in the game
 			
-			if IsAlly( aiBrain.ArmyIndex, armyindex ) then
+			if IsAlly( aiBrain:GetArmyIndex(), brain:GetArmyIndex() ) then
 				TeamCount = TeamCount + 1 	-- number of players on this team
 			end
         end
@@ -474,17 +473,18 @@ function NeedMassPointShare( aiBrain )
 	local SWARMGETN = table.getn
 
     local ArmyCount = 0
-	local TeamCount = 0
+    local TeamCount = 0
+
+    local MassMarker = {}
+    local MassMarker = table.getn(MassMarker)
     
     for _,brain in ArmyBrains do
-		
-		local armyindex = brain.ArmyIndex
 	
-        if not brain:IsDefeated() and not ArmyIsCivilian(armyindex) then
+        if not brain:IsDefeated() and not ArmyIsCivilian(brain:GetArmyIndex()) then
 		
 			ArmyCount = ArmyCount + 1		-- number of players in the game
 			
-			if IsAlly( aiBrain.ArmyIndex, armyindex ) then
+			if IsAlly( aiBrain:GetArmyIndex(), brain:GetArmyIndex() ) then
 				TeamCount = TeamCount + 1 	-- number of players on this team
 			end
         end
@@ -498,23 +498,23 @@ function NeedMassPointShare( aiBrain )
 	
 	extractorCount = extractorCount + (fabricatorCount * .5) + (res_genCount * 3)
 	
-	return extractorCount <= SWARMFLOOR( (ScenarioInfo.MassMarker/ ArmyCount)-1 )	
+	return extractorCount <= SWARMFLOOR( (MassMarker/ ArmyCount)-1 )	
 end
 
 function AirStrengthRatioGreaterThan( aiBrain, value )
-	return aiBrain.AirRatio >= value
+	return aiBrain.MyAirRatio >= value
 end
 
 function AirStrengthRatioLessThan ( aiBrain, value )
-	return aiBrain.AirRatio < value
+	return aiBrain.MyAirRatio < value
 end
 
 function LandStrengthRatioGreaterThan( aiBrain, value )
-	return aiBrain.LandRatio >= value
+	return aiBrain.MyLandRatio >= value
 end
 
 function LandStrengthRatioLessThan ( aiBrain, value )
-	return aiBrain.LandRatio < value
+	return aiBrain.MyLandRatio < value
 end
 
 function NavalStrengthRatioGreaterThan( aiBrain, value )

@@ -149,10 +149,10 @@ Platoon = Class(SwarmPlatoonClass) {
     end,
 
     InterceptorAISwarm = function(self)
-        if 1==1 then
+        --[[ if 1==1 then
             self:HeroFightPlatoonSwarm()
             return
-        end 
+        end ]]--
         AIAttackUtils.GetMostRestrictiveLayer(self) -- this will set self.MovementLayer to the platoon
         local aiBrain = self:GetBrain()
         -- Search all platoon units and activate Stealth and Cloak (mostly Modded units)
@@ -5634,6 +5634,20 @@ Platoon = Class(SwarmPlatoonClass) {
         if aiBrain:PlatoonExists(self) then
             self:PlatoonDisband()
         end
+    end,
+
+    TMLAISwarm = function(self)
+        local aiBrain = self:GetBrain()
+        local platoonUnits = self:GetPlatoonUnits()
+        local TML
+        for k, v in platoonUnits do
+            if not v.Dead and EntityCategoryContains(categories.STRUCTURE * categories.TACTICALMISSILEPLATFORM * categories.TECH2, v) then
+                TML = v
+                break
+            end
+        end
+        SwarmUtils.TMLAIThreadSwarm(self,TML,aiBrain)
+        self:PlatoonDisband()
     end,
 }
 
