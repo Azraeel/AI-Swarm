@@ -12,7 +12,7 @@ PlatoonTemplate {
     Name = 'AISwarm Intercept',
     Plan = 'InterceptorAIUveso',
     GlobalSquads = {
-        { categories.MOBILE * categories.LAND - categories.ANTIAIR - categories.EXPERIMENTAL - categories.ENGINEER - categories.SCOUT, 1, 100, 'attack', 'none' },
+        { categories.MOBILE * categories.LAND + (categories.MOBILE * categories.EXPERIMENTAL) - categories.ANTIAIR - categories.ENGINEER - categories.SCOUT, 1, 100, 'attack', 'none' },
     },
 }
 
@@ -20,7 +20,7 @@ PlatoonTemplate {
     Name = 'AISwarm LandAttack Micro - Standard',
     Plan = 'LandAttackAISwarm',
     GlobalSquads = {
-        { categories.MOBILE * categories.LAND - categories.ANTIAIR - categories.EXPERIMENTAL - categories.ENGINEER - categories.SCOUT, 4, 50, 'attack', 'none' },
+        { categories.MOBILE * categories.LAND + (categories.MOBILE * categories.EXPERIMENTAL) - categories.ANTIAIR - categories.ENGINEER - categories.SCOUT, 4, 50, 'attack', 'none' },
     },
 }
 
@@ -64,6 +64,30 @@ PlatoonTemplate {
     Plan = 'GuardBaseSwarm',    
     GlobalSquads = {
         { categories.LAND * categories.MOBILE - categories.SCOUT - categories.ENGINEER - categories.EXPERIMENTAL, 5, 20, 'attack', 'none' },
+    },
+}
+
+PlatoonTemplate {
+    Name = 'AISwarm - Experimental Group', 
+    Plan = 'LandAttackAISwarm',
+    GlobalSquads = {
+        { categories.MOBILE * categories.LAND * categories.EXPERIMENTAL - categories.ENGINEER - categories.SCOUT,
+        1,
+        1,
+        'attack',
+        'GrowthFormation' },
+    },
+}
+
+PlatoonTemplate {
+    Name = 'AISwarm - Experimental', 
+    Plan = 'LandAttackAISwarm',
+    GlobalSquads = {
+        { categories.MOBILE * categories.LAND * categories.EXPERIMENTAL - categories.ENGINEER - categories.SCOUT,
+        3,
+        3,
+        'attack',
+        'GrowthFormation' },
     },
 }
 
@@ -133,18 +157,6 @@ PlatoonTemplate {
 } 
 
 PlatoonTemplate {
-    Name = 'AISwarm - Experimental - Group', 
-    Plan = 'LandAttackAISwarm',
-    GlobalSquads = {
-        { categories.MOBILE * categories.LAND * categories.EXPERIMENTAL - categories.ENGINEER - categories.SCOUT,
-        2,
-        15,
-        'attack',
-        'GrowthFormation' },
-    },
-}
-
-PlatoonTemplate {
     Name = 'S1 LandDFBot',
     FactionSquads = {
         UEF = {
@@ -204,6 +216,19 @@ PlatoonTemplate {
         },
         Seraphim = {
             { 'xsl0303', 1, 1, 'attack', 'none' },
+        },
+    }
+}
+
+-- Added Loyalist and Titans, back into the game; now with Micro Abilities they are now viable. --
+PlatoonTemplate {
+    Name = 'T3LightBotSwarm',
+    FactionSquads = {
+        UEF = {
+            { 'uel0303', 1, 1, 'attack', 'none' },
+        },
+        Cybran = {
+            { 'url0303', 1, 1, 'attack', 'none' },
         },
     }
 }

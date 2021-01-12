@@ -41,14 +41,6 @@ BaseBuilderTemplate {
         -- ==== EXPERIMENTALS BUILDER ==== --
         -----------------------------------------------------------------------------
         'Swarm Naval Experimental Builders',
-        
-        -----------------------------------------------------------------------------
-        -- ==== EXPERIMENTALS FORMER ==== --
-        -----------------------------------------------------------------------------
-        'Swarm Naval Experimental Formers PanicZone',
-        'Swarm Naval Experimental Formers MilitaryZone',
-        'Swarm Naval Experimental Formers EnemyZone',
-        'Swarm Naval Experimental Formers Trasher',
 
         -----------------------------------------------------------------------------
         -- ==== Defenses BUILDER ==== --

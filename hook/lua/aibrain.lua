@@ -1,63 +1,83 @@
+local lastCall = GetGameTimeSeconds()
 
-SwarmAIBrainClass = AIBrain
-AIBrain = Class(SwarmAIBrainClass) {
+--SwarmAIBrainClass = AIBrain
+--AIBrain = Class(SwarmAIBrainClass) 
 
-    -- Hook AI-Swarm, set self.Swarm = true
+{
+
     OnCreateAI = function(self, planName)
         SwarmAIBrainClass.OnCreateAI(self, planName)
+
         local per = ScenarioInfo.ArmySetup[self.Name].AIPersonality
+
         if string.find(per, 'swarm') then
-            LOG('* AI-Swarm: OnCreateAI() found AI-Swarm  Name: ('..self.Name..') - personality: ('..per..') ')
+
+            --LOG('* AI-Swarm: OnCreateAI() found AI-Swarm  Name: ('..self.Name..') - personality: ('..per..') ')
+
             self.Swarm = true
+
         end
+
     end,
 
     CalculateMassMarkersSwarm = function(self)
+
         local MassMarker = {}
+
         for _, v in Scenario.MasterChain._MASTERCHAIN_.Markers do
+
             if v.type == 'Mass' then
+
                 if v.position[1] <= 8 or v.position[1] >= ScenarioInfo.size[1] - 8 or v.position[3] <= 8 or v.position[3] >= ScenarioInfo.size[2] - 8 then
-                    -- mass marker is too close to border, skip it.
                     continue
                 end 
+
                 table.insert(MassMarker, v)
+
             end
         end
+
         local MassMarker = table.getn(MassMarker)
+
         self.BrainIntel.SelfThreat.MassMarker = MassMarker
+
     end,
 
     ExpansionHelpThread = function(self)
-       -- Only use this with AI-Swarm
+
         if not self.Swarm then
-            return SwarmAIBrainClass.ExpansionHelpThread(self)
+            return self.ExpansionHelpThread(self)
         end
+
         coroutine.yield(10)
-        -- We are leaving this forked thread here because we don't need it.
+
         KillThread(CurrentThread())
     end,
 
     InitializeEconomyState = function(self)
-        -- Only use this with AI-Swarm
+
         if not self.Swarm then
-            return SwarmAIBrainClass.InitializeEconomyState(self)
+            return self.InitializeEconomyState(self)
         end
+
     end,
 
     OnIntelChange = function(self, blip, reconType, val)
-        -- Only use this with AI-Swarm
+
         if not self.Swarm then
-            return SwarmAIBrainClass.OnIntelChange(self, blip, reconType, val)
+            return self.OnIntelChange(self, blip, reconType, val)
         end
+
     end,
 
     SetupAttackVectorsThread = function(self)
-       -- Only use this with AI-Swarm
+
         if not self.Swarm then
-            return SwarmAIBrainClass.SetupAttackVectorsThread(self)
+            return self.SetupAttackVectorsThread(self)
         end
+
         coroutine.yield(10)
-        -- We are leaving this forked thread here because we don't need it.
+
         KillThread(CurrentThread())
     end,
 
@@ -66,97 +86,103 @@ AIBrain = Class(SwarmAIBrainClass) {
         -----------------
         --- LAND UNITS --
 		-----------------
-        if (GetGameTimeSeconds() > 60 * 1) and lastCall+10 < GetGameTimeSeconds() then
-            lastCall = GetGameTimeSeconds()
+        if (GetGameTimeSeconds() > 60 * 1) and lastCall + 10 < GetGameTimeSeconds() then
 
-            --score of all players (unitcount)
+            local lastCall = GetGameTimeSeconds()
+
             allyScore = 0
             enemyScore = 0
 
-            for k, brain in ArmyBrains do
-                if ArmyIsCivilian(brain:GetArmyIndex()) then
-                    --NOOP
-                elseif IsAlly( aiBrain:GetArmyIndex(), brain:GetArmyIndex() ) then
+            for k, self in ArmyBrains do
+                if ArmyIsCivilian(self:GetArmyIndex()) then
+                  
+                elseif IsAlly( self:GetArmyIndex(), self:GetArmyIndex() ) then
 
-                    allyScore = allyScore + table.getn(brain:GetListOfUnits( categories.MOBILE * categories.LAND - categories.ENGINEER - categories.SCOUT, false, false))
+                    allyScore = allyScore + table.getn(self:GetListOfUnits( categories.MOBILE * categories.LAND - categories.ENGINEER - categories.SCOUT, false, false))
 
-                elseif IsEnemy( aiBrain:GetArmyIndex(), brain:GetArmyIndex() ) then
+                elseif IsEnemy( self:GetArmyIndex(), self:GetArmyIndex() ) then
 
-                    enemyScore = enemyScore + table.getn(brain:GetListOfUnits( categories.MOBILE * categories.LAND - categories.ENGINEER - categories.SCOUT, false, false))
+                    enemyScore = enemyScore + table.getn(self:GetListOfUnits( categories.MOBILE * categories.LAND - categories.ENGINEER - categories.SCOUT, false, false))
                 end
             end
+
             if enemyScore ~= 0 then
                 if allyScore == 0 then
                     allyScore = 1
                 end
-                aiBrain.MyLandRatio = enemyScore / allyScore
+                self.MyLandRatio = enemyScore / allyScore
             else
-                aiBrain.MyLandRatio = 1
+                self.MyLandRatio = 0.01
             end
+
         end
 
         -----------------
         --- AIR UNITS ---
 		-----------------
-        if (GetGameTimeSeconds() > 60 * 1) and lastCall+10 < GetGameTimeSeconds() then
-            lastCall = GetGameTimeSeconds()
+        if (GetGameTimeSeconds() > 60 * 1) and lastCall + 10 < GetGameTimeSeconds() then
 
-            --score of all players (unitcount)
+            local lastCall = GetGameTimeSeconds()
+
             allyScore = 0
             enemyScore = 0
 
-            for k, brain in ArmyBrains do
-                if ArmyIsCivilian(brain:GetArmyIndex()) then
-                    --NOOP
-                elseif IsAlly( aiBrain:GetArmyIndex(), brain:GetArmyIndex() ) then
+            for k, self in ArmyBrains do
+                if ArmyIsCivilian(self:GetArmyIndex()) then
+                   
+                elseif IsAlly( self:GetArmyIndex(), self:GetArmyIndex() ) then
 
-                    allyScore = allyScore + table.getn(brain:GetListOfUnits( categories.MOBILE * categories.AIR - categories.ENGINEER - categories.SCOUT, false, false))
+                    allyScore = allyScore + table.getn(self:GetListOfUnits( categories.MOBILE * categories.AIR - categories.ENGINEER - categories.SCOUT, false, false))
 
-                elseif IsEnemy( aiBrain:GetArmyIndex(), brain:GetArmyIndex() ) then
+                elseif IsEnemy( self:GetArmyIndex(), self:GetArmyIndex() ) then
 
-                    enemyScore = enemyScore + table.getn(brain:GetListOfUnits( categories.MOBILE * categories.AIR - categories.ENGINEER - categories.SCOUT, false, false))
+                    enemyScore = enemyScore + table.getn(self:GetListOfUnits( categories.MOBILE * categories.AIR - categories.ENGINEER - categories.SCOUT, false, false))
                 end
             end
+
             if enemyScore ~= 0 then
                 if allyScore == 0 then
                     allyScore = 1
                 end
-                aiBrain.MyAirRatio = enemyScore / allyScore
+                self.MyAirRatio = enemyScore / allyScore
             else
-                aiBrain.MyAirRatio = 1
+                self.MyAirRatio = 0.01
             end
+
         end
 
         -----------------
         --- NAVAL UNITS -
 		-----------------
-        if (GetGameTimeSeconds() > 60 * 1) and lastCall+10 < GetGameTimeSeconds() then
-            lastCall = GetGameTimeSeconds()
+        if (GetGameTimeSeconds() > 60 * 1) and lastCall + 10 < GetGameTimeSeconds() then
 
-            --score of all players (unitcount)
+            local lastCall = GetGameTimeSeconds()
+
             allyScore = 0
             enemyScore = 0
 
-            for k, brain in ArmyBrains do
-                if ArmyIsCivilian(brain:GetArmyIndex()) then
-                    --NOOP
-                elseif IsAlly( aiBrain:GetArmyIndex(), brain:GetArmyIndex() ) then
+            for k, self in ArmyBrains do
+                if ArmyIsCivilian(self:GetArmyIndex()) then
+                   
+                elseif IsAlly( self:GetArmyIndex(), self:GetArmyIndex() ) then
 
-                    allyScore = allyScore + table.getn(brain:GetListOfUnits( categories.MOBILE * categories.NAVAL - categories.ENGINEER - categories.SCOUT, false, false))
+                    allyScore = allyScore + table.getn(self:GetListOfUnits( categories.MOBILE * categories.NAVAL - categories.ENGINEER - categories.SCOUT, false, false))
 
-                elseif IsEnemy( aiBrain:GetArmyIndex(), brain:GetArmyIndex() ) then
+                elseif IsEnemy( self:GetArmyIndex(), self:GetArmyIndex() ) then
 
-                    enemyScore = enemyScore + table.getn(brain:GetListOfUnits( categories.MOBILE * categories.NAVAL - categories.ENGINEER - categories.SCOUT, false, false))
+                    enemyScore = enemyScore + table.getn(self:GetListOfUnits( categories.MOBILE * categories.NAVAL - categories.ENGINEER - categories.SCOUT, false, false))
                 end
             end
+    
             if enemyScore ~= 0 then
                 if allyScore == 0 then
                     allyScore = 1
                 end
-                aiBrain.MyNavalRatio = enemyScore / allyScore
+                self.MyNavalRatio = enemyScore / allyScore
             else
-                aiBrain.MyNavalRatio = 1
+                self.MyNavalRatio = 0.01
             end
+
         end
     end,
 }

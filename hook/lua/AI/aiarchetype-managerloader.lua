@@ -1,16 +1,21 @@
 --WARN('['..string.gsub(debug.getinfo(1).source, ".*\\(.*.lua)", "%1")..', line:'..debug.getinfo(1).currentline..'] * AI-Swarm: offset aiarchetype-managerloader.lua' )
 
 local BuffSwarm = import('/lua/sim/Buff.lua')
+local lastCall = GetGameTimeSeconds()
 
 
--- This hook is for debug-option Platoon-Names. Hook for all AI's
+
+
 SwarmExecutePlanFunction = ExecutePlan
+
 function ExecutePlan(aiBrain)
-   -- enable ecomanager
+
     if aiBrain.Swarm then
         aiBrain:ForkThread(EcoManagerThreadSwarm, aiBrain)
     end
+
     return SwarmExecutePlanFunction(aiBrain)
+
 end
 
 function SetArmyPoolBuffSwarm(aiBrain, CheatMult, BuildMult)
@@ -89,7 +94,7 @@ function EcoManagerThreadSwarm(aiBrain)
         if personality == 'swarmeternal' then
             -- Check every 30 seconds for new armyStats to change ECO
             if (GetGameTimeSeconds() > 60 * 1) and lastCall+10 < GetGameTimeSeconds() then
-                lastCall = GetGameTimeSeconds()
+                local lastCall = GetGameTimeSeconds()
                 --score of all players (unitcount)
                 allyScore = 0
                 enemyScore = 0

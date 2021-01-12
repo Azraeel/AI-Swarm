@@ -114,11 +114,21 @@ PlatoonTemplate {
     }
 }
 
+-- Swarm Experimental Air Formers --
+
 PlatoonTemplate {
-    Name = 'AISwarm AirAttack Experimental',
+    Name = 'S Air Attack Experimental',
     Plan = 'InterceptorAISwarm',
     GlobalSquads = {
-        { categories.AIR * categories.EXPERIMENTAL - categories.SCOUT, 1, 3, 'Attack', 'none' },
+        { categories.AIR * categories.EXPERIMENTAL - categories.SCOUT, 1, 1, 'Attack', 'none' },
+    }
+}
+
+PlatoonTemplate {
+    Name = 'S Air Attack Experimental - Group',
+    Plan = 'InterceptorAISwarm',
+    GlobalSquads = {
+        { categories.AIR * categories.EXPERIMENTAL - categories.SCOUT, 4, 8, 'Attack', 'none' },
     }
 }
 

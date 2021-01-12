@@ -311,6 +311,14 @@ function GetOwnUnitsAroundLocationSwarm(aiBrain, category, location, radius)
     return retUnits
 end
 
+function PoolLess( aiBrain, unitCount, testCat)
+	return PlatoonCategoryCount( aiBrain.ArmyPool, testCat ) < unitCount
+end
+
+function PoolGreater( aiBrain, unitCount, testCat)
+	return PlatoonCategoryCount( aiBrain.ArmyPool, testCat ) > unitCount
+end
+
 
 
 --            { UCBC, 'CanPathNavalBaseToNavalTargetsSwarm', {  'LocationType', categories.STRUCTURE * categories.FACTORY * categories.NAVAL }}, -- LocationType, categoryUnits

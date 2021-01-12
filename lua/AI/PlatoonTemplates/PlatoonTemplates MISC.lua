@@ -48,10 +48,10 @@ PlatoonTemplate {
 }
 
 PlatoonTemplate {
-    Name = 'S3EngineerTransfer',
+    Name = 'SACUEngineerTransfer',
     Plan = 'TransferAISwarm',
     GlobalSquads = {
-        { categories.MOBILE * categories.ENGINEER * categories.TECH3, 1, 1, 'support', 'none' },
+        { categories.MOBILE * categories.ENGINEER * categories.SubCommander, 1, 1, 'support', 'none' },
     },
 }
 

@@ -274,6 +274,8 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',                  
 
             { MIBC, 'CanPathToCurrentEnemySwarm', { true } },
 
+            { UCBC, 'FactoryGreaterAtLocation', { 'LocationType', 1, categories.LAND * categories.FACTORY * categories.TECH3 } },
+
             { UCBC, 'PoolLessAtLocation', { 'LocationType', 25, categories.DIRECTFIRE * categories.LAND * categories.TECH3 }},
         },
         BuilderType = 'Land',
@@ -292,6 +294,33 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',                  
             { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.01, 0.1}},
 
             { MIBC, 'CanPathToCurrentEnemySwarm', { true } },
+
+            { UCBC, 'FactoryGreaterAtLocation', { 'LocationType', 1, categories.LAND * categories.FACTORY * categories.TECH3 } },
+
+            { UCBC, 'PoolLessAtLocation', { 'LocationType', 25, categories.DIRECTFIRE * categories.LAND * categories.TECH3 }},
+        },
+        BuilderType = 'Land',
+    },
+
+    Builder { BuilderName = 'T3LightBot - Swarm',
+        PlatoonTemplate = 'T3LightBotSwarm',
+        Priority = 900,
+        BuilderConditions = {
+            { UCBC, 'UnitCapCheckLess', { 0.95 } },
+
+            { EBC, 'GreaterThanEconIncomeSwarm', { 3.0, 100 } },
+
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.85, 0.9 }},
+
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.01, 0.1}},
+
+            { MIBC, 'CanPathToCurrentEnemySwarm', { true } },
+
+            { MIBC, 'FactionIndex', { 1, 3 }}, -- 1: UEF, 2: Aeon, 3: Cybran, 4: Seraphim, 5: Nomads 
+
+            { UCBC, 'LocationFactoriesBuildingLess', { 'LocationType', 1, categories.uel0303 + categories.url0303 } },
+
+            { UCBC, 'FactoryGreaterAtLocation', { 'LocationType', 0, categories.LAND * categories.FACTORY * categories.TECH3 } },
 
             { UCBC, 'PoolLessAtLocation', { 'LocationType', 25, categories.DIRECTFIRE * categories.LAND * categories.TECH3 }},
         },
