@@ -52,7 +52,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',                  
 
             { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.01, 0.1}},
 
-            { MIBC, 'CanPathToCurrentEnemySwarm', { true } },
+            { MIBC, 'CanPathToCurrentEnemySwarm', { true, 'LocationType' } },
 
             { UCBC, 'HaveGreaterThanUnitsWithCategory', { 2, categories.MOBILE * categories.ENGINEER }},
         },
@@ -71,7 +71,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',                  
 
             { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.01, 0.1}},
 
-            { MIBC, 'CanPathToCurrentEnemySwarm', { true } },
+            { MIBC, 'CanPathToCurrentEnemySwarm', { true, 'LocationType' } },
         },
         BuilderType = 'Land',
     },
@@ -88,7 +88,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',                  
 
             { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.01, 0.1}},
 
-            { MIBC, 'CanPathToCurrentEnemySwarm', { true } },
+            { MIBC, 'CanPathToCurrentEnemySwarm', { true, 'LocationType' } },
 
             { UCBC, 'PoolLessAtLocation', { 'LocationType', 1, categories.LAND * categories.MOBILE * categories.ANTIAIR }},
 
@@ -113,7 +113,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',                  
 
             { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.01, 0.1}},
 
-            { MIBC, 'CanPathToCurrentEnemySwarm', { true } },
+            { MIBC, 'CanPathToCurrentEnemySwarm', { true, 'LocationType' } },
 
             { UCBC, 'EnemyUnitsGreaterAtLocationRadiusSwarm', {  BaseMilitaryZone, 'LocationType', 5, categories.AIR * (categories.BOMBER + categories.GROUNDATTACK) }},
 
@@ -139,7 +139,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',                  
 
             { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.01, 0.1}},
 
-            { MIBC, 'CanPathToCurrentEnemySwarm', { true } },
+            { MIBC, 'CanPathToCurrentEnemySwarm', { true, 'LocationType' } },
 
             { UCBC, 'PoolLessAtLocation', { 'LocationType', 25, categories.DIRECTFIRE * categories.LAND * categories.TECH2 }},
         },
@@ -158,7 +158,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',                  
 
             { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.01, 0.1}},
 
-            { MIBC, 'CanPathToCurrentEnemySwarm', { true } },
+            { MIBC, 'CanPathToCurrentEnemySwarm', { true, 'LocationType' } },
 
             { UCBC, 'PoolLessAtLocation', { 'LocationType', 25, categories.DIRECTFIRE * categories.LAND * categories.TECH2 }},
         },
@@ -177,7 +177,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',                  
 
             { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.01, 0.1}},
 
-            { MIBC, 'CanPathToCurrentEnemySwarm', { true } },
+            { MIBC, 'CanPathToCurrentEnemySwarm', { true, 'LocationType' } },
 
             { UCBC, 'PoolLessAtLocation', { 'LocationType', 1, categories.INDIRECTFIRE * categories.LAND * categories.TECH2 }},
 
@@ -198,7 +198,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',                  
 
             { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.01, 0.1}},
 
-            { MIBC, 'CanPathToCurrentEnemySwarm', { true } },
+            { MIBC, 'CanPathToCurrentEnemySwarm', { true, 'LocationType' } },
 
             { UCBC, 'HaveGreaterThanUnitsWithCategory', { 5, categories.LAND * categories.MOBILE * categories.DIRECTFIRE * categories.TECH2 - categories.ENGINEER }},
 
@@ -219,7 +219,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',                  
 
             { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.01, 0.1}},
 
-            { MIBC, 'CanPathToCurrentEnemySwarm', { true } },
+            { MIBC, 'CanPathToCurrentEnemySwarm', { true, 'LocationType' } },
 
             { UCBC, 'PoolLessAtLocation', { 'LocationType', 1, categories.LAND * categories.MOBILE * categories.ANTIAIR * categories.TECH2 }},
 
@@ -244,7 +244,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',                  
 
             { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.01, 0.1}},
 
-            { MIBC, 'CanPathToCurrentEnemySwarm', { true } },
+            { MIBC, 'CanPathToCurrentEnemySwarm', { true, 'LocationType' } },
 
             { UCBC, 'EnemyUnitsGreaterAtLocationRadiusSwarm', {  BaseMilitaryZone, 'LocationType', 5, categories.AIR * (categories.BOMBER + categories.GROUNDATTACK) }},
 
@@ -272,7 +272,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',                  
 
             { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.01, 0.1}},
 
-            { MIBC, 'CanPathToCurrentEnemySwarm', { true } },
+            { MIBC, 'CanPathToCurrentEnemySwarm', { true, 'LocationType' } },
 
             { UCBC, 'FactoryGreaterAtLocation', { 'LocationType', 1, categories.LAND * categories.FACTORY * categories.TECH3 } },
 
@@ -293,7 +293,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',                  
 
             { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.01, 0.1}},
 
-            { MIBC, 'CanPathToCurrentEnemySwarm', { true } },
+            { MIBC, 'CanPathToCurrentEnemySwarm', { true, 'LocationType' } },
 
             { UCBC, 'FactoryGreaterAtLocation', { 'LocationType', 1, categories.LAND * categories.FACTORY * categories.TECH3 } },
 
@@ -314,7 +314,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',                  
 
             { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.01, 0.1}},
 
-            { MIBC, 'CanPathToCurrentEnemySwarm', { true } },
+            { MIBC, 'CanPathToCurrentEnemySwarm', { true, 'LocationType' } },
 
             { MIBC, 'FactionIndex', { 1, 3 }}, -- 1: UEF, 2: Aeon, 3: Cybran, 4: Seraphim, 5: Nomads 
 
@@ -339,7 +339,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',                  
 
             { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.01, 0.1}},
 
-            { MIBC, 'CanPathToCurrentEnemySwarm', { true } },
+            { MIBC, 'CanPathToCurrentEnemySwarm', { true, 'LocationType' } },
 
             { UCBC, 'PoolLessAtLocation', { 'LocationType', 2, categories.DIRECTFIRE * categories.LAND * categories.SNIPER * categories.TECH3 }},
 
@@ -360,7 +360,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',                  
 
             { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.01, 0.1}},
 
-            { MIBC, 'CanPathToCurrentEnemySwarm', { true } },
+            { MIBC, 'CanPathToCurrentEnemySwarm', { true, 'LocationType' } },
 
             { UCBC, 'PoolLessAtLocation', { 'LocationType', 2, categories.INDIRECTFIRE * categories.LAND * categories.TECH3 }},
 
@@ -381,7 +381,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',                  
 
             { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.01, 0.1}},
 
-            { MIBC, 'CanPathToCurrentEnemySwarm', { true } },
+            { MIBC, 'CanPathToCurrentEnemySwarm', { true, 'LocationType' } },
 
             { UCBC, 'PoolLessAtLocation', { 'LocationType', 1, categories.INDIRECTFIRE * categories.LAND * categories.TECH3 }},
 
@@ -402,7 +402,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',                  
 
             { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.01, 0.1}},
 
-            { MIBC, 'CanPathToCurrentEnemySwarm', { true } },
+            { MIBC, 'CanPathToCurrentEnemySwarm', { true, 'LocationType' } },
 
             { UCBC, 'PoolLessAtLocation', { 'LocationType', 1, categories.LAND * categories.MOBILE * categories.ANTIAIR * categories.TECH3 }},
 
@@ -427,7 +427,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',                  
 
             { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.01, 0.1}},
 
-            { MIBC, 'CanPathToCurrentEnemySwarm', { true } },
+            { MIBC, 'CanPathToCurrentEnemySwarm', { true, 'LocationType' } },
 
             { UCBC, 'EnemyUnitsGreaterAtLocationRadiusSwarm', {  BaseMilitaryZone, 'LocationType', 5, categories.AIR * (categories.BOMBER + categories.GROUNDATTACK) }},
 
@@ -486,7 +486,7 @@ BuilderGroup {
             },
         },
         BuilderConditions = {    
-            { MIBC, 'CanPathToCurrentEnemySwarm', { true } },
+            { MIBC, 'CanPathToCurrentEnemySwarm', { true, 'LocationType' } },
 
             { UCBC, 'EnemyUnitsGreaterAtLocationRadius', {  BasePanicZone, 'LocationType', 0, categories.MOBILE - categories.SCOUT }}, 
         },
@@ -502,7 +502,7 @@ BuilderGroup {
         BuilderConditions = { 
             { UCBC, 'ScalePlatoonSizeSwarm', { 'LocationType', 'LAND', categories.MOBILE * categories.LAND - categories.ENGINEER - categories.EXPERIMENTAL } },
 
-            { MIBC, 'CanPathToCurrentEnemySwarm', { true } },
+            { MIBC, 'CanPathToCurrentEnemySwarm', { true, 'LocationType' } },
 
             { UCBC, 'UnitsGreaterAtEnemy', { 0 , categories.MOBILE * categories.LAND - categories.SCOUT } },
 
@@ -537,7 +537,7 @@ BuilderGroup {
         BuilderConditions = { 
             { UCBC, 'ScalePlatoonSizeSwarm', { 'LocationType', 'LAND', categories.MOBILE * categories.LAND - categories.ENGINEER - categories.EXPERIMENTAL } },
 
-            { MIBC, 'CanPathToCurrentEnemySwarm', { true } },
+            { MIBC, 'CanPathToCurrentEnemySwarm', { true, 'LocationType' } },
 
             { UCBC, 'UnitsGreaterAtEnemy', { 0 , categories.MOBILE * categories.LAND - categories.SCOUT } },
 
@@ -572,7 +572,7 @@ BuilderGroup {
         BuilderConditions = { 
             { UCBC, 'ScalePlatoonSizeSwarm', { 'LocationType', 'LAND', categories.MOBILE * categories.LAND - categories.ENGINEER - categories.EXPERIMENTAL } },
 
-            { MIBC, 'CanPathToCurrentEnemySwarm', { true } },
+            { MIBC, 'CanPathToCurrentEnemySwarm', { true, 'LocationType' } },
 
             { UCBC, 'UnitsGreaterAtEnemy', { 0 , categories.MOBILE * categories.LAND - categories.SCOUT } },
 
@@ -607,7 +607,7 @@ BuilderGroup {
         BuilderConditions = { 
             { UCBC, 'ScalePlatoonSizeSwarm', { 'LocationType', 'LAND', categories.MOBILE * categories.LAND - categories.ENGINEER - categories.EXPERIMENTAL } },
 
-            { MIBC, 'CanPathToCurrentEnemySwarm', { true } },
+            { MIBC, 'CanPathToCurrentEnemySwarm', { true, 'LocationType' } },
 
             { UCBC, 'UnitsGreaterAtEnemy', { 0 , categories.MOBILE * categories.LAND - categories.SCOUT } },
 
@@ -755,7 +755,7 @@ BuilderGroup {
         InstanceCount = 2,
         BuilderType = 'Any',
         BuilderConditions = {  
-            { MIBC, 'CanPathToCurrentEnemySwarm', { true } },
+            { MIBC, 'CanPathToCurrentEnemySwarm', { true, 'LocationType' } },
 
             { UCBC, 'LessThanGameTimeSeconds', { 240 } },
 
@@ -787,7 +787,7 @@ BuilderGroup {
         BuilderConditions = {   
             { UCBC, 'ScalePlatoonSizeSwarm', { 'LocationType', 'LAND', categories.MOBILE * categories.LAND - categories.ENGINEER - categories.EXPERIMENTAL } },
             
-            { MIBC, 'CanPathToCurrentEnemySwarm', { true } },
+            { MIBC, 'CanPathToCurrentEnemySwarm', { true, 'LocationType' } },
 
             { UCBC, 'GreaterThanGameTimeSeconds', { 300 } },
 
@@ -816,7 +816,7 @@ BuilderGroup {
         PlatoonAddPlans = {'PlatoonCallForHelpAISwarm', 'DistressResponseAISwarm'},
         Priority = 540,
         BuilderConditions = {
-            { MIBC, 'CanPathToCurrentEnemySwarm', { true } },
+            { MIBC, 'CanPathToCurrentEnemySwarm', { true, 'LocationType' } },
 
             { UCBC, 'GreaterThanGameTimeSeconds', { 540 } }, 
         },
@@ -892,7 +892,7 @@ BuilderGroup {
 
             { UCBC, 'LandStrengthRatioGreaterThan', { 1 } },
 
-            { MIBC, 'CanPathToCurrentEnemySwarm', { true } },
+            { MIBC, 'CanPathToCurrentEnemySwarm', { true, 'LocationType' } },
         },
     },
 
@@ -928,7 +928,7 @@ BuilderGroup {
 
             { UCBC, 'LandStrengthRatioGreaterThan', { 1 } },
             
-            { MIBC, 'CanPathToCurrentEnemySwarm', { true } },
+            { MIBC, 'CanPathToCurrentEnemySwarm', { true, 'LocationType' } },
         },
     }, 
 }

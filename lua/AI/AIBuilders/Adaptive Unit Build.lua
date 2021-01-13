@@ -114,7 +114,7 @@ BuilderGroup {
         PlatoonTemplate = 'T2AirTorpedoBomber',
         Priority = 775,
         BuilderConditions = {
-            { MIBC, 'CanPathToCurrentEnemySwarm', { false } },
+            { MIBC, 'CanPathToCurrentEnemySwarm', { true, 'LocationType' } },
 
             { UCBC, 'HaveLessThanUnitsWithCategory', { 80, categories.MOBILE * categories.AIR * categories.ANTINAVY }},
 

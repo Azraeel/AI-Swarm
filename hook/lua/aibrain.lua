@@ -1,9 +1,9 @@
-local lastCall = GetGameTimeSeconds()
+WARN('['..string.gsub(debug.getinfo(1).source, ".*\\(.*.lua)", "%1")..', line:'..debug.getinfo(1).currentline..'] * AI-Swarm: offset aibrain.lua' )
 
---SwarmAIBrainClass = AIBrain
---AIBrain = Class(SwarmAIBrainClass) 
+local lastCall = 0
 
-{
+SwarmAIBrainClass = AIBrain
+AIBrain = Class(SwarmAIBrainClass) {
 
     OnCreateAI = function(self, planName)
         SwarmAIBrainClass.OnCreateAI(self, planName)
@@ -15,6 +15,8 @@ local lastCall = GetGameTimeSeconds()
             --LOG('* AI-Swarm: OnCreateAI() found AI-Swarm  Name: ('..self.Name..') - personality: ('..per..') ')
 
             self.Swarm = true
+
+            self:ForkThread(self.ParseIntelThreadSwarm)
 
         end
 
@@ -46,7 +48,7 @@ local lastCall = GetGameTimeSeconds()
     ExpansionHelpThread = function(self)
 
         if not self.Swarm then
-            return self.ExpansionHelpThread(self)
+            return SwarmAIBrainClass.ExpansionHelpThread(self)
         end
 
         coroutine.yield(10)
@@ -57,7 +59,7 @@ local lastCall = GetGameTimeSeconds()
     InitializeEconomyState = function(self)
 
         if not self.Swarm then
-            return self.InitializeEconomyState(self)
+            return SwarmAIBrainClass.InitializeEconomyState(self)
         end
 
     end,
@@ -65,7 +67,7 @@ local lastCall = GetGameTimeSeconds()
     OnIntelChange = function(self, blip, reconType, val)
 
         if not self.Swarm then
-            return self.OnIntelChange(self, blip, reconType, val)
+            return SwarmAIBrainClass.OnIntelChange(self, blip, reconType, val)
         end
 
     end,
@@ -73,7 +75,7 @@ local lastCall = GetGameTimeSeconds()
     SetupAttackVectorsThread = function(self)
 
         if not self.Swarm then
-            return self.SetupAttackVectorsThread(self)
+            return SwarmAIBrainClass.SetupAttackVectorsThread(self)
         end
 
         coroutine.yield(10)
@@ -81,28 +83,31 @@ local lastCall = GetGameTimeSeconds()
         KillThread(CurrentThread())
     end,
 
-    ParseIntelThread = function(self)
+    ParseIntelThreadSwarm = function(self)
+
+        LOG("*AI DEBUG "..self.Nickname.." ParseIntelThreadSwarm begins")
 
         -----------------
         --- LAND UNITS --
 		-----------------
-        if (GetGameTimeSeconds() > 60 * 1) and lastCall + 10 < GetGameTimeSeconds() then
+        while self.Swarm do
 
-            local lastCall = GetGameTimeSeconds()
+            WaitTicks(20)
 
             allyScore = 0
             enemyScore = 0
 
-            for k, self in ArmyBrains do
-                if ArmyIsCivilian(self:GetArmyIndex()) then
+            for k, brain in ArmyBrains do
+
+                if ArmyIsCivilian(brain:GetArmyIndex()) then
                   
-                elseif IsAlly( self:GetArmyIndex(), self:GetArmyIndex() ) then
+                elseif IsAlly( self:GetArmyIndex(), brain:GetArmyIndex() ) then
 
                     allyScore = allyScore + table.getn(self:GetListOfUnits( categories.MOBILE * categories.LAND - categories.ENGINEER - categories.SCOUT, false, false))
 
-                elseif IsEnemy( self:GetArmyIndex(), self:GetArmyIndex() ) then
+                elseif IsEnemy( self:GetArmyIndex(), brain:GetArmyIndex() ) then
 
-                    enemyScore = enemyScore + table.getn(self:GetListOfUnits( categories.MOBILE * categories.LAND - categories.ENGINEER - categories.SCOUT, false, false))
+                    enemyScore = enemyScore + table.getn(brain:GetListOfUnits( categories.MOBILE * categories.LAND - categories.ENGINEER - categories.SCOUT, false, false))
                 end
             end
 
@@ -110,33 +115,29 @@ local lastCall = GetGameTimeSeconds()
                 if allyScore == 0 then
                     allyScore = 1
                 end
-                self.MyLandRatio = enemyScore / allyScore
+                self.MyLandRatio = 1/enemyScore*allyScore
             else
                 self.MyLandRatio = 0.01
             end
+        
 
-        end
+            LOG("*AI DEBUG "..self.Nickname.." First Phase Ends")
 
-        -----------------
-        --- AIR UNITS ---
-		-----------------
-        if (GetGameTimeSeconds() > 60 * 1) and lastCall + 10 < GetGameTimeSeconds() then
-
-            local lastCall = GetGameTimeSeconds()
 
             allyScore = 0
             enemyScore = 0
 
-            for k, self in ArmyBrains do
-                if ArmyIsCivilian(self:GetArmyIndex()) then
+            for k, brain in ArmyBrains do
+
+                if ArmyIsCivilian(brain:GetArmyIndex()) then
                    
-                elseif IsAlly( self:GetArmyIndex(), self:GetArmyIndex() ) then
+                elseif IsAlly( self:GetArmyIndex(), brain:GetArmyIndex() ) then
 
                     allyScore = allyScore + table.getn(self:GetListOfUnits( categories.MOBILE * categories.AIR - categories.ENGINEER - categories.SCOUT, false, false))
 
-                elseif IsEnemy( self:GetArmyIndex(), self:GetArmyIndex() ) then
+                elseif IsEnemy( self:GetArmyIndex(), brain:GetArmyIndex() ) then
 
-                    enemyScore = enemyScore + table.getn(self:GetListOfUnits( categories.MOBILE * categories.AIR - categories.ENGINEER - categories.SCOUT, false, false))
+                    enemyScore = enemyScore + table.getn(brain:GetListOfUnits( categories.MOBILE * categories.AIR - categories.ENGINEER - categories.SCOUT, false, false))
                 end
             end
 
@@ -144,33 +145,29 @@ local lastCall = GetGameTimeSeconds()
                 if allyScore == 0 then
                     allyScore = 1
                 end
-                self.MyAirRatio = enemyScore / allyScore
+                self.MyAirRatio = 1/enemyScore*allyScore
             else
                 self.MyAirRatio = 0.01
             end
+    
 
-        end
+            LOG("*AI DEBUG "..self.Nickname.." Second Phase Ends")
 
-        -----------------
-        --- NAVAL UNITS -
-		-----------------
-        if (GetGameTimeSeconds() > 60 * 1) and lastCall + 10 < GetGameTimeSeconds() then
-
-            local lastCall = GetGameTimeSeconds()
 
             allyScore = 0
             enemyScore = 0
 
-            for k, self in ArmyBrains do
-                if ArmyIsCivilian(self:GetArmyIndex()) then
+            for k, brain in ArmyBrains do
+
+                if ArmyIsCivilian(brain:GetArmyIndex()) then
                    
-                elseif IsAlly( self:GetArmyIndex(), self:GetArmyIndex() ) then
+                elseif IsAlly( self:GetArmyIndex(), brain:GetArmyIndex() ) then
 
                     allyScore = allyScore + table.getn(self:GetListOfUnits( categories.MOBILE * categories.NAVAL - categories.ENGINEER - categories.SCOUT, false, false))
 
-                elseif IsEnemy( self:GetArmyIndex(), self:GetArmyIndex() ) then
+                elseif IsEnemy( self:GetArmyIndex(), brain:GetArmyIndex() ) then
 
-                    enemyScore = enemyScore + table.getn(self:GetListOfUnits( categories.MOBILE * categories.NAVAL - categories.ENGINEER - categories.SCOUT, false, false))
+                    enemyScore = enemyScore + table.getn(brain:GetListOfUnits( categories.MOBILE * categories.NAVAL - categories.ENGINEER - categories.SCOUT, false, false))
                 end
             end
     
@@ -178,11 +175,11 @@ local lastCall = GetGameTimeSeconds()
                 if allyScore == 0 then
                     allyScore = 1
                 end
-                self.MyNavalRatio = enemyScore / allyScore
+                self.MyNavalRatio = 1/enemyScore*allyScore
             else
                 self.MyNavalRatio = 0.01
             end
-
+            LOG("*AI DEBUG "..self.Nickname.." Air Ratio is "..repr(self.MyAirRatio).." Land Ratio is "..repr(self.MyLandRatio).." Naval Ratio is "..repr(self.MyNavalRatio))
         end
     end,
 }

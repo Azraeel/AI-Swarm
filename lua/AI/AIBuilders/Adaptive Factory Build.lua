@@ -65,8 +65,8 @@ BuilderGroup {
     BuildersType = 'EngineerBuilder',
     Builder {
         BuilderName = 'S1 Sea Factory 1st',
-        PlatoonTemplate = 'EngineerBuilder',
-        Priority = 605,
+        PlatoonTemplate = 'EngineerBuilderALLTECH',
+        Priority = 655,
         DelayEqualBuildPlattons = {'Factories', 3},
         BuilderConditions = {
             { UCBC, 'HaveLessThanUnitsWithCategory', { 1, categories.STRUCTURE * categories.FACTORY * categories.NAVAL - categories.SUPPORTFACTORY } },
@@ -166,7 +166,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Adaptive Factory Build',
         BuilderConditions = {
             { UCBC, 'CheckBuildPlattonDelay', { 'Factories' }},
 
-            { MIBC, 'CanPathToCurrentEnemySwarm', { true } },
+            { MIBC, 'CanPathToCurrentEnemySwarm', { true, 'LocationType' } },
             
             { EBC, 'GreaterThanEconTrendSwarm', { 0.0, 0.0 } }, 
 
@@ -198,7 +198,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Adaptive Factory Build',
         BuilderConditions = {
             { UCBC, 'CheckBuildPlattonDelay', { 'Factories' }},
 
-            { MIBC, 'CanPathToCurrentEnemySwarm', { true } },
+            { MIBC, 'CanPathToCurrentEnemySwarm', { true, 'LocationType' } },
             
             { EBC, 'GreaterThanEconTrendSwarm', { 0.0, 0.0 } }, 
 

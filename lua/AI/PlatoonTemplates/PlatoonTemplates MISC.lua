@@ -51,7 +51,7 @@ PlatoonTemplate {
     Name = 'SACUEngineerTransfer',
     Plan = 'TransferAISwarm',
     GlobalSquads = {
-        { categories.MOBILE * categories.ENGINEER * categories.SubCommander, 1, 1, 'support', 'none' },
+        { categories.MOBILE * categories.ENGINEER * categories.SUBCOMMANDER, 1, 1, 'support', 'none' },
     },
 }
 

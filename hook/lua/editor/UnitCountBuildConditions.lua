@@ -510,6 +510,11 @@ function NeedMassPointShare( aiBrain )
 end
 
 function AirStrengthRatioGreaterThan( aiBrain, value )
+
+    if aiBrain.MyAirRatio <= .01 then
+        return true
+    end
+
 	return aiBrain.MyAirRatio >= value
 end
 
@@ -518,6 +523,11 @@ function AirStrengthRatioLessThan ( aiBrain, value )
 end
 
 function LandStrengthRatioGreaterThan( aiBrain, value )
+
+    if aiBrain.MyLandRatio <= .01 then
+        return true
+    end
+
 	return aiBrain.MyLandRatio >= value
 end
 
@@ -526,6 +536,11 @@ function LandStrengthRatioLessThan ( aiBrain, value )
 end
 
 function NavalStrengthRatioGreaterThan( aiBrain, value )
+
+    if aiBrain.MyNavalRatio <= .01 then
+        return true
+    end
+
 	return aiBrain.MyNavalRatio >= value
 end
 

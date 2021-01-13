@@ -1,4 +1,4 @@
---WARN('['..string.gsub(debug.getinfo(1).source, ".*\\(.*.lua)", "%1")..', line:'..debug.getinfo(1).currentline..'] * AI-Swarm: offset platoon.lua' )
+WARN('['..string.gsub(debug.getinfo(1).source, ".*\\(.*.lua)", "%1")..', line:'..debug.getinfo(1).currentline..'] * AI-Swarm: offset platoon.lua' )
 
 local SwarmUtils = import('/mods/AI-Swarm/lua/AI/Swarmutilities.lua')
 
@@ -209,7 +209,7 @@ Platoon = Class(SwarmPlatoonClass) {
         local path
         local reason
         local maxRadius = self.PlatoonData.SearchRadius or 100
-        local maxRadius = math.max(maxradius, (maxradius * aiBrain.MyAirRatio) )
+        local maxRadius = math.max(maxRadius, (maxRadius * aiBrain.MyAirRatio) )
         local PlatoonPos = self:GetPlatoonPosition()
         local LastTargetPos = PlatoonPos
         local basePosition

@@ -23,7 +23,7 @@ BuilderGroup {
 
             { UCBC, 'HaveGreaterThanUnitsWithCategory', { 2, categories.FACTORY * categories.LAND } },
 
-            { MIBC, 'CanPathToCurrentEnemySwarm', { true } },
+            { MIBC, 'CanPathToCurrentEnemySwarm', { true, 'LocationType' } },
 
             { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.6, 0.8 }},
 

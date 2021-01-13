@@ -23,6 +23,10 @@ _Land Experimental_
 # Priority 950 - S Land Experimental - 2
 # Priority 950 - S Land Experimental - 3
 
-_Water Ships_
+_Water Builders_
 
-# Standardized to Priority of 500 - ALL SHIP BUILDERS
+# Standardized to Priority of 500 - ALL WATER BUILDERS
+
+_Air Builders_
+
+# Standardized to Priority of 500 - ALL AIR BUILDERS
