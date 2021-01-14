@@ -14,9 +14,11 @@ BuilderGroup { BuilderGroupName = 'Swarm Strategic Builder',
         PlatoonTemplate = 'T2EngineerBuilder',
         Priority = 1000,
         BuilderConditions = {
-            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.1, 1.1 }},
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.05, 1.1 }},
 
-            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.06, 0.1}},  
+            { EBC, 'GreaterThanEnergyIncomeSwarm', { 2000 }},
+
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.05, 0.1}},  
 
             { EBC, 'GreaterThanEconTrendSwarm', { 0.0, 0.0 } }, 
 
@@ -44,9 +46,11 @@ BuilderGroup { BuilderGroupName = 'Swarm Strategic Builder',
         PlatoonTemplate = 'T2EngineerBuilder',
         Priority = 1000,
         BuilderConditions = {
-            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.1, 1.1 }},
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.05, 1.1 }},
 
-            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.08, 0.1}},  
+            { EBC, 'GreaterThanEnergyIncomeSwarm', { 2000 }},
+
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.05, 0.1}},  
 
             { EBC, 'GreaterThanEconTrendSwarm', { 0.0, 0.0 } },       
 

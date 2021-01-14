@@ -77,7 +77,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Naval Builders',
 
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
 
-            { UCBC, 'PoolLess', { 'LocationType', 10, categories.FRIGATE * categories.NAVAL }},
+            { UCBC, 'PoolLessAtLocation', { 'LocationType', 10, categories.FRIGATE * categories.NAVAL }},
         },
 
         BuilderType = 'Sea',
@@ -101,7 +101,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Naval Builders',
 
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
 
-            { UCBC, 'PoolLess', { 'LocationType', 5, categories.T1SUBMARINE * categories.NAVAL }},
+            { UCBC, 'PoolLessAtLocation', { 'LocationType', 5, categories.T1SUBMARINE * categories.NAVAL }},
         },
 
         BuilderType = 'Sea',
@@ -128,7 +128,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Naval Builders',
 
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
 
-            { UCBC, 'PoolLess', { 'LocationType', 10, categories.DESTROYER * categories.NAVAL * categories.TECH2 }},
+            { UCBC, 'PoolLessAtLocation', { 'LocationType', 10, categories.DESTROYER * categories.NAVAL * categories.TECH2 }},
         },
 
         BuilderType = 'Sea',
@@ -152,7 +152,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Naval Builders',
 
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
 
-            { UCBC, 'PoolLess', { 'LocationType', 3, categories.CRUISER * categories.NAVAL * categories.TECH2 }},
+            { UCBC, 'PoolLessAtLocation', { 'LocationType', 3, categories.CRUISER * categories.NAVAL * categories.TECH2 }},
         },
 
         BuilderType = 'Sea',
@@ -176,7 +176,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Naval Builders',
 
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
 
-            { UCBC, 'PoolLess', { 'LocationType', 5, categories.CRUISER * categories.NAVAL * categories.TECH2 }},
+            { UCBC, 'PoolLessAtLocation', { 'LocationType', 5, categories.CRUISER * categories.NAVAL * categories.TECH2 }},
         },
 
         BuilderType = 'Sea',
@@ -200,7 +200,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Naval Builders',
 
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
 
-            { UCBC, 'PoolLess', { 'LocationType', 3, categories.T2SUBMARINE * categories.NAVAL * categories.TECH2 }},
+            { UCBC, 'PoolLessAtLocation', { 'LocationType', 3, categories.T2SUBMARINE * categories.NAVAL * categories.TECH2 }},
         },
 
         BuilderType = 'Sea',
@@ -224,7 +224,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Naval Builders',
 
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
 
-            { UCBC, 'PoolLess', { 'LocationType', 1, categories.SHIELD * categories.NAVAL * categories.TECH2 }},
+            { UCBC, 'PoolLessAtLocation', { 'LocationType', 1, categories.SHIELD * categories.NAVAL * categories.TECH2 }},
         },
 
         BuilderType = 'Sea',
@@ -248,7 +248,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Naval Builders',
 
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
 
-            { UCBC, 'PoolLess', { 'LocationType', 1, categories.STEALTH * categories.NAVAL * categories.TECH2 }},
+            { UCBC, 'PoolLessAtLocation', { 'LocationType', 1, categories.STEALTH * categories.NAVAL * categories.TECH2 }},
         },
 
         BuilderType = 'Sea',
@@ -271,7 +271,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Naval Builders',
 
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
 
-            { UCBC, 'PoolLess', { 'LocationType', 6, categories.BATTLESHIP * categories.NAVAL * categories.TECH3 }},
+            { UCBC, 'PoolLessAtLocation', { 'LocationType', 6, categories.BATTLESHIP * categories.NAVAL * categories.TECH3 }},
         },
 
         BuilderType = 'Sea',
@@ -293,7 +293,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Naval Builders',
 
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
 
-            { UCBC, 'PoolLess', { 'LocationType', 5, categories.CRUISER * categories.NAVAL * categories.TECH3 }},
+            { UCBC, 'PoolLessAtLocation', { 'LocationType', 5, categories.CRUISER * categories.NAVAL * categories.TECH3 }},
         },
 
         BuilderType = 'Sea',
@@ -317,7 +317,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Naval Builders',
 
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
 
-            { UCBC, 'PoolLess', { 'LocationType', 5, categories.CRUISER * categories.NAVAL * categories.TECH2 }},
+            { UCBC, 'PoolLessAtLocation', { 'LocationType', 5, categories.CRUISER * categories.NAVAL * categories.TECH2 }},
         },
         BuilderType = 'Sea',
     },
@@ -337,7 +337,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Naval Builders',
 
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
 
-            { UCBC, 'PoolLess', { 'LocationType', 10, categories.SUBMERSIBLE * categories.NAVAL * categories.TECH3 }},
+            { UCBC, 'PoolLessAtLocation', { 'LocationType', 10, categories.SUBMERSIBLE * categories.NAVAL * categories.TECH3 }},
         },
         BuilderType = 'Sea',
     },
@@ -355,7 +355,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Naval Builders',
 
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
 
-            { UCBC, 'PoolLess', { 'LocationType', 2, categories.BATTLESHIP * categories.INDIRECTFIRE * categories.NAVAL * categories.TECH3 }},
+            { UCBC, 'PoolLessAtLocation', { 'LocationType', 2, categories.BATTLESHIP * categories.INDIRECTFIRE * categories.NAVAL * categories.TECH3 }},
         },
 
         BuilderType = 'Sea',
@@ -376,7 +376,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Naval Builders',
 
             { UCBC, 'HaveLessThanUnitsWithCategory', { 5, categories.NUKE * categories.NAVAL }},
 
-            { UCBC, 'PoolLess', { 'LocationType', 1, categories.NUKE * categories.NAVAL * categories.TECH3 }},
+            { UCBC, 'PoolLessAtLocation', { 'LocationType', 1, categories.NUKE * categories.NAVAL * categories.TECH3 }},
         },
         BuilderType = 'Sea',
     },

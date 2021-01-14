@@ -96,6 +96,15 @@ function LessThanEnergyTrend(aiBrain, eTrend)
     end
 end
 
+function GreaterThanEnergyIncomeSwarm(aiBrain, EnergyIncome)
+	local econ = AIUtils.AIGetEconomyNumbers(aiBrain)
+    if econ.EnergyIncome >= EnergyIncome then
+        return true
+    else
+        return false
+    end
+end
+
 --            { UCBC, 'EnergyToMassRatioIncome', { 10.0, '>=',true } },  -- True if we have 10 times more Energy then Mass income ( 100 >= 10 = true )
 function EnergyToMassRatioIncome(aiBrain, ratio, compareType)
     local econ = AIUtils.AIGetEconomyNumbers(aiBrain)

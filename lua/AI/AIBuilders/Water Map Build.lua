@@ -29,7 +29,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Transports - Water Map',               
 
             { UCBC, 'LocationFactoriesBuildingLess', { 'LocationType', 1, categories.AIR * categories.TRANSPORTATION} },
 
-            { UCBC, 'PoolLessAtLocation', { 'LocationType', 1, categories.AIR * categories.TRANSPORTATION }},
+            { UCBC, 'PoolLessAtLocation', { 'LocationType',  1, categories.AIR * categories.TRANSPORTATION }},
         },
         BuilderType = 'Air',
     },
@@ -55,7 +55,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Transports - Water Map',               
 
             { UCBC, 'LocationFactoriesBuildingLess', { 'LocationType', 1, categories.AIR * categories.TRANSPORTATION} },
 
-            { UCBC, 'PoolLessAtLocation', { 'LocationType', 1, categories.AIR * categories.TRANSPORTATION }}
+            { UCBC, 'PoolLessAtLocation', { 'LocationType',  1, categories.AIR * categories.TRANSPORTATION }}
         },
         BuilderType = 'Air',
     },
@@ -81,7 +81,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Transports - Water Map',               
 
             { UCBC, 'LocationFactoriesBuildingLess', { 'LocationType', 1, categories.AIR * categories.TRANSPORTATION} },
 
-            { UCBC, 'PoolLessAtLocation', { 'LocationType', 1, categories.AIR * categories.TRANSPORTATION }}
+            { UCBC, 'PoolLessAtLocation', { 'LocationType',  1, categories.AIR * categories.TRANSPORTATION }}
        },
         BuilderType = 'Air',
     }, 
@@ -106,7 +106,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders - Water Map',            
 
             { MIBC, 'MapGreaterThanSwarm', { 1023, 1023 }},
 
-            { UCBC, 'PoolLessAtLocation', { 'LocationType', 5, categories.LAND * categories.TECH1 * (categories.DIRECTFIRE + categories.INDIRECTFIRE)}},
+            { UCBC, 'PoolLessAtLocation', { 'LocationType',  5, categories.LAND * categories.TECH1 * (categories.DIRECTFIRE + categories.INDIRECTFIRE)}},
 
             { UCBC, 'LocationFactoriesBuildingLess', { 'LocationType', 2, categories.LAND * categories.TECH1 * (categories.DIRECTFIRE + categories.INDIRECTFIRE)} },
         },
@@ -132,7 +132,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders - Water Map',            
 
             { MIBC, 'MapGreaterThanSwarm', { 1023, 1023 }},
 
-            { UCBC, 'PoolLessAtLocation', { 'LocationType', 5, categories.LAND * categories.TECH2 * (categories.DIRECTFIRE + categories.INDIRECTFIRE)}},
+            { UCBC, 'PoolLessAtLocation', { 'LocationType',  5, categories.LAND * categories.TECH2 * (categories.DIRECTFIRE + categories.INDIRECTFIRE)}},
 
             { UCBC, 'LocationFactoriesBuildingLess', { 'LocationType', 2, categories.LAND * categories.TECH2 * (categories.DIRECTFIRE + categories.INDIRECTFIRE)} },
         },
@@ -158,7 +158,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders - Water Map',            
 
             { MIBC, 'MapGreaterThanSwarm', { 1023, 1023 }},
 
-            { UCBC, 'PoolLessAtLocation', { 'LocationType', 8, categories.LAND * categories.TECH3 * (categories.DIRECTFIRE + categories.INDIRECTFIRE)}},
+            { UCBC, 'PoolLessAtLocation', { 'LocationType',  8, categories.LAND * categories.TECH3 * (categories.DIRECTFIRE + categories.INDIRECTFIRE)}},
 
             { UCBC, 'LocationFactoriesBuildingLess', { 'LocationType', 2, categories.LAND * categories.TECH3 * (categories.DIRECTFIRE + categories.INDIRECTFIRE)}},
         },

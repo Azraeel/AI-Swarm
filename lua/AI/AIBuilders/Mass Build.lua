@@ -16,7 +16,7 @@ BuilderGroup {
     BuildersType = 'EngineerBuilder',
     Builder {
         BuilderName = 'S1 Mass 30 - Opener',
-        PlatoonTemplate = 'EngineerBuilder',
+        PlatoonTemplate = 'EngineerBuilderALLTECH',
         Priority = 600,
         InstanceCount = 4,
         DelayEqualBuildPlattons = {'MASSEXTRACTION', 3},
@@ -42,7 +42,7 @@ BuilderGroup {
 
     Builder {
         BuilderName = 'S1 Mass 30',
-        PlatoonTemplate = 'EngineerBuilder',
+        PlatoonTemplate = 'EngineerBuilderALLTECH',
         Priority = 600,
         InstanceCount = 4,
         DelayEqualBuildPlattons = {'MASSEXTRACTION', 3},
@@ -67,7 +67,7 @@ BuilderGroup {
     },
     Builder {
         BuilderName = 'S1 Mass 60',
-        PlatoonTemplate = 'EngineerBuilder',
+        PlatoonTemplate = 'EngineerBuilderALLTECH',
         Priority = 585,
         InstanceCount = 4,
         DelayEqualBuildPlattons = {'MASSEXTRACTION', 3},
@@ -92,7 +92,7 @@ BuilderGroup {
     },
     Builder {
         BuilderName = 'S1 Mass 1000 6+',
-        PlatoonTemplate = 'EngineerBuilder',
+        PlatoonTemplate = 'EngineerBuilderALLTECH',
         Priority = 575,
         DelayEqualBuildPlattons = {'MASSEXTRACTION', 3},
         InstanceCount = 4,
@@ -118,7 +118,7 @@ BuilderGroup {
     },
     Builder {
         BuilderName = 'S1 Mass 1000 8+',
-        PlatoonTemplate = 'EngineerBuilder',
+        PlatoonTemplate = 'EngineerBuilderALLTECH',
         Priority = 565,
         DelayEqualBuildPlattons = {'MASSEXTRACTION', 3},
         InstanceCount = 4,
@@ -144,7 +144,7 @@ BuilderGroup {
     },
     Builder {
         BuilderName = 'S1 Mass 1000 10+',
-        PlatoonTemplate = 'EngineerBuilder',
+        PlatoonTemplate = 'EngineerBuilderALLTECH',
         Priority = 555,
         DelayEqualBuildPlattons = {'MASSEXTRACTION', 3},
         InstanceCount = 4,
@@ -217,7 +217,7 @@ BuilderGroup {
     -- ============ --
     Builder {
         BuilderName = 'S3 Mass Fab',
-        PlatoonTemplate = 'T3EngineerBuildernoSUB',
+        PlatoonTemplate = 'T3EngineerBuilderSUB',
         Priority = 1175,
         BuilderConditions = {
             { UCBC, 'HasNotParagon', {} },

@@ -124,8 +124,11 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Builders',
 
     Builder {
         BuilderName = 'Swarm-AI - T3 Air Fighter Group',
+
         PlatoonTemplate = 'SwarmAIT3AirFighterGroup',
+
         Priority = 950,
+
         BuilderConditions = {
             { UCBC, 'UnitCapCheckLess', { 0.90 } },
 
@@ -140,8 +143,11 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Builders',
 
     Builder {
         BuilderName = 'Swarm-AI - T3 Air Attack Group',
+
         PlatoonTemplate = 'SwarmAIT3AirAttackQueue',
+
         Priority = 900,
+        
         BuilderConditions = {
             { UCBC, 'UnitCapCheckLess', { 0.90 } },
 
@@ -168,17 +174,13 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Builders',
 
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
 
-            { EBC, 'GreaterThanEconIncomeSwarm', { 2, 20 } },
-
             { MIBC, 'ArmyNeedsTransports', {} },
 
             { MIBC, 'CanPathToCurrentEnemySwarm', { true, 'LocationType' } },
 
             { UCBC, 'LocationFactoriesBuildingLess', { 'LocationType', 1, categories.AIR * categories.TRANSPORTATION} },
 
-            { UCBC, 'PoolLessAtLocation', { 'LocationType', 1, categories.AIR * categories.TRANSPORTATION }},
-
-            { UCBC, 'HaveLessThanUnitsWithCategory', { 1, categories.AIR * categories.TRANSPORTATION } },
+            { UCBC, 'PoolLess', {1, categories.AIR * categories.TRANSPORTATION }},
         },
         BuilderType = 'Air',
     },
@@ -194,17 +196,13 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Builders',
 
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
 
-            { EBC, 'GreaterThanEconIncomeSwarm', { 2, 20 } },
-
             { MIBC, 'ArmyNeedsTransports', {} },
 
             { MIBC, 'CanPathToCurrentEnemySwarm', { true, 'LocationType' } },
 
             { UCBC, 'LocationFactoriesBuildingLess', { 'LocationType', 1, categories.AIR * categories.TRANSPORTATION} },
 
-            { UCBC, 'PoolLessAtLocation', { 'LocationType', 1, categories.AIR * categories.TRANSPORTATION }},
-
-            { UCBC, 'HaveLessThanUnitsWithCategory', { 1, categories.AIR * categories.TRANSPORTATION } },
+            { UCBC, 'PoolLess', {1, categories.AIR * categories.TRANSPORTATION }},
         },
         BuilderType = 'Air',
     },
@@ -220,17 +218,13 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Builders',
 
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
 
-            { EBC, 'GreaterThanEconIncomeSwarm', { 3.5, 100 } },
-
             { MIBC, 'ArmyNeedsTransports', {} },
 
             { MIBC, 'CanPathToCurrentEnemySwarm', { true, 'LocationType' } },
 
             { UCBC, 'LocationFactoriesBuildingLess', { 'LocationType', 1, categories.AIR * categories.TRANSPORTATION} },
 
-            { UCBC, 'PoolLessAtLocation', { 'LocationType', 1, categories.AIR * categories.TRANSPORTATION }},
-
-            { UCBC, 'HaveLessThanUnitsWithCategory', { 1, categories.AIR * categories.TRANSPORTATION } },
+            { UCBC, 'PoolLess', {1, categories.AIR * categories.TRANSPORTATION }},
        },
         BuilderType = 'Air',
     }, 

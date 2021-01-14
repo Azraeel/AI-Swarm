@@ -1,5 +1,7 @@
 -- hook for additional build conditions used from AIBuilders
 
+WARN('['..string.gsub(debug.getinfo(1).source, ".*\\(.*.lua)", "%1")..', line:'..debug.getinfo(1).currentline..'] * AI-Swarm: offset UCBC.lua' )
+
 local BASEPOSTITIONSSWARM = {}
 local mapSizeX, mapSizeZ = GetMapSize()
 local PlatoonExists = moho.aibrain_methods.PlatoonExists
@@ -311,16 +313,6 @@ function GetOwnUnitsAroundLocationSwarm(aiBrain, category, location, radius)
     return retUnits
 end
 
-function PoolLess( aiBrain, unitCount, testCat)
-	return PlatoonCategoryCount( aiBrain.ArmyPool, testCat ) < unitCount
-end
-
-function PoolGreater( aiBrain, unitCount, testCat)
-	return PlatoonCategoryCount( aiBrain.ArmyPool, testCat ) > unitCount
-end
-
-
-
 --            { UCBC, 'CanPathNavalBaseToNavalTargetsSwarm', {  'LocationType', categories.STRUCTURE * categories.FACTORY * categories.NAVAL }}, -- LocationType, categoryUnits
 function CanPathNavalBaseToNavalTargetsSwarm(aiBrain, locationType, unitCategory)
     local AIAttackUtils = import('/lua/AI/aiattackutilities.lua')
@@ -618,4 +610,3 @@ function ScalePlatoonSizeSwarm(aiBrain, locationType, type, unitCategory)
     end
     return false
 end
-

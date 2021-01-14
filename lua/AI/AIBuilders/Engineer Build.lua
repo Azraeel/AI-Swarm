@@ -36,7 +36,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Builders',
 
             { EBC, 'GreaterThanEconIncomeSwarm', { 0, 0 } },
 
-            { UCBC, 'PoolLessAtLocation', { 'LocationType', 1, categories.MOBILE * categories.ENGINEER * categories.TECH1 } },
+            { UCBC, 'PoolLessAtLocation', { 'LocationType',  1, categories.MOBILE * categories.ENGINEER * categories.TECH1 } },
 
             { UCBC, 'LocationFactoriesBuildingLess', { 'LocationType', 1, categories.MOBILE * categories.ENGINEER * categories.TECH1} },
 
@@ -55,7 +55,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Builders',
 
             { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.98, 0.50 } }, 
 
-            { UCBC, 'PoolLessAtLocation', { 'LocationType', 2, categories.MOBILE * categories.ENGINEER * categories.TECH1 } },
+            { UCBC, 'PoolLessAtLocation', { 'LocationType',  2, categories.MOBILE * categories.ENGINEER * categories.TECH1 } },
 
             { UCBC, 'LocationFactoriesBuildingLess', { 'LocationType', 3, categories.MOBILE * categories.ENGINEER * categories.TECH1} },
          },
@@ -71,7 +71,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Builders',
         BuilderConditions = {
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
 
-            { UCBC, 'PoolLessAtLocation', { 'LocationType', 1, categories.MOBILE * categories.ENGINEER * categories.TECH2 } },
+            { UCBC, 'PoolLessAtLocation', { 'LocationType',  1, categories.MOBILE * categories.ENGINEER * categories.TECH2 } },
 
             { UCBC, 'LocationFactoriesBuildingLess', { 'LocationType', 1, categories.MOBILE * categories.ENGINEER * categories.TECH2} },
         },
@@ -88,7 +88,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Builders',
 
             { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.98, 0.50 } }, 
 
-            { UCBC, 'PoolLessAtLocation', { 'LocationType', 2, categories.MOBILE * categories.ENGINEER * categories.TECH2 } },
+            { UCBC, 'PoolLessAtLocation', { 'LocationType',  2, categories.MOBILE * categories.ENGINEER * categories.TECH2 } },
 
             { UCBC, 'LocationFactoriesBuildingLess', { 'LocationType', 3, categories.MOBILE * categories.ENGINEER * categories.TECH2} },
          },
@@ -104,7 +104,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Builders',
         BuilderConditions = {
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
 
-            { UCBC, 'PoolLessAtLocation', { 'LocationType', 1, categories.MOBILE * categories.ENGINEER * categories.TECH3 } },
+            { UCBC, 'PoolLessAtLocation', { 'LocationType',  1, categories.MOBILE * categories.ENGINEER * categories.TECH3 } },
 
             { UCBC, 'LocationFactoriesBuildingLess', { 'LocationType', 1, categories.MOBILE * categories.ENGINEER * categories.TECH1} },
         },
@@ -121,7 +121,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Builders',
 
             { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.98, 0.50 } }, 
 
-            { UCBC, 'PoolLessAtLocation', { 'LocationType', 2, categories.MOBILE * categories.ENGINEER * categories.TECH3 } },
+            { UCBC, 'PoolLessAtLocation', { 'LocationType',  2, categories.MOBILE * categories.ENGINEER * categories.TECH3 } },
 
             { UCBC, 'LocationFactoriesBuildingLess', { 'LocationType', 3, categories.MOBILE * categories.ENGINEER * categories.TECH3} },
          },
@@ -313,7 +313,7 @@ BuilderGroup { BuilderGroupName = 'Swarm SACU Builder',
 
             { UCBC, 'HaveLessThanUnitsWithCategory', { 50, categories.ENGINEERPRESET + categories.RASPRESET } },
 
-            { UCBC, 'PoolLessAtLocation', { 'LocationType', 3, categories.ENGINEERPRESET + categories.RASPRESET } },
+            { UCBC, 'PoolLessAtLocation', { 'LocationType',  3, categories.ENGINEERPRESET + categories.RASPRESET } },
 
             { UCBC, 'LocationFactoriesBuildingLess', { 'LocationType', 2, categories.ENGINEERPRESET + categories.RASPRESET} },
         },
@@ -329,7 +329,7 @@ BuilderGroup { BuilderGroupName = 'Swarm SACU Builder',
 
             { UCBC, 'HaveLessThanUnitsWithCategory', { 50, categories.ENGINEERPRESET + categories.RASPRESET } },
 
-            { UCBC, 'PoolLessAtLocation', { 'LocationType', 3, categories.ENGINEERPRESET + categories.RASPRESET } },
+            { UCBC, 'PoolLessAtLocation', { 'LocationType',  3, categories.ENGINEERPRESET + categories.RASPRESET } },
 
             { UCBC, 'LocationFactoriesBuildingLess', { 'LocationType', 10, categories.ENGINEERPRESET + categories.RASPRESET} },
         },
@@ -343,7 +343,7 @@ BuilderGroup { BuilderGroupName = 'Swarm SACU Builder',
         BuilderConditions = {
             { UCBC, 'HaveLessThanUnitsWithCategory', { 50, categories.ENGINEERPRESET + categories.RASPRESET } },
 
-            { UCBC, 'PoolLessAtLocation', { 'LocationType', 3, categories.ENGINEERPRESET + categories.RASPRESET } },
+            { UCBC, 'PoolLessAtLocation', { 'LocationType',  3, categories.ENGINEERPRESET + categories.RASPRESET } },
 
             { UCBC, 'LocationFactoriesBuildingLess', { 'LocationType', 10, categories.ENGINEERPRESET + categories.RASPRESET} },
         },

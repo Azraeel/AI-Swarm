@@ -4,14 +4,18 @@ local MIBC = '/lua/editor/MiscBuildConditions.lua'
 local MABC = '/lua/editor/MarkerBuildConditions.lua'
 local TBC = '/lua/editor/ThreatBuildConditions.lua'
 
-local MaxAttackForce = 0.45                                                     -- 45% of all units can be attacking units (categories.MOBILE - categories.ENGINEER)
-local MaxDefense = 0.12 -- 12% of all units can be defenses (categories.STRUCTURE * categories.DEFENSE)
+local MaxAttackForce = 0.45                                       
+local MaxDefense = 0.12
 local MaxCapStructure = 0.12      
 
 BuilderGroup { BuilderGroupName = 'Swarm Defense Plus Builders',                               
     BuildersType = 'EngineerBuilder',
 
-    Builder {
+    -- This just doesn't work out.
+    -- Unreliable and sucks up tons of mass for no pay off
+    -- especially against human players
+
+    --[[ Builder {
         BuilderName = 'AI-Swarm T1 Mass Adjacency Defense Engineer',
         PlatoonTemplate = 'EngineerBuilderALLTECH',
         Priority = 800,
@@ -103,7 +107,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Defense Plus Builders',
                 }
             }
         }
-    },
+    }, ]]--
 }
 
 BuilderGroup { BuilderGroupName = 'Swarm Defense Plus Builders Expansion',                               
@@ -113,8 +117,9 @@ BuilderGroup { BuilderGroupName = 'Swarm Defense Plus Builders Expansion',
         BuilderName = 'AI-Swarm T1 Base D AA Engineer - Response',
         PlatoonTemplate = 'EngineerBuilderALLTECH',
         Priority = 900,
+        InstanceCount = 1,
         BuilderConditions = {
-            { UCBC, 'UnitsLessAtLocation', { 'LocationType', 2, 'DEFENSE ANTIAIR STRUCTURE TECH1'}},
+            { UCBC, 'UnitsLessAtLocation', { 'LocationType', 1, categories.DEFENSE * categories.TECH1 * categories.ANTIAIR}},
 
             { TBC, 'EnemyThreatGreaterThanValueAtBase', { 'LocationType', 1, 'Air' } },
 
@@ -124,7 +129,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Defense Plus Builders Expansion',
         },
         BuilderType = 'Any',
         BuilderData = {
-            NumAssistees = 2,
+            NumAssistees = 1,
             Construction = {
                 AdjacencyCategory = 'STRUCTURE FACTORY',
                 AdjacencyDistance = 175,
@@ -141,8 +146,9 @@ BuilderGroup { BuilderGroupName = 'Swarm Defense Plus Builders Expansion',
         BuilderName = 'AI-Swarm T1 Base D PD Engineer - Response',
         PlatoonTemplate = 'EngineerBuilderALLTECH',
         Priority = 900,
+        InstanceCount = 1,
         BuilderConditions = {
-            { UCBC, 'UnitsLessAtLocation', { 'LocationType', 2, 'DEFENSE DIRECTFIRE STRUCTURE TECH1'}},
+            { UCBC, 'UnitsLessAtLocation', { 'LocationType', 1, categories.DEFENSE * categories.TECH1 * categories.DIRECTFIRE}},
 
             { TBC, 'EnemyThreatGreaterThanValueAtBase', { 'LocationType', 1, 'Land' } },
 
@@ -152,7 +158,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Defense Plus Builders Expansion',
         },
         BuilderType = 'Any',
         BuilderData = {
-            NumAssistees = 2,
+            NumAssistees = 1,
             Construction = {
                 AdjacencyCategory = 'STRUCTURE FACTORY',
                 AdjacencyDistance = 175,
@@ -169,8 +175,9 @@ BuilderGroup { BuilderGroupName = 'Swarm Defense Plus Builders Expansion',
         BuilderName = 'AI-Swarm T2 Base D AA Engineer - Response',
         PlatoonTemplate = 'EngineerBuilderT2T3',
         Priority = 900,
+        InstanceCount = 1,
         BuilderConditions = {
-            { UCBC, 'UnitsLessAtLocation', { 'LocationType', 2, 'DEFENSE ANTIAIR STRUCTURE TECH2'}},
+            { UCBC, 'UnitsLessAtLocation', { 'LocationType', 1, categories.DEFENSE * categories.ANTIAIR * categories.STRUCTURE * categories.TECH2}},
 
             { TBC, 'EnemyThreatGreaterThanValueAtBase', { 'LocationType', 1, 'Air' } },
 
@@ -180,7 +187,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Defense Plus Builders Expansion',
         },
         BuilderType = 'Any',
         BuilderData = {
-            NumAssistees = 2,
+            NumAssistees = 1,
             Construction = {
                 AdjacencyCategory = 'STRUCTURE FACTORY',
                 AdjacencyDistance = 175,
@@ -197,8 +204,9 @@ BuilderGroup { BuilderGroupName = 'Swarm Defense Plus Builders Expansion',
         BuilderName = 'AI-Swarm T2 Base D PD Engineer - Response',
         PlatoonTemplate = 'EngineerBuilderT2T3',
         Priority = 900,
+        InstanceCount = 1,
         BuilderConditions = {
-            { UCBC, 'UnitsLessAtLocation', { 'LocationType', 2, 'DEFENSE DIRECTFIRE STRUCTURE TECH2'}},
+            { UCBC, 'UnitsLessAtLocation', { 'LocationType', 1, categories.DEFENSE * categories.DIRECTFIRE * categories.STRUCTURE * categories.TECH2}},
 
             { TBC, 'EnemyThreatGreaterThanValueAtBase', { 'LocationType', 1, 'Land' } },
 
@@ -208,7 +216,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Defense Plus Builders Expansion',
         },
         BuilderType = 'Any',
         BuilderData = {
-            NumAssistees = 2,
+            NumAssistees = 1,
             Construction = {
                 AdjacencyCategory = 'STRUCTURE FACTORY',
                 AdjacencyDistance = 175,
@@ -227,7 +235,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Defense Plus Builders Expansion',
         Priority = 900,
         InstanceCount = 1,
         BuilderConditions = {
-            { UCBC, 'UnitsLessAtLocation', { 'LocationType', 6, 'ARTILLERY TECH2 STRUCTURE'}},
+            { UCBC, 'UnitsLessAtLocation', { 'LocationType', 2, categories.DEFENSE * categories.ARTILLERY * categories.STRUCTURE * categories.TECH2}},
 
             { TBC, 'EnemyThreatGreaterThanValueAtBase', { 'LocationType', 20, 'Land' } },
 
@@ -235,7 +243,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Defense Plus Builders Expansion',
         },
         BuilderType = 'Any',
         BuilderData = {
-            NumAssistees = 2,
+            NumAssistees = 1,
             Construction = {
                 AdjacencyCategory = 'STRUCTURE FACTORY',
                 AdjacencyDistance = 175,
@@ -252,18 +260,19 @@ BuilderGroup { BuilderGroupName = 'Swarm Defense Plus Builders Expansion',
         BuilderName = 'AI-Swarm T3 Base D Engineer AA - Response',
         PlatoonTemplate = 'EngineerBuilderT3&SUB',
         Priority = 945,
+        InstanceCount = 1,
         BuilderConditions = {
-            { UCBC, 'UnitsLessAtLocation', { 'LocationType', 6, 'DEFENSE TECH3 ANTIAIR STRUCTURE' }},
+            { UCBC, 'UnitsLessAtLocation', { 'LocationType', 2, categories.DEFENSE * categories.ANTIAIR * categories.STRUCTURE}},
 
             { TBC, 'EnemyThreatGreaterThanValueAtBase', { 'LocationType', 3, 'Air' } },
 
-            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.15, 1.2 }},
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.2, 1.2 }},
 
             { UCBC, 'LocationEngineersBuildingLess', { 'LocationType', 1, categories.DEFENSE * categories.TECH3 * categories.STRUCTURE * (categories.ANTIAIR + categories.DIRECTFIRE) } },
         },
         BuilderType = 'Any',
         BuilderData = {
-            NumAssistees = 2,
+            NumAssistees = 1,
             Construction = {
                 AdjacencyCategory = 'STRUCTURE FACTORY',
                 AdjacencyDistance = 175,
