@@ -40,6 +40,8 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Builders',
 
             { UCBC, 'LocationFactoriesBuildingLess', { 'LocationType', 1, categories.MOBILE * categories.ENGINEER * categories.TECH1} },
 
+            { UCBC, 'EngineerCapCheck', { 'LocationType', 'Tech1' } },
+
             { UCBC, 'GreaterThanGameTimeSeconds', { 120 } },
          },
         BuilderType = 'All',
@@ -73,6 +75,8 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Builders',
 
             { UCBC, 'PoolLessAtLocation', { 'LocationType',  1, categories.MOBILE * categories.ENGINEER * categories.TECH2 } },
 
+            { UCBC, 'EngineerCapCheck', { 'LocationType', 'Tech2' } },
+
             { UCBC, 'LocationFactoriesBuildingLess', { 'LocationType', 1, categories.MOBILE * categories.ENGINEER * categories.TECH2} },
         },
         BuilderType = 'All',
@@ -105,6 +109,8 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Builders',
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
 
             { UCBC, 'PoolLessAtLocation', { 'LocationType',  1, categories.MOBILE * categories.ENGINEER * categories.TECH3 } },
+
+            { UCBC, 'EngineerCapCheck', { 'LocationType', 'Tech3' } },
 
             { UCBC, 'LocationFactoriesBuildingLess', { 'LocationType', 1, categories.MOBILE * categories.ENGINEER * categories.TECH1} },
         },
@@ -311,6 +317,8 @@ BuilderGroup { BuilderGroupName = 'Swarm SACU Builder',
 
             { MIBC, 'FactionIndex', { 1, 2, 3, 5 }}, -- 1: UEF, 2: Aeon, 3: Cybran, 4: Seraphim, 5: Nomads 
 
+            { UCBC, 'EngineerCapCheck', { 'LocationType', 'SCU' } },
+
             { UCBC, 'HaveLessThanUnitsWithCategory', { 50, categories.ENGINEERPRESET + categories.RASPRESET } },
 
             { UCBC, 'PoolLessAtLocation', { 'LocationType',  3, categories.ENGINEERPRESET + categories.RASPRESET } },
@@ -325,7 +333,9 @@ BuilderGroup { BuilderGroupName = 'Swarm SACU Builder',
         PlatoonTemplate = 'S3 SACU ENGINEER preset 12345',
         Priority = 1020,
         BuilderConditions = {
-        	{ MIBC, 'FactionIndex', { 4 }}, -- 1: UEF, 2: Aeon, 3: Cybran, 4: Seraphim, 5: Nomads
+            { MIBC, 'FactionIndex', { 4 }}, -- 1: UEF, 2: Aeon, 3: Cybran, 4: Seraphim, 5: Nomads
+            
+            { UCBC, 'EngineerCapCheck', { 'LocationType', 'SCU' } },
 
             { UCBC, 'HaveLessThanUnitsWithCategory', { 50, categories.ENGINEERPRESET + categories.RASPRESET } },
 
@@ -342,6 +352,8 @@ BuilderGroup { BuilderGroupName = 'Swarm SACU Builder',
         Priority = 1020,
         BuilderConditions = {
             { UCBC, 'HaveLessThanUnitsWithCategory', { 50, categories.ENGINEERPRESET + categories.RASPRESET } },
+
+            { UCBC, 'EngineerCapCheck', { 'LocationType', 'SCU' } },
 
             { UCBC, 'PoolLessAtLocation', { 'LocationType',  3, categories.ENGINEERPRESET + categories.RASPRESET } },
 

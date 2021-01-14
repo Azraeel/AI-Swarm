@@ -63,7 +63,7 @@ BaseBuilderTemplate {
             Gate = 0,
         },
         EngineerCount = {
-            Tech1 = 2,
+            Tech1 = 1,
             Tech2 = 1,
             Tech3 = 1,
             SCU = 0,

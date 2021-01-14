@@ -234,9 +234,9 @@ BuilderGroup { BuilderGroupName = 'Swarm Adaptive Factory Build',
 
             { UCBC, 'CanPathLandBaseToLandTargetsSwarm', {  'LocationType', categories.STRUCTURE * categories.FACTORY * categories.LAND }},
 
-            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.035, 0.01}},
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.0375, 0.01}},
 
-            { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.75, 0.9 }},
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.8, 1.0 }},
 
             { UCBC, 'HaveLessThanUnitsInCategoryBeingBuilt', { 2, categories.STRUCTURE * categories.FACTORY * categories.LAND * categories.TECH1 }},
 
@@ -264,9 +264,9 @@ BuilderGroup { BuilderGroupName = 'Swarm Adaptive Factory Build',
 
             { EBC, 'GreaterThanEconTrendSwarm', { 0.0, 0.0 } }, -- relative income
 
-            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.035, 0.01}},
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.0375, 0.01}},
 
-            { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.75, 0.9 }},
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.8, 1.0 }},
 
             { UCBC, 'HaveLessThanUnitsInCategoryBeingBuilt', { 2, categories.STRUCTURE * categories.FACTORY * categories.AIR * categories.TECH1 }},
 
@@ -296,9 +296,9 @@ BuilderGroup { BuilderGroupName = 'Swarm Adaptive Factory Build',
 
             { EBC, 'GreaterThanEconTrendSwarm', { 0.0, 0.0 } }, -- relative income
 
-            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.03, 0.01}},
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.0375, 0.01}},
 
-            { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.75, 0.9 }},
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.8, 1.0 }},
 
             { UCBC, 'HaveLessThanUnitsInCategoryBeingBuilt', { 2, categories.STRUCTURE * categories.FACTORY * categories.LAND * categories.TECH1 }},
 
@@ -326,9 +326,9 @@ BuilderGroup { BuilderGroupName = 'Swarm Adaptive Factory Build',
 
             { EBC, 'GreaterThanEconTrendSwarm', { 0.0, 0.0 } }, -- relative income
 
-            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.03, 0.01}},
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.0375, 0.01}},
 
-            { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.75, 0.9 }},
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.8, 1.0 }},
 
             { UCBC, 'HaveLessThanUnitsInCategoryBeingBuilt', { 2, categories.STRUCTURE * categories.FACTORY * categories.AIR * categories.TECH1 }},
 

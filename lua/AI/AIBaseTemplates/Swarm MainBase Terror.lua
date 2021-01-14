@@ -150,13 +150,13 @@ BaseBuilderTemplate {
             Land = 0,
             Air = 0,
             Sea = 0,
-            Gate = 3,
+            Gate = 2,
         },
         EngineerCount = {
-            Tech1 = 6,
-            Tech2 = 3,
-            Tech3 = 3,
-            SCU = 3,
+            Tech1 = 5,
+            Tech2 = 6,
+            Tech3 = 4,
+            SCU = 12,
         },
         MassToFactoryValues = {
             T1Value = 6,
