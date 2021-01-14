@@ -180,7 +180,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Builders',
 
             { UCBC, 'LocationFactoriesBuildingLess', { 'LocationType', 1, categories.AIR * categories.TRANSPORTATION} },
 
-            { UCBC, 'PoolLess', {1, categories.AIR * categories.TRANSPORTATION }},
+            { UCBC, 'PoolLessAtLocation', { 'LocationType', 1, categories.AIR * categories.TRANSPORTATION }},
         },
         BuilderType = 'Air',
     },
@@ -202,7 +202,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Builders',
 
             { UCBC, 'LocationFactoriesBuildingLess', { 'LocationType', 1, categories.AIR * categories.TRANSPORTATION} },
 
-            { UCBC, 'PoolLess', {1, categories.AIR * categories.TRANSPORTATION }},
+            { UCBC, 'PoolLessAtLocation', { 'LocationType', 1, categories.AIR * categories.TRANSPORTATION }},
         },
         BuilderType = 'Air',
     },
@@ -224,7 +224,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Builders',
 
             { UCBC, 'LocationFactoriesBuildingLess', { 'LocationType', 1, categories.AIR * categories.TRANSPORTATION} },
 
-            { UCBC, 'PoolLess', {1, categories.AIR * categories.TRANSPORTATION }},
+            { UCBC, 'PoolLessAtLocation', { 'LocationType', 1, categories.AIR * categories.TRANSPORTATION }},
        },
         BuilderType = 'Air',
     }, 
