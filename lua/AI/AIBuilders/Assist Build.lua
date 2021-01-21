@@ -25,7 +25,9 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
                 AssistLocation = 'LocationType',
                 PermanentAssist = false,
                 AssisteeType = 'Engineer',
-                AssistUntilFinished = true,
+                AssistClosestUnit = true, 
+                AssistUntilFinished = false,
+                Time = 150,
             },
         }
     },
@@ -35,7 +37,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
         Priority = 150,
         InstanceCount = 20,
         BuilderConditions = {
-            { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.9, 1.0 }},
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.0, 1.0 }},
         },
         BuilderType = 'Any',
         BuilderData = {
@@ -43,8 +45,10 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
                 AssistLocation = 'LocationType',
                 AssisteeType = 'Factory',
                 AssistRange = 200,
+                AssistClosestUnit = true, 
                 BeingBuiltCategories = {'STRUCTURE LAND FACTORY TECH2'},        -- Unitcategories must be type string
-                AssistUntilFinished = true,
+                AssistUntilFinished = false,
+                Time = 150,
             },
         }
     },
@@ -53,7 +57,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
         Priority = 200,
         InstanceCount = 20,
         BuilderConditions = {
-            { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.9, 1.0 }},
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.0, 1.0 }},
         },
         BuilderType = 'Any',
         BuilderData = {
@@ -61,8 +65,10 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
                 AssistLocation = 'LocationType',
                 AssisteeType = 'Factory',
                 AssistRange = 200,
+                AssistClosestUnit = true, 
                 BeingBuiltCategories = {'STRUCTURE LAND FACTORY TECH3'},        -- Unitcategories must be type string
-                AssistUntilFinished = true,
+                AssistUntilFinished = false,
+                Time = 150,
             },
         }
     },
@@ -71,7 +77,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
         Priority = 210,
         InstanceCount = 5,
         BuilderConditions = {
-            { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.9, 1.0 }},
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.0, 1.0 }},
         },
         BuilderType = 'Any',
         BuilderData = {
@@ -79,8 +85,10 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
                 AssistLocation = 'LocationType',
                 AssisteeType = 'Factory',
                 AssistRange = 200,
+                AssistClosestUnit = true, 
                 BeingBuiltCategories = {'STRUCTURE LAND FACTORY TECH3'},        -- Unitcategories must be type string
-                AssistUntilFinished = true,
+                AssistUntilFinished = false,
+                Time = 150,
             },
         }
     },
@@ -89,7 +97,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
         Priority = 250,
         InstanceCount = 20,
         BuilderConditions = {
-            { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.9, 1.0 }},
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.0, 1.0 }},
         },
         BuilderType = 'Any',
         BuilderData = {
@@ -99,7 +107,8 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
                 AssistRange = 200,
                 AssistClosestUnit = true,                                       -- Assist the closest unit instead unit with the least number of assisters
                 BeingBuiltCategories = {'STRUCTURE FACTORY'},                   -- Unitcategories must be type string
-                AssistUntilFinished = true,
+                AssistUntilFinished = false,
+                Time = 150,
             },
         }
     },
@@ -143,7 +152,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
                 PermanentAssist = false,
                 AssisteeType = 'Engineer',
                 AssistClosestUnit = true,                                       -- Assist the closest unit instead unit with the least number of assisters
-                Time = 60,
+                Time = 150,
             },
         }
     },
@@ -188,7 +197,8 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
                 AssistRange = 200,
                 AssistClosestUnit = true,                                       -- Assist the closest unit instead unit with the least number of assisters
                 BeingBuiltCategories = {'STRUCTURE ENERGYPRODUCTION TECH2', 'STRUCTURE ENERGYPRODUCTION TECH3'},-- Unitcategories must be type string
-                AssistUntilFinished = true,
+                AssistUntilFinished = false,
+                Time = 150,
             },
         }
     },
@@ -210,7 +220,8 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
                 AssistRange = 200,
                 AssistClosestUnit = true,                                       -- Assist the closest unit instead unit with the least number of assisters
                 BeingBuiltCategories = {'STRUCTURE ENERGYPRODUCTION TECH2', 'STRUCTURE ENERGYPRODUCTION TECH3'},-- Unitcategories must be type string
-                AssistUntilFinished = true,
+                AssistUntilFinished = false,
+                Time = 150,
             },
         }
     },
@@ -232,7 +243,31 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
                 AssistRange = 200,
                 AssistClosestUnit = true,                                       -- Assist the closest unit instead unit with the least number of assisters
                 BeingBuiltCategories = {'STRUCTURE ENERGYPRODUCTION TECH2', 'STRUCTURE ENERGYPRODUCTION TECH3'},-- Unitcategories must be type string
-                AssistUntilFinished = true,
+                AssistUntilFinished = false,
+                Time = 150,
+            },
+        }
+    },
+
+    Builder { BuilderName = 'S4 Assist Energy Turbo',
+        PlatoonTemplate = 'T3EngineerAssistSUB',
+        Priority = 650,
+        InstanceCount = 20,
+        BuilderConditions = {
+            { EBC, 'GreaterThanEconIncomeSwarm', { 4, 50 } },
+
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.75, 0.6 }},
+        },
+        BuilderType = 'Any',
+        BuilderData = {
+            Assist = {
+                AssistLocation = 'LocationType',
+                AssisteeType = 'Structure',
+                AssistRange = 200,
+                AssistClosestUnit = true,                                       -- Assist the closest unit instead unit with the least number of assisters
+                BeingBuiltCategories = {'STRUCTURE ENERGYPRODUCTION TECH2', 'STRUCTURE ENERGYPRODUCTION TECH3'},-- Unitcategories must be type string
+                AssistUntilFinished = false,
+                Time = 150,
             },
         }
     },
@@ -252,7 +287,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
                 AssistRange = 200,
                 AssistClosestUnit = true,                                       -- Assist the closest unit instead unit with the least number of assisters
                 BeingBuiltCategories = {'HYDROCARBON'},-- Unitcategories must be type string
-                AssistUntilFinished = true,
+                AssistUntilFinished = false,
             },
         }
     },
@@ -282,7 +317,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
                 PermanentAssist = false,
                 AssisteeType = 'Engineer',
                 AssistClosestUnit = true,                                       -- Assist the closest unit instead unit with the least number of assisters
-                Time = 30,
+                Time = 150,
             },
         }
     },
@@ -309,7 +344,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
                 AssistRange = 300,
                 PermanentAssist = false,
                 BeingBuiltCategories = {'EXPERIMENTAL ECONOMIC'},               -- Unitcategories must be type string
-                Time = 30,
+                Time = 150,
             },
         }
     },
@@ -336,7 +371,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
                 PermanentAssist = false,
                 AssistClosestUnit = true,                                       -- Assist the closest unit instead unit with the least number of assisters
                 BeingBuiltCategories = {'EXPERIMENTAL'},                        -- Unitcategories must be type string
-                Time = 40,
+                Time = 150,
             },
         }
     },
@@ -364,7 +399,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
                 PermanentAssist = false,
                 AssistClosestUnit = true,                                       -- Assist the closest unit instead unit with the least number of assisters
                 BeingBuiltCategories = {'GATE FACTORY'},                                -- Unitcategories must be type string
-                Time = 40,
+                Time = 150,
             },
         }
     },
@@ -393,7 +428,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
                 AssistClosestUnit = true,                                       -- Assist the closest unit instead unit with the least number of assisters
                 BeingBuiltCategories = {'ANTIMISSILE SILO'},-- Unitcategories must be type string
                 PermanentAssist = false,
-                Time = 45,
+                Time = 150,
             },
         }
     },
@@ -418,7 +453,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
                 AssistClosestUnit = true,                                       -- Assist the closest unit instead unit with the least number of assisters
                 BeingBuiltCategories = {'STRATEGIC NUKE'},-- Unitcategories must be type string
                 PermanentAssist = false,
-                Time = 45,
+                Time = 150,
             },
         }
     },
@@ -443,7 +478,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
                 AssistClosestUnit = true,                                       -- Assist the closest unit instead unit with the least number of assisters
                 BeingBuiltCategories = {'STRATEGIC ARTILLERY'},-- Unitcategories must be type string
                 PermanentAssist = false,
-                Time = 45,
+                Time = 150,
             },
         }
     },
@@ -466,7 +501,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
                 AssistRange = 500,
                 AssisteeCategory = 'STRUCTURE NUKE',
                 PermanentAssist = false,
-                Time = 45,
+                Time = 150,
             },
         }
     },
@@ -491,7 +526,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
                 AssistRange = 250,
                 AssistClosestUnit = true,                                       -- Assist the closest unit instead unit with the least number of assisters
                 PermanentAssist = false,
-                Time = 25,
+                Time = 150,
             },
         }
     },
@@ -581,6 +616,21 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
 -- ============== --
 BuilderGroup { BuilderGroupName = 'Swarm Engineer Reclaim',                                -- BuilderGroupName, initalized from AIBaseTemplates in "\lua\AI\AIBaseTemplates\"
     BuildersType = 'PlatoonFormBuilder',
+
+    Builder { BuilderName = 'Swarm Reclaim Mass - Opener',
+        PlatoonTemplate = 'S1Reclaim',
+        Priority = 595,
+        InstanceCount = 2,
+        BuilderConditions = {
+            { EBC, 'LessThanEconStorageRatio', { 1.0, 2.0}},
+        },
+        BuilderData = {
+            LocationType = 'LocationType',
+        },
+        BuilderType = 'Any',
+    },
+
+
     Builder { BuilderName = 'S1 Reclaim RECOVER mass',
         PlatoonTemplate = 'S1Reclaim',
         Priority = 350,
@@ -590,7 +640,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Reclaim',                     
             { UCBC, 'HaveLessThanUnitsWithCategory', { 1, categories.MOBILE * categories.COMMAND }},
             -- Do we need additional conditions to build it ?
             { UCBC, 'HaveLessThanUnitsWithCategory', { 1, categories.STRUCTURE * categories.MASSEXTRACTION } },
-            { EBC, 'LessThanEconStorageRatio', { 0.9, 1}}, -- Ratio from 0 to 1. (1=100%)
+            { EBC, 'LessThanEconStorageRatio', { 0.9, 2}}, -- Ratio from 0 to 1. (1=100%)
             -- Have we the eco to build it ?
             -- Don't build it if...
         },
@@ -608,7 +658,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Reclaim',                     
             { UCBC, 'HaveLessThanUnitsWithCategory', { 1, categories.MOBILE * categories.COMMAND }},
             -- Do we need additional conditions to build it ?
             { UCBC, 'HaveLessThanUnitsWithCategory', { 1, categories.STRUCTURE * categories.ENERGYPRODUCTION } },
-            { EBC, 'LessThanEconStorageRatio', { 0.9, 0.9}}, -- Ratio from 0 to 1. (1=100%)
+            { EBC, 'LessThanEconStorageRatio', { 0.9, 2}}, -- Ratio from 0 to 1. (1=100%)
             -- Have we the eco to build it ?
             -- Don't build it if...
         },
@@ -624,7 +674,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Reclaim',                     
         BuilderConditions = {
             -- When do we want to build this ?
             { UCBC, 'HaveGreaterThanUnitsWithCategory', { 3, categories.MOBILE * categories.ENGINEER}},
-            { EBC, 'LessThanEconStorageRatio', { 0.9, 1}}, -- Ratio from 0 to 1. (1=100%)
+            { EBC, 'LessThanEconStorageRatio', { 0.9, 2}}, -- Ratio from 0 to 1. (1=100%)
             -- Do we need additional conditions to build it ?
             -- Have we the eco to build it ?
             -- Don't build it if...
@@ -642,7 +692,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Reclaim',                     
             -- When do we want to build this ?
             { UCBC, 'HaveGreaterThanUnitsWithCategory', { 9, categories.MOBILE * categories.ENGINEER}},
             -- Do we need additional conditions to build it ?
-            { EBC, 'LessThanEconStorageRatio', { 0.9, 1}}, -- Ratio from 0 to 1. (1=100%)
+            { EBC, 'LessThanEconStorageRatio', { 0.9, 2}}, -- Ratio from 0 to 1. (1=100%)
             { UCBC, 'BuildOnlyOnLocationSwarm', { 'LocationType', 'MAIN' } },
             -- Have we the eco to build it ?
             -- Don't build it if...
@@ -660,7 +710,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Reclaim',                     
             -- When do we want to build this ?
             { UCBC, 'HaveGreaterThanUnitsWithCategory', { 0, categories.MOBILE * categories.ENGINEER * categories.TECH2}},
             -- Do we need additional conditions to build it ?
-            { EBC, 'LessThanEconStorageRatio', { 0.9, 1}}, -- Ratio from 0 to 1. (1=100%)
+            { EBC, 'LessThanEconStorageRatio', { 0.9, 2}}, -- Ratio from 0 to 1. (1=100%)
             { UCBC, 'BuildOnlyOnLocationSwarm', { 'LocationType', 'MAIN' } },
             -- Have we the eco to build it ?
             -- Don't build it if...
@@ -678,7 +728,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Reclaim',                     
             -- When do we want to build this ?
             { UCBC, 'HaveGreaterThanUnitsWithCategory', { 0, categories.MOBILE * categories.ENGINEER * categories.TECH3}},
             -- Do we need additional conditions to build it ?
-            { EBC, 'LessThanEconStorageRatio', { 0.9, 1}}, -- Ratio from 0 to 1. (1=100%)
+            { EBC, 'LessThanEconStorageRatio', { 0.9, 2}}, -- Ratio from 0 to 1. (1=100%)
             { UCBC, 'BuildOnlyOnLocationSwarm', { 'LocationType', 'MAIN' } },
             -- Have we the eco to build it ?
             -- Don't build it if...

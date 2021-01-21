@@ -381,7 +381,7 @@ BuilderGroup {
     BuilderGroupName = 'AISwarm Platoon Builder',
     BuildersType = 'PlatoonFormBuilder', -- A PlatoonFormBuilder is for builder groups of units.
 
-    Builder {
+    --[[ Builder {
         BuilderName = 'AI-Swarm Base Response - Intelli',                                        
         PlatoonTemplate = 'AISwarm Intercept',                       
         Priority = 300,                                                       
@@ -405,7 +405,7 @@ BuilderGroup {
             { UCBC, 'EnemyUnitsGreaterAtLocationRadius', {  BasePanicZone, 'LocationType', 0, categories.MOBILE - categories.SCOUT }}, 
         },
         BuilderType = 'Any',                                                    
-    },
+    }, ]]--
 
     Builder {
         BuilderName = 'AI-Swarm Standard Land (80) M',
@@ -425,7 +425,7 @@ BuilderGroup {
         BuilderData = {
             AttackEnemyStrength = 80,
             SearchRadius = BaseMilitaryZone,
-            GetTargetsFromBase = false,
+            GetTargetsFromBase = true,
             RequireTransport = false, 
             AggressiveMove = true, 
             IgnorePathing = false,
@@ -460,7 +460,7 @@ BuilderGroup {
         BuilderData = {
             AttackEnemyStrength = 120,
             SearchRadius = BaseMilitaryZone,
-            GetTargetsFromBase = false,
+            GetTargetsFromBase = true,
             RequireTransport = false, 
             AggressiveMove = true, 
             IgnorePathing = false,

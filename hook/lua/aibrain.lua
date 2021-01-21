@@ -85,7 +85,7 @@ AIBrain = Class(SwarmAIBrainClass) {
 
     ParseIntelThreadSwarm = function(self)
 
-        LOG("*AI DEBUG "..self.Nickname.." ParseIntelThreadSwarm begins")
+        --LOG("*AI DEBUG "..self.Nickname.." ParseIntelThreadSwarm begins")
 
         -----------------
         --- LAND UNITS --
@@ -121,7 +121,7 @@ AIBrain = Class(SwarmAIBrainClass) {
             end
         
 
-            LOG("*AI DEBUG "..self.Nickname.." First Phase Ends")
+            --LOG("*AI DEBUG "..self.Nickname.." First Phase Ends")
 
 
             allyScore = 0
@@ -151,7 +151,7 @@ AIBrain = Class(SwarmAIBrainClass) {
             end
     
 
-            LOG("*AI DEBUG "..self.Nickname.." Second Phase Ends")
+            --LOG("*AI DEBUG "..self.Nickname.." Second Phase Ends")
 
 
             allyScore = 0
@@ -179,7 +179,7 @@ AIBrain = Class(SwarmAIBrainClass) {
             else
                 self.MyNavalRatio = 0.01
             end
-            LOG("*AI DEBUG "..self.Nickname.." Air Ratio is "..repr(self.MyAirRatio).." Land Ratio is "..repr(self.MyLandRatio).." Naval Ratio is "..repr(self.MyNavalRatio))
+            --LOG("*AI DEBUG "..self.Nickname.." Air Ratio is "..repr(self.MyAirRatio).." Land Ratio is "..repr(self.MyLandRatio).." Naval Ratio is "..repr(self.MyNavalRatio))
         end
     end,
 }

@@ -58,7 +58,7 @@ BuilderGroup {
         BuilderConditions = {
             { UCBC, 'CheckBuildPlattonDelay', { 'Energy' }},
 
-            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.015, 0}},
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.04, 0}},
 
             { EBC, 'LessThanEnergyTrend', { 7.5 } },
 
@@ -93,7 +93,7 @@ BuilderGroup {
         BuilderConditions = {
             { EBC, 'EnergyToMassRatioIncome', { 10.0, '<=' } },  -- True if we have less than 10 times more Energy then Mass income ( 100 <= 10 = true )
 
-            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.15, 0}},
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.05, 0}},
 
             { UCBC, 'HaveLessThanUnitsWithCategory', { 1, categories.ENERGYPRODUCTION * categories.TECH2 } },
 
@@ -128,7 +128,7 @@ BuilderGroup {
         BuilderConditions = {
             { EBC, 'EnergyToMassRatioIncome', { 5.0, '<=' } },  -- True if we have less than 10 times more Energy then Mass income ( 100 <= 10 = true )
 
-            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.10, 0}},
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.05, 0}},
 
             { UCBC, 'HaveLessThanUnitsWithCategory', { 1, categories.ENERGYPRODUCTION * categories.TECH2 } },
 
@@ -163,6 +163,8 @@ BuilderGroup {
         BuilderConditions = {
             -- When do we want to build this ?
             { MABC, 'CanBuildOnHydroSwarm', { 'LocationType', 50, -1000, 100, 1, 'AntiSurface', 1 }},            -- Do we need additional conditions to build it ?
+
+            { UCBC, 'HaveLessThanUnitsWithCategory', { 1, categories.HYDROCARBON } },
 
             { UCBC, 'HasNotParagon', {} },
 

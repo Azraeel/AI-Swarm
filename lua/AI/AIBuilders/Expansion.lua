@@ -64,11 +64,11 @@ BuilderGroup {
 
             { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 0, categories.ENGINEER * categories.TECH1 - categories.COMMAND - categories.STATIONASSISTPOD }},
 
-            { EBC, 'GreaterThanEconTrendSwarm', { 0.0, 0.0 } }, 
+            { EBC, 'MassToFactoryRatioBaseCheck', { 'LocationType' } },
 
-            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.05, 0.35}},
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.05, 0.75}},
 
-            { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.85, 0.9 }},
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.8, 1.0 }}, 
         },
         BuilderType = 'Any',
         BuilderData = {
@@ -104,11 +104,11 @@ BuilderGroup {
 
             { UCBC, 'StartLocationNeedsEngineer', { 'LocationType', 1000, -1000, 100, 1, 'AntiSurface' } },
 
-            { EBC, 'GreaterThanEconTrendSwarm', { 0.0, 0.0 } }, 
+            { EBC, 'MassToFactoryRatioBaseCheck', { 'LocationType' } },
 
-            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.05, 0.35}},
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.05, 0.75}},
 
-            { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.85, 0.9 }},
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.8, 1.0 }}, 
         },
         BuilderType = 'Any',
         BuilderData = {
@@ -144,11 +144,11 @@ BuilderGroup {
 
             { UCBC, 'ExpansionAreaNeedsEngineer', { 'LocationType', 1000, -1000, 100, 1, 'AntiSurface' } },
 
-            { EBC, 'GreaterThanEconTrendSwarm', { 0.0, 0.0 } }, 
+            { EBC, 'MassToFactoryRatioBaseCheck', { 'LocationType' } },
 
-            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.05, 0.35}},
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.05, 0.75}},
 
-            { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.85, 0.9 }},
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.8, 1.0 }}, 
         },
         BuilderType = 'Any',
         BuilderData = {
@@ -184,11 +184,11 @@ BuilderGroup {
 
             { UCBC, 'ExpansionAreaNeedsEngineer', { 'LocationType', 1000, -1000, 100, 1, 'AntiSurface' } },
 
-            { EBC, 'GreaterThanEconTrendSwarm', { 0.0, 0.0 } }, 
+            { EBC, 'MassToFactoryRatioBaseCheck', { 'LocationType' } },
 
-            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.05, 0.35}},
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.05, 0.75}},
 
-            { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.85, 0.9 }},
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.8, 1.0 }}, 
         },
         BuilderType = 'Any',
         BuilderData = {
@@ -224,11 +224,11 @@ BuilderGroup {
 
             { UCBC, 'NavalAreaNeedsEngineer', { 'LocationType', 750, -1000, 100, 1, 'AntiSurface' } },
 
-            { EBC, 'GreaterThanEconTrendSwarm', { 0.0, 0.0 } }, 
+            { EBC, 'MassToFactoryRatioBaseCheck', { 'LocationType' } },
 
-            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.05, 0.50}},
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.05, 0.75}},
 
-            { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.85, 0.9 }},
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.8, 1.0 }}, 
         },
         BuilderType = 'Any',
         BuilderData = {

@@ -40,8 +40,6 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Builders',
 
             { UCBC, 'LocationFactoriesBuildingLess', { 'LocationType', 1, categories.MOBILE * categories.ENGINEER * categories.TECH1} },
 
-            { UCBC, 'EngineerCapCheck', { 'LocationType', 'Tech1' } },
-
             { UCBC, 'GreaterThanGameTimeSeconds', { 120 } },
          },
         BuilderType = 'All',
