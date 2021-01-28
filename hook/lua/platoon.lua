@@ -162,15 +162,6 @@ Platoon = Class(SwarmPlatoonClass) {
 
         local PlatoonStrength = table.getn(platoonUnits)
 
-        local maxrange = 0	-- this will be set when a target is selected and will be used to keep the platoon from wandering too far
-        local mythreat = 0
-        local threatcompare = 'AntiAir'
-        local mult = { 1, 1.75, 2.5 }				-- this multiplies the range of the platoon when searching for targets
-	    local difficulty = { .7, 1, 1.2 }   		-- this multiplies the threat of the platoon so that easier targets are selected first
-        local minrange = 0
-
-        local rangemult, threatmult, strikerange
-
         if platoonUnits and PlatoonStrength > 0 then
             for k, v in platoonUnits do
                 if not v.Dead then
@@ -213,7 +204,7 @@ Platoon = Class(SwarmPlatoonClass) {
         local path
         local reason
         local maxRadius = self.PlatoonData.SearchRadius or 100
-        local maxRadius = math.max(maxRadius, (maxRadius * aiBrain.MyAirRatio) )
+        --local maxRadius = math.max(maxRadius, (maxRadius * aiBrain.MyAirRatio) ) -- Whoops, this doesn't work :)
         local PlatoonPos = self:GetPlatoonPosition()
         local LastTargetPos = PlatoonPos
         local basePosition

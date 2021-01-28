@@ -4,7 +4,7 @@ PlatoonBuilder = Class(SwarmPlatoonBuilder) {
     CalculatePriority = function(self, builderManager)
        -- Only use this with Swarm
         if not self.Brain.Swarm then
-            return TheOldPlatoonBuilder.CalculatePriority(self, builderManager)
+            return SwarmPlatoonBuilder.CalculatePriority(self, builderManager)
         end
         self.PriorityAltered = false
         if Builders[self.BuilderName].PriorityFunction then

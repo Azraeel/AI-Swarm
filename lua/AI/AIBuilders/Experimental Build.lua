@@ -301,7 +301,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Experimental Formers',
         FormRadius = 10000,
 
         BuilderData = {
-            SearchRadius = 752,         
+            SearchRadius = BaseMilitaryZone,         
 
             GetTargetsFromBase = false,          
 
@@ -354,7 +354,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Experimental Formers',
         FormRadius = 10000,
 
         BuilderData = {
-            SearchRadius = 1024,    
+            SearchRadius = BaseEnemyZone,    
 
             GetTargetsFromBase = false,     
 
@@ -411,7 +411,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Experimental Formers',
         FormRadius = 10000,
 
         BuilderData = {
-            SearchRadius = BaseEnemyZone, 
+            SearchRadius = BaseMilitaryZone, 
 
             GetTargetsFromBase = false,  
 

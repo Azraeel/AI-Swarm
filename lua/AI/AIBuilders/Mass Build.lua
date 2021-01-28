@@ -371,7 +371,7 @@ BuilderGroup {
         BuilderConditions = {
             { UCBC, 'HaveGreaterThanArmyPoolWithCategorySwarm', { 0, categories.MASSEXTRACTION} },
 
-            { UCBC, 'GreaterThanGameTimeSeconds', { 210 } },
+            { UCBC, 'GreaterThanGameTimeSeconds', { 270 } },
         },
         BuilderData = {
             AIPlan = 'ExtractorUpgradeAISwarm',
