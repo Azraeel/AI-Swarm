@@ -106,7 +106,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',
 
             { UCBC, 'PoolLessAtLocation', { 'LocationType', 1, categories.LAND * categories.MOBILE * categories.ANTIAIR }},
 
-            { UCBC, 'AirStrengthRatioLessThan', { 1.1 } },
+            { UCBC, 'AirStrengthRatioLessThan', { 1.5 } },
         },
         BuilderType = 'Land',
     },
@@ -207,7 +207,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',
 
             { UCBC, 'HaveGreaterThanUnitsWithCategory', { 5, categories.LAND * categories.MOBILE * categories.DIRECTFIRE * categories.TECH2 - categories.ENGINEER }},
 
-            { UCBC, 'AirStrengthRatioLessThan', { 1.1 } },
+            { UCBC, 'AirStrengthRatioLessThan', { 1.5 } },
         },
         BuilderType = 'Land',
     },
@@ -349,7 +349,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',
 
             { UCBC, 'PoolLessAtLocation', { 'LocationType', 2, categories.LAND * categories.MOBILE * categories.ANTIAIR * categories.TECH3 }},
 
-            { UCBC, 'AirStrengthRatioLessThan', { 1.1 } },
+            { UCBC, 'AirStrengthRatioLessThan', { 1.5 } },
         },
         BuilderType = 'Land',
     },

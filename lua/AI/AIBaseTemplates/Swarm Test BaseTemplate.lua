@@ -25,7 +25,7 @@ BaseBuilderTemplate {
 
         -- This platoon will form an attack platoon and send the units to the enemy
         -- The platoon is defined in \lua\AI\AIBuilders\Land units Move.lua
-        'Swarm Land Attack Formers',
+        --'Swarm Land Attack Formers',
 
     },
     -- Not used by Swarm AI. We always need intel in case the commander is dead.
