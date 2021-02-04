@@ -2957,9 +2957,9 @@ Platoon = Class(SwarmPlatoonClass) {
             end
 
             -- otherwise we do the merge
-            if ScenarioInfo.PlatoonMergeDialog then
-                LOG("*AI DEBUG "..aiBrain.Nickname.." MERGE_WITH "..repr(self.BuilderName).." takes "..counter.." units from "..aPlat.BuilderName.." now has "..platooncount+counter)
-            end
+            --if ScenarioInfo.PlatoonMergeDialog then
+            --    LOG("*AI DEBUG "..aiBrain.Nickname.." MERGE_WITH "..repr(self.BuilderName).." takes "..counter.." units from "..aPlat.BuilderName.." now has "..platooncount+counter)
+            --end
             
             -- unmark the allied platoon
             aPlat.UsingTransport = false
@@ -4469,9 +4469,9 @@ Platoon = Class(SwarmPlatoonClass) {
 
             if counter > 0 then
 			
-				if ScenarioInfo.PlatoonMergeDialog then
-					LOG("*AI DEBUG "..aiBrain.Nickname.." "..repr(self.BuilderName).." with "..counter.." units MERGE_INTO "..repr(aPlat.BuilderName))
-				end			
+				--if ScenarioInfo.PlatoonMergeDialog then
+				--	LOG("*AI DEBUG "..aiBrain.Nickname.." "..repr(self.BuilderName).." with "..counter.." units MERGE_INTO "..repr(aPlat.BuilderName))
+				--end			
 
 				AssignUnitsToPlatoon( aiBrain, aPlat, validUnits, 'Attack', 'GrowthFormation' )
 

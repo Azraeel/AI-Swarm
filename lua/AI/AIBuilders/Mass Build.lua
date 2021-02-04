@@ -5,29 +5,46 @@ local MABC = '/lua/editor/MarkerBuildConditions.lua'
 
 local BasePanicZone, BaseMilitaryZone, BaseEnemyZone = import('/mods/AI-Swarm/lua/AI/swarmutilities.lua').GetDangerZoneRadii()
 
-local MaxCapMass = 0.25 -- 25% of all units can be mass extractors (STRUCTURE * MASSEXTRACTION)
-local MaxCapStructure = 0.25                                                    -- 12% of all units can be structures (STRUCTURE -MASSEXTRACTION -DEFENSE -FACTORY)
+local MaxCapMass = 0.25 
+local MaxCapStructure = 0.25                   
 
--- ============================================================================================================ --
--- ==                                     Build MassExtractors / Creators                                    == --
--- ============================================================================================================ --
+
 BuilderGroup {
     BuilderGroupName = 'S1 MassBuilders',                       
     BuildersType = 'EngineerBuilder',
     Builder {
-        BuilderName = 'S1 Mass 30 - Opener',
+        BuilderName = 'Swarm Mass - Opener',
         PlatoonTemplate = 'EngineerBuilder',
         Priority = 600,
         InstanceCount = 2,
         DelayEqualBuildPlattons = {'MASSEXTRACTION', 3},
         BuilderConditions = {
-            { MABC, 'CanBuildOnMassSwarm', { 'LocationType', 30, -500, 1, 0, 'AntiSurface', 1 }}, 
-            
-            { UCBC, 'HasNotParagon', {} },
+            { MABC, 'CanBuildOnMassSwarm', { 'LocationType', 1000, -500, 1, 1, 'AntiSurface', 1 }},
 
             { UCBC, 'CheckBuildPlattonDelay', { 'MASSEXTRACTION' }},
+        },
+        BuilderType = 'Any',
+        BuilderData = {
+            Construction = {
+                BuildClose = true,
+                RepeatBuild = true,
+                BuildStructures = {
+                    'T1Resource',
+                }
+            }
+        }
+    },
 
-            { UCBC, 'HaveUnitRatioVersusCapSwarm', { MaxCapMass , '<', categories.STRUCTURE * categories.MASSEXTRACTION } },
+    Builder {
+        BuilderName = 'Swarm Mass',
+        PlatoonTemplate = 'EngineerBuilder',
+        Priority = 600,
+        InstanceCount = 2,
+        DelayEqualBuildPlattons = {'MASSEXTRACTION', 3},
+        BuilderConditions = {
+            { MABC, 'CanBuildOnMassSwarm', { 'LocationType', 1000, -500, 1, 1, 'AntiSurface', 1 }},
+
+            { UCBC, 'CheckBuildPlattonDelay', { 'MASSEXTRACTION' }},
         },
         BuilderType = 'Any',
         BuilderData = {
@@ -41,47 +58,17 @@ BuilderGroup {
     },
 
     Builder {
-        BuilderName = 'S1 Mass 30',
-        PlatoonTemplate = 'EngineerBuilder',
-        Priority = 600,
-        InstanceCount = 2,
-        DelayEqualBuildPlattons = {'MASSEXTRACTION', 3},
-        BuilderConditions = {
-            { MABC, 'CanBuildOnMassSwarm', { 'LocationType', 30, -500, 1, 0, 'AntiSurface', 1 }},
-
-            { UCBC, 'HasNotParagon', {} },
-
-            { UCBC, 'CheckBuildPlattonDelay', { 'MASSEXTRACTION' }},
-
-            { UCBC, 'HaveUnitRatioVersusCapSwarm', { MaxCapMass , '<', categories.STRUCTURE * categories.MASSEXTRACTION } },
-        },
-        BuilderType = 'Any',
-        BuilderData = {
-            Construction = {
-                RepeatBuild = true,
-                BuildStructures = {
-                    'T1Resource',
-                }
-            }
-        }
-    },
-
-    Builder {
-        BuilderName = 'S2 Mass 30',
+        BuilderName = 'Swarm Mass T2',
         PlatoonTemplate = 'T2EngineerBuilder',
         Priority = 600,
         InstanceCount = 1,
         DelayEqualBuildPlattons = {'MASSEXTRACTION', 3},
         BuilderConditions = {
-            { MABC, 'CanBuildOnMassSwarm', { 'LocationType', 30, -500, 1, 0, 'AntiSurface', 1 }},
+            { MABC, 'CanBuildOnMassSwarm', { 'LocationType', 1000, -500, 1, 1, 'AntiSurface', 1 }},
 
             { EBC, 'LessThanEconStorageRatio', { 0.50, 2 } },
 
-            { UCBC, 'HasNotParagon', {} },
-
             { UCBC, 'CheckBuildPlattonDelay', { 'MASSEXTRACTION' }},
-
-            { UCBC, 'HaveUnitRatioVersusCapSwarm', { MaxCapMass , '<', categories.STRUCTURE * categories.MASSEXTRACTION } },
         },
         BuilderType = 'Any',
         BuilderData = {
@@ -95,21 +82,17 @@ BuilderGroup {
     },
 
     Builder {
-        BuilderName = 'S3 Mass 30',
+        BuilderName = 'Swarm Mass T3',
         PlatoonTemplate = 'T3EngineerBuilderSUB',
         Priority = 600,
         InstanceCount = 1,
         DelayEqualBuildPlattons = {'MASSEXTRACTION', 3},
         BuilderConditions = {
-            { MABC, 'CanBuildOnMassSwarm', { 'LocationType', 30, -500, 1, 0, 'AntiSurface', 1 }},
+            { MABC, 'CanBuildOnMassSwarm', { 'LocationType', 1000, -500, 1, 1, 'AntiSurface', 1 }},
 
             { EBC, 'LessThanEconStorageRatio', { 0.35, 2 } },
 
-            { UCBC, 'HasNotParagon', {} },
-
             { UCBC, 'CheckBuildPlattonDelay', { 'MASSEXTRACTION' }},
-
-            { UCBC, 'HaveUnitRatioVersusCapSwarm', { MaxCapMass , '<', categories.STRUCTURE * categories.MASSEXTRACTION } },
         },
         BuilderType = 'Any',
         BuilderData = {
@@ -117,211 +100,6 @@ BuilderGroup {
                 RepeatBuild = true,
                 BuildStructures = {
                     'T3Resource',
-                }
-            }
-        }
-    },
-    
-    Builder {
-        BuilderName = 'S1 Mass 60',
-        PlatoonTemplate = 'EngineerBuilder',
-        Priority = 585,
-        InstanceCount = 4,
-        DelayEqualBuildPlattons = {'MASSEXTRACTION', 3},
-        BuilderConditions = {
-            { MABC, 'CanBuildOnMassSwarm', { 'LocationType', 60, -500, 1, 0, 'AntiSurface', 1 }},
-
-            { UCBC, 'HasNotParagon', {} },
-
-            { UCBC, 'CheckBuildPlattonDelay', { 'MASSEXTRACTION' }},
-
-            { UCBC, 'HaveUnitRatioVersusCapSwarm', { MaxCapMass , '<', categories.STRUCTURE * categories.MASSEXTRACTION } },
-        },
-        BuilderType = 'Any',
-        BuilderData = {
-            Construction = {
-                RepeatBuild = true,
-                BuildStructures = {
-                    'T1Resource',
-                }
-            }
-        }
-    },
-
-    Builder {
-        BuilderName = 'S2 Mass 60',
-        PlatoonTemplate = 'T2EngineerBuilder',
-        Priority = 585,
-        InstanceCount = 1,
-        DelayEqualBuildPlattons = {'MASSEXTRACTION', 3},
-        BuilderConditions = {
-            { MABC, 'CanBuildOnMassSwarm', { 'LocationType', 60, -500, 1, 0, 'AntiSurface', 1 }},
-
-            { EBC, 'LessThanEconStorageRatio', { 0.50, 2 } },
-
-            { UCBC, 'HasNotParagon', {} },
-
-            { UCBC, 'CheckBuildPlattonDelay', { 'MASSEXTRACTION' }},
-
-            { UCBC, 'HaveUnitRatioVersusCapSwarm', { MaxCapMass , '<', categories.STRUCTURE * categories.MASSEXTRACTION } },
-        },
-        BuilderType = 'Any',
-        BuilderData = {
-            Construction = {
-                RepeatBuild = true,
-                BuildStructures = {
-                    'T2Resource',
-                }
-            }
-        }
-    },
-
-    Builder {
-        BuilderName = 'S3 Mass 60',
-        PlatoonTemplate = 'T3EngineerBuilderSUB',
-        Priority = 585,
-        InstanceCount = 1,
-        DelayEqualBuildPlattons = {'MASSEXTRACTION', 3},
-        BuilderConditions = {
-            { MABC, 'CanBuildOnMassSwarm', { 'LocationType', 60, -500, 1, 0, 'AntiSurface', 1 }},
-
-            { EBC, 'LessThanEconStorageRatio', { 0.35, 2 } },
-
-            { UCBC, 'HasNotParagon', {} },
-
-            { UCBC, 'CheckBuildPlattonDelay', { 'MASSEXTRACTION' }},
-
-            { UCBC, 'HaveUnitRatioVersusCapSwarm', { MaxCapMass , '<', categories.STRUCTURE * categories.MASSEXTRACTION } },
-        },
-        BuilderType = 'Any',
-        BuilderData = {
-            Construction = {
-                RepeatBuild = true,
-                BuildStructures = {
-                    'T3Resource',
-                }
-            }
-        }
-    },
-
-    Builder {
-        BuilderName = 'S1 Mass 1000 6+',
-        PlatoonTemplate = 'EngineerBuilder',
-        Priority = 575,
-        DelayEqualBuildPlattons = {'MASSEXTRACTION', 3},
-        InstanceCount = 4,
-        BuilderConditions = {
-            { MABC, 'CanBuildOnMassSwarm', { 'LocationType', 1000, -500, 1, 0, 'AntiSurface', 1 }},
-
-            { UCBC, 'HaveGreaterThanUnitsWithCategory', { 5, categories.ENGINEER * categories.TECH1 }},
-
-            { UCBC, 'HasNotParagon', {} },
-
-            { UCBC, 'CheckBuildPlattonDelay', { 'MASSEXTRACTION' }},
-
-            { UCBC, 'HaveUnitRatioVersusCapSwarm', { MaxCapMass , '<', categories.STRUCTURE * categories.MASSEXTRACTION } },
-        },
-        BuilderType = 'Any',
-        BuilderData = {
-            Construction = {
-                BuildStructures = {
-                    'T1Resource',
-                }
-            }
-        }
-    },
-    Builder {
-        BuilderName = 'S1 Mass 1000 8+',
-        PlatoonTemplate = 'EngineerBuilder',
-        Priority = 565,
-        DelayEqualBuildPlattons = {'MASSEXTRACTION', 3},
-        InstanceCount = 4,
-        BuilderConditions = {
-            { MABC, 'CanBuildOnMassSwarm', { 'LocationType', 1000, -500, 1, 0, 'AntiSurface', 1 }}, 
-            
-            { UCBC, 'HaveGreaterThanUnitsWithCategory', { 7, categories.ENGINEER * categories.TECH1 }},
-
-            { UCBC, 'HasNotParagon', {} },
-
-            { UCBC, 'CheckBuildPlattonDelay', { 'MASSEXTRACTION' }},
-
-            { UCBC, 'HaveUnitRatioVersusCapSwarm', { MaxCapMass , '<', categories.STRUCTURE * categories.MASSEXTRACTION } },
-        },
-        BuilderType = 'Any',
-        BuilderData = {
-            Construction = {
-                BuildStructures = {
-                    'T1Resource',
-                }
-            }
-        }
-    },
-    Builder {
-        BuilderName = 'S1 Mass 1000 10+',
-        PlatoonTemplate = 'EngineerBuilder',
-        Priority = 555,
-        DelayEqualBuildPlattons = {'MASSEXTRACTION', 3},
-        InstanceCount = 4,
-        BuilderConditions = {
-            { MABC, 'CanBuildOnMassSwarm', { 'LocationType', 1000, -500, 1, 0, 'AntiSurface', 1 }},
-
-            { UCBC, 'HaveGreaterThanUnitsWithCategory', { 9, categories.ENGINEER * categories.TECH1 }},
-
-            { UCBC, 'HasNotParagon', {} },
-
-            { UCBC, 'CheckBuildPlattonDelay', { 'MASSEXTRACTION' }},
-
-            { UCBC, 'HaveUnitRatioVersusCapSwarm', { MaxCapMass , '<', categories.STRUCTURE * categories.MASSEXTRACTION } },
-        },
-        BuilderType = 'Any',
-        BuilderData = {
-            Construction = {
-                BuildStructures = {
-                    'T1Resource',
-                }
-            }
-        }
-    },
-    Builder {
-        BuilderName = 'SC Resource RECOVER',
-        PlatoonTemplate = 'CommanderBuilder',
-        Priority = 150,
-        BuilderConditions = {
-            { UCBC, 'GreaterThanGameTimeSeconds', { 2*60 } },
-
-            { UCBC, 'HaveLessThanUnitsWithCategory', { 1, categories.STRUCTURE * categories.MASSEXTRACTION } },
-
-            { MABC, 'CanBuildOnMassSwarm', { 'LocationType', 60, -5000, 1, 0, 'AntiSurface', 1 }},
-
-            { UCBC, 'BuildOnlyOnLocationSwarm', { 'LocationType', 'MAIN' } },
-        },
-        BuilderType = 'Any',
-        BuilderData = {
-            Construction = {
-                BuildStructures = {
-                    'T1Resource',
-                }
-            }
-        }
-    },
-    Builder {
-        BuilderName = 'S1 Resource RECOVER',
-        PlatoonTemplate = 'EngineerBuilder',
-        Priority = 150,
-        BuilderConditions = {
-            { UCBC, 'GreaterThanGameTimeSeconds', { 2*60 } },
-
-            { UCBC, 'HaveLessThanUnitsWithCategory', { 1, categories.STRUCTURE * categories.MASSEXTRACTION } },
-      
-            { MABC, 'CanBuildOnMassSwarm', { 'LocationType', 60, -5000, 1, 0, 'AntiSurface', 1 }}, 
-
-            { UCBC, 'BuildOnlyOnLocationSwarm', { 'LocationType', 'MAIN' } },
-        },
-        BuilderType = 'Any',
-        BuilderData = {
-            Construction = {
-                BuildStructures = {
-                    'T1Resource',
                 }
             }
         }
