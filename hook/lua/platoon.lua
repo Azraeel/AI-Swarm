@@ -33,93 +33,6 @@ local KillThread = KillThread
 SwarmPlatoonClass = Platoon
 Platoon = Class(SwarmPlatoonClass) {
 
--- For AI Patch V8 (Patched) if eng:IsUnitState('BlockCommandQueue') then
-    ProcessBuildCommand = function(eng, removeLastBuild)
-        if not eng or eng.Dead or not eng.PlatoonHandle then
-            return
-        end
-        local aiBrain = eng.PlatoonHandle:GetBrain()
-
-        if not aiBrain or eng.Dead or not eng.EngineerBuildQueue or table.getn(eng.EngineerBuildQueue) == 0 then
-            if aiBrain:PlatoonExists(eng.PlatoonHandle) then
-                --LOG("* AI-DEBUG: ProcessBuildCommand: Disbanding Engineer Platoon in ProcessBuildCommand top " .. eng.Sync.id)
-                if not eng.AssistSet and not eng.AssistPlatoon and not eng.UnitBeingAssist then
-                    eng.PlatoonHandle:PlatoonDisband()
-                end
-            end
-            if eng then eng.ProcessBuild = nil end
-            return
-        end
-
-        -- it wasn't a failed build, so we just finished something
-        if removeLastBuild then
-            --LOG('* AI-DEBUG: ProcessBuildCommand: table.remove(eng.EngineerBuildQueue, 1) removeLastBuild')
-            table.remove(eng.EngineerBuildQueue, 1)
-        end
-
-        eng.ProcessBuildDone = false
-        IssueClearCommands({eng})
-        local commandDone = false
-        while not eng.Dead and not commandDone and table.getn(eng.EngineerBuildQueue) > 0  do
-            local whatToBuild = eng.EngineerBuildQueue[1][1]
-            local buildLocation = {eng.EngineerBuildQueue[1][2][1], 0, eng.EngineerBuildQueue[1][2][2]}
-            local buildRelative = eng.EngineerBuildQueue[1][3]
-            --LOG('* AI-DEBUG: ProcessBuildCommand: whatToBuild = '..repr(whatToBuild))
-            if not eng.NotBuildingThread then
-                eng.NotBuildingThread = eng:ForkThread(eng.PlatoonHandle.WatchForNotBuilding)
-            end
-            -- see if we can move there first
-            if AIUtils.EngineerMoveWithSafePath(aiBrain, eng, buildLocation) then
-                if not eng or eng.Dead or not eng.PlatoonHandle or not aiBrain:PlatoonExists(eng.PlatoonHandle) then
-                    if eng then eng.ProcessBuild = nil end
-                    return
-                end
-
-                -- check to see if we need to reclaim or capture...
-                AIUtils.EngineerTryReclaimCaptureArea(aiBrain, eng, buildLocation)
-                    -- check to see if we can repair
-                AIUtils.EngineerTryRepair(aiBrain, eng, whatToBuild, buildLocation)
-                        -- otherwise, go ahead and build the next structure there
-                aiBrain:BuildStructure(eng, whatToBuild, {buildLocation[1], buildLocation[3], 0}, buildRelative)
-                if not eng.NotBuildingThread then
-                    eng.NotBuildingThread = eng:ForkThread(eng.PlatoonHandle.WatchForNotBuilding)
-                end
-                commandDone = true
-            else
-                -- we can't move there, so remove it from our build queue
-                table.remove(eng.EngineerBuildQueue, 1)
-            end
-        end
-
-        -- final check for if we should disband
-        if not eng or eng.Dead or table.getn(eng.EngineerBuildQueue) <= 0 then
-            if eng.PlatoonHandle and aiBrain:PlatoonExists(eng.PlatoonHandle) then
-                eng.PlatoonHandle:PlatoonDisband()
-            end
-            if eng then eng.ProcessBuild = nil end
-            return
-        end
-        if eng then eng.ProcessBuild = nil end
-    end,
--- For AI Patch V8 (Patched) fixed issue with AI cdr not building at game start
-    WatchForNotBuilding = function(eng)
-        coroutine.yield(10)
-        local aiBrain = eng:GetAIBrain()
-
-        while not eng.Dead and (eng.GoingHome or eng.UnitBeingBuiltBehavior or eng.ProcessBuild != nil or not eng:IsIdleState()) do
-            coroutine.yield(30)
-        end
-
-        eng.NotBuildingThread = nil
-        if not eng.Dead and eng:IsIdleState() and table.getn(eng.EngineerBuildQueue) != 0 and eng.PlatoonHandle then
-            eng.PlatoonHandle.SetupEngineerCallbacks(eng)
-            if not eng.ProcessBuild then
-                eng.ProcessBuild = eng:ForkThread(eng.PlatoonHandle.ProcessBuildCommand, true)
-            end
-        end
-    end,
-    
--- Swarm Stuff: ------------------------------------------------------------------------------------
 
     -- Hook for Mass RepeatBuild
     PlatoonDisband = function(self)
@@ -127,11 +40,7 @@ Platoon = Class(SwarmPlatoonClass) {
         if not self.Swarm then
             return SwarmPlatoonClass.PlatoonDisband(self)
         end
---        LOG('* AI-Swarm: PlatoonDisband = '..repr(self.PlatoonData.Construction.BuildStructures))
---        LOG('* AI-Swarm: PlatoonDisband = '..repr(self.PlatoonData.Construction))
         if self.PlatoonData.Construction.RepeatBuild then
---            LOG('* AI-Swarm: Repeat build = '..repr(self.PlatoonData.Construction.BuildStructures[1]))
-            -- only repeat build if less then 10% of all structures are extractors
             local UCBC = import('/lua/editor/UnitCountBuildConditions.lua')
             if UCBC.HaveUnitRatioVersusCapSwarm(aiBrain, 0.10, '<', categories.STRUCTURE * categories.MASSEXTRACTION) then
                 -- only repeat if we have a free mass spot
