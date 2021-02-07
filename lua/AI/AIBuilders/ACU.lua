@@ -14,7 +14,7 @@ BuilderGroup {
         Priority = 590,                                                       -- Priority. Higher priotity will be build more often then lower priotity.
         InstanceCount = 1,                                                      -- Number of plattons that will be formed with this template.
         BuilderData = {
-            SearchRadius = 100,
+            SearchRadius = 96,
             GetTargetsFromBase = true,                                          -- Get targets from base position (true) or platoon position (false)
             RequireTransport = false,                                           -- If this is true, the unit is forced to use a transport, even if it has a valid path to the destination.
             AttackEnemyStrength = 2000,                                         -- Compare platoon to enemy strenght. 100 will attack equal, 50 weaker and 150 stronger enemies.
@@ -32,7 +32,7 @@ BuilderGroup {
             -- When do we want to build this ?
             { UCBC, 'GreaterThanGameTimeSeconds', { 60*4  } },
             -- Do we need additional conditions to build it ?
-            { UCBC, 'EnemyUnitsGreaterAtLocationRadiusSwarm', {  100, 'LocationType', 0, categories.ALLUNITS - (categories.ENGINEER * categories.TECH1 * categories.TECH2) - categories.AIR - categories.SCOUT }}, -- radius, LocationType, unitCount, categoryEnemy
+            { UCBC, 'EnemyUnitsGreaterAtLocationRadiusSwarm', {  96, 'LocationType', 0, categories.ALLUNITS - (categories.ENGINEER * categories.TECH1 * categories.TECH2) - categories.AIR - categories.SCOUT }}, -- radius, LocationType, unitCount, categoryEnemy
             -- Don't build it if...
             { UCBC, 'HaveGreaterThanUnitsWithCategory', { 0, categories.STRUCTURE * categories.FACTORY * categories.LAND - categories.SUPPORTFACTORY } },
         },
@@ -44,7 +44,7 @@ BuilderGroup {
         Priority = 640,                                                       -- Priority. Higher priotity will be build more often then lower priotity.
         InstanceCount = 1,                                                      -- Number of plattons that will be formed with this template.
         BuilderData = {
-            SearchRadius = 300,
+            SearchRadius = 176,
             GetTargetsFromBase = false,                                          -- Get targets from base position (true) or platoon position (false)
             RequireTransport = false,                                           -- If this is true, the unit is forced to use a transport, even if it has a valid path to the destination.
             AttackEnemyStrength = 2000,                                         -- Compare platoon to enemy strenght. 100 will attack equal, 50 weaker and 150 stronger enemies.
@@ -62,7 +62,7 @@ BuilderGroup {
             -- When do we want to build this ?
             { UCBC, 'GreaterThanGameTimeSeconds', { 60*7 } },
             -- Do we need additional conditions to build it ?
-            { UCBC, 'EnemyUnitsGreaterAtLocationRadiusSwarm', {  300, 'LocationType', 0, categories.ALLUNITS - (categories.ENGINEER * categories.TECH1 * categories.TECH2) - categories.AIR - categories.SCOUT }}, -- radius, LocationType, unitCount, categoryEnemy
+            { UCBC, 'EnemyUnitsGreaterAtLocationRadiusSwarm', {  176, 'LocationType', 0, categories.ALLUNITS - (categories.ENGINEER * categories.TECH1 * categories.TECH2) - categories.AIR - categories.SCOUT }}, -- radius, LocationType, unitCount, categoryEnemy
             -- Don't build it if...
             { UCBC, 'HaveGreaterThanUnitsWithCategory', { 2, categories.STRUCTURE * categories.FACTORY * categories.LAND - categories.SUPPORTFACTORY } },
         },

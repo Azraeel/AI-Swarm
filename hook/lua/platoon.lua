@@ -536,10 +536,10 @@ Platoon = Class(SwarmPlatoonClass) {
     end,
 
     NavalAttackAISwarm = function(self)
-        if 1==1 then
-            self:HeroFightPlatoonSwarm()
-            return
-        end 
+        --if 1==1 then
+        --    self:HeroFightPlatoonSwarm()
+        --    return
+        --end 
         AIAttackUtils.GetMostRestrictiveLayer(self) -- this will set self.MovementLayer to the platoon
         -- Search all platoon units and activate Stealth and Cloak (mostly Modded units)
         local platoonUnits = self:GetPlatoonUnits()
@@ -1400,17 +1400,17 @@ Platoon = Class(SwarmPlatoonClass) {
             elseif aiBrain:GetEconomyIncome('MASS') > 500 then
                 --LOG('* AI-Swarm: Mass over 500. Eco running with 50%')
                 ratio = 0.50
-            elseif GetGameTimeSeconds() > 1800 then -- 30 * 60
-                ratio = 0.35
-            elseif GetGameTimeSeconds() > 1200 then -- 20 * 60
-                ratio = 0.25
-            elseif GetGameTimeSeconds() > 900 then -- 15 * 60
+            elseif GetGameTimeSeconds() > 1920 then -- 32 * 60
+                ratio = 0.30
+            elseif GetGameTimeSeconds() > 1320 then -- 22 * 60
                 ratio = 0.20
-            elseif GetGameTimeSeconds() > 600 then -- 10 * 60
+            elseif GetGameTimeSeconds() > 1020 then -- 17 * 60
                 ratio = 0.15
-            elseif GetGameTimeSeconds() > 300 then -- 5 * 60
+            elseif GetGameTimeSeconds() > 720 then -- 12 * 60
                 ratio = 0.10
-            elseif GetGameTimeSeconds() <= 300 then -- 5 * 50 run the first 5 minutes with 0% Eco and 100% Army
+            elseif GetGameTimeSeconds() > 420 then -- 7 * 60
+                ratio = 0.05
+            elseif GetGameTimeSeconds() <= 420 then -- 7 * 50 run the first 7 minutes with 0% Eco and 100% Army
                 ratio = 0.00
             end
             local platoonUnits = self:GetPlatoonUnits()

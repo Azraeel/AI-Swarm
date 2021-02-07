@@ -130,8 +130,8 @@ BaseBuilderTemplate {
         },
         EngineerCount = {
             Tech1 = 2,
-            Tech2 = 4,
-            Tech3 = 3,
+            Tech2 = 3,
+            Tech3 = 2,
             SCU = 1,
         },
         MassToFactoryValues = {

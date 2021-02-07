@@ -36,6 +36,8 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Builders',
 
             { EBC, 'GreaterThanEconIncomeSwarm', { 0, 0 } },
 
+            { UCBC, 'EngineerCapCheck', { 'LocationType', 'Tech1' } },
+
             { UCBC, 'PoolLessAtLocation', { 'LocationType',  1, categories.MOBILE * categories.ENGINEER * categories.TECH1 } },
 
             { UCBC, 'LocationFactoriesBuildingLess', { 'LocationType', 1, categories.MOBILE * categories.ENGINEER * categories.TECH1} },

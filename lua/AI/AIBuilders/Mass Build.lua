@@ -15,11 +15,11 @@ BuilderGroup {
     Builder {
         BuilderName = 'Swarm Mass - Opener',
         PlatoonTemplate = 'EngineerBuilder',
-        Priority = 600,
+        Priority = 650,
         InstanceCount = 2,
         DelayEqualBuildPlattons = {'MASSEXTRACTION', 3},
         BuilderConditions = {
-            { MABC, 'CanBuildOnMassSwarm', { 'LocationType', 1000, -500, 1, 1, 'AntiSurface', 1 }},
+            { MABC, 'CanBuildOnMassSwarm', { 'LocationType', 1000, -500, 1, 0, 'AntiSurface', 1}},
 
             { UCBC, 'CheckBuildPlattonDelay', { 'MASSEXTRACTION' }},
         },
@@ -36,19 +36,20 @@ BuilderGroup {
     },
 
     Builder {
-        BuilderName = 'Swarm Mass',
+        BuilderName = 'Swarm Mass 60',
         PlatoonTemplate = 'EngineerBuilder',
-        Priority = 600,
+        Priority = 650,
         InstanceCount = 2,
         DelayEqualBuildPlattons = {'MASSEXTRACTION', 3},
         BuilderConditions = {
-            { MABC, 'CanBuildOnMassSwarm', { 'LocationType', 1000, -500, 1, 1, 'AntiSurface', 1 }},
+            { MABC, 'CanBuildOnMassLessThanDistanceSwarm', { 'LocationType', 60, -500, 1, 0, 'AntiSurface', 1}},
 
             { UCBC, 'CheckBuildPlattonDelay', { 'MASSEXTRACTION' }},
         },
         BuilderType = 'Any',
         BuilderData = {
             Construction = {
+                BuildClose = true,
                 RepeatBuild = true,
                 BuildStructures = {
                     'T1Resource',
@@ -58,48 +59,92 @@ BuilderGroup {
     },
 
     Builder {
-        BuilderName = 'Swarm Mass T2',
-        PlatoonTemplate = 'T2EngineerBuilder',
-        Priority = 600,
-        InstanceCount = 1,
+        BuilderName = 'Swarm Mass 120',
+        PlatoonTemplate = 'EngineerBuilder',
+        Priority = 650,
+        InstanceCount = 2,
         DelayEqualBuildPlattons = {'MASSEXTRACTION', 3},
         BuilderConditions = {
-            { MABC, 'CanBuildOnMassSwarm', { 'LocationType', 1000, -500, 1, 1, 'AntiSurface', 1 }},
-
-            { EBC, 'LessThanEconStorageRatio', { 0.50, 2 } },
+            { MABC, 'CanBuildOnMassLessThanDistanceSwarm', { 'LocationType', 120, -500, 1, 0, 'AntiSurface', 1}},
 
             { UCBC, 'CheckBuildPlattonDelay', { 'MASSEXTRACTION' }},
         },
         BuilderType = 'Any',
         BuilderData = {
             Construction = {
+                BuildClose = true,
                 RepeatBuild = true,
                 BuildStructures = {
-                    'T2Resource',
+                    'T1Resource',
                 }
             }
         }
     },
 
     Builder {
-        BuilderName = 'Swarm Mass T3',
-        PlatoonTemplate = 'T3EngineerBuilderSUB',
-        Priority = 600,
-        InstanceCount = 1,
+        BuilderName = 'Swarm Mass 240',
+        PlatoonTemplate = 'EngineerBuilder',
+        Priority = 650,
+        InstanceCount = 4,
         DelayEqualBuildPlattons = {'MASSEXTRACTION', 3},
         BuilderConditions = {
-            { MABC, 'CanBuildOnMassSwarm', { 'LocationType', 1000, -500, 1, 1, 'AntiSurface', 1 }},
-
-            { EBC, 'LessThanEconStorageRatio', { 0.35, 2 } },
+            { MABC, 'CanBuildOnMassLessThanDistanceSwarm', { 'LocationType', 240, -500, 1, 0, 'AntiSurface', 1}},
 
             { UCBC, 'CheckBuildPlattonDelay', { 'MASSEXTRACTION' }},
         },
         BuilderType = 'Any',
         BuilderData = {
             Construction = {
+                BuildClose = true,
                 RepeatBuild = true,
                 BuildStructures = {
-                    'T3Resource',
+                    'T1Resource',
+                }
+            }
+        }
+    },
+
+    Builder {
+        BuilderName = 'Swarm Mass 480',
+        PlatoonTemplate = 'EngineerBuilder',
+        Priority = 650,
+        InstanceCount = 4,
+        DelayEqualBuildPlattons = {'MASSEXTRACTION', 3},
+        BuilderConditions = {
+            { MABC, 'CanBuildOnMassLessThanDistanceSwarm', { 'LocationType', 480, -500, 1, 0, 'AntiSurface', 1}},
+
+            { UCBC, 'CheckBuildPlattonDelay', { 'MASSEXTRACTION' }},
+        },
+        BuilderType = 'Any',
+        BuilderData = {
+            Construction = {
+                BuildClose = true,
+                RepeatBuild = true,
+                BuildStructures = {
+                    'T1Resource',
+                }
+            }
+        }
+    },
+
+    Builder {
+        BuilderName = 'Swarm Mass 1000',
+        PlatoonTemplate = 'EngineerBuilder',
+        Priority = 650,
+        InstanceCount = 4,
+        DelayEqualBuildPlattons = {'MASSEXTRACTION', 3},
+        BuilderConditions = {
+            { MABC, 'CanBuildOnMassLessThanDistanceSwarm', { 'LocationType', 1000, -500, 1, 0, 'AntiSurface', 1}},
+
+            { UCBC, 'CheckBuildPlattonDelay', { 'MASSEXTRACTION' }},
+        },
+        BuilderType = 'Any',
+        BuilderData = {
+            Construction = {
+                BuildClose = true,
+                RepeatBuild = true,
+                BuildStructures = {
+                    'T1Resource',
                 }
             }
         }
@@ -149,7 +194,7 @@ BuilderGroup {
         BuilderConditions = {
             { UCBC, 'HaveGreaterThanArmyPoolWithCategorySwarm', { 0, categories.MASSEXTRACTION} },
 
-            { UCBC, 'GreaterThanGameTimeSeconds', { 270 } },
+            { UCBC, 'GreaterThanGameTimeSeconds', { 420 } },
         },
         BuilderData = {
             AIPlan = 'ExtractorUpgradeAISwarm',
@@ -173,7 +218,7 @@ BuilderGroup {
             
             { UCBC, 'GreaterThanGameTimeSeconds', { 60 * 10 } },
 
-            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.01, 0.50 } },
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.08, 0.50 } },
 
             { MABC, 'MarkerLessThanDistance',  { 'Mass', 275, -3, 0, 0}},
 
@@ -210,7 +255,7 @@ BuilderGroup {
             
             { UCBC, 'GreaterThanGameTimeSeconds', { 60 * 15 } },
 
-            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.01, 0.50 } }, 
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.1, 0.50 } }, 
 
             { MABC, 'MarkerLessThanDistance',  { 'Mass', 775, -3, 0, 0}},
 

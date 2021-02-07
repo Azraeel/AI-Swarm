@@ -59,7 +59,7 @@ PlatoonTemplate {
     Name = 'S1Reclaim',
     Plan = 'ReclaimAISwarm',
     GlobalSquads = {
-        { categories.ENGINEER * (categories.TECH1 + categories.TECH2 + categories.TECH3 + categories.SUBCOMMANDER), 1, 1, "support", "None" }
+        { categories.ENGINEER * categories.TECH1, 1, 1, "support", "None" }
     },
 }
 

@@ -17,10 +17,6 @@ BuilderGroup { BuilderGroupName = 'Swarm Transports - Water Map',               
 
             { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.1, 1.12 }},
 
-            { UCBC, 'UnitCapCheckLess', { 0.95 } },
-
-            { EBC, 'GreaterThanEconIncomeSwarm', { 0.2, 2 } },
-
             { MIBC, 'ArmyNeedsTransports', {} },
 
             { MIBC, 'CanPathToCurrentEnemySwarm', { false, 'LocationType' } },
@@ -42,10 +38,6 @@ BuilderGroup { BuilderGroupName = 'Swarm Transports - Water Map',               
             { EBC, 'GreaterThanEconTrendSwarm', { 0.0, 0.0 } },
 
             { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.15, 1.2 }},
-
-            { UCBC, 'UnitCapCheckLess', { 0.95 } },
-
-            { EBC, 'GreaterThanEconIncomeSwarm', { 1, 20 } },
 
             { MIBC, 'ArmyNeedsTransports', {} },
 
@@ -69,10 +61,6 @@ BuilderGroup { BuilderGroupName = 'Swarm Transports - Water Map',               
 
             { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.2, 1.25 }},
 
-            { UCBC, 'UnitCapCheckLess', { 0.95 } },
-
-            { EBC, 'GreaterThanEconIncomeSwarm', { 2.5, 100 } },
-
             { MIBC, 'ArmyNeedsTransports', {} },
 
             { MIBC, 'CanPathToCurrentEnemySwarm', { false, 'LocationType' } },
@@ -90,21 +78,15 @@ BuilderGroup { BuilderGroupName = 'Swarm Transports - Water Map',               
 BuilderGroup { BuilderGroupName = 'Swarm Land Builders - Water Map',                         -- BuilderGroupName, initalized from AIBaseTemplates in "\lua\AI\AIBaseTemplates\"
     BuildersType = 'FactoryBuilder',
 
-    Builder { BuilderName = 'Swarm LandSquads Amphibious 1 - 20km',
+    Builder { BuilderName = 'Swarm LandSquads Amphibious 1',
         PlatoonTemplate = 'S1 LandSquads Amphibious',
         Priority = 500,
         BuilderConditions = {
-            { UCBC, 'UnitCapCheckLess', { 0.95 } },
-
-            { EBC, 'GreaterThanEconIncomeSwarm', { 0.2, 2 } },
-
             { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.6, 0.8 }},
 
             { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.02, 0.1}},
 
             { MIBC, 'CanPathToCurrentEnemySwarm', { false, 'LocationType' } },
-
-            { MIBC, 'MapGreaterThanSwarm', { 1023, 1023 }},
 
             { UCBC, 'PoolLessAtLocation', { 'LocationType',  5, categories.LAND * categories.TECH1 * (categories.DIRECTFIRE + categories.INDIRECTFIRE)}},
 
@@ -116,21 +98,15 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders - Water Map',            
     -- ============ --
     --    TECH 2    --
     -- ============ --
-    Builder { BuilderName = 'Swarm LandSquads Amphibious 2 - 20km',
+    Builder { BuilderName = 'Swarm LandSquads Amphibious 2',
         PlatoonTemplate = 'S2 LandSquads Amphibious',
         Priority = 700,
         BuilderConditions = {
-            { UCBC, 'UnitCapCheckLess', { 0.95 } },
-
-            { EBC, 'GreaterThanEconIncomeSwarm', { 1, 20 } },
-
             { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.85, 0.9 }},
 
             { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.05, 0.1}},
 
             { MIBC, 'CanPathToCurrentEnemySwarm', { false, 'LocationType' } },
-
-            { MIBC, 'MapGreaterThanSwarm', { 1023, 1023 }},
 
             { UCBC, 'PoolLessAtLocation', { 'LocationType',  5, categories.LAND * categories.TECH2 * (categories.DIRECTFIRE + categories.INDIRECTFIRE)}},
 
@@ -142,21 +118,15 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders - Water Map',            
     -- ============ --
     --    TECH 3    --
     -- ============ --
-    Builder { BuilderName = 'Swarm LandSquads Amphibious 3 - 20km',
+    Builder { BuilderName = 'Swarm LandSquads Amphibious 3',
         PlatoonTemplate = 'S3 LandSquads Amphibious',
         Priority = 900,
         BuilderConditions = {
-            { UCBC, 'UnitCapCheckLess', { 0.95 } },
-
-            { EBC, 'GreaterThanEconIncomeSwarm', { 3.5, 100 } },
-
             { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.0, 1.1 }},
 
             { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.07, 0.1}},
 
             { MIBC, 'CanPathToCurrentEnemySwarm', { false, 'LocationType' } },
-
-            { MIBC, 'MapGreaterThanSwarm', { 1023, 1023 }},
 
             { UCBC, 'PoolLessAtLocation', { 'LocationType',  8, categories.LAND * categories.TECH3 * (categories.DIRECTFIRE + categories.INDIRECTFIRE)}},
 
@@ -169,7 +139,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders - Water Map',            
 BuilderGroup { BuilderGroupName = 'Swarm Factory Builder - Water Map',
     BuildersType = 'EngineerBuilder',
     Builder {
-        BuilderName = 'Swarm Commander Factory Builder Land - Watermap - 20km',
+        BuilderName = 'Swarm Commander Factory Builder Land - Watermap',
         PlatoonTemplate = 'CommanderBuilder',
         Priority = 600,
         BuilderConditions = {
@@ -179,9 +149,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Factory Builder - Water Map',
 
             { MIBC, 'CanPathToCurrentEnemySwarm', { false, 'LocationType' } },
 
-            { MIBC, 'MapGreaterThanSwarm', { 1023, 1023 }},
-
-            { UCBC, 'HaveLessThanUnitsWithCategory', { 2, categories.STRUCTURE * categories.FACTORY * categories.LAND * (categories.TECH1 + categories.TECH2 + categories.TECH3) }},
+            { UCBC, 'HaveLessThanUnitsWithCategory', { 3, categories.STRUCTURE * categories.FACTORY * categories.LAND * (categories.TECH1 + categories.TECH2 + categories.TECH3) }},
         },
         BuilderType = 'Any',
         BuilderData = {
@@ -196,8 +164,8 @@ BuilderGroup { BuilderGroupName = 'Swarm Factory Builder - Water Map',
     },
 
     Builder {
-        BuilderName = 'Swarm Commander Factory Builder Air - Watermap - 20km',
-        PlatoonTemplate = 'CommanderBuilder',
+        BuilderName = 'Swarm Commander Factory Builder Air - Watermap',
+        PlatoonTemplate = 'EngineerBuilderALLTECH',
         Priority = 575,
         BuilderConditions = {
             { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.05, 0.50}},
@@ -205,8 +173,6 @@ BuilderGroup { BuilderGroupName = 'Swarm Factory Builder - Water Map',
             { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.75, 0.9 }},
 
             { MIBC, 'CanPathToCurrentEnemySwarm', { false, 'LocationType' } },
-
-            { MIBC, 'MapGreaterThanSwarm', { 1023, 1023 }},
 
             { UCBC, 'HaveLessThanUnitsWithCategory', { 1, categories.STRUCTURE * categories.AIR * categories.FACTORY * (categories.TECH1 + categories.TECH2 + categories.TECH3)  }},
         },
@@ -223,7 +189,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Factory Builder - Water Map',
     },
 
     Builder {
-        BuilderName = 'Swarm Factory Builder Land - Watermap - 20km',
+        BuilderName = 'Swarm Factory Builder Land - Watermap',
         PlatoonTemplate = 'EngineerBuilderALLTECH',
         Priority = 600,
         BuilderConditions = {
@@ -233,9 +199,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Factory Builder - Water Map',
 
             { MIBC, 'CanPathToCurrentEnemySwarm', { false, 'LocationType' } }, 
 
-            { MIBC, 'MapGreaterThanSwarm', { 1023, 1023 }},
-
-            { UCBC, 'HaveLessThanUnitsWithCategory', { 2, categories.STRUCTURE * categories.FACTORY * categories.LAND * (categories.TECH1 + categories.TECH2 + categories.TECH3) }},
+            { UCBC, 'HaveLessThanUnitsWithCategory', { 3, categories.STRUCTURE * categories.FACTORY * categories.LAND * (categories.TECH1 + categories.TECH2 + categories.TECH3) }},
         },
         BuilderType = 'Any',
         BuilderData = {
@@ -250,15 +214,13 @@ BuilderGroup { BuilderGroupName = 'Swarm Factory Builder - Water Map',
     },
 
     Builder {
-        BuilderName = 'Swarm Factory Builder Air - First - Watermap - 20km',
-        PlatoonTemplate = 'EngineerBuilder',
+        BuilderName = 'Swarm Factory Builder Air - First - Watermap',
+        PlatoonTemplate = 'CommanderBuilder',
         Priority = 650,
         BuilderConditions = {
             { MIBC, 'CanPathToCurrentEnemySwarm', { false, 'LocationType' } },
 
             { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.05, 0.50}},
-
-            { MIBC, 'MapGreaterThanSwarm', { 1023, 1023 }},
 
             { UCBC, 'HaveLessThanUnitsInCategoryBeingBuilt', { 1, categories.STRUCTURE * categories.FACTORY * categories.AIR * categories.TECH1 }},
 
@@ -276,7 +238,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Factory Builder - Water Map',
     },
 
     Builder {
-        BuilderName = 'Swarm Factory Builder Air - Watermap - 20km',
+        BuilderName = 'Swarm Factory Builder Air - Watermap',
         PlatoonTemplate = 'EngineerBuilderALLTECH',
         Priority = 600,
         BuilderConditions = {
@@ -286,11 +248,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Factory Builder - Water Map',
 
             { MIBC, 'CanPathToCurrentEnemySwarm', { false, 'LocationType' } },
 
-            { MIBC, 'MapGreaterThanSwarm', { 1023, 1023 }},
-
             { UCBC, 'HaveLessThanUnitsInCategoryBeingBuilt', { 1, categories.STRUCTURE * categories.FACTORY * categories.AIR * categories.TECH1 }},
-
-            { UCBC, 'HaveUnitRatioVersusCapSwarm', { MaxCapFactory , '<', categories.STRUCTURE * categories.FACTORY * categories.AIR } }, 
         },
         BuilderType = 'Any',
         BuilderData = {

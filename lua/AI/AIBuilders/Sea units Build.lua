@@ -490,7 +490,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Naval Formers',
 
             AttackEnemyStrength = 100,                   
 
-            TargetSearchCategory = categories.MOBILE * categories.NAVAL - categories.SCOUT,      
+            TargetSearchCategory = categories.MOBILE * categories.NAVAL + categories.LAND - categories.SCOUT,      
 
             MoveToCategories = {                                                
                 categories.EXPERIMENTAL * categories.NAVAL,
@@ -519,7 +519,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Naval Formers',
 
             AttackEnemyStrength = 100,   
 
-            TargetSearchCategory = categories.MOBILE * categories.NAVAL,      
+            TargetSearchCategory = categories.MOBILE * categories.NAVAL + categories.LAND,      
 
             MoveToCategories = {                                               
                 categories.NAVAL * categories.DEFENSE,
@@ -551,7 +551,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Naval Formers',
 
             AttackEnemyStrength = 105,   
 
-            TargetSearchCategory = categories.NAVAL * categories.STRUCTURE * categories.FACTORY,   
+            TargetSearchCategory = categories.NAVAL * categories.STRUCTURE * categories.FACTORY + categories.LAND,   
 
             MoveToCategories = {                                             
                 categories.NAVAL * categories.STRUCTURE * categories.FACTORY,
@@ -584,7 +584,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Naval Formers',
 
             AttackEnemyStrength = 100,   
 
-            TargetSearchCategory = categories.STRUCTURE + categories.NAVAL,     
+            TargetSearchCategory = categories.STRUCTURE + categories.NAVAL + categories.LAND,     
 
             MoveToCategories = {                                              
                 categories.MOBILE * categories.NAVAL,

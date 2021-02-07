@@ -38,22 +38,22 @@ PlatoonTemplate { Name = 'T1LandStandardQueue',
     FactionSquads = {
         UEF = {
             { 'uel0201', 1, 4, 'Attack', 'none' },		-- Striker Medium Tank
-            { 'uel0103', 1, 2, 'support', 'None' },     -- Artillery
+            { 'uel0103', 1, 3, 'support', 'None' },     -- Artillery
             { 'uel0201', 1, 1, 'Attack', 'none' },      -- Striker Medium Tank
         },
         Aeon = {
             { 'ual0201', 1, 4, 'Attack', 'none' },		-- Light Hover tank
-            { 'ual0103', 1, 2, 'support', 'None' },     -- Artillery
+            { 'ual0103', 1, 3, 'support', 'None' },     -- Artillery
             { 'ual0201', 1, 1, 'Attack', 'none' },      -- Light Hover tank
         },
         Cybran = {
             { 'url0107', 1, 4, 'Attack', 'none' },		-- Mantis
-            { 'url0103', 1, 2, 'support', 'None' },     -- Artillery
+            { 'url0103', 1, 3, 'support', 'None' },     -- Artillery
             { 'url0107', 1, 1, 'Attack', 'none' },      -- Mantis
         },
         Seraphim = {
             { 'xsl0201', 1, 4, 'Attack', 'none' },		-- Medium Tank
-            { 'xsl0103', 1, 2, 'support', 'None' },     -- Artillery
+            { 'xsl0103', 1, 3, 'support', 'None' },     -- Artillery
             { 'xsl0201', 1, 1, 'Attack', 'none' },      -- Medium Tank
         },
     }

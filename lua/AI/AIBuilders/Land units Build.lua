@@ -429,7 +429,7 @@ BuilderGroup {
             RequireTransport = false, 
             AggressiveMove = true, 
             IgnorePathing = false,
-            TargetSearchCategory = categories.MOBILE * categories.LAND - categories.SCOUT,                        
+            TargetSearchCategory = categories.MOBILE * categories.LAND - categories.SCOUT - categories.WALL,                        
             MoveToCategories = {
                 categories.EXPERIMENTAL,
                 categories.MOBILE * categories.LAND * categories.INDIRECTFIRE - categories.SCOUT,
@@ -464,7 +464,7 @@ BuilderGroup {
             RequireTransport = false, 
             AggressiveMove = true, 
             IgnorePathing = false,
-            TargetSearchCategory = categories.MOBILE * categories.LAND - categories.SCOUT,                        
+            TargetSearchCategory = categories.MOBILE * categories.LAND - categories.SCOUT - categories.WALL,                        
             MoveToCategories = {
                 categories.EXPERIMENTAL,
                 categories.MOBILE * categories.LAND * categories.INDIRECTFIRE - categories.SCOUT,
@@ -495,11 +495,11 @@ BuilderGroup {
         BuilderData = {
             AttackEnemyStrength = 80,
             SearchRadius = BaseEnemyZone,
-            GetTargetsFromBase = false,
+            GetTargetsFromBase = true,
             RequireTransport = false, 
             AggressiveMove = true, 
             IgnorePathing = false,
-            TargetSearchCategory = categories.STRUCTURE + categories.MOBILE - categories.SCOUT,                        
+            TargetSearchCategory = categories.STRUCTURE + categories.MOBILE - categories.SCOUT - categories.WALL,                        
             MoveToCategories = {
                 categories.STRUCTURE * categories.ANTIAIR,
                 categories.STRUCTURE * categories.DEFENSE,
@@ -530,11 +530,11 @@ BuilderGroup {
         BuilderData = {
             AttackEnemyStrength = 120,
             SearchRadius = BaseEnemyZone,
-            GetTargetsFromBase = false,
+            GetTargetsFromBase = true,
             RequireTransport = false, 
             AggressiveMove = true, 
             IgnorePathing = false,
-            TargetSearchCategory = categories.STRUCTURE + categories.MOBILE - categories.SCOUT,                        
+            TargetSearchCategory = categories.STRUCTURE + categories.MOBILE - categories.SCOUT - categories.WALL,                        
             MoveToCategories = {
                 categories.STRUCTURE * categories.ANTIAIR,
                 categories.STRUCTURE * categories.DEFENSE,

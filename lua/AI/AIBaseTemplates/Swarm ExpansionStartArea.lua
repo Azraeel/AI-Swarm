@@ -135,10 +135,10 @@ BaseBuilderTemplate {
             Gate = 2,
         },
         EngineerCount = {
-            Tech1 = 5,
-            Tech2 = 6,
-            Tech3 = 4,
-            SCU = 12,
+            Tech1 = 2,
+            Tech2 = 3,
+            Tech3 = 3,
+            SCU = 10,
         },
         MassToFactoryValues = {
             T1Value = 6,
