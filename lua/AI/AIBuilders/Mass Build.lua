@@ -15,7 +15,7 @@ BuilderGroup {
     Builder {
         BuilderName = 'Swarm Mass - Opener',
         PlatoonTemplate = 'EngineerBuilder',
-        Priority = 650,
+        Priority = 670,
         InstanceCount = 2,
         DelayEqualBuildPlattons = {'MASSEXTRACTION', 3},
         BuilderConditions = {
@@ -38,11 +38,11 @@ BuilderGroup {
     Builder {
         BuilderName = 'Swarm Mass 60',
         PlatoonTemplate = 'EngineerBuilder',
-        Priority = 650,
+        Priority = 665,
         InstanceCount = 2,
         DelayEqualBuildPlattons = {'MASSEXTRACTION', 3},
         BuilderConditions = {
-            { MABC, 'CanBuildOnMassLessThanDistanceSwarm', { 'LocationType', 60, -500, 1, 0, 'AntiSurface', 1}},
+            { MABC, 'CanBuildOnMassSwarm', { 'LocationType', 60, -500, 1, 0, 'AntiSurface', 1}},
 
             { UCBC, 'CheckBuildPlattonDelay', { 'MASSEXTRACTION' }},
         },
@@ -61,11 +61,11 @@ BuilderGroup {
     Builder {
         BuilderName = 'Swarm Mass 120',
         PlatoonTemplate = 'EngineerBuilder',
-        Priority = 650,
+        Priority = 665,
         InstanceCount = 2,
         DelayEqualBuildPlattons = {'MASSEXTRACTION', 3},
         BuilderConditions = {
-            { MABC, 'CanBuildOnMassLessThanDistanceSwarm', { 'LocationType', 120, -500, 1, 0, 'AntiSurface', 1}},
+            { MABC, 'CanBuildOnMassSwarm', { 'LocationType', 120, -500, 1, 0, 'AntiSurface', 1}},
 
             { UCBC, 'CheckBuildPlattonDelay', { 'MASSEXTRACTION' }},
         },
@@ -84,11 +84,11 @@ BuilderGroup {
     Builder {
         BuilderName = 'Swarm Mass 240',
         PlatoonTemplate = 'EngineerBuilder',
-        Priority = 650,
+        Priority = 665,
         InstanceCount = 4,
         DelayEqualBuildPlattons = {'MASSEXTRACTION', 3},
         BuilderConditions = {
-            { MABC, 'CanBuildOnMassLessThanDistanceSwarm', { 'LocationType', 240, -500, 1, 0, 'AntiSurface', 1}},
+            { MABC, 'CanBuildOnMassSwarm', { 'LocationType', 240, -500, 1, 0, 'AntiSurface', 1}},
 
             { UCBC, 'CheckBuildPlattonDelay', { 'MASSEXTRACTION' }},
         },
@@ -107,11 +107,11 @@ BuilderGroup {
     Builder {
         BuilderName = 'Swarm Mass 480',
         PlatoonTemplate = 'EngineerBuilder',
-        Priority = 650,
+        Priority = 665,
         InstanceCount = 4,
         DelayEqualBuildPlattons = {'MASSEXTRACTION', 3},
         BuilderConditions = {
-            { MABC, 'CanBuildOnMassLessThanDistanceSwarm', { 'LocationType', 480, -500, 1, 0, 'AntiSurface', 1}},
+            { MABC, 'CanBuildOnMassSwarm', { 'LocationType', 480, -500, 1, 0, 'AntiSurface', 1}},
 
             { UCBC, 'CheckBuildPlattonDelay', { 'MASSEXTRACTION' }},
         },
@@ -130,11 +130,11 @@ BuilderGroup {
     Builder {
         BuilderName = 'Swarm Mass 1000',
         PlatoonTemplate = 'EngineerBuilder',
-        Priority = 650,
+        Priority = 665,
         InstanceCount = 4,
         DelayEqualBuildPlattons = {'MASSEXTRACTION', 3},
         BuilderConditions = {
-            { MABC, 'CanBuildOnMassLessThanDistanceSwarm', { 'LocationType', 1000, -500, 1, 0, 'AntiSurface', 1}},
+            { MABC, 'CanBuildOnMassSwarm', { 'LocationType', 1000, -500, 1, 0, 'AntiSurface', 1}},
 
             { UCBC, 'CheckBuildPlattonDelay', { 'MASSEXTRACTION' }},
         },

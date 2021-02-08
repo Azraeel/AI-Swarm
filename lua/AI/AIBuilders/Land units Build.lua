@@ -381,31 +381,40 @@ BuilderGroup {
     BuilderGroupName = 'AISwarm Platoon Builder',
     BuildersType = 'PlatoonFormBuilder', -- A PlatoonFormBuilder is for builder groups of units.
 
-    --[[ Builder {
-        BuilderName = 'AI-Swarm Base Response - Intelli',                                        
-        PlatoonTemplate = 'AISwarm Intercept',                       
-        Priority = 300,                                                       
-        InstanceCount = 1,                                                     
-        BuilderData = {
-            SearchRadius = BasePanicZone,                                       
-            GetTargetsFromBase = true,                                          
-            RequireTransport = false,                                           
-            AggressiveMove = true,                                             
-            AttackEnemyStrength = 100000000,                                    
-            IgnorePathing = true,                                               
-            TargetSearchCategory = categories.MOBILE - categories.SCOUT,        
-            MoveToCategories = {                                             
-                categories.EXPERIMENTAL,
-                categories.MOBILE,
-            },
-        },
-        BuilderConditions = {    
+    Builder {
+        BuilderName = 'AI-Swarm Standard Land (150) P',
+        PlatoonTemplate = 'AISwarm LandAttack Micro - Standard', 
+        Priority = 651,
+        InstanceCount = 2,
+        BuilderType = 'Any',
+        BuilderConditions = { 
+            { UCBC, 'ScalePlatoonSizeSwarm', { 'LocationType', 'LAND', categories.MOBILE * categories.LAND - categories.ENGINEER - categories.EXPERIMENTAL } },
+
             { MIBC, 'CanPathToCurrentEnemySwarm', { true, 'LocationType' } },
 
-            { UCBC, 'EnemyUnitsGreaterAtLocationRadius', {  BasePanicZone, 'LocationType', 0, categories.MOBILE - categories.SCOUT }}, 
+            { UCBC, 'UnitsGreaterAtEnemy', { 0 , categories.MOBILE * categories.LAND - categories.SCOUT } },
+
+            { UCBC, 'EnemyUnitsGreaterAtLocationRadius', {  BasePanicZone, 'LocationType', 0, categories.MOBILE - categories.NAVAL}}, -- radius, LocationType, unitCount, categoryEnemy
         },
-        BuilderType = 'Any',                                                    
-    }, ]]--
+        BuilderData = {
+            AttackEnemyStrength = 150,
+            SearchRadius = BasePanicZone,
+            GetTargetsFromBase = true,
+            RequireTransport = false, 
+            AggressiveMove = false, 
+            IgnorePathing = true,
+            TargetSearchCategory = categories.MOBILE * categories.LAND - categories.SCOUT - categories.WALL,                        
+            MoveToCategories = {
+                categories.EXPERIMENTAL,
+                categories.MOBILE * categories.LAND * categories.INDIRECTFIRE - categories.SCOUT,
+                categories.MOBILE * categories.LAND * categories.DIRECTFIRE - categories.SCOUT,
+                categories.MOBILE * categories.LAND * categories.ANTIAIR,
+                categories.STRUCTURE * categories.ANTIAIR,
+                categories.STRUCTURE * categories.DEFENSE,
+                categories.ALLUNITS,
+            },
+        },        
+    },
 
     Builder {
         BuilderName = 'AI-Swarm Standard Land (80) M',
@@ -480,7 +489,7 @@ BuilderGroup {
     Builder {
         BuilderName = 'AI-Swarm Standard Land (80) E',
         PlatoonTemplate = 'AISwarm LandAttack Micro - Standard', 
-        Priority = 650,
+        Priority = 649,
         InstanceCount = 8,
         BuilderType = 'Any',
         BuilderConditions = { 
@@ -515,7 +524,7 @@ BuilderGroup {
     Builder {
         BuilderName = 'AI-Swarm Standard Land (120) E',
         PlatoonTemplate = 'AISwarm LandAttack Micro - Standard', 
-        Priority = 650,
+        Priority = 649,
         InstanceCount = 8,
         BuilderType = 'Any',
         BuilderConditions = { 
@@ -678,6 +687,8 @@ BuilderGroup {
             { UCBC, 'HaveGreaterThanUnitsWithCategory', { 0, categories.MOBILE * categories.LAND }},      	
         },
         BuilderData = {
+            SearchRadius = 512,
+            LocationType = 'LocationType',
             IncludeWater = false,
             IgnoreFriendlyBase = true,
             MaxPathDistance = 512, 
@@ -689,6 +700,21 @@ BuilderGroup {
             AggressiveMove = true,      
             AvoidClosestRadius = 100,
             UseFormation = 'None',
+            TargetSearchPriorities = { 
+                categories.MASSEXTRACTION,
+                categories.MASSFABRICATION, 
+                categories.ENERGYPRODUCTION,
+                categories.ALLUNITS,
+            },
+            PrioritizedCategories = {   
+                categories.MOBILE * categories.LAND * categories.INDIRECTFIRE - categories.SCOUT,
+                categories.MOBILE * categories.LAND * categories.DIRECTFIRE - categories.SCOUT,
+                categories.MOBILE * categories.LAND * categories.ANTIAIR,
+                categories.MASSEXTRACTION,
+                categories.ENERGYPRODUCTION,
+                categories.MASSFABRICATION,
+                categories.ALLUNITS,
+            },
         },    
     },
 
@@ -710,17 +736,34 @@ BuilderGroup {
             { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 2, categories.MOBILE * categories.LAND - categories.ENGINEER } },
         },
         BuilderData = {
+            SearchRadius = 512,
+            LocationType = 'LocationType',
             IncludeWater = false,
             IgnoreFriendlyBase = true,
-            MaxPathDistance = 396, 
+            MaxPathDistance = 512, 
             FindHighestThreat = true,			
-            MaxThreatThreshold = 5000,		
-            MinThreatThreshold = 1000,		    
+            MaxThreatThreshold = 4900,		
+            MinThreatThreshold = 2000,		    
             AvoidBases = true,
             AvoidBasesRadius = 100,
             AggressiveMove = true,      
             AvoidClosestRadius = 100,
             UseFormation = 'None',
+            TargetSearchPriorities = { 
+                categories.MASSEXTRACTION,
+                categories.MASSFABRICATION, 
+                categories.ENERGYPRODUCTION,
+                categories.ALLUNITS,
+            },
+            PrioritizedCategories = {   
+                categories.MOBILE * categories.LAND * categories.INDIRECTFIRE - categories.SCOUT,
+                categories.MOBILE * categories.LAND * categories.DIRECTFIRE - categories.SCOUT,
+                categories.MOBILE * categories.LAND * categories.ANTIAIR,
+                categories.MASSEXTRACTION,
+                categories.ENERGYPRODUCTION,
+                categories.MASSFABRICATION,
+                categories.ALLUNITS,
+            },
         },
     },
 

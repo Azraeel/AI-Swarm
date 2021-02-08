@@ -155,7 +155,7 @@ BuilderGroup {
     },
 
     Builder {
-        BuilderName = 'Swarm Power Hydrocarbon',
+        BuilderName = 'Swarm Power Hydrocarbon Rush',
         PlatoonTemplate = 'EngineerBuilder',
         Priority = 675,
         DelayEqualBuildPlattons = {'Energy', 1},
@@ -165,8 +165,6 @@ BuilderGroup {
             { MABC, 'CanBuildOnHydroSwarm', { 'LocationType', 50, -1000, 100, 1, 'AntiSurface', 1 }},            -- Do we need additional conditions to build it ?
 
             { UCBC, 'HaveLessThanUnitsWithCategory', { 1, categories.HYDROCARBON } },
-
-            { UCBC, 'HasNotParagon', {} },
 
             { EBC, 'GreaterThanEconIncomeSwarm',  { 0.2, 2.0}}, -- Absolut Base income 4 60
 
@@ -181,6 +179,31 @@ BuilderGroup {
             }
         }
     },
+
+    Builder {
+        BuilderName = 'Swarm Power Hydrocarbon Normal',
+        PlatoonTemplate = 'EngineerBuilder',
+        Priority = 660,
+        DelayEqualBuildPlattons = {'Energy', 1},
+        InstanceCount = 1,
+        BuilderConditions = {
+            -- When do we want to build this ?
+            { MABC, 'CanBuildOnHydroSwarm', { 'LocationType', 480, -1000, 100, 1, 'AntiSurface', 1 }},            -- Do we need additional conditions to build it ?
+
+            { EBC, 'GreaterThanEconIncomeSwarm',  { 0.2, 2.0}}, -- Absolut Base income 4 60
+
+            { UCBC, 'CheckBuildPlattonDelay', { 'Energy' }},
+        },
+        BuilderType = 'Any',
+        BuilderData = {
+            Construction = {
+                BuildStructures = {
+                    'T1HydroCarbon',
+                }
+            }
+        }
+    },
+
 
     --==========================--
     -- Commander Energy Builders--

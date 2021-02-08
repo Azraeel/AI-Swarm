@@ -10,7 +10,7 @@ function ExtractorPauseSwarm(self, aiBrain, MassExtractorUnitList, ratio, techLe
     local IdleBuilding = nil
     local BussyBuilding = nil
     local IdleBuildingNum = 0
-    -- loop over all MASSEXTRACTION buildings 
+
     for unitNum, unit in MassExtractorUnitList do
         if unit
             and not unit.Dead
@@ -18,28 +18,25 @@ function ExtractorPauseSwarm(self, aiBrain, MassExtractorUnitList, ratio, techLe
             and not unit:GetFractionComplete() < 1
             and EntityCategoryContains(ParseEntityCategory(techLevel), unit)
         then
-            -- Is the building upgrading ?
+
             if unit:IsUnitState('Upgrading') then
-                -- If is paused
                 if unit:IsPaused() then
                     if not PausedUpgradingBuilding then
                         PausedUpgradingBuilding = unit
                     end
                     PausedUpgradingBuildingNum = PausedUpgradingBuildingNum + 1
-                -- The unit is upgrading but not paused
                 else
                     if not UpgradingBuilding then
                          UpgradingBuilding = unit
                     end
                     UpgradingBuildingNum = UpgradingBuildingNum + 1
                 end
-            -- check if we have stopped the production
+
             elseif unit:GetScriptBit('RULEUTC_ProductionToggle') then
                 if not DisabledBuilding then
                     DisabledBuilding = unit
                 end
                 DisabledBuildingNum = DisabledBuildingNum + 1
-            -- we have left buildings that are not disabled, and not upgrading. Mabe they are paused ?
             else
                 if not unit:IsPaused() then
                     if not IdleBuilding then
@@ -50,95 +47,59 @@ function ExtractorPauseSwarm(self, aiBrain, MassExtractorUnitList, ratio, techLe
                 end
                IdleBuildingNum = IdleBuildingNum + 1
             end
+
         end
     end
-    --LOG('* ExtractorPauseSwarm: Idle= '..UpgradingBuildingNum..'   Upgrading= '..UpgradingBuildingNum..'   Paused= '..PausedUpgradingBuildingNum..'   Disabled= '..DisabledBuildingNum..'   techLevel= '..techLevel)
-    --Check for energy stall
-    --if aiBrain:GetEconomyStoredRatio('ENERGY') < 0.50 and aiBrain:GetEconomyStoredRatio('MASS') > aiBrain:GetEconomyStoredRatio('ENERGY') then
-    if aiBrain:GetEconomyStoredRatio('MASS') -0.1 > aiBrain:GetEconomyStoredRatio('ENERGY') then
-        -- Have we a building that is actual upgrading
+    
+
+    --[[ if aiBrain:GetEconomyStoredRatio('MASS') -0.1 > aiBrain:GetEconomyStoredRatio('ENERGY') then
         if UpgradingBuilding then
-            -- Its upgrading, now check fist if we only have 1 building that is upgrading
-            if UpgradingBuildingNum <= 1 and table.getn(MassExtractorUnitList) >= 6 then
+            if UpgradingBuildingNum <= 0 and table.getn(MassExtractorUnitList) >= 8 then
             else
-                -- we don't have the eco to upgrade the extractor. Pause it!
                 UpgradingBuilding:SetPaused( true )
-                --UpgradingBuilding:SetCustomName('Upgrading paused')
-                --LOG('Upgrading paused')
                 return true
             end
         end
-        -- All buildings that are doing nothing
         if IdleBuilding then
-            if IdleBuildingNum <= 1 then
+            if IdleBuildingNum <= 0 then
             else
                 IdleBuilding:SetScriptBit('RULEUTC_ProductionToggle', true)
-                --IdleBuilding:SetCustomName('Production off')
-                --LOG('Production off')
                 return true
             end
         end
-    -- Do we produce more mass then we need ? Disable some for more energy    
-    else
-        if DisabledBuilding then
-            DisabledBuilding:SetScriptBit('RULEUTC_ProductionToggle', false)
-            --DisabledBuilding:SetCustomName('Production on')
-            --LOG('Production on')
-            return true
-        end
-    end
-    -- Check for positive Mass/Upgrade ratio
+    end ]]--
+
     local MassRatioCheckPositive = GlobalMassUpgradeCostVsGlobalMassIncomeRatioSwarm( self, aiBrain, ratio, techLevel, '<' )
-    -- Did we found a paused unit ?
+
     if PausedUpgradingBuilding then
         if MassRatioCheckPositive then
-            -- We have good Mass ratio. We can unpause an extractor
             PausedUpgradingBuilding:SetPaused( false )
-            --PausedUpgradingBuilding:SetCustomName('PausedUpgradingBuilding2 unpaused')
-            --LOG('PausedUpgradingBuilding2 unpaused')
             return true
         elseif not MassRatioCheckPositive and UpgradingBuildingNum < 1 and table.getn(MassExtractorUnitList) >= 6 then
             PausedUpgradingBuilding:SetPaused( false )
-            --PausedUpgradingBuilding:SetCustomName('PausedUpgradingBuilding1 unpaused')
-            --LOG('PausedUpgradingBuilding1 unpaused')
             return true
         end
     end
-    -- Check for negative Mass/Upgrade ratio
+
     local MassRatioCheckNegative = GlobalMassUpgradeCostVsGlobalMassIncomeRatioSwarm( self, aiBrain, ratio, techLevel, '>=')
-    --LOG('* ExtractorPauseSwarm 2 MassRatioCheckNegative >: '..repr(MassRatioCheckNegative)..' - IF this is true , we have bad eco and we should pause.')
+
     if MassRatioCheckNegative then
         if UpgradingBuildingNum > 1 then
-            -- we don't have the eco to upgrade the extractor. Pause it!
             if aiBrain:GetEconomyTrend('MASS') <= 0 and aiBrain:GetEconomyStored('MASS') <= 0.01  then
                 UpgradingBuilding:SetPaused( true )
-                --UpgradingBuilding:SetCustomName('UpgradingBuilding paused')
-                --LOG('UpgradingBuilding paused')
-                --LOG('* ExtractorPauseSwarm: Pausing upgrading extractor')
                 return true
             end
         end
-        --[[ if PausedUpgradingBuilding then
-            -- if we stall mass, then cancel the upgrade
-            if aiBrain:GetEconomyTrend('MASS') <= 0 and aiBrain:GetEconomyStored('MASS') <= 0  then
-                IssueClearCommands({PausedUpgradingBuilding})
-                PausedUpgradingBuilding:SetPaused( false )
-                --PausedUpgradingBuilding:SetCustomName('Upgrade canceled')
-                --LOG('Upgrade canceled')
-                --LOG('* ExtractorPauseSwarm: Cancel upgrading extractor')
-                return true
-            end 
-        end ]]--
     end
+
     return false
+
 end
 
--- ExtractorUpgradeSwarm is upgrading the nearest building to our own main base instead of a random building.
+
 function ExtractorUpgradeSwarm(self, aiBrain, MassExtractorUnitList, ratio, techLevel, UnitUpgradeTemplates, StructureUpgradeTemplates)
-    -- Do we have the eco to upgrade ?
     local MassRatioCheckPositive = GlobalMassUpgradeCostVsGlobalMassIncomeRatioSwarm(self, aiBrain, ratio, techLevel, '<' )
     local aiBrain = self:GetBrain()
-    -- search for the neares building to the base for upgrade.
     local BasePosition = aiBrain.BuilderManagers['MAIN'].Position
     local factionIndex = aiBrain:GetFactionIndex()
     local UpgradingBuilding = 0
@@ -149,9 +110,11 @@ function ExtractorUpgradeSwarm(self, aiBrain, MassExtractorUnitList, ratio, tech
     local UnitPos = nil
     local FactionToIndex  = { UEF = 1, AEON = 2, CYBRAN = 3, SERAPHIM = 4, NOMADS = 5}
     local UnitBeingUpgradeFactionIndex = nil
+
     for k, v in MassExtractorUnitList do
+
         local TempID
-        -- Check if we don't want to upgrade this unit
+
         if not v
             or v.Dead
             or v:BeenDestroyed()
@@ -159,51 +122,58 @@ function ExtractorUpgradeSwarm(self, aiBrain, MassExtractorUnitList, ratio, tech
             or not EntityCategoryContains(ParseEntityCategory(techLevel), v)
             or v:GetFractionComplete() < 1
         then
-            -- Skip this loop and continue with the next array
             continue
         end
+
         if v:IsUnitState('Upgrading') then
             UpgradingBuilding = UpgradingBuilding + 1
-            -- Skip this loop and continue with the next array
             continue
         end
-        -- Check for the nearest distance from mainbase
+
         UnitPos = v:GetPosition()
         DistanceToBase= VDist2(BasePosition[1] or 0, BasePosition[3] or 0, UnitPos[1] or 0, UnitPos[3] or 0)
+
         if not LowestDistanceToBase or DistanceToBase < LowestDistanceToBase then
-            -- Get the factionindex from the unit to get the right update (in case we have captured this unit from another faction)
+
             UnitBeingUpgradeFactionIndex = FactionToIndex[v.factionCategory] or factionIndex
-            -- see if we can find a upgrade
+
             if EntityCategoryContains(categories.MOBILE, v) then
                 TempID = aiBrain:FindUpgradeBP(v:GetUnitId(), UnitUpgradeTemplates[UnitBeingUpgradeFactionIndex])
+
                 if not TempID then
-                    WARN('['..string.gsub(debug.getinfo(1).source, ".*\\(.*.lua)", "%1")..', line:'..debug.getinfo(1).currentline..'] *UnitUpgradeAI ERROR: Can\'t find UnitUpgradeTemplate for mobile unit: ' .. repr(v:GetUnitId()) )
+                    --WARN('['..string.gsub(debug.getinfo(1).source, ".*\\(.*.lua)", "%1")..', line:'..debug.getinfo(1).currentline..'] *UnitUpgradeAI ERROR: Can\'t find UnitUpgradeTemplate for mobile unit: ' .. repr(v:GetUnitId()) )
                 end
+
             else
                 TempID = aiBrain:FindUpgradeBP(v:GetUnitId(), StructureUpgradeTemplates[UnitBeingUpgradeFactionIndex])
+
                 if not TempID then
-                    WARN('['..string.gsub(debug.getinfo(1).source, ".*\\(.*.lua)", "%1")..', line:'..debug.getinfo(1).currentline..'] *UnitUpgradeAI ERROR: Can\'t find StructureUpgradeTemplate for structure: ' .. repr(v:GetUnitId()) )
+                    --WARN('['..string.gsub(debug.getinfo(1).source, ".*\\(.*.lua)", "%1")..', line:'..debug.getinfo(1).currentline..'] *UnitUpgradeAI ERROR: Can\'t find StructureUpgradeTemplate for structure: ' .. repr(v:GetUnitId()) )
                 end
+
             end 
-            -- Check if we can build the upgrade
+
             if TempID and EntityCategoryContains(categories.STRUCTURE, v) and not v:CanBuild(TempID) then
-                WARN('['..string.gsub(debug.getinfo(1).source, ".*\\(.*.lua)", "%1")..', line:'..debug.getinfo(1).currentline..'] *UnitUpgradeAI ERROR: Can\'t upgrade structure with StructureUpgradeTemplate: ' .. repr(v:GetUnitId()) )
+
+                --WARN('['..string.gsub(debug.getinfo(1).source, ".*\\(.*.lua)", "%1")..', line:'..debug.getinfo(1).currentline..'] *UnitUpgradeAI ERROR: Can\'t upgrade structure with StructureUpgradeTemplate: ' .. repr(v:GetUnitId()) )
+
             elseif TempID then
                 upgradeID = TempID
                 upgradeBuilding = v
                 LowestDistanceToBase = DistanceToBase
             end
+
         end
     end
-    -- If we have not the Eco then return false. Exept we have none extractor upgrading or 100% mass storrage
+    
     if not MassRatioCheckPositive and aiBrain:GetEconomyStoredRatio('MASS') < 1.00 then
-        -- if we have at least 1 extractor upgrading or less then 4 extractors, then return false
-        if UpgradingBuilding > 0 or table.getn(MassExtractorUnitList) < 4 then
+      
+        if UpgradingBuilding > 0 or table.getn(MassExtractorUnitList) < 8 then
             return false
         end
-        -- Even if we don't have the Eco for it; If we have more then 4 Extractors, then upgrade at least one of them.
+
     end
-    -- Have we found a unit that can upgrade ?
+
     if upgradeID and upgradeBuilding then
         --LOG('* ExtractorUpgradeSwarm: Upgrading Building in DistanceToBase '..(LowestDistanceToBase or 'Unknown ???')..' '..techLevel..' - UnitId '..upgradeBuilding:GetUnitId()..' - upgradeID '..upgradeID..' - GlobalUpgrading '..techLevel..': '..(UpgradingBuilding + 1) )
         IssueUpgrade({upgradeBuilding}, upgradeID)
