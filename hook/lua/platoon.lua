@@ -230,10 +230,10 @@ Platoon = Class(SwarmPlatoonClass) {
     end,
 
     BomberGunshipAISwarm = function(self)
-        if 1==1 then
-            self:HeroFightPlatoonSwarm()
-            return
-        end 
+        --if 1==1 then
+        --    self:HeroFightPlatoonSwarm()
+        --    return
+        --end 
         AIAttackUtils.GetMostRestrictiveLayer(self) 
 
         local aiBrain = self:GetBrain()

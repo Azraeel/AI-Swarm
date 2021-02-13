@@ -200,7 +200,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Adaptive Factory Build',
 
             { MIBC, 'CanPathToCurrentEnemySwarm', { true, 'LocationType' } }, 
 
-            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.1, 0.75}},
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.25, 0.75}},
 
             { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.95, 1.0 }}, 
 
@@ -262,7 +262,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Adaptive Factory Build',
 
             { MIBC, 'CanPathToCurrentEnemySwarm', { true, 'LocationType' } }, 
 
-            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.1, 0.75}},
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.25, 0.75}},
 
             { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.95, 1.0 }}, 
 
@@ -444,7 +444,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Adaptive Factory Build',
         BuilderConditions = {
             { UCBC, 'CheckBuildPlattonDelay', { 'Factories' }},
 
-            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.1, 0.75}},
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.25, 0.75}},
 
             { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.9, 1.03 }}, 
 
@@ -502,7 +502,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Adaptive Factory Build',
         BuilderConditions = {
             { UCBC, 'CheckBuildPlattonDelay', { 'Factories' }},
 
-            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.1, 0.75}},
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.25, 0.75}},
 
             { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.9, 1.03 }}, 
 

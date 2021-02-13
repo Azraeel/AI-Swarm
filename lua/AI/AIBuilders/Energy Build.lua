@@ -52,7 +52,7 @@ BuilderGroup {
     Builder {
         BuilderName = 'Swarm Power low trend - Scale Power',
         PlatoonTemplate = 'EngineerBuilder',
-        Priority = 650,
+        Priority = 660,
         InstanceCount = 2,                                                      -- Number of plattons that will be formed with this template.
         DelayEqualBuildPlattons = {'Energy', 3},
         BuilderConditions = {
@@ -88,7 +88,7 @@ BuilderGroup {
     Builder {
         BuilderName = 'Swarm Engineer Power MassRatio 10',
         PlatoonTemplate = 'EngineerBuilder',
-        Priority = 655,
+        Priority = 650,
         InstanceCount = 2,
         BuilderConditions = {
             { EBC, 'EnergyToMassRatioIncome', { 10.0, '<=' } },  -- True if we have less than 10 times more Energy then Mass income ( 100 <= 10 = true )
@@ -123,7 +123,7 @@ BuilderGroup {
     Builder {
         BuilderName = 'Swarm Engineer Power MassRatio 5',
         PlatoonTemplate = 'EngineerBuilder',
-        Priority = 655,
+        Priority = 650,
         InstanceCount = 1,
         BuilderConditions = {
             { EBC, 'EnergyToMassRatioIncome', { 5.0, '<=' } },  -- True if we have less than 10 times more Energy then Mass income ( 100 <= 10 = true )

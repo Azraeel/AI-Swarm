@@ -9,10 +9,10 @@ PlatoonTemplate {
 }
 
 PlatoonTemplate {
-    Name = 'AISwarm Intercept',
+    Name = 'AISwarm LandAttack Micro - Intercept',
     Plan = 'InterceptorAIUveso',
     GlobalSquads = {
-        { categories.MOBILE * categories.LAND + (categories.MOBILE * categories.EXPERIMENTAL) - categories.ANTIAIR - categories.ENGINEER - categories.SCOUT, 1, 100, 'attack', 'none' },
+        { categories.MOBILE * categories.LAND + (categories.MOBILE * categories.EXPERIMENTAL) - categories.ANTIAIR - categories.ENGINEER - categories.SCOUT, 4, 100, 'attack', 'none' },
     },
 }
 
