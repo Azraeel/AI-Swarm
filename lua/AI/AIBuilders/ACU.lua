@@ -2,6 +2,8 @@ local UCBC = '/lua/editor/UnitCountBuildConditions.lua'
 
 local BasePanicZone, BaseMilitaryZone, BaseEnemyZone = import('/mods/AI-Swarm/lua/AI/swarmutilities.lua').GetDangerZoneRadii()
 
+-- The Commander needs to fully become an Engineer, Combat doesnt suit him or the AI.
+
 BuilderGroup {
     BuilderGroupName = 'SC ACU Attack Former',                                      -- BuilderGroupName, initalized from AIBaseTemplates in "\lua\AI\AIBaseTemplates\"
     BuildersType = 'EngineerBuilder',

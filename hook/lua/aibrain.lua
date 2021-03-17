@@ -83,6 +83,9 @@ AIBrain = Class(SwarmAIBrainClass) {
         KillThread(CurrentThread())
     end,
 
+    -- Needs to be expanded on sooner or later. Unit Cap was only a replacement for Threat, until we clean threat up in the FAF DB. 
+    -- Eventually, I will personally do this with the rest of AI Development Team and we will PR our complete threat reviewal towards the FAF Github.
+
     ParseIntelThreadSwarm = function(self)
 
         --LOG("*AI DEBUG "..self.Nickname.." ParseIntelThreadSwarm begins")

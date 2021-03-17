@@ -7,6 +7,12 @@
 #**  Copyright © 2005 Gas Powered Games, Inc.  All rights reserved.
 #****************************************************************************
 
+-- These need to be different from the MainBase Template and have different purposes which means ==>
+-- ExpansionFunction will need to be reviewed and rewrote to have multiple different template choices for Swarm based on situation and or location.
+-- But the larger Expansion Areas need to be production areas. 
+-- Start Areas must be similar to Mainbase, but there are 2 major differences when I do change these... 
+-- First SACUs will only be on these Markers or Mainbase, EXPANSIONS WILL NEVER GET SACUs
+
 BaseBuilderTemplate {
     BaseTemplateName = 'SwarmStartArea',
     Builders = {

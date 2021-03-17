@@ -52,6 +52,13 @@ BuilderGroup {
         }
     }, ]]--
     
+    -- I have neglected working on expansions more, and they were always a backup and or the last thought inside Swarm's mind.
+    -- This needs some serious work, clearly this does not work in FAF and he needs to control his expansions better and building expansions/FOBs would most likely help him defend his ZONE better
+    -- I have also neglected to put though into the use of zones as a physical map for Swarm.
+    -- For example when a expansion or any other base is created this actually extends the Panic zone which can be his Restricted or Protected Zone in his mind.
+    -- This will allow Swarm to tell his frontline more clearly.
+    -- More so direct platoons better.
+    
     Builder {
         BuilderName = 'S1 Vacant Start Location',                               -- Random Builder Name.
         PlatoonTemplate = 'EngineerBuilderALLTECH',                                    -- Template Name. These units will be formed. See: "\lua\AI\PlatoonTemplates\"

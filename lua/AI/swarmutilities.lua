@@ -1,5 +1,7 @@
 local ScenarioUtils = import('/lua/sim/ScenarioUtilities.lua')
 
+--Extractor Upgrading needs a complete rework, though honestly I do not have the skill to rewrite this completely nor the skill to use Sprouto or Relly's code right now.
+
 function ExtractorPauseSwarm(self, aiBrain, MassExtractorUnitList, ratio, techLevel)
     local UpgradingBuilding = nil
     local UpgradingBuildingNum = 0

@@ -7,9 +7,13 @@ local MaxAttackForce = 0.45                                                     
 
 if not categories.STEALTHFIELD then categories.STEALTHFIELD = categories.SHIELD end
 
-local First25Minutes = function( self,aiBrain )
+-- The timing will never be perfect on stopping T1 Production, but 25 minutes is obviously too long for Swarm. 
+-- Maybe some kind of condition, that stops this from being purely a Timer Function. 
+-- We'll try Land Ratio for right now.
+
+local First15Minutes = function( self,aiBrain )
 	
-	if GetGameTimeSeconds() > 1500 then
+	if GetGameTimeSeconds() > 900 and aiBrain.MyLandRatio > 0.9 then
 		return 0, false
 	end
 	
@@ -49,7 +53,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',
 
         Priority = 505, 
 
-        PriorityFunction = First25Minutes,
+        PriorityFunction = First15Minutes,
 
         BuilderConditions = {
             { UCBC, 'LessThanGameTimeSeconds', { 60 * 4 } },
@@ -73,7 +77,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',
 
         Priority = 500,
 
-        PriorityFunction = First25Minutes,
+        PriorityFunction = First15Minutes,
 
         BuilderConditions = {
             { UCBC, 'UnitCapCheckLess', { 0.90 } },
@@ -93,7 +97,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',
 
         Priority = 500,
 
-        PriorityFunction = First25Minutes,
+        PriorityFunction = First15Minutes,
 
         BuilderConditions = {
             { UCBC, 'UnitCapCheckLess', { 0.90 } },
@@ -401,6 +405,10 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Scout Formers',
 -- ===================================================-======================================================== --
 -- ==                                         Land Formbuilder                                               == --
 -- ===================================================-======================================================== --
+
+-- Swarm struggles to defend his expansions and other assets, perhaps we should extend platoons towards Expansion bases. 
+-- Forward towards --> Expansion.lua to see to the rest of this commentation. 
+
 BuilderGroup {
     BuilderGroupName = 'AISwarm Platoon Builder',
     BuildersType = 'PlatoonFormBuilder', 

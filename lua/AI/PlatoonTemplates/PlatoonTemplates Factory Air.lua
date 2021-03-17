@@ -1,3 +1,8 @@
+-- We'll be Abandoning Queue Building soon, as Air Ratio has done greatly in allowing Swarm to take Air Control even in the Tournies.
+-- Queues are slowing his reaction to the Ratio Change and Advantage. 
+-- So we'll be transition back to Singular Builders.
+-- Yes more builders but Swarm has the lowest count for Builders of All AI, so I feel comfortable increasing this count a little.
+
 PlatoonTemplate {
     Name = 'SwarmAIFighterGroup',
     FactionSquads = {

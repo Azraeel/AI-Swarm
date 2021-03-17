@@ -55,6 +55,8 @@ end
 -- Silly Conditions like CanPathNavalBaseToNavalTargetsSwarm can be completely removed and opt for continus production
 -- if Navy is contested, instead we can opt for Bombardment Ship production et Battleships and Missile Ships, Cruisers too.
 
+-- As I though Navy has been a complete success or although the Bombardment Ship Production needs a specific Platoon Function.
+
 
 BuilderGroup { BuilderGroupName = 'Swarm Naval Builders',    
 
