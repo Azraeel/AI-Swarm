@@ -388,6 +388,305 @@ Platoon = Class(SwarmPlatoonClass) {
         end
     end,
 
+    --Currently in Development.
+
+    --[[ HuntAISwarm = function(self)
+        self:Stop()
+        local aiBrain = self:GetBrain()
+        local armyIndex = aiBrain:GetArmyIndex()
+        local target
+        local blip
+
+        if platoonUnits > 0 then
+            for k, v in platoonUnits do
+                if not v.Dead then
+                    for _, weapon in v:GetBlueprint().Weapon or {} do
+                        -- unit can have MaxWeaponRange entry from the last platoon
+                        if not v.MaxWeaponRange or weapon.MaxRadius > v.MaxWeaponRange then
+                            -- save the weaponrange 
+                            v.MaxWeaponRange = weapon.MaxRadius * 0.9 -- maxrange minus 10%
+                            -- save the weapon balistic arc, we need this later to check if terrain is blocking the weapon line of sight
+                            if weapon.BallisticArc == 'RULEUBA_LowArc' then
+                                v.WeaponArc = 'low'
+                            elseif weapon.BallisticArc == 'RULEUBA_HighArc' then
+                                v.WeaponArc = 'high'
+                            else
+                                v.WeaponArc = 'none'
+                            end
+                        end
+                        if not MaxPlatoonWeaponRange or MaxPlatoonWeaponRange < v.MaxWeaponRange then
+                            MaxPlatoonWeaponRange = v.MaxWeaponRange
+                        end
+                    end
+                    if v:TestToggleCaps('RULEUTC_StealthToggle') then
+                        v:SetScriptBit('RULEUTC_StealthToggle', false)
+                    end
+                    if v:TestToggleCaps('RULEUTC_CloakToggle') then
+                        v:SetScriptBit('RULEUTC_CloakToggle', false)
+                    end
+                    -- prevent units from reclaiming while attack moving
+                    v:RemoveCommandCap('RULEUCC_Reclaim')
+                    v:RemoveCommandCap('RULEUCC_Repair')
+                    v.smartPos = {0,0,0}
+                    if not v.MaxWeaponRange then
+                        WARN('Scanning: unit ['..repr(v.UnitId)..'] has no MaxWeaponRange - '..repr(self.BuilderName))
+                    end
+                end
+            end
+        end
+
+        while aiBrain:PlatoonExists(self) do
+            target = self:FindClosestUnit('Attack', 'Enemy', true, categories.ALLUNITS - categories.WALL)
+            if target then
+                blip = target:GetBlip(armyIndex)
+                self:Stop()
+                self:AggressiveMoveToLocation(table.copy(target:GetPosition()))
+                --DUNCAN - added to try and stop AI getting stuck.
+                local position = AIUtils.RandomLocation(target:GetPosition()[1],target:GetPosition()[3])
+                self:MoveToLocation(position, false)
+            end
+            WaitSeconds(17)
+            SquadPosition = self:GetSquadPosition('Attack') or nil
+            if not SquadPosition then break end
+            local enemyUnitCount = GetNumUnitsAroundPoint(aiBrain, categories.MOBILE * categories.LAND - categories.SCOUT - categories.ENGINEER, SquadPosition, enemyRadius, 'Enemy')
+            if enemyUnitCount > 0 then
+                target = self:FindClosestUnit('Attack', 'Enemy', true, categories.ALLUNITS - categories.NAVAL - categories.AIR - categories.SCOUT - categories.WALL)
+                attackSquad = self:GetSquadUnits('Attack')
+                IssueClearCommands(attackSquad)
+                while PlatoonExists(aiBrain, self) do
+                    if target and not target.Dead then
+                        targetPosition = target:GetPosition()
+                        microCap = 50
+                        for _, unit in attackSquad do
+                            microCap = microCap - 1
+                            if microCap <= 0 then break end
+                            if unit.Dead then continue end
+                            if not unit.MaxWeaponRange then
+                                continue
+                            end
+                            unitPos = unit:GetPosition()
+                            alpha = math.atan2 (targetPosition[3] - unitPos[3] ,targetPosition[1] - unitPos[1])
+                            x = targetPosition[1] - math.cos(alpha) * (unit.MaxWeaponRange or MaxPlatoonWeaponRange)
+                            y = targetPosition[3] - math.sin(alpha) * (unit.MaxWeaponRange or MaxPlatoonWeaponRange)
+                            smartPos = { x, GetTerrainHeight( x, y), y }
+                            -- check if the move position is new or target has moved
+                            if VDist2( smartPos[1], smartPos[3], unit.smartPos[1], unit.smartPos[3] ) > 0.7 or unit.TargetPos ~= targetPosition then
+                                -- clear move commands if we have queued more than 4
+                                if table.getn(unit:GetCommandQueue()) > 2 then
+                                    IssueClearCommands({unit})
+                                    coroutine.yield(3)
+                                end
+                                -- if our target is dead, jump out of the "for _, unit in self:GetPlatoonUnits() do" loop
+                                IssueMove({unit}, smartPos )
+                                if target.Dead then break end
+                                IssueAttack({unit}, target)
+                                --unit:SetCustomName('Fight micro moving')
+                                unit.smartPos = smartPos
+                                unit.TargetPos = targetPosition
+                                -- in case we don't move, check if we can fire at the target
+                                else
+                                local dist = VDist2( unit.smartPos[1], unit.smartPos[3], unit.TargetPos[1], unit.TargetPos[3] )
+                                if aiBrain:CheckBlockingTerrain(unitPos, targetPosition, unit.WeaponArc) then
+                                    --unit:SetCustomName('Fight micro WEAPON BLOCKED!!! ['..repr(target.UnitId)..'] dist: '..dist)
+                                    IssueMove({unit}, targetPosition )
+                                    WaitTicks(30)
+                                else
+                                    --unit:SetCustomName('Fight micro SHOOTING ['..repr(target.UnitId)..'] dist: '..dist)
+                                end
+                            end
+                        end
+                    else
+                        break
+                    end
+                WaitTicks(10)
+                end
+            end
+        end
+    end,
+
+    HuntAISwarm = function(self)
+        self:Stop()
+        local aiBrain = self:GetBrain()
+        local armyIndex = aiBrain:GetArmyIndex()
+        local target
+        local blip
+        local platoonUnits = GetPlatoonUnits(self)
+        local enemyRadius = 40
+        local movingToScout = false
+        local MaxPlatoonWeaponRange
+        local unitPos
+        local alpha
+        local x
+        local y
+        local smartPos
+        AIAttackUtils.GetMostRestrictiveLayer(self)
+
+        if platoonUnits > 0 then
+            for k, v in platoonUnits do
+                if not v.Dead then
+                    for _, weapon in v:GetBlueprint().Weapon or {} do
+                        -- unit can have MaxWeaponRange entry from the last platoon
+                        if not v.MaxWeaponRange or weapon.MaxRadius > v.MaxWeaponRange then
+                            -- save the weaponrange 
+                            v.MaxWeaponRange = weapon.MaxRadius * 0.9 -- maxrange minus 10%
+                            -- save the weapon balistic arc, we need this later to check if terrain is blocking the weapon line of sight
+                            if weapon.BallisticArc == 'RULEUBA_LowArc' then
+                                v.WeaponArc = 'low'
+                            elseif weapon.BallisticArc == 'RULEUBA_HighArc' then
+                                v.WeaponArc = 'high'
+                            else
+                                v.WeaponArc = 'none'
+                            end
+                        end
+                        if not MaxPlatoonWeaponRange or MaxPlatoonWeaponRange < v.MaxWeaponRange then
+                            MaxPlatoonWeaponRange = v.MaxWeaponRange
+                        end
+                    end
+                    if v:TestToggleCaps('RULEUTC_StealthToggle') then
+                        v:SetScriptBit('RULEUTC_StealthToggle', false)
+                    end
+                    if v:TestToggleCaps('RULEUTC_CloakToggle') then
+                        v:SetScriptBit('RULEUTC_CloakToggle', false)
+                    end
+                    -- prevent units from reclaiming while attack moving
+                    v:RemoveCommandCap('RULEUCC_Reclaim')
+                    v:RemoveCommandCap('RULEUCC_Repair')
+                    v.smartPos = {0,0,0}
+                    if not v.MaxWeaponRange then
+                        WARN('Scanning: unit ['..repr(v.UnitId)..'] has no MaxWeaponRange - '..repr(self.BuilderName))
+                    end
+                end
+            end
+        end
+        while PlatoonExists(aiBrain, self) do
+            target = self:FindClosestUnit('Attack', 'Enemy', true, categories.ALLUNITS - categories.AIR - categories.AIR - categories.SCOUT - categories.WALL - categories.NAVAL)
+            if target then
+                local threatAroundplatoon = 0
+                local targetPosition = target:GetPosition()
+                local platoonPos = GetPlatoonPosition(self)
+                local platoonThreat = self:CalculatePlatoonThreat('AntiSurface', categories.ALLUNITS)
+                local attackUnits =  self:GetSquadUnits('Attack')
+                local attackUnitCount = table.getn(attackUnits)
+                local scoutUnits = self:GetSquadUnits('Scout')
+                local guardUnits = self:GetSquadUnits('Guard')
+                if scoutUnits then
+                    local guardedUnit = 1
+                    if attackUnitCount > 0 then
+                        while attackUnits[guardedUnit].Dead or attackUnits[guardedUnit]:BeenDestroyed() do
+                            guardedUnit = guardedUnit + 1
+                            WaitTicks(3)
+                            if guardedUnit > attackUnitCount then
+                                guardedUnit = false
+                                break
+                            end
+                        end
+                    else
+                        return self:SetAIPlan('ReturnToBaseAISwarm')
+                    end
+                    IssueClearCommands(scoutUnits)
+                    if not guardedUnit then
+                        return self:SetAIPlan('ReturnToBaseAISwarm')
+                    else
+                        IssueGuard(scoutUnits, attackUnits[guardedUnit])
+                    end
+                end
+                if guardUnits then
+                    local guardedUnit = 1
+                    if attackUnitCount > 0 then
+                        while attackUnits[guardedUnit].Dead or attackUnits[guardedUnit]:BeenDestroyed() do
+                            guardedUnit = guardedUnit + 1
+                            WaitTicks(3)
+                            if guardedUnit > attackUnitCount then
+                                guardedUnit = false
+                                break
+                            end
+                        end
+                    else
+                        return self:SetAIPlan('ReturnToBaseAISwarm')
+                    end
+                    IssueClearCommands(guardUnits)
+                    if not guardedUnit then
+                        return self:SetAIPlan('ReturnToBaseAISwarm')
+                    else
+                        IssueGuard(guardUnits, attackUnits[guardedUnit])
+                    end
+                end
+                if attackUnits then
+                    self:Stop('Attack')
+                    self:AggressiveMoveToLocation(table.copy(target:GetPosition()), 'Attack')
+                    local position = AIUtils.RandomLocation(target:GetPosition()[1],target:GetPosition()[3])
+                    self:MoveToLocation(position, false, 'Attack')
+                end
+                WaitTicks(30)
+                SquadPosition = self:GetSquadPosition('Attack') or nil
+                if not SquadPosition then break end
+                local enemyUnitCount = GetNumUnitsAroundPoint(aiBrain, categories.MOBILE * categories.LAND - categories.SCOUT - categories.ENGINEER, SquadPosition, enemyRadius, 'Enemy')
+                if enemyUnitCount > 0 then
+                    target = self:FindClosestUnit('Attack', 'Enemy', true, categories.ALLUNITS - categories.NAVAL - categories.AIR - categories.SCOUT - categories.WALL)
+                    attackSquad = self:GetSquadUnits('Attack')
+                    IssueClearCommands(attackSquad)
+                    while PlatoonExists(aiBrain, self) do
+                        if target and not target.Dead then
+                            targetPosition = target:GetPosition()
+                            microCap = 50
+                            for _, unit in attackSquad do
+                                microCap = microCap - 1
+                                if microCap <= 0 then break end
+                                if unit.Dead then continue end
+                                if not unit.MaxWeaponRange then
+                                    continue
+                                end
+                                unitPos = unit:GetPosition()
+                                alpha = math.atan2 (targetPosition[3] - unitPos[3] ,targetPosition[1] - unitPos[1])
+                                x = targetPosition[1] - math.cos(alpha) * (unit.MaxWeaponRange or MaxPlatoonWeaponRange)
+                                y = targetPosition[3] - math.sin(alpha) * (unit.MaxWeaponRange or MaxPlatoonWeaponRange)
+                                smartPos = { x, GetTerrainHeight( x, y), y }
+                                -- check if the move position is new or target has moved
+                                if VDist2( smartPos[1], smartPos[3], unit.smartPos[1], unit.smartPos[3] ) > 0.7 or unit.TargetPos ~= targetPosition then
+                                    -- clear move commands if we have queued more than 4
+                                    if table.getn(unit:GetCommandQueue()) > 2 then
+                                        IssueClearCommands({unit})
+                                        coroutine.yield(3)
+                                    end
+                                    -- if our target is dead, jump out of the "for _, unit in self:GetPlatoonUnits() do" loop
+                                    IssueMove({unit}, smartPos )
+                                    if target.Dead then break end
+                                    IssueAttack({unit}, target)
+                                    --unit:SetCustomName('Fight micro moving')
+                                    unit.smartPos = smartPos
+                                    unit.TargetPos = targetPosition
+                                -- in case we don't move, check if we can fire at the target
+                                else
+                                    local dist = VDist2( unit.smartPos[1], unit.smartPos[3], unit.TargetPos[1], unit.TargetPos[3] )
+                                    if aiBrain:CheckBlockingTerrain(unitPos, targetPosition, unit.WeaponArc) then
+                                        --unit:SetCustomName('Fight micro WEAPON BLOCKED!!! ['..repr(target.UnitId)..'] dist: '..dist)
+                                        IssueMove({unit}, targetPosition )
+                                        WaitTicks(30)
+                                    else
+                                        --unit:SetCustomName('Fight micro SHOOTING ['..repr(target.UnitId)..'] dist: '..dist)
+                                    end
+                                end
+                            end
+                        else
+                            break
+                        end
+                    WaitTicks(10)
+                    end
+                end
+            elseif not movingToScout then
+                movingToScout = true
+                self:Stop()
+                for k,v in AIUtils.AIGetSortedMassLocations(aiBrain, 10, nil, nil, nil, nil, GetPlatoonPosition(self)) do
+                    if v[1] < 0 or v[3] < 0 or v[1] > ScenarioInfo.size[1] or v[3] > ScenarioInfo.size[2] then
+                        --LOG('*AI DEBUG: STRIKE FORCE SENDING UNITS TO WRONG LOCATION - ' .. v[1] .. ', ' .. v[3])
+                    end
+                    self:MoveToLocation((v), false)
+                end
+            end
+        WaitTicks(60)
+        end
+    end, ]]--
+
     LandAttackAISwarm = function(self)
         if 1==1 then
             self:HeroFightPlatoonSwarm()
@@ -645,7 +944,6 @@ Platoon = Class(SwarmPlatoonClass) {
             else
                 if aiBrain:PlatoonExists(self) and target and not target.Dead and not target:BeenDestroyed() then
                     LastTargetPos = target:GetPosition()
-                    -- check if the target is not in a nuke blast area
                     self:SetPlatoonFormationOverride('AttackFormation')
                     self:AttackTarget(target)
                     WaitSeconds(2)
@@ -656,12 +954,10 @@ Platoon = Class(SwarmPlatoonClass) {
     end,
     
     ACUAttackAISwarm = function(self)
-        --LOG('* AI-Swarm: * ACUAttackAISwarm: START '..self.BuilderName)
-        AIAttackUtils.GetMostRestrictiveLayer(self) -- this will set self.MovementLayer to the platoon
+        AIAttackUtils.GetMostRestrictiveLayer(self) 
         local aiBrain = self:GetBrain()
         local PlatoonUnits = self:GetPlatoonUnits()
         local cdr = PlatoonUnits[1]
-        -- There should be only the commander inside this platoon. Check it.
         if not cdr then
             WARN('* ACUAttackAISwarm: Platoon formed but Commander unit not found!')
             coroutine.yield(1)
@@ -678,6 +974,7 @@ Platoon = Class(SwarmPlatoonClass) {
                 return
             end
         end
+
         local personality = ScenarioInfo.ArmySetup[aiBrain.Name].AIPersonality
         cdr.HealthOLD = 100
         cdr.CDRHome = aiBrain.BuilderManagers['MAIN'].Position
@@ -689,7 +986,9 @@ Platoon = Class(SwarmPlatoonClass) {
         else
             LOG('* AI-Swarm: * ACUAttackAISwarm: MoveToCategories missing in platoon '..self.BuilderName)
         end
+
         local WeaponTargetCategories = {}
+
         if self.PlatoonData.WeaponTargetCategories then
             for k,v in self.PlatoonData.WeaponTargetCategories do
                 table.insert(WeaponTargetCategories, v )
@@ -697,13 +996,13 @@ Platoon = Class(SwarmPlatoonClass) {
         elseif self.PlatoonData.MoveToCategories then
             WeaponTargetCategories = MoveToCategories
         end
+
         self:SetPrioritizedTargetList('Attack', WeaponTargetCategories)
-        -- prevent ACU from reclaiming while attack moving
+        
         cdr:RemoveCommandCap('RULEUCC_Reclaim')
         cdr:RemoveCommandCap('RULEUCC_Repair')
         local TargetUnit, DistanceToTarget
         local PlatoonPos = self:GetPlatoonPosition()
-        -- land and air units are assigned to mainbase
         local GetTargetsFromBase = self.PlatoonData.GetTargetsFromBase
         local GetTargetsFrom = cdr.CDRHome
         local LastTargetCheck
@@ -718,12 +1017,14 @@ Platoon = Class(SwarmPlatoonClass) {
         while aiBrain:PlatoonExists(self) do
             if cdr.Dead then break end
             cdr.position = self:GetPlatoonPosition()
-            -- leave the loop and disband this platton in time
             if ReturnToBaseAfterGameTime and ReturnToBaseAfterGameTime < GetGameTimeSeconds()/60 then
-                --LOG('* AI-Swarm: * ACUAttackAISwarm: ReturnToBaseAfterGameTime:'..ReturnToBaseAfterGameTime..' >= '..GetGameTimeSeconds()/60)
                 SwarmUtils.CDRParkingHome(self,cdr)
                 break
             end
+
+            -- This needs another review as this isnt really a good way of drawing him back to the base, such an important unit needs some combat.
+            -- especially within FAF
+
             -- the maximum radis that the ACU can be away from base
             maxRadius = (SwarmUtils.ComHealth(cdr)-65)*7 -- If the comanders health is 100% then we have a maxtange of ~250 = (100-65)*7
             maxTimeRadius = 240 - GetGameTimeSeconds()/60*6 -- reduce the radius by 6 map units per minute. After 30 minutes it's (240-180) = 60
@@ -734,49 +1035,51 @@ Platoon = Class(SwarmPlatoonClass) {
                 maxRadius = SearchRadius
             end
             UnitsInACUBaseRange = aiBrain:GetUnitsAroundPoint( TargetSearchCategory, cdr.CDRHome, maxRadius, 'Enemy')
-            -- get the position of this platoon (ACU)
             if not GetTargetsFromBase then
-                -- we don't get out targets relativ to base position. Use the ACU position
                 GetTargetsFrom = cdr.position
             end
+
+
             ----------------------------------------------
             --- This is the start of the main ACU loop ---
             ----------------------------------------------
-            if aiBrain:GetEconomyStoredRatio('ENERGY') > 0.95 and SwarmUtils.ComHealth(cdr) < 100 then
+            if aiBrain:GetEconomyStoredRatio('ENERGY') > 0.35 and SwarmUtils.ComHealth(cdr) <= 100 then
                 cdr:SetAutoOvercharge(true)
             else
                 cdr:SetAutoOvercharge(false)
             end
+
+            --COMMANDERTHREAD NEEDS TO BE REVIEWED ESPECIALLY UPGRADE SECTION.
+
+            --[[ if not cdr.Dead then
+                SwarmUtils.CDRHideBehaviorSwarm(self,cdr)
+            end
+            WaitTicks(2) ]]--
            
-            -- in case we have no Factory left, recover!
             if not aiBrain:GetListOfUnits(categories.STRUCTURE * categories.FACTORY * categories.LAND - categories.SUPPORTFACTORY, false)[1] then
-                --LOG('* AI-Swarm: * ACUAttackAISwarm: exiting attack function. RECOVER')
                 self:PlatoonDisband()
                 return
-            -- check if we are further away from base then the closest enemy
+
             elseif SwarmUtils.CDRRunHomeEnemyNearBase(self,cdr,UnitsInACUBaseRange) then
-                --LOG('* AI-Swarm: * ACUAttackAISwarm: CDRRunHomeEnemyNearBase')
                 TargetUnit = false
-            -- check if we get actual damage, then move home
+
             elseif SwarmUtils.CDRRunHomeAtDamage(self,cdr) then
-                --LOG('* AI-Swarm: * ACUAttackAISwarm: CDRRunHomeAtDamage')
                 TargetUnit = false
-            -- check how much % health we have and go closer to our base
+
             elseif SwarmUtils.CDRRunHomeHealthRange(self,cdr,maxRadius) then
-                --LOG('* AI-Swarm: * ACUAttackAISwarm: CDRRunHomeHealthRange')
                 TargetUnit = false
+
             -- can we upgrade ?
+            -- we should always upgrade it doesnt really matter if we have enemies near base, imho
+            -- I know its a sin Sprouto, but I'm going to put a time base on this.
+
             elseif table.getn(UnitsInACUBaseRange) <= 0 and VDist2(cdr.position[1], cdr.position[3], cdr.CDRHome[1], cdr.CDRHome[3]) < 60 and self:BuildACUEnhancementsSwarm(cdr) then
-                --LOG('* AI-Swarm: * ACUAttackAISwarm: BuildACUEnhancementsSwarm')
-                -- Do nothing if BuildACUEnhancementsSwarm is true. we are upgrading!
-            -- only get a new target and make a move command if the target is dead
+
+            elseif GetGameTimeSeconds() >= 900 and self:BuildACUEnhancementsSwarm(cdr) then
+
             else
-               --LOG('* AI-Swarm: * ACUAttackAISwarm: ATTACK')
-                -- ToDo: scann for enemy COM and change target if needed
                 TargetUnit, _, _, _ = AIUtils.AIFindNearestCategoryTargetInRangeSwarmCDRSwarm(aiBrain, GetTargetsFrom, maxRadius, MoveToCategories, TargetSearchCategory, false)
-                -- if we have a target, move to the target and attack
                 if TargetUnit then
-                    --LOG('* AI-Swarm: * ACUAttackAISwarm: ATTACK TargetUnit')
                     if aiBrain:PlatoonExists(self) and TargetUnit and not TargetUnit.Dead and not TargetUnit:BeenDestroyed() then
                         local targetPos = TargetUnit:GetPosition()
                         local cdrNewPos = {}
@@ -792,23 +1095,16 @@ Platoon = Class(SwarmPlatoonClass) {
                     end
                 -- if we have no target, move to base. If we are at base, dance. (random moves)
                 elseif SwarmUtils.CDRForceRunHome(self,cdr) then
-                    --LOG('* AI-Swarm: * ACUAttackAISwarm: CDRForceRunHome true. we are running home')
-                -- we are at home, dance if we have nothing to do.
                 else
-                    -- There is nothing to fight; so we left the attack function and see if we can build something
-                    --LOG('* AI-Swarm: * ACUAttackAISwarm:We are at home and dancing')
-                    --LOG('* AI-Swarm: * ACUAttackAISwarm: exiting attack function')
                     self:PlatoonDisband()
                     return
                 end
             end
-            --DrawCircle(cdr.CDRHome, maxRadius, '00FFFF')
             coroutine.yield(10)
             --------------------------------------------
             --- This is the end of the main ACU loop ---
             --------------------------------------------
         end
-        --LOG('* AI-Swarm: * ACUAttackAISwarm: END '..self.BuilderName)
         self:PlatoonDisband()
     end,
     
@@ -835,44 +1131,34 @@ Platoon = Class(SwarmPlatoonClass) {
             ['esl0001'] = {'PlasmaGatlingCannon', 'CombatEngineering', 'ElectronicsEnhancment', 'PhasedEnergyFields', 'AssaultEngineering', 'PersonalTeleporter', 'SecondaryPowerFeeds', 'ApocalypticEngineering', 'CloakingSubsystems'},
         }
         local CRDBlueprint = cdr:GetBlueprint()
-        --LOG('* AI-Swarm: BlueprintId '..repr(CRDBlueprint.BlueprintId))
         local ACUUpgradeList = EnhancementsByUnitID[CRDBlueprint.BlueprintId]
-        --LOG('* AI-Swarm: ACUUpgradeList '..repr(ACUUpgradeList))
         local NextEnhancement = false
         local HaveEcoForEnhancement = false
+
         for _,enhancement in ACUUpgradeList or {} do
             local wantedEnhancementBP = CRDBlueprint.Enhancements[enhancement]
-            --LOG('* AI-Swarm: wantedEnhancementBP '..repr(wantedEnhancementBP))
             if not wantedEnhancementBP then
                 SPEW('* AI-Swarm: ACUAttackAISwarm: no enhancement found for  = '..repr(enhancement))
             elseif cdr:HasEnhancement(enhancement) then
                 NextEnhancement = false
-                --LOG('* AI-Swarm: * ACUAttackAISwarm: BuildACUEnhancementsSwarm: Enhancement is already installed: '..enhancement)
             elseif platoon:EcoGoodForUpgradeSwarm(cdr, wantedEnhancementBP) then
-                --LOG('* AI-Swarm: * ACUAttackAISwarm: BuildACUEnhancementsSwarm: Eco is good for '..enhancement)
                 if not NextEnhancement then
                     NextEnhancement = enhancement
                     HaveEcoForEnhancement = true
-                    --LOG('* AI-Swarm: * ACUAttackAISwarm: *** Set as Enhancememnt: '..NextEnhancement)
                 end
             else
-                --LOG('* AI-Swarm: * ACUAttackAISwarm: BuildACUEnhancementsSwarm: Eco is bad for '..enhancement)
                 if not NextEnhancement then
                     NextEnhancement = enhancement
                     HaveEcoForEnhancement = false
-                    -- if we don't have the eco for this ugrade, stop the search
-                    --LOG('* AI-Swarm: * ACUAttackAISwarm: canceled search. no eco available')
                     break
                 end
             end
         end
+
         if NextEnhancement and HaveEcoForEnhancement then
-            --LOG('* AI-Swarm: * ACUAttackAISwarm: BuildACUEnhancementsSwarm Building '..NextEnhancement)
             if platoon:BuildEnhancementSwarm(cdr, NextEnhancement) then
-                --LOG('* AI-Swarm: * ACUAttackAISwarm: BuildACUEnhancementsSwarm returned true'..NextEnhancement)
                 return true
             else
-                --LOG('* AI-Swarm: * ACUAttackAISwarm: BuildACUEnhancementsSwarm returned false'..NextEnhancement)
                 return false
             end
         end
@@ -885,11 +1171,8 @@ Platoon = Class(SwarmPlatoonClass) {
         if not enhancement.BuildTime then
             WARN('* AI-Swarm: EcoGoodForUpgradeSwarm: Enhancement has no buildtime: '..repr(enhancement))
         end
-        --LOG('* AI-Swarm: cdr:GetBuildRate() '..BuildRate..'')
         local drainMass = (BuildRate / enhancement.BuildTime) * enhancement.BuildCostMass
         local drainEnergy = (BuildRate / enhancement.BuildTime) * enhancement.BuildCostEnergy
-        --LOG('* AI-Swarm: drain: m'..drainMass..'  e'..drainEnergy..'')
-        --LOG('* AI-Swarm: Pump: m'..math.floor(aiBrain:GetEconomyTrend('MASS')*10)..'  e'..math.floor(aiBrain:GetEconomyTrend('ENERGY')*10)..'')
         if aiBrain.HasParagon then
             return true
         elseif aiBrain:GetEconomyTrend('MASS')*10 >= drainMass and aiBrain:GetEconomyTrend('ENERGY')*10 >= drainEnergy

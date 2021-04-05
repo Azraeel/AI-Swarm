@@ -3,6 +3,7 @@ local UCBC = '/lua/editor/UnitCountBuildConditions.lua'
 local BasePanicZone, BaseMilitaryZone, BaseEnemyZone = import('/mods/AI-Swarm/lua/AI/swarmutilities.lua').GetDangerZoneRadii()
 
 -- The Commander needs to fully become an Engineer, Combat doesnt suit him or the AI.
+-- Not really sure if he should have a military usage tbf.
 
 BuilderGroup {
     BuilderGroupName = 'SC ACU Attack Former',                                      -- BuilderGroupName, initalized from AIBaseTemplates in "\lua\AI\AIBaseTemplates\"
@@ -40,6 +41,7 @@ BuilderGroup {
         },
         BuilderType = 'Any',                                                    -- Build with "Land" "Air" "Sea" "Gate" or "All" Factories. - "Any" forms a Platoon.
     },
+
     Builder {
         BuilderName = 'SC CDR Attack Panic Military - Usage',                                 -- Random Builder Name.
         PlatoonTemplate = 'CDR Attack',                                         -- Template Name. These units will be formed. See: "\lua\AI\PlatoonTemplates\"

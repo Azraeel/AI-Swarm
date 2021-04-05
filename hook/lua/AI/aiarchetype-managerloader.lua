@@ -236,13 +236,16 @@ function EcoManagerThreadSwarm(aiBrain)
                 end
             end
         end
+
+
         if bussy then
             continue -- while true do
         end
 
+
 -- ECO for Assisting engineers
         -- loop over assisting engineers and manage pause / unpause
-        --[[ for _, unit in Engineers do
+        for _, unit in Engineers do
             -- if the unit is dead, continue with the next unit
             if unit.Dead then continue end
             -- Only Check units that are assisting
@@ -408,9 +411,13 @@ function EcoManagerThreadSwarm(aiBrain)
                 end
             end
         end
+
+
         if bussy then
             continue -- while true do
         end
+
+        
 -- ECO for Building engineers
         -- loop over building engineers and manage pause / unpause
         for _, unit in Engineers do
@@ -426,14 +433,14 @@ function EcoManagerThreadSwarm(aiBrain)
                     break -- for _, unit in Engineers do
                 end
             -- We have negative eco. Check if we can switch something off
-            elseif aiBrain:GetEconomyStoredRatio('ENERGY') < 0.01 then
+            elseif aiBrain:GetEconomyStoredRatio('ENERGY') < 0.1 then
                 if unit:IsPaused() then continue end
                 if not EntityCategoryContains( categories.ENERGYPRODUCTION + ((categories.MASSEXTRACTION + categories.FACTORY + categories.ENERGYSTORAGE) * categories.TECH1) , unit.UnitBeingBuilt) then
                     unit:SetPaused( true )
                     bussy = true
                     break -- for _, unit in Engineers do
                 end
-            elseif aiBrain:GetEconomyStoredRatio('MASS') < 0.0 then
+            elseif aiBrain:GetEconomyStoredRatio('MASS') < 0.05 then
                 if unit:IsPaused() then continue end
                 if not EntityCategoryContains( categories.MASSEXTRACTION + ((categories.ENERGYPRODUCTION + categories.FACTORY + categories.MASSSTORAGE) * categories.TECH1) , unit.UnitBeingBuilt) then
                     unit:SetPaused( true )
@@ -441,12 +448,12 @@ function EcoManagerThreadSwarm(aiBrain)
                     break -- for _, unit in Engineers do
                 end
             -- We have positive eco. Check if we can switch something on
-            elseif aiBrain:GetEconomyStoredRatio('MASS') >= 0.2 and aiBrain:GetEconomyStoredRatio('ENERGY') >= 0.80 then
+            elseif aiBrain:GetEconomyStoredRatio('MASS') >= 0.05 and aiBrain:GetEconomyStoredRatio('ENERGY') >= 0.50 then
                 if not unit:IsPaused() then continue end
                 unit:SetPaused( false )
                 bussy = true
                 break -- for _, unit in Engineers do
-            elseif aiBrain:GetEconomyStoredRatio('MASS') >= 0.01 and aiBrain:GetEconomyStoredRatio('ENERGY') >= 0.80 then
+            elseif aiBrain:GetEconomyStoredRatio('MASS') >= 0.05 and aiBrain:GetEconomyStoredRatio('ENERGY') >= 0.50 then
                 if not unit:IsPaused() then continue end
                 if EntityCategoryContains((categories.ENERGYPRODUCTION + categories.MASSEXTRACTION) - categories.EXPERIMENTAL, unit.UnitBeingBuilt) then
                     unit:SetPaused( false )
@@ -462,9 +469,14 @@ function EcoManagerThreadSwarm(aiBrain)
                 end
             end
         end
+
+
         if bussy then
             continue -- while true do
         end
+
+
+        --[[
 -- ECO for FACTORIES
         -- loop over Factories and manage pause / unpause
         for _, unit in Factories do
@@ -495,6 +507,7 @@ function EcoManagerThreadSwarm(aiBrain)
         if bussy then
             continue -- while true do
         end ]]--
+
 
 -- ECO for STRUCTURES
         if aiBrain:GetEconomyStoredRatio('ENERGY') < 0.01 and not aiBrain.HasParagon then

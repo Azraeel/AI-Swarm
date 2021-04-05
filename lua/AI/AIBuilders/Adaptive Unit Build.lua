@@ -136,11 +136,13 @@ BuilderGroup {
         Priority = 775,
 
         BuilderConditions = {
-            { UCBC, 'AirStrengthRatioGreaterThan', { 1.5 } },
+            { UCBC, 'AirStrengthRatioGreaterThan', { 2.5 } },
 
             { MIBC, 'CanPathToCurrentEnemySwarm', { false, 'LocationType' } },
 
             { UCBC, 'HaveLessThanUnitsWithCategory', { 80, categories.MOBILE * categories.AIR * categories.ANTINAVY }},
+
+            { UCBC, 'UnitsGreaterAtEnemy', { 0 , categories.NAVAL * categories.MOBILE } },
 
             { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.75, 1.0 }},
 

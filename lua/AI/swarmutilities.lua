@@ -231,6 +231,52 @@ function GlobalMassUpgradeCostVsGlobalMassIncomeRatioSwarm(self, aiBrain, ratio,
     return CompareBody(GlobalUpgradeCost / MassIncome, ratio, compareType)
 end
 
+-- Hopefully this stops the commander from actually getting sniped 
+-- This has been a problem, players have reported for a long time
+-- this will be included in next version
+-- will wait a bit on adding this though
+
+--[[
+function CDRHideBehaviorSwarm(aiBrain,cdr)
+    if cdr:IsIdleState() then
+    
+        local category = false
+        local runShield = false
+        local runPos = false
+        local nmaShield = GetNumUnitsAroundPoint(aiBrain, categories.SHIELD * categories.STRUCTURE, cdr:GetPosition(), 100, 'Ally')
+        local nmaPD = GetNumUnitsAroundPoint(aiBrain, categories.DIRECTFIRE * categories.DEFENSE, cdr:GetPosition(), 100, 'Ally')
+        local nmaAA = GetNumUnitsAroundPoint(aiBrain, categories.ANTIAIR * categories.DEFENSE, cdr:GetPosition(), 100, 'Ally')
+    
+        if nmaShield > 0 then
+            category = categories.SHIELD * categories.STRUCTURE
+            runShield = true
+        elseif nmaAA > 0 then
+            category = categories.DEFENSE * categories.ANTIAIR
+        elseif nmaPD > 0 then
+            category = categories.DEFENSE * categories.DIRECTFIRE
+        end
+    
+        if category then
+            runPos = AIUtils.AIFindDefensiveAreaSorian(aiBrain, cdr, category, 100, runShield)
+            IssueClearCommands({cdr})
+            IssueMove({cdr}, runPos)
+            WaitTicks(30)
+        end
+    
+        if not category or not runPos then
+            local cdrNewPos = {}
+            cdrNewPos[1] = cdr.CDRHome[1] + Random(-6, 6)
+            cdrNewPos[2] = cdr.CDRHome[2]
+            cdrNewPos[3] = cdr.CDRHome[3] + Random(-6, 6)
+            WaitTicks(1)
+            IssueStop({cdr})
+            IssueMove({cdr}, cdrNewPos)
+            WaitTicks(30)
+        end
+    end
+    WaitTicks(5)
+end ]]--
+
 function HaveUnitRatio(aiBrain, ratio, categoryOne, compareType, categoryTwo)
     local numOne = aiBrain:GetCurrentUnits(categoryOne)
     local numTwo = aiBrain:GetCurrentUnits(categoryTwo)

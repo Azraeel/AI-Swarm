@@ -1,6 +1,7 @@
 local UCBC = '/lua/editor/UnitCountBuildConditions.lua'
 local EBC = '/lua/editor/EconomyBuildConditions.lua'
 local MIBC = '/lua/editor/MiscBuildConditions.lua'
+local SIBC = '/lua/editor/SorianInstantBuildConditions.lua'
 local BasePanicZone, BaseMilitaryZone, BaseEnemyZone = import('/mods/AI-Swarm/lua/AI/swarmutilities.lua').GetDangerZoneRadii()
 
 local MaxAttackForce = 0.45                                               
@@ -40,16 +41,16 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Builders',
     -- ============ --
 
     Builder {
-        BuilderName = 'Swarm-AI - T1 Air Fight Group',
+        BuilderName = 'Swarm-AI - T1 Air Fighter',
 
-        PlatoonTemplate = 'SwarmAIFighterGroup',
+        PlatoonTemplate = 'T1AirFighter',
 
         Priority = 500,
 
         PriorityFunction = HaveLessThanTwoT2AirFactory,
 
         BuilderConditions = {
-            { UCBC, 'AirStrengthRatioLessThan', { 3 } },
+            { UCBC, 'AirStrengthRatioLessThan', { 4 } },
 
             { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.7, 0.8 }},
 
@@ -59,9 +60,28 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Builders',
     },
 
     Builder {
-        BuilderName = 'Swarm-AI - T1 Air Attack Group',
+        BuilderName = 'Swarm-AI - T1 Air Bomber',
 
-        PlatoonTemplate = 'SwarmAIT1AirAttack',
+        PlatoonTemplate = 'T1AirBomber',
+
+        Priority = 500,
+
+        PriorityFunction = HaveLessThanTwoT2AirFactory,
+
+        BuilderConditions = {
+            { UCBC, 'AirStrengthRatioGreaterThan', { 2 } },
+
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.7, 0.8 }},
+
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.02, 0.01}},
+        },
+        BuilderType = 'Air',
+    },
+
+    Builder {
+        BuilderName = 'Swarm-AI - T1 Air Gunship',
+
+        PlatoonTemplate = 'T1Gunship',
 
         Priority = 500,
 
@@ -81,16 +101,16 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Builders',
     --    TECH 2    --
     -- ============ --
     Builder {
-        BuilderName = 'Swarm-AI - T2 Air Fighter Group',
+        BuilderName = 'Swarm-AI - T2 Air Fighter/Bomber',
 
-        PlatoonTemplate = 'SwarmAIFighterGroupT2',
+        PlatoonTemplate = 'T2FighterBomber',
 
         Priority = 500,
 
         PriorityFunction = HaveLessThanTwoT3AirFactory,
 
         BuilderConditions = {
-            { UCBC, 'AirStrengthRatioLessThan', { 3 } },
+            { UCBC, 'AirStrengthRatioGreaterThan', { 2 } },
 
             { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.75, 1.0 }},
 
@@ -100,9 +120,9 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Builders',
     },
 
     Builder {
-        BuilderName = 'Swarm-AI - T2 Air Attack Group',
+        BuilderName = 'Swarm-AI - T2 Air Gunship',
 
-        PlatoonTemplate = 'SwarmAIT2AirAttack',
+        PlatoonTemplate = 'T2AirGunship',
 
         Priority = 500,
 
@@ -110,6 +130,25 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Builders',
 
         BuilderConditions = {
             { UCBC, 'AirStrengthRatioGreaterThan', { 2 } },
+
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.75, 1.0 }},
+
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.02, 0.01}},
+        },
+        BuilderType = 'Air',
+    },
+
+    Builder {
+        BuilderName = 'Swarm-AI - T2 Air Torpedo-Bomber',
+
+        PlatoonTemplate = 'T2AirTorpedoBomber',
+
+        Priority = 500,
+
+        BuilderConditions = {
+            { UCBC, 'AirStrengthRatioGreaterThan', { 2 } },
+
+            { UCBC, 'UnitsGreaterAtEnemy', { 0 , categories.NAVAL * categories.MOBILE } },
 
             { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.75, 1.0 }},
 
@@ -123,16 +162,16 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Builders',
     -- ============ --
 
     Builder {
-        BuilderName = 'Swarm-AI - T3 Air Fighter Group',
+        BuilderName = 'Swarm-AI - T3 Air Fighter',
 
-        PlatoonTemplate = 'SwarmAIT3AirFighterGroup',
+        PlatoonTemplate = 'T3AirFighter',
 
-        Priority = 950,
+        Priority = 500,
 
         BuilderConditions = {
             { UCBC, 'UnitCapCheckLess', { 0.90 } },
 
-            { UCBC, 'AirStrengthRatioLessThan', { 3 } },
+            { UCBC, 'AirStrengthRatioLessThan', { 4 } },
 
             { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.9, 1.1 }},
 
@@ -142,16 +181,54 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Builders',
     },
 
     Builder {
-        BuilderName = 'Swarm-AI - T3 Air Attack Group',
+        BuilderName = 'Swarm-AI - T3 Air Bomber',
 
-        PlatoonTemplate = 'SwarmAIT3AirAttackQueue',
+        PlatoonTemplate = 'T3AirBomber',
 
-        Priority = 900,
+        Priority = 500,
         
         BuilderConditions = {
             { UCBC, 'UnitCapCheckLess', { 0.90 } },
 
             { UCBC, 'AirStrengthRatioGreaterThan', { 2 } },
+
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.9, 1.1 }},
+
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.02, 0.01}},
+        },
+        BuilderType = 'Air',
+    },
+
+    Builder {
+        BuilderName = 'Swarm-AI - T3 Air Gunship',
+
+        PlatoonTemplate = 'T3AirGunship',
+
+        Priority = 500,
+        
+        BuilderConditions = {
+            { UCBC, 'UnitCapCheckLess', { 0.90 } },
+
+            { UCBC, 'AirStrengthRatioGreaterThan', { 2 } },
+
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.9, 1.1 }},
+
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.02, 0.01}},
+        },
+        BuilderType = 'Air',
+    },
+
+    Builder {
+        BuilderName = 'Swarm-AI - T3 Air Torpedo-Bomber',
+
+        PlatoonTemplate = 'T3TorpedoBomber',
+
+        Priority = 500,
+
+        BuilderConditions = {
+            { UCBC, 'AirStrengthRatioGreaterThan', { 3 } },
+
+            { UCBC, 'UnitsGreaterAtEnemy', { 0 , categories.NAVAL * categories.MOBILE } },
 
             { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.9, 1.1 }},
 
@@ -228,6 +305,46 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Builders',
        },
         BuilderType = 'Air',
     }, 
+
+    Builder {
+        BuilderName = 'Swarm-AI - T1 Air Scout',
+
+        PlatoonTemplate = 'T1AirScout',
+
+        Priority = 500,
+
+        PriorityFunction = HaveLessThanTwoT3AirFactory,
+
+        DelayEqualBuildPlattons = {'Scouts', 10},
+
+        BuilderConditions = {
+            { UCBC, 'CheckBuildPlattonDelay', { 'Scouts' }},
+
+            { SIBC, 'HaveLessThanUnitsForMapSize', { {[256] = 8, [512] = 12, [1024] = 18, [2048] = 20, [4096] = 20}, categories.AIR * categories.SCOUT}},
+
+            { UCBC, 'LocationFactoriesBuildingLess', { 'LocationType', 1, categories.AIR * categories.SCOUT } },
+        },
+        BuilderType = 'Air',
+    },
+
+    Builder {
+        BuilderName = 'Swarm-AI - T3 Air Scout',
+
+        PlatoonTemplate = 'T3AirScout',
+
+        Priority = 500,
+
+        DelayEqualBuildPlattons = {'Scouts', 10},
+
+        BuilderConditions = {
+            { UCBC, 'CheckBuildPlattonDelay', { 'Scouts' }},
+
+            { SIBC, 'HaveLessThanUnitsForMapSize', { {[256] = 4, [512] = 8, [1024] = 12, [2048] = 16, [4096] = 20}, categories.AIR * categories.SCOUT}},
+
+            { UCBC, 'LocationFactoriesBuildingLess', { 'LocationType', 1, categories.AIR * categories.SCOUT } },
+        },
+        BuilderType = 'Air',
+    },
 }
 
 

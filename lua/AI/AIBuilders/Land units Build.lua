@@ -20,6 +20,15 @@ local First15Minutes = function( self,aiBrain )
 	return self.Priority,true
 end
 
+local AfterDirectCombat = function( self,aiBrain )
+	
+	if GetGameTimeSeconds() > 1800 and aiBrain.MyLandRatio > 1.5 then
+		return 0, false
+	end
+	
+	return self.Priority,true
+end
+
 
 BuilderGroup { BuilderGroupName = 'Swarm Land Scout Builders',                             
     BuildersType = 'FactoryBuilder',
@@ -408,17 +417,27 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Scout Formers',
 
 -- Swarm struggles to defend his expansions and other assets, perhaps we should extend platoons towards Expansion bases. 
 -- Forward towards --> Expansion.lua to see to the rest of this commentation. 
+-- Viewing the LandAttackAISwarm, Having a hard time justifying the usage compared to what other ais do with things like an Upgraded HuntAI 
+-- even compared to a Player.
+-- The only time, LandAttackAISwarm can be justified is mid to late game which means 30minutes+. The pathing and strength readings are simply too thoughtful for simple spam game early on.
 
 BuilderGroup {
     BuilderGroupName = 'AISwarm Platoon Builder',
     BuildersType = 'PlatoonFormBuilder', 
 
-    Builder {
+    --[[ Builder {
         BuilderName = 'AI-Swarm Standard Land (160) P',
+
         PlatoonTemplate = 'AISwarm LandAttack Micro - Standard', 
-        Priority = 651,
+
+        Priority = 652,
+
+        PriorityFunction = AfterDirectCombat,
+
         InstanceCount = 2,
+
         BuilderType = 'Any',
+
         BuilderConditions = { 
             { UCBC, 'ScalePlatoonSizeSwarm', { 'LocationType', 'LAND', categories.MOBILE * categories.LAND - categories.ENGINEER - categories.EXPERIMENTAL } },
 
@@ -450,10 +469,17 @@ BuilderGroup {
 
     Builder {
         BuilderName = 'AI-Swarm Standard Land (120) P',
+
         PlatoonTemplate = 'AISwarm LandAttack Micro - Standard', 
-        Priority = 651,
+
+        Priority = 652,
+
+        PriorityFunction = AfterDirectCombat,
+
         InstanceCount = 2,
+
         BuilderType = 'Any',
+
         BuilderConditions = { 
             { UCBC, 'ScalePlatoonSizeSwarm', { 'LocationType', 'LAND', categories.MOBILE * categories.LAND - categories.ENGINEER - categories.EXPERIMENTAL } },
 
@@ -485,10 +511,17 @@ BuilderGroup {
 
     Builder {
         BuilderName = 'AI-Swarm Standard Land (40) M',
+
         PlatoonTemplate = 'AISwarm LandAttack Micro - Intercept', 
+
         Priority = 650,
+
+        PriorityFunction = AfterDirectCombat,
+
         InstanceCount = 4,
+
         BuilderType = 'Any',
+
         BuilderConditions = { 
             { UCBC, 'ScalePlatoonSizeSwarm', { 'LocationType', 'LAND', categories.MOBILE * categories.LAND - categories.ENGINEER - categories.EXPERIMENTAL } },
 
@@ -520,10 +553,17 @@ BuilderGroup {
 
     Builder {
         BuilderName = 'AI-Swarm Standard Land (80) M',
+
         PlatoonTemplate = 'AISwarm LandAttack Micro - Intercept', 
+
         Priority = 650,
+
+        PriorityFunction = AfterDirectCombat,
+
         InstanceCount = 4,
+
         BuilderType = 'Any',
+
         BuilderConditions = { 
             { UCBC, 'ScalePlatoonSizeSwarm', { 'LocationType', 'LAND', categories.MOBILE * categories.LAND - categories.ENGINEER - categories.EXPERIMENTAL } },
 
@@ -555,10 +595,17 @@ BuilderGroup {
 
     Builder {
         BuilderName = 'AI-Swarm Standard Land (120) M',
+
         PlatoonTemplate = 'AISwarm LandAttack Micro - Intercept', 
+
         Priority = 650,
+
+        PriorityFunction = AfterDirectCombat,
+
         InstanceCount = 4,
+
         BuilderType = 'Any',
+
         BuilderConditions = { 
             { UCBC, 'ScalePlatoonSizeSwarm', { 'LocationType', 'LAND', categories.MOBILE * categories.LAND - categories.ENGINEER - categories.EXPERIMENTAL } },
 
@@ -586,14 +633,44 @@ BuilderGroup {
                 categories.ALLUNITS,
             },
         },        
+    }, ]]--
+
+    Builder {
+        BuilderName = 'AISwarm Spam',     
+
+        PlatoonTemplate = 'AISwarm Spam',   
+
+        Priority = 650,                
+
+        InstanceCount = 35,           
+
+        BuilderType = 'Any',
+
+        BuilderConditions = {
+            { UCBC, 'ScalePlatoonSizeSwarm', { 'LocationType', 'LAND', categories.MOBILE * categories.LAND * (categories.DIRECTFIRE + categories.INDIRECTFIRE) - categories.ENGINEER - categories.EXPERIMENTAL } },
+
+            { MIBC, 'CanPathToCurrentEnemySwarm', { true, 'LocationType' } },
+        },
+
+        BuilderData = {
+            UseFormation = 'Growthformation',
+            LocationType = 'LocationType',
+        },
+
     },
+
 
     Builder {
         BuilderName = 'AI-Swarm Standard Land (40) E',
+
         PlatoonTemplate = 'AISwarm LandAttack Micro - Standard', 
+
         Priority = 649,
-        InstanceCount = 8,
+
+        InstanceCount = 3,
+
         BuilderType = 'Any',
+
         BuilderConditions = { 
             { UCBC, 'ScalePlatoonSizeSwarm', { 'LocationType', 'LAND', categories.MOBILE * categories.LAND - categories.ENGINEER - categories.EXPERIMENTAL } },
 
@@ -610,7 +687,7 @@ BuilderGroup {
             RequireTransport = false, 
             AggressiveMove = true, 
             IgnorePathing = false,
-            TargetSearchCategory = categories.STRUCTURE + categories.MOBILE - categories.SCOUT - categories.WALL,                        
+            TargetSearchCategory = categories.STRUCTURE - categories.SCOUT - categories.WALL,                        
             MoveToCategories = {
                 categories.MASSEXTRACTION,
                 categories.MASSFABRICATION, 
@@ -618,10 +695,10 @@ BuilderGroup {
                 categories.ENERGYSTORAGE,
                 categories.STRUCTURE * categories.ANTIAIR,
                 categories.STRUCTURE * categories.DEFENSE,
-                categories.EXPERIMENTAL,
-                categories.MOBILE * categories.LAND * categories.INDIRECTFIRE - categories.SCOUT,
-                categories.MOBILE * categories.LAND * categories.DIRECTFIRE - categories.SCOUT,
-                categories.MOBILE * categories.LAND * categories.ANTIAIR,
+                --categories.EXPERIMENTAL,
+                --categories.MOBILE * categories.LAND * categories.INDIRECTFIRE - categories.SCOUT,
+                --categories.MOBILE * categories.LAND * categories.DIRECTFIRE - categories.SCOUT,
+                --categories.MOBILE * categories.LAND * categories.ANTIAIR,
                 categories.ALLUNITS,
             },
         },        
@@ -631,7 +708,7 @@ BuilderGroup {
         BuilderName = 'AI-Swarm Standard Land (80) E',
         PlatoonTemplate = 'AISwarm LandAttack Micro - Standard', 
         Priority = 649,
-        InstanceCount = 8,
+        InstanceCount = 2,
         BuilderType = 'Any',
         BuilderConditions = { 
             { UCBC, 'ScalePlatoonSizeSwarm', { 'LocationType', 'LAND', categories.MOBILE * categories.LAND - categories.ENGINEER - categories.EXPERIMENTAL } },
@@ -649,7 +726,7 @@ BuilderGroup {
             RequireTransport = false, 
             AggressiveMove = true, 
             IgnorePathing = false,
-            TargetSearchCategory = categories.STRUCTURE + categories.MOBILE - categories.SCOUT - categories.WALL,                        
+            TargetSearchCategory = categories.STRUCTURE - categories.SCOUT - categories.WALL,                        
             MoveToCategories = {
                 categories.MASSEXTRACTION,
                 categories.MASSFABRICATION, 
@@ -657,20 +734,20 @@ BuilderGroup {
                 categories.ENERGYSTORAGE,
                 categories.STRUCTURE * categories.ANTIAIR,
                 categories.STRUCTURE * categories.DEFENSE,
-                categories.EXPERIMENTAL,
-                categories.MOBILE * categories.LAND * categories.INDIRECTFIRE - categories.SCOUT,
-                categories.MOBILE * categories.LAND * categories.DIRECTFIRE - categories.SCOUT,
-                categories.MOBILE * categories.LAND * categories.ANTIAIR,
+                --categories.EXPERIMENTAL,
+                --categories.MOBILE * categories.LAND * categories.INDIRECTFIRE - categories.SCOUT,
+                --categories.MOBILE * categories.LAND * categories.DIRECTFIRE - categories.SCOUT,
+                --categories.MOBILE * categories.LAND * categories.ANTIAIR,
                 categories.ALLUNITS,
             },
         },        
     },
 
     Builder {
-        BuilderName = 'AI-Swarm Standard Land (120) E',
+        BuilderName = 'AI-Swarm Standard Land (100) E',
         PlatoonTemplate = 'AISwarm LandAttack Micro - Standard', 
         Priority = 649,
-        InstanceCount = 8,
+        InstanceCount = 1,
         BuilderType = 'Any',
         BuilderConditions = { 
             { UCBC, 'ScalePlatoonSizeSwarm', { 'LocationType', 'LAND', categories.MOBILE * categories.LAND - categories.ENGINEER - categories.EXPERIMENTAL } },
@@ -682,13 +759,13 @@ BuilderGroup {
             { UCBC, 'EnemyUnitsGreaterAtLocationRadius', {  BaseEnemyZone, 'LocationType', 0, categories.MOBILE - categories.NAVAL}}, -- radius, LocationType, unitCount, categoryEnemy
         },
         BuilderData = {
-            AttackEnemyStrength = 120,
+            AttackEnemyStrength = 100,
             SearchRadius = BaseEnemyZone,
             GetTargetsFromBase = true,
             RequireTransport = false, 
             AggressiveMove = true, 
             IgnorePathing = false,
-            TargetSearchCategory = categories.STRUCTURE + categories.MOBILE - categories.SCOUT - categories.WALL,                        
+            TargetSearchCategory = categories.STRUCTURE - categories.SCOUT - categories.WALL,                        
             MoveToCategories = {
                 categories.MASSEXTRACTION,
                 categories.MASSFABRICATION, 
@@ -696,10 +773,10 @@ BuilderGroup {
                 categories.ENERGYSTORAGE,
                 categories.STRUCTURE * categories.ANTIAIR,
                 categories.STRUCTURE * categories.DEFENSE,
-                categories.EXPERIMENTAL,
-                categories.MOBILE * categories.LAND * categories.INDIRECTFIRE - categories.SCOUT,
-                categories.MOBILE * categories.LAND * categories.DIRECTFIRE - categories.SCOUT,
-                categories.MOBILE * categories.LAND * categories.ANTIAIR,
+                --categories.EXPERIMENTAL,
+                --categories.MOBILE * categories.LAND * categories.INDIRECTFIRE - categories.SCOUT,
+                --categories.MOBILE * categories.LAND * categories.DIRECTFIRE - categories.SCOUT,
+                --categories.MOBILE * categories.LAND * categories.ANTIAIR,
                 categories.ALLUNITS,
             },
         },        
@@ -858,7 +935,6 @@ BuilderGroup {
             PrioritizedCategories = {   
                 categories.MOBILE * categories.LAND * categories.INDIRECTFIRE - categories.SCOUT,
                 categories.MOBILE * categories.LAND * categories.DIRECTFIRE - categories.SCOUT,
-                categories.MOBILE * categories.LAND * categories.ANTIAIR,
                 categories.MASSEXTRACTION,
                 categories.ENERGYPRODUCTION,
                 categories.MASSFABRICATION,
@@ -870,15 +946,15 @@ BuilderGroup {
     Builder {
         BuilderName = 'Swarm Mass Raid Standard',                            
         PlatoonTemplate = 'AISwarm Mass Raid Large',                         
-        Priority = 690,                                                      
-        InstanceCount = 4,                                                     
+        Priority = 652,                                                      
+        InstanceCount = 2,                                                     
         BuilderType = 'Any',
         BuilderConditions = {   
             { UCBC, 'ScalePlatoonSizeSwarm', { 'LocationType', 'LAND', categories.MOBILE * categories.LAND - categories.ENGINEER - categories.EXPERIMENTAL } },
             
             { MIBC, 'CanPathToCurrentEnemySwarm', { true, 'LocationType' } },
 
-            { UCBC, 'GreaterThanGameTimeSeconds', { 300 } },
+            { UCBC, 'GreaterThanGameTimeSeconds', { 240 } },
 
             --{ UCBC, 'NeedMassPointShare', {}},
 
@@ -894,9 +970,9 @@ BuilderGroup {
             MaxThreatThreshold = 4900,		
             MinThreatThreshold = 2000,		    
             AvoidBases = true,
-            AvoidBasesRadius = 100,
+            AvoidBasesRadius = 150,
             AggressiveMove = true,      
-            AvoidClosestRadius = 100,
+            AvoidClosestRadius = 125,
             UseFormation = 'None',
             TargetSearchPriorities = { 
                 categories.MASSEXTRACTION,
@@ -907,7 +983,54 @@ BuilderGroup {
             PrioritizedCategories = {   
                 categories.MOBILE * categories.LAND * categories.INDIRECTFIRE - categories.SCOUT,
                 categories.MOBILE * categories.LAND * categories.DIRECTFIRE - categories.SCOUT,
-                categories.MOBILE * categories.LAND * categories.ANTIAIR,
+                categories.MASSEXTRACTION,
+                categories.ENERGYPRODUCTION,
+                categories.MASSFABRICATION,
+                categories.ALLUNITS,
+            },
+        },
+    },
+
+    Builder {
+        BuilderName = 'Swarm Mass Raid Standard - High Risk',                            
+        PlatoonTemplate = 'AISwarm Mass Raid Large',                         
+        Priority = 651,                                                      
+        InstanceCount = 1,                                                     
+        BuilderType = 'Any',
+        BuilderConditions = {   
+            { UCBC, 'ScalePlatoonSizeSwarm', { 'LocationType', 'LAND', categories.MOBILE * categories.LAND - categories.ENGINEER - categories.EXPERIMENTAL } },
+            
+            { MIBC, 'CanPathToCurrentEnemySwarm', { true, 'LocationType' } },
+
+            { UCBC, 'GreaterThanGameTimeSeconds', { 240 } },
+
+            --{ UCBC, 'NeedMassPointShare', {}},
+
+            { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 2, categories.MOBILE * categories.LAND - categories.ENGINEER } },
+        },
+        BuilderData = {
+            SearchRadius = 756,
+            LocationType = 'LocationType',
+            IncludeWater = false,
+            IgnoreFriendlyBase = true,
+            MaxPathDistance = 756, 
+            FindHighestThreat = true,			
+            MaxThreatThreshold = 8900,		
+            MinThreatThreshold = 3000,		    
+            AvoidBases = true,
+            AvoidBasesRadius = 150,
+            AggressiveMove = true,      
+            AvoidClosestRadius = 125,
+            UseFormation = 'None',
+            TargetSearchPriorities = { 
+                categories.MASSEXTRACTION,
+                categories.MASSFABRICATION,
+                categories.ENERGYPRODUCTION, 
+                categories.ALLUNITS,
+            },
+            PrioritizedCategories = {   
+                categories.MOBILE * categories.LAND * categories.INDIRECTFIRE - categories.SCOUT,
+                categories.MOBILE * categories.LAND * categories.DIRECTFIRE - categories.SCOUT,
                 categories.MASSEXTRACTION,
                 categories.ENERGYPRODUCTION,
                 categories.MASSFABRICATION,
@@ -996,7 +1119,7 @@ BuilderGroup {
         BuilderConditions = {
             { MIBC, 'GreaterThanGameTime', { 1800 } }, 
 
-            { UCBC, 'LandStrengthRatioGreaterThan', { 1 } },
+            { UCBC, 'LandStrengthRatioGreaterThan', { 3 } },
 
             { MIBC, 'CanPathToCurrentEnemySwarm', { true, 'LocationType' } },
         },
@@ -1032,7 +1155,7 @@ BuilderGroup {
         BuilderConditions = {
             { MIBC, 'GreaterThanGameTime', { 1800 } }, 
 
-            { UCBC, 'LandStrengthRatioGreaterThan', { 1 } },
+            { UCBC, 'LandStrengthRatioGreaterThan', { 3 } },
             
             { MIBC, 'CanPathToCurrentEnemySwarm', { true, 'LocationType' } },
         },
