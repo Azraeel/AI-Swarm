@@ -47,8 +47,6 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Builders',
 
         Priority = 500,
 
-        PriorityFunction = HaveLessThanTwoT2AirFactory,
-
         BuilderConditions = {
             { UCBC, 'AirStrengthRatioLessThan', { 4 } },
 
