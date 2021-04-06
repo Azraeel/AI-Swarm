@@ -767,7 +767,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Staging Platform Builders',        
     BuildersType = 'EngineerBuilder',
     
     Builder { BuilderName = 'U-T1 Air Staging 1st',
-        PlatoonTemplate = 'EngineerBuilderRNG',
+        PlatoonTemplate = 'EngineerBuilder',
         Priority = 15300,
         BuilderConditions = {
             { UCBC, 'HaveLessThanUnitsWithCategory', { 1, categories.STRUCTURE * categories.AIRSTAGINGPLATFORM }},
@@ -793,7 +793,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Staging Platform Builders',        
         }
     },
     Builder { BuilderName = 'U-T1 Air Staging',
-        PlatoonTemplate = 'EngineerBuilderRNG',
+        PlatoonTemplate = 'EngineerBuilder',
         Priority = 15300,
         BuilderConditions = {
             { UCBC, 'HaveUnitRatioVersusEnemySwarm', { 0.05, categories.STRUCTURE * categories.AIRSTAGINGPLATFORM, '<', categories.MOBILE * categories.AIR } },
