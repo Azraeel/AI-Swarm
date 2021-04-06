@@ -26,7 +26,7 @@ PlatoonTemplate {
 
 PlatoonTemplate {
     Name = 'AISwarm T1 Spam',
-    Plan = 'HuntAI',
+    Plan = 'HuntAISwarm',
     GlobalSquads = {
         { categories.MOBILE * categories.LAND * categories.MOBILE * categories.TECH1 - categories.EXPERIMENTAL - categories.ANTIAIR - categories.ENGINEER - categories.SCOUT, 2, 100, 'attack', 'none' },
     },
