@@ -8,6 +8,10 @@ local BasePanicZone, BaseMilitaryZone, BaseEnemyZone = import('/mods/AI-Swarm/lu
 -- Mobile Experimental Air --
 -----------------------------
 
+-- Yet another reduction to Experimental Econ Efficiency :)
+-- from { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.03, 1.04 }},
+-- to { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.02, 1.03 }},
+
 BuilderGroup { BuilderGroupName = 'Swarm Air Experimental Builders',                          
     BuildersType = 'EngineerBuilder',
         
@@ -22,7 +26,9 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Experimental Builders',
         BuilderConditions = {
             { UCBC, 'UnitCapCheckLess', { 0.90 } },
 
-            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.03, 1.04 }},
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.02, 1.03 }},
+
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.02, 0.1}},
             
             { EBC, 'GreaterThanMassTrendSwarm', { 0.0 } },
         },
@@ -60,7 +66,9 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Experimental Builders',
         BuilderConditions = {
             { UCBC, 'UnitCapCheckLess', { 0.90 } },
 
-            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.03, 1.04 }},
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.02, 1.03 }},
+
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.02, 0.1}},
 
             { EBC, 'GreaterThanMassTrendSwarm', { 0.0 } },
 
@@ -108,7 +116,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Experimental Builders',
 
             { EBC, 'GreaterThanMassTrendSwarm', { 0.0 } },
 
-            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.03, 1.04 }},
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.02, 1.03 }},
 
             { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.02, 0.1}},
         },
@@ -155,7 +163,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Experimental Builders',
 
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
 
-            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.03, 1.04 }},
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.02, 1.03 }},
 
             { EBC, 'GreaterThanMassTrendSwarm', { 0.0 } },
 
@@ -202,7 +210,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Experimental Builders',
 
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
             
-            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.03, 1.04 }},
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.02, 1.03 }},
 
             { EBC, 'GreaterThanMassTrendSwarm', { 0.0 } },
 
@@ -256,7 +264,9 @@ BuilderGroup { BuilderGroupName = 'Swarm Naval Experimental Builders',
 
             { EBC, 'GreaterThanMassTrendSwarm', { 0.0 } },
 
-            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.03, 1.04 }},       
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.02, 1.03 }},      
+            
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.02, 0.1}},
 
             { UCBC, 'HaveLessThanUnitsInCategoryBeingBuilt', { 2, categories.MOBILE * categories.EXPERIMENTAL }},
         },

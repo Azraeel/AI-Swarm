@@ -250,6 +250,8 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',
 
             { MIBC, 'CanPathToCurrentEnemySwarm', { true, 'LocationType' } },
 
+            { MIBC, 'FactionIndex', { 1, 3 }}, -- 1: UEF, 2: Aeon, 3: Cybran, 4: Seraphim, 5: Nomads 
+
             { UCBC, 'HaveGreaterThanUnitsWithCategory', { 1, categories.FACTORY * categories.LAND * categories.TECH3 }},
 
             { UCBC, 'FactoryGreaterAtLocation', { 'LocationType', 1, categories.LAND * categories.FACTORY * categories.TECH3 } },
@@ -273,9 +275,11 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',
 
             { MIBC, 'CanPathToCurrentEnemySwarm', { true, 'LocationType' } },
 
+            { MIBC, 'FactionIndex', { 2, 4 }}, -- 1: UEF, 2: Aeon, 3: Cybran, 4: Seraphim, 5: Nomads 
+
             { UCBC, 'HaveGreaterThanUnitsWithCategory', { 1, categories.FACTORY * categories.LAND * categories.TECH3 }},
 
-            { UCBC, 'FactoryGreaterAtLocation', { 'LocationType', 1, categories.LAND * categories.FACTORY * categories.TECH3 } },
+            { UCBC, 'FactoryGreaterAtLocation', { 'LocationType', 0, categories.LAND * categories.FACTORY * categories.TECH3 } }, -- Swarm likes to upgrade his expansion factory to t3 first, which isn't that good.
 
             { UCBC, 'PoolLessAtLocation', { 'LocationType', 55, categories.DIRECTFIRE * categories.LAND * categories.TECH3 }},
         },
@@ -420,6 +424,10 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Scout Formers',
 -- Viewing the LandAttackAISwarm, Having a hard time justifying the usage compared to what other ais do with things like an Upgraded HuntAI 
 -- even compared to a Player.
 -- The only time, LandAttackAISwarm can be justified is mid to late game which means 30minutes+. The pathing and strength readings are simply too thoughtful for simple spam game early on.
+-- Ok, so after days of testing. HuntAI the most simple platoon function in existence has proven to be the most effective.
+-- But an idea popped in my head.
+-- HuntAI was only be really effective with T1 spam so lets implement this like a real player theres not much point to much t1
+-- So lets keep everything else on my most complex platoon functions. :D
 
 BuilderGroup {
     BuilderGroupName = 'AISwarm Platoon Builder',
@@ -428,7 +436,7 @@ BuilderGroup {
     --[[ Builder {
         BuilderName = 'AI-Swarm Standard Land (160) P',
 
-        PlatoonTemplate = 'AISwarm LandAttack Micro - Standard', 
+        PlatoonTemplate = 'AISwarm LandAttack Micro - Intercept', 
 
         Priority = 652,
 
@@ -470,7 +478,7 @@ BuilderGroup {
     Builder {
         BuilderName = 'AI-Swarm Standard Land (120) P',
 
-        PlatoonTemplate = 'AISwarm LandAttack Micro - Standard', 
+        PlatoonTemplate = 'AISwarm LandAttack Micro - Intercept', 
 
         Priority = 652,
 
@@ -507,12 +515,36 @@ BuilderGroup {
                 categories.ALLUNITS,
             },
         },        
+    }, ]]--
+
+    Builder {
+        BuilderName = 'AISwarm T1 Spam',     
+
+        PlatoonTemplate = 'AISwarm T1 Spam',   
+
+        Priority = 651,                
+
+        InstanceCount = 35,           
+
+        BuilderType = 'Any',
+
+        BuilderConditions = {
+            { UCBC, 'ScalePlatoonSizeSwarm', { 'LocationType', 'LAND', categories.MOBILE * categories.LAND * (categories.DIRECTFIRE + categories.INDIRECTFIRE) - categories.ENGINEER - categories.EXPERIMENTAL } },
+
+            { MIBC, 'CanPathToCurrentEnemySwarm', { true, 'LocationType' } },
+        },
+
+        BuilderData = {
+            UseFormation = 'Growthformation',
+            LocationType = 'LocationType',
+        },
+
     },
 
     Builder {
         BuilderName = 'AI-Swarm Standard Land (40) M',
 
-        PlatoonTemplate = 'AISwarm LandAttack Micro - Intercept', 
+        PlatoonTemplate = 'AISwarm LandAttack Micro - Standard', 
 
         Priority = 650,
 
@@ -554,11 +586,9 @@ BuilderGroup {
     Builder {
         BuilderName = 'AI-Swarm Standard Land (80) M',
 
-        PlatoonTemplate = 'AISwarm LandAttack Micro - Intercept', 
+        PlatoonTemplate = 'AISwarm LandAttack Micro - Standard', 
 
         Priority = 650,
-
-        PriorityFunction = AfterDirectCombat,
 
         InstanceCount = 4,
 
@@ -596,11 +626,9 @@ BuilderGroup {
     Builder {
         BuilderName = 'AI-Swarm Standard Land (120) M',
 
-        PlatoonTemplate = 'AISwarm LandAttack Micro - Intercept', 
+        PlatoonTemplate = 'AISwarm LandAttack Micro - Standard', 
 
         Priority = 650,
-
-        PriorityFunction = AfterDirectCombat,
 
         InstanceCount = 4,
 
@@ -633,31 +661,7 @@ BuilderGroup {
                 categories.ALLUNITS,
             },
         },        
-    }, ]]--
-
-    Builder {
-        BuilderName = 'AISwarm Spam',     
-
-        PlatoonTemplate = 'AISwarm Spam',   
-
-        Priority = 650,                
-
-        InstanceCount = 35,           
-
-        BuilderType = 'Any',
-
-        BuilderConditions = {
-            { UCBC, 'ScalePlatoonSizeSwarm', { 'LocationType', 'LAND', categories.MOBILE * categories.LAND * (categories.DIRECTFIRE + categories.INDIRECTFIRE) - categories.ENGINEER - categories.EXPERIMENTAL } },
-
-            { MIBC, 'CanPathToCurrentEnemySwarm', { true, 'LocationType' } },
-        },
-
-        BuilderData = {
-            UseFormation = 'Growthformation',
-            LocationType = 'LocationType',
-        },
-
-    },
+    }, 
 
 
     Builder {
@@ -946,7 +950,7 @@ BuilderGroup {
     Builder {
         BuilderName = 'Swarm Mass Raid Standard',                            
         PlatoonTemplate = 'AISwarm Mass Raid Large',                         
-        Priority = 652,                                                      
+        Priority = 653,                                                      
         InstanceCount = 2,                                                     
         BuilderType = 'Any',
         BuilderConditions = {   
@@ -994,7 +998,7 @@ BuilderGroup {
     Builder {
         BuilderName = 'Swarm Mass Raid Standard - High Risk',                            
         PlatoonTemplate = 'AISwarm Mass Raid Large',                         
-        Priority = 651,                                                      
+        Priority = 652,                                                      
         InstanceCount = 1,                                                     
         BuilderType = 'Any',
         BuilderConditions = {   
