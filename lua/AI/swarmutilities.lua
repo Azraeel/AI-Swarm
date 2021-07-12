@@ -489,104 +489,17 @@ function ComHealth(cdr)
     return ( armorPercent + shieldPercent ) / 2
 end
 
-function CDRRunHomeEnemyNearBase(platoon,cdr,UnitsInBasePanicZone)
-    local minEnemyDist, EnemyPosition
-    local enemyCount = 0
-    for _, EnemyUnit in UnitsInBasePanicZone do
-        if not EnemyUnit.Dead and not EnemyUnit:BeenDestroyed() then
-            if EntityCategoryContains(categories.MOBILE * categories.EXPERIMENTAL, EnemyUnit) then
-                --LOG('* ACUAttackAISwarm: CDRRunHomeEnemyNearBase EXPERIMENTAL!!!! RUN HOME:')
-                minEnemyDist = 40
-                break
-            end
-            enemyCount = enemyCount + 1
-            EnemyPosition = EnemyUnit:GetPosition()
-            local dist = VDist2(cdr.CDRHome[1], cdr.CDRHome[3], EnemyPosition[1], EnemyPosition[3])
-            if not minEnemyDist or minEnemyDist > dist then
-                minEnemyDist = dist
-            end
-        end
-    end
-    if minEnemyDist then
-        local CDRDist = VDist2(cdr.position[1], cdr.position[3], cdr.CDRHome[1], cdr.CDRHome[3])
-        local cdrNewPos = {}
-        if CDRDist > minEnemyDist then
-            cdrNewPos[1] = cdr.CDRHome[1] + Random(-6, 6)
-            cdrNewPos[2] = cdr.CDRHome[2]
-            cdrNewPos[3] = cdr.CDRHome[3] + Random(-6, 6)
-            platoon:Stop()
-            coroutine.yield(1)
-            platoon:MoveToLocation(cdrNewPos, false)
-            coroutine.yield(50)
-            return true
-        end
-    end
-    return false
-end
-
-function CDRRunHomeHealthRange(platoon,cdr,maxRadius)
-    local cdrNewPos = {}
-    if VDist2(cdr.position[1], cdr.position[3], cdr.CDRHome[1], cdr.CDRHome[3]) > maxRadius then
-        cdrNewPos[1] = cdr.CDRHome[1] + Random(-6, 6)
-        cdrNewPos[2] = cdr.CDRHome[2]
-        cdrNewPos[3] = cdr.CDRHome[3] + Random(-6, 6)
-        platoon:Stop()
-        coroutine.yield(1)
-        platoon:MoveToLocation(cdrNewPos, false)
-        coroutine.yield(50)
-        return true
-    end
-    return false
-end
-
-function CDRRunHomeAtDamage(platoon,cdr)
+function UnderAttackSwarm(cdr)
     local CDRHealth = ComHealth(cdr)
-    local diff = CDRHealth - cdr.HealthOLD
-    if diff < -10 then
-        --LOG('Health diff = '..diff)
-        local cdrNewPos = {}
-        cdrNewPos[1] = cdr.CDRHome[1] + Random(-6, 6)
-        cdrNewPos[2] = cdr.CDRHome[2]
-        cdrNewPos[3] = cdr.CDRHome[3] + Random(-6, 6)
-        platoon:Stop()
-        coroutine.yield(1)
-        platoon:MoveToLocation(cdrNewPos, false)
-        coroutine.yield(10)
-        cdr.HealthOLD = CDRHealth
-        return true
-    end    
+    if CDRHealth - (cdr.HealthOLD or CDRHealth) < -1 then
+        cdr.LastDamaged = GetGameTimeSeconds()
+    end
     cdr.HealthOLD = CDRHealth
-    return false
-end
-
-function CDRForceRunHome(platoon,cdr)
-    local cdrNewPos = {}
-    cdrNewPos[1] = cdr.CDRHome[1] + Random(-6, 6)
-    cdrNewPos[2] = cdr.CDRHome[2]
-    cdrNewPos[3] = cdr.CDRHome[3] + Random(-6, 6)
-    platoon:Stop()
-    coroutine.yield(1)
-    platoon:MoveToLocation(cdrNewPos, false)
-    coroutine.yield(30)
-    if VDist2(cdr.position[1], cdr.position[3], cdr.CDRHome[1], cdr.CDRHome[3]) > 20 then
+    if GetGameTimeSeconds() - cdr.LastDamaged < 4 then
         return true
+    else
+        return false
     end
-    return false
-end
-
-function CDRParkingHome(platoon,cdr)
-    local cdrNewPos = {}
-    while VDist2(cdr.position[1], cdr.position[3], cdr.CDRHome[1], cdr.CDRHome[3]) > 20 do
-        cdr.position = platoon:GetPlatoonPosition()
-        cdrNewPos[1] = cdr.CDRHome[1] + Random(-6, 6)
-        cdrNewPos[2] = cdr.CDRHome[2]
-        cdrNewPos[3] = cdr.CDRHome[3] + Random(-6, 6)
-        platoon:Stop()
-        coroutine.yield(1)
-        platoon:MoveToLocation(cdrNewPos, false)
-        coroutine.yield(30)
-    end
-    return
 end
 
 function RandomizePosition(position)
@@ -594,15 +507,45 @@ function RandomizePosition(position)
     local Posz = position[3]
     local X = -1
     local Z = -1
+    local guard = 0
     while X <= 0 or X >= ScenarioInfo.size[1] do
+        guard = guard + 1
+        if guard > 100 then break end
         X = Posx + Random(-10, 10)
     end
+    guard = 0
     while Z <= 0 or Z >= ScenarioInfo.size[2] do
+        guard = guard + 1
+        if guard > 100 then break end
         Z = Posz + Random(-10, 10)
     end
-    local Y = GetTerrainHeight(Posx, Posz)
-    if GetSurfaceHeight(Posx, Posz) > Y then
-        Y = GetSurfaceHeight(Posx, Posz)
+    local Y = GetTerrainHeight(X, Z)
+    if GetSurfaceHeight(X, Z) > Y then
+        Y = GetSurfaceHeight(X, Z)
+    end
+    return {X, Y, Z}
+end
+
+function RandomizePositionTML(position)
+    local Posx = position[1]
+    local Posz = position[3]
+    local X = -1
+    local Z = -1
+    local guard = 0
+    while X <= 0 or X >= ScenarioInfo.size[1] do
+        guard = guard + 1
+        if guard > 100 then break end
+        X = Posx + Random(-3, 3)
+    end
+    guard = 0
+    while Z <= 0 or Z >= ScenarioInfo.size[2] do
+        guard = guard + 1
+        if guard > 100 then break end
+        Z = Posz + Random(-3, 3)
+    end
+    local Y = GetTerrainHeight(X, Z)
+    if GetSurfaceHeight(X, Z) > Y then
+        Y = GetSurfaceHeight(X, Z)
     end
     return {X, Y, Z}
 end

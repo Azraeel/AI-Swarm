@@ -7,6 +7,8 @@ BaseBuilderTemplate {
         -----------------------------------------------------------------------------
         -- Build Main Base (only once). Land/Air factory and basic Energy
         'SC ACU Attack Former',
+
+        'ACU Support Platoon Swarm',
         
         -----------------------------------------------------------------------------
         -- ==== Expansion Builders ==== --

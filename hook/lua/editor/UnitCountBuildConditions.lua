@@ -40,6 +40,65 @@ function ReturnFalse(aiBrain)
     return false
 end
 
+--            { UCBC, 'UnitsLessInPlatoon', {} },
+function UnitsLessInPlatoonSwarm(aiBrain,PlatoonPlan, num, cat)
+    local SearchCat = cat or categories.ALLUNITS
+    local PlatoonList = aiBrain:GetPlatoonsList()
+    local NumPlatoonUnits = 0
+    local PlatoonFound
+    for Li,Platoon in PlatoonList do
+        --LOG('* UnitsLessInPlatoon: Found Platoon: '..repr(Platoon:GetPlan()))
+        if Platoon:GetPlan() == PlatoonPlan then
+            PlatoonFound = true
+            for Ui,Unit in Platoon:GetPlatoonUnits() or {} do
+                if EntityCategoryContains(cat, Unit) then
+                    NumPlatoonUnits = NumPlatoonUnits + 1
+                end
+            end
+            break
+        end
+    end
+    if not PlatoonFound then
+        --LOG('* UnitsLessInPlatoon: Platoon ('..PlatoonPlan..') not found.')
+        -- in case the platoon is not formed yet, just return false.
+        -- so the platoonformer does not try to add the unit to an non existing platoon
+        return false
+    end
+    if NumPlatoonUnits < num then
+        --LOG('* UnitsLessInPlatoon: TRUE Units in platoon ('..PlatoonPlan..'): '..NumPlatoonUnits..'/'..num)
+        return true
+    end
+    --LOG('* UnitsLessInPlatoon: FALSE Units in platoon('..PlatoonPlan..'): '..NumPlatoonUnits..'/'..num)
+    return false
+end
+
+
+function CDRHealthLessThanSwarm(aiBrain, health)
+    local cdr = aiBrain:GetListOfUnits(categories.COMMAND, false)[1]
+    if cdr.Dead or not cdr.BeenDestroyed or cdr:BeenDestroyed() then
+        return false
+    end
+    local armorPercent = 100 / cdr:GetMaxHealth() * cdr:GetHealth()
+    local shieldPercent = armorPercent
+    if cdr.MyShield then
+        shieldPercent = 100 / cdr.MyShield:GetMaxHealth() * cdr.MyShield:GetHealth()
+    end
+    return math.floor(( armorPercent + shieldPercent ) / 2) < health
+end
+
+function CDRHealthLessThan(aiBrain, health)
+    local cdr = aiBrain:GetListOfUnits(categories.COMMAND, false)[1]
+    if cdr.Dead or not cdr.BeenDestroyed or cdr:BeenDestroyed() then
+        return false
+    end
+    local armorPercent = 100 / cdr:GetMaxHealth() * cdr:GetHealth()
+    local shieldPercent = armorPercent
+    if cdr.MyShield then
+        shieldPercent = 100 / cdr.MyShield:GetMaxHealth() * cdr.MyShield:GetHealth()
+    end
+    return math.floor(( armorPercent + shieldPercent ) / 2) < health
+end
+
 --{ UCBC, 'CanBuildCategorySwarm', { categories.RADAR * categories.TECH1 } },
 local FactionIndexToCategory = {[1] = categories.UEF, [2] = categories.AEON, [3] = categories.CYBRAN, [4] = categories.SERAPHIM, [5] = categories.NOMADS }
 function CanBuildCategorySwarm(aiBrain,category)
@@ -241,9 +300,9 @@ end
 function HaveGreaterThanUnitsInCategoryBeingBuiltAtLocationSwarm(aiBrain, locationType, numReq, category, constructionCat)
     local numUnits
     if constructionCat then
-        numUnits = table.getn( GetUnitsBeingBuiltLocation(aiBrain, locationType, category, category + (categories.ENGINEER * categories.MOBILE - categories.STATIONASSISTPOD) + constructionCat) or {} )
+        numUnits = table.getn( GetUnitsBeingBuiltLocationSwarm(aiBrain, locationType, category, category + (categories.ENGINEER * categories.MOBILE - categories.STATIONASSISTPOD) + constructionCat) or {} )
     else
-        numUnits = table.getn( GetUnitsBeingBuiltLocation(aiBrain,locationType, category, category + (categories.ENGINEER * categories.MOBILE - categories.STATIONASSISTPOD) ) or {} )
+        numUnits = table.getn( GetUnitsBeingBuiltLocationSwarm(aiBrain,locationType, category, category + (categories.ENGINEER * categories.MOBILE - categories.STATIONASSISTPOD) ) or {} )
     end
     if numUnits > numReq then
         return true

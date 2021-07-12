@@ -16,6 +16,8 @@
 BaseBuilderTemplate {
     BaseTemplateName = 'SwarmStartArea',
     Builders = {
+
+        'ACU Support Platoon Swarm',
         -----------------------------------------------------------------------------
         -- ==== Engineer ==== --
         -----------------------------------------------------------------------------
