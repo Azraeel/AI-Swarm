@@ -1,8 +1,8 @@
 
 -- ==== Global Form platoons ==== --
 PlatoonTemplate {
-    Name = 'CDR Attack',
-    Plan = 'ACUAttackAISwarm',
+    Name = 'CDR Attack Swarm',
+    Plan = 'ACUChampionPlatoonSwarm',
     GlobalSquads = {
         { categories.COMMAND, 1, 1, 'Attack', 'none' }
     },
