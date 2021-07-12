@@ -119,7 +119,7 @@ BuilderGroup {
         },
         BuilderConditions = {                                                  
    
-            { UCBC, 'GreaterThanGameTimeSeconds', { 60*9 } },
+            { UCBC, 'GreaterThanGameTimeSeconds', { 60*8 } },
          
             { UCBC, 'EnemyUnitsGreaterAtLocationRadiusSwarm', {  BaseEnemyZone, 'LocationType', 0, categories.ALLUNITS - (categories.ENGINEER * categories.TECH1 * categories.TECH2) - categories.AIR - categories.SCOUT }}, -- radius, LocationType, unitCount, categoryEnemy
 
@@ -159,7 +159,7 @@ BuilderGroup {
         BuilderConditions = {                         
             { UCBC, 'CheckBuildPlattonDelay', { 'ACUFORM' }},
                                      
-            { EBC, 'GreaterThanEconIncome',  { 2, 50}},
+            { EBC, 'GreaterThanEconIncome',  { 2.0, 50.0}},
         },
         BuilderType = 'Any',                                              
     },
@@ -216,7 +216,7 @@ BuilderGroup {
             AIPlan = 'ACUChampionPlatoonSwarm',
         },
         BuilderConditions = {
-            { UCBC, 'HaveGreaterThanArmyPoolWithCategory', { 1, categories.ENGINEER * categories.TECH1 - categories.STATIONASSISTPOD } },
+            { UCBC, 'HaveGreaterThanArmyPoolWithCategorySwarm', { 1, categories.ENGINEER * categories.TECH1 - categories.STATIONASSISTPOD } },
 
             { UCBC, 'UnitsLessInPlatoonSwarm', { 'ACUChampionPlatoonSwarm', 1, categories.ENGINEER * categories.TECH1 - categories.STATIONASSISTPOD } },
         },
@@ -232,7 +232,7 @@ BuilderGroup {
             AIPlan = 'ACUChampionPlatoonSwarm',
         },
         BuilderConditions = {
-            { UCBC, 'HaveGreaterThanArmyPoolWithCategory', { 0, (categories.MOBILE * categories.SHIELD) + (categories.MOBILE * categories.STEALTHFIELD) * (categories.TECH2 + categories.TECH3) } },
+            { UCBC, 'HaveGreaterThanArmyPoolWithCategorySwarm', { 0, (categories.MOBILE * categories.SHIELD) + (categories.MOBILE * categories.STEALTHFIELD) * (categories.TECH2 + categories.TECH3) } },
 
             { UCBC, 'UnitsLessInPlatoonSwarm', { 'ACUChampionPlatoonSwarm', 2, (categories.MOBILE * categories.SHIELD) + (categories.MOBILE * categories.STEALTHFIELD) * (categories.TECH2 + categories.TECH3) } },
         },
@@ -248,7 +248,7 @@ BuilderGroup {
             AIPlan = 'ACUChampionPlatoonSwarm',
         },
         BuilderConditions = {
-            { UCBC, 'HaveGreaterThanArmyPoolWithCategory', { 0, categories.SUBCOMMANDER} },
+            { UCBC, 'HaveGreaterThanArmyPoolWithCategorySwarm', { 0, categories.SUBCOMMANDER} },
 
             { UCBC, 'UnitsLessInPlatoonSwarm', { 'ACUChampionPlatoonSwarm', 2, categories.SUBCOMMANDER } },
         },
@@ -264,7 +264,7 @@ BuilderGroup {
             AIPlan = 'ACUChampionPlatoonSwarm',
         },
         BuilderConditions = {
-            { UCBC, 'HaveGreaterThanArmyPoolWithCategory', { 0, categories.MOBILE * categories.DIRECTFIRE - categories.ANTIAIR - categories.EXPERIMENTAL } },
+            { UCBC, 'HaveGreaterThanArmyPoolWithCategorySwarm', { 0, categories.MOBILE * categories.DIRECTFIRE - categories.ANTIAIR - categories.EXPERIMENTAL } },
 
             { UCBC, 'UnitsLessInPlatoonSwarm', { 'ACUChampionPlatoonSwarm', 2, categories.MOBILE * categories.DIRECTFIRE - categories.ANTIAIR - categories.EXPERIMENTAL } },
         },
@@ -280,7 +280,7 @@ BuilderGroup {
             AIPlan = 'ACUChampionPlatoonSwarm',
         },
         BuilderConditions = {
-            { UCBC, 'HaveGreaterThanArmyPoolWithCategory', { 0, categories.MOBILE * categories.LAND * categories.ANTIAIR } },
+            { UCBC, 'HaveGreaterThanArmyPoolWithCategorySwarm', { 0, categories.MOBILE * categories.LAND * categories.ANTIAIR } },
 
             { UCBC, 'UnitsLessInPlatoonSwarm', { 'ACUChampionPlatoonSwarm', 3, categories.MOBILE * categories.LAND * categories.ANTIAIR } },
         },
@@ -296,7 +296,7 @@ BuilderGroup {
             AIPlan = 'ACUChampionPlatoonSwarm',
         },
         BuilderConditions = {
-            { UCBC, 'HaveGreaterThanArmyPoolWithCategory', { 0, categories.MOBILE * categories.AIR * categories.GROUNDATTACK - categories.TRANSPORTFOCUS } },
+            { UCBC, 'HaveGreaterThanArmyPoolWithCategorySwarm', { 0, categories.MOBILE * categories.AIR * categories.GROUNDATTACK - categories.TRANSPORTFOCUS } },
 
             { UCBC, 'UnitsLessInPlatoonSwarm', { 'ACUChampionPlatoonSwarm', 8, categories.MOBILE * categories.AIR * categories.GROUNDATTACK - categories.TRANSPORTFOCUS } },
         },

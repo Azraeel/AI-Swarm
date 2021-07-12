@@ -21,6 +21,29 @@ function ValidateLayerSwarm(UnitPos,MovementLayer)
     return false
 end
 
+function ValidateAttackLayerSwarm(position, TargetPosition)
+    -- check if attacker and target are both over or under water
+    if ( position[2] >= GetSurfaceHeight( position[1], position[3] ) ) == ( TargetPosition[2] >= GetSurfaceHeight( TargetPosition[1], TargetPosition[3] ) ) then
+        return true
+    end
+    return false
+end
+
+-- AI-Uveso: Helper function for targeting
+function IsNukeBlastAreaSwarm(aiBrain, TargetPosition)
+    -- check if the target is inside a nuke blast radius
+    if aiBrain.NukedArea then
+        for i, data in aiBrain.NukedArea or {} do
+            if data.NukeTime + 50 <  GetGameTimeSeconds() then
+                table.remove(aiBrain.NukedArea, i)
+            elseif VDist2(TargetPosition[1], TargetPosition[3], data.Location[1], data.Location[3]) < 40 then
+                return true
+            end
+        end
+    end
+    return false
+end
+
 -- AI-Swarm: Target function
 function AIFindNearestCategoryTargetInRangeSwarm(aiBrain, platoon, squad, position, maxRange, MoveToCategories, TargetSearchCategory, enemyBrain)
     if not maxRange then
@@ -97,7 +120,7 @@ function AIFindNearestCategoryTargetInRangeSwarm(aiBrain, platoon, squad, positi
                     if not EntityCategoryContains(category, Target) then continue end
                     -- check if the target is on the same layer then the attacker
                     if not IgnoreTargetLayerCheck then
-                        if not ValidateAttackLayer(position, TargetPosition) then continue end
+                        if not ValidateAttackLayerSwarm(position, TargetPosition) then continue end
                     end
                     -- check if the Target is still alive, matches our target priority and can be attacked from our platoon
                     if not platoon:CanAttackTarget(squad, Target) then continue end
@@ -112,7 +135,7 @@ function AIFindNearestCategoryTargetInRangeSwarm(aiBrain, platoon, squad, positi
                                     -- yes... we need to check if we got friendly units with GetUnitsAroundPoint(_, _, _, 'Enemy')
                                     if not IsEnemy( MyArmyIndex, Target.Army ) then continue end
                                     -- check if the target is inside a nuke blast radius
-                                    if IsNukeBlastArea(aiBrain, TargetPosition) then continue end
+                                    if IsNukeBlastAreaSwarm(aiBrain, TargetPosition) then continue end
                                     -- check if we have a special player as enemy
                                     if enemyBrain and enemyIndex and enemyBrain ~= enemyIndex then continue end
                                     -- we can't attack units while reclaim or capture is in progress
@@ -264,42 +287,27 @@ function AIFindNearestCategoryTargetInRangeCDRSwarm(aiBrain, position, maxRange,
 end
 
 
-function AIFindNearestCategoryTargetInCloseRangeSwarm(aiBrain, position, maxRange, MoveToCategories, TargetSearchCategory, enemyBrain)
-    if type(TargetSearchCategory) == 'string' then
-        TargetSearchCategory = ParseEntityCategory(TargetSearchCategory)
-    end
+function AIFindNearestCategoryTargetInCloseRangeSwarm(platoon, aiBrain, squad, position, maxRange, MoveToCategories, TargetSearchCategory, enemyBrain)
+    local IgnoreTargetLayerCheck = platoon.PlatoonData.IgnoreTargetLayerCheck
     local enemyIndex = false
     local MyArmyIndex = aiBrain:GetArmyIndex()
     if enemyBrain then
         enemyIndex = enemyBrain:GetArmyIndex()
     end
+    if maxRange < 50 then
+        maxRange = 50
+    end
     local RangeList = {
-        [1] = 10,
+        [1] = 30,
         [2] = maxRange,
-        [3] = maxRange + 80,
+        [3] = maxRange + 50,
     }
     local TargetUnit = false
-    local TargetsInRange, EnemyStrength, TargetPosition, category, distance, targetRange, baseTargetRange, canAttack
+    local TargetsInRange, EnemyStrength, TargetPosition, distance, targetRange, baseTargetRange, canAttack
     for _, range in RangeList do
-        if not position then
-            --WARN('* AI-Swarm: AIFindNearestCategoryTargetInCloseRange: position is empty')
-            return false
-        end
-        if not range then
-            --WARN('* AI-Swarm: AIFindNearestCategoryTargetInCloseRange: range is empty')
-            return false
-        end
-        if not TargetSearchCategory then
-            --WARN('* AI-Swarm: AIFindNearestCategoryTargetInCloseRange: TargetSearchCategory is empty')
-            return false
-        end
         TargetsInRange = aiBrain:GetUnitsAroundPoint(TargetSearchCategory, position, range, 'Enemy')
         --DrawCircle(position, range, '0000FF')
-        for _, v in MoveToCategories do
-            category = v
-            if type(category) == 'string' then
-                category = ParseEntityCategory(category)
-            end
+        for _, category in MoveToCategories do
             distance = maxRange
             --LOG('* AIFindNearestCategoryTargetInRange: numTargets '..table.getn(TargetsInRange)..'  ')
             for num, Target in TargetsInRange do
@@ -309,21 +317,30 @@ function AIFindNearestCategoryTargetInCloseRangeSwarm(aiBrain, position, maxRang
                 TargetPosition = Target:GetPosition()
                 EnemyStrength = 0
                 -- check if the target is inside a nuke blast radius
-                if IsNukeBlastArea(aiBrain, TargetPosition) then continue end
+                if IsNukeBlastAreaSwarm(aiBrain, TargetPosition) then continue end
                 -- check if we have a special player as enemy
                 if enemyBrain and enemyIndex and enemyBrain ~= enemyIndex then continue end
+                -- check if the target is on the same layer then the attacker
+                if not IgnoreTargetLayerCheck then
+                    if not ValidateAttackLayerSwarm(position, TargetPosition) then continue end
+                end
+                -- check if the Target is still alive, matches our target priority and can be attacked from our platoon
+                if not platoon:CanAttackTarget(squad, Target) then continue end
+                --LOG('* AIFindNearestCategoryTargetInRange: canAttack '..repr(canAttack))
+                if platoon.MovementLayer == 'Land' and EntityCategoryContains(categories.AIR, Target) then continue end
                 -- check if the Target is still alive, matches our target priority and can be attacked from our platoon
                 if not Target.Dead and EntityCategoryContains(category, Target) then
                     -- yes... we need to check if we got friendly units with GetUnitsAroundPoint(_, _, _, 'Enemy')
-                    if not IsEnemy( MyArmyIndex, Target:GetAIBrain():GetArmyIndex() ) then continue end
+                    if not IsEnemy( MyArmyIndex, Target.Army ) then continue end
                     if Target.ReclaimInProgress then
-                        --WARN('* AIFindNearestCategoryTargetInRangeSwarm: ReclaimInProgress !!! Ignoring the target.')
+                        --WARN('* AIFindNearestCategoryTargetInRange: ReclaimInProgress !!! Ignoring the target.')
                         continue
                     end
                     if Target.CaptureInProgress then
-                        --WARN('* AIFindNearestCategoryTargetInRangeSwarm: CaptureInProgress !!! Ignoring the target.')
+                        --WARN('* AIFindNearestCategoryTargetInRange: CaptureInProgress !!! Ignoring the target.')
                         continue
                     end
+                    if not AIAttackUtils.CanGraphAreaTo(position, TargetPosition, platoon.MovementLayer) then continue end
                     targetRange = VDist2(position[1],position[3],TargetPosition[1],TargetPosition[3])
                     -- check if the target is in range of the unit and in range of the base
                     if targetRange < distance then
@@ -335,9 +352,9 @@ function AIFindNearestCategoryTargetInCloseRangeSwarm(aiBrain, position, maxRang
             if TargetUnit then
                 return TargetUnit
             end
-           coroutine.yield(10)
+           coroutine.yield(5)
         end
-        coroutine.yield(1)
+        coroutine.yield(5)
     end
     return TargetUnit
 end

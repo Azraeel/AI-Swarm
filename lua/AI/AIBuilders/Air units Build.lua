@@ -146,7 +146,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Builders',
         BuilderConditions = {
             { UCBC, 'AirStrengthRatioGreaterThan', { 2 } },
 
-            { UCBC, 'UnitsGreaterAtEnemy', { 0 , categories.NAVAL * categories.MOBILE } },
+            { UCBC, 'UnitsGreaterAtEnemySwarm', { 0 , categories.NAVAL * categories.MOBILE } },
 
             { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.75, 1.0 }},
 
@@ -226,7 +226,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Builders',
         BuilderConditions = {
             { UCBC, 'AirStrengthRatioGreaterThan', { 3 } },
 
-            { UCBC, 'UnitsGreaterAtEnemy', { 0 , categories.NAVAL * categories.MOBILE } },
+            { UCBC, 'UnitsGreaterAtEnemySwarm', { 0 , categories.NAVAL * categories.MOBILE } },
 
             { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.9, 1.1 }},
 
@@ -536,7 +536,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Formers',
             AggressiveMove = true,                                          
             AttackEnemyStrength = 300,                                         
             IgnorePathing = true,                                      
-            TargetSearchCategory = categories.MOBILE * categories.AIR  * categories.TRANSPORTFOCUS,      
+            TargetSearchCategory = categories.MOBILE * categories.AIR * categories.TRANSPORTFOCUS,      
             MoveToCategories = {                                           
                 categories.MOBILE * categories.AIR * categories.TRANSPORTFOCUS,
                 categories.MOBILE * categories.AIR * categories.BOMBER,

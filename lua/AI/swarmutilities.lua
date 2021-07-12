@@ -489,7 +489,7 @@ function ComHealth(cdr)
     return ( armorPercent + shieldPercent ) / 2
 end
 
-function UnderAttackSwarmSwarm(cdr)
+function UnderAttackSwarm(cdr)
     local CDRHealth = ComHealth(cdr)
     if CDRHealth - (cdr.HealthOLD or CDRHealth) < -1 then
         cdr.LastDamaged = GetGameTimeSeconds()
@@ -518,6 +518,30 @@ function RandomizePosition(position)
         guard = guard + 1
         if guard > 100 then break end
         Z = Posz + Random(-10, 10)
+    end
+    local Y = GetTerrainHeight(X, Z)
+    if GetSurfaceHeight(X, Z) > Y then
+        Y = GetSurfaceHeight(X, Z)
+    end
+    return {X, Y, Z}
+end
+
+function RandomizePositionTML(position)
+    local Posx = position[1]
+    local Posz = position[3]
+    local X = -1
+    local Z = -1
+    local guard = 0
+    while X <= 0 or X >= ScenarioInfo.size[1] do
+        guard = guard + 1
+        if guard > 100 then break end
+        X = Posx + Random(-3, 3)
+    end
+    guard = 0
+    while Z <= 0 or Z >= ScenarioInfo.size[2] do
+        guard = guard + 1
+        if guard > 100 then break end
+        Z = Posz + Random(-3, 3)
     end
     local Y = GetTerrainHeight(X, Z)
     if GetSurfaceHeight(X, Z) > Y then
