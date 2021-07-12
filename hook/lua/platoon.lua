@@ -153,7 +153,7 @@ Platoon = Class(SwarmPlatoonClass) {
             end
             -- only get a new target and make a move command if the target is dead
             if not target or target.Dead or target:BeenDestroyed() then
-                UnitWithPath, UnitNoPath, path, reason = AIUtils.AIFindNearestCategoryTargetInRange(aiBrain, self, 'Attack', GetTargetsFrom, maxRadius, MoveToCategories, TargetSearchCategory, false )
+                UnitWithPath, UnitNoPath, path, reason = AIUtils.AIFindNearestCategoryTargetInRangeSwarm(aiBrain, self, 'Attack', GetTargetsFrom, maxRadius, MoveToCategories, TargetSearchCategory, false )
                 if UnitWithPath then
                     --LOG('* AI-Swarm: *InterceptorAISwarm: found UnitWithPath')
                     self:Stop()
@@ -312,7 +312,7 @@ Platoon = Class(SwarmPlatoonClass) {
             end
             -- only get a new target and make a move command if the target is dead
             if not target or target.Dead or target:BeenDestroyed() then
-                UnitWithPath, UnitNoPath, path, reason = AIUtils.AIFindNearestCategoryTargetInRange(aiBrain, self, 'Attack', GetTargetsFrom, maxRadius, MoveToCategories, TargetSearchCategory, false )
+                UnitWithPath, UnitNoPath, path, reason = AIUtils.AIFindNearestCategoryTargetInRangeSwarm(aiBrain, self, 'Attack', GetTargetsFrom, maxRadius, MoveToCategories, TargetSearchCategory, false )
                 if UnitWithPath then
                     --LOG('* AI-Swarm: *InterceptorAISwarm: found UnitWithPath')
                     self:Stop()
@@ -672,7 +672,7 @@ Platoon = Class(SwarmPlatoonClass) {
             PlatoonPos = self:GetPlatoonPosition()
             -- only get a new target and make a move command if the target is dead or after 10 seconds
             if not target or target.Dead then
-                UnitWithPath, UnitNoPath, path, reason = AIUtils.AIFindNearestCategoryTargetInRange(aiBrain, self, 'Attack', PlatoonPos, maxRadius, MoveToCategories, TargetSearchCategory, false )
+                UnitWithPath, UnitNoPath, path, reason = AIUtils.AIFindNearestCategoryTargetInRangeSwarm(aiBrain, self, 'Attack', PlatoonPos, maxRadius, MoveToCategories, TargetSearchCategory, false )
                 if UnitWithPath then
                     losttargetnum = 0
                     self:Stop()
@@ -803,7 +803,7 @@ Platoon = Class(SwarmPlatoonClass) {
             PlatoonPos = self:GetPlatoonPosition()
             -- only get a new target and make a move command if the target is dead or after 10 seconds
             if not target or target.Dead then
-                UnitWithPath, UnitNoPath, path, reason = AIUtils.AIFindNearestCategoryTargetInRange(aiBrain, self, 'Attack', PlatoonPos, maxRadius, MoveToCategories, TargetSearchCategory, false )
+                UnitWithPath, UnitNoPath, path, reason = AIUtils.AIFindNearestCategoryTargetInRangeSwarm(aiBrain, self, 'Attack', PlatoonPos, maxRadius, MoveToCategories, TargetSearchCategory, false )
                 if UnitWithPath then
                     losttargetnum = 0
                     self:Stop()
@@ -4802,7 +4802,7 @@ Platoon = Class(SwarmPlatoonClass) {
 		end
 
 		-- this function will return a 3D position and a named marker
-		local GetClosestSafePathNodeInRadiusByLayerSwarm = function( location, seeksafest, goalseek, threatmodifier )
+		local GetClosestSafePathNodeInRadiusByLayerSwarm2 = function( location, seeksafest, goalseek, threatmodifier )
 	
 			if markerlist then
 			
@@ -4915,13 +4915,13 @@ Platoon = Class(SwarmPlatoonClass) {
 		end
 	
 		-- Get the closest safe node at platoon position which is closest to the destination
-		local startNode, startNodeName = GetClosestSafePathNodeInRadiusByLayerSwarm( start, false, destination, 2 )
+		local startNode, startNodeName = GetClosestSafePathNodeInRadiusByLayerSwarm2( start, false, destination, 2 )
 
 		if not startNode and platoonLayer == 'Amphibious' then
 		
 			--LOG("*AI DEBUG "..aiBrain.Nickname.." GenerateSafePath "..platoon.BuilderName.." "..threatallowed.." fails no safe "..platoonLayer.." startnode within "..MaxMarkerDist.." of "..repr(start).." - trying Land")
 			platoonLayer = 'Land'
-			startNode, startNodeName = GetClosestSafePathNodeInRadiusByLayerSwarm( start, false, destination, 2 )
+			startNode, startNodeName = GetClosestSafePathNodeInRadiusByLayerSwarm2( start, false, destination, 2 )
 			
 		end
 	
@@ -4941,7 +4941,7 @@ Platoon = Class(SwarmPlatoonClass) {
 		end			
     
 		-- Get the closest safe node at the destination which is cloest to the start
-		local endNode, endNodeName = GetClosestSafePathNodeInRadiusByLayerSwarm( destination, true, false, 1 )
+		local endNode, endNodeName = GetClosestSafePathNodeInRadiusByLayerSwarm2( destination, true, false, 1 )
 
 		if not endNode then
 		
