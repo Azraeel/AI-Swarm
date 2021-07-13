@@ -140,6 +140,94 @@ BuilderGroup {
         }
     },
     Builder {
+        BuilderName = 'S2 Vacant Start Location - Defense Point',                             
+        PlatoonTemplate = 'T2EngineerBuilder',                                   
+        Priority = 510,                                                  
+        InstanceCount = 1,                                                 
+        BuilderConditions = {
+            { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 0, categories.ENGINEER * categories.TECH2 - categories.COMMAND - categories.STATIONASSISTPOD }},
+
+            { UCBC, 'ExpansionAreaNeedsEngineer', { 'LocationType', 1000, -1000, 100, 1, 'AntiSurface' } },
+
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.04, 0.70}},
+
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.75, 0.9 }}, 
+        },
+        BuilderType = 'Any',
+        BuilderData = {
+            RequireTransport = false,
+            Construction = {
+                BuildClose = false,
+                BaseTemplate = 'ExpansionBaseTemplates',
+                ExpansionBase = false,
+                NearMarkerType = 'Start Location',
+                LocationRadius = 1000,
+                LocationType = 'LocationType',
+                ThreatMin = 10,
+                ThreatMax = 500,
+                ThreatRings = 1,
+                ThreatType = 'StructuresNotMex',
+                ExpansionRadius = 100,
+                BuildStructures = {
+                    'T2Radar',
+                    'T2GroundDefense',
+                    'T2AADefense',
+                    'T2GroundDefense',
+                    'T2AADefense',
+                    'T2ShieldDefense',
+                    'T2MissileDefense',
+                    'T2MissileDefense',
+                    'T2GroundDefense',
+                    'T2GroundDefense',
+                }
+            },
+        }
+    },
+    Builder {
+        BuilderName = 'S2 Vacant Expansion Area - Defense Point',                             
+        PlatoonTemplate = 'T2EngineerBuilder',                                   
+        Priority = 510,                                                  
+        InstanceCount = 1,                                                 
+        BuilderConditions = {
+            { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 3, categories.ENGINEER * categories.TECH2 - categories.COMMAND - categories.STATIONASSISTPOD }},
+
+            { UCBC, 'ExpansionAreaNeedsEngineer', { 'LocationType', 1000, -1000, 100, 1, 'AntiSurface' } },
+
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.04, 0.70}},
+
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.75, 0.9 }}, 
+        },
+        BuilderType = 'Any',
+        BuilderData = {
+            RequireTransport = false,
+            Construction = {
+                BuildClose = false,
+                BaseTemplate = 'ExpansionBaseTemplates',
+                ExpansionBase = false,
+                NearMarkerType = 'Expansion Area',
+                LocationRadius = 1000,
+                LocationType = 'LocationType',
+                ThreatMin = 10,
+                ThreatMax = 500,
+                ThreatRings = 1,
+                ThreatType = 'StructuresNotMex',
+                ExpansionRadius = 100,
+                BuildStructures = {
+                    'T2Radar',
+                    'T2GroundDefense',
+                    'T2AADefense',
+                    'T2GroundDefense',
+                    'T2AADefense',
+                    'T2ShieldDefense',
+                    'T2MissileDefense',
+                    'T2MissileDefense',
+                    'T2GroundDefense',
+                    'T2GroundDefense',
+                }
+            },
+        }
+    },
+    Builder {
         BuilderName = 'S1 Vacant Expansion Area',                               -- Random Builder Name.
         PlatoonTemplate = 'EngineerBuilderALLTECH',                                    -- Template Name. These units will be formed. See: "\lua\AI\PlatoonTemplates\"
         Priority = 500,                                                        -- Priority. Higher priotity will be build more often then lower priotity.
@@ -215,50 +303,6 @@ BuilderGroup {
                 BuildStructures = {
                     'T1LandFactory',
                     'T1Radar',
-                }
-            },
-        }
-    },
-    Builder {
-        BuilderName = 'S2 Vacant Expansion Area - Defense Point',                             
-        PlatoonTemplate = 'T2EngineerBuilder',                                   
-        Priority = 510,                                                  
-        InstanceCount = 1,                                                 
-        BuilderConditions = {
-            { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 0, categories.ENGINEER * categories.TECH2 - categories.COMMAND - categories.STATIONASSISTPOD }},
-
-            { UCBC, 'ExpansionAreaNeedsEngineer', { 'LocationType', 1000, -1000, 100, 1, 'AntiSurface' } },
-
-            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.04, 0.70}},
-
-            { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.75, 0.9 }}, 
-        },
-        BuilderType = 'Any',
-        BuilderData = {
-            RequireTransport = false,
-            Construction = {
-                BuildClose = false,
-                BaseTemplate = 'ExpansionBaseTemplates',
-                ExpansionBase = false,
-                NearMarkerType = 'Expansion Area',
-                LocationRadius = 1000,
-                LocationType = 'LocationType',
-                ThreatMin = 10,
-                ThreatMax = 500,
-                ThreatRings = 1,
-                ThreatType = 'StructuresNotMex',
-                ExpansionRadius = 100,
-                BuildStructures = {
-                    'T2Radar',
-                    'T2GroundDefense',
-                    'T2AADefense',
-                    'T2GroundDefense',
-                    'T2AADefense',
-                    'T2ShieldDefense',
-                    'T2MissileDefense',
-                    'T2MissileDefense',
-                    'T2GroundDefense',
-                    'T2GroundDefense',
                 }
             },
         }

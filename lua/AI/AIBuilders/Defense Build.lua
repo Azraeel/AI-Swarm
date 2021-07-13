@@ -892,10 +892,13 @@ BuilderGroup { BuilderGroupName = 'Swarm Defense Anti Air Builders',
         BuilderName = 'Swarm Reclaim T1 AA',
         PlatoonTemplate = 'EngineerBuilderALLTECH',
         PlatoonAIPlan = 'ReclaimStructuresAI',
-        Priority = 500,
+        DelayEqualBuildPlattons = {'ReclaimS', 10},   
+        Priority = 250,
         InstanceCount = 1,
         BuilderConditions = {
-            { UCBC, 'HaveGreaterThanUnitsWithCategory', { 0, categories.STRUCTURE * categories.DEFENSE * categories.TECH2 * categories.ANTIAIR }},
+            { UCBC, 'CheckBuildPlattonDelay', { 'ReclaimS' }},
+
+            { UCBC, 'HaveGreaterThanUnitsWithCategory', { 2, categories.STRUCTURE * categories.DEFENSE * categories.TECH2 * categories.ANTIAIR }},
         },
         BuilderData = {
             Location = 'LocationType',
