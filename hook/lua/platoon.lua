@@ -594,7 +594,7 @@ Platoon = Class(SwarmPlatoonClass) {
     end, ]]--
 
     LandAttackAISwarm = function(self)
-        if UseHeroPlatoon then
+        if UseHeroPlatoonswarm then
             self:HeroFightPlatoonSwarm()
             return
         end
@@ -741,7 +741,7 @@ Platoon = Class(SwarmPlatoonClass) {
     end,
 
     NavalAttackAISwarm = function(self)
-        if UseHeroPlatoon then
+        if UseHeroPlatoonswarm then
             self:HeroFightPlatoonSwarm()
             return
         end
