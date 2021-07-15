@@ -21,7 +21,7 @@ BuilderGroup {
         BuilderConditions = {
             { MABC, 'CanBuildOnMassSwarm', { 'LocationType', 1000, -500, 1, 0, 'AntiSurface', 1}},
 
-            { UCBC, 'CheckBuildPlattonDelay', { 'MASSEXTRACTION' }},
+            --{ UCBC, 'CheckBuildPlattonDelay', { 'MASSEXTRACTION' }},
         },
         BuilderType = 'Any',
         BuilderData = {
@@ -44,12 +44,12 @@ BuilderGroup {
         BuilderConditions = {
             { MABC, 'CanBuildOnMassSwarm', { 'LocationType', 60, -500, 1, 0, 'AntiSurface', 1}},
 
-            { UCBC, 'CheckBuildPlattonDelay', { 'MASSEXTRACTION' }},
+            --{ UCBC, 'CheckBuildPlattonDelay', { 'MASSEXTRACTION' }},
         },
         BuilderType = 'Any',
         BuilderData = {
             Construction = {
-                BuildClose = true,
+                BuildClose = false,
                 RepeatBuild = true,
                 BuildStructures = {
                     'T1Resource',
@@ -67,12 +67,12 @@ BuilderGroup {
         BuilderConditions = {
             { MABC, 'CanBuildOnMassSwarm', { 'LocationType', 120, -500, 1, 0, 'AntiSurface', 1}},
 
-            { UCBC, 'CheckBuildPlattonDelay', { 'MASSEXTRACTION' }},
+            --{ UCBC, 'CheckBuildPlattonDelay', { 'MASSEXTRACTION' }},
         },
         BuilderType = 'Any',
         BuilderData = {
             Construction = {
-                BuildClose = true,
+                BuildClose = false,
                 RepeatBuild = true,
                 BuildStructures = {
                     'T1Resource',
@@ -90,7 +90,7 @@ BuilderGroup {
         BuilderConditions = {
             { MABC, 'CanBuildOnMassSwarm', { 'LocationType', 240, -500, 1, 0, 'AntiSurface', 1}},
 
-            { UCBC, 'CheckBuildPlattonDelay', { 'MASSEXTRACTION' }},
+            --{ UCBC, 'CheckBuildPlattonDelay', { 'MASSEXTRACTION' }},
         },
         BuilderType = 'Any',
         BuilderData = {
@@ -113,7 +113,7 @@ BuilderGroup {
         BuilderConditions = {
             { MABC, 'CanBuildOnMassSwarm', { 'LocationType', 480, -500, 1, 0, 'AntiSurface', 1}},
 
-            { UCBC, 'CheckBuildPlattonDelay', { 'MASSEXTRACTION' }},
+            --{ UCBC, 'CheckBuildPlattonDelay', { 'MASSEXTRACTION' }},
         },
         BuilderType = 'Any',
         BuilderData = {
@@ -136,7 +136,7 @@ BuilderGroup {
         BuilderConditions = {
             { MABC, 'CanBuildOnMassSwarm', { 'LocationType', 1000, -500, 1, 0, 'AntiSurface', 1}},
 
-            { UCBC, 'CheckBuildPlattonDelay', { 'MASSEXTRACTION' }},
+            --{ UCBC, 'CheckBuildPlattonDelay', { 'MASSEXTRACTION' }},
         },
         BuilderType = 'Any',
         BuilderData = {
