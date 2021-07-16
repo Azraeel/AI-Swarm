@@ -33,9 +33,16 @@ local KillThread = KillThread
 SwarmPlatoonClass = Platoon
 Platoon = Class(SwarmPlatoonClass) {
 
+    -- Hook For Masss RepeatBuild by Uveso
+    -- This is an Improper way of doing RepeatBuild 
+    -- ProcessBuildCommand Function in Base Game has a severe issue | Engineers not completely jobs and or switching jobs mid way to job. 
+    -- Engineers starting a build, and immediately stopping | Somewhere in PBC Function when checking for Reclaim, Capture, and or Repair
+    -- Engineers are having issues/bug. Around Line 3627 still debugging issue but Will commit this.
+    -- This Affects All AIs as PBC decides all engineer behaviors and such, severe issue affecting all AIs.
 
+    
     -- Hook for Mass RepeatBuild
-    PlatoonDisband = function(self)
+    --[[ PlatoonDisband = function(self)
         local aiBrain = self:GetBrain()
         if not self.Swarm then
             return SwarmPlatoonClass.PlatoonDisband(self)
@@ -56,7 +63,7 @@ Platoon = Class(SwarmPlatoonClass) {
             return
         end
         SwarmPlatoonClass.PlatoonDisband(self)
-    end,
+    end, ]]--
 
     BaseManagersDistressAI = function(self)
         -- Only use this with AI-Swarm
@@ -67,6 +74,7 @@ Platoon = Class(SwarmPlatoonClass) {
          coroutine.yield(10)
          -- We are leaving this forked thread here because we don't need it.
          -- This shit is annoying!
+         -- Want to get this properly working with Swarm One Day.
          KillThread(CurrentThread())
      end,
 

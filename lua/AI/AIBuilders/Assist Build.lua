@@ -301,13 +301,13 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
         Priority = 950,
         InstanceCount = 50,
         BuilderConditions = {
-            { UCBC, 'LocationEngineersBuildingAssistanceGreater', { 'LocationType', 0, categories.TECH2 + categories.TECH3 + categories.EXPERIMENTAL } },
-
             { EBC, 'GreaterThanEconTrend', { 0.0, 0.0 } },
 
             { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.0, 1.0 }},
 
             { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.03, 0.01}},
+            
+            { UCBC, 'LocationEngineersBuildingAssistanceGreater', { 'LocationType', 0, categories.TECH2 + categories.TECH3 + categories.EXPERIMENTAL } },
         },
         BuilderType = 'Any',
         BuilderData = {
@@ -487,9 +487,9 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
         Priority = 850,
         InstanceCount = 6,
         BuilderConditions = {
-            { UCBC, 'UnitsGreaterAtLocation', { 'LocationType', 0, 'NUKE STRUCTURE'}},
-
             { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.01, 1.03 }},
+
+            { UCBC, 'UnitsGreaterAtLocation', { 'LocationType', 0, 'NUKE STRUCTURE'}},
         },
         BuilderType = 'Any',
         BuilderData = {
@@ -540,11 +540,11 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
         Priority = 750,
         InstanceCount = 10,
         BuilderConditions = {
-            { UCBC, 'UnfinishedUnitsAtLocationSwarm', { 'LocationType' }},
-
             { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.0, 1.03 }},
 
             { EBC, 'GreaterThanMassTrendSwarm', { 0.0 } },
+
+            { UCBC, 'UnfinishedUnitsAtLocationSwarm', { 'LocationType' }},
         },
         BuilderData = {
             LocationType = 'LocationType',
@@ -557,11 +557,11 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
         Priority = 760,
         InstanceCount = 10,
         BuilderConditions = {
-            { UCBC, 'UnfinishedUnitsAtLocationSwarm', { 'LocationType' }},
-
             { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.0, 1.03 }},
 
             { EBC, 'GreaterThanMassTrendSwarm', { 0.0 } },
+
+            { UCBC, 'UnfinishedUnitsAtLocationSwarm', { 'LocationType' }},
         },
         BuilderData = {
             LocationType = 'LocationType',
@@ -579,11 +579,11 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
         BuilderConditions = {
             { EBC, 'GreaterThanEconTrendSwarm', { 0.0, 0.0 } }, 
 
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.01, 1.02 }},
+
             { UCBC, 'DamagedStructuresInArea', { 'LocationType', }},
 
             { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 0, categories.MOBILE * categories.LAND * categories.ENGINEER * categories.TECH1 } },
-
-            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.01, 1.02 }},
         },
         BuilderData = {
             LocationType = 'LocationType',
@@ -598,11 +598,11 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
         BuilderConditions = {
             { EBC, 'GreaterThanEconTrendSwarm', { 0.0, 0.0 } }, 
 
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.01, 1.02 }},
+
             { UCBC, 'DamagedStructuresInArea', { 'LocationType', }},
 
             { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 0, categories.MOBILE * categories.LAND * categories.ENGINEER * categories.TECH2 } },
-
-            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.01, 1.02 }},
         },
         BuilderData = {
             LocationType = 'LocationType',
