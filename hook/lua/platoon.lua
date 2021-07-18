@@ -2509,7 +2509,7 @@ Platoon = Class(SwarmPlatoonClass) {
     ExtractorUpgradeAISwarm = function(self)
         --LOG('* AI-Swarm: +++ ExtractorUpgradeAISwarm: START')
         local aiBrain = self:GetBrain()
-        local personality = ScenarioInfo.ArmySetup[aiBrain.Name].AIPersonality
+        --local personality = ScenarioInfo.ArmySetup[aiBrain.Name].AIPersonality
         while aiBrain:PlatoonExists(self) do
             local ratio = 0.10
             if aiBrain.HasParagon then
@@ -2517,18 +2517,18 @@ Platoon = Class(SwarmPlatoonClass) {
                 ratio = 1.0
             elseif aiBrain:GetEconomyIncome('MASS') > 500 then
                 --LOG('* AI-Swarm: Mass over 500. Eco running with 50%')
+                ratio = 0.60
+            elseif GetGameTimeSeconds() > 1500 then -- 32 * 60
                 ratio = 0.50
-            elseif GetGameTimeSeconds() > 1920 then -- 32 * 60
+            elseif GetGameTimeSeconds() > 1200 then -- 22 * 60
+                ratio = 0.40
+            elseif GetGameTimeSeconds() > 900 then -- 17 * 60
                 ratio = 0.30
-            elseif GetGameTimeSeconds() > 1320 then -- 22 * 60
+            elseif GetGameTimeSeconds() > 600 then -- 12 * 60
                 ratio = 0.20
-            elseif GetGameTimeSeconds() > 1020 then -- 17 * 60
-                ratio = 0.15
-            elseif GetGameTimeSeconds() > 720 then -- 12 * 60
+            elseif GetGameTimeSeconds() > 240 then -- 4 * 60
                 ratio = 0.10
-            elseif GetGameTimeSeconds() > 420 then -- 7 * 60
-                ratio = 0.05
-            elseif GetGameTimeSeconds() <= 420 then -- 7 * 50 run the first 7 minutes with 0% Eco and 100% Army
+            elseif GetGameTimeSeconds() <= 240 then -- 4 * 60 run the first 4 minutes with 0% Eco and 100% Army
                 ratio = 0.00
             end
             local platoonUnits = self:GetPlatoonUnits()
@@ -2558,7 +2558,7 @@ Platoon = Class(SwarmPlatoonClass) {
             coroutine.yield(10)
             -- find dead units inside the platoon and disband if we find one
             for k,v in self:GetPlatoonUnits() do
-                if not v or v.Dead or v:BeenDestroyed() then
+                if v.Dead then
                     -- We found a dead unit inside this platoon. Disband the platton; It will be reformed
                     --LOG('* AI-Swarm: +++ ExtractorUpgradeAISwarm: Found Dead unit, self:PlatoonDisbandNoAssign()')
                     -- needs PlatoonDisbandNoAssign, or extractors will stop upgrading if the platton is disbanded

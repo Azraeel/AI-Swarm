@@ -106,7 +106,7 @@ BuilderGroup {
         BuilderName = 'Swarm Mass 480',
         PlatoonTemplate = 'EngineerBuilder',
         Priority = 655,
-        InstanceCount = 2,
+        InstanceCount = 3,
         BuilderConditions = {
             { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 0, categories.ENGINEER * categories.TECH1 }},
 
@@ -128,7 +128,7 @@ BuilderGroup {
         BuilderName = 'Swarm Mass 1000',
         PlatoonTemplate = 'EngineerBuilder',
         Priority = 655,
-        InstanceCount = 2,
+        InstanceCount = 3,
         BuilderConditions = {
             { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 0, categories.ENGINEER * categories.TECH1 }},
 
@@ -190,7 +190,7 @@ BuilderGroup {
         BuilderConditions = {
             { UCBC, 'HaveGreaterThanArmyPoolWithCategorySwarm', { 0, categories.MASSEXTRACTION} },
 
-            { UCBC, 'GreaterThanGameTimeSeconds', { 420 } },
+            { UCBC, 'GreaterThanGameTimeSeconds', { 240 } },
         },
         BuilderData = {
             AIPlan = 'ExtractorUpgradeAISwarm',

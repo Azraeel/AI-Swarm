@@ -20,7 +20,6 @@ function ExtractorPauseSwarm(self, aiBrain, MassExtractorUnitList, ratio, techLe
     for unitNum, unit in MassExtractorUnitList do
         if unit
             and not unit.Dead
-            and not unit:BeenDestroyed()
             and not unit:GetFractionComplete() < 1
             and EntityCategoryContains(ParseEntityCategory(techLevel), unit)
         then
@@ -58,7 +57,7 @@ function ExtractorPauseSwarm(self, aiBrain, MassExtractorUnitList, ratio, techLe
     end
     
 
-    if aiBrain:GetEconomyStoredRatio('ENERGY') <= 0.55 then
+    if aiBrain:GetEconomyStoredRatio('ENERGY') <= 0.25 then
         if UpgradingBuilding then
             if UpgradingBuildingNum <= 0 and table.getn(MassExtractorUnitList) >= 8 then
             else
