@@ -8,11 +8,13 @@ local BasePanicZone, BaseMilitaryZone, BaseEnemyZone = import('/mods/AI-Swarm/lu
 local MaxCapMass = 0.25 
 local MaxCapStructure = 0.25                   
 
+-- I need a function or something, that does not allow engineers in a certain radius to build something. 
+-- This is a issue mostly with factories, engineers walking all the way back to base to build factory from 300 distances away.
 
 BuilderGroup {
     BuilderGroupName = 'S1 MassBuilders',                       
     BuildersType = 'EngineerBuilder',
-    Builder {
+    --[[ Builder {
         BuilderName = 'Swarm Mass - Opener',
         PlatoonTemplate = 'EngineerBuilder',
         Priority = 670,
@@ -32,7 +34,7 @@ BuilderGroup {
                 }
             }
         }
-    },
+    }, 
 
     Builder {
         BuilderName = 'Swarm Mass 60',
@@ -47,14 +49,14 @@ BuilderGroup {
         BuilderType = 'Any',
         BuilderData = {
             Construction = {
-                BuildClose = false,
-                RepeatBuild = true,
+                BuildClose = true,
+                RepeatBuild = false,
                 BuildStructures = {
                     'T1Resource',
                 }
             }
         }
-    },
+    }, 
 
     Builder {
         BuilderName = 'Swarm Mass 120',
@@ -69,24 +71,24 @@ BuilderGroup {
         BuilderType = 'Any',
         BuilderData = {
             Construction = {
-                BuildClose = false,
+                BuildClose = true,
                 RepeatBuild = true,
                 BuildStructures = {
                     'T1Resource',
                 }
             }
         }
-    },
+    }, ]]--
 
     Builder {
         BuilderName = 'Swarm Mass 240',
         PlatoonTemplate = 'EngineerBuilder',
-        Priority = 655,
-        InstanceCount = 4,
+        Priority = 670,
+        InstanceCount = 2,
         BuilderConditions = {
             { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 0, categories.ENGINEER * categories.TECH1 }},
 
-            { MABC, 'CanBuildOnMassSwarm', { 'LocationType', 240, -500, 1, 0, 'AntiSurface', 1}},
+            { MABC, 'CanBuildOnMassSwarm', { 'LocationType', 240, -500, 30, 1, 'AntiSurface', 1}},
         },
         BuilderType = 'Any',
         BuilderData = {
@@ -104,11 +106,11 @@ BuilderGroup {
         BuilderName = 'Swarm Mass 480',
         PlatoonTemplate = 'EngineerBuilder',
         Priority = 655,
-        InstanceCount = 4,
+        InstanceCount = 2,
         BuilderConditions = {
             { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 0, categories.ENGINEER * categories.TECH1 }},
 
-            { MABC, 'CanBuildOnMassSwarm', { 'LocationType', 480, -500, 1, 0, 'AntiSurface', 1}},
+            { MABC, 'CanBuildOnMassSwarm', { 'LocationType', 480, -500, 30, 1, 'AntiSurface', 1}},
         },
         BuilderType = 'Any',
         BuilderData = {
@@ -126,11 +128,11 @@ BuilderGroup {
         BuilderName = 'Swarm Mass 1000',
         PlatoonTemplate = 'EngineerBuilder',
         Priority = 655,
-        InstanceCount = 4,
+        InstanceCount = 2,
         BuilderConditions = {
             { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 0, categories.ENGINEER * categories.TECH1 }},
 
-            { MABC, 'CanBuildOnMassSwarm', { 'LocationType', 1000, -500, 1, 0, 'AntiSurface', 1}},
+            { MABC, 'CanBuildOnMassSwarm', { 'LocationType', 1000, -500, 30, 1, 'AntiSurface', 1}},
         },
         BuilderType = 'Any',
         BuilderData = {

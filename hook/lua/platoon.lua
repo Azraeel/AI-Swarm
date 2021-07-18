@@ -34,15 +34,7 @@ SwarmPlatoonClass = Platoon
 Platoon = Class(SwarmPlatoonClass) {
 
     -- Hook For Masss RepeatBuild by Uveso
-    -- This is an Improper way of doing RepeatBuild 
-    -- ProcessBuildCommand Function in Base Game has a severe issue | Engineers not completely jobs and or switching jobs mid way to job. 
-    -- Engineers starting a build, and immediately stopping | Somewhere in PBC Function when checking for Reclaim, Capture, and or Repair
-    -- Engineers are having issues/bug. Around Line 3627 still debugging issue but Will commit this.
-    -- This Affects All AIs as PBC decides all engineer behaviors and such, severe issue affecting all AIs.
-
-    
-    -- Hook for Mass RepeatBuild
-    --[[ PlatoonDisband = function(self)
+    PlatoonDisband = function(self)
         local aiBrain = self:GetBrain()
         if not self.Swarm then
             return SwarmPlatoonClass.PlatoonDisband(self)
@@ -51,19 +43,20 @@ Platoon = Class(SwarmPlatoonClass) {
             local UCBC = import('/lua/editor/UnitCountBuildConditions.lua')
             if UCBC.HaveUnitRatioVersusCapSwarm(aiBrain, 0.10, '<', categories.STRUCTURE * categories.MASSEXTRACTION) then
                 -- only repeat if we have a free mass spot
-                local MABC = import('/lua/editor/MarkerBuildConditions.lua')
-                if MABC.CanBuildOnMassSwarm(aiBrain, 'MAIN', 1000, -500, 1, 0, 'AntiSurface', 1) then  -- LocationType, distance, threatMin, threatMax, threatRadius, threatType, maxNum
-                    self:SetAIPlan('EngineerBuildAI')
-                    return
+                if aiBrain:GetEconomyStoredRatio('ENERGY') > 0.50 then
+                    local MABC = import('/lua/editor/MarkerBuildConditions.lua')
+                    if MABC.CanBuildOnMassSwarm(aiBrain, 'MAIN', 1000, -500, 30, 1, 'AntiSurface', 1) then  -- LocationType, distance, threatMin, threatMax, threatRadius, threatType, maxNum
+                        self:SetAIPlan('EngineerBuildAI')
+                        return
+                    end
                 end
             end
             -- delete the repeat flag so the engineer will not repeat on its next task
             self.PlatoonData.Construction.RepeatBuild = nil
             self:MoveToLocation(aiBrain.BuilderManagers['MAIN'].Position, false)
-            return
         end
         SwarmPlatoonClass.PlatoonDisband(self)
-    end, ]]--
+    end, 
 
     BaseManagersDistressAI = function(self)
         -- Only use this with AI-Swarm

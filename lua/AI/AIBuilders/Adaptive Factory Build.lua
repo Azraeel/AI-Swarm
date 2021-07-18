@@ -161,7 +161,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Adaptive Factory Build',
     Builder {
         BuilderName = 'Swarm Land Factory Mass > MassRatio',
         PlatoonTemplate = 'EngineerBuilderALLTECH',
-        Priority = 600,
+        Priority = 650,
         DelayEqualBuildPlattons = {'Factories', 3},
         BuilderConditions = {
             { UCBC, 'CheckBuildPlattonDelay', { 'Factories' }},
@@ -644,7 +644,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Factory Builders Expansions',
     
     Builder { BuilderName = 'All Land Factory Expansions',
         PlatoonTemplate = 'EngineerBuilderALLTECH',
-        Priority = 500,
+        Priority = 650,
         InstanceCount = 1,                                                      -- Number of plattons that will be formed with this template.
         DelayEqualBuildPlattons = {'Factories', 3},
         BuilderConditions = {
@@ -675,7 +675,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Factory Builders Expansions',
 
     Builder { BuilderName = 'All Air Factory Expansions',
         PlatoonTemplate = 'EngineerBuilderALLTECH',
-        Priority = 500,
+        Priority = 650,
         InstanceCount = 1,
         DelayEqualBuildPlattons = {'Factories', 3},
         BuilderConditions = {

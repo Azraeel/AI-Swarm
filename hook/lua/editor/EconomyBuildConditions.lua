@@ -1,3 +1,4 @@
+local AIUtils = import('/lua/ai/aiutilities.lua')
 
 OldGreaterThanEconStorageRatioFunction = GreaterThanEconStorageRatio
 function GreaterThanEconStorageRatioSwarm(aiBrain, mStorageRatio, eStorageRatio)
@@ -10,6 +11,14 @@ function GreaterThanEconStorageRatioSwarm(aiBrain, mStorageRatio, eStorageRatio)
     if aiBrain.HasParagon and econ.MassStorageRatio >= 0.01 and econ.EnergyStorageRatio >= 0.01 then
         return true
     elseif econ.MassStorageRatio >= mStorageRatio and econ.EnergyStorageRatio >= eStorageRatio then
+        return true
+    end
+    return false
+end
+
+function LessThanEconStorageRatioSwarm(aiBrain, mStorageRatio, eStorageRatio)
+    local econ = AIUtils.AIGetEconomyNumbers(aiBrain)
+    if (econ.MassStorageRatio < mStorageRatio or econ.EnergyStorageRatio < eStorageRatio) then
         return true
     end
     return false
