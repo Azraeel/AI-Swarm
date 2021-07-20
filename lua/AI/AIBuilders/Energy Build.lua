@@ -53,7 +53,7 @@ BuilderGroup {
         BuilderName = 'Swarm Power low trend - Scale Power',
         PlatoonTemplate = 'EngineerBuilder',
         Priority = 660,
-        InstanceCount = 2,                                                      -- Number of plattons that will be formed with this template.
+        InstanceCount = 3,                                                      -- Number of plattons that will be formed with this template.
         DelayEqualBuildPlattons = {'Energy', 3},
         BuilderConditions = {
             { UCBC, 'CheckBuildPlattonDelay', { 'Energy' }},
@@ -62,13 +62,11 @@ BuilderGroup {
 
             { EBC, 'LessThanEnergyTrend', { 7.5 } },
 
-            { UCBC, 'HaveLessThanUnitsWithCategory', { 1, categories.ENERGYPRODUCTION * categories.TECH2 } },
+            { UCBC, 'HaveLessThanUnitsWithCategory', { 1, categories.ENERGYPRODUCTION - categories.TECH1 - categories.COMMAND } },
 
-            { UCBC, 'HasNotParagon', {} },
+            --{ EBC, 'GreaterThanEconIncomeSwarm',  { 0.5, 0.0}}, -- Absolut Base income
 
-            { EBC, 'GreaterThanEconIncomeSwarm',  { 0.5, 0.0}}, -- Absolut Base income
-
-            { UCBC, 'GreaterThanGameTimeSeconds', { 260 } },
+            --{ UCBC, 'GreaterThanGameTimeSeconds', { 260 } },
         },
         BuilderType = 'Any',
         BuilderData = {
@@ -85,7 +83,7 @@ BuilderGroup {
         }
     },
 
-    Builder {
+    --[[ Builder {
         BuilderName = 'Swarm Engineer Power MassRatio 10',
         PlatoonTemplate = 'EngineerBuilder',
         Priority = 650,
@@ -96,8 +94,6 @@ BuilderGroup {
             { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.05, 0}},
 
             { UCBC, 'HaveLessThanUnitsWithCategory', { 1, categories.ENERGYPRODUCTION * categories.TECH2 } },
-
-            { UCBC, 'HasNotParagon', {} },
 
             { EBC, 'GreaterThanEconIncomeSwarm',  { 0.5, 0.0}}, -- Absolut Base income
 
@@ -132,8 +128,6 @@ BuilderGroup {
 
             { UCBC, 'HaveLessThanUnitsWithCategory', { 1, categories.ENERGYPRODUCTION * categories.TECH2 } },
 
-            { UCBC, 'HasNotParagon', {} },
-
             { EBC, 'GreaterThanEconIncomeSwarm',  { 0.5, 0.0}}, -- Absolut Base income
 
             { UCBC, 'GreaterThanGameTimeSeconds', { 180 } },
@@ -152,7 +146,7 @@ BuilderGroup {
                 },
             }
         }
-    },
+    }, ]]--
 
     Builder {
         BuilderName = 'Swarm Power Hydrocarbon Rush',
@@ -205,73 +199,12 @@ BuilderGroup {
     },
 
 
-    --==========================--
-    -- Commander Energy Builders--
-    --==========================--
-
-    Builder {
-        BuilderName = 'Swarm Power low trend',
-        PlatoonTemplate = 'CommanderBuilder',
-        Priority = 645,
-        BuilderConditions = {
-            { EBC, 'LessThanEnergyTrend', { 0.0 } },             -- Ratio from 0 to 1. (1=100%)
-
-            { UCBC, 'HaveLessThanUnitsWithCategory', { 1, categories.ENERGYPRODUCTION * categories.TECH2 } },
-
-            { UCBC, 'HasNotParagon', {} },
-
-            { UCBC, 'GreaterThanGameTimeSeconds', { 2 } },
-
-            { EBC, 'GreaterThanEconIncomeSwarm',  { 0.5, 0.0}}, -- Absolut Base income
-        },
-        InstanceCount = 1,
-        BuilderType = 'Any',
-        BuilderData = {
-            Construction = {
-                AdjacencyCategory = categories.STRUCTURE * categories.FACTORY * (categories.LAND + categories.AIR),
-                AdjacencyDistance = 50,
-                BuildClose = true,
-                LocationType = 'LocationType',
-                BuildStructures = {
-                    'T1EnergyProduction',
-                },
-            }
-        }
-    },
-
-    Builder {
-        BuilderName = 'Swarm Commander Power MassRatio 10',
-        PlatoonTemplate = 'CommanderBuilder',
-        Priority = 650,
-        BuilderConditions = {
-            { EBC, 'EnergyToMassRatioIncome', { 10.0, '<=' } },  -- True if we have less than 10 times more Energy then Mass income ( 100 <= 10 = true )
-
-            { UCBC, 'HaveLessThanUnitsWithCategory', { 1, categories.ENERGYPRODUCTION * categories.TECH2 } },
-
-            { UCBC, 'HasNotParagon', {} },
-
-            { UCBC, 'LessThanGameTimeSeconds', { 300 } },
-
-            { EBC, 'GreaterThanEconIncomeSwarm',  { 0.5, 0.0}}, -- Absolut Base income
-        },
-        InstanceCount = 1,
-        BuilderType = 'Any',
-        BuilderData = {
-            Construction = {
-                AdjacencyCategory = categories.STRUCTURE * categories.FACTORY * (categories.LAND + categories.AIR),
-                AdjacencyDistance = 50,
-                BuildClose = true,
-                LocationType = 'LocationType',
-                BuildStructures = {
-                    'T1EnergyProduction',
-                },
-            }
-        }
-    },
     -- ============ --
     --    TECH 2    --
     -- ============ --
-    Builder {
+
+
+    --[[Builder {
         BuilderName = 'S2 Power minimum',
         PlatoonTemplate = 'T2EngineerBuilder',
         Priority = 1250,
@@ -302,7 +235,7 @@ BuilderGroup {
                 },
             }
         }
-    }, 
+    }, ]]--
 
     Builder {
         BuilderName = 'S2 Power',
@@ -312,7 +245,7 @@ BuilderGroup {
         BuilderConditions = {
             { UCBC, 'HaveLessThanUnitsWithCategory', { 1, categories.ENERGYPRODUCTION * categories.TECH3 } },
             
-            { EBC, 'LessThanEnergyTrend', { 0.0 } },              -- Ratio from 0 to 1. (1=100%)
+            { EBC, 'LessThanEnergyTrend', { 20.0 } },              -- Ratio from 0 to 1. (1=100%)
 
             { UCBC, 'HaveLessThanUnitsInCategoryBeingBuilt', { 1, categories.STRUCTURE * categories.ENERGYPRODUCTION * categories.TECH2 }},
         },
@@ -334,7 +267,7 @@ BuilderGroup {
         }
     },
 
-    Builder {
+    --[[ Builder {
         BuilderName = 'S2 Power - Overbuild',
         PlatoonTemplate = 'T2EngineerBuilder',
         Priority = 1000,
@@ -344,7 +277,7 @@ BuilderGroup {
 
             { EBC, 'GreaterThanEconStorageRatio', { 0.10, 0.00 } },             -- Ratio from 0 to 1. (1=100%)
             
-            { EBC, 'LessThanEnergyTrend', { 100.0 } },              -- Ratio from 0 to 1. (1=100%)
+            { EBC, 'LessThanEnergyTrend', { 50.0 } },              -- Ratio from 0 to 1. (1=100%)
 
             { UCBC, 'HaveLessThanUnitsInCategoryBeingBuilt', { 1, categories.STRUCTURE * categories.ENERGYPRODUCTION * categories.TECH2 }},
         },
@@ -364,10 +297,14 @@ BuilderGroup {
                 },
             }
         }
-    },
+    }, ]]--
+
+
     -- ============ --
     --    TECH 3    --
     -- ============ --
+
+
     --[[Builder {
         BuilderName = 'S3 Power minimum',
         PlatoonTemplate = 'T3EngineerBuildernoSUB',

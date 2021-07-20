@@ -100,10 +100,10 @@ PlatoonTemplate {
 }
 
 PlatoonTemplate {
-    Name = 'Hero Fight 5 48',
+    Name = 'Hero Fight 1 48',
     Plan = 'HeroFightPlatoonSwarm',
     GlobalSquads = {
-        { categories.MOBILE * categories.LAND - categories.SHIELD - categories.STEALTHFIELD - categories.ANTIAIR - categories.EXPERIMENTAL - categories.ENGINEER - categories.SCOUT - categories.COMMAND - categories.SUBCOMMANDER, 4, 48, 'Attack', 'none' },
+        { categories.MOBILE * categories.LAND - categories.SHIELD - categories.STEALTHFIELD - categories.ANTIAIR - categories.EXPERIMENTAL - categories.ENGINEER - categories.SCOUT - categories.COMMAND - categories.SUBCOMMANDER, 1, 48, 'Attack', 'none' },
         { categories.MOBILE * (categories.SHIELD + categories.STEALTHFIELD) - categories.ANTIAIR - categories.EXPERIMENTAL - categories.ENGINEER - categories.SCOUT - categories.COMMAND - categories.SUBCOMMANDER, 0, 8, 'support', 'none' }
     },
 }

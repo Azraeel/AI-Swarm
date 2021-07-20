@@ -429,6 +429,10 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Scout Formers',
 -- HuntAI was only be really effective with T1 spam so lets implement this like a real player theres not much point to much t1
 -- So lets keep everything else on my most complex platoon functions. :D
 
+-- Swarm needs to be slightly more complex in the T1 Phase, We need to mix in some form of LandAttackAISwarm whether that be in a situation where Swarm has a high land ratio 
+-- or in some other condition when Swarm needs to be more effective with his land units instead of just HuntAI Straight at the Enemy.
+-- Problems for another day though.
+
 BuilderGroup {
     BuilderGroupName = 'AISwarm Platoon Builder',
     BuildersType = 'PlatoonFormBuilder', 

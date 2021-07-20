@@ -36,7 +36,7 @@ BuilderGroup {
         }
     },
 
-    Builder {
+    --[[ Builder {
         BuilderName = 'S1 Radar - Field Radars',
         PlatoonTemplate = 'EngineerBuilder',
         Priority = 600,
@@ -61,7 +61,7 @@ BuilderGroup {
                 Location = 'LocationType',
             }
         }
-    },
+    }, ]]--
 
     Builder {
         BuilderName = 'S3 Radar',

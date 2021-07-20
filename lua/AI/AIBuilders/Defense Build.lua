@@ -269,6 +269,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Shields Upgrader',
             { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.05, 1.1 }},
 
             { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.02, 0.1}},
+            
             { UCBC, 'UnitsGreaterAtLocation', { 'LocationType', 0, categories.TECH3 * categories.ENERGYPRODUCTION}},
 
             { UCBC, 'HaveLessThanUnitsInCategoryBeingUpgradeSwarm', { 2, categories.STRUCTURE * categories.SHIELD }},
@@ -808,6 +809,8 @@ BuilderGroup { BuilderGroupName = 'Swarm Defense Anti Ground Builders',
         Priority = 550,
         InstanceCount = 1,
         BuilderConditions = {
+            { UCBC, 'HaveGreaterThanUnitsWithCategory', { 0, categories.STRUCTURE * categories.DEFENSE * categories.TECH1 * categories.DIRECTFIRE }},
+
             { UCBC, 'HaveGreaterThanUnitsWithCategory', { 0, categories.STRUCTURE * categories.DEFENSE * categories.TECH2 * categories.DIRECTFIRE }},
         },
         BuilderData = {
@@ -891,11 +894,13 @@ BuilderGroup { BuilderGroupName = 'Swarm Defense Anti Air Builders',
     Builder {
         BuilderName = 'Swarm Reclaim T1 AA',
         PlatoonTemplate = 'EngineerBuilderALLTECH',
-        PlatoonAIPlan = 'ReclaimStructuresAI',
-        Priority = 500,
+        PlatoonAIPlan = 'ReclaimStructuresAI',   
+        Priority = 250,
         InstanceCount = 1,
         BuilderConditions = {
-            { UCBC, 'HaveGreaterThanUnitsWithCategory', { 0, categories.STRUCTURE * categories.DEFENSE * categories.TECH2 * categories.ANTIAIR }},
+            { UCBC, 'HaveGreaterThanUnitsWithCategory', { 0, categories.STRUCTURE * categories.DEFENSE * categories.TECH1 * categories.ANTIAIR }},
+
+            { UCBC, 'HaveGreaterThanUnitsWithCategory', { 2, categories.STRUCTURE * categories.DEFENSE * categories.TECH2 * categories.ANTIAIR }},
         },
         BuilderData = {
             Location = 'LocationType',

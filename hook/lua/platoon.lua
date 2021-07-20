@@ -33,8 +33,7 @@ local KillThread = KillThread
 SwarmPlatoonClass = Platoon
 Platoon = Class(SwarmPlatoonClass) {
 
-
-    -- Hook for Mass RepeatBuild
+    -- Hook For Masss RepeatBuild by Uveso
     PlatoonDisband = function(self)
         local aiBrain = self:GetBrain()
         if not self.Swarm then
@@ -44,19 +43,20 @@ Platoon = Class(SwarmPlatoonClass) {
             local UCBC = import('/lua/editor/UnitCountBuildConditions.lua')
             if UCBC.HaveUnitRatioVersusCapSwarm(aiBrain, 0.10, '<', categories.STRUCTURE * categories.MASSEXTRACTION) then
                 -- only repeat if we have a free mass spot
-                local MABC = import('/lua/editor/MarkerBuildConditions.lua')
-                if MABC.CanBuildOnMassSwarm(aiBrain, 'MAIN', 1000, -500, 1, 0, 'AntiSurface', 1) then  -- LocationType, distance, threatMin, threatMax, threatRadius, threatType, maxNum
-                    self:SetAIPlan('EngineerBuildAI')
-                    return
+                if aiBrain:GetEconomyStoredRatio('ENERGY') > 0.50 then
+                    local MABC = import('/lua/editor/MarkerBuildConditions.lua')
+                    if MABC.CanBuildOnMassSwarm(aiBrain, 'MAIN', 1000, -500, 30, 1, 'AntiSurface', 1) then  -- LocationType, distance, threatMin, threatMax, threatRadius, threatType, maxNum
+                        self:SetAIPlan('EngineerBuildAI')
+                        return
+                    end
                 end
             end
             -- delete the repeat flag so the engineer will not repeat on its next task
             self.PlatoonData.Construction.RepeatBuild = nil
             self:MoveToLocation(aiBrain.BuilderManagers['MAIN'].Position, false)
-            return
         end
         SwarmPlatoonClass.PlatoonDisband(self)
-    end,
+    end, 
 
     BaseManagersDistressAI = function(self)
         -- Only use this with AI-Swarm
@@ -67,6 +67,7 @@ Platoon = Class(SwarmPlatoonClass) {
          coroutine.yield(10)
          -- We are leaving this forked thread here because we don't need it.
          -- This shit is annoying!
+         -- Want to get this properly working with Swarm One Day.
          KillThread(CurrentThread())
      end,
 
@@ -2508,7 +2509,7 @@ Platoon = Class(SwarmPlatoonClass) {
     ExtractorUpgradeAISwarm = function(self)
         --LOG('* AI-Swarm: +++ ExtractorUpgradeAISwarm: START')
         local aiBrain = self:GetBrain()
-        local personality = ScenarioInfo.ArmySetup[aiBrain.Name].AIPersonality
+        --local personality = ScenarioInfo.ArmySetup[aiBrain.Name].AIPersonality
         while aiBrain:PlatoonExists(self) do
             local ratio = 0.10
             if aiBrain.HasParagon then
@@ -2516,18 +2517,18 @@ Platoon = Class(SwarmPlatoonClass) {
                 ratio = 1.0
             elseif aiBrain:GetEconomyIncome('MASS') > 500 then
                 --LOG('* AI-Swarm: Mass over 500. Eco running with 50%')
+                ratio = 0.60
+            elseif GetGameTimeSeconds() > 1500 then -- 32 * 60
                 ratio = 0.50
-            elseif GetGameTimeSeconds() > 1920 then -- 32 * 60
+            elseif GetGameTimeSeconds() > 1200 then -- 22 * 60
+                ratio = 0.40
+            elseif GetGameTimeSeconds() > 900 then -- 17 * 60
                 ratio = 0.30
-            elseif GetGameTimeSeconds() > 1320 then -- 22 * 60
+            elseif GetGameTimeSeconds() > 600 then -- 12 * 60
                 ratio = 0.20
-            elseif GetGameTimeSeconds() > 1020 then -- 17 * 60
-                ratio = 0.15
-            elseif GetGameTimeSeconds() > 720 then -- 12 * 60
+            elseif GetGameTimeSeconds() > 240 then -- 4 * 60
                 ratio = 0.10
-            elseif GetGameTimeSeconds() > 420 then -- 7 * 60
-                ratio = 0.05
-            elseif GetGameTimeSeconds() <= 420 then -- 7 * 50 run the first 7 minutes with 0% Eco and 100% Army
+            elseif GetGameTimeSeconds() <= 240 then -- 4 * 60 run the first 4 minutes with 0% Eco and 100% Army
                 ratio = 0.00
             end
             local platoonUnits = self:GetPlatoonUnits()
@@ -2557,7 +2558,7 @@ Platoon = Class(SwarmPlatoonClass) {
             coroutine.yield(10)
             -- find dead units inside the platoon and disband if we find one
             for k,v in self:GetPlatoonUnits() do
-                if not v or v.Dead or v:BeenDestroyed() then
+                if v.Dead then
                     -- We found a dead unit inside this platoon. Disband the platton; It will be reformed
                     --LOG('* AI-Swarm: +++ ExtractorUpgradeAISwarm: Found Dead unit, self:PlatoonDisbandNoAssign()')
                     -- needs PlatoonDisbandNoAssign, or extractors will stop upgrading if the platton is disbanded
@@ -6514,12 +6515,27 @@ Platoon = Class(SwarmPlatoonClass) {
                         else
                             unit.WeaponArc = 'none'
                         end
+                    else
+                        -- save a backup weapon in case we have only missiles or longrange weapons
+                        unit.MaxWeaponRangeBackup = weapon.MaxRadius * 0.9 -- maxrange minus 10%
+                        if weapon.BallisticArc == 'RULEUBA_LowArc' then
+                            unit.WeaponArcBackup = 'low'
+                        elseif weapon.BallisticArc == 'RULEUBA_HighArc' then
+                            unit.WeaponArcBackup = 'high'
+                        else
+                            unit.WeaponArcBackup = 'none'
+                        end
                     end
                 end
                 -- check for the overall range of the platoon
                 if not MaxPlatoonWeaponRange or MaxPlatoonWeaponRange > unit.MaxWeaponRange then
                     MaxPlatoonWeaponRange = unit.MaxWeaponRange
                 end
+            end
+            -- in case we have not a normal weapons, use the backupweapon if available
+            if not unit.MaxWeaponRange and unit.MaxWeaponRangeBackup then
+                unit.MaxWeaponRange = unit.MaxWeaponRangeBackup
+                unit.WeaponArc = unit.WeaponArcBackup
             end
             -- Search all platoon units and activate Stealth and Cloak (mostly Modded units)
             if unit:TestToggleCaps('RULEUTC_StealthToggle') then
@@ -6562,12 +6578,16 @@ Platoon = Class(SwarmPlatoonClass) {
             unit.IamLost = 0
         end
         if not MaxPlatoonWeaponRange then
+            if aiBrain:PlatoonExists(self) then
+                self:PlatoonDisband()
+            end
             return
         end
         -- we only see targets from this targetcategories.
         local TargetSearchCategory = self.PlatoonData.TargetSearchCategory
         if not TargetSearchCategory then
             WARN('* AI-Swarm: Missing TargetSearchCategory in builder: '..repr(self.BuilderName))
+            TargetSearchCategory = categories.ALLUNITS
         end
         -- additional variables we need inside the platoon loop
         local TargetInPlatoonRange
@@ -6582,7 +6602,7 @@ Platoon = Class(SwarmPlatoonClass) {
         local alpha
         local x
         local y
-        local smartPos
+        local smartPos = {}
         local UnitToCover = nil
         local CoverIndex = 0
         local UnitMassCost = {}
@@ -6633,11 +6653,17 @@ Platoon = Class(SwarmPlatoonClass) {
                 unit.Blocked = false
             end
             -- wait a bit here, so continue commands can't deadloop/freeze the game
-            coroutine.yield(4)
+            coroutine.yield(3)
             if self.UsingTransport then
                 continue
             end
             PlatoonCenterPosition = self:GetPlatoonPosition()
+            if not PlatoonCenterPosition[1] then
+                if aiBrain:PlatoonExists(self) then
+                    self:PlatoonDisband()
+                end
+                return
+            end
             -- set target search center position
             if not GetTargetsFromBase then
                 GetTargetsFrom = PlatoonCenterPosition
@@ -6753,10 +6779,13 @@ Platoon = Class(SwarmPlatoonClass) {
                     --self:RenamePlatoon('move to base')
                     if VDist2(PlatoonCenterPosition[1] or 0, PlatoonCenterPosition[3] or 0, basePosition[1] or 0, basePosition[3] or 0) > 40 then
                         self:SetPlatoonFormationOverride('NoFormation')
-                        self:SimpleReturnToBase(basePosition)
+                        self:SimpleReturnToBaseSwarm(basePosition)
                         if HERODEBUGSwarm then
                             self:RenamePlatoon('returning (Air)')
                             coroutine.yield(10)
+                        end
+                        if aiBrain:PlatoonExists(self) then
+                            self:PlatoonDisband()
                         end
                         return
                     else
@@ -6778,6 +6807,9 @@ Platoon = Class(SwarmPlatoonClass) {
                         end
                         self:SetPlatoonFormationOverride('NoFormation')
                         self:ForceReturnToNearestBaseAISwarm()
+                        if aiBrain:PlatoonExists(self) then
+                            self:PlatoonDisband()
+                        end
                         return
                     else
                     -- we are at home and we don't have a target. Disband!
@@ -6834,7 +6866,11 @@ Platoon = Class(SwarmPlatoonClass) {
             if aiBrain:PlatoonExists(self) then
                 self:Stop()
                 coroutine.yield(1)
-                self:Patrol(LastTargetPos)
+                if LastTargetPos then
+                    self:Patrol(LastTargetPos)
+                else
+                    self:Patrol(basePosition)
+                end
             else
                 return
             end
@@ -6846,11 +6882,11 @@ Platoon = Class(SwarmPlatoonClass) {
             LastTargetPos = nil
             --self:RenamePlatoon('MICRO loop')
             while aiBrain:PlatoonExists(self) do
-                -- wait a bit here, so continue commands can't deadloop/freeze the game
                 if HERODEBUGSwarm then
-                    self:RenamePlatoon('microing in 4 ticks')
+                    self:RenamePlatoon('microing in 5 ticks')
                 end
-                coroutine.yield(3)
+                -- wait a bit here, so continue commands can't deadloop/freeze the game
+                coroutine.yield(10)
                 --LOG('* AI-Swarm: * HeroFightPlatoon: Starting micro loop')
                 PlatoonCenterPosition = self:GetPlatoonPosition()
                 if not PlatoonCenterPosition then
@@ -6866,14 +6902,30 @@ Platoon = Class(SwarmPlatoonClass) {
                 if HERODEBUGSwarm then
                     self:RenamePlatoon('AIFindNearestCategoryTargetInCloseRangeSwarm')
                 end
+
                 -- get a target on every loop, so we can see targets that are moving closer
-                if self.MovementLayer == 'Air' then
-                    TargetInPlatoonRange = AIUtils.AIFindNearestCategoryTargetInCloseRangeSwarm(self, aiBrain, 'Attack', LastTargetPos or PlatoonCenterPosition, MaxPlatoonWeaponRange + 50 , WeaponTargetCategories, TargetSearchCategory, false)
-                elseif TargetHug then
-                    TargetInPlatoonRange = AIUtils.AIFindNearestCategoryTargetInCloseRangeSwarm(self, aiBrain, 'Attack', LastTargetPos or PlatoonCenterPosition, MaxPlatoonWeaponRange + 50 , MoveToCategories, TargetSearchCategory, false)
+                if TargetHug then
+                    TargetInPlatoonRange = self:FindClosestUnit('Attack', 'Enemy', true, TargetSearchCategory)
                 else
-                    TargetInPlatoonRange = AIUtils.AIFindNearestCategoryTargetInCloseRangeSwarm(self, aiBrain, 'Attack', LastTargetPos or PlatoonCenterPosition, MaxPlatoonWeaponRange + 30 , {TargetSearchCategory}, TargetSearchCategory, false)
+                    TargetInPlatoonRange = self:FindClosestUnit('Attack', 'Enemy', true, categories.ALLUNITS)
                 end
+
+                -- check if the target is in range
+                if TargetInPlatoonRange then
+                    LastTargetPos = TargetInPlatoonRange:GetPosition()
+                    if self.MovementLayer == 'Air' then
+                        if VDist2( PlatoonCenterPosition[1], PlatoonCenterPosition[3], LastTargetPos[1], LastTargetPos[3] ) > MaxPlatoonWeaponRange + 60 then
+                            -- Air target is to far away, remove it and lets get a new main target 
+                            TargetInPlatoonRange = false
+                        end
+                    else
+                        if VDist2( PlatoonCenterPosition[1], PlatoonCenterPosition[3], LastTargetPos[1], LastTargetPos[3] ) > MaxPlatoonWeaponRange + 35 then
+                            -- land/naval target is to far away, remove it and lets get a new main target 
+                            TargetInPlatoonRange = false
+                        end
+                    end
+                end
+
                 if HERODEBUGSwarm then
                     if TargetInPlatoonRange then
                         if TargetInPlatoonRange.Dead then
@@ -6887,8 +6939,7 @@ Platoon = Class(SwarmPlatoonClass) {
                 end
 
                 if TargetInPlatoonRange and not TargetInPlatoonRange.Dead then
-                    --LOG('* AI-Swarm: * HeroFightPlatoon: TargetInPlatoonRange: ['..repr(TargetInPlatoonRange.UnitId)..']')
-                    LastTargetPos = TargetInPlatoonRange:GetPosition()
+                    --LOG('* AI-Uveso: * HeroFightPlatoon: TargetInPlatoonRange: ['..repr(TargetInPlatoonRange.UnitId)..']')
                     if AIUtils.IsNukeBlastAreaSwarm(aiBrain, LastTargetPos) then
                         -- continue the "while aiBrain:PlatoonExists(self) do" loop
                         continue
@@ -6930,6 +6981,10 @@ Platoon = Class(SwarmPlatoonClass) {
                             if unit.IsShieldOnlyUnit then
                                 continue
                             end
+                            -- clear move commands if we have queued more than 2
+                            if table.getn(unit:GetCommandQueue()) > 1 then
+                                IssueClearCommands({unit})
+                            end
                             unitPos = unit:GetPosition()
                             if unit.Blocked then
                                 -- Weapoon fire is blocked, move to the target as close as possible.
@@ -6942,8 +6997,6 @@ Platoon = Class(SwarmPlatoonClass) {
                             end
                             -- if we need to get as close to the target as possible, then just run to the target position
                             if TargetHug then
-                                IssueStop({unit})
-                                coroutine.yield(1)
                                 IssueMove({unit}, { LastTargetPos[1] + Random(-1, 1), LastTargetPos[2], LastTargetPos[3] + Random(-1, 1) } )
                             -- check if the move position is new or target has moved
                             -- if we don't have a rear weapon then attack (will move in circles otherwise)
@@ -6977,17 +7030,11 @@ Platoon = Class(SwarmPlatoonClass) {
                                     -- stucked units can't be unstucked, even with a forked thread and hammering movement commands. Let's kill it !!!
                                     unit:Kill()
                                 end
-                                -- clear move commands if we have queued more than 2
-                                if table.getn(unit:GetCommandQueue()) > 2 then
-                                    IssueClearCommands({unit})
-                                    coroutine.yield(3)
-                                end
-                                -- if our target is dead, jump out of the "for _, unit in self:GetPlatoonUnits() do" loop
                                 IssueMove({unit}, smartPos )
-                                if not TargetInPlatoonRange.Dead then
-                                    IssueAttack({unit}, TargetInPlatoonRange)
+                                if HERODEBUGSwarm then
+                                    unit:SetCustomName('Fight micro moving')
+                                    coroutine.yield(1)
                                 end
-                                --unit:SetCustomName('Fight micro moving')
                                 unit.smartPos = smartPos
                                 unit.TargetPos = LastTargetPos
                             -- in case we don't move, check if we can fire at the target
@@ -7004,7 +7051,8 @@ Platoon = Class(SwarmPlatoonClass) {
                                     end
                                     unit.Blocked = false
                                     if not TargetInPlatoonRange.Dead then
-                                        IssueAttack({unit}, TargetInPlatoonRange)
+                                        -- set the target as focus, we are in range, the unit will shoot without attack command
+                                        unit:SetFocusEntity(TargetInPlatoonRange)
                                     end
                                 end
                             end
@@ -7086,7 +7134,11 @@ Platoon = Class(SwarmPlatoonClass) {
         if HERODEBUGSwarm then
             self:RenamePlatoon('PlatoonExists = false')
         end
+
         if aiBrain:PlatoonExists(self) then
+            if HERODEBUGSwarm then
+                self:RenamePlatoon('PlatoonDisband 5')
+            end
             self:PlatoonDisband()
         end
     end,

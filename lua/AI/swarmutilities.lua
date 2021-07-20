@@ -3,12 +3,16 @@ local ScenarioUtils = import('/lua/sim/ScenarioUtilities.lua')
 --Extractor Upgrading needs a complete rework, though honestly I do not have the skill to rewrite this completely nor the skill to use Sprouto or Relly's code right now.
 
 function ExtractorPauseSwarm(self, aiBrain, MassExtractorUnitList, ratio, techLevel)
+    local aiBrain = self:GetBrain()
+    local BasePosition = aiBrain.BuilderManagers['MAIN'].Position
     local UpgradingBuilding = nil
     local UpgradingBuildingNum = 0
     local PausedUpgradingBuilding = nil
     local PausedUpgradingBuildingNum = 0
     local DisabledBuilding = nil
     local DisabledBuildingNum = 0
+    local DistanceToBase = nil
+    local LowestDistanceToBase = nil
     local IdleBuilding = nil
     local BussyBuilding = nil
     local IdleBuildingNum = 0
@@ -16,7 +20,6 @@ function ExtractorPauseSwarm(self, aiBrain, MassExtractorUnitList, ratio, techLe
     for unitNum, unit in MassExtractorUnitList do
         if unit
             and not unit.Dead
-            and not unit:BeenDestroyed()
             and not unit:GetFractionComplete() < 1
             and EntityCategoryContains(ParseEntityCategory(techLevel), unit)
         then
@@ -54,22 +57,15 @@ function ExtractorPauseSwarm(self, aiBrain, MassExtractorUnitList, ratio, techLe
     end
     
 
-    --[[ if aiBrain:GetEconomyStoredRatio('MASS') -0.1 > aiBrain:GetEconomyStoredRatio('ENERGY') then
+    if aiBrain:GetEconomyStoredRatio('ENERGY') <= 0.25 then
         if UpgradingBuilding then
             if UpgradingBuildingNum <= 0 and table.getn(MassExtractorUnitList) >= 8 then
             else
                 UpgradingBuilding:SetPaused( true )
                 return true
             end
-        end
-        if IdleBuilding then
-            if IdleBuildingNum <= 0 then
-            else
-                IdleBuilding:SetScriptBit('RULEUTC_ProductionToggle', true)
-                return true
-            end
-        end
-    end ]]--
+        end 
+    end 
 
     local MassRatioCheckPositive = GlobalMassUpgradeCostVsGlobalMassIncomeRatioSwarm( self, aiBrain, ratio, techLevel, '<' )
 
@@ -77,14 +73,14 @@ function ExtractorPauseSwarm(self, aiBrain, MassExtractorUnitList, ratio, techLe
         if MassRatioCheckPositive then
             PausedUpgradingBuilding:SetPaused( false )
             return true
-        elseif not MassRatioCheckPositive and UpgradingBuildingNum < 1 and table.getn(MassExtractorUnitList) >= 6 then
+        elseif not MassRatioCheckPositive and UpgradingBuildingNum < 1 and table.getn(MassExtractorUnitList) >= 8 then
             PausedUpgradingBuilding:SetPaused( false )
             return true
         end
     end
 
     local MassRatioCheckNegative = GlobalMassUpgradeCostVsGlobalMassIncomeRatioSwarm( self, aiBrain, ratio, techLevel, '>=')
-
+    
     if MassRatioCheckNegative then
         if UpgradingBuildingNum > 1 then
             if aiBrain:GetEconomyTrend('MASS') <= 0 and aiBrain:GetEconomyStored('MASS') <= 0.01  then
@@ -93,7 +89,6 @@ function ExtractorPauseSwarm(self, aiBrain, MassExtractorUnitList, ratio, techLe
             end
         end
     end
-
     return false
 
 end
