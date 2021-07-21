@@ -33,29 +33,54 @@ local KillThread = KillThread
 SwarmPlatoonClass = Platoon
 Platoon = Class(SwarmPlatoonClass) {
 
-    -- Hook For Masss RepeatBuild by Uveso
+
     PlatoonDisband = function(self)
         local aiBrain = self:GetBrain()
-        if not self.Swarm then
+        if not aiBrain.Swarm then
             return SwarmPlatoonClass.PlatoonDisband(self)
         end
         if self.PlatoonData.Construction.RepeatBuild then
+            
             local UCBC = import('/lua/editor/UnitCountBuildConditions.lua')
+
             if UCBC.HaveUnitRatioVersusCapSwarm(aiBrain, 0.10, '<', categories.STRUCTURE * categories.MASSEXTRACTION) then
-                -- only repeat if we have a free mass spot
+
                 if aiBrain:GetEconomyStoredRatio('ENERGY') > 0.50 then
                     local MABC = import('/lua/editor/MarkerBuildConditions.lua')
-                    if MABC.CanBuildOnMassSwarm(aiBrain, 'MAIN', 1000, -500, 30, 1, 'AntiSurface', 1) then  -- LocationType, distance, threatMin, threatMax, threatRadius, threatType, maxNum
+                    if MABC.CanBuildOnMassSwarm(aiBrain, 'MAIN', 1000, -500, 20, 1, 'AntiSurface', 1) then 
+                        self:SetAIPlan('EngineerBuildAI')
+                        return
+                    end
+                end
+
+            end
+    
+            self:AggressiveMoveToLocation(aiBrain.BuilderManagers['MAIN'].Position)
+
+            coroutine.yield(10)
+
+            local count = 1
+            local eng = self:GetPlatoonUnits()[1]
+
+            while eng and not eng.Dead and not (eng:IsIdleState()) and aiBrain:PlatoonExists(self) and count < 120 do
+                coroutine.yield(10)
+                count = count + 1
+                if aiBrain:GetEconomyStoredRatio('ENERGY') > 0.50 then
+                    local MABC = import('/lua/editor/MarkerBuildConditions.lua')
+                    if MABC.CanBuildOnMassSwarm(aiBrain, 'MAIN', 1000, -500, 20, 1, 'AntiSurface', 1) then 
+                        --LOG("Ooga Booga RepeatBuild is " .. repr(self.BuilderName) .. " " .. repr(self.PlatoonData.Construction.RepeatBuild))
                         self:SetAIPlan('EngineerBuildAI')
                         return
                     end
                 end
             end
-            -- delete the repeat flag so the engineer will not repeat on its next task
+
             self.PlatoonData.Construction.RepeatBuild = nil
-            self:MoveToLocation(aiBrain.BuilderManagers['MAIN'].Position, false)
+
         end
+        --LOG("Ooga Booga RepeatBuild is " .. repr(self.BuilderName) .. " " .. repr(self.PlatoonData.Construction.RepeatBuild))
         SwarmPlatoonClass.PlatoonDisband(self)
+        
     end, 
 
     BaseManagersDistressAI = function(self)
