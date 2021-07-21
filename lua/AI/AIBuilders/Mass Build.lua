@@ -88,7 +88,7 @@ BuilderGroup {
         BuilderConditions = {
             { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 0, categories.ENGINEER * categories.TECH1 }},
 
-            { MABC, 'CanBuildOnMassSwarm', { 'LocationType', 240, -500, 30, 1, 'AntiSurface', 1}},
+            { MABC, 'CanBuildOnMassSwarm', { 'LocationType', 240, -500, 20, 1, 'AntiSurface', 1}},
         },
         BuilderType = 'Any',
         BuilderData = {
@@ -110,7 +110,7 @@ BuilderGroup {
         BuilderConditions = {
             { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 0, categories.ENGINEER * categories.TECH1 }},
 
-            { MABC, 'CanBuildOnMassSwarm', { 'LocationType', 480, -500, 30, 1, 'AntiSurface', 1}},
+            { MABC, 'CanBuildOnMassSwarm', { 'LocationType', 480, -500, 20, 1, 'AntiSurface', 1}},
         },
         BuilderType = 'Any',
         BuilderData = {
@@ -132,7 +132,7 @@ BuilderGroup {
         BuilderConditions = {
             { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 0, categories.ENGINEER * categories.TECH1 }},
 
-            { MABC, 'CanBuildOnMassSwarm', { 'LocationType', 1000, -500, 30, 1, 'AntiSurface', 1}},
+            { MABC, 'CanBuildOnMassSwarm', { 'LocationType', 1000, -500, 20, 1, 'AntiSurface', 1}},
         },
         BuilderType = 'Any',
         BuilderData = {

@@ -156,7 +156,7 @@ BuilderGroup {
         InstanceCount = 1,
         BuilderConditions = {
             -- When do we want to build this ?
-            { MABC, 'CanBuildOnHydroSwarm', { 'LocationType', 50, -1000, 100, 1, 'AntiSurface', 1 }},            -- Do we need additional conditions to build it ?
+            { MABC, 'CanBuildOnHydroSwarm', { 'LocationType', 50, -1000, 15, 1, 'AntiSurface', 1 }},            -- Do we need additional conditions to build it ?
 
             { UCBC, 'HaveLessThanUnitsWithCategory', { 1, categories.HYDROCARBON } },
 
@@ -182,9 +182,11 @@ BuilderGroup {
         InstanceCount = 1,
         BuilderConditions = {
             -- When do we want to build this ?
-            { MABC, 'CanBuildOnHydroSwarm', { 'LocationType', 480, -1000, 100, 1, 'AntiSurface', 1 }},            -- Do we need additional conditions to build it ?
+            { MABC, 'CanBuildOnHydroSwarm', { 'LocationType', 240, -1000, 15, 1, 'AntiSurface', 1 }},            -- Do we need additional conditions to build it ?
 
             { EBC, 'GreaterThanEconIncomeSwarm',  { 0.2, 2.0}}, -- Absolut Base income 4 60
+
+            { EBC, 'LessThanEconStorageRatio', { 2.0, 0.75 } },
 
             { UCBC, 'CheckBuildPlattonDelay', { 'Energy' }},
         },
