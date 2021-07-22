@@ -1489,7 +1489,7 @@ Platoon = Class(SwarmPlatoonClass) {
                 -- Do we have the energy in general to overcharge ?
                 if aiBrain:GetEconomyStored('ENERGY') >= OverchargeWeapon.EnergyRequired then
                     -- only shoot when we have low mass (then we don't need energy) or at full energy (max damage) or when in danger
-                    if aiBrain:GetEconomyStoredRatio('MASS') < 0.05 or aiBrain:GetEconomyStoredRatio('ENERGY') > 0.99 or CDRHealth < 60 then
+                    if aiBrain:GetEconomyStoredRatio('MASS') < 0.05 or aiBrain:GetEconomyStored('ENERGY') > 6000 or CDRHealth < 60 then
                         if OverchargeTarget and not OverchargeTarget.Dead and not OverchargeTarget:BeenDestroyed() then
                             IssueOverCharge({cdr}, OverchargeTarget)
                         end
