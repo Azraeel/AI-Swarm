@@ -297,7 +297,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Adaptive Factory Build',
     Builder {
         BuilderName = 'Swarm Air Factory > Land To Air Ratio',
         PlatoonTemplate = 'EngineerBuilderALLTECH',
-        Priority = 655,
+        Priority = 650,
         DelayEqualBuildPlattons = {'Factories', 3},
         BuilderConditions = {
             { UCBC, 'CheckBuildPlattonDelay', { 'Factories' }},
@@ -454,7 +454,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Staging Platform Builders',        
     
     Builder { BuilderName = 'U-T1 Air Staging 1st',
         PlatoonTemplate = 'EngineerBuilder',
-        Priority = 15300,
+        Priority = 600,
         BuilderConditions = {
             { UCBC, 'HaveLessThanUnitsWithCategory', { 1, categories.STRUCTURE * categories.AIRSTAGINGPLATFORM }},
           
@@ -480,7 +480,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Staging Platform Builders',        
     },
     Builder { BuilderName = 'U-T1 Air Staging',
         PlatoonTemplate = 'EngineerBuilder',
-        Priority = 15300,
+        Priority = 600,
         BuilderConditions = {
             { UCBC, 'HaveUnitRatioVersusEnemySwarm', { 0.05, categories.STRUCTURE * categories.AIRSTAGINGPLATFORM, '<', categories.MOBILE * categories.AIR } },
 

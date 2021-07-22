@@ -50,9 +50,9 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Builders',
         BuilderConditions = {
             { UCBC, 'AirStrengthRatioLessThan', { 4 } },
 
-            { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.7, 0.8 }},
+            { EBC, 'GreaterThanEconStorageCurrent', { 200, 2000}},
 
-            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.02, 0.01}},
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.7, 0.8 }},
         },
         BuilderType = 'Air',
     },
@@ -69,9 +69,9 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Builders',
         BuilderConditions = {
             { UCBC, 'AirStrengthRatioGreaterThan', { 2 } },
 
-            { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.7, 0.8 }},
+            { EBC, 'GreaterThanEconStorageCurrent', { 200, 2000}},
 
-            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.02, 0.01}},
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.7, 0.8 }},
         },
         BuilderType = 'Air',
     },
@@ -88,9 +88,9 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Builders',
         BuilderConditions = {
             { UCBC, 'AirStrengthRatioGreaterThan', { 2 } },
 
-            { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.7, 0.8 }},
+            { EBC, 'GreaterThanEconStorageCurrent', { 200, 2000}},
 
-            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.02, 0.01}},
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.7, 0.8 }},
         },
         BuilderType = 'Air',
     },
@@ -110,9 +110,9 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Builders',
         BuilderConditions = {
             { UCBC, 'AirStrengthRatioGreaterThan', { 2 } },
 
-            { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.75, 1.0 }},
+            { EBC, 'GreaterThanEconStorageCurrent', { 200, 2000}},
 
-            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.02, 0.01}},
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.75, 1.0 }},
         },
         BuilderType = 'Air',
     },
@@ -129,9 +129,9 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Builders',
         BuilderConditions = {
             { UCBC, 'AirStrengthRatioGreaterThan', { 2 } },
 
-            { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.75, 1.0 }},
+            { EBC, 'GreaterThanEconStorageCurrent', { 200, 2000}},
 
-            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.02, 0.01}},
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.75, 1.0 }},
         },
         BuilderType = 'Air',
     },
@@ -144,13 +144,13 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Builders',
         Priority = 500,
 
         BuilderConditions = {
-            { UCBC, 'AirStrengthRatioGreaterThan', { 2 } },
-
             { UCBC, 'UnitsGreaterAtEnemySwarm', { 0 , categories.NAVAL * categories.MOBILE } },
 
-            { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.75, 1.0 }},
+            { UCBC, 'AirStrengthRatioGreaterThan', { 2 } },
 
-            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.02, 0.01}},
+            { EBC, 'GreaterThanEconStorageCurrent', { 200, 2000}},
+
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.75, 1.0 }},
         },
         BuilderType = 'Air',
     },
@@ -171,9 +171,9 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Builders',
 
             { UCBC, 'AirStrengthRatioLessThan', { 4 } },
 
-            { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.9, 1.1 }},
+            { EBC, 'GreaterThanEconStorageCurrent', { 200, 2000}},
 
-            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.02, 0.01}},
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.9, 1.1 }},
         },
         BuilderType = 'Air',
     },
@@ -190,9 +190,9 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Builders',
 
             { UCBC, 'AirStrengthRatioGreaterThan', { 2 } },
 
-            { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.9, 1.1 }},
+            { EBC, 'GreaterThanEconStorageCurrent', { 200, 2000}},
 
-            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.02, 0.01}},
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.9, 1.1 }},
         },
         BuilderType = 'Air',
     },
@@ -209,9 +209,9 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Builders',
 
             { UCBC, 'AirStrengthRatioGreaterThan', { 2 } },
 
-            { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.9, 1.1 }},
+            { EBC, 'GreaterThanEconStorageCurrent', { 200, 2000}},
 
-            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.02, 0.01}},
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.9, 1.1 }},
         },
         BuilderType = 'Air',
     },
@@ -224,13 +224,13 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Builders',
         Priority = 500,
 
         BuilderConditions = {
-            { UCBC, 'AirStrengthRatioGreaterThan', { 3 } },
-
             { UCBC, 'UnitsGreaterAtEnemySwarm', { 0 , categories.NAVAL * categories.MOBILE } },
 
-            { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.9, 1.1 }},
+            { UCBC, 'AirStrengthRatioGreaterThan', { 3 } },
 
-            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.02, 0.01}},
+            { EBC, 'GreaterThanEconStorageCurrent', { 200, 2000}},
+
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.9, 1.1 }},
         },
         BuilderType = 'Air',
     },
