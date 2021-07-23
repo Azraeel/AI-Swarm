@@ -88,13 +88,17 @@ BuilderGroup {
         BuilderConditions = {
             { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 0, categories.ENGINEER * categories.TECH1 }},
 
-            { MABC, 'CanBuildOnMassSwarm', { 'LocationType', 240, -500, 20, 1, 'AntiSurface', 1}},
+            { MABC, 'CanBuildOnMassSwarm', { 'LocationType', 240, -500, 5, 1, 'AntiSurface', 1}},
         },
         BuilderType = 'Any',
         BuilderData = {
             Construction = {
                 BuildClose = true,
                 RepeatBuild = true,
+                ThreatMin = -1000,
+                ThreatMax = 5,
+                ThreatRings = 1,
+                ThreatType = 'AntiSurface',
                 BuildStructures = {
                     'T1Resource',
                 }
@@ -114,13 +118,17 @@ BuilderGroup {
 
             { UCBC, 'EnemyUnitsLessAtLocationRadiusSwarm', {  BaseMilitaryZone, 'LocationType', 5, categories.ALLUNITS - categories.ENGINEER - categories.AIR - categories.SCOUT }},
 
-            { MABC, 'CanBuildOnMassSwarm', { 'LocationType', 480, -500, 20, 1, 'AntiSurface', 1}},
+            { MABC, 'CanBuildOnMassSwarm', { 'LocationType', 480, -500, 5, 1, 'AntiSurface', 1}},
         },
         BuilderType = 'Any',
         BuilderData = {
             Construction = {
                 BuildClose = true,
                 RepeatBuild = true,
+                ThreatMin = -1000,
+                ThreatMax = 5,
+                ThreatRings = 1,
+                ThreatType = 'AntiSurface',
                 BuildStructures = {
                     'T1Resource',
                 }
@@ -140,13 +148,17 @@ BuilderGroup {
 
             { UCBC, 'EnemyUnitsLessAtLocationRadiusSwarm', {  BaseMilitaryZone, 'LocationType', 5, categories.ALLUNITS - categories.ENGINEER - categories.AIR - categories.SCOUT }},
 
-            { MABC, 'CanBuildOnMassSwarm', { 'LocationType', 1000, -500, 20, 1, 'AntiSurface', 1}},
+            { MABC, 'CanBuildOnMassSwarm', { 'LocationType', 1000, -500, 5, 1, 'AntiSurface', 1}},
         },
         BuilderType = 'Any',
         BuilderData = {
             Construction = {
                 BuildClose = true,
                 RepeatBuild = true,
+                ThreatMin = -1000,
+                ThreatMax = 5,
+                ThreatRings = 1,
+                ThreatType = 'AntiSurface',
                 BuildStructures = {
                     'T1Resource',
                 }

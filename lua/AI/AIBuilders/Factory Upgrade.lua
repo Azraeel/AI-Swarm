@@ -38,7 +38,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Factory Upgrader Rush',
 
             { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.07, 0.01 } },
 
-            { EBC, 'GreaterThanEconTrendSwarm', { 5.0, 4.0 } },
+            { EBC, 'GreaterThanEconTrendSwarm', { 2.5, 2.0 } },
 
             { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.05, 1.0 }},
 
@@ -62,7 +62,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Factory Upgrader Rush',
             
             { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.07, 0.01 } },
 
-            { EBC, 'GreaterThanEconTrendSwarm', { 5.0, 4.0 } },
+            { EBC, 'GreaterThanEconTrendSwarm', { 2.5, 2.0 } },
 
             { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.05, 1.0 }},
             
@@ -86,7 +86,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Factory Upgrader Rush',
 
             { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.07, 0.01 } },
 
-            { EBC, 'GreaterThanEconTrendSwarm', { 5.0, 4.0 } },
+            { EBC, 'GreaterThanEconTrendSwarm', { 2.5, 2.0 } },
 
             { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.95, 1.0 }},
 
@@ -350,7 +350,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Factory Upgrader Rush',
 
             { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.07, 0.01 } },
 
-            { EBC, 'GreaterThanEconTrendSwarm', { 3.5, 8.0 } },
+            { EBC, 'GreaterThanEconTrendSwarm', { 1.75, 4.0 } },
 
             { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.05, 1.25 }},
 
@@ -374,7 +374,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Factory Upgrader Rush',
           
             { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.07, 0.01 } },
 
-            { EBC, 'GreaterThanEconTrendSwarm', { 3.5, 8.0 } },
+            { EBC, 'GreaterThanEconTrendSwarm', { 1.75, 4.0 } },
 
             { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.05, 1.25 }},
           
@@ -400,7 +400,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Factory Upgrader Rush',
 
             { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.07, 0.01 } },
 
-            { EBC, 'GreaterThanEconTrendSwarm', { 3.5, 8.0 } },
+            { EBC, 'GreaterThanEconTrendSwarm', { 1.75, 4.0 } },
 
             { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.05, 1.25 }},
            
@@ -424,7 +424,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Factory Upgrader Rush',
            
             { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.07, 0.01 } },
 
-            { EBC, 'GreaterThanEconTrendSwarm', { 3.5, 8.0 } },
+            { EBC, 'GreaterThanEconTrendSwarm', { 1.75, 4.0 } },
 
             { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.05, 1.25 }},
 

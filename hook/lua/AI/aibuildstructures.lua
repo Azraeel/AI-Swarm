@@ -2,10 +2,10 @@
 -- AI-Swarm: Hook for Replace factory buildtemplate to find a better buildplace not too close to the center of the base
 local AntiSpamList = {}
 SwarmAIExecuteBuildStructure = AIExecuteBuildStructure
-function AIExecuteBuildStructure(aiBrain, builder, buildingType, closeToBuilder, relative, buildingTemplate, baseTemplate, reference, NearMarkerType)
+function AIExecuteBuildStructure(aiBrain, builder, buildingType, closeToBuilder, relative, buildingTemplate, baseTemplate, reference, constructionData)
     -- Only use this with AI-Swarm
     if not aiBrain.Swarm then
-        return SwarmAIExecuteBuildStructure(aiBrain, builder, buildingType, closeToBuilder, relative, buildingTemplate, baseTemplate, reference, NearMarkerType)
+        return SwarmAIExecuteBuildStructure(aiBrain, builder, buildingType, closeToBuilder, relative, buildingTemplate, baseTemplate, reference, constructionData)
     end
     local factionIndex = aiBrain:GetFactionIndex()
     local whatToBuild = aiBrain:DecideWhatToBuild(builder, buildingType, buildingTemplate)
@@ -138,7 +138,103 @@ function AIExecuteBuildStructure(aiBrain, builder, buildingType, closeToBuilder,
     end
 
     if IsResource(buildingType) then
-        location = aiBrain:FindPlaceToBuild(buildingType, whatToBuild, baseTemplate, relative, closeToBuilder, 'Enemy', relativeTo[1], relativeTo[3], 5)
+        
+        local constructionData = builder.PlatoonHandle.PlatoonData.Construction
+
+        --location = aiBrain:FindPlaceToBuild(buildingType, whatToBuild, baseTemplate, relative, closeToBuilder, 'Enemy', relativeTo[1], relativeTo[3], 5)
+        -- OK - Here is an important piece of code particularily for Engineers building Mass Extractors
+		-- Notice the final parameter ?  It's supposed to tell the command to ignore places with threat greater than that
+		-- If so -- it has no specific range or threat types associated with it - which means we have no idea what it's measuring
+		-- Most certainly it won't be related to any threat check we do elsewhere in our code - as far as I can tell.
+		-- The biggest result - ENGINEERS GO WANDERING INTO HARMS WAY FREQUENTLY -- I'm going to try various values
+		-- I am now passing along the engineers ThreatMax from his platoon (if it's there)
+        --location = aiBrain:FindPlaceToBuild( buildingType, whatToBuild, baseTemplate, relative, engineer, 'Enemy', SourcePosition[1], SourcePosition[3], constructionData.ThreatMax or 7.5)	
+    
+        local AIUtils = '/lua/ai/aiutilities.lua'
+
+        local testunit = 'ueb1102'  -- Hydrocarbon
+        local testtype = 'Hydrocarbon'
+        
+        if buildingType != 'T1HydroCarbon' then
+            testunit = 'ueb1103'    -- Extractor
+            testtype = 'Mass'
+        end
+
+        LOG("*AI DEBUG: Data is " .. repr(testtype) .. " " .. repr(constructionData))
+		local markerlist = import(AIUtils).AIGetMarkerLocations(testtype)
+        LOG("*AI DEBUG: Data is " .. repr(markerlist))
+        local SourcePosition = aiBrain.BuilderManagers[builder.LocationType].Position or false
+        
+		local mlist = {}
+		local counter = 0
+        
+        local mindistance = constructionData.MinRange or 0
+        local maxdistance = constructionData.MaxRange or 500
+        local tMin = constructionData.ThreatMin or 0
+        local tMax = constructionData.ThreatMax or 20
+        local tRings = constructionData.ThreatRings or 0
+        local tType = constructionData.ThreatType or 'AntiSurface'
+        local maxlist = constructionData.MaxChoices or 1
+        
+        table.sort( markerlist, function (a,b) return VDist3( a.Position, SourcePosition ) < VDist3( b.Position, SourcePosition ) end )
+
+		local CanBuildStructureAt = moho.aibrain_methods.CanBuildStructureAt
+    
+		for _,v in markerlist do
+            
+            if VDist3( v.Position, SourcePosition ) >= mindistance then
+            
+                if VDist3( v.Position, SourcePosition ) <= maxdistance then
+                
+                    if CanBuildStructureAt( aiBrain, testunit, v.Position ) then
+                        mlist[counter+1] = v
+                        counter = counter + 1
+                    end
+                    
+                end
+                
+            end
+            
+		end
+		
+		if counter > 0 then
+            
+			local markerTable = import(AIUtils).AISortMarkersFromLastPos(aiBrain, mlist, maxlist, tMin, tMax, tRings, tType, SourcePosition)
+
+			if markerTable then
+            
+                LOG("*AI DEBUG "..aiBrain.Nickname.." finds "..table.getn(markerTable).." "..repr(buildingType).." markers")
+
+                -- pick one of the points randomly
+				location = table.copy( markerTable[ Random(1,table.getn(markerTable)) ] )
+            end
+		end	
+
+        -- if no result or out of range - then abort
+		if not location or VDist3( SourcePosition, location ) > constructionData.MaxRange then
+        
+			builder.PlatoonHandle:SetAIPlan('ReturnToBaseAI', aiBrain)
+            
+            location = false
+            
+		end
+
+        if location then
+ 	
+            relativeLoc = { location[1], 0, location[3] }
+
+            relative = false
+        
+            location = {relativeLoc[1],relativeLoc[3]}
+        
+            if constructionData.RepeatBuild then
+            
+                -- loop builders have minimum range to start with
+                -- reduced after first build
+                constructionData.MinRange = 0
+            end
+            
+		end
     else
         location = aiBrain:FindPlaceToBuild(buildingTypeReplace or buildingType, whatToBuildReplace or whatToBuild, baseTemplate, relative, closeToBuilder, nil, relativeTo[1], relativeTo[3])
     end

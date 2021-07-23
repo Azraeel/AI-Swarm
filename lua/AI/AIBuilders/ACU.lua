@@ -375,7 +375,7 @@ BuilderGroup {
     }, 
 
     Builder {
-        BuilderName = 'SC Land Factory Mass > MassRatio',
+        BuilderName = 'SC Land Factory Mass > MassStorage',
         PlatoonTemplate = 'CommanderBuilder',
         Priority = 650,
         DelayEqualBuildPlattons = {'Factories', 3},
@@ -499,7 +499,7 @@ BuilderGroup {
     },
 
     Builder {
-        BuilderName = 'SC Air Factory Mass > MassRatio',
+        BuilderName = 'SC Air Factory Mass > MassStorage',
         PlatoonTemplate = 'CommanderBuilder',
         Priority = 650,
         DelayEqualBuildPlattons = {'Factories', 3},
