@@ -73,7 +73,7 @@ BuilderGroup {
 
             { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.8, 1.0 }}, 
 
-            { UCBC, 'StartLocationNeedsEngineer', { 'LocationType', 250, -1000, 2, 1, 'AntiSurface' } },
+            { UCBC, 'StartLocationNeedsEngineer', { 'LocationType', 250, -1000, 5, 1, 'AntiSurface' } },
 
             { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 0, categories.ENGINEER * categories.TECH1 - categories.COMMAND - categories.STATIONASSISTPOD }},
         },
@@ -88,7 +88,7 @@ BuilderGroup {
                 LocationRadius = 250,
                 LocationType = 'LocationType',
                 ThreatMin = -1000,
-                ThreatMax = 2,
+                ThreatMax = 5,
                 ThreatRings = 1,
                 ThreatType = 'AntiSurface',
                 ExpansionRadius = 100,
@@ -114,9 +114,9 @@ BuilderGroup {
 
             { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.8, 1.0 }}, 
 
-            { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 0, categories.ENGINEER * categories.TECH1 - categories.COMMAND - categories.STATIONASSISTPOD }},
+            { UCBC, 'ExpansionAreaNeedsEngineer', { 'LocationType', 250, -1000, 5, 1, 'AntiSurface' } },
 
-            { UCBC, 'ExpansionAreaNeedsEngineer', { 'LocationType', 250, -1000, 2, 1, 'AntiSurface' } },
+            { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 0, categories.ENGINEER * categories.TECH1 - categories.COMMAND - categories.STATIONASSISTPOD }},
         },
         BuilderType = 'Any',
         BuilderData = {
@@ -129,7 +129,7 @@ BuilderGroup {
                 LocationRadius = 250,
                 LocationType = 'LocationType',
                 ThreatMin = -1000,
-                ThreatMax = 2,
+                ThreatMax = 5,
                 ThreatRings = 1,
                 ThreatType = 'StructuresNotMex',
                 ExpansionRadius = 100,

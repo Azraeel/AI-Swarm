@@ -597,8 +597,8 @@ function AirScoutPatrolSwarmAIThread(self, aiBrain)
             mustScoutArea.TaggedBy = scout
             targetArea = mustScoutArea.Position
 
-        --2) Scout "unknown threat" areas with a threat higher than 25
-        elseif table.getn(unknownThreats) > 0 and unknownThreats[1][3] > 25 then
+        --2) Scout "unknown threat" areas with a threat higher than 5
+        elseif table.getn(unknownThreats) > 0 and unknownThreats[1][3] > 5 then
             aiBrain:AddScoutArea({unknownThreats[1][1], 0, unknownThreats[1][2]})
 
         --3) Scout high priority locations

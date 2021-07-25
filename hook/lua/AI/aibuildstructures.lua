@@ -139,7 +139,7 @@ function AIExecuteBuildStructure(aiBrain, builder, buildingType, closeToBuilder,
 
     if IsResource(buildingType) then
         
-        local constructionData = builder.PlatoonHandle.PlatoonData.Construction
+        --[[ local constructionData = builder.PlatoonHandle.PlatoonData.Construction
 
         --location = aiBrain:FindPlaceToBuild(buildingType, whatToBuild, baseTemplate, relative, closeToBuilder, 'Enemy', relativeTo[1], relativeTo[3], 5)
         -- OK - Here is an important piece of code particularily for Engineers building Mass Extractors
@@ -234,7 +234,8 @@ function AIExecuteBuildStructure(aiBrain, builder, buildingType, closeToBuilder,
                 constructionData.MinRange = 0
             end
             
-		end
+		end ]]--
+        location = aiBrain:FindPlaceToBuild(buildingType, whatToBuild, baseTemplate, relative, closeToBuilder, 'Enemy', relativeTo[1], relativeTo[3], 5)
     else
         location = aiBrain:FindPlaceToBuild(buildingTypeReplace or buildingType, whatToBuildReplace or whatToBuild, baseTemplate, relative, closeToBuilder, nil, relativeTo[1], relativeTo[3])
     end
