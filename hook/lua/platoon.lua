@@ -5713,7 +5713,7 @@ Platoon = Class(SwarmPlatoonClass) {
                 continue
             end
 
-            self.MergeWithNearbyPlatoonsSwarm( self, aiBrain, 'LandAttackAISwarm', 30, false, 40)
+            self.MergeWithNearbyPlatoonsSwarm( self, aiBrain, 'AttackForceAISwarm', 30, false, 40)
 
 
             local OriginalSurfaceThreat = self:CalculatePlatoonThreat('AntiSurface', categories.ALLUNITS)
