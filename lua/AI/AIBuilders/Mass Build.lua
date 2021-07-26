@@ -14,71 +14,6 @@ local MaxCapStructure = 0.25
 BuilderGroup {
     BuilderGroupName = 'S1 MassBuilders',                       
     BuildersType = 'EngineerBuilder',
-    --[[ Builder {
-        BuilderName = 'Swarm Mass - Opener',
-        PlatoonTemplate = 'EngineerBuilder',
-        Priority = 670,
-        InstanceCount = 2,
-        BuilderConditions = {
-            { UCBC, 'LessThanGameTimeSeconds', { 480 } },
-
-            { MABC, 'CanBuildOnMassSwarm', { 'LocationType', 1000, -500, 1, 0, 'AntiSurface', 1}},
-        },
-        BuilderType = 'Any',
-        BuilderData = {
-            Construction = {
-                BuildClose = true,
-                RepeatBuild = true,
-                BuildStructures = {
-                    'T1Resource',
-                }
-            }
-        }
-    }, 
-
-    Builder {
-        BuilderName = 'Swarm Mass 60',
-        PlatoonTemplate = 'EngineerBuilder',
-        Priority = 655,
-        InstanceCount = 2,
-        BuilderConditions = {
-            { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 0, categories.ENGINEER * categories.TECH1 }},
-
-            { MABC, 'CanBuildOnMassSwarm', { 'LocationType', 60, -500, 1, 0, 'AntiSurface', 1}},
-        },
-        BuilderType = 'Any',
-        BuilderData = {
-            Construction = {
-                BuildClose = true,
-                RepeatBuild = false,
-                BuildStructures = {
-                    'T1Resource',
-                }
-            }
-        }
-    }, 
-
-    Builder {
-        BuilderName = 'Swarm Mass 120',
-        PlatoonTemplate = 'EngineerBuilder',
-        Priority = 655,
-        InstanceCount = 2,
-        BuilderConditions = {
-            { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 0, categories.ENGINEER * categories.TECH1 }},
-
-            { MABC, 'CanBuildOnMassSwarm', { 'LocationType', 120, -500, 1, 0, 'AntiSurface', 1}},
-        },
-        BuilderType = 'Any',
-        BuilderData = {
-            Construction = {
-                BuildClose = true,
-                RepeatBuild = true,
-                BuildStructures = {
-                    'T1Resource',
-                }
-            }
-        }
-    }, ]]--
 
     Builder {
         BuilderName = 'Swarm Mass 240',
@@ -88,13 +23,19 @@ BuilderGroup {
         BuilderConditions = {
             { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 0, categories.ENGINEER * categories.TECH1 }},
 
-            { MABC, 'CanBuildOnMassSwarm', { 'LocationType', 240, -500, 20, 1, 'AntiSurface', 1}},
+            { MABC, 'CanBuildOnMassSwarm', { 'LocationType', 240, -500, 1, 1, 'AntiSurface', 1}},
         },
         BuilderType = 'Any',
         BuilderData = {
             Construction = {
                 BuildClose = true,
                 RepeatBuild = true,
+                MinRange = 0
+                MaxRange = 240
+                ThreatMin = -1000,
+                ThreatMax = 1,
+                ThreatRings = 1,
+                ThreatType = 'AntiSurface',
                 BuildStructures = {
                     'T1Resource',
                 }
@@ -110,17 +51,23 @@ BuilderGroup {
         BuilderConditions = {
             { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 0, categories.ENGINEER * categories.TECH1 }},
 
-            { UCBC, 'LandStrengthRatioLessThan', { 1.5 } },
+            { UCBC, 'LandStrengthRatioLessThan', { 1 } },
 
             { UCBC, 'EnemyUnitsLessAtLocationRadiusSwarm', {  BaseMilitaryZone, 'LocationType', 5, categories.ALLUNITS - categories.ENGINEER - categories.AIR - categories.SCOUT }},
 
-            { MABC, 'CanBuildOnMassSwarm', { 'LocationType', 480, -500, 20, 1, 'AntiSurface', 1}},
+            { MABC, 'CanBuildOnMassSwarm', { 'LocationType', 480, -500, 1, 1, 'AntiSurface', 1}},
         },
         BuilderType = 'Any',
         BuilderData = {
             Construction = {
                 BuildClose = true,
                 RepeatBuild = true,
+                MinRange = 240
+                MaxRange = 480
+                ThreatMin = -1000,
+                ThreatMax = 1,
+                ThreatRings = 1,
+                ThreatType = 'AntiSurface',
                 BuildStructures = {
                     'T1Resource',
                 }
@@ -136,17 +83,23 @@ BuilderGroup {
         BuilderConditions = {
             { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 0, categories.ENGINEER * categories.TECH1 }},
 
-            { UCBC, 'LandStrengthRatioLessThan', { 1.5 } },
+            { UCBC, 'LandStrengthRatioLessThan', { 1 } },
 
             { UCBC, 'EnemyUnitsLessAtLocationRadiusSwarm', {  BaseMilitaryZone, 'LocationType', 5, categories.ALLUNITS - categories.ENGINEER - categories.AIR - categories.SCOUT }},
 
-            { MABC, 'CanBuildOnMassSwarm', { 'LocationType', 1000, -500, 20, 1, 'AntiSurface', 1}},
+            { MABC, 'CanBuildOnMassSwarm', { 'LocationType', 1000, -500, 1, 1, 'AntiSurface', 1}},
         },
         BuilderType = 'Any',
         BuilderData = {
             Construction = {
                 BuildClose = true,
                 RepeatBuild = true,
+                MinRange = 480
+                MaxRange = 1000
+                ThreatMin = -1000,
+                ThreatMax = 1,
+                ThreatRings = 1,
+                ThreatType = 'AntiSurface',
                 BuildStructures = {
                     'T1Resource',
                 }

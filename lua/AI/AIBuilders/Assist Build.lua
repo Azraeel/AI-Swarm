@@ -591,7 +591,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Reclaim',                     
     Builder { BuilderName = 'Swarm Reclaim Mass - Opener',
         PlatoonTemplate = 'S1Reclaim',
         Priority = 595,
-        InstanceCount = 4,
+        InstanceCount = 3,
         BuilderConditions = {
             { EBC, 'LessThanEconStorageRatioSwarm', { 1.0, 2.0}},
 
@@ -606,7 +606,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Reclaim',                     
     Builder { BuilderName = 'Swarm Reclaim Resource - Additional',
         PlatoonTemplate = 'S1Reclaim',
         Priority = 595,
-        InstanceCount = 4,
+        InstanceCount = 3,
         BuilderConditions = {
             { EBC, 'LessThanEconStorageRatioSwarm', { 0.6, 1}}, 
         },

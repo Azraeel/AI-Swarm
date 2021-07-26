@@ -62,18 +62,18 @@ BuilderGroup {
     Builder {
         BuilderName = 'S1 Vacant Start Location',                               -- Random Builder Name.
         PlatoonTemplate = 'EngineerBuilderALLTECH',                                    -- Template Name. These units will be formed. See: "\lua\AI\PlatoonTemplates\"
-        Priority = 500,                                                        -- Priority. Higher priotity will be build more often then lower priotity.
-        InstanceCount = 2,                                                      -- Number of plattons that will be formed with this template.
+        Priority = 650,                                                        -- Priority. Higher priotity will be build more often then lower priotity.
+        InstanceCount = 1,                                                      -- Number of plattons that will be formed with this template.
         BuilderConditions = {
             { UCBC, 'ExpansionBaseCheck', { } },
 
             { EBC, 'MassToFactoryRatioBaseCheck', { 'LocationType' } },
 
-            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.05, 0.75}},
+            { EBC, 'GreaterThanEconStorageCurrent', { 200, 2000}},
 
             { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.8, 1.0 }}, 
 
-            { UCBC, 'StartLocationNeedsEngineer', { 'LocationType', 1000, -1000, 100, 1, 'AntiSurface' } },
+            { UCBC, 'StartLocationNeedsEngineer', { 'LocationType', 250, -1000, 5, 1, 'AntiSurface' } },
 
             { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 0, categories.ENGINEER * categories.TECH1 - categories.COMMAND - categories.STATIONASSISTPOD }},
         },
@@ -85,12 +85,12 @@ BuilderGroup {
                 BaseTemplate = 'ExpansionBaseTemplates',
                 ExpansionBase = true,
                 NearMarkerType = 'Start Location',
-                LocationRadius = 1000,
+                LocationRadius = 250,
                 LocationType = 'LocationType',
                 ThreatMin = -1000,
-                ThreatMax = 5000,
+                ThreatMax = 5,
                 ThreatRings = 1,
-                ThreatType = 'StructuresNotMex',
+                ThreatType = 'AntiSurface',
                 ExpansionRadius = 100,
                 BuildStructures = {
                     'T1LandFactory',
@@ -99,8 +99,9 @@ BuilderGroup {
             },
         }
     },
+
     Builder {
-        BuilderName = 'S1 Vacant Start Location trans',                               -- Random Builder Name.
+        BuilderName = 'S1 Vacant Expansion Area',                               -- Random Builder Name.
         PlatoonTemplate = 'EngineerBuilderALLTECH',                                    -- Template Name. These units will be formed. See: "\lua\AI\PlatoonTemplates\"
         Priority = 500,                                                        -- Priority. Higher priotity will be build more often then lower priotity.
         InstanceCount = 1,                                                      -- Number of plattons that will be formed with this template.
@@ -109,36 +110,36 @@ BuilderGroup {
 
             { EBC, 'MassToFactoryRatioBaseCheck', { 'LocationType' } },
 
-            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.05, 0.75}},
+            { EBC, 'GreaterThanEconStorageCurrent', { 200, 2000}},
 
             { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.8, 1.0 }}, 
 
-            { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 0, categories.ENGINEER * categories.TECH1 - categories.COMMAND - categories.STATIONASSISTPOD }},
+            { UCBC, 'ExpansionAreaNeedsEngineer', { 'LocationType', 250, -1000, 5, 1, 'AntiSurface' } },
 
-            { UCBC, 'StartLocationNeedsEngineer', { 'LocationType', 1000, -1000, 100, 1, 'AntiSurface' } },
+            { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 0, categories.ENGINEER * categories.TECH1 - categories.COMMAND - categories.STATIONASSISTPOD }},
         },
         BuilderType = 'Any',
         BuilderData = {
-            RequireTransport = true,
+            RequireTransport = false,
             Construction = {
                 BuildClose = false,
                 BaseTemplate = 'ExpansionBaseTemplates',
                 ExpansionBase = true,
-                NearMarkerType = 'Start Location',
-                LocationRadius = 1000,
+                NearMarkerType = 'Expansion Area',
+                LocationRadius = 250,
                 LocationType = 'LocationType',
                 ThreatMin = -1000,
-                ThreatMax = 5000,
+                ThreatMax = 5,
                 ThreatRings = 1,
                 ThreatType = 'StructuresNotMex',
                 ExpansionRadius = 100,
                 BuildStructures = {
-                    'T1LandFactory',
                     'T1Radar',
                 }
             },
         }
     },
+
     Builder {
         BuilderName = 'S2 Vacant Start Location - Defense Point',                             
         PlatoonTemplate = 'T2EngineerBuilder',                                   
@@ -183,6 +184,7 @@ BuilderGroup {
             },
         }
     },
+
     Builder {
         BuilderName = 'S2 Vacant Expansion Area - Defense Point',                             
         PlatoonTemplate = 'T2EngineerBuilder',                                   
@@ -227,85 +229,7 @@ BuilderGroup {
             },
         }
     },
-    Builder {
-        BuilderName = 'S1 Vacant Expansion Area',                               -- Random Builder Name.
-        PlatoonTemplate = 'EngineerBuilderALLTECH',                                    -- Template Name. These units will be formed. See: "\lua\AI\PlatoonTemplates\"
-        Priority = 500,                                                        -- Priority. Higher priotity will be build more often then lower priotity.
-        InstanceCount = 2,                                                      -- Number of plattons that will be formed with this template.
-        BuilderConditions = {
-            { UCBC, 'ExpansionBaseCheck', { } },
 
-            { EBC, 'MassToFactoryRatioBaseCheck', { 'LocationType' } },
-
-            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.05, 0.75}},
-
-            { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.8, 1.0 }}, 
-
-            { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 0, categories.ENGINEER * categories.TECH1 - categories.COMMAND - categories.STATIONASSISTPOD }},
-
-            { UCBC, 'ExpansionAreaNeedsEngineer', { 'LocationType', 1000, -1000, 100, 1, 'AntiSurface' } },
-        },
-        BuilderType = 'Any',
-        BuilderData = {
-            RequireTransport = false,
-            Construction = {
-                BuildClose = false,
-                BaseTemplate = 'ExpansionBaseTemplates',
-                ExpansionBase = true,
-                NearMarkerType = 'Expansion Area',
-                LocationRadius = 1000,
-                LocationType = 'LocationType',
-                ThreatMin = -1000,
-                ThreatMax = 5000,
-                ThreatRings = 1,
-                ThreatType = 'StructuresNotMex',
-                ExpansionRadius = 100,
-                BuildStructures = {
-                    'T1Radar',
-                }
-            },
-        }
-    },
-    Builder {
-        BuilderName = 'S1 Vacant Expansion Area trans',                               -- Random Builder Name.
-        PlatoonTemplate = 'EngineerBuilderALLTECH',                                    -- Template Name. These units will be formed. See: "\lua\AI\PlatoonTemplates\"
-        Priority = 500,                                                        -- Priority. Higher priotity will be build more often then lower priotity.
-        InstanceCount = 1,                                                      -- Number of plattons that will be formed with this template.
-        BuilderConditions = {
-            { UCBC, 'ExpansionBaseCheck', { } },
-
-            { EBC, 'MassToFactoryRatioBaseCheck', { 'LocationType' } },
-
-            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.05, 0.75}},
-
-            { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.8, 1.0 }}, 
-
-            { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 0, categories.ENGINEER * categories.TECH1 - categories.COMMAND - categories.STATIONASSISTPOD }},
-
-            { UCBC, 'ExpansionAreaNeedsEngineer', { 'LocationType', 1000, -1000, 100, 1, 'AntiSurface' } },
-        },
-        BuilderType = 'Any',
-        BuilderData = {
-            RequireTransport = true,
-            Construction = {
-                BuildClose = false,
-                BaseTemplate = 'ExpansionBaseTemplates',
-                ExpansionBase = true,
-                NearMarkerType = 'Expansion Area',
-                LocationRadius = 1000,
-                LocationType = 'LocationType',
-                ThreatMin = -1000,
-                ThreatMax = 5000,
-                ThreatRings = 1,
-                ThreatType = 'StructuresNotMex',
-                ExpansionRadius = 100,
-                BuildStructures = {
-                    'T1LandFactory',
-                    'T1Radar',
-                }
-            },
-        }
-    },
     Builder {
         BuilderName = 'S1 Naval Builder',                                       -- Random Builder Name.
         PlatoonTemplate = 'EngineerBuilderALLTECH',                                    -- Template Name. These units will be formed. See: "\lua\AI\PlatoonTemplates\"
@@ -316,7 +240,7 @@ BuilderGroup {
 
             { EBC, 'MassToFactoryRatioBaseCheck', { 'LocationType' } },
 
-            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.05, 0.75}},
+            { EBC, 'GreaterThanEconStorageCurrent', { 250, 1000}},
 
             { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.8, 1.0 }}, 
 

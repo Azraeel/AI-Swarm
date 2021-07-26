@@ -36,9 +36,9 @@ BuilderGroup { BuilderGroupName = 'Swarm Factory Upgrader Rush',
 
             { UCBC, 'BuildOnlyOnLocationSwarm', { 'LocationType', 'MAIN' } },
 
-            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.07, 0.01 } },
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.05, 0.10 } },
 
-            { EBC, 'GreaterThanEconTrendSwarm', { 5.0, 4.0 } },
+            { EBC, 'GreaterThanEconTrendSwarm', { 1.0, 1.5 } },
 
             { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.05, 1.0 }},
 
@@ -60,9 +60,9 @@ BuilderGroup { BuilderGroupName = 'Swarm Factory Upgrader Rush',
         
             { UCBC, 'BuildOnlyOnLocationSwarm', { 'LocationType', 'MAIN' } },
             
-            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.07, 0.01 } },
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.05, 0.10 } },
 
-            { EBC, 'GreaterThanEconTrendSwarm', { 5.0, 4.0 } },
+            { EBC, 'GreaterThanEconTrendSwarm', { 1.0, 1.5 } },
 
             { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.05, 1.0 }},
             
@@ -84,9 +84,9 @@ BuilderGroup { BuilderGroupName = 'Swarm Factory Upgrader Rush',
 
             { UCBC, 'BuildOnlyOnLocationSwarm', { 'LocationType', 'MAIN' } },
 
-            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.07, 0.01 } },
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.05, 0.10 } },
 
-            { EBC, 'GreaterThanEconTrendSwarm', { 5.0, 4.0 } },
+            { EBC, 'GreaterThanEconTrendSwarm', { 1.0, 1.5 } },
 
             { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.95, 1.0 }},
 
@@ -110,11 +110,11 @@ BuilderGroup { BuilderGroupName = 'Swarm Factory Upgrader Rush',
 
             { UCBC, 'BuildOnlyOnLocationSwarm', { 'LocationType', 'MAIN' } },
           
-            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.07, 0.01 } },
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.05, 0.20 } },
 
-            { EBC, 'GreaterThanEconTrendSwarm', { 0.0, 0.0 } },
+            { EBC, 'GreaterThanEconTrendSwarm', { 1.0, 1.5 } },
 
-            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.05, 1.0 }},
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.03, 1.0 }},
             
             { UCBC, 'HaveLessThanUnitsInCategoryBeingUpgradeSwarm', { 1, categories.STRUCTURE * categories.FACTORY * categories.TECH2 * categories.RESEARCH }},
         },
@@ -134,11 +134,11 @@ BuilderGroup { BuilderGroupName = 'Swarm Factory Upgrader Rush',
            
             { UCBC, 'BuildOnlyOnLocationSwarm', { 'LocationType', 'MAIN' } },
             
-            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.07, 0.01 } },
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.05, 0.20 } },
 
-            { EBC, 'GreaterThanEconTrendSwarm', { 0.0, 0.0 } },
+            { EBC, 'GreaterThanEconTrendSwarm', { 1.0, 1.5 } },
 
-            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.05, 1.0 }},
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.03, 1.0 }},
             
             { UCBC, 'HaveLessThanUnitsInCategoryBeingUpgradeSwarm', { 1, categories.STRUCTURE * categories.FACTORY * categories.TECH2 * categories.RESEARCH }},
         },
@@ -158,11 +158,11 @@ BuilderGroup { BuilderGroupName = 'Swarm Factory Upgrader Rush',
 
             { UCBC, 'BuildOnlyOnLocationSwarm', { 'LocationType', 'MAIN' } },
          
-            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.07, 0.01 } },
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.05, 0.20 } },
 
-            { EBC, 'GreaterThanEconTrendSwarm', { 0.0, 0.0 } },
+            { EBC, 'GreaterThanEconTrendSwarm', { 1.0, 1.5 } },
 
-            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.05, 1.0 }},
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.03, 1.0 }},
           
             { UCBC, 'HaveLessThanUnitsInCategoryBeingUpgradeSwarm', { 1, categories.STRUCTURE * categories.FACTORY * categories.TECH2 * categories.RESEARCH }},
         },
@@ -178,11 +178,11 @@ BuilderGroup { BuilderGroupName = 'Swarm Factory Upgrader Rush',
 
             { UCBC, 'HaveGreaterThanUnitsWithCategory', { 1, categories.STRUCTURE * categories.FACTORY * categories.TECH3 } }, 
 
-            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.07, 0.01 } },
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.05, 0.20 } },
 
-            { EBC, 'GreaterThanEconTrendSwarm', { 0.0, 0.0 } },
+            { EBC, 'GreaterThanEconTrendSwarm', { 1.0, 1.5 } },
 
-            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.05, 1.0 }},
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.03, 1.0 }},
            
             { UCBC, 'HaveLessThanUnitsInCategoryBeingUpgradeSwarm', { 1, categories.STRUCTURE * categories.FACTORY * categories.TECH2 * categories.RESEARCH }},
         },
@@ -348,11 +348,11 @@ BuilderGroup { BuilderGroupName = 'Swarm Factory Upgrader Rush',
 
             { UCBC, 'BuildOnlyOnLocationSwarm', { 'LocationType', 'MAIN' } },
 
-            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.07, 0.01 } },
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.05, 0.25 } },
 
-            { EBC, 'GreaterThanEconTrendSwarm', { 3.5, 8.0 } },
+            { EBC, 'GreaterThanEconTrendSwarm', { 1.0, 2.5 } },
 
-            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.05, 1.25 }},
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.0, 1.05 }},
 
             { UCBC, 'HaveLessThanUnitsInCategoryBeingUpgradeSwarm', { 1, categories.STRUCTURE * categories.FACTORY * categories.TECH1 * categories.AIR }},
         },
@@ -372,11 +372,11 @@ BuilderGroup { BuilderGroupName = 'Swarm Factory Upgrader Rush',
            
             { UCBC, 'BuildOnlyOnLocationSwarm', { 'LocationType', 'MAIN' } },
           
-            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.07, 0.01 } },
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.05, 0.25 } },
 
-            { EBC, 'GreaterThanEconTrendSwarm', { 3.5, 8.0 } },
+            { EBC, 'GreaterThanEconTrendSwarm', { 1.0, 2.5 } },
 
-            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.05, 1.25 }},
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.0, 1.05 }},
           
             { UCBC, 'HaveLessThanUnitsInCategoryBeingUpgradeSwarm', { 1, categories.STRUCTURE * categories.FACTORY * categories.TECH1 * categories.AIR }},
         },
@@ -398,11 +398,11 @@ BuilderGroup { BuilderGroupName = 'Swarm Factory Upgrader Rush',
 
             { UCBC, 'BuildOnlyOnLocationSwarm', { 'LocationType', 'MAIN' } },
 
-            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.07, 0.01 } },
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.05, 0.25 } },
 
-            { EBC, 'GreaterThanEconTrendSwarm', { 3.5, 8.0 } },
+            { EBC, 'GreaterThanEconTrendSwarm', { 1.0, 2.5 } },
 
-            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.05, 1.25 }},
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.0, 1.05 }},
            
             { UCBC, 'HaveLessThanUnitsInCategoryBeingUpgradeSwarm', { 1, categories.STRUCTURE * categories.FACTORY * categories.TECH1 * categories.AIR }},
         },
@@ -422,11 +422,11 @@ BuilderGroup { BuilderGroupName = 'Swarm Factory Upgrader Rush',
 
             { UCBC, 'BuildOnlyOnLocationSwarm', { 'LocationType', 'MAIN' } },
            
-            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.07, 0.01 } },
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.05, 0.25 } },
 
-            { EBC, 'GreaterThanEconTrendSwarm', { 3.5, 8.0 } },
+            { EBC, 'GreaterThanEconTrendSwarm', { 1.0, 2.5 } },
 
-            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.05, 1.25 }},
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.0, 1.05 }},
 
             { UCBC, 'HaveLessThanUnitsInCategoryBeingUpgradeSwarm', { 1, categories.STRUCTURE * categories.FACTORY * categories.TECH1 * categories.AIR }},
         },
@@ -446,11 +446,11 @@ BuilderGroup { BuilderGroupName = 'Swarm Factory Upgrader Rush',
 
             { UCBC, 'BuildOnlyOnLocationSwarm', { 'LocationType', 'MAIN' } },
            
-            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.07, 0.01 } },
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.05, 0.50 } },
 
-            { EBC, 'GreaterThanEconTrendSwarm', { 0.0, 0.0 } },
+            { EBC, 'GreaterThanEconTrendSwarm', { 1.0, 2.5 } },
 
-            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.05, 1.3 }},
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.05, 1.1 }},
         
             { UCBC, 'HaveLessThanUnitsInCategoryBeingUpgradeSwarm', { 1, categories.STRUCTURE * categories.FACTORY * categories.TECH2 * categories.RESEARCH }},
         },
@@ -470,11 +470,11 @@ BuilderGroup { BuilderGroupName = 'Swarm Factory Upgrader Rush',
       
             { UCBC, 'BuildOnlyOnLocationSwarm', { 'LocationType', 'MAIN' } },
          
-            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.07, 0.01 } },
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.05, 0.50 } },
 
-            { EBC, 'GreaterThanEconTrendSwarm', { 0.0, 0.0 } },
+            { EBC, 'GreaterThanEconTrendSwarm', { 1.0, 2.5 } },
 
-            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.05, 1.3 }},
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.05, 1.1 }},
             
             { UCBC, 'HaveLessThanUnitsInCategoryBeingUpgradeSwarm', { 1, categories.STRUCTURE * categories.FACTORY * categories.TECH2 * categories.RESEARCH }},
         },
@@ -496,11 +496,11 @@ BuilderGroup { BuilderGroupName = 'Swarm Factory Upgrader Rush',
 
             { UCBC, 'BuildOnlyOnLocationSwarm', { 'LocationType', 'MAIN' } },
        
-            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.07, 0.01 } },
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.05, 0.50 } },
 
-            { EBC, 'GreaterThanEconTrendSwarm', { 0.0, 0.0 } },
+            { EBC, 'GreaterThanEconTrendSwarm', { 1.0, 2.5 } },
 
-            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.05, 1.3 }},
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.05, 1.1 }},
        
             { UCBC, 'HaveLessThanUnitsInCategoryBeingUpgradeSwarm', { 1, categories.STRUCTURE * categories.FACTORY * categories.TECH2 * categories.RESEARCH }},
         },
@@ -520,11 +520,11 @@ BuilderGroup { BuilderGroupName = 'Swarm Factory Upgrader Rush',
 
             { UCBC, 'BuildOnlyOnLocationSwarm', { 'LocationType', 'MAIN' } },
            
-            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.07, 0.01 } },
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.05, 0.50 } },
 
-            { EBC, 'GreaterThanEconTrendSwarm', { 0.0, 0.0 } },
+            { EBC, 'GreaterThanEconTrendSwarm', { 1.0, 2.5 } },
 
-            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.05, 1.3 }},
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.05, 1.1 }},
            
             { UCBC, 'HaveLessThanUnitsInCategoryBeingUpgradeSwarm', { 1, categories.STRUCTURE * categories.FACTORY * categories.TECH2 * categories.RESEARCH }},
 
@@ -542,11 +542,11 @@ BuilderGroup { BuilderGroupName = 'Swarm Factory Upgrader Rush',
            
             { UCBC, 'HaveGreaterThanUnitsWithCategory', { 1, categories.STRUCTURE * categories.FACTORY * categories.AIR * categories.TECH3 } },
 
-            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.07, 0.01 } },
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.05, 0.50 } },
 
-            { EBC, 'GreaterThanEconTrendSwarm', { 0.0, 0.0 } },
+            { EBC, 'GreaterThanEconTrendSwarm', { 1.0, 2.5 } },
 
-            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.0, 1.3 }},
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.05, 1.1 }},
           
             { UCBC, 'HaveLessThanUnitsInCategoryBeingUpgradeSwarm', { 1, categories.STRUCTURE * categories.FACTORY * categories.TECH2 * categories.RESEARCH }},
         },
