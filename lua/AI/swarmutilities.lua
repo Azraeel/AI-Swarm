@@ -172,21 +172,21 @@ function ExtractorUpgradeSwarm(self, aiBrain, MassExtractorUnitList, ratio, tech
     end
 
     if upgradeID and upgradeBuilding then
-        --LOG('* ExtractorUpgradeSwarm: Upgrading Building in DistanceToBase '..(LowestDistanceToBase or 'Unknown ???')..' '..techLevel..' - UnitId '..upgradeBuilding:GetUnitId()..' - upgradeID '..upgradeID..' - GlobalUpgrading '..techLevel..': '..(UpgradingBuilding + 1) )
         IssueUpgrade({upgradeBuilding}, upgradeID)
         coroutine.yield(10)
         return true
     end
+
     return false
 end
 
 -- Helperfunction fro ExtractorUpgradeAISwarm. 
 function GlobalMassUpgradeCostVsGlobalMassIncomeRatioSwarm(self, aiBrain, ratio, techLevel, compareType)
+
     local GlobalUpgradeCost = 0
-    -- get all units matching 'category'
     local unitsBuilding = aiBrain:GetListOfUnits(categories.MASSEXTRACTION * (categories.TECH1 + categories.TECH2), true)
     local numBuilding = 0
-    -- if we compare for more buildings, add the cost for a building.
+    
     if compareType == '<' or compareType == '<=' then
         numBuilding = 1
         if techLevel == 'TECH1' then
@@ -197,10 +197,10 @@ function GlobalMassUpgradeCostVsGlobalMassIncomeRatioSwarm(self, aiBrain, ratio,
             MassIncomeLost = 6
         end
     end
+
     local SingleUpgradeCost
-    -- own armyIndex
     local armyIndex = aiBrain:GetArmyIndex()
-    -- loop over all units and search for upgrading units
+   
     for unitNum, unit in unitsBuilding do
         if unit
             and not unit:BeenDestroyed()
@@ -211,71 +211,26 @@ function GlobalMassUpgradeCostVsGlobalMassIncomeRatioSwarm(self, aiBrain, ratio,
             and unit:GetAIBrain():GetArmyIndex() == armyIndex
         then
             numBuilding = numBuilding + 1
-            -- look for every building, category can hold different categories / techlevels for multiple building search
+            
             local UpgraderBlueprint = unit:GetBlueprint()
             local BeingUpgradeEconomy = __blueprints[UpgraderBlueprint.General.UpgradesTo].Economy
             SingleUpgradeCost = (UpgraderBlueprint.Economy.BuildRate / BeingUpgradeEconomy.BuildTime) * BeingUpgradeEconomy.BuildCostMass
             GlobalUpgradeCost = GlobalUpgradeCost + SingleUpgradeCost
         end
     end
-    -- If we have under 20 Massincome return always false
+   
     local MassIncome = ( aiBrain:GetEconomyIncome('MASS') * 10 ) - MassIncomeLost
+
     if MassIncome < 20 and ( compareType == '<' or compareType == '<=' ) then
         return false
     end
+
     return CompareBody(GlobalUpgradeCost / MassIncome, ratio, compareType)
 end
-
--- Hopefully this stops the commander from actually getting sniped 
--- This has been a problem, players have reported for a long time
--- this will be included in next version
--- will wait a bit on adding this though
-
---[[
-function CDRHideBehaviorSwarm(aiBrain,cdr)
-    if cdr:IsIdleState() then
-    
-        local category = false
-        local runShield = false
-        local runPos = false
-        local nmaShield = GetNumUnitsAroundPoint(aiBrain, categories.SHIELD * categories.STRUCTURE, cdr:GetPosition(), 100, 'Ally')
-        local nmaPD = GetNumUnitsAroundPoint(aiBrain, categories.DIRECTFIRE * categories.DEFENSE, cdr:GetPosition(), 100, 'Ally')
-        local nmaAA = GetNumUnitsAroundPoint(aiBrain, categories.ANTIAIR * categories.DEFENSE, cdr:GetPosition(), 100, 'Ally')
-    
-        if nmaShield > 0 then
-            category = categories.SHIELD * categories.STRUCTURE
-            runShield = true
-        elseif nmaAA > 0 then
-            category = categories.DEFENSE * categories.ANTIAIR
-        elseif nmaPD > 0 then
-            category = categories.DEFENSE * categories.DIRECTFIRE
-        end
-    
-        if category then
-            runPos = AIUtils.AIFindDefensiveAreaSorian(aiBrain, cdr, category, 100, runShield)
-            IssueClearCommands({cdr})
-            IssueMove({cdr}, runPos)
-            WaitTicks(30)
-        end
-    
-        if not category or not runPos then
-            local cdrNewPos = {}
-            cdrNewPos[1] = cdr.CDRHome[1] + Random(-6, 6)
-            cdrNewPos[2] = cdr.CDRHome[2]
-            cdrNewPos[3] = cdr.CDRHome[3] + Random(-6, 6)
-            WaitTicks(1)
-            IssueStop({cdr})
-            IssueMove({cdr}, cdrNewPos)
-            WaitTicks(30)
-        end
-    end
-    WaitTicks(5)
-end ]]--
 
 function HaveUnitRatio(aiBrain, ratio, categoryOne, compareType, categoryTwo)
     local numOne = aiBrain:GetCurrentUnits(categoryOne)
     local numTwo = aiBrain:GetCurrentUnits(categoryTwo)
-    --LOG(aiBrain:GetArmyIndex()..' CompareBody {World} ( '..numOne..' '..compareType..' '..numTwo..' ) -- ['..ratio..'] -- return '..repr(CompareBody(numOne / numTwo, ratio, compareType)))
     return CompareBody(numOne / numTwo, ratio, compareType)
 end
 
@@ -321,9 +276,8 @@ function ReclaimAIThreadSwarm(platoon,self,aiBrain)
         SelfPos = self:GetPosition()
         MassStorageRatio = aiBrain:GetEconomyStoredRatio('MASS')
         EnergyStorageRatio = aiBrain:GetEconomyStoredRatio('ENERGY')
-        -- 1==1 is always true, i use this to clean up the base from wreckages even if we have full eco.
         if (MassStorageRatio < 1.00 or EnergyStorageRatio < 1.00) and not aiBrain.HasParagon then
-            --LOG('Searching for reclaimables')
+
             local x1 = SelfPos[1]-scanrange
             local y1 = SelfPos[3]-scanrange
             local x2 = SelfPos[1]+scanrange
@@ -332,12 +286,12 @@ function ReclaimAIThreadSwarm(platoon,self,aiBrain)
             if y1 < playablearea[2]+6 then y1 = playablearea[2]+6 end
             if x2 > playablearea[3]-6 then x2 = playablearea[3]-6 end
             if y2 > playablearea[4]-6 then y2 = playablearea[4]-6 end
-            --LOG('GetReclaimablesInRect from x1='..math.floor(x1)..' - x2='..math.floor(x2)..' - y1='..math.floor(y1)..' - y2='..math.floor(y2)..' - scanrange='..scanrange..'')
             local props = GetReclaimablesInRect(Rect(x1, y1, x2, y2))
             local NearestWreckDist = -1
             local NearestWreckPos = {}
             local WreckDist = 0
             local WrackCount = 0
+
             if props and table.getn( props ) > 0 then
                 for _, p in props do
                     local WreckPos = p.CachePosition
@@ -352,30 +306,31 @@ function ReclaimAIThreadSwarm(platoon,self,aiBrain)
                     if blacklisted then continue end
                     -- End Blacklisted Props
                     local BPID = p.AssociatedBP or "unknown"
-                    if BPID == 'ueb5101' or BPID == 'uab5101' or BPID == 'urb5101' or BPID == 'xsb5101' then -- Walls will not be reclaimed on patrols
+                    if BPID == 'ueb5101' or BPID == 'uab5101' or BPID == 'urb5101' or BPID == 'xsb5101' then 
                         continue
                     end
-					-- reclaim mass if mass is lower than energy and reclaim energy if energy is lower than mass and gametime is higher then 4 minutes.
+					
                     if (MassStorageRatio <= EnergyStorageRatio and p.MaxMassReclaim and p.MaxMassReclaim > 1) or (GetGameTimeSeconds() > 240 and MassStorageRatio > EnergyStorageRatio and p.MaxEnergyReclaim and p.MaxEnergyReclaim > 1) then
-                        --LOG('Found Wreckage no.('..WrackCount..') from '..BPID..'. - Distance:'..WreckDist..' - NearestWreckDist:'..NearestWreckDist..' '..repr(MassStorageRatio < EnergyStorageRatio)..' '..repr(p.MaxMassReclaim)..' '..repr(p.MaxEnergyReclaim))
                         WreckDist = VDist2(SelfPos[1], SelfPos[3], WreckPos[1], WreckPos[3])
                         WrackCount = WrackCount + 1
                         if WreckDist < NearestWreckDist or NearestWreckDist == -1 then
                             NearestWreckDist = WreckDist
                             NearestWreckPos = WreckPos
-                            --LOG('Found Wreckage no.('..WrackCount..') from '..BPID..'. - Distance:'..WreckDist..' - NearestWreckDist:'..NearestWreckDist..'')
+                           
                         end
                         if NearestWreckDist < 20 then
-                            --LOG('Found Wreckage nearer then 20. break!')
+                          
                             break
                         end
                     end
                 end
             end
+
             if self.Dead then
-				--LOG('* ReclaimAIThreadSwarm: Unit Dead')
+			
                 return
             end
+
             if NearestWreckDist == -1 then
                 scanrange = math.floor(scanrange + 100)
                 if scanrange > 512 then -- 5 Km
@@ -383,23 +338,20 @@ function ReclaimAIThreadSwarm(platoon,self,aiBrain)
                     scanrange = 25
                     local HomeDist = VDist2(SelfPos[1], SelfPos[3], basePosition[1], basePosition[3])
                     if HomeDist > 50 then
-                        --LOG('noop returning home')
                         StartMoveDestination(self, {basePosition[1], basePosition[2], basePosition[3]})
                     end
                     PropBlacklist = {}
                 end
-                --LOG('No Wreckage, expanding scanrange:'..scanrange..'.')
+         
             elseif math.floor(NearestWreckDist) < scanrange then
                 scanrange = math.floor(NearestWreckDist)
                 if scanrange < 25 then
                     scanrange = 25
                 end
-                --LOG('Adapting scanrange to nearest Object:'..scanrange..'.')
             end
+
             scanKM = math.floor(10000/512*NearestWreckDist)
             if NearestWreckDist > 20 and not self.Dead then
-                --LOG('NearestWreck is > 20 away Distance:'..NearestWreckDist..'. Moving to Wreckage!')
-				-- We don't need to go too close to the mapborder for reclaim, we have reclaimdrones with a flightradius of 25!
                 if NearestWreckPos[1] < playablearea[1]+21 then
                     NearestWreckPos[1] = playablearea[1]+21
                 end
@@ -412,7 +364,8 @@ function ReclaimAIThreadSwarm(platoon,self,aiBrain)
                 if NearestWreckPos[3] > playablearea[4]-21 then
                     NearestWreckPos[3] = playablearea[4]-21
                 end
-                 if self.lastXtarget == NearestWreckPos[1] and self.lastYtarget == NearestWreckPos[3] then
+
+                if self.lastXtarget == NearestWreckPos[1] and self.lastYtarget == NearestWreckPos[3] then
                     self.blocked = self.blocked + 1
                     if self.blocked > 10 then
                         self.blocked = 0
@@ -424,10 +377,11 @@ function ReclaimAIThreadSwarm(platoon,self,aiBrain)
                     self.lastYtarget = NearestWreckPos[3]
                     StartMoveDestination(self, NearestWreckPos)
                 end
+
             end 
             coroutine.yield(10)
             if not self.Dead and self:IsUnitState("Moving") then
-                --LOG('Moving to Wreckage.')
+             
                 while self and not self.Dead and self:IsUnitState("Moving") do
                     coroutine.yield(10)
                 end
@@ -437,10 +391,10 @@ function ReclaimAIThreadSwarm(platoon,self,aiBrain)
             IssueAggressiveMove({self}, self:GetPosition())
             IssueAggressiveMove({self}, self:GetPosition())
         else
-            --LOG('Storage Full')
+           
             local HomeDist = VDist2(SelfPos[1], SelfPos[3], basePosition[1], basePosition[3])
             if HomeDist > 36 then
-                --LOG('full, moving home')
+               
                 StartMoveDestination(self, {basePosition[1], basePosition[2], basePosition[3]})
                 coroutine.yield(10)
                 if not self.Dead and self:IsUnitState("Moving") then
@@ -454,7 +408,7 @@ function ReclaimAIThreadSwarm(platoon,self,aiBrain)
                     scanrange = 25
                 end
             else
-				--LOG('* ReclaimAIThreadSwarm: Storrage are full, and we are home.')
+				
                 return
             end
         end
@@ -545,29 +499,28 @@ function RandomizePositionTML(position)
     return {X, Y, Z}
 end
 
--- Please don't change any range here!!!
--- Called from AIBuilders/*.*, simInit.lua, aiarchetype-managerloader.lua
+
 function GetDangerZoneRadii(bool)
-    -- Military zone is the half the map size (10x10map) or maximal 250.
+    
     local BaseMilitaryZone = math.max( ScenarioInfo.size[1]-50, ScenarioInfo.size[2]-50 ) / 2
     BaseMilitaryZone = math.max( 250, BaseMilitaryZone )
-    -- Panic Zone is half the BaseMilitaryZone. That's 1/4 of a 10x10 map
+
     local BasePanicZone = BaseMilitaryZone / 2
-    -- Make sure the Panic Zone is not smaller than 60 or greater than 120
     BasePanicZone = math.max( 60, BasePanicZone )
     BasePanicZone = math.min( 120, BasePanicZone )
-    -- The rest of the map is enemy zone
+
     local BaseEnemyZone = math.max( ScenarioInfo.size[1], ScenarioInfo.size[2] ) * 1.5
-    -- "bool" is only true if called from "AIBuilders/Mobile Land.lua", so we only print this once.
+  
     if bool then
         LOG('* AI-Swarm: BasePanicZone= '..math.floor( BasePanicZone * 0.01953125 ) ..' Km - ('..BasePanicZone..' units)' )
         LOG('* AI-Swarm: BaseMilitaryZone= '..math.floor( BaseMilitaryZone * 0.01953125 )..' Km - ('..BaseMilitaryZone..' units)' )
         LOG('* AI-Swarm: BaseEnemyZone= '..math.floor( BaseEnemyZone * 0.01953125 )..' Km - ('..BaseEnemyZone..' units)' )
     end
+
     return BasePanicZone, BaseMilitaryZone, BaseEnemyZone
 end
 
--- 99% of this is Relent0r's Work --Scouting--
+-- Requires Rework
 function AirScoutPatrolSwarmAIThread(self, aiBrain)
     
     local scout = self:GetPlatoonUnits()[1]
@@ -575,12 +528,12 @@ function AirScoutPatrolSwarmAIThread(self, aiBrain)
         return
     end
 
-    -- build scoutlocations if not already done.
+   
     if not aiBrain.InterestList then
         aiBrain:BuildScoutLocations()
     end
 
-    --If we have Stealth (are cybran), then turn on our Stealth
+   
     if scout:TestToggleCaps('RULEUTC_CloakToggle') then
         scout:EnableUnitIntel('Toggle', 'Cloak')
     end
@@ -625,7 +578,6 @@ function AirScoutPatrolSwarmAIThread(self, aiBrain)
 
             aiBrain:SortScoutingAreas(aiBrain.InterestList.LowPriority)
         else
-            --Reset number of scoutings and start over
             aiBrain.IntelData.AirLowPriScouts = 0
             aiBrain.IntelData.AirHiPriScouts = 0
         end
@@ -638,10 +590,9 @@ function AirScoutPatrolSwarmAIThread(self, aiBrain)
 
             while not scout.Dead and not scout:IsIdleState() do
 
-                --If we're close enough...
+              
                 if VDist2Sq(vec[1], vec[3], scout:GetPosition()[1], scout:GetPosition()[3]) < 15625 then
                     if mustScoutArea then
-                        --Untag and remove
                         for idx,loc in aiBrain.InterestList.MustScout do
                             if loc == mustScoutArea then
                                table.remove(aiBrain.InterestList.MustScout, idx)
@@ -649,7 +600,7 @@ function AirScoutPatrolSwarmAIThread(self, aiBrain)
                             end
                         end
                     end
-                    --Break within 125 ogrids of destination so we don't decelerate trying to stop on the waypoint.
+                   
                     break
                 end
 
@@ -924,9 +875,6 @@ function LeadTarget(launcher, target)
     local YmovePerSec=0
     local XmovePerSecCheck=-1
     local YmovePerSecCheck=-1
-    -- Check if the target is runing straight or circling
-    -- If x/y and xcheck/ycheck are equal, we can be sure the target is moving straight
-    -- in one direction. At least for the last 2 seconds.
     local LoopSaveGuard = 0
     while target and (XmovePerSec ~= XmovePerSecCheck or YmovePerSec ~= YmovePerSecCheck) and LoopSaveGuard < 10 do
         -- 1st position of target

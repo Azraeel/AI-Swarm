@@ -139,7 +139,7 @@ function AIExecuteBuildStructure(aiBrain, builder, buildingType, closeToBuilder,
 
     if IsResource(buildingType) then
         
-        --[[ local constructionData = builder.PlatoonHandle.PlatoonData.Construction
+        local constructionData = builder.PlatoonHandle.PlatoonData.Construction
 
         --location = aiBrain:FindPlaceToBuild(buildingType, whatToBuild, baseTemplate, relative, closeToBuilder, 'Enemy', relativeTo[1], relativeTo[3], 5)
         -- OK - Here is an important piece of code particularily for Engineers building Mass Extractors
@@ -160,10 +160,10 @@ function AIExecuteBuildStructure(aiBrain, builder, buildingType, closeToBuilder,
             testtype = 'Mass'
         end
 
-        LOG("*AI DEBUG: Data is " .. repr(testtype) .. " " .. repr(constructionData))
-		local markerlist = import(AIUtils).AIGetMarkerLocations(testtype)
-        LOG("*AI DEBUG: Data is " .. repr(markerlist))
-        local SourcePosition = aiBrain.BuilderManagers[builder.LocationType].Position or false
+        --LOG("*AI DEBUG: Data is " .. repr(testtype) .. " " .. repr(constructionData))
+		local markerlist = import(AIUtils).AIGetMarkerLocations(aiBrain, testtype)
+        --LOG("*AI DEBUG: BuilderManagers Location is " .. repr(builder.BuilderManagerData.LocationType))
+        local SourcePosition = aiBrain.BuilderManagers[builder.BuilderManagerData.LocationType].Position or false
         
 		local mlist = {}
 		local counter = 0
@@ -175,10 +175,12 @@ function AIExecuteBuildStructure(aiBrain, builder, buildingType, closeToBuilder,
         local tRings = constructionData.ThreatRings or 0
         local tType = constructionData.ThreatType or 'AntiSurface'
         local maxlist = constructionData.MaxChoices or 1
-        
+
+        --LOG("SourcePosition is " .. repr(SourcePosition))
         table.sort( markerlist, function (a,b) return VDist3( a.Position, SourcePosition ) < VDist3( b.Position, SourcePosition ) end )
 
-		local CanBuildStructureAt = moho.aibrain_methods.CanBuildStructureAt
+		local CanBuildStructureAt = moho.aibrain_methods.CanBuildStructureAt    
+        --LOG("*AI DEBUG: Markerlist is " .. repr(markerlist))
     
 		for _,v in markerlist do
             
@@ -207,6 +209,7 @@ function AIExecuteBuildStructure(aiBrain, builder, buildingType, closeToBuilder,
 
                 -- pick one of the points randomly
 				location = table.copy( markerTable[ Random(1,table.getn(markerTable)) ] )
+                LOG("*AI DEBUG at marker is " .. aiBrain:GetThreatAtPosition(location, tRings, true, 'AntiSurface'))
             end
 		end	
 
@@ -234,8 +237,8 @@ function AIExecuteBuildStructure(aiBrain, builder, buildingType, closeToBuilder,
                 constructionData.MinRange = 0
             end
             
-		end ]]--
-        location = aiBrain:FindPlaceToBuild(buildingType, whatToBuild, baseTemplate, relative, closeToBuilder, 'Enemy', relativeTo[1], relativeTo[3], 5)
+		end 
+        --location = aiBrain:FindPlaceToBuild(buildingType, whatToBuild, baseTemplate, relative, closeToBuilder, 'Enemy', relativeTo[1], relativeTo[3], 5)
     else
         location = aiBrain:FindPlaceToBuild(buildingTypeReplace or buildingType, whatToBuildReplace or whatToBuild, baseTemplate, relative, closeToBuilder, nil, relativeTo[1], relativeTo[3])
     end

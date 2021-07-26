@@ -287,6 +287,8 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Builders',
         PlatoonTemplate = 'T3AirTransport',
         Priority = 707,
         BuilderConditions = {
+            { MIBC, 'FactionIndex', { 1 }}, -- 1: UEF, 2: Aeon, 3: Cybran, 4: Seraphim, 5: Nomads 
+            
             { EBC, 'GreaterThanEconTrendSwarm', { 0.0, 0.0 } },
 
             { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.02, 1.1 }},
