@@ -19,7 +19,7 @@ BuilderGroup {
         BuilderName = 'Swarm Mass 240',
         PlatoonTemplate = 'EngineerBuilder',
         Priority = 670,
-        InstanceCount = 2,
+        InstanceCount = 4,
         BuilderConditions = {
             { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 0, categories.ENGINEER * categories.TECH1 }},
 

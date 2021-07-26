@@ -21,8 +21,6 @@ BuilderGroup {
         BuilderConditions = {
             { UCBC, 'CheckBuildPlattonDelay', { 'Energy' }},
 
-            { UCBC, 'GreaterThanGameTimeSeconds', { 260 } },
-
             { EBC, 'LessThanEnergyTrend', { 0.0 } },             
 
             { UCBC, 'HaveLessThanUnitsWithCategory', { 1, categories.ENERGYPRODUCTION * categories.TECH2 } },
@@ -55,7 +53,7 @@ BuilderGroup {
         BuilderConditions = {
             { UCBC, 'CheckBuildPlattonDelay', { 'Energy' }},
 
-            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.05, 0}},
+            { EBC, 'GreaterThanEconStorageCurrent', { 200, 2000}},
 
             { EBC, 'LessThanEnergyTrend', { 4.0 } },
 
@@ -76,14 +74,13 @@ BuilderGroup {
         }
     },
 
-    Builder {
+    --[[ Builder {
         BuilderName = 'Swarm Power Hydrocarbon Rush',
         PlatoonTemplate = 'EngineerBuilder',
         Priority = 675,
         DelayEqualBuildPlattons = {'Energy', 1},
         InstanceCount = 1,
         BuilderConditions = {
-            
             { MABC, 'CanBuildOnHydroSwarm', { 'LocationType', 50, -1000, 15, 1, 'AntiSurface', 1 }},          
 
             { UCBC, 'HaveLessThanUnitsWithCategory', { 1, categories.HYDROCARBON } },
@@ -100,7 +97,7 @@ BuilderGroup {
                 }
             }
         }
-    },
+    }, ]]--
 
     Builder {
         BuilderName = 'Swarm Power Hydrocarbon Normal',
@@ -109,9 +106,9 @@ BuilderGroup {
         DelayEqualBuildPlattons = {'Energy', 1},
         InstanceCount = 1,
         BuilderConditions = {
-            { MABC, 'CanBuildOnHydroSwarm', { 'LocationType', 240, -1000, 15, 1, 'AntiSurface', 1 }},            
+            { MABC, 'CanBuildOnHydroSwarm', { 'LocationType', 240, -1000, 2, 1, 'AntiSurface', 1 }},            
 
-            { EBC, 'GreaterThanEconIncomeSwarm',  { 0.2, 2.0}}, 
+            { EBC, 'GreaterThanEconIncomeSwarm',  { 1, 4.0}}, 
 
             { EBC, 'LessThanEconStorageRatio', { 2.0, 0.75 } },
 

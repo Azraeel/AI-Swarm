@@ -55,7 +55,7 @@ Platoon = Class(SwarmPlatoonClass) {
 
             end
     
-            self:AggressiveMoveToLocation(aiBrain.BuilderManagers['MAIN'].Position)
+            self:MoveToLocation(aiBrain.BuilderManagers['MAIN'].Position, false)
 
             coroutine.yield(10)
 

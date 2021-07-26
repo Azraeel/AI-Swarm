@@ -28,7 +28,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Factory Upgrader Rush',
         BuilderConditions = {
             { UCBC, 'CheckBuildPlattonDelay', { 'FactoryUpgrade' }},
 
-            { UCBC, 'HaveGreaterThanUnitsWithCategory', { 2, categories.LAND * categories.FACTORY * categories.STRUCTURE } },
+            { UCBC, 'HaveGreaterThanUnitsWithCategory', { 3, categories.LAND * categories.FACTORY * categories.STRUCTURE } },
          
             { UCBC, 'HaveLessThanUnitsWithCategory', { 1, categories.STRUCTURE * categories.FACTORY * categories.LAND * categories.RESEARCH * (categories.TECH2 + categories.TECH3) - categories.SUPPORTFACTORY } },
         
@@ -38,7 +38,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Factory Upgrader Rush',
 
             { EBC, 'GreaterThanEconTrendSwarm', { 1.0, 8.0 } },
 
-            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.02, 1.02 }},
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.04, 1.1 }},
             
             { UCBC, 'HaveLessThanUnitsInCategoryBeingUpgradeSwarm', { 1, categories.STRUCTURE * categories.FACTORY * categories.TECH1 }},
         },
@@ -51,6 +51,8 @@ BuilderGroup { BuilderGroupName = 'Swarm Factory Upgrader Rush',
         DelayEqualBuildPlattons = {'FactoryUpgrade', 3},
         BuilderConditions = {
             { UCBC, 'CheckBuildPlattonDelay', { 'FactoryUpgrade' }},
+
+            { UCBC, 'HaveGreaterThanUnitsWithCategory', { 3, categories.LAND * categories.FACTORY * categories.STRUCTURE * categories.SUPPORTFACTORY * categories.TECH2} },
            
             { UCBC, 'HaveLessThanUnitsWithCategory', { 1, categories.STRUCTURE * categories.FACTORY * categories.LAND * categories.RESEARCH * categories.TECH3 - categories.SUPPORTFACTORY } },
            
@@ -58,9 +60,9 @@ BuilderGroup { BuilderGroupName = 'Swarm Factory Upgrader Rush',
             
             { EBC, 'GreaterThanEconStorageCurrent', { 200, 2000}},
 
-            { EBC, 'GreaterThanEconTrendSwarm', { 1.0, 8.0 } },
+            { EBC, 'GreaterThanEconTrendSwarm', { 1.2, 11.0 } },
 
-            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.02, 1.02 }},
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.04, 1.1 }},
             
             { UCBC, 'HaveLessThanUnitsInCategoryBeingUpgradeSwarm', { 1, categories.STRUCTURE * categories.FACTORY * categories.TECH2 * categories.RESEARCH }},
         },

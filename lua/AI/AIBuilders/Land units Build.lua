@@ -922,9 +922,9 @@ BuilderGroup {
             AggressiveMove = true,      
             AvoidClosestRadius = 100,
             UseFormation = 'None',
-            TargetSearchCategory = categories.ECONOMIC - categories.COMMAND,
+            TargetSearchCategory = categories.MASSPRODUCTION - categories.COMMAND,
             MoveToCategories = {                                                
-                categories.ECONOMIC,
+                categories.MASSPRODUCTION,
                 categories.ENGINEER - categories.COMMAND,
             },
             TargetSearchPriorities = { 
@@ -953,7 +953,54 @@ BuilderGroup {
             
             { MIBC, 'CanPathToCurrentEnemySwarm', { true, 'LocationType' } },
 
-            { UCBC, 'GreaterThanGameTimeSeconds', { 240 } },
+            --{ UCBC, 'NeedMassPointShare', {}},
+
+            { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 2, categories.MOBILE * categories.LAND - categories.ENGINEER } },
+        },
+        BuilderData = {
+            SearchRadius = 512,
+            LocationType = 'LocationType',
+            IncludeWater = false,
+            IgnoreFriendlyBase = true,
+            MaxPathDistance = 512, 
+            FindHighestThreat = false,			
+            MaxThreatThreshold = 6000,		
+            MinThreatThreshold = 1000,		    
+            AvoidBases = true,
+            AvoidBasesRadius = 150,
+            AggressiveMove = true,      
+            AvoidClosestRadius = 125,
+            UseFormation = 'None',
+            TargetSearchCategory = categories.MASSPRODUCTION - categories.COMMAND,
+            MoveToCategories = {                                                
+                categories.MASSPRODUCTION,
+                categories.ENGINEER - categories.COMMAND,
+            },
+            TargetSearchPriorities = { 
+                categories.ENGINEER,
+                categories.MASSEXTRACTION,
+                categories.MASSFABRICATION, 
+                categories.ENERGYPRODUCTION,
+            },
+            PrioritizedCategories = {   
+                categories.ENGINEER,
+                categories.MASSEXTRACTION,
+                categories.ENERGYPRODUCTION,
+                categories.MASSFABRICATION,
+            },
+        },
+    },
+
+    Builder {
+        BuilderName = 'Swarm Mass Raid Standard - Extended',                            
+        PlatoonTemplate = 'AISwarm Mass Raid Large',                         
+        Priority = 652,                                                      
+        InstanceCount = 3,                                                     
+        BuilderType = 'Any',
+        BuilderConditions = {   
+            { UCBC, 'ScalePlatoonSizeSwarm', { 'LocationType', 'LAND', categories.MOBILE * categories.LAND - categories.ENGINEER - categories.EXPERIMENTAL } },
+            
+            { MIBC, 'CanPathToCurrentEnemySwarm', { true, 'LocationType' } },
 
             --{ UCBC, 'NeedMassPointShare', {}},
 
@@ -966,16 +1013,16 @@ BuilderGroup {
             IgnoreFriendlyBase = true,
             MaxPathDistance = 512, 
             FindHighestThreat = false,			
-            MaxThreatThreshold = 4900,		
-            MinThreatThreshold = 2000,		    
+            MaxThreatThreshold = 6000,		
+            MinThreatThreshold = 1000,		    
             AvoidBases = true,
             AvoidBasesRadius = 150,
             AggressiveMove = true,      
             AvoidClosestRadius = 125,
             UseFormation = 'None',
-            TargetSearchCategory = categories.ECONOMIC - categories.COMMAND,
+            TargetSearchCategory = categories.MASSPRODUCTION - categories.COMMAND,
             MoveToCategories = {                                                
-                categories.ECONOMIC,
+                categories.MASSPRODUCTION,
                 categories.ENGINEER - categories.COMMAND,
             },
             TargetSearchPriorities = { 
@@ -989,107 +1036,6 @@ BuilderGroup {
                 categories.MASSEXTRACTION,
                 categories.ENERGYPRODUCTION,
                 categories.MASSFABRICATION,
-            },
-        },
-    },
-
-    Builder {
-        BuilderName = 'Swarm Mass Raid Standard - High Risk',                            
-        PlatoonTemplate = 'AISwarm Mass Raid Large',                         
-        Priority = 651,                                                      
-        InstanceCount = 1,                                                     
-        BuilderType = 'Any',
-        BuilderConditions = {   
-            { UCBC, 'ScalePlatoonSizeSwarm', { 'LocationType', 'LAND', categories.MOBILE * categories.LAND - categories.ENGINEER - categories.EXPERIMENTAL } },
-            
-            { MIBC, 'CanPathToCurrentEnemySwarm', { true, 'LocationType' } },
-
-            { UCBC, 'GreaterThanGameTimeSeconds', { 240 } },
-
-            --{ UCBC, 'NeedMassPointShare', {}},
-
-            { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 2, categories.MOBILE * categories.LAND - categories.ENGINEER } },
-        },
-        BuilderData = {
-            SearchRadius = 756,
-            LocationType = 'LocationType',
-            IncludeWater = false,
-            IgnoreFriendlyBase = true,
-            MaxPathDistance = 756, 
-            FindHighestThreat = false,			
-            MaxThreatThreshold = 8900,		
-            MinThreatThreshold = 3000,		    
-            AvoidBases = true,
-            AvoidBasesRadius = 150,
-            AggressiveMove = true,      
-            AvoidClosestRadius = 125,
-            UseFormation = 'None',
-            TargetSearchCategory = categories.ECONOMIC - categories.COMMAND,
-            MoveToCategories = {                                                
-                categories.ECONOMIC,
-                categories.ENGINEER - categories.COMMAND,
-            },
-            TargetSearchPriorities = { 
-                categories.ENGINEER,
-                categories.MASSEXTRACTION,
-                categories.MASSFABRICATION, 
-                categories.ENERGYPRODUCTION,
-            },
-            PrioritizedCategories = {   
-                categories.ENGINEER,
-                categories.MASSEXTRACTION,
-                categories.ENERGYPRODUCTION,
-                categories.MASSFABRICATION,
-            },
-        },
-    },
-
-    Builder {
-        BuilderName = 'Swarm Guard Mass Standard',                            
-        PlatoonTemplate = 'AISwarm Standard Guard Marker',                         
-        Priority = 651,                                                      
-        InstanceCount = 2,                                                     
-        BuilderType = 'Any',
-        BuilderConditions = {   
-            { UCBC, 'ScalePlatoonSizeSwarm', { 'LocationType', 'LAND', categories.MOBILE * categories.LAND - categories.ENGINEER - categories.EXPERIMENTAL } },
-            
-            { MIBC, 'CanPathToCurrentEnemySwarm', { true, 'LocationType' } },
-
-            { UCBC, 'GreaterThanGameTimeSeconds', { 120 } },
-
-            --{ UCBC, 'NeedMassPointShare', {}},
-
-            { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 2, categories.TECH1 * categories.LAND * categories.MOBILE * categories.DIRECTFIRE - categories.SCOUT - categories.ENGINEER - categories.EXPERIMENTAL } },
-        },
-        BuilderData = {
-            SearchRadius = 156,
-            LocationType = 'LocationType',
-            IncludeWater = false,
-            IgnoreFriendlyBase = true,
-            MaxPathDistance = 240, 
-            FindHighestThreat = false,			
-            MaxThreatThreshold = 1500,		
-            MinThreatThreshold = 20,		    
-            AvoidBases = true,
-            AvoidBasesRadius = 50,
-            AggressiveMove = true,      
-            AvoidClosestRadius = 20,
-            UseFormation = 'None',
-            TargetSearchCategory = categories.MOBILE * categories.LAND - categories.COMMAND,
-            MoveToCategories = {                                                
-                categories.MOBILE * categories.LAND,
-                categories.ALLUNITS,
-            },
-            TargetSearchPriorities = { 
-                categories.MOBILE * categories.LAND,
-                categories.ALLUNITS,
-            },
-            PrioritizedCategories = {   
-                categories.ENGINEER - categories.COMMAND,
-                categories.MOBILE * categories.LAND * categories.INDIRECTFIRE - categories.SCOUT,
-                categories.MOBILE * categories.LAND * categories.DIRECTFIRE - categories.SCOUT,
-                categories.MOBILE * categories.LAND * categories.ANTIAIR - categories.SCOUT,
-                categories.ALLUNITS,
             },
         },
     },

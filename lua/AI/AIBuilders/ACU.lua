@@ -99,9 +99,9 @@ BuilderGroup {
         BuilderConditions = {                                                  
             { UCBC, 'GreaterThanGameTimeSeconds', { 60*3  } },
            
-            { UCBC, 'EnemyUnitsGreaterAtLocationRadiusSwarm', {  BasePanicZone, 'LocationType', 5, categories.ALLUNITS - categories.ENGINEER - categories.AIR - categories.SCOUT }}, -- radius, LocationType, unitCount, categoryEnemy
+            { UCBC, 'EnemyUnitsGreaterAtLocationRadiusSwarm', {  BasePanicZone, 'LocationType', 10, categories.ALLUNITS - categories.ENGINEER - categories.AIR - categories.SCOUT }}, -- radius, LocationType, unitCount, categoryEnemy
        
-            { UCBC, 'HaveGreaterThanUnitsWithCategory', { 0, categories.STRUCTURE * categories.FACTORY * categories.LAND - categories.SUPPORTFACTORY } },
+            { UCBC, 'HaveGreaterThanUnitsWithCategory', { 5, categories.STRUCTURE * categories.FACTORY * categories.LAND } },
         },
         BuilderType = 'Any',                                                  
     },
@@ -139,7 +139,7 @@ BuilderGroup {
          
             { UCBC, 'EnemyUnitsGreaterAtLocationRadiusSwarm', {  BaseMilitaryZone, 'LocationType', 10, categories.ALLUNITS - categories.ENGINEER - categories.AIR - categories.SCOUT }}, -- radius, LocationType, unitCount, categoryEnemy
 
-            { UCBC, 'HaveGreaterThanUnitsWithCategory', { 2, categories.STRUCTURE * categories.FACTORY * categories.LAND - categories.SUPPORTFACTORY } },
+            { UCBC, 'HaveGreaterThanUnitsWithCategory', { 5, categories.STRUCTURE * categories.FACTORY * categories.LAND } },
         },
         BuilderType = 'Any',                                              
     },
@@ -177,7 +177,7 @@ BuilderGroup {
          
             { UCBC, 'EnemyUnitsGreaterAtLocationRadiusSwarm', {  BaseEnemyZone, 'LocationType', 20, categories.ALLUNITS - categories.ENGINEER - categories.AIR - categories.SCOUT }}, -- radius, LocationType, unitCount, categoryEnemy
 
-            { UCBC, 'HaveGreaterThanUnitsWithCategory', { 3, categories.STRUCTURE * categories.FACTORY * categories.LAND - categories.SUPPORTFACTORY } },
+            { UCBC, 'HaveGreaterThanUnitsWithCategory', { 5, categories.STRUCTURE * categories.FACTORY * categories.LAND } },
         },
         BuilderType = 'Any',                                              
     },
@@ -259,8 +259,10 @@ BuilderGroup {
     Builder {
         BuilderName = 'SC Assist Hydro',
         PlatoonTemplate = 'CommanderAssist',
-        Priority = 750,
+        Priority = 550,
         BuilderConditions = {
+            { EBC, 'GreaterThanEconStorageCurrent', { 200, 2000}},
+
             { UCBC, 'HaveGreaterThanUnitsInCategoryBeingBuiltAtLocationSwarm', { 'LocationType', 0, categories.STRUCTURE * categories.HYDROCARBON }},
         },
         BuilderType = 'Any',
@@ -282,6 +284,8 @@ BuilderGroup {
         BuilderConditions = {
             { EBC, 'GreaterThanMassTrendSwarm', { 0.0 } },
 
+            { EBC, 'GreaterThanEconStorageCurrent', { 200, 2000}},
+
             { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.0, 1.0 }},
         },
         BuilderType = 'Any',
@@ -297,12 +301,13 @@ BuilderGroup {
         }
     },
 
-    -- Spammy Builder
     Builder { BuilderName = 'SC Assist Energy',
         PlatoonTemplate = 'CommanderAssist',
         Priority = 650,
         BuilderConditions = {
-            { EBC, 'GreaterThanEconIncomeSwarm', { 2.0, 20 } },
+            { EBC, 'GreaterThanMassTrendSwarm', { 0.0 } },
+
+            { EBC, 'GreaterThanEconStorageCurrent', { 200, 2000}},
 
             { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.95, 0.6 }},
 
@@ -325,13 +330,11 @@ BuilderGroup {
     --==========================--
 
     Builder {
-        BuilderName = 'Swarm Power low trend',
+        BuilderName = 'Swarm Commander Power low trend',
         PlatoonTemplate = 'CommanderBuilder',
         Priority = 650,
         BuilderConditions = {
-            { EBC, 'LessThanEconStorageRatioSwarm', { 2.0, 0.20}},
-
-            { EBC, 'LessThanEnergyTrend', { 7.5 } },             -- Ratio from 0 to 1. (1=100%)
+            { EBC, 'LessThanEnergyTrend', { 4.0 } },             -- Ratio from 0 to 1. (1=100%)
 
             { UCBC, 'HaveLessThanUnitsWithCategory', { 1, categories.ENERGYPRODUCTION - categories.TECH1 - categories.COMMAND } },
         },
@@ -339,7 +342,7 @@ BuilderGroup {
         BuilderData = {
             Construction = {
                 AdjacencyCategory = categories.STRUCTURE * categories.FACTORY * (categories.LAND + categories.AIR),
-                AdjacencyDistance = 50,
+                AdjacencyDistance = 100,
                 BuildClose = true,
                 LocationType = 'LocationType',
                 BuildStructures = {
@@ -357,8 +360,6 @@ BuilderGroup {
             { EBC, 'EnergyToMassRatioIncome', { 10.0, '<=' } },  -- True if we have less than 10 times more Energy then Mass income ( 100 <= 10 = true )
 
             { UCBC, 'HaveLessThanUnitsWithCategory', { 1, categories.ENERGYPRODUCTION - categories.TECH1 - categories.COMMAND } },
-
-            { UCBC, 'LessThanGameTimeSeconds', { 300 } },
         },
         BuilderType = 'Any',
         BuilderData = {
