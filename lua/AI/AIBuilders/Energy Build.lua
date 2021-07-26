@@ -251,6 +251,7 @@ BuilderGroup {
         InstanceCount = 2,
         BuilderConditions = {
             { UCBC, 'HaveGreaterThanUnitsWithCategory', { 1, categories.STRUCTURE * categories.ENERGYPRODUCTION * categories.TECH3 }},
+
             { UCBC, 'UnitsGreaterAtLocation', { 'LocationType', 0, categories.STRUCTURE * categories.TECH1 * categories.ENERGYPRODUCTION - categories.HYDROCARBON }},
         },
         BuilderData = {
@@ -259,6 +260,7 @@ BuilderGroup {
         },
         BuilderType = 'Any',
     },
+
     Builder {
         BuilderName = 'S1 Reclaim T1 Pgens cap',
         PlatoonTemplate = 'EngineerBuilder',
@@ -267,8 +269,11 @@ BuilderGroup {
         InstanceCount = 2,
         BuilderConditions = {
             { EBC, 'GreaterThanEconTrendSwarm', { 0.0, 1.0 } }, -- relative income
+
             { UCBC, 'HaveGreaterThanUnitsWithCategory', { 0, categories.STRUCTURE * categories.ENERGYPRODUCTION * (categories.TECH2 + categories.TECH3) }},
+
             { UCBC, 'UnitsGreaterAtLocation', { 'LocationType', 0, categories.STRUCTURE * categories.TECH1 * categories.ENERGYPRODUCTION - categories.HYDROCARBON }},
+
             { UCBC, 'UnitCapCheckGreater', { 0.95 } },
         },
         BuilderData = {
@@ -277,6 +282,7 @@ BuilderGroup {
         },
         BuilderType = 'Any',
     },
+
     Builder {
         BuilderName = 'S1 Reclaim T2 Pgens',
         PlatoonTemplate = 'EngineerBuilder',
@@ -284,7 +290,8 @@ BuilderGroup {
         Priority = 790,
         InstanceCount = 2,
         BuilderConditions = {
-            { UCBC, 'HaveGreaterThanUnitsWithCategory', { 3, categories.STRUCTURE * categories.ENERGYPRODUCTION * categories.TECH3 }},
+            { UCBC, 'HaveGreaterThanUnitsWithCategory', { 2, categories.STRUCTURE * categories.ENERGYPRODUCTION * categories.TECH3 }},
+
             { UCBC, 'UnitsGreaterAtLocation', { 'LocationType', 0, categories.STRUCTURE * categories.TECH2 * categories.ENERGYPRODUCTION - categories.HYDROCARBON }},
         },
         BuilderData = {
@@ -293,6 +300,7 @@ BuilderGroup {
         },
         BuilderType = 'Any',
     },
+
     Builder {
         BuilderName = 'S1 Reclaim T2 Pgens cap',
         PlatoonTemplate = 'EngineerBuilder',
@@ -301,8 +309,11 @@ BuilderGroup {
         InstanceCount = 2,
         BuilderConditions = {
             { EBC, 'GreaterThanEconTrendSwarm', { 0.0, 50.0 } }, -- relative income
+
             { UCBC, 'HaveGreaterThanUnitsWithCategory', { 0, categories.STRUCTURE * categories.ENERGYPRODUCTION * categories.TECH3 }},
+
             { UCBC, 'UnitsGreaterAtLocation', { 'LocationType', 0, categories.STRUCTURE * categories.TECH2 * categories.ENERGYPRODUCTION - categories.HYDROCARBON }},
+            
             { UCBC, 'UnitCapCheckGreater', { 0.95 } },
         },
         BuilderData = {
@@ -311,6 +322,7 @@ BuilderGroup {
         },
         BuilderType = 'Any',
     },
+
     Builder {
         BuilderName = 'S1 Reclaim E storage cap',
         PlatoonTemplate = 'EngineerBuilder',
@@ -319,6 +331,7 @@ BuilderGroup {
         InstanceCount = 2,
         BuilderConditions = {
             { UCBC, 'UnitsGreaterAtLocation', { 'LocationType', 3, categories.STRUCTURE * categories.ENERGYSTORAGE }},
+
             { UCBC, 'UnitCapCheckGreater', { 0.95 } },
         },
         BuilderData = {
