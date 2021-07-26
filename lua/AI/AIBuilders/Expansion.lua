@@ -148,7 +148,7 @@ BuilderGroup {
         BuilderConditions = {
             { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 0, categories.ENGINEER * categories.TECH2 - categories.COMMAND - categories.STATIONASSISTPOD }},
 
-            { UCBC, 'ExpansionAreaNeedsEngineer', { 'LocationType', 1000, -1000, 100, 1, 'AntiSurface' } },
+            { UCBC, 'ExpansionAreaNeedsEngineer', { 'LocationType', 1000, 5, 500, 1, 'AntiSurface' } },
 
             { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.04, 0.70}},
 
@@ -164,17 +164,18 @@ BuilderGroup {
                 NearMarkerType = 'Start Location',
                 LocationRadius = 1000,
                 LocationType = 'LocationType',
-                ThreatMin = 10,
+                ThreatMin = 5,
                 ThreatMax = 500,
                 ThreatRings = 1,
                 ThreatType = 'StructuresNotMex',
                 ExpansionRadius = 100,
                 BuildStructures = {
+                    'T1GroundDefense',
+                    'T2GroundDefense',
+                    'T2AADefense',
+                    'T2GroundDefense',
+                    'T2AADefense',
                     'T2Radar',
-                    'T2GroundDefense',
-                    'T2AADefense',
-                    'T2GroundDefense',
-                    'T2AADefense',
                     'T2ShieldDefense',
                     'T2MissileDefense',
                     'T2MissileDefense',
@@ -193,7 +194,7 @@ BuilderGroup {
         BuilderConditions = {
             { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 3, categories.ENGINEER * categories.TECH2 - categories.COMMAND - categories.STATIONASSISTPOD }},
 
-            { UCBC, 'ExpansionAreaNeedsEngineer', { 'LocationType', 1000, -1000, 100, 1, 'AntiSurface' } },
+            { UCBC, 'ExpansionAreaNeedsEngineer', { 'LocationType', 1000, 5, 500, 1, 'AntiSurface' } },
 
             { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.04, 0.70}},
 
@@ -209,17 +210,18 @@ BuilderGroup {
                 NearMarkerType = 'Expansion Area',
                 LocationRadius = 1000,
                 LocationType = 'LocationType',
-                ThreatMin = 10,
+                ThreatMin = 5,
                 ThreatMax = 500,
                 ThreatRings = 1,
                 ThreatType = 'StructuresNotMex',
                 ExpansionRadius = 100,
                 BuildStructures = {
+                    'T1GroundDefense',
+                    'T2GroundDefense',
+                    'T2AADefense',
+                    'T2GroundDefense',
+                    'T2AADefense',
                     'T2Radar',
-                    'T2GroundDefense',
-                    'T2AADefense',
-                    'T2GroundDefense',
-                    'T2AADefense',
                     'T2ShieldDefense',
                     'T2MissileDefense',
                     'T2MissileDefense',

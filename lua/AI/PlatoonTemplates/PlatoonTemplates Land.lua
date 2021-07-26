@@ -12,7 +12,7 @@ PlatoonTemplate {
     Name = 'AISwarm LandAttack Micro - Intercept',
     Plan = 'InterceptorAISwarm',
     GlobalSquads = {
-        { categories.MOBILE * categories.LAND + (categories.MOBILE * categories.EXPERIMENTAL) - categories.ANTIAIR - categories.ENGINEER - categories.SCOUT, 4, 100, 'attack', 'none' },
+        { categories.MOBILE * categories.LAND + (categories.MOBILE * categories.EXPERIMENTAL) - categories.ANTIAIR - categories.ENGINEER - categories.SCOUT, 2, 6, 'attack', 'none' },
     },
 }
 
@@ -36,7 +36,7 @@ PlatoonTemplate {
     Name = 'AISwarm Mass Raid',
     Plan = 'MassRaidSwarm',    
     GlobalSquads = {
-        { categories.TECH1 * categories.LAND * categories.MOBILE - categories.SCOUT - categories.ENGINEER - categories.EXPERIMENTAL, 2, 3, 'attack', 'none' },
+        { categories.TECH1 * categories.LAND * categories.MOBILE - categories.INDIRECTFIRE - categories.SCOUT - categories.ENGINEER - categories.EXPERIMENTAL, 2, 3, 'attack', 'none' },
         --{ categories.LAND * categories.SCOUT, 0, 1, 'Guard', 'none' },
     },
 }
@@ -45,7 +45,7 @@ PlatoonTemplate {
     Name = 'AISwarm Mass Raid Large',
     Plan = 'MassRaidSwarm',    
     GlobalSquads = {
-        { categories.TECH1 * categories.LAND * categories.MOBILE - categories.SCOUT - categories.ENGINEER - categories.EXPERIMENTAL, 4, 15, 'attack', 'none' },
+        { categories.TECH1 * categories.LAND * categories.MOBILE - categories.INDIRECTFIRE - categories.SCOUT - categories.ENGINEER - categories.EXPERIMENTAL, 4, 15, 'attack', 'none' },
         --{ categories.LAND * categories.SCOUT, 0, 1, 'Guard', 'none' },
     },
 }

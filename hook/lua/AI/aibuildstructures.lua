@@ -205,11 +205,11 @@ function AIExecuteBuildStructure(aiBrain, builder, buildingType, closeToBuilder,
 
 			if markerTable then
             
-                LOG("*AI DEBUG "..aiBrain.Nickname.." finds "..table.getn(markerTable).." "..repr(buildingType).." markers")
+                --LOG("*AI DEBUG "..aiBrain.Nickname.." finds "..table.getn(markerTable).." "..repr(buildingType).." markers")
 
                 -- pick one of the points randomly
 				location = table.copy( markerTable[ Random(1,table.getn(markerTable)) ] )
-                LOG("*AI DEBUG at marker is " .. aiBrain:GetThreatAtPosition(location, tRings, true, 'AntiSurface'))
+                --LOG("*AI DEBUG at marker is " .. aiBrain:GetThreatAtPosition(location, tRings, true, 'AntiSurface'))
             end
 		end	
 

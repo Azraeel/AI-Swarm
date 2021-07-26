@@ -97,10 +97,10 @@ Platoon = Class(SwarmPlatoonClass) {
      end,
 
     InterceptorAISwarm = function(self)
-        if UseHeroPlatoonswarm then
-            self:HeroFightPlatoonSwarm()
-            return
-        end
+        --if UseHeroPlatoonswarm then
+        --    self:HeroFightPlatoonSwarm()
+        --    return
+        --end
         AIAttackUtils.GetMostRestrictiveLayer(self) 
 
         local aiBrain = self:GetBrain()
@@ -442,10 +442,10 @@ Platoon = Class(SwarmPlatoonClass) {
     end,
 
     LandAttackAISwarm = function(self)
-        if UseHeroPlatoonswarm then
-            self:HeroFightPlatoonSwarm()
-            return
-        end
+        --if UseHeroPlatoonswarm then
+        --    self:HeroFightPlatoonSwarm()
+        --    return
+        --end
         AIAttackUtils.GetMostRestrictiveLayer(self) -- this will set self.MovementLayer to the platoon
         -- Search all platoon units and activate Stealth and Cloak (mostly Modded units)
         local platoonUnits = self:GetPlatoonUnits()
@@ -589,10 +589,10 @@ Platoon = Class(SwarmPlatoonClass) {
     end,
 
     NavalAttackAISwarm = function(self)
-        if UseHeroPlatoonswarm then
-            self:HeroFightPlatoonSwarm()
-            return
-        end
+        --if UseHeroPlatoonswarm then
+        --    self:HeroFightPlatoonSwarm()
+        --    return
+        --end
         AIAttackUtils.GetMostRestrictiveLayer(self) -- this will set self.MovementLayer to the platoon
         -- Search all platoon units and activate Stealth and Cloak (mostly Modded units)
         local platoonUnits = self:GetPlatoonUnits()
@@ -6151,11 +6151,11 @@ Platoon = Class(SwarmPlatoonClass) {
             until VDist2Sq(platLoc[1], platLoc[3], bestMarker.Position[1], bestMarker.Position[3]) < 64 or not aiBrain:PlatoonExists(self)
 
             -- we're there... wait here until we're done
-            local numGround = aiBrain:GetNumUnitsAroundPoint((categories.LAND + categories.NAVAL + categories.STRUCTURE), bestMarker.Position, 15, 'Enemy')
+            local numGround = aiBrain:GetNumUnitsAroundPoint((categories.ENGINEER + categories.STRUCTURE), bestMarker.Position, 35, 'Enemy')
             while numGround > 0 and aiBrain:PlatoonExists(self) do
-                WaitTicks(Random(50,100))
+                WaitTicks(30)
                 --LOG('Still enemy stuff around marker position')
-                numGround = aiBrain:GetNumUnitsAroundPoint((categories.LAND + categories.NAVAL + categories.STRUCTURE), bestMarker.Position, 15, 'Enemy')
+                numGround = aiBrain:GetNumUnitsAroundPoint((categories.ENGINEER + categories.STRUCTURE), bestMarker.Position, 35, 'Enemy')
             end
 
             if not aiBrain:PlatoonExists(self) then
@@ -6241,6 +6241,9 @@ Platoon = Class(SwarmPlatoonClass) {
         end
     end,
 
+
+    -- HeroFightPlatoon Function is extremely slow, leading to platoons which use this function having awful and insanely slow reactions.
+    -- Most likely will be using this less and less.
     HeroFightPlatoonSwarm = function(self)
         local aiBrain = self:GetBrain()
         local personality = ScenarioInfo.ArmySetup[aiBrain.Name].AIPersonality
