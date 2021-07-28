@@ -21,8 +21,6 @@ BuilderGroup {
         BuilderConditions = {
             { UCBC, 'CheckBuildPlattonDelay', { 'Energy' }},
 
-            { UCBC, 'GreaterThanGameTimeSeconds', { 260 } },
-
             { EBC, 'LessThanEnergyTrend', { 0.0 } },             
 
             { UCBC, 'HaveLessThanUnitsWithCategory', { 1, categories.ENERGYPRODUCTION * categories.TECH2 } },
@@ -55,7 +53,7 @@ BuilderGroup {
         BuilderConditions = {
             { UCBC, 'CheckBuildPlattonDelay', { 'Energy' }},
 
-            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.05, 0}},
+            { EBC, 'GreaterThanEconStorageCurrent', { 200, 2000}},
 
             { EBC, 'LessThanEnergyTrend', { 4.0 } },
 
@@ -76,14 +74,13 @@ BuilderGroup {
         }
     },
 
-    Builder {
+    --[[ Builder {
         BuilderName = 'Swarm Power Hydrocarbon Rush',
         PlatoonTemplate = 'EngineerBuilder',
         Priority = 675,
         DelayEqualBuildPlattons = {'Energy', 1},
         InstanceCount = 1,
         BuilderConditions = {
-            
             { MABC, 'CanBuildOnHydroSwarm', { 'LocationType', 50, -1000, 15, 1, 'AntiSurface', 1 }},          
 
             { UCBC, 'HaveLessThanUnitsWithCategory', { 1, categories.HYDROCARBON } },
@@ -100,7 +97,7 @@ BuilderGroup {
                 }
             }
         }
-    },
+    }, ]]--
 
     Builder {
         BuilderName = 'Swarm Power Hydrocarbon Normal',
@@ -109,9 +106,9 @@ BuilderGroup {
         DelayEqualBuildPlattons = {'Energy', 1},
         InstanceCount = 1,
         BuilderConditions = {
-            { MABC, 'CanBuildOnHydroSwarm', { 'LocationType', 240, -1000, 15, 1, 'AntiSurface', 1 }},            
+            { MABC, 'CanBuildOnHydroSwarm', { 'LocationType', 240, -1000, 2, 1, 'AntiSurface', 1 }},            
 
-            { EBC, 'GreaterThanEconIncomeSwarm',  { 0.2, 2.0}}, 
+            { EBC, 'GreaterThanEconIncomeSwarm',  { 1, 4.0}}, 
 
             { EBC, 'LessThanEconStorageRatio', { 2.0, 0.75 } },
 
@@ -140,7 +137,7 @@ BuilderGroup {
         BuilderConditions = {
             { UCBC, 'HaveLessThanUnitsWithCategory', { 1, categories.ENERGYPRODUCTION * categories.TECH3 } },
             
-            { EBC, 'LessThanEnergyTrend', { 20.0 } },              -- Ratio from 0 to 1. (1=100%)
+            { EBC, 'LessThanEnergyTrend', { 8.0 } },              -- Ratio from 0 to 1. (1=100%)
 
             { UCBC, 'HaveLessThanUnitsInCategoryBeingBuilt', { 1, categories.STRUCTURE * categories.ENERGYPRODUCTION * categories.TECH2 }},
         },
@@ -251,6 +248,7 @@ BuilderGroup {
         InstanceCount = 2,
         BuilderConditions = {
             { UCBC, 'HaveGreaterThanUnitsWithCategory', { 1, categories.STRUCTURE * categories.ENERGYPRODUCTION * categories.TECH3 }},
+
             { UCBC, 'UnitsGreaterAtLocation', { 'LocationType', 0, categories.STRUCTURE * categories.TECH1 * categories.ENERGYPRODUCTION - categories.HYDROCARBON }},
         },
         BuilderData = {
@@ -259,6 +257,7 @@ BuilderGroup {
         },
         BuilderType = 'Any',
     },
+
     Builder {
         BuilderName = 'S1 Reclaim T1 Pgens cap',
         PlatoonTemplate = 'EngineerBuilder',
@@ -267,8 +266,11 @@ BuilderGroup {
         InstanceCount = 2,
         BuilderConditions = {
             { EBC, 'GreaterThanEconTrendSwarm', { 0.0, 1.0 } }, -- relative income
+
             { UCBC, 'HaveGreaterThanUnitsWithCategory', { 0, categories.STRUCTURE * categories.ENERGYPRODUCTION * (categories.TECH2 + categories.TECH3) }},
+
             { UCBC, 'UnitsGreaterAtLocation', { 'LocationType', 0, categories.STRUCTURE * categories.TECH1 * categories.ENERGYPRODUCTION - categories.HYDROCARBON }},
+
             { UCBC, 'UnitCapCheckGreater', { 0.95 } },
         },
         BuilderData = {
@@ -277,6 +279,7 @@ BuilderGroup {
         },
         BuilderType = 'Any',
     },
+
     Builder {
         BuilderName = 'S1 Reclaim T2 Pgens',
         PlatoonTemplate = 'EngineerBuilder',
@@ -284,7 +287,8 @@ BuilderGroup {
         Priority = 790,
         InstanceCount = 2,
         BuilderConditions = {
-            { UCBC, 'HaveGreaterThanUnitsWithCategory', { 3, categories.STRUCTURE * categories.ENERGYPRODUCTION * categories.TECH3 }},
+            { UCBC, 'HaveGreaterThanUnitsWithCategory', { 2, categories.STRUCTURE * categories.ENERGYPRODUCTION * categories.TECH3 }},
+
             { UCBC, 'UnitsGreaterAtLocation', { 'LocationType', 0, categories.STRUCTURE * categories.TECH2 * categories.ENERGYPRODUCTION - categories.HYDROCARBON }},
         },
         BuilderData = {
@@ -293,6 +297,7 @@ BuilderGroup {
         },
         BuilderType = 'Any',
     },
+
     Builder {
         BuilderName = 'S1 Reclaim T2 Pgens cap',
         PlatoonTemplate = 'EngineerBuilder',
@@ -301,8 +306,11 @@ BuilderGroup {
         InstanceCount = 2,
         BuilderConditions = {
             { EBC, 'GreaterThanEconTrendSwarm', { 0.0, 50.0 } }, -- relative income
+
             { UCBC, 'HaveGreaterThanUnitsWithCategory', { 0, categories.STRUCTURE * categories.ENERGYPRODUCTION * categories.TECH3 }},
+
             { UCBC, 'UnitsGreaterAtLocation', { 'LocationType', 0, categories.STRUCTURE * categories.TECH2 * categories.ENERGYPRODUCTION - categories.HYDROCARBON }},
+            
             { UCBC, 'UnitCapCheckGreater', { 0.95 } },
         },
         BuilderData = {
@@ -311,6 +319,7 @@ BuilderGroup {
         },
         BuilderType = 'Any',
     },
+
     Builder {
         BuilderName = 'S1 Reclaim E storage cap',
         PlatoonTemplate = 'EngineerBuilder',
@@ -319,6 +328,7 @@ BuilderGroup {
         InstanceCount = 2,
         BuilderConditions = {
             { UCBC, 'UnitsGreaterAtLocation', { 'LocationType', 3, categories.STRUCTURE * categories.ENERGYSTORAGE }},
+
             { UCBC, 'UnitCapCheckGreater', { 0.95 } },
         },
         BuilderData = {

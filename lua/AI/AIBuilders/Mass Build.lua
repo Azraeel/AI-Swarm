@@ -19,7 +19,7 @@ BuilderGroup {
         BuilderName = 'Swarm Mass 240',
         PlatoonTemplate = 'EngineerBuilder',
         Priority = 670,
-        InstanceCount = 2,
+        InstanceCount = 4,
         BuilderConditions = {
             { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 0, categories.ENGINEER * categories.TECH1 }},
 
@@ -30,8 +30,7 @@ BuilderGroup {
             Construction = {
                 BuildClose = true,
                 RepeatBuild = true,
-                MinRange = 0
-                MaxRange = 240
+                MaxRange = 240,
                 ThreatMin = -1000,
                 ThreatMax = 1,
                 ThreatRings = 1,
@@ -62,8 +61,7 @@ BuilderGroup {
             Construction = {
                 BuildClose = true,
                 RepeatBuild = true,
-                MinRange = 240
-                MaxRange = 480
+                MaxRange = 480,
                 ThreatMin = -1000,
                 ThreatMax = 1,
                 ThreatRings = 1,
@@ -94,8 +92,7 @@ BuilderGroup {
             Construction = {
                 BuildClose = true,
                 RepeatBuild = true,
-                MinRange = 480
-                MaxRange = 1000
+                MaxRange = 1000,
                 ThreatMin = -1000,
                 ThreatMax = 1,
                 ThreatRings = 1,
@@ -167,7 +164,7 @@ BuilderGroup {
         BuilderName = 'Swarm Mass Adjacency Engineer - Ring',
         PlatoonTemplate = 'EngineerBuilderALLTECH',
         Priority = 1005,
-        InstanceCount = 4,
+        InstanceCount = 2,
         BuilderConditions = {
             { UCBC, 'GreaterThanGameTimeSeconds', { 60 * 10 } },
 
@@ -204,7 +201,7 @@ BuilderGroup {
         BuilderName = 'Swarm Mass Adjacency Engineer - Outter Mexes - Ring',
         PlatoonTemplate = 'EngineerBuilderALLTECH',
         Priority = 1025,
-        InstanceCount = 5,
+        InstanceCount = 2,
         BuilderConditions = {
             { UCBC, 'GreaterThanGameTimeSeconds', { 60 * 15 } },
 
