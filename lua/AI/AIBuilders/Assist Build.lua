@@ -12,13 +12,13 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
 
     Builder {
         BuilderName = 'Engineer Assist Factory',
-        PlatoonTemplate = 'EngineerAssist',
+        PlatoonTemplate = 'EngineerAssistALLTECH',
         Priority = 1000,
-        InstanceCount = 25,
+        InstanceCount = 10,
         BuilderConditions = {
             { EBC, 'GreaterThanEconStorageCurrent', { 200, 2000}},
 
-            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.0, 1.0 }},
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.8, 1.0 }}, 
         },
         BuilderType = 'Any',
         BuilderData = {
@@ -28,7 +28,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
                 AssistRange = 120,
                 AssistClosestUnit = true, 
                 BeingBuiltCategories = {'LAND MOBILE'},        -- Unitcategories must be type string
-                AssistUntilFinished = false,
+                AssistUntilFinished = true,
                 Time = 40,
             },
         }
@@ -41,7 +41,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
     Builder { BuilderName = 'S1 Assist 1st T2 Factory Upgrade',
         PlatoonTemplate = 'EngineerAssist',
         Priority = 150,
-        InstanceCount = 20,
+        InstanceCount = 5,
         BuilderConditions = {
             { EBC, 'GreaterThanEconStorageCurrent', { 200, 2000}},
 
@@ -63,7 +63,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
     Builder { BuilderName = 'S1 Assist 1st T3 Factory Upgrade',
         PlatoonTemplate = 'EngineerAssist',
         Priority = 200,
-        InstanceCount = 20,
+        InstanceCount = 5,
         BuilderConditions = {
             { EBC, 'GreaterThanEconStorageCurrent', { 200, 2000}},
 
@@ -107,7 +107,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
     Builder { BuilderName = 'S2 Assist Factory Upgrade',
         PlatoonTemplate = 'T2EngineerAssist',
         Priority = 250,
-        InstanceCount = 20,
+        InstanceCount = 5,
         BuilderConditions = {
             { EBC, 'GreaterThanEconStorageCurrent', { 200, 2000}},
 
