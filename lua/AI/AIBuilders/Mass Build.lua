@@ -50,9 +50,9 @@ BuilderGroup {
         BuilderConditions = {
             { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 0, categories.ENGINEER * categories.TECH1 }},
 
-            { UCBC, 'LandStrengthRatioLessThan', { 1 } },
+            { UCBC, 'LandStrengthRatioGreaterThan', { 0.7 } },
 
-            { UCBC, 'EnemyUnitsLessAtLocationRadiusSwarm', {  BaseMilitaryZone, 'LocationType', 5, categories.ALLUNITS - categories.ENGINEER - categories.AIR - categories.SCOUT }},
+            { UCBC, 'EnemyUnitsLessAtLocationRadiusSwarm', {  BaseMilitaryZone, 'LocationType', 10, categories.ALLUNITS - categories.ENGINEER - categories.AIR - categories.SCOUT }},
 
             { MABC, 'CanBuildOnMassSwarm', { 'LocationType', 480, -500, 1, 1, 'AntiSurface', 1}},
         },
@@ -81,9 +81,9 @@ BuilderGroup {
         BuilderConditions = {
             { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 0, categories.ENGINEER * categories.TECH1 }},
 
-            { UCBC, 'LandStrengthRatioLessThan', { 1 } },
+            { UCBC, 'LandStrengthRatioGreaterThan', { 0.7 } },
 
-            { UCBC, 'EnemyUnitsLessAtLocationRadiusSwarm', {  BaseMilitaryZone, 'LocationType', 5, categories.ALLUNITS - categories.ENGINEER - categories.AIR - categories.SCOUT }},
+            { UCBC, 'EnemyUnitsLessAtLocationRadiusSwarm', {  BaseMilitaryZone, 'LocationType', 10, categories.ALLUNITS - categories.ENGINEER - categories.AIR - categories.SCOUT }},
 
             { MABC, 'CanBuildOnMassSwarm', { 'LocationType', 1000, -500, 1, 1, 'AntiSurface', 1}},
         },
