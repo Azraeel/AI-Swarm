@@ -38,7 +38,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Factory Upgrader Rush',
 
             { EBC, 'GreaterThanEconTrendSwarm', { 1.0, 8.0 } },
 
-            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.04, 1.1 }},
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.04, 1.05 }},
             
             { UCBC, 'HaveLessThanUnitsInCategoryBeingUpgradeSwarm', { 1, categories.STRUCTURE * categories.FACTORY * categories.TECH1 }},
         },
@@ -85,7 +85,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Factory Upgrader Rush',
 
             { EBC, 'GreaterThanEconTrendSwarm', { 0.4, 3.3 } },
 
-            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.04, 1.1 }},
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.04, 1.05 }},
 
             { UCBC, 'HaveLessThanUnitsInCategoryBeingUpgradeSwarm', { 1, categories.STRUCTURE * categories.FACTORY * categories.TECH1 }},
         },
@@ -232,7 +232,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Factory Upgrader Rush',
 
             { EBC, 'GreaterThanEconTrendSwarm', { 0.7, 16.0 } },
 
-            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.04, 1.1 }},
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.04, 1.07 }},
           
             { UCBC, 'HaveLessThanUnitsInCategoryBeingUpgradeSwarm', { 1, categories.STRUCTURE * categories.FACTORY * categories.TECH1 * categories.AIR }},
         },
@@ -279,7 +279,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Factory Upgrader Rush',
 
             { EBC, 'GreaterThanEconTrendSwarm', { 0.4, 8.6 } },
 
-            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.04, 1.1 }},
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.04, 1.07 }},
       
             { UCBC, 'HaveLessThanUnitsInCategoryBeingUpgradeSwarm', { 1, categories.STRUCTURE * categories.FACTORY * categories.TECH1 }},
         },
@@ -432,7 +432,7 @@ BuilderGroup {
 
             { EBC, 'GreaterThanEconTrendSwarm', { 0.9, 4.9 } },
 
-            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.04, 1.1 }},
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.04, 1.06 }},
 
             { UCBC, 'HaveLessThanUnitsInCategoryBeingUpgradeSwarm', { 1, categories.STRUCTURE * categories.FACTORY * categories.TECH1 }},
         },
@@ -481,7 +481,7 @@ BuilderGroup {
 
             { EBC, 'GreaterThanEconTrendSwarm', { 0.9, 4.9 } },
 
-            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.04, 1.1 }},
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.04, 1.06 }},
 
             { UCBC, 'HaveLessThanUnitsInCategoryBeingUpgradeSwarm', { 2, categories.STRUCTURE * categories.FACTORY * categories.TECH1 }},
         },
