@@ -173,7 +173,7 @@ function ExtractorUpgradeSwarm(self, aiBrain, MassExtractorUnitList, ratio, tech
 
     if upgradeID and upgradeBuilding then
         IssueUpgrade({upgradeBuilding}, upgradeID)
-        coroutine.yield(10)
+        coroutine.yield(100)
         return true
     end
 

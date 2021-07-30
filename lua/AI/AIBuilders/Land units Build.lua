@@ -11,22 +11,26 @@ if not categories.STEALTHFIELD then categories.STEALTHFIELD = categories.SHIELD 
 -- Maybe some kind of condition, that stops this from being purely a Timer Function. 
 -- We'll try Land Ratio for right now.
 
-local First15Minutes = function( self,aiBrain )
-	
-	if GetGameTimeSeconds() > 900 and aiBrain.MyLandRatio > 1 then
-		return 0, false
-	end
-	
-	return self.Priority,true
-end
+--local AfterDirectCombat = function( self, aiBrain )
+--	
+--	if GetGameTimeSeconds() > 1800 and aiBrain.MyLandRatio > 1.5 then
+--		return 0, false
+--	end
+--	
+--	return self.Priority,true
+--end
 
-local AfterDirectCombat = function( self,aiBrain )
+local HaveLessThanThreeT3LandFactory = function( self, aiBrain )
 	
-	if GetGameTimeSeconds() > 1800 and aiBrain.MyLandRatio > 1.5 then
-		return 0, false
+	if table.getn( aiBrain:GetListOfUnits( categories.FACTORY * categories.LAND * categories.TECH3, false, true )) < 3 then
+	
+		return 500, true
+		
 	end
+
 	
-	return self.Priority,true
+	return 0, false
+	
 end
 
 
@@ -62,8 +66,6 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',
 
         Priority = 505, 
 
-        PriorityFunction = First15Minutes,
-
         BuilderConditions = {
             { UCBC, 'LessThanGameTimeSeconds', { 60 * 4 } },
 
@@ -86,10 +88,12 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',
 
         Priority = 500,
 
-        PriorityFunction = First15Minutes,
-
         BuilderConditions = {
             { UCBC, 'UnitCapCheckLess', { 0.90 } },
+
+            { UCBC, 'LandStrengthRatioLessThan', { 2 } },
+
+            { UCBC, 'HaveLessThanUnitsWithCategory', { 3, categories.FACTORY * categories.LAND * (categories.TECH2 + categories.TECH3) }},
 
             { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.7, 0.8 }},
 
@@ -106,12 +110,12 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',
 
         Priority = 500,
 
-        PriorityFunction = First15Minutes,
-
         BuilderConditions = {
             { UCBC, 'UnitCapCheckLess', { 0.90 } },
 
             { UCBC, 'AirStrengthRatioLessThan', { 1.5 } },
+
+            { UCBC, 'HaveLessThanUnitsWithCategory', { 3, categories.FACTORY * categories.LAND * (categories.TECH2 + categories.TECH3) }},
 
             { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.7, 0.8 }},
 
@@ -128,8 +132,13 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',
     --    TECH 2    --
     -- ============ --
     Builder { BuilderName = 'T2LandDFTank - Swarm',
+
         PlatoonTemplate = 'T2LandDFTank',
+
         Priority = 500,
+
+        PriorityFunction = HaveLessThanThreeT3LandFactory,
+
         BuilderConditions = {
             { UCBC, 'UnitCapCheckLess', { 0.90 } },
 
@@ -147,8 +156,13 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',
     },
 
     Builder { BuilderName = 'T2AttackTank - Swarm',
+
         PlatoonTemplate = 'T2AttackTank',
+
         Priority = 500,
+
+        PriorityFunction = HaveLessThanThreeT3LandFactory,
+
         BuilderConditions = {
             { UCBC, 'UnitCapCheckLess', { 0.90 } },
 
@@ -166,8 +180,13 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',
     },
 
     Builder { BuilderName = 'T2LandArtillery - Swarm',
+
         PlatoonTemplate = 'T2LandArtillery',
+
         Priority = 500,
+
+        PriorityFunction = HaveLessThanThreeT3LandFactory,
+
         BuilderConditions = {
             { UCBC, 'UnitCapCheckLess', { 0.90 } },
 
@@ -190,8 +209,11 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',
     -- Note these will build like they have t3 priority 
 
     Builder { BuilderName = 'T2MobileShields - Swarm',
+
         PlatoonTemplate = 'T2MobileShields',
+
         Priority = 550,
+
         BuilderConditions = {
             { UCBC, 'UnitCapCheckLess', { 0.90 } },
 
@@ -201,9 +223,9 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',
 
             { MIBC, 'CanPathToCurrentEnemySwarm', { true, 'LocationType' } },
 
-            { UCBC, 'HaveGreaterThanUnitsWithCategory', { 2, categories.FACTORY * categories.LAND * categories.TECH2 }},
+            { UCBC, 'HaveGreaterThanUnitsWithCategory', { 2, categories.FACTORY * categories.LAND * (categories.TECH2 + categories.TECH3) }},
 
-            { UCBC, 'HaveGreaterThanUnitsWithCategory', { 6, categories.LAND * categories.MOBILE * categories.DIRECTFIRE * categories.TECH2 - categories.ENGINEER }},
+            { UCBC, 'HaveGreaterThanUnitsWithCategory', { 6, categories.LAND * categories.MOBILE * categories.DIRECTFIRE * (categories.TECH2 * categories.TECH3) - categories.ENGINEER }},
 
             { UCBC, 'LocationFactoriesBuildingLess', { 'LocationType', 1, categories.LAND * categories.MOBILE * categories.SHIELD }},
 
@@ -213,8 +235,13 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',
     },
 
     Builder { BuilderName = 'T2LandAA - Swarm',
+
         PlatoonTemplate = 'T2LandAA',
+
         Priority = 500,
+
+        PriorityFunction = HaveLessThanThreeT3LandFactory,
+
         BuilderConditions = {
             { UCBC, 'UnitCapCheckLess', { 0.90 } },
 
@@ -226,11 +253,11 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',
 
             { MIBC, 'CanPathToCurrentEnemySwarm', { true, 'LocationType' } },
 
-            { UCBC, 'HaveGreaterThanUnitsWithCategory', { 2, categories.FACTORY * categories.LAND * categories.TECH2 }},
+            { UCBC, 'HaveGreaterThanUnitsWithCategory', { 2, categories.FACTORY * categories.LAND * (categories.TECH2 + categories.TECH3) }},
 
             { UCBC, 'PoolLessAtLocation', { 'LocationType', 1, categories.LAND * categories.MOBILE * categories.ANTIAIR * categories.TECH2 }},
 
-            { UCBC, 'HaveGreaterThanUnitsWithCategory', { 5, categories.LAND * categories.MOBILE * categories.DIRECTFIRE * categories.TECH2 - categories.ENGINEER }},
+            { UCBC, 'HaveGreaterThanUnitsWithCategory', { 5, categories.LAND * categories.MOBILE * categories.DIRECTFIRE * (categories.TECH2 + categories.TECH3) - categories.ENGINEER }},
         },
         BuilderType = 'Land',
     },
@@ -995,7 +1022,7 @@ BuilderGroup {
         BuilderName = 'Swarm Mass Raid Standard - Extended',                            
         PlatoonTemplate = 'AISwarm Mass Raid Large',                         
         Priority = 652,                                                      
-        InstanceCount = 3,                                                     
+        InstanceCount = 1,                                                     
         BuilderType = 'Any',
         BuilderConditions = {   
             { UCBC, 'ScalePlatoonSizeSwarm', { 'LocationType', 'LAND', categories.MOBILE * categories.LAND - categories.ENGINEER - categories.EXPERIMENTAL } },
