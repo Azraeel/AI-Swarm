@@ -6,7 +6,7 @@ BaseBuilderTemplate {
         -- ==== ACU ==== --
         -----------------------------------------------------------------------------
         -- Build Main Base (only once). Land/Air factory and basic Energy
-        'SC ACU Attack Former',
+        'SC ACU Formers',
         
         -----------------------------------------------------------------------------
         -- ==== Expansion Builders ==== --
@@ -17,6 +17,8 @@ BaseBuilderTemplate {
         -----------------------------------------------------------------------------
         -- ==== SCU ==== --
         -----------------------------------------------------------------------------
+
+        'Swarm Engineer Transfer from MainBase',
 
         -----------------------------------------------------------------------------
         -- ==== Engineer ==== --
@@ -145,16 +147,16 @@ BaseBuilderTemplate {
 
     BaseSettings = {
         FactoryCount = {
-            Land = 0,
-            Air = 0,
-            Sea = 0,
-            Gate = 3,
+            Land = 10,
+            Air = 8,
+            Sea = 6,
+            Gate = 2,
         },
         EngineerCount = {
-            Tech1 = 6,
-            Tech2 = 3,
-            Tech3 = 3,
-            SCU = 3,
+            Tech1 = 15,
+            Tech2 = 5,
+            Tech3 = 4,
+            SCU = 12,
         },
         MassToFactoryValues = {
             T1Value = 6,

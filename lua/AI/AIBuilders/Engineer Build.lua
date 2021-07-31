@@ -36,7 +36,9 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Builders',
 
             { EBC, 'GreaterThanEconIncomeSwarm', { 0, 0 } },
 
-            { UCBC, 'PoolLessAtLocation', { 'LocationType', 1, categories.MOBILE * categories.ENGINEER * categories.TECH1 } },
+            { UCBC, 'EngineerCapCheck', { 'LocationType', 'Tech1' } },
+
+            { UCBC, 'PoolLessAtLocation', { 'LocationType',  1, categories.MOBILE * categories.ENGINEER * categories.TECH1 } },
 
             { UCBC, 'LocationFactoriesBuildingLess', { 'LocationType', 1, categories.MOBILE * categories.ENGINEER * categories.TECH1} },
 
@@ -55,7 +57,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Builders',
 
             { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.98, 0.50 } }, 
 
-            { UCBC, 'PoolLessAtLocation', { 'LocationType', 2, categories.MOBILE * categories.ENGINEER * categories.TECH1 } },
+            { UCBC, 'PoolLessAtLocation', { 'LocationType',  2, categories.MOBILE * categories.ENGINEER * categories.TECH1 } },
 
             { UCBC, 'LocationFactoriesBuildingLess', { 'LocationType', 3, categories.MOBILE * categories.ENGINEER * categories.TECH1} },
          },
@@ -71,7 +73,9 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Builders',
         BuilderConditions = {
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
 
-            { UCBC, 'PoolLessAtLocation', { 'LocationType', 1, categories.MOBILE * categories.ENGINEER * categories.TECH2 } },
+            { UCBC, 'PoolLessAtLocation', { 'LocationType',  1, categories.MOBILE * categories.ENGINEER * categories.TECH2 } },
+
+            { UCBC, 'EngineerCapCheck', { 'LocationType', 'Tech2' } },
 
             { UCBC, 'LocationFactoriesBuildingLess', { 'LocationType', 1, categories.MOBILE * categories.ENGINEER * categories.TECH2} },
         },
@@ -88,7 +92,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Builders',
 
             { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.98, 0.50 } }, 
 
-            { UCBC, 'PoolLessAtLocation', { 'LocationType', 2, categories.MOBILE * categories.ENGINEER * categories.TECH2 } },
+            { UCBC, 'PoolLessAtLocation', { 'LocationType',  2, categories.MOBILE * categories.ENGINEER * categories.TECH2 } },
 
             { UCBC, 'LocationFactoriesBuildingLess', { 'LocationType', 3, categories.MOBILE * categories.ENGINEER * categories.TECH2} },
          },
@@ -104,7 +108,9 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Builders',
         BuilderConditions = {
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
 
-            { UCBC, 'PoolLessAtLocation', { 'LocationType', 1, categories.MOBILE * categories.ENGINEER * categories.TECH3 } },
+            { UCBC, 'PoolLessAtLocation', { 'LocationType',  1, categories.MOBILE * categories.ENGINEER * categories.TECH3 } },
+
+            { UCBC, 'EngineerCapCheck', { 'LocationType', 'Tech3' } },
 
             { UCBC, 'LocationFactoriesBuildingLess', { 'LocationType', 1, categories.MOBILE * categories.ENGINEER * categories.TECH1} },
         },
@@ -121,7 +127,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Builders',
 
             { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.98, 0.50 } }, 
 
-            { UCBC, 'PoolLessAtLocation', { 'LocationType', 2, categories.MOBILE * categories.ENGINEER * categories.TECH3 } },
+            { UCBC, 'PoolLessAtLocation', { 'LocationType',  2, categories.MOBILE * categories.ENGINEER * categories.TECH3 } },
 
             { UCBC, 'LocationFactoriesBuildingLess', { 'LocationType', 3, categories.MOBILE * categories.ENGINEER * categories.TECH3} },
          },
@@ -311,9 +317,11 @@ BuilderGroup { BuilderGroupName = 'Swarm SACU Builder',
 
             { MIBC, 'FactionIndex', { 1, 2, 3, 5 }}, -- 1: UEF, 2: Aeon, 3: Cybran, 4: Seraphim, 5: Nomads 
 
+            { UCBC, 'EngineerCapCheck', { 'LocationType', 'SCU' } },
+
             { UCBC, 'HaveLessThanUnitsWithCategory', { 50, categories.ENGINEERPRESET + categories.RASPRESET } },
 
-            { UCBC, 'PoolLessAtLocation', { 'LocationType', 3, categories.ENGINEERPRESET + categories.RASPRESET } },
+            { UCBC, 'PoolLessAtLocation', { 'LocationType',  3, categories.ENGINEERPRESET + categories.RASPRESET } },
 
             { UCBC, 'LocationFactoriesBuildingLess', { 'LocationType', 2, categories.ENGINEERPRESET + categories.RASPRESET} },
         },
@@ -325,11 +333,13 @@ BuilderGroup { BuilderGroupName = 'Swarm SACU Builder',
         PlatoonTemplate = 'S3 SACU ENGINEER preset 12345',
         Priority = 1020,
         BuilderConditions = {
-        	{ MIBC, 'FactionIndex', { 4 }}, -- 1: UEF, 2: Aeon, 3: Cybran, 4: Seraphim, 5: Nomads
+            { MIBC, 'FactionIndex', { 4 }}, -- 1: UEF, 2: Aeon, 3: Cybran, 4: Seraphim, 5: Nomads
+            
+            { UCBC, 'EngineerCapCheck', { 'LocationType', 'SCU' } },
 
             { UCBC, 'HaveLessThanUnitsWithCategory', { 50, categories.ENGINEERPRESET + categories.RASPRESET } },
 
-            { UCBC, 'PoolLessAtLocation', { 'LocationType', 3, categories.ENGINEERPRESET + categories.RASPRESET } },
+            { UCBC, 'PoolLessAtLocation', { 'LocationType',  3, categories.ENGINEERPRESET + categories.RASPRESET } },
 
             { UCBC, 'LocationFactoriesBuildingLess', { 'LocationType', 10, categories.ENGINEERPRESET + categories.RASPRESET} },
         },
@@ -343,7 +353,9 @@ BuilderGroup { BuilderGroupName = 'Swarm SACU Builder',
         BuilderConditions = {
             { UCBC, 'HaveLessThanUnitsWithCategory', { 50, categories.ENGINEERPRESET + categories.RASPRESET } },
 
-            { UCBC, 'PoolLessAtLocation', { 'LocationType', 3, categories.ENGINEERPRESET + categories.RASPRESET } },
+            { UCBC, 'EngineerCapCheck', { 'LocationType', 'SCU' } },
+
+            { UCBC, 'PoolLessAtLocation', { 'LocationType',  3, categories.ENGINEERPRESET + categories.RASPRESET } },
 
             { UCBC, 'LocationFactoriesBuildingLess', { 'LocationType', 10, categories.ENGINEERPRESET + categories.RASPRESET} },
         },
@@ -354,56 +366,35 @@ BuilderGroup { BuilderGroupName = 'Swarm SACU Builder',
 -- ===================================================-======================================================== --
 -- ==                                          Engineer Transfers                                            == --
 -- ===================================================-======================================================== --
---[[ BuilderGroup { BuilderGroupName = 'Swarm Engineer Transfer To MainBase',
+BuilderGroup { BuilderGroupName = 'Swarm Engineer Transfer from MainBase',
+
     BuildersType = 'PlatoonFormBuilder',
-    -- ============================================ --
-    --    Transfer from LocationType to MainBase    --
-    -- ============================================ --
 
-    Builder { BuilderName = 'S1 Engi Trans to MainBase',
-        PlatoonTemplate = 'S1EngineerTransfer',
-        Priority = 650,
-        InstanceCount = 3,
-        BuilderConditions = {
-            { UCBC, 'GreaterThanGameTimeSeconds', { 60 } },
-            { UCBC, 'BuildNotOnLocationSwarm', { 'LocationType', 'MAIN' } },
-            { UCBC, 'EngineerManagerUnitsAtLocationSwarm', { 'LocationType', '>', 3,  categories.MOBILE * categories.TECH1 } },
-        },
-        BuilderData = {
-            MoveToLocationType = 'MAIN',
-        },
-        BuilderType = 'Any',
-    },
+    Builder { BuilderName = 'S Engi Trans from MainBase',
 
+        PlatoonTemplate = 'SACUEngineerTransfer',
 
-    Builder { BuilderName = 'S2 Engi Trans to MainBase',
-        PlatoonTemplate = 'S2EngineerTransfer',
-        Priority = 750,
-        InstanceCount = 3,
-        BuilderConditions = {
-            { UCBC, 'GreaterThanGameTimeSeconds', { 90 } },
-            { UCBC, 'BuildNotOnLocationSwarm', { 'LocationType', 'MAIN' } },
-            { UCBC, 'EngineerManagerUnitsAtLocationSwarm', { 'LocationType', '>', 3,  categories.MOBILE * categories.TECH2 } },
-        },
-        BuilderData = {
-            MoveToLocationType = 'MAIN',
-        },
-        BuilderType = 'Any',
-    },
-
-
-    Builder { BuilderName = 'S3 Engi Trans to MainBase',
-        PlatoonTemplate = 'S3EngineerTransfer',
         Priority = 850,
+
         InstanceCount = 3,
+
         BuilderConditions = {
+
             { UCBC, 'GreaterThanGameTimeSeconds', { 120 } },
-            { UCBC, 'BuildNotOnLocationSwarm', { 'LocationType', 'MAIN' } },
-            { UCBC, 'EngineerManagerUnitsAtLocationSwarm', { 'LocationType', '>', 3,  categories.MOBILE * categories.TECH3 } },
+
+            { UCBC, 'BuildOnlyOnLocationSwarm', { 'LocationType', 'MAIN' } },
+
+            { UCBC, 'EngineerManagerUnitsAtLocationSwarm', { 'LocationType', '>', 10,  categories.MOBILE * categories.TECH3 } },
+
         },
+
         BuilderData = {
-            MoveToLocationType = 'MAIN',
+
+            MoveToLocationType = 'Start Location',
+
         },
+
         BuilderType = 'Any',
+
     },
-} ]]--
+} 

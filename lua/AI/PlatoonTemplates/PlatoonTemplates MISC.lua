@@ -48,10 +48,53 @@ PlatoonTemplate {
 }
 
 PlatoonTemplate {
-    Name = 'S3EngineerTransfer',
+    Name = 'SACUEngineerTransfer',
     Plan = 'TransferAISwarm',
     GlobalSquads = {
-        { categories.MOBILE * categories.ENGINEER * categories.TECH3, 1, 1, 'support', 'none' },
+        { categories.MOBILE * categories.ENGINEER * categories.SUBCOMMANDER, 1, 1, 'support', 'none' },
+    },
+}
+
+PlatoonTemplate {
+    Name = 'AddEngineerToACUChampionPlatoon',
+    Plan = 'SwarmPlatoonMerger',
+    GlobalSquads = {
+        { categories.ENGINEER * categories.TECH1 - categories.STATIONASSISTPOD, 1, 1, 'support', 'none' }
+    },
+}
+PlatoonTemplate {
+    Name = 'AddShieldToACUChampionPlatoon',
+    Plan = 'SwarmPlatoonMerger',
+    GlobalSquads = {
+        { (categories.MOBILE * categories.SHIELD) + (categories.MOBILE * categories.STEALTHFIELD) * (categories.TECH2 + categories.TECH3), 1, 1, 'support', 'none' }
+    },
+}
+PlatoonTemplate {
+    Name = 'AddSACUToACUChampionPlatoon',
+    Plan = 'SwarmPlatoonMerger',
+    GlobalSquads = {
+        { categories.SUBCOMMANDER, 1, 1, 'support', 'none' }
+    },
+}
+PlatoonTemplate {
+    Name = 'AddTankToACUChampionPlatoon',
+    Plan = 'SwarmPlatoonMerger',
+    GlobalSquads = {
+        { categories.MOBILE * categories.DIRECTFIRE - categories.ANTIAIR - categories.EXPERIMENTAL, 1, 1, 'support', 'none' }
+    },
+}
+PlatoonTemplate {
+    Name = 'AddAAToACUChampionPlatoon',
+    Plan = 'SwarmPlatoonMerger',
+    GlobalSquads = {
+        { categories.MOBILE * categories.LAND * categories.ANTIAIR, 1, 1, 'support', 'none' }
+    },
+}
+PlatoonTemplate {
+    Name = 'AddGunshipACUChampionPlatoon',
+    Plan = 'SwarmPlatoonMerger',
+    GlobalSquads = {
+        { categories.MOBILE * categories.AIR * categories.GROUNDATTACK - categories.TRANSPORTFOCUS, 1, 1, 'support', 'none' }
     },
 }
 

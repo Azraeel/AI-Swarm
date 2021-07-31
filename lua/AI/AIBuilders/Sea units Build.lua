@@ -3,291 +3,380 @@ local EBC = '/lua/editor/EconomyBuildConditions.lua'
 local MIBC = '/lua/editor/MiscBuildConditions.lua'
 local BasePanicZone, BaseMilitaryZone, BaseEnemyZone = import('/mods/AI-Swarm/lua/AI/swarmutilities.lua').GetDangerZoneRadii()
 
-local MaxAttackForce = 0.45                                                     -- 45% of all units can be attacking units (categories.MOBILE - categories.ENGINEER)
+local MaxAttackForce = 0.45     
 
--- ===================================================-======================================================== --
--- ==                                        Build T1 T2 T3 SEA                                              == --
--- ===================================================-======================================================== --
-BuilderGroup { BuilderGroupName = 'Swarm Naval Builders',                               -- BuilderGroupName, initalized from AIBaseTemplates in "\lua\AI\AIBaseTemplates\"
+-- this function will turn a builder off if the enemy is not active in the water
+local IsEnemyNavalActive = function( self, aiBrain, manager )
+
+	if aiBrain.MyNavalRatio and (aiBrain.MyNavalRatio > .01 and aiBrain.MyNavalRatio <= 10) then
+        --LOG("*AI DEBUG "..aiBrain.Nickname.." enemy naval is active at "..repr(aiBrain.MyNavalRatio))
+		return 500, true
+
+	end
+
+	return 0, true
+	
+end
+
+local HaveLessThanTwoT2NavalFactory = function( self, aiBrain )
+	
+	if table.getn( aiBrain:GetListOfUnits( categories.FACTORY * categories.NAVAL - categories.TECH1, false, true )) < 2 then
+	
+		return 500, true
+		
+	end
+
+	
+	return 0, false
+	
+end
+
+local HaveLessThanTwoT3NavalFactory = function( self, aiBrain )
+
+	if table.getn( aiBrain:GetListOfUnits( categories.FACTORY * categories.NAVAL * categories.TECH3, false, true )) < 2 then
+	
+		return 500, true
+		
+	end
+
+	return 0, false
+	
+end
+
+-- ================== --
+-- Build T1 T2 T3 SEA --
+-- ================== --
+
+-- ALL PRIORITIES ARE SET TO 500 --
+-- Production is purely decided by Priority Functions
+-- usually controlled by naval ratio and number of factories producing that unit
+
+-- reduction of Builder Conditions is the next goal 
+-- Silly Conditions like CanPathNavalBaseToNavalTargetsSwarm can be completely removed and opt for continus production
+-- if Navy is contested, instead we can opt for Bombardment Ship production et Battleships and Missile Ships, Cruisers too.
+
+-- As I though Navy has been a complete success or although the Bombardment Ship Production needs a specific Platoon Function.
+
+
+BuilderGroup { BuilderGroupName = 'Swarm Naval Builders',    
+
     BuildersType = 'FactoryBuilder',
-    
-    -- =========== --
-    --    TECH 1   --
-    -- =========== --
-    Builder { BuilderName = 'T1SeaFrigate - Swarm',
-        PlatoonTemplate = 'T1SeaFrigate',
-        Priority = 500,
-        BuilderConditions = {
-            { UCBC, 'CanPathNavalBaseToNavalTargetsSwarm', {  'LocationType', categories.STRUCTURE * categories.FACTORY * categories.NAVAL }},
 
-            { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.75, 0.85 }},
+    Builder { BuilderName = 'T1SeaFrigate - Swarm',
+
+        PlatoonTemplate = 'T1SeaFrigate',
+
+        Priority = 500,
+
+        PriorityFunction = HaveLessThanTwoT2NavalFactory,
+
+        BuilderConditions = {
+            { UCBC, 'NavalStrengthRatioLessThan', { 3 } },
+
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.8, 0.9 }},
 
             { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.02, 0.1}},
 
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
-
-            { EBC, 'GreaterThanEconIncomeSwarm', { 2, 10 } },
 
             { UCBC, 'PoolLessAtLocation', { 'LocationType', 10, categories.FRIGATE * categories.NAVAL }},
         },
+
         BuilderType = 'Sea',
+
     },
 
     Builder { BuilderName = 'T1SeaSub - Swarm',
-        PlatoonTemplate = 'T1SeaSub',
-        Priority = 500,
-        BuilderConditions = {
-            { UCBC, 'CanPathNavalBaseToNavalTargetsSwarm', {  'LocationType', categories.STRUCTURE * categories.FACTORY * categories.NAVAL }},
 
-            { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.75, 0.85 }},
+        PlatoonTemplate = 'T1SeaSub',
+
+        Priority = 500,
+
+        PriorityFunction = HaveLessThanTwoT2NavalFactory,
+
+        BuilderConditions = {
+            { UCBC, 'NavalStrengthRatioLessThan', { 3 } },
+
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.8, 0.9 }},
 
             { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.02, 0.1}},
 
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
 
-            { EBC, 'GreaterThanEconIncomeSwarm', { 2, 10 } },
-
-            { UCBC, 'PoolLessAtLocation', { 'LocationType', 4, categories.T1SUBMARINE * categories.NAVAL }},
+            { UCBC, 'PoolLessAtLocation', { 'LocationType', 5, categories.T1SUBMARINE * categories.NAVAL }},
         },
+
         BuilderType = 'Sea',
+
     },
 
     -- ============ --
     --    TECH 2    --
     -- ============ --
     Builder { BuilderName = 'T2SeaDestroyer - Swarm',
+
         PlatoonTemplate = 'T2SeaDestroyer',
-        Priority = 600,
+
+        Priority = 500,
+
+        PriorityFunction = HaveLessThanTwoT3NavalFactory,
+
         BuilderConditions = {
-            { UCBC, 'CanPathNavalBaseToNavalTargetsSwarm', {  'LocationType', categories.STRUCTURE * categories.FACTORY * categories.NAVAL }},
+            { UCBC, 'NavalStrengthRatioLessThan', { 3 } },
 
-        	{ EBC, 'GreaterThanEconEfficiencyOverTime', { 0.8, 0.95 }},
+        	{ EBC, 'GreaterThanEconEfficiencyOverTime', { 0.8, 0.9 }},
 
-            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.03, 0.1}},
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.02, 0.1}},
 
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
-
-            { EBC, 'GreaterThanEconIncomeSwarm', { 4, 40 } },
 
             { UCBC, 'PoolLessAtLocation', { 'LocationType', 10, categories.DESTROYER * categories.NAVAL * categories.TECH2 }},
         },
+
         BuilderType = 'Sea',
+
     },
 
     Builder { BuilderName = 'T2SeaCruiser - Swarm',
+
         PlatoonTemplate = 'T2SeaCruiser',
-        Priority = 600,
+
+        Priority = 500,
+
+        PriorityFunction = HaveLessThanTwoT3NavalFactory,
+
         BuilderConditions = {
-            { UCBC, 'CanPathNavalBaseToNavalTargetsSwarm', {  'LocationType', categories.STRUCTURE * categories.FACTORY * categories.NAVAL }},
+            { UCBC, 'NavalStrengthRatioLessThan', { 3 } },
 
-            { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.8, 0.95 }},
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.8, 0.9 }},
 
-            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.03, 0.1}},
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.02, 0.1}},
 
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
-
-            { EBC, 'GreaterThanEconIncomeSwarm', { 4, 40 } },
 
             { UCBC, 'PoolLessAtLocation', { 'LocationType', 3, categories.CRUISER * categories.NAVAL * categories.TECH2 }},
         },
+
         BuilderType = 'Sea',
+
     },
 
     Builder { BuilderName = 'T2SeaCruiser - Swarm - Reactive',
+
         PlatoonTemplate = 'T2SeaCruiser',
-        Priority = 605,
+
+        Priority = 500,
+
+        PriorityFunction = HaveLessThanTwoT3NavalFactory,
+
         BuilderConditions = {
-            { UCBC, 'CanPathNavalBaseToNavalTargetsSwarm', {  'LocationType', categories.STRUCTURE * categories.FACTORY * categories.NAVAL }},
+            { UCBC, 'AirStrengthRatioLessThan', { 1.5 } },
 
-            { UCBC, 'EnemyUnitsGreaterAtLocationRadiusSwarm', {  BaseMilitaryZone, 'LocationType', 5, categories.AIR * (categories.ANTINAVY + categories.GROUNDATTACK) }},
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.8, 0.9 }},
 
-            { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.8, 0.95 }},
-
-            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.03, 0.1}},
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.02, 0.1}},
 
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
 
-            { EBC, 'GreaterThanEconIncomeSwarm', { 4, 40 } },
-
-            { UCBC, 'PoolLessAtLocation', { 'LocationType', 4, categories.CRUISER * categories.NAVAL * categories.TECH2 }},
+            { UCBC, 'PoolLessAtLocation', { 'LocationType', 5, categories.CRUISER * categories.NAVAL * categories.TECH2 }},
         },
+
         BuilderType = 'Sea',
+
     },
 
     Builder { BuilderName = 'T2SubKiller - Swarm',
+
         PlatoonTemplate = 'T2SubKiller',
-        Priority = 600,
+
+        Priority = 500,
+
+        PriorityFunction = HaveLessThanTwoT3NavalFactory,
+
         BuilderConditions = {
-            { UCBC, 'CanPathNavalBaseToNavalTargetsSwarm', {  'LocationType', categories.STRUCTURE * categories.FACTORY * categories.NAVAL }},
+            { UCBC, 'NavalStrengthRatioLessThan', { 3 } },
 
-            { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.8, 0.95 }},
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.8, 0.9 }},
 
-            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.03, 0.1}},
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.02, 0.1}},
 
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
-
-            { EBC, 'GreaterThanEconIncomeSwarm', { 4, 40 } },
 
             { UCBC, 'PoolLessAtLocation', { 'LocationType', 3, categories.T2SUBMARINE * categories.NAVAL * categories.TECH2 }},
         },
+
         BuilderType = 'Sea',
+
     },
 
     Builder { BuilderName = 'T2ShieldBoat - Swarm',
+
         PlatoonTemplate = 'T2ShieldBoat',
-        Priority = 600,
+
+        Priority = 500,
+
+        PriorityFunction = HaveLessThanTwoT3NavalFactory,
+
         BuilderConditions = {
-            { UCBC, 'CanPathNavalBaseToNavalTargetsSwarm', {  'LocationType', categories.STRUCTURE * categories.FACTORY * categories.NAVAL }},
+            { UCBC, 'NavalStrengthRatioLessThan', { 3 } },
 
-            { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.8, 0.95 }},
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.8, 0.9 }},
 
-            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.03, 0.1}},
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.02, 0.1}},
 
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
-
-            { EBC, 'GreaterThanEconIncomeSwarm', { 4, 40 } },
 
             { UCBC, 'PoolLessAtLocation', { 'LocationType', 1, categories.SHIELD * categories.NAVAL * categories.TECH2 }},
         },
+
         BuilderType = 'Sea',
+
     },
 
     Builder { BuilderName = 'T2CounterIntelBoat - Swarm',
+
         PlatoonTemplate = 'T2CounterIntelBoat',
-        Priority = 600,
+
+        Priority = 500,
+
+        PriorityFunction = HaveLessThanTwoT3NavalFactory,
+
         BuilderConditions = {
-            { UCBC, 'CanPathNavalBaseToNavalTargetsSwarm', {  'LocationType', categories.STRUCTURE * categories.FACTORY * categories.NAVAL }},
+            { UCBC, 'NavalStrengthRatioLessThan', { 3 } },
 
-            { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.8, 0.95 }},
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.8, 0.9 }},
 
-            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.03, 0.1}},
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.02, 0.1}},
 
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
 
-            { EBC, 'GreaterThanEconIncomeSwarm', { 4, 40 } },
-
             { UCBC, 'PoolLessAtLocation', { 'LocationType', 1, categories.STEALTH * categories.NAVAL * categories.TECH2 }},
         },
+
         BuilderType = 'Sea',
+
     },
 
     -- ============ --
     --    TECH 3    --
     -- ============ --
     Builder { BuilderName = 'T3SeaBattleship - Swarm',
+
         PlatoonTemplate = 'T3SeaBattleship',
-        Priority = 750,
+
+        Priority = 500,
+
         BuilderConditions = {
-            { UCBC, 'CanPathNavalBaseToNavalTargetsSwarm', {  'LocationType', categories.STRUCTURE * categories.FACTORY * categories.NAVAL }},
+        	{ EBC, 'GreaterThanEconEfficiencyOverTime', { 0.8, 0.9 }},
 
-        	{ EBC, 'GreaterThanEconEfficiencyOverTime', { 0.95, 1.0 }},
-
-            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.04, 0.1}},
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.02, 0.1}},
 
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
-
-            { EBC, 'GreaterThanEconIncomeSwarm', { 10, 100 } },
 
             { UCBC, 'PoolLessAtLocation', { 'LocationType', 6, categories.BATTLESHIP * categories.NAVAL * categories.TECH3 }},
         },
+
         BuilderType = 'Sea',
+
     },
 
     Builder { BuilderName = 'T3Battlecruiser - Swarm',
+
         PlatoonTemplate = 'T3Battlecruiser',
-        Priority = 750,
+
+        Priority = 500,
+
+        PriorityFunction = IsEnemyNavalActive,
+
         BuilderConditions = {
-            { UCBC, 'CanPathNavalBaseToNavalTargetsSwarm', {  'LocationType', categories.STRUCTURE * categories.FACTORY * categories.NAVAL }},
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.8, 0.9 }},
 
-            { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.95, 1.0 }},
-
-            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.04, 0.1}},
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.02, 0.1}},
 
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
 
-            { EBC, 'GreaterThanEconIncomeSwarm', { 10, 100 } },
-
-            { UCBC, 'PoolLessAtLocation', { 'LocationType', 2, categories.CRUISER * categories.NAVAL * categories.TECH3 }},
+            { UCBC, 'PoolLessAtLocation', { 'LocationType', 5, categories.CRUISER * categories.NAVAL * categories.TECH3 }},
         },
+
         BuilderType = 'Sea',
+
     },
 
     Builder { BuilderName = 'T2SeaCruiser - Swarm - Reactive - Tech3',
+
         PlatoonTemplate = 'T2SeaCruiser',
-        Priority = 755,
+
+        Priority = 500,
+
         BuilderConditions = {
-            { UCBC, 'CanPathNavalBaseToNavalTargetsSwarm', {  'LocationType', categories.STRUCTURE * categories.FACTORY * categories.NAVAL }},
+            { UCBC, 'AirStrengthRatioLessThan', { 1.5 } },
 
-            { UCBC, 'EnemyUnitsGreaterAtLocationRadiusSwarm', {  BaseMilitaryZone, 'LocationType', 5, categories.AIR * (categories.ANTINAVY + categories.GROUNDATTACK) }},
+            { UCBC, 'HaveGreaterThanUnitsWithCategory', { 1, categories.STRUCTURE * categories.FACTORY * categories.NAVAL * categories.TECH3 } },
 
-            { UCBC, 'HaveGreaterThanUnitsWithCategory', { 0, categories.STRUCTURE * categories.FACTORY * categories.NAVAL * categories.TECH3 } },
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.8, 0.9 }},
 
-            { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.95, 1.0 }},
-
-            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.04, 0.1}},
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.02, 0.1}},
 
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
 
-            { EBC, 'GreaterThanEconIncomeSwarm', { 4, 40 } },
-
-            { UCBC, 'PoolLessAtLocation', { 'LocationType', 4, categories.CRUISER * categories.NAVAL * categories.TECH2 }},
+            { UCBC, 'PoolLessAtLocation', { 'LocationType', 5, categories.CRUISER * categories.NAVAL * categories.TECH2 }},
         },
         BuilderType = 'Sea',
     },
 
     Builder { BuilderName = 'T3SubKiller - Swarm',
+
         PlatoonTemplate = 'T3SubKiller',
-        Priority = 750,
+
+        Priority = 500,
+
+        PriorityFunction = IsEnemyNavalActive,
+
         BuilderConditions = {
-            { UCBC, 'CanPathNavalBaseToNavalTargetsSwarm', {  'LocationType', categories.STRUCTURE * categories.FACTORY * categories.NAVAL }},
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.8, 0.9 }},
 
-            { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.95, 1.0 }},
-
-            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.04, 0.1}},
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.02, 0.1}},
 
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
 
-            { EBC, 'GreaterThanEconIncomeSwarm', { 10, 100 } },
-
-            { UCBC, 'PoolLessAtLocation', { 'LocationType', 4, categories.SUBMERSIBLE * categories.NAVAL * categories.TECH3 }},
+            { UCBC, 'PoolLessAtLocation', { 'LocationType', 10, categories.SUBMERSIBLE * categories.NAVAL * categories.TECH3 }},
         },
         BuilderType = 'Sea',
     },
 
     Builder { BuilderName = 'T3MissileBoat - Swarm',
+
         PlatoonTemplate = 'T3MissileBoat',
-        Priority = 750,
+
+        Priority = 500,
+
         BuilderConditions = {
-            { UCBC, 'CanPathNavalBaseToNavalTargetsSwarm', {  'LocationType', categories.STRUCTURE * categories.FACTORY * categories.NAVAL }},
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.8, 0.9 }},
 
-            { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.95, 1.0 }},
-
-            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.04, 0.1}},
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.02, 0.1}},
 
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
 
-            { EBC, 'GreaterThanEconIncomeSwarm', { 10, 100 } },
-
             { UCBC, 'PoolLessAtLocation', { 'LocationType', 2, categories.BATTLESHIP * categories.INDIRECTFIRE * categories.NAVAL * categories.TECH3 }},
         },
+
         BuilderType = 'Sea',
     },
 
     Builder { BuilderName = 'T3SeaNukeSub - Swarm',
-        PlatoonTemplate = 'T3SeaNukeSub',
-        Priority = 750,
-        BuilderConditions = {
-            { UCBC, 'CanPathNavalBaseToNavalTargetsSwarm', {  'LocationType', categories.STRUCTURE * categories.FACTORY * categories.NAVAL }},
 
+        PlatoonTemplate = 'T3SeaNukeSub',
+
+        Priority = 500,
+
+        BuilderConditions = {
             { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.15, 1.15 }},
 
-            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.10, 0.1}},
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.2, 0.1}},
 
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
 
-            { EBC, 'GreaterThanEconIncomeSwarm', { 20, 200 } },
-
-            { UCBC, 'HaveLessThanUnitsWithCategory', { 3, categories.NUKE * categories.NAVAL }},
+            { UCBC, 'HaveLessThanUnitsWithCategory', { 5, categories.NUKE * categories.NAVAL }},
 
             { UCBC, 'PoolLessAtLocation', { 'LocationType', 1, categories.NUKE * categories.NAVAL * categories.TECH3 }},
         },
@@ -295,213 +384,223 @@ BuilderGroup { BuilderGroupName = 'Swarm Naval Builders',                       
     },
 }
 
--- ===================================================-======================================================== --
--- ==                                            Sonar  builder                                              == --
--- ===================================================-======================================================== --
-BuilderGroup { BuilderGroupName = 'Swarm Sonar Builders',                               -- BuilderGroupName, initalized from AIBaseTemplates in "\lua\AI\AIBaseTemplates\"
+-------------------
+-- Sonar Builder --                                      
+-------------------
+
+BuilderGroup { BuilderGroupName = 'Swarm Sonar Builders',                              
+
     BuildersType = 'EngineerBuilder',
     
     Builder { BuilderName = 'S1 Sonar',
+
         PlatoonTemplate = 'EngineerBuilder',
-        Priority = 17500,
+
+        Priority = 200,
+
         BuilderConditions = {
-            -- When do we want to build this ?
-            { UCBC, 'UnitsLessAtLocation', { 'LocationType', 1, (categories.SONAR * categories.STRUCTURE - categories.TECH3) + (categories.MOBILESONAR * categories.TECH3) } }, -- TECH3 sonar is MOBILE not STRUCTURE!!!
-            -- Do we need additional conditions to build it ?
+            { UCBC, 'UnitsLessAtLocation', { 'LocationType', 1, (categories.SONAR * categories.STRUCTURE - categories.TECH3) + (categories.MOBILESONAR * categories.TECH3) } },
+
             { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 0, categories.ENGINEER * categories.TECH1 }},
+
             { UCBC, 'HaveGreaterThanUnitsWithCategory', { 1, categories.STRUCTURE * categories.FACTORY * categories.NAVAL } },
+            
             { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.40, 0.90 } },
-            -- Have we the eco to build it ?
-            -- Don't build it if...
-            -- Respect UnitCap
         },
+
         BuilderType = 'Any',
+
         BuilderData = {
+
             Construction = {
-                AdjacencyCategory = categories.STRUCTURE * categories.ENERGYPRODUCTION,
-                AdjacencyDistance = 50,
+
                 BuildStructures = {
+
                     'T1Sonar',
                 },
+
                 Location = 'LocationType',
+
             }
         }
     },
 }
 
-BuilderGroup { BuilderGroupName = 'Swarm Sonar Upgraders',                               -- BuilderGroupName, initalized from AIBaseTemplates in "\lua\AI\AIBaseTemplates\"
+BuilderGroup { BuilderGroupName = 'Swarm Sonar Upgraders',                         
+
     BuildersType = 'PlatoonFormBuilder',
     
     Builder { BuilderName = 'S1 Sonar Upgrade',
+
         PlatoonTemplate = 'T1SonarUpgrade',
+
         Priority = 200,
+
         BuilderConditions = {
-            -- When do we want to build this ?
             { UCBC, 'HaveGreaterThanUnitsWithCategory', { 0, categories.SONAR * categories.TECH1}},
-            -- Do we need additional conditions to build it ?
-            -- Have we the eco to build it ?
-            { EBC, 'GreaterThanEconTrendSwarm', { 0.0, 0.0 } }, -- relative income
-            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.90, 0.90 } },             -- Ratio from 0 to 1. (1=100%)
-            -- Don't build it if...
-            -- Respect UnitCap
+
+            { EBC, 'GreaterThanEconTrendSwarm', { 0.0, 0.0 } }, 
+
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.90, 0.90 } },  
         },
+
         BuilderType = 'Any',
+
     },
     
     Builder { BuilderName = 'S2 Sonar Upgrade',
+
         PlatoonTemplate = 'T2SonarUpgrade',
+
         Priority = 300,
+
         BuilderConditions = {
-            -- When do we want to build this ?
             { UCBC, 'HaveGreaterThanUnitsWithCategory', { 0, categories.SONAR * categories.TECH2}},
-            -- Do we need additional conditions to build it ?
-            { MIBC, 'FactionIndex', { 1, 2, 3, 5 }}, -- 1: UEF, 2: Aeon, 3: Cybran, 4: Seraphim, 5: Nomads 
-            -- Have we the eco to build it ?
-            { EBC, 'GreaterThanEconTrendSwarm', { 0.0, 0.0 } }, -- relative income
-            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.90, 0.90 } },             -- Ratio from 0 to 1. (1=100%)
-            -- Don't build it if...
-            -- Respect UnitCap
+            
+            { MIBC, 'FactionIndex', { 1, 2, 3, 5 }},
+
+            { EBC, 'GreaterThanEconTrendSwarm', { 0.0, 0.0 } }, 
+
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.90, 0.90 } },
         },
+
         BuilderType = 'Any',
+
     },
 }
 
--- ===================================================-======================================================== --
--- ==                                      NAVAL T1 T2 T3 Formbuilder                                        == --
--- ===================================================-======================================================== --
--- =============== --
---    PanicZone    --
--- =============== --
-BuilderGroup { BuilderGroupName = 'Swarm Naval Formers',                            
+-----------------------
+-- NAVAL Formbuilder --
+-----------------------
+
+BuilderGroup { BuilderGroupName = 'Swarm Naval Formers',   
+
     BuildersType = 'PlatoonFormBuilder',
     Builder {
-        BuilderName = 'Swarm PANIC AntiSea',                                     
-        PlatoonTemplate = 'Swarm Sea Attack',                          
-        Priority = 100,                                                         
-        InstanceCount = 5,                                                     
+        BuilderName = 'Swarm Panic Sea',     
+
+        PlatoonTemplate = 'Swarm Sea Attack',      
+
+        Priority = 100,    
+
+        InstanceCount = 1,     
+
         BuilderData = {
-            SearchRadius = BasePanicZone,                                      
-            AggressiveMove = true,                                             
-            AttackEnemyStrength = 100,                                    
-            TargetSearchCategory = categories.MOBILE - categories.SCOUT,        
+            SearchRadius = BasePanicZone,       
+
+            AggressiveMove = true,                
+
+            AttackEnemyStrength = 100,                   
+
+            TargetSearchCategory = categories.MOBILE * categories.NAVAL + categories.LAND - categories.SCOUT,      
+
             MoveToCategories = {                                                
-                categories.EXPERIMENTAL,
-                categories.MOBILE,
+                categories.EXPERIMENTAL * categories.NAVAL,
+                categories.MOBILE * categories.NAVAL,
             },
         },
-        BuilderConditions = {                                                  
-            { UCBC, 'EnemyUnitsGreaterAtLocationRadiusSwarm', {  BasePanicZone, 'LocationType', 0, categories.MOBILE }}, 
-        },
+
+        BuilderConditions = { },
+
         BuilderType = 'Any',                                                 
     },
 
     Builder {
-        BuilderName = 'Swarm Military AntiSea',                              
-        PlatoonTemplate = 'Swarm Sea Attack',                       
-        Priority = 100,                                                         
-        InstanceCount = 6,                                                    
+        BuilderName = 'Swarm Military Sea',                              
+        PlatoonTemplate = 'Swarm Sea Attack',   
+
+        Priority = 100,         
+
+        InstanceCount = 1,    
+
         BuilderData = {
-            SearchRadius = BaseMilitaryZone,                                  
-            AggressiveMove = true,                                             
-            AttackEnemyStrength = 100,                                        
-            TargetSearchCategory = categories.MOBILE,                           
+
+            SearchRadius = BaseMilitaryZone,   
+
+            AggressiveMove = true,        
+
+            AttackEnemyStrength = 100,   
+
+            TargetSearchCategory = categories.MOBILE * categories.NAVAL + categories.LAND,      
+
             MoveToCategories = {                                               
                 categories.NAVAL * categories.DEFENSE,
                 categories.MOBILE * categories.NAVAL,
-                categories.ALLUNITS,
             },
         },
+
         BuilderConditions = {                                                   
-            { UCBC, 'EnemyUnitsGreaterAtLocationRadiusSwarm', {  BaseMilitaryZone, 'LocationType', 0, categories.MOBILE }}, 
             { UCBC, 'UnitsGreaterAtLocation', { 'LocationType', 6, categories.MOBILE * categories.NAVAL } },
         },
+
         BuilderType = 'Any',                                                    
     },
 
     Builder {
-        BuilderName = 'Swarm Enemy AntiSea Kill early',
-        PlatoonTemplate = 'Swarm Sea Attack',
-        Priority = 100,
-        InstanceCount = 3,
-        BuilderData = {
-            SearchRadius = BaseEnemyZone,                                    
-            AggressiveMove = true,                                              
-            AttackEnemyStrength = 200,                                         
-            TargetSearchCategory = categories.MOBILE + categories.STRUCTURE,   
-            MoveToCategories = {                                                
-                categories.STRUCTURE,
-                categories.MOBILE,
-                categories.ALLUNITS,
-            },
-        },
-        BuilderConditions = {                                                 
-            { UCBC, 'UnitsGreaterAtLocation', { 'LocationType', 5, categories.MOBILE * categories.NAVAL } },
-        },
-        BuilderType = 'Any',
-    },
+        BuilderName = 'Swarm Enemy Sea - Rush',
 
-    Builder {
-        BuilderName = 'Swarm Enemy Sea AntiStructure',
         PlatoonTemplate = 'Swarm Sea Attack',
-        Priority = 100,
-        InstanceCount = 3,
-        BuilderData = {
-            SearchRadius = BaseEnemyZone,                                       
-            AggressiveMove = true,                                             
-            AttackEnemyStrength = 100,                                          
-            TargetSearchCategory = categories.STRUCTURE * categories.NAVAL,     
-            MoveToCategories = {                                              
-                categories.MOBILE * categories.NAVAL * categories.DEFENSE,
-                categories.STRUCTURE * categories.NAVAL,
-            },
-        },
-        BuilderConditions = {                                                  
-            { UCBC, 'UnitsGreaterAtLocation', { 'LocationType', 15, categories.MOBILE * categories.NAVAL } },
-            { UCBC, 'UnitsGreaterAtEnemySwarm', { 1 , categories.STRUCTURE * categories.NAVAL } },
-        },
-        BuilderType = 'Any',
-    },
 
-    Builder {
-        BuilderName = 'Swarm Enemy Sea AntiMobile',
-        PlatoonTemplate = 'Swarm Sea Attack',
         Priority = 100,
-        InstanceCount = 8,
+
+        InstanceCount = 1,
+
         BuilderData = {
-            SearchRadius = BaseEnemyZone,                                   
-            AggressiveMove = true,                                            
-            AttackEnemyStrength = 100,                                        
-            TargetSearchCategory = categories.MOBILE * categories.NAVAL,       
-            MoveToCategories = {                                               
+
+            SearchRadius = BaseEnemyZone,     
+
+            AggressiveMove = true,      
+
+            AttackEnemyStrength = 105,   
+
+            TargetSearchCategory = categories.NAVAL * categories.STRUCTURE * categories.FACTORY + categories.LAND,   
+
+            MoveToCategories = {                                             
+                categories.NAVAL * categories.STRUCTURE * categories.FACTORY,
                 categories.MOBILE * categories.NAVAL,
             },
+
         },
-        BuilderConditions = {                                                  
-            { UCBC, 'UnitsGreaterAtLocation', { 'LocationType', 15, categories.MOBILE * categories.NAVAL } },
-            { UCBC, 'UnitsGreaterAtEnemySwarm', { 1 , categories.MOBILE * categories.NAVAL } },
+
+        BuilderConditions = {    
+            { UCBC, 'UnitsGreaterAtLocation', { 'LocationType', 5, categories.MOBILE * categories.NAVAL } },
         },
+
         BuilderType = 'Any',
     },
 
     Builder {
-        BuilderName = 'Swarm Enemy AntiNavalFactories',
+        BuilderName = 'Swarm Enemy Sea - General',
+
         PlatoonTemplate = 'Swarm Sea Attack',
+
         Priority = 100,
-        InstanceCount = 2,
+
+        InstanceCount = 3,
+
         BuilderData = {
-            SearchRadius = BaseEnemyZone,                                       
-            AggressiveMove = true,                                             
-            AttackEnemyStrength = 100,                                      
-            TargetSearchCategory = categories.STRUCTURE * categories.FACTORY * categories.NAVAL, 
-            MoveToCategories = {                                               
+
+            SearchRadius = BaseEnemyZone,   
+
+            AggressiveMove = true,      
+
+            AttackEnemyStrength = 100,   
+
+            TargetSearchCategory = categories.STRUCTURE + categories.NAVAL + categories.LAND,     
+
+            MoveToCategories = {                                              
+                categories.MOBILE * categories.NAVAL,
+                categories.EXPERIMENTAL,
                 categories.ALLUNITS,
             },
         },
+
         BuilderConditions = {                                                  
-            { UCBC, 'UnitsGreaterAtLocation', { 'LocationType', 10, categories.MOBILE * categories.NAVAL } },
-            { UCBC, 'UnitsGreaterAtEnemySwarm', { 1 , categories.STRUCTURE * categories.FACTORY * categories.NAVAL } },
+            { UCBC, 'UnitsGreaterAtLocation', { 'LocationType', 15, categories.MOBILE * categories.NAVAL } },
         },
+
         BuilderType = 'Any',
+
     },
 
     Builder {

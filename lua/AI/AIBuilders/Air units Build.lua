@@ -1,13 +1,38 @@
 local UCBC = '/lua/editor/UnitCountBuildConditions.lua'
 local EBC = '/lua/editor/EconomyBuildConditions.lua'
 local MIBC = '/lua/editor/MiscBuildConditions.lua'
+local SIBC = '/lua/editor/SorianInstantBuildConditions.lua'
 local BasePanicZone, BaseMilitaryZone, BaseEnemyZone = import('/mods/AI-Swarm/lua/AI/swarmutilities.lua').GetDangerZoneRadii()
 
-local MaxAttackForce = 0.45                                                     -- 45% of all units can be attacking units (categories.MOBILE - categories.ENGINEER)
+local MaxAttackForce = 0.45                                               
 
--- ================================================================================== --
--- ==                                 Air Unit Builders                               == --
--- ================================================================================== --
+
+local HaveLessThanTwoT2AirFactory = function( self, aiBrain )
+	
+	if table.getn( aiBrain:GetListOfUnits( categories.FACTORY * categories.AIR - categories.TECH1, false, true )) < 2 then
+	
+		return 500, true
+		
+	end
+
+	
+	return 0, false
+	
+end
+
+local HaveLessThanTwoT3AirFactory = function( self, aiBrain )
+	
+	if table.getn( aiBrain:GetListOfUnits( categories.FACTORY * categories.AIR * categories.TECH3, false, true )) < 2 then
+	
+		return 500, true
+		
+	end
+
+	
+	return 0, false
+	
+end
+
 BuilderGroup { BuilderGroupName = 'Swarm Air Builders',
     BuildersType = 'FactoryBuilder',
     
@@ -16,45 +41,56 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Builders',
     -- ============ --
 
     Builder {
-        BuilderName = 'Swarm-AI - T1 Air Fight Group',
-        PlatoonTemplate = 'SwarmAIFighterGroup',
+        BuilderName = 'Swarm-AI - T1 Air Fighter',
+
+        PlatoonTemplate = 'T1AirFighter',
+
         Priority = 500,
+
         BuilderConditions = {
-            { UCBC, 'HaveGreaterThanUnitsWithCategory', { 0, categories.MOBILE * categories.ENGINEER - categories.STATIONASSISTPOD}},
+            { UCBC, 'AirStrengthRatioLessThan', { 4 } },
 
-            { UCBC, 'HaveGreaterThanUnitsWithCategory', { 0, categories.STRUCTURE * categories.LAND * categories.FACTORY * categories.TECH1 }},
-
-            { UCBC, 'HaveLessThanUnitsWithCategory', { 2, categories.MOBILE * categories.AIR * categories.TECH3 - categories.ENGINEER }},
-
-            { EBC, 'GreaterThanEconIncomeSwarm', { 0.2, 2 } },
+            { EBC, 'GreaterThanEconStorageCurrent', { 200, 2000}},
 
             { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.7, 0.8 }},
-
-            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.01, 0.01}},
-
-            { UCBC, 'AirStrengthRatioLessThan', { 1 } },
         },
         BuilderType = 'Air',
     },
 
     Builder {
-        BuilderName = 'Swarm-AI - T1 Air Attack Group',
-        PlatoonTemplate = 'SwarmAIT1AirAttack',
-        Priority = 450,
+        BuilderName = 'Swarm-AI - T1 Air Bomber',
+
+        PlatoonTemplate = 'T1AirBomber',
+
+        Priority = 500,
+
+        PriorityFunction = HaveLessThanTwoT2AirFactory,
+
         BuilderConditions = {
-            { UCBC, 'HaveGreaterThanUnitsWithCategory', { 0, categories.MOBILE * categories.ENGINEER - categories.STATIONASSISTPOD}},
+            { UCBC, 'AirStrengthRatioGreaterThan', { 2 } },
 
-            { UCBC, 'HaveGreaterThanUnitsWithCategory', { 0, categories.STRUCTURE * categories.LAND * categories.FACTORY * categories.TECH1 }},
-
-            { UCBC, 'HaveLessThanUnitsWithCategory', { 2, categories.MOBILE * categories.AIR * categories.TECH3 - categories.ENGINEER }},
-
-            { EBC, 'GreaterThanEconIncomeSwarm', { 0.2, 2 } },
+            { EBC, 'GreaterThanEconStorageCurrent', { 200, 2000}},
 
             { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.7, 0.8 }},
+        },
+        BuilderType = 'Air',
+    },
 
-            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.01, 0.01}},
+    Builder {
+        BuilderName = 'Swarm-AI - T1 Air Gunship',
 
-            { UCBC, 'AirStrengthRatioGreaterThan', { 1 } },
+        PlatoonTemplate = 'T1Gunship',
+
+        Priority = 500,
+
+        PriorityFunction = HaveLessThanTwoT2AirFactory,
+
+        BuilderConditions = {
+            { UCBC, 'AirStrengthRatioGreaterThan', { 2 } },
+
+            { EBC, 'GreaterThanEconStorageCurrent', { 200, 2000}},
+
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.7, 0.8 }},
         },
         BuilderType = 'Air',
     },
@@ -63,37 +99,58 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Builders',
     --    TECH 2    --
     -- ============ --
     Builder {
-        BuilderName = 'Swarm-AI - T2 Air Fighter Group',
-        PlatoonTemplate = 'SwarmAIFighterGroupT2',
-        Priority = 750,
-        BuilderConditions = {
-            { UCBC, 'HaveUnitRatioVersusCapSwarm', { MaxAttackForce , '<=', categories.MOBILE - categories.ENGINEER } },
+        BuilderName = 'Swarm-AI - T2 Air Fighter/Bomber',
 
-            { EBC, 'GreaterThanEconIncomeSwarm', { 1, 20 } },
+        PlatoonTemplate = 'T2FighterBomber',
+
+        Priority = 500,
+
+        PriorityFunction = HaveLessThanTwoT3AirFactory,
+
+        BuilderConditions = {
+            { UCBC, 'AirStrengthRatioGreaterThan', { 2 } },
+
+            { EBC, 'GreaterThanEconStorageCurrent', { 200, 2000}},
 
             { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.75, 1.0 }},
-
-            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.01, 0.01}},
-
-            { UCBC, 'AirStrengthRatioLessThan', { 1 } },
         },
         BuilderType = 'Air',
     },
 
     Builder {
-        BuilderName = 'Swarm-AI - T2 Air Attack Group',
-        PlatoonTemplate = 'SwarmAIT2AirAttack',
-        Priority = 700,
-        BuilderConditions = {
-            { UCBC, 'HaveUnitRatioVersusCapSwarm', { MaxAttackForce , '<=', categories.MOBILE - categories.ENGINEER } },
+        BuilderName = 'Swarm-AI - T2 Air Gunship',
 
-            { EBC, 'GreaterThanEconIncomeSwarm', { 1, 20 } },
+        PlatoonTemplate = 'T2AirGunship',
+
+        Priority = 500,
+
+        PriorityFunction = HaveLessThanTwoT3AirFactory,
+
+        BuilderConditions = {
+            { UCBC, 'AirStrengthRatioGreaterThan', { 2 } },
+
+            { EBC, 'GreaterThanEconStorageCurrent', { 200, 2000}},
 
             { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.75, 1.0 }},
+        },
+        BuilderType = 'Air',
+    },
 
-            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.01, 0.01}},
+    Builder {
+        BuilderName = 'Swarm-AI - T2 Air Torpedo-Bomber',
 
-            { UCBC, 'AirStrengthRatioGreaterThan', { 1 } },
+        PlatoonTemplate = 'T2AirTorpedoBomber',
+
+        Priority = 500,
+
+        BuilderConditions = {
+            { UCBC, 'UnitsGreaterAtEnemySwarm', { 0 , categories.NAVAL * categories.MOBILE } },
+
+            { UCBC, 'AirStrengthRatioGreaterThan', { 2 } },
+
+            { EBC, 'GreaterThanEconStorageCurrent', { 200, 2000}},
+
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.75, 1.0 }},
         },
         BuilderType = 'Air',
     },
@@ -103,105 +160,77 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Builders',
     -- ============ --
 
     Builder {
-        BuilderName = 'Swarm-AI - T3 Air Fighter Group',
-        PlatoonTemplate = 'SwarmAIT3AirFighterGroup',
-        Priority = 950,
-        BuilderConditions = {
-            { EBC, 'GreaterThanEconIncomeSwarm', { 2.5, 100 } },
+        BuilderName = 'Swarm-AI - T3 Air Fighter',
 
-            { UCBC, 'UnitCapCheckLess', { 0.98 } },
-
-            { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.9, 1.1 }},
-
-            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.01, 0.01}},
-
-            { UCBC, 'AirStrengthRatioLessThan', { 1 } },
-        },
-        BuilderType = 'Air',
-    },
-
-    Builder {
-        BuilderName = 'Swarm-AI - T3 Air Attack Group',
-        PlatoonTemplate = 'SwarmAIT3AirAttackQueue',
-        Priority = 900,
-        BuilderConditions = {
-            { EBC, 'GreaterThanEconIncomeSwarm', { 2.5, 100 } },
-
-            { UCBC, 'UnitCapCheckLess', { 0.98 } },
-
-            { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.9, 1.1 }},
-
-            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.01, 0.01}},
-
-            { UCBC, 'AirStrengthRatioGreaterThan', { 1 } },
-        },
-        BuilderType = 'Air',
-    },
-
-    -- =========================== --
-    --  Anti-Experimental Builder  --
-    -- =========================== --
-
-    Builder {
-        BuilderName = 'T2EAirGunship - Swarm',
-        PlatoonTemplate = 'T2AirGunship',
-        Priority = 960,
-        BuilderConditions = {
-            { UCBC, 'HaveLessThanUnitsWithCategory', { 1, categories.MOBILE * categories.AIR * categories.GROUNDATTACK * categories.TECH3 - categories.HIGHALTAIR }},
-
-            { UCBC, 'HaveLessThanUnitsWithCategory', { 50, categories.MOBILE * categories.AIR * categories.GROUNDATTACK - categories.HIGHALTAIR }},
-
-            { UCBC, 'UnitsGreaterAtEnemySwarm', { 0 , categories.MOBILE * categories.LAND * categories.EXPERIMENTAL } },
-
-            { UCBC, 'HaveUnitRatioVersusEnemySwarm', { 30.0, categories.MOBILE * categories.AIR * categories.GROUNDATTACK - categories.HIGHALTAIR, '<=', categories.MOBILE * categories.LAND * categories.EXPERIMENTAL } },
-
-            { UCBC, 'UnitCapCheckLess', { 0.98 } },
-
-            { EBC, 'GreaterThanEconIncomeSwarm', { 1, 20 } },
-
-            { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.75, 1.0 }},
-
-            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.01, 0.01}},
-
-        },
-        BuilderType = 'Air',
-    },
-
-    Builder {
-        BuilderName = 'T3EAirFighter EXPResponse',
         PlatoonTemplate = 'T3AirFighter',
-        Priority = 970,
+
+        Priority = 500,
+
         BuilderConditions = {
-            { UCBC, 'UnitsGreaterAtEnemySwarm', { 0 , categories.MOBILE * categories.AIR * categories.EXPERIMENTAL } },
+            { UCBC, 'UnitCapCheckLess', { 0.90 } },
 
-            { UCBC, 'HaveLessThanUnitsWithCategory', { 80, categories.MOBILE * categories.AIR * categories.ANTIAIR - categories.GROUNDATTACK - categories.BOMBER }},
+            { UCBC, 'AirStrengthRatioLessThan', { 4 } },
 
-            { UCBC, 'HaveUnitRatioVersusEnemySwarm', { 30.0, categories.MOBILE * categories.AIR * categories.ANTIAIR - categories.GROUNDATTACK - categories.BOMBER, '<=', categories.MOBILE * categories.AIR * categories.EXPERIMENTAL } },
-            -- Respect UnitCap
-            { UCBC, 'UnitCapCheckLess', { 0.98 } },
+            { EBC, 'GreaterThanEconStorageCurrent', { 200, 2000}},
 
             { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.9, 1.1 }},
-
-            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.01, 0.01}},
         },
         BuilderType = 'Air',
     },
+
     Builder {
-        BuilderName = 'S3E Air Gunship EXPResponse',
-        PlatoonTemplate = 'T3AirGunship',
-        Priority = 970,
+        BuilderName = 'Swarm-AI - T3 Air Bomber',
+
+        PlatoonTemplate = 'T3AirBomber',
+
+        Priority = 500,
+        
         BuilderConditions = {
-            { UCBC, 'UnitsGreaterAtEnemySwarm', { 0 , categories.MOBILE * categories.LAND * categories.EXPERIMENTAL } },
+            { UCBC, 'UnitCapCheckLess', { 0.90 } },
 
-            { UCBC, 'HaveLessThanUnitsWithCategory', { 50, categories.MOBILE * categories.AIR * categories.GROUNDATTACK - categories.HIGHALTAIR }},
+            { UCBC, 'AirStrengthRatioGreaterThan', { 2 } },
 
-            { UCBC, 'HaveUnitRatioVersusEnemySwarm', { 30.0, categories.MOBILE * categories.AIR * categories.GROUNDATTACK - categories.HIGHALTAIR, '<=', categories.MOBILE * categories.LAND * categories.EXPERIMENTAL } },
-            -- Respect UnitCap
-            { UCBC, 'UnitCapCheckLess', { 0.98 } },
+            { EBC, 'GreaterThanEconStorageCurrent', { 200, 2000}},
 
             { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.9, 1.1 }},
+        },
+        BuilderType = 'Air',
+    },
 
-            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.01, 0.01}},
+    Builder {
+        BuilderName = 'Swarm-AI - T3 Air Gunship',
+
+        PlatoonTemplate = 'T3AirGunship',
+
+        Priority = 500,
+        
+        BuilderConditions = {
+            { UCBC, 'UnitCapCheckLess', { 0.90 } },
+
+            { UCBC, 'AirStrengthRatioGreaterThan', { 2 } },
+
+            { EBC, 'GreaterThanEconStorageCurrent', { 200, 2000}},
+
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.9, 1.1 }},
+        },
+        BuilderType = 'Air',
+    },
+
+    Builder {
+        BuilderName = 'Swarm-AI - T3 Air Torpedo-Bomber',
+
+        PlatoonTemplate = 'T3TorpedoBomber',
+
+        Priority = 500,
+
+        BuilderConditions = {
+            { UCBC, 'UnitsGreaterAtEnemySwarm', { 0 , categories.NAVAL * categories.MOBILE } },
+
+            { UCBC, 'AirStrengthRatioGreaterThan', { 3 } },
+
+            { EBC, 'GreaterThanEconStorageCurrent', { 200, 2000}},
+
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.9, 1.1 }},
         },
         BuilderType = 'Air',
     },
@@ -214,23 +243,21 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Builders',
         PlatoonTemplate = 'T1AirTransport',
         Priority = 510, 
         BuilderConditions = {
-            { EBC, 'GreaterThanEconTrendSwarm', { 0.0, 0.0 } },
+            { EBC, 'GreaterThanEconTrendSwarm', { 0.3, 12.0 } },
 
-            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.0, 1.1 }},
+            { EBC, 'GreaterThanEconStorageCurrent', { 200, 2000}},
+
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.02, 1.1 }},
 
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
 
-            { EBC, 'GreaterThanEconIncomeSwarm', { 2, 20 } },
-
             { MIBC, 'ArmyNeedsTransports', {} },
 
-            { MIBC, 'CanPathToCurrentEnemySwarm', { true } },
+            { MIBC, 'CanPathToCurrentEnemySwarm', { true, 'LocationType' } },
 
             { UCBC, 'LocationFactoriesBuildingLess', { 'LocationType', 1, categories.AIR * categories.TRANSPORTATION} },
 
             { UCBC, 'PoolLessAtLocation', { 'LocationType', 1, categories.AIR * categories.TRANSPORTATION }},
-
-            { UCBC, 'HaveLessThanUnitsWithCategory', { 1, categories.AIR * categories.TRANSPORTATION } },
         },
         BuilderType = 'Air',
     },
@@ -240,23 +267,21 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Builders',
         PlatoonTemplate = 'T2AirTransport',
         Priority = 603,
         BuilderConditions = {
-            { EBC, 'GreaterThanEconTrendSwarm', { 0.0, 0.0 } },
+            { EBC, 'GreaterThanEconTrendSwarm', { 0.3, 12.0 } },
 
-            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.0, 1.1 }},
+            { EBC, 'GreaterThanEconStorageCurrent', { 200, 2000}},
+
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.02, 1.1 }},
 
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
 
-            { EBC, 'GreaterThanEconIncomeSwarm', { 2, 20 } },
-
             { MIBC, 'ArmyNeedsTransports', {} },
 
-            { MIBC, 'CanPathToCurrentEnemySwarm', { true } },
+            { MIBC, 'CanPathToCurrentEnemySwarm', { true, 'LocationType' } },
 
             { UCBC, 'LocationFactoriesBuildingLess', { 'LocationType', 1, categories.AIR * categories.TRANSPORTATION} },
 
             { UCBC, 'PoolLessAtLocation', { 'LocationType', 1, categories.AIR * categories.TRANSPORTATION }},
-
-            { UCBC, 'HaveLessThanUnitsWithCategory', { 1, categories.AIR * categories.TRANSPORTATION } },
         },
         BuilderType = 'Air',
     },
@@ -266,26 +291,70 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Builders',
         PlatoonTemplate = 'T3AirTransport',
         Priority = 707,
         BuilderConditions = {
-            { EBC, 'GreaterThanEconTrendSwarm', { 0.0, 0.0 } },
+            { MIBC, 'FactionIndex', { 1 }}, -- 1: UEF, 2: Aeon, 3: Cybran, 4: Seraphim, 5: Nomads 
+            
+            { EBC, 'GreaterThanEconTrendSwarm', { 0.3, 12.0 } },
 
-            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.0, 1.1 }},
+            { EBC, 'GreaterThanEconStorageCurrent', { 200, 2000}},
+
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.02, 1.1 }},
 
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
 
-            { EBC, 'GreaterThanEconIncomeSwarm', { 3.5, 100 } },
-
             { MIBC, 'ArmyNeedsTransports', {} },
 
-            { MIBC, 'CanPathToCurrentEnemySwarm', { true } },
+            { MIBC, 'CanPathToCurrentEnemySwarm', { true, 'LocationType' } },
 
             { UCBC, 'LocationFactoriesBuildingLess', { 'LocationType', 1, categories.AIR * categories.TRANSPORTATION} },
 
             { UCBC, 'PoolLessAtLocation', { 'LocationType', 1, categories.AIR * categories.TRANSPORTATION }},
-
-            { UCBC, 'HaveLessThanUnitsWithCategory', { 1, categories.AIR * categories.TRANSPORTATION } },
        },
         BuilderType = 'Air',
     }, 
+
+    Builder {
+        BuilderName = 'Swarm-AI - T1 Air Scout',
+
+        PlatoonTemplate = 'T1AirScout',
+
+        Priority = 500,
+
+        PriorityFunction = HaveLessThanTwoT3AirFactory,
+
+        DelayEqualBuildPlattons = {'Scouts', 10},
+
+        BuilderConditions = {
+            { UCBC, 'CheckBuildPlattonDelay', { 'Scouts' }},
+
+            { UCBC, 'EnemyUnitsLessAtLocationRadiusSwarm', {  BasePanicZone, 'LocationType', 1, categories.AIR * categories.MOBILE * (categories.BOMBER + categories.GROUNDATTACK) - categories.ENGINEER - categories.AIR - categories.SCOUT }},
+
+            { SIBC, 'HaveLessThanUnitsForMapSize', { {[256] = 8, [512] = 12, [1024] = 18, [2048] = 20, [4096] = 20}, categories.AIR * categories.SCOUT}},
+
+            { UCBC, 'LocationFactoriesBuildingLess', { 'LocationType', 1, categories.AIR * categories.SCOUT } },
+        },
+        BuilderType = 'Air',
+    },
+
+    Builder {
+        BuilderName = 'Swarm-AI - T3 Air Scout',
+
+        PlatoonTemplate = 'T3AirScout',
+
+        Priority = 500,
+
+        DelayEqualBuildPlattons = {'Scouts', 10},
+
+        BuilderConditions = {
+            { UCBC, 'CheckBuildPlattonDelay', { 'Scouts' }},
+
+            { UCBC, 'EnemyUnitsLessAtLocationRadiusSwarm', {  BasePanicZone, 'LocationType', 1, categories.AIR * categories.MOBILE * categories.TECH3 * (categories.BOMBER + categories.GROUNDATTACK) - categories.ENGINEER - categories.AIR - categories.SCOUT }},
+
+            { SIBC, 'HaveLessThanUnitsForMapSize', { {[256] = 4, [512] = 8, [1024] = 12, [2048] = 16, [4096] = 20}, categories.AIR * categories.SCOUT}},
+
+            { UCBC, 'LocationFactoriesBuildingLess', { 'LocationType', 1, categories.AIR * categories.SCOUT } },
+        },
+        BuilderType = 'Air',
+    },
 }
 
 
@@ -361,8 +430,8 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Formers',
         BuilderName = 'Swarm Fighter Intercept 3 5',
         PlatoonTemplate = 'Swarm Fighter Intercept 3 5',
         PlatoonAddBehaviors = { 'AirUnitRefit' },                      
-        Priority = 150,                                                        
-        InstanceCount = 4,                                                   
+        Priority = 160,                                                        
+        InstanceCount = 4,                                                  
         BuilderData = {
             SearchRadius = BaseMilitaryZone,                                   
             GetTargetsFromBase = true,                                          
@@ -380,7 +449,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Formers',
             },
         },
         BuilderConditions = {                                                  
-            { UCBC, 'EnemyUnitsGreaterAtLocationRadiusSwarm', {  BaseMilitaryZone, 'LocationType', 0, categories.MOBILE * categories.AIR - categories.SCOUT }}, 
+            { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 5, categories.MOBILE * categories.AIR * categories.ANTIAIR - categories.ENGINEER } },
         },
         BuilderType = 'Any',                                                   
     },
@@ -389,8 +458,8 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Formers',
         BuilderName = 'Swarm Fighter Intercept 10',
         PlatoonTemplate = 'Swarm Fighter Intercept 10',
         PlatoonAddBehaviors = { 'AirUnitRefit' },                      
-        Priority = 150,                                                        
-        InstanceCount = 4,                                                   
+        Priority = 159,                                                        
+        InstanceCount = 4,                                                
         BuilderData = {
             SearchRadius = BaseMilitaryZone,                                   
             GetTargetsFromBase = true,                                          
@@ -407,8 +476,8 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Formers',
                 categories.MOBILE * categories.AIR,
             },
         },
-        BuilderConditions = {                                                  
-            { UCBC, 'EnemyUnitsGreaterAtLocationRadiusSwarm', {  BaseMilitaryZone, 'LocationType', 0, categories.MOBILE * categories.AIR - categories.SCOUT }}, 
+        BuilderConditions = {                     
+            { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 10, categories.MOBILE * categories.AIR * categories.ANTIAIR - categories.ENGINEER } },                             
         },
         BuilderType = 'Any',                                                   
     },
@@ -416,10 +485,10 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Formers',
         BuilderName = 'Swarm Fighter Intercept 20',
         PlatoonTemplate = 'Swarm Fighter Intercept 20',
         PlatoonAddBehaviors = { 'AirUnitRefit' },                               
-        Priority = 150,                                                        
+        Priority = 158,                                                        
         InstanceCount = 2,                                                     
         BuilderData = {
-            SearchRadius = BaseMilitaryZone,                                  
+            SearchRadius = BaseEnemyZone,                                  
             GetTargetsFromBase = true,                                         
             AttackEnemyStrength = 200,                                           
             IgnorePathing = false,                                         
@@ -435,7 +504,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Formers',
             },
         },
         BuilderConditions = {                                             
-            { UCBC, 'EnemyUnitsGreaterAtLocationRadiusSwarm', {  BaseMilitaryZone, 'LocationType', 0, categories.MOBILE * categories.AIR - categories.SCOUT }}, 
+            { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 20, categories.MOBILE * categories.AIR * categories.ANTIAIR - categories.ENGINEER } },    
         },
         BuilderType = 'Any',                                                   
     },
@@ -443,10 +512,10 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Formers',
         BuilderName = 'Swarm Fighter Intercept 30 50',
         PlatoonTemplate = 'Swarm Fighter Intercept 30 50',
         PlatoonAddBehaviors = { 'AirUnitRefit' },                          
-        Priority = 150,                                                         
+        Priority = 157,                                                         
         InstanceCount = 1,                                                      
         BuilderData = {
-            SearchRadius = BaseMilitaryZone,                                    
+            SearchRadius = BaseEnemyZone,                                    
             GetTargetsFromBase = true,                                          
             AttackEnemyStrength = 300,                                       
             IgnorePathing = false,                                             
@@ -461,8 +530,8 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Formers',
                 categories.MOBILE * categories.AIR,
             },
         },
-        BuilderConditions = {                                                  
-            { UCBC, 'EnemyUnitsGreaterAtLocationRadiusSwarm', {  BaseMilitaryZone, 'LocationType', 0, categories.MOBILE * categories.AIR - categories.SCOUT }}, 
+        BuilderConditions = {           
+            { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 40, categories.MOBILE * categories.AIR * categories.ANTIAIR - categories.ENGINEER } },                                          
         },
         BuilderType = 'Any',                                                  
     },
@@ -479,7 +548,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Formers',
             AggressiveMove = true,                                          
             AttackEnemyStrength = 300,                                         
             IgnorePathing = true,                                      
-            TargetSearchCategory = categories.MOBILE * categories.AIR  * categories.TRANSPORTFOCUS,      
+            TargetSearchCategory = categories.MOBILE * categories.AIR * categories.TRANSPORTFOCUS,      
             MoveToCategories = {                                           
                 categories.MOBILE * categories.AIR * categories.TRANSPORTFOCUS,
                 categories.MOBILE * categories.AIR * categories.BOMBER,
@@ -488,8 +557,8 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Formers',
                 categories.ALLUNITS,
             },
         },
-        BuilderConditions = {                                                  
-            { UCBC, 'EnemyUnitsGreaterAtLocationRadiusSwarm', {  BaseMilitaryZone, 'LocationType', 0, categories.MOBILE * categories.AIR * categories.TRANSPORTFOCUS }}, 
+        BuilderConditions = {   
+            { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 5, categories.MOBILE * categories.AIR * categories.ANTIAIR - categories.ENGINEER } },                                                  
         },
         BuilderType = 'Any',                                                   
     },
@@ -498,7 +567,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Formers',
         BuilderName = 'Swarm Military AntiGunship',
         PlatoonTemplate = 'Swarm Fighter Intercept 1 2',
         PlatoonAddBehaviors = { 'AirUnitRefit' },                               
-        Priority = 100,                                                          
+        Priority = 99,                                                          
         InstanceCount = 2,                                                    
         BuilderData = {
             SearchRadius = BaseMilitaryZone,                                    
@@ -515,9 +584,8 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Formers',
                 categories.ALLUNITS,
             },
         },
-        BuilderConditions = {                                                   
-            -- When do we want to form this ?
-            { UCBC, 'EnemyUnitsGreaterAtLocationRadiusSwarm', {  BaseMilitaryZone, 'LocationType', 0, categories.MOBILE * categories.AIR * categories.GROUNDATTACK }}, 
+        BuilderConditions = {         
+            { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 1, categories.MOBILE * categories.AIR * categories.ANTIAIR - categories.ENGINEER } },                                           
         },
         BuilderType = 'Any',                                                    
     },
@@ -526,7 +594,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Formers',
         BuilderName = 'Swarm Panic AntiGunship',
         PlatoonTemplate = 'Swarm Fighter Intercept 1 2',
         PlatoonAddBehaviors = { 'AirUnitRefit' },                               
-        Priority = 100,                                                          
+        Priority = 98,                                                          
         InstanceCount = 2,                                                    
         BuilderData = {
             SearchRadius = BasePanicZone,                                    
@@ -543,9 +611,8 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Formers',
                 categories.ALLUNITS,
             },
         },
-        BuilderConditions = {                                                   
-            -- When do we want to form this ?
-            { UCBC, 'EnemyUnitsGreaterAtLocationRadiusSwarm', {  BasePanicZone, 'LocationType', 0, categories.MOBILE * categories.AIR * categories.GROUNDATTACK }}, 
+        BuilderConditions = {     
+            { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 0, categories.MOBILE * categories.AIR * categories.ANTIAIR - categories.ENGINEER } },                                               
         },
         BuilderType = 'Any',                                                    
     },
@@ -554,7 +621,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Formers',
         BuilderName = 'Swarm Military AntiBomber',
         PlatoonTemplate = 'Swarm Fighter Intercept 1 2',
         PlatoonAddBehaviors = { 'AirUnitRefit' },                               
-        Priority = 100,                                                          
+        Priority = 101,                                                          
         InstanceCount = 2,                                                    
         BuilderData = {
             SearchRadius = BaseMilitaryZone,                                    
@@ -571,9 +638,8 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Formers',
                 categories.ALLUNITS,
             },
         },
-        BuilderConditions = {                                                   
-            -- When do we want to form this ?
-            { UCBC, 'EnemyUnitsGreaterAtLocationRadiusSwarm', {  BaseMilitaryZone, 'LocationType', 0, categories.MOBILE * categories.AIR * categories.BOMBER }}, 
+        BuilderConditions = {        
+            { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 1, categories.MOBILE * categories.AIR * categories.ANTIAIR - categories.ENGINEER } },                                            
         },
         BuilderType = 'Any',                                                    
     },
@@ -582,7 +648,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Formers',
         BuilderName = 'Swarm Panic AntiBomber',
         PlatoonTemplate = 'Swarm Fighter Intercept 1 2',
         PlatoonAddBehaviors = { 'AirUnitRefit' },                               
-        Priority = 100,                                                          
+        Priority = 102,                                                          
         InstanceCount = 2,                                                    
         BuilderData = {
             SearchRadius = BasePanicZone,                                    
@@ -600,8 +666,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Formers',
             },
         },
         BuilderConditions = {                                                   
-            -- When do we want to form this ?
-            { UCBC, 'EnemyUnitsGreaterAtLocationRadiusSwarm', {  BasePanicZone, 'LocationType', 0, categories.MOBILE * categories.AIR * categories.BOMBER }}, 
+            { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 0, categories.MOBILE * categories.AIR * categories.ANTIAIR - categories.ENGINEER } }, 
         },
         BuilderType = 'Any',                                                    
     },
@@ -616,7 +681,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Formers',
             SearchRadius = BasePanicZone,                                    
             GetTargetsFromBase = true,                                          
             AggressiveMove = true,                                              
-            AttackEnemyStrength = 100000000,                                    
+            AttackEnemyStrength = 300,                                    
             IgnorePathing = true,                                               
             TargetSearchCategory = categories.MOBILE - categories.SCOUT,       
             MoveToCategories = {                                                
@@ -630,9 +695,8 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Formers',
                 categories.MOBILE,
             },
         },
-        BuilderConditions = {                                                  
-            -- When do we want to form this ?
-            { UCBC, 'EnemyUnitsGreaterAtLocationRadiusSwarm', {  BasePanicZone, 'LocationType', 0, categories.MOBILE }}, 
+        BuilderConditions = {   
+            { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 5, categories.MOBILE * categories.AIR * (categories.GROUNDATTACK + categories.BOMBER) - categories.ENGINEER } },                                                
         },
         BuilderType = 'Any',                                                    
     },
@@ -641,10 +705,10 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Formers',
         BuilderName = 'Swarm Military AntiGround',                                 
         PlatoonTemplate = 'AntiGround Bomber/Gunship Mix',                           
         PlatoonAddBehaviors = { 'AirUnitRefit' },                             
-        Priority = 100,                                                       
+        Priority = 101,                                                       
         InstanceCount = 4,                                                 
         BuilderData = {
-            SearchRadius = BasePanicZone,                                    
+            SearchRadius = BaseMilitaryZone,                                    
             GetTargetsFromBase = true,                                         
             AggressiveMove = true,                                             
             AttackEnemyStrength = 100000000,                                    
@@ -661,8 +725,8 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Formers',
                 categories.MOBILE,
             },
         },
-        BuilderConditions = {                                               
-            { UCBC, 'EnemyUnitsGreaterAtLocationRadiusSwarm', {  BaseMilitaryZone, 'LocationType', 0, categories.MOBILE }}, 
+        BuilderConditions = {      
+            { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 2, categories.MOBILE * categories.AIR * (categories.GROUNDATTACK + categories.BOMBER) - categories.ENGINEER } },                                          
         },
         BuilderType = 'Any',                                                    
     },
@@ -705,8 +769,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Formers',
             },
         },
         BuilderConditions = {                                                  
-            { UCBC, 'EnemyUnitsLessAtLocationRadiusSwarm', {  BaseMilitaryZone, 'LocationType', 1, categories.MOBILE * categories.EXPERIMENTAL }}, 
-            { UCBC, 'EnemyUnitsGreaterAtLocationRadiusSwarm', {  BaseMilitaryZone, 'LocationType', 0, categories.MOBILE * categories.LAND * categories.INDIRECTFIRE }}, 
+            { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 2, categories.MOBILE * categories.AIR * (categories.GROUNDATTACK + categories.BOMBER) - categories.ENGINEER } }, 
         },
         BuilderType = 'Any',                                                 
     },
@@ -733,7 +796,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Formers',
             },
         },
         BuilderConditions = {                                                   
-            { UCBC, 'EnemyUnitsGreaterAtLocationRadiusSwarm', {  BaseMilitaryZone, 'LocationType', 0, categories.MOBILE - categories.AIR }}, 
+            { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 5, categories.MOBILE * categories.AIR * (categories.GROUNDATTACK + categories.BOMBER) - categories.ENGINEER } }, 
         },
         BuilderType = 'Any',                                                    
     },
@@ -744,7 +807,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Formers',
         Priority = 67,                                                          
         InstanceCount = 4,                                                    
         BuilderData = {
-            SearchRadius = BaseEnemyZone,                                       
+            SearchRadius = BaseMilitaryZone,                                       
             GetTargetsFromBase = false,                                         
             AggressiveMove = true,                                             
             AttackEnemyStrength = 33,                                    
@@ -765,19 +828,18 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Formers',
             },
         },
         BuilderConditions = {                                                   
-            { UCBC, 'EnemyUnitsLessAtLocationRadiusSwarm', {  BaseMilitaryZone, 'LocationType', 1, categories.MOBILE * categories.EXPERIMENTAL }}, 
-
-            { UCBC, 'AirStrengthRatioGreaterThan', { 1 } },
+            { UCBC, 'AirStrengthRatioGreaterThan', { 1.1 } },
+            { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 5, categories.MOBILE * categories.AIR * categories.GROUNDATTACK - categories.ENGINEER } }, 
         },
         BuilderType = 'Any',                                                    
     },
     Builder {
         BuilderName = 'Swarm Enemy AntiMass Bomber 3 5',                                   
         PlatoonTemplate = 'Swarm Bomber Intercept 3 5',                        
-        Priority = 67,                                                     
+        Priority = 66,                                                     
         InstanceCount = 3,                                                  
         BuilderData = {
-            SearchRadius = BaseEnemyZone,                                          
+            SearchRadius = BaseMilitaryZone,                                          
             GetTargetsFromBase = false,                                        
             AggressiveMove = false,                                            
             AttackEnemyStrength = 33,                                           
@@ -797,9 +859,8 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Formers',
             },
         },
         BuilderConditions = {                                                   
-            { UCBC, 'EnemyUnitsLessAtLocationRadiusSwarm', {  BaseMilitaryZone, 'LocationType', 1, categories.MOBILE * categories.EXPERIMENTAL }}, 
-
-            { UCBC, 'AirStrengthRatioGreaterThan', { 1 } },
+            { UCBC, 'AirStrengthRatioGreaterThan', { 1.1 } },
+            { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 5, categories.MOBILE * categories.AIR * categories.BOMBER - categories.ENGINEER } }, 
         },
         BuilderType = 'Any',                                                    
     },
@@ -846,9 +907,8 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Formers',
             },
         },
         BuilderConditions = {                                                  
-            { UCBC, 'EnemyUnitsLessAtLocationRadiusSwarm', {  BaseMilitaryZone, 'LocationType', 1, categories.MOBILE * categories.EXPERIMENTAL }}, 
-
-            { UCBC, 'AirStrengthRatioGreaterThan', { 1 } },
+            { UCBC, 'AirStrengthRatioGreaterThan', { 1.1 } },
+            { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 5, categories.MOBILE * categories.AIR * categories.BOMBER - categories.ENGINEER } }, 
         },
         BuilderType = 'Any',                                                   
     },
@@ -895,9 +955,8 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Formers',
             },
         },
         BuilderConditions = {                                                 
-            { UCBC, 'EnemyUnitsLessAtLocationRadiusSwarm', {  BaseMilitaryZone, 'LocationType', 1, categories.MOBILE * categories.EXPERIMENTAL }}, 
-
-            { UCBC, 'AirStrengthRatioGreaterThan', { 1 } },
+            { UCBC, 'AirStrengthRatioGreaterThan', { 1.1 } },
+            { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 3, categories.MOBILE * categories.AIR * categories.BOMBER - categories.ENGINEER } }, 
         },
         BuilderType = 'Any',                                                   
     },
@@ -941,9 +1000,8 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Formers',
             },
         },
         BuilderConditions = {                                                   
-            { UCBC, 'EnemyUnitsLessAtLocationRadiusSwarm', {  BaseMilitaryZone, 'LocationType', 1, categories.MOBILE * categories.EXPERIMENTAL }},
-
-            { UCBC, 'AirStrengthRatioGreaterThan', { 1 } },
+            { UCBC, 'AirStrengthRatioGreaterThan', { 1.5 } },
+            { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 20, categories.MOBILE * categories.AIR * categories.BOMBER - categories.ENGINEER } },
         },
         BuilderType = 'Any',                                                    
     },
@@ -988,15 +1046,14 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Formers',
             },
         },
         BuilderConditions = {                                                   
-            { UCBC, 'EnemyUnitsLessAtLocationRadiusSwarm', {  BaseMilitaryZone, 'LocationType', 1, categories.MOBILE * categories.EXPERIMENTAL }}, 
-
-            { UCBC, 'AirStrengthRatioGreaterThan', { 1 } },
+            { UCBC, 'AirStrengthRatioGreaterThan', { 1.5 } },
+            { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 20, categories.MOBILE * categories.AIR * categories.GROUNDATTACK - categories.ENGINEER } },
         },
         BuilderType = 'Any',                                               
     },
     
     Builder {
-        BuilderName = 'S123 PANIC AntiSea TorpedoBomber',                       -- Random Builder Name.
+        BuilderName = 'Swarm PANIC AntiSea TorpedoBomber',                      
         PlatoonTemplate = 'S123-TorpedoBomber 1 100',
         Priority = 90,                                                          -- Priority. 1000 is normal.
         InstanceCount = 5,                                                      -- Number of plattons that will be formed.
@@ -1012,15 +1069,14 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Formers',
                 categories.ALLUNITS,
             },
         },
-        BuilderConditions = {                                                   -- platoon will be formed if all conditions are true
-            -- When do we want to form this ?
-            { UCBC, 'EnemyUnitsGreaterAtLocationRadiusSwarm', {  BasePanicZone, 'LocationType', 0, categories.MOBILE }}, -- radius, LocationType, unitCount, categoryEnemy
+        BuilderConditions = {        
+            { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 5, categories.MOBILE * categories.AIR * categories.ANTINAVY - categories.ENGINEER } },                                      
         },
-        BuilderType = 'Any',                                                    -- Build with "Land" "Air" "Sea" "Gate" or "All" Factories. - "Any" forms a Platoon.
+        BuilderType = 'Any',                                                    
     },
 
     Builder {
-        BuilderName = 'S123 Military AntiSea TorpedoBomber',                    -- Random Builder Name.
+        BuilderName = 'Swarm Military AntiSea TorpedoBomber',                  
         PlatoonTemplate = 'S123-TorpedoBomber 1 100',
         Priority = 80,                                                          -- Priority. 1000 is normal.
         InstanceCount = 6,                                                      -- Number of plattons that will be formed.
@@ -1041,15 +1097,14 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Formers',
                 categories.ALLUNITS,
             },
         },
-        BuilderConditions = {                                                   -- platoon will be formed if all conditions are true
-            -- When do we want to form this ?
-            { UCBC, 'EnemyUnitsGreaterAtLocationRadiusSwarm', {  BaseMilitaryZone, 'LocationType', 0, categories.STRUCTURE + categories.MOBILE }}, -- radius, LocationType, unitCount, categoryEnemy
+        BuilderConditions = {                                                   
+            { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 10, categories.MOBILE * categories.AIR * categories.ANTINAVY - categories.ENGINEER } }, 
         },
-        BuilderType = 'Any',                                                    -- Build with "Land" "Air" "Sea" "Gate" or "All" Factories. - "Any" forms a Platoon.
+        BuilderType = 'Any',                                           
     },
 
     Builder {
-        BuilderName = 'S123 Enemy AntiStructure TorpedoBomber',
+        BuilderName = 'Swarm Enemy AntiStructure TorpedoBomber',
         PlatoonTemplate = 'S123-TorpedoBomber 1 100',
         Priority = 70,
         InstanceCount = 2,
@@ -1072,11 +1127,9 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Formers',
                 categories.ALLUNITS,
             },
         },
-        BuilderConditions = {                                                   -- platoon will be formed if all conditions are true
-            -- When do we want to form this ?
-            { UCBC, 'UnitsGreaterAtEnemySwarm', { 1 , categories.STRUCTURE + categories.MOBILE } },
-
-            { UCBC, 'AirStrengthRatioGreaterThan', { 1 } },
+        BuilderConditions = {                                      
+            { UCBC, 'AirStrengthRatioGreaterThan', { 1.5 } },
+            { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 3, categories.MOBILE * categories.AIR * categories.ANTINAVY - categories.ENGINEER } }, 
         },
         BuilderType = 'Any',
     },

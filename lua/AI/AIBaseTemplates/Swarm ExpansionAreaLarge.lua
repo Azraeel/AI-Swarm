@@ -7,6 +7,10 @@
 #**  Copyright © 2005 Gas Powered Games, Inc.  All rights reserved.
 #****************************************************************************
 
+-- These need to be different from the MainBase Template and have different purposes which means ==>
+-- ExpansionFunction will need to be reviewed and rewrote to have multiple different template choices for Swarm based on situation and or location.
+-- But the larger Expansion Areas need to be production areas.
+
 BaseBuilderTemplate {
     BaseTemplateName = 'SwarmExpansionAreaLarge',
     Builders = {
@@ -129,10 +133,10 @@ BaseBuilderTemplate {
             Gate = 1,
         },
         EngineerCount = {
-            Tech1 = 3,
-            Tech2 = 5,
-            Tech3 = 7,
-            SCU = 2,
+            Tech1 = 2,
+            Tech2 = 3,
+            Tech3 = 2,
+            SCU = 1,
         },
         MassToFactoryValues = {
             T1Value = 6,

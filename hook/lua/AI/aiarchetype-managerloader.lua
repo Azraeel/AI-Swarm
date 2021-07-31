@@ -1,16 +1,21 @@
 --WARN('['..string.gsub(debug.getinfo(1).source, ".*\\(.*.lua)", "%1")..', line:'..debug.getinfo(1).currentline..'] * AI-Swarm: offset aiarchetype-managerloader.lua' )
 
 local BuffSwarm = import('/lua/sim/Buff.lua')
+local lastCall = GetGameTimeSeconds()
 
 
--- This hook is for debug-option Platoon-Names. Hook for all AI's
+
+
 SwarmExecutePlanFunction = ExecutePlan
+
 function ExecutePlan(aiBrain)
-   -- enable ecomanager
+
     if aiBrain.Swarm then
         aiBrain:ForkThread(EcoManagerThreadSwarm, aiBrain)
     end
+
     return SwarmExecutePlanFunction(aiBrain)
+
 end
 
 function SetArmyPoolBuffSwarm(aiBrain, CheatMult, BuildMult)
@@ -89,7 +94,7 @@ function EcoManagerThreadSwarm(aiBrain)
         if personality == 'swarmeternal' then
             -- Check every 30 seconds for new armyStats to change ECO
             if (GetGameTimeSeconds() > 60 * 1) and lastCall+10 < GetGameTimeSeconds() then
-                lastCall = GetGameTimeSeconds()
+                local lastCall = GetGameTimeSeconds()
                 --score of all players (unitcount)
                 allyScore = 0
                 enemyScore = 0
@@ -231,265 +236,11 @@ function EcoManagerThreadSwarm(aiBrain)
                 end
             end
         end
-        if bussy then
-            continue -- while true do
-        end
 
--- ECO for Assisting engineers
-        -- loop over assisting engineers and manage pause / unpause
-        --[[ for _, unit in Engineers do
-            -- if the unit is dead, continue with the next unit
-            if unit.Dead then continue end
-            -- Only Check units that are assisting
-            if not unit.PlatoonHandle.PlatoonData.Assist.AssisteeType then continue end
-            -- Only Check units that have UnitBeingAssist
-            if not unit.UnitBeingAssist then continue end
 
-            -- Do we have a Paragon like structure ?
-            if aiBrain.HasParagon then
-                if unit:IsPaused() then
-                    unit:SetPaused( false )
-                    bussy = true
-                    break -- for _, unit in Engineers do
-                end
-            -- We have negative eco. Check if we can switch something off
-            elseif aiBrain:GetEconomyStoredRatio('MASS') < 0.0 or aiBrain:GetEconomyStoredRatio('ENERGY') < 0.0 then
-                -- if this unit is already paused, continue with the next unit
-                if unit:IsPaused() then continue end
-                -- Emergency low eco energy, prevent shield colaps: disable everything
-                if aiBrain:GetEconomyStoredRatio('ENERGY') < 0.25 then
-                    -- Pause Experimental assist
-                    if EntityCategoryContains(categories.STRUCTURE * categories.EXPERIMENTAL - categories.ECONOMIC, unit.UnitBeingAssist) then
-                        unit:SetPaused( true )
-                        bussy = true
-                        break -- for _, unit in Engineers do
-                    -- Pause Paragon assist
-                    elseif EntityCategoryContains(categories.STRUCTURE * categories.EXPERIMENTAL * categories.ECONOMIC, unit.UnitBeingAssist) then
-                        unit:SetPaused( true )
-                        bussy = true
-                        break -- for _, unit in Engineers do
-                    -- Pause Factory assist
-                    elseif EntityCategoryContains(categories.STRUCTURE * categories.FACTORY, unit.UnitBeingAssist) then
-                        unit:SetPaused( true )
-                        bussy = true
-                        break -- for _, unit in Engineers do
-                    -- Pause Energy assist
-                    elseif EntityCategoryContains(categories.STRUCTURE * categories.ENERGYPRODUCTION - categories.ECONOMIC, unit.UnitBeingAssist) then
-                        unit:SetPaused( true )
-                        bussy = true
-                        break -- for _, unit in Engineers do
-                    end
-                    -- disband all other assist Platoons
-                    unit.PlatoonHandle:Stop()
-                    unit.PlatoonHandle:PlatoonDisband()
-                    bussy = true
-                    break
-                -- Extreme low eco mass, disable everything exept energy
-                elseif aiBrain:GetEconomyStoredRatio('MASS') < 0.0 or aiBrain:GetEconomyStoredRatio('ENERGY') < 0.25 then
-                    -- Pause Experimental assist
-                    if EntityCategoryContains(categories.STRUCTURE * categories.EXPERIMENTAL - categories.ECONOMIC, unit.UnitBeingAssist) then
-                        unit:SetPaused( true )
-                        bussy = true
-                        break -- for _, unit in Engineers do
-                    -- Pause Paragon assist
-                    elseif EntityCategoryContains(categories.STRUCTURE * categories.EXPERIMENTAL * categories.ECONOMIC, unit.UnitBeingAssist) then
-                        unit:SetPaused( true )
-                        bussy = true
-                        break -- for _, unit in Engineers do
-                    -- Pause Factory assist
-                    elseif EntityCategoryContains(categories.STRUCTURE * categories.FACTORY, unit.UnitBeingAssist) then
-                        unit:SetPaused( true )
-                        bussy = true
-                        break -- for _, unit in Engineers do
-                    -- Pause Energy assist
-                    elseif EntityCategoryContains(categories.STRUCTURE * categories.ENERGYPRODUCTION - categories.ECONOMIC, unit.UnitBeingAssist) then
-                        -- noop
-                    end
-                    -- disband all other assist Platoons
-                    unit.PlatoonHandle:Stop()
-                    unit.PlatoonHandle:PlatoonDisband()
-                    bussy = true
-                    break
-                -- Very low eco, disable everything but factory
-                elseif aiBrain:GetEconomyStoredRatio('MASS') < 0.0 or aiBrain:GetEconomyStoredRatio('ENERGY') < 0.25 then
-                    -- Pause Experimental assist
-                    if EntityCategoryContains(categories.STRUCTURE * categories.EXPERIMENTAL - categories.ECONOMIC, unit.UnitBeingAssist) then
-                        unit:SetPaused( true )
-                        bussy = true
-                        break -- for _, unit in Engineers do
-                    -- Pause Paragon assist
-                    elseif EntityCategoryContains(categories.STRUCTURE * categories.EXPERIMENTAL * categories.ECONOMIC, unit.UnitBeingAssist) then
-                        unit:SetPaused( true )
-                        bussy = true
-                        break -- for _, unit in Engineers do
-                    -- Pause Factory assist
-                    elseif EntityCategoryContains(categories.STRUCTURE * categories.FACTORY, unit.UnitBeingAssist) then
-                        -- noop
-                    -- Pause Energy assist
-                    elseif EntityCategoryContains(categories.STRUCTURE * categories.ENERGYPRODUCTION - categories.ECONOMIC, unit.UnitBeingAssist) then
-                        -- noop
-                    end
-                    -- disband all other assist Platoons
-                    unit.PlatoonHandle:Stop()
-                    unit.PlatoonHandle:PlatoonDisband()
-                    bussy = true
-                    break
-                -- Low eco, disable only special buildings
-                elseif aiBrain:GetEconomyStoredRatio('MASS') < 0.0 or aiBrain:GetEconomyStoredRatio('ENERGY') < 0.25 then
-                    -- Pause Experimental assist
-                    if EntityCategoryContains(categories.STRUCTURE * categories.EXPERIMENTAL - categories.ECONOMIC, unit.UnitBeingAssist) then
-                        unit:SetPaused( true )
-                        bussy = true
-                        break -- for _, unit in Engineers do
-                    -- Pause Paragon assist
-                    elseif EntityCategoryContains(categories.STRUCTURE * categories.EXPERIMENTAL * categories.ECONOMIC, unit.UnitBeingAssist) then
-                        -- noop
-                    -- Pause Factory assist
-                    elseif EntityCategoryContains(categories.STRUCTURE * categories.FACTORY, unit.UnitBeingAssist) then
-                        -- noop
-                    -- Pause Energy assist
-                    elseif EntityCategoryContains(categories.STRUCTURE * categories.ENERGYPRODUCTION - categories.ECONOMIC, unit.UnitBeingAssist) then
-                        -- noop
-                    end
-                    -- disband all other assist Platoons
-                    unit.PlatoonHandle:Stop()
-                    unit.PlatoonHandle:PlatoonDisband()
-                    bussy = true
-                    break
-                end
-            -- We have positive eco. Check if we can switch something on
-            elseif aiBrain:GetEconomyTrend('MASS') >= 0.0 and aiBrain:GetEconomyTrend('ENERGY') >= 0.0 then
-                -- if this unit is paused, continue with the next unit
-                if not unit:IsPaused() then continue end
-                if aiBrain:GetEconomyStoredRatio('MASS') >= 0.35 and aiBrain:GetEconomyStoredRatio('ENERGY') >= 0.99 then
-                    unit:SetPaused( false )
-                    bussy = true
-                    break -- for _, unit in Engineers do
-                elseif aiBrain:GetEconomyStoredRatio('MASS') >= 0.25 and aiBrain:GetEconomyStoredRatio('ENERGY') >= 0.80 then
-                    -- UnPause Experimental assist
-                    if EntityCategoryContains(categories.STRUCTURE * categories.EXPERIMENTAL - categories.ECONOMIC, unit.UnitBeingAssist) then
-                        unit:SetPaused( false )
-                        bussy = true
-                        break -- for _, unit in Engineers do
-                    -- UnPause Factory assist
-                    elseif EntityCategoryContains(categories.STRUCTURE * categories.FACTORY, unit.UnitBeingAssist) then
-                        unit:SetPaused( false )
-                        bussy = true
-                        break -- for _, unit in Engineers do
-                    -- UnPause Energy assist
-                    elseif EntityCategoryContains(categories.STRUCTURE * categories.ENERGYPRODUCTION - categories.ECONOMIC, unit.UnitBeingAssist) then
-                        unit:SetPaused( false )
-                        bussy = true
-                        break -- for _, unit in Engineers do
-                    end
-                elseif aiBrain:GetEconomyStoredRatio('MASS') >= 0.05 and aiBrain:GetEconomyStoredRatio('ENERGY') >= 0.50 then
-                    -- UnPause Factory assist
-                    if EntityCategoryContains(categories.STRUCTURE * categories.FACTORY, unit.UnitBeingAssist) then
-                        unit:SetPaused( false )
-                        bussy = true
-                        break -- for _, unit in Engineers do
-                    elseif EntityCategoryContains(categories.STRUCTURE * categories.ENERGYPRODUCTION - categories.ECONOMIC, unit.UnitBeingAssist) then
-                        unit:SetPaused( false )
-                        bussy = true
-                        break -- for _, unit in Engineers do
-                    end
-                elseif aiBrain:GetEconomyStoredRatio('ENERGY') > 0.25 then
-                    -- UnPause Energy assist
-                    if EntityCategoryContains(categories.STRUCTURE * categories.ENERGYPRODUCTION - categories.ECONOMIC, unit.UnitBeingAssist) then
-                        unit:SetPaused( false )
-                        bussy = true
-                        break -- for _, unit in Engineers do
-                    end
-                end
-            end
-        end
         if bussy then
             continue -- while true do
         end
--- ECO for Building engineers
-        -- loop over building engineers and manage pause / unpause
-        for _, unit in Engineers do
-            -- if the unit is dead, continue with the next unit
-            if unit.Dead then continue end
-            if unit.PlatoonHandle.PlatoonData.Assist.AssisteeType then continue end
-            -- Only Check units that are assisting
-            if not unit.UnitBeingBuilt then continue end
-            if aiBrain.HasParagon or unit.noPause then
-                if unit:IsPaused() then
-                    unit:SetPaused( false )
-                    bussy = true
-                    break -- for _, unit in Engineers do
-                end
-            -- We have negative eco. Check if we can switch something off
-            elseif aiBrain:GetEconomyStoredRatio('ENERGY') < 0.01 then
-                if unit:IsPaused() then continue end
-                if not EntityCategoryContains( categories.ENERGYPRODUCTION + ((categories.MASSEXTRACTION + categories.FACTORY + categories.ENERGYSTORAGE) * categories.TECH1) , unit.UnitBeingBuilt) then
-                    unit:SetPaused( true )
-                    bussy = true
-                    break -- for _, unit in Engineers do
-                end
-            elseif aiBrain:GetEconomyStoredRatio('MASS') < 0.0 then
-                if unit:IsPaused() then continue end
-                if not EntityCategoryContains( categories.MASSEXTRACTION + ((categories.ENERGYPRODUCTION + categories.FACTORY + categories.MASSSTORAGE) * categories.TECH1) , unit.UnitBeingBuilt) then
-                    unit:SetPaused( true )
-                    bussy = true
-                    break -- for _, unit in Engineers do
-                end
-            -- We have positive eco. Check if we can switch something on
-            elseif aiBrain:GetEconomyStoredRatio('MASS') >= 0.2 and aiBrain:GetEconomyStoredRatio('ENERGY') >= 0.80 then
-                if not unit:IsPaused() then continue end
-                unit:SetPaused( false )
-                bussy = true
-                break -- for _, unit in Engineers do
-            elseif aiBrain:GetEconomyStoredRatio('MASS') >= 0.01 and aiBrain:GetEconomyStoredRatio('ENERGY') >= 0.80 then
-                if not unit:IsPaused() then continue end
-                if EntityCategoryContains((categories.ENERGYPRODUCTION + categories.MASSEXTRACTION) - categories.EXPERIMENTAL, unit.UnitBeingBuilt) then
-                    unit:SetPaused( false )
-                    bussy = true
-                    break -- for _, unit in Engineers do
-                end
-            elseif aiBrain:GetEconomyStoredRatio('ENERGY') >= 1.00 then
-                if not unit:IsPaused() then continue end
-                if not EntityCategoryContains(categories.ENERGYPRODUCTION - categories.EXPERIMENTAL, unit.UnitBeingBuilt) then
-                    unit:SetPaused( false )
-                    bussy = true
-                    break -- for _, unit in Engineers do
-                end
-            end
-        end
-        if bussy then
-            continue -- while true do
-        end
--- ECO for FACTORIES
-        -- loop over Factories and manage pause / unpause
-        for _, unit in Factories do
-            -- if the unit is dead, continue with the next unit
-            if unit.Dead then continue end
-            if aiBrain.HasParagon then
-                if unit:IsPaused() then
-                    unit:SetPaused( false )
-                    bussy = true
-                    break -- for _, unit in Engineers do
-                end
-            -- We have negative eco. Check if we can switch something off
-            elseif aiBrain:GetEconomyStoredRatio('MASS') < 0.00 or aiBrain:GetEconomyStoredRatio('ENERGY') < 0.25 then
-                if unit:IsPaused() or not unit:IsUnitState('Building') then continue end
-                if not unit.UnitBeingBuilt then continue end
-                if EntityCategoryContains(categories.ENGINEER + categories.TECH1, unit.UnitBeingBuilt) then continue end
-                if table.getn(Factories) == 1 then continue end
-                unit:SetPaused( true )
-                bussy = true
-                break -- for _, unit in Engineers do
-            else
-                if not unit:IsPaused() then continue end
-                unit:SetPaused( false )
-                bussy = true
-                break -- for _, unit in Engineers do
-            end
-        end
-        if bussy then
-            continue -- while true do
-        end ]]--
 
 -- ECO for STRUCTURES
         if aiBrain:GetEconomyStoredRatio('ENERGY') < 0.01 and not aiBrain.HasParagon then
