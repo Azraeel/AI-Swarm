@@ -20,6 +20,20 @@ if not categories.STEALTHFIELD then categories.STEALTHFIELD = categories.SHIELD 
 --	return self.Priority,true
 --end
 
+
+local UniversalT1Land = function( self, aiBrain )
+	
+	if GetGameTimeSeconds() > 1200 then
+        return 0, false
+    elseif aiBrain.MyLandRatio > 2 then
+		return 0, false
+    elseif table.getn( aiBrain:GetListOfUnits( categories.FACTORY * categories.LAND * categories.TECH2, false, true )) >= 3 then
+        return 0, false
+	end
+	
+	return self.Priority,true
+end
+
 local HaveLessThanThreeT3LandFactory = function( self, aiBrain )
 	
 	if table.getn( aiBrain:GetListOfUnits( categories.FACTORY * categories.LAND * categories.TECH3, false, true )) < 3 then
@@ -88,12 +102,10 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',
 
         Priority = 500,
 
+        PriorityFunction = UniversalT1Land,
+
         BuilderConditions = {
             { UCBC, 'UnitCapCheckLess', { 0.90 } },
-
-            { UCBC, 'LandStrengthRatioLessThan', { 2 } },
-
-            { UCBC, 'HaveLessThanUnitsWithCategory', { 3, categories.FACTORY * categories.LAND * (categories.TECH2 + categories.TECH3) }},
 
             { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.7, 0.8 }},
 
@@ -110,12 +122,12 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',
 
         Priority = 500,
 
+        PriorityFunction = UniversalT1Land,
+
         BuilderConditions = {
             { UCBC, 'UnitCapCheckLess', { 0.90 } },
 
             { UCBC, 'AirStrengthRatioLessThan', { 1.5 } },
-
-            { UCBC, 'HaveLessThanUnitsWithCategory', { 3, categories.FACTORY * categories.LAND * (categories.TECH2 + categories.TECH3) }},
 
             { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.7, 0.8 }},
 
@@ -124,6 +136,32 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',
             { MIBC, 'CanPathToCurrentEnemySwarm', { true, 'LocationType' } },
 
             { UCBC, 'PoolLessAtLocation', { 'LocationType', 3, categories.LAND * categories.MOBILE * categories.ANTIAIR }},
+        },
+        BuilderType = 'Land',
+    },
+
+    Builder { BuilderName = 'T1LandAA - Swarm - Emergency',
+
+        PlatoonTemplate = 'T1LandAA',
+
+        Priority = 510,
+
+        PriorityFunction = UniversalT1Land,
+
+        BuilderConditions = {
+            { UCBC, 'UnitCapCheckLess', { 0.90 } },
+
+            { UCBC, 'AirStrengthRatioLessThan', { 1.5 } },
+
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.7, 0.8 }},
+
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.02, 0.1}},
+
+            { MIBC, 'CanPathToCurrentEnemySwarm', { true, 'LocationType' } },
+
+            { UCBC, 'EnemyUnitsGreaterAtLocationRadiusSwarm', {  BasePanicZone, 'LocationType', 0, categories.AIR * categories.MOBILE * (categories.BOMBER + categories.GROUNDATTACK) - categories.ENGINEER - categories.AIR - categories.SCOUT }},
+
+            { UCBC, 'LocationFactoriesBuildingLess', { 'LocationType', 1, categories.LAND * categories.MOBILE * categories.ANTIAIR }},
         },
         BuilderType = 'Land',
     },
