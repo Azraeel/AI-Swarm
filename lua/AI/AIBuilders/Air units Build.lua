@@ -243,7 +243,9 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Builders',
         PlatoonTemplate = 'T1AirTransport',
         Priority = 510, 
         BuilderConditions = {
-            { EBC, 'GreaterThanEconTrendSwarm', { 0.0, 0.0 } },
+            { EBC, 'GreaterThanEconTrendSwarm', { 0.3, 12.0 } },
+
+            { EBC, 'GreaterThanEconStorageCurrent', { 200, 2000}},
 
             { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.02, 1.1 }},
 
@@ -265,7 +267,9 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Builders',
         PlatoonTemplate = 'T2AirTransport',
         Priority = 603,
         BuilderConditions = {
-            { EBC, 'GreaterThanEconTrendSwarm', { 0.0, 0.0 } },
+            { EBC, 'GreaterThanEconTrendSwarm', { 0.3, 12.0 } },
+
+            { EBC, 'GreaterThanEconStorageCurrent', { 200, 2000}},
 
             { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.02, 1.1 }},
 
@@ -289,7 +293,9 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Builders',
         BuilderConditions = {
             { MIBC, 'FactionIndex', { 1 }}, -- 1: UEF, 2: Aeon, 3: Cybran, 4: Seraphim, 5: Nomads 
             
-            { EBC, 'GreaterThanEconTrendSwarm', { 0.0, 0.0 } },
+            { EBC, 'GreaterThanEconTrendSwarm', { 0.3, 12.0 } },
+
+            { EBC, 'GreaterThanEconStorageCurrent', { 200, 2000}},
 
             { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.02, 1.1 }},
 
@@ -320,7 +326,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Builders',
         BuilderConditions = {
             { UCBC, 'CheckBuildPlattonDelay', { 'Scouts' }},
 
-            { UCBC, 'EnemyUnitsLessAtLocationRadiusSwarm', {  BasePanicZone, 'LocationType', 1, categories.AIR * categories.MOBILE - categories.ANTIAIR - categories.ENGINEER - categories.AIR - categories.SCOUT }},
+            { UCBC, 'EnemyUnitsLessAtLocationRadiusSwarm', {  BasePanicZone, 'LocationType', 1, categories.AIR * categories.MOBILE * (categories.BOMBER + categories.GROUNDATTACK) - categories.ENGINEER - categories.AIR - categories.SCOUT }},
 
             { SIBC, 'HaveLessThanUnitsForMapSize', { {[256] = 8, [512] = 12, [1024] = 18, [2048] = 20, [4096] = 20}, categories.AIR * categories.SCOUT}},
 
@@ -341,7 +347,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Builders',
         BuilderConditions = {
             { UCBC, 'CheckBuildPlattonDelay', { 'Scouts' }},
 
-            { UCBC, 'EnemyUnitsLessAtLocationRadiusSwarm', {  BasePanicZone, 'LocationType', 1, categories.AIR * categories.MOBILE * categories.TECH3 - categories.ANTIAIR - categories.ENGINEER - categories.AIR - categories.SCOUT }},
+            { UCBC, 'EnemyUnitsLessAtLocationRadiusSwarm', {  BasePanicZone, 'LocationType', 1, categories.AIR * categories.MOBILE * categories.TECH3 * (categories.BOMBER + categories.GROUNDATTACK) - categories.ENGINEER - categories.AIR - categories.SCOUT }},
 
             { SIBC, 'HaveLessThanUnitsForMapSize', { {[256] = 4, [512] = 8, [1024] = 12, [2048] = 16, [4096] = 20}, categories.AIR * categories.SCOUT}},
 
@@ -579,7 +585,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Formers',
             },
         },
         BuilderConditions = {         
-            { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 2, categories.MOBILE * categories.AIR * categories.ANTIAIR - categories.ENGINEER } },                                           
+            { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 1, categories.MOBILE * categories.AIR * categories.ANTIAIR - categories.ENGINEER } },                                           
         },
         BuilderType = 'Any',                                                    
     },
@@ -606,7 +612,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Formers',
             },
         },
         BuilderConditions = {     
-            { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 2, categories.MOBILE * categories.AIR * categories.ANTIAIR - categories.ENGINEER } },                                               
+            { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 0, categories.MOBILE * categories.AIR * categories.ANTIAIR - categories.ENGINEER } },                                               
         },
         BuilderType = 'Any',                                                    
     },
@@ -633,7 +639,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Formers',
             },
         },
         BuilderConditions = {        
-            { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 2, categories.MOBILE * categories.AIR * categories.ANTIAIR - categories.ENGINEER } },                                            
+            { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 1, categories.MOBILE * categories.AIR * categories.ANTIAIR - categories.ENGINEER } },                                            
         },
         BuilderType = 'Any',                                                    
     },
@@ -660,7 +666,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Formers',
             },
         },
         BuilderConditions = {                                                   
-            { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 2, categories.MOBILE * categories.AIR * categories.ANTIAIR - categories.ENGINEER } }, 
+            { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 0, categories.MOBILE * categories.AIR * categories.ANTIAIR - categories.ENGINEER } }, 
         },
         BuilderType = 'Any',                                                    
     },
