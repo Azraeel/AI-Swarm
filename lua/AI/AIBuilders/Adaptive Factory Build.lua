@@ -58,7 +58,7 @@ BuilderGroup {
 
             { EBC, 'GreaterThanEconStorageCurrent', { 250, 1000}},
 
-            { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.8, 0.9 }},          
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.9, 1.0 }},          
             
             { UCBC, 'HaveLessThanUnitsInCategoryBeingBuilt', { 2, categories.STRUCTURE * categories.FACTORY * categories.TECH1 * categories.NAVAL }},
            
@@ -89,7 +89,7 @@ BuilderGroup {
 
             { EBC, 'GreaterThanEconStorageCurrent', { 250, 1000}},
 
-            { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.8, 0.9 }},
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.9, 1.0 }},
 
             { UCBC, 'HaveLessThanUnitsInCategoryBeingBuilt', { 1, categories.STRUCTURE * categories.FACTORY * categories.NAVAL * categories.TECH1 }},
 
@@ -126,7 +126,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Adaptive Factory Build',
 
             { EBC, 'GreaterThanEconStorageCurrent', { 200, 2000}},
 
-            { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.8, 1.0 }},         
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.9, 1.0 }},         
             
             { UCBC, 'HaveLessThanUnitsInCategoryBeingBuilt', { 2, categories.STRUCTURE * categories.FACTORY * categories.TECH1 }},
            
@@ -145,7 +145,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Adaptive Factory Build',
     },
     
     Builder {
-        BuilderName = 'Swarm Land Factory Enemy - Outnumbered',
+        BuilderName = 'Swarm Land Factory Enemy - Land Ratio',
         PlatoonTemplate = 'EngineerBuilderALLTECH',
         Priority = 650,
         DelayEqualBuildPlattons = {'Factories', 3},
@@ -154,15 +154,15 @@ BuilderGroup { BuilderGroupName = 'Swarm Adaptive Factory Build',
 
             { UCBC, 'CanPathLandBaseToLandTargetsSwarm', {  'LocationType', categories.STRUCTURE * categories.FACTORY * categories.LAND }},
 
+            { UCBC, 'LandStrengthRatioLessThan', { 1 } },
+
             { EBC, 'MassToFactoryRatioBaseCheck', { 'LocationType' } },
 
             { EBC, 'GreaterThanEconStorageCurrent', { 200, 2000}},
 
-            { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.8, 1.0 }}, 
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.9, 1.0 }}, 
 
             { UCBC, 'HaveLessThanUnitsInCategoryBeingBuilt', { 2, categories.STRUCTURE * categories.FACTORY * categories.LAND * categories.TECH1 }},
-
-            { UCBC, 'HaveUnitRatioVersusEnemySwarm', { 1.00, categories.STRUCTURE * categories.FACTORY * categories.LAND, '<',categories.STRUCTURE * categories.FACTORY * categories.LAND } },
         },
         BuilderType = 'Any',
         BuilderData = {
@@ -171,36 +171,6 @@ BuilderGroup { BuilderGroupName = 'Swarm Adaptive Factory Build',
                 Location = 'LocationType',
                 BuildStructures = {
                     'T1LandFactory',
-                },
-            }
-        }
-    },
-
-    Builder {
-        BuilderName = 'Swarm Air Factory Enemy - Outnumbered',
-        PlatoonTemplate = 'EngineerBuilderALLTECH',
-        Priority = 650,
-        DelayEqualBuildPlattons = {'Factories', 3},
-        BuilderConditions = {
-            { UCBC, 'CheckBuildPlattonDelay', { 'Factories' }},
-
-            { EBC, 'MassToFactoryRatioBaseCheck', { 'LocationType' } },
-
-            { EBC, 'GreaterThanEconStorageCurrent', { 200, 2000}},
-
-            { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.8, 1.0 }}, 
-
-            { UCBC, 'HaveLessThanUnitsInCategoryBeingBuilt', { 2, categories.STRUCTURE * categories.FACTORY * categories.AIR * categories.TECH1 }},
-
-            { UCBC, 'HaveUnitRatioVersusEnemySwarm', { 1.00, categories.STRUCTURE * categories.FACTORY * categories.AIR, '<',categories.STRUCTURE * categories.FACTORY * categories.AIR } },
-        },
-        BuilderType = 'Any',
-        BuilderData = {
-            BuildClose = false,
-            Construction = {
-                Location = 'LocationType',
-                BuildStructures = {
-                    'T1AirFactory',
                 },
             }
         }
@@ -218,7 +188,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Adaptive Factory Build',
 
             { EBC, 'GreaterThanEconStorageCurrent', { 200, 2000}},
 
-            { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.8, 1.0 }}, 
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.9, 1.0 }}, 
 
             { UCBC, 'HaveLessThanUnitsInCategoryBeingBuilt', { 1, categories.STRUCTURE * categories.FACTORY * categories.AIR * categories.TECH1 }},
 
@@ -244,15 +214,15 @@ BuilderGroup { BuilderGroupName = 'Swarm Adaptive Factory Build',
         BuilderConditions = {
             { UCBC, 'CheckBuildPlattonDelay', { 'Factories' }},
 
+            { UCBC, 'AirStrengthRatioLessThan', { 1 } },
+
             { EBC, 'GreaterThanEconStorageCurrent', { 200, 2000}},
 
-            { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.8, 1.0 }}, 
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.9, 1.0 }}, 
 
             { UCBC, 'HaveLessThanUnitsInCategoryBeingBuilt', { 1, categories.STRUCTURE * categories.FACTORY * categories.AIR * categories.TECH1 }},
 
             { UCBC, 'HaveLessThanUnitsWithCategory', { 8, categories.STRUCTURE * categories.FACTORY * categories.AIR * (categories.TECH1 + categories.TECH2 + categories.TECH3) }},
-
-            { UCBC, 'AirStrengthRatioLessThan', { 1 } },
         },
         BuilderType = 'Any',
         BuilderData = {
@@ -280,15 +250,15 @@ BuilderGroup { BuilderGroupName = 'Swarm Factory Builders Expansions',
 
             { UCBC, 'CanPathLandBaseToLandTargetsSwarm', {  'LocationType', categories.STRUCTURE * categories.FACTORY * categories.LAND }},
 
+            { UCBC, 'LandStrengthRatioLessThan', { 1 } },
+
             { EBC, 'MassToFactoryRatioBaseCheck', { 'LocationType' } },
 
             { EBC, 'GreaterThanEconStorageCurrent', { 200, 2000}},
 
-            { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.8, 1.0 }}, 
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.9, 1.0 }}, 
 
             { UCBC, 'HaveLessThanUnitsInCategoryBeingBuilt', { 2, categories.STRUCTURE * categories.FACTORY * categories.LAND * categories.TECH1 }},
-
-            { UCBC, 'HaveUnitRatioVersusEnemySwarm', { 1.00, categories.STRUCTURE * categories.FACTORY * categories.LAND, '<',categories.STRUCTURE * categories.FACTORY * categories.LAND } },
         },
         BuilderType = 'Any',
         BuilderData = {
@@ -311,15 +281,15 @@ BuilderGroup { BuilderGroupName = 'Swarm Factory Builders Expansions',
 
             { UCBC, 'CanPathNavalBaseToNavalTargetsSwarm', {  'LocationType', categories.STRUCTURE * categories.FACTORY * categories.AIR }},
 
+            { UCBC, 'AirStrengthRatioLessThan', { 1 } },
+
             { EBC, 'MassToFactoryRatioBaseCheck', { 'LocationType' } },
 
             { EBC, 'GreaterThanEconStorageCurrent', { 200, 2000}},
 
-            { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.8, 1.0 }}, 
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.9, 1.0 }}, 
 
             { UCBC, 'HaveLessThanUnitsInCategoryBeingBuilt', { 2, categories.STRUCTURE * categories.FACTORY * categories.AIR * categories.TECH1 }},
-
-            { UCBC, 'HaveUnitRatioVersusEnemySwarm', { 1.00, categories.STRUCTURE * categories.FACTORY * categories.AIR, '<',categories.STRUCTURE * categories.FACTORY * categories.AIR } },
         },
         BuilderType = 'Any',
         BuilderData = {

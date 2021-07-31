@@ -1,9 +1,11 @@
 local ScenarioUtils = import('/lua/sim/ScenarioUtilities.lua')
+local AIUtils = import('/lua/ai/aiutilities.lua')
 
 --Extractor Upgrading needs a complete rework, though honestly I do not have the skill to rewrite this completely nor the skill to use Sprouto or Relly's code right now.
 
 function ExtractorPauseSwarm(self, aiBrain, MassExtractorUnitList, ratio, techLevel)
     local aiBrain = self:GetBrain()
+    local econ = AIUtils.AIGetEconomyNumbers(aiBrain)
     local BasePosition = aiBrain.BuilderManagers['MAIN'].Position
     local UpgradingBuilding = nil
     local UpgradingBuildingNum = 0
@@ -32,7 +34,7 @@ function ExtractorPauseSwarm(self, aiBrain, MassExtractorUnitList, ratio, techLe
                     PausedUpgradingBuildingNum = PausedUpgradingBuildingNum + 1
                 else
                     if not UpgradingBuilding then
-                         UpgradingBuilding = unit
+                        UpgradingBuilding = unit
                     end
                     UpgradingBuildingNum = UpgradingBuildingNum + 1
                 end
@@ -73,7 +75,7 @@ function ExtractorPauseSwarm(self, aiBrain, MassExtractorUnitList, ratio, techLe
         if MassRatioCheckPositive then
             PausedUpgradingBuilding:SetPaused( false )
             return true
-        elseif not MassRatioCheckPositive and UpgradingBuildingNum < 1 and table.getn(MassExtractorUnitList) >= 8 then
+        elseif not MassRatioCheckPositive and UpgradingBuildingNum < 1 and table.getn(MassExtractorUnitList) >= 8 or econ.MassEfficiencyOverTime > 1.02 and aiBrain:GetEconomyStored('MASS') >= 200 then
             PausedUpgradingBuilding:SetPaused( false )
             return true
         end
@@ -82,8 +84,8 @@ function ExtractorPauseSwarm(self, aiBrain, MassExtractorUnitList, ratio, techLe
     local MassRatioCheckNegative = GlobalMassUpgradeCostVsGlobalMassIncomeRatioSwarm( self, aiBrain, ratio, techLevel, '>=')
     
     if MassRatioCheckNegative then
-        if UpgradingBuildingNum > 1 then
-            if aiBrain:GetEconomyTrend('MASS') <= 0 and aiBrain:GetEconomyStored('MASS') <= 0.01  then
+        if UpgradingBuildingNum > 0 then
+            if econ.MassEfficiencyOverTime < 1.02 and aiBrain:GetEconomyStored('MASS') <= 200 then
                 UpgradingBuilding:SetPaused( true )
                 return true
             end
@@ -97,6 +99,7 @@ end
 function ExtractorUpgradeSwarm(self, aiBrain, MassExtractorUnitList, ratio, techLevel, UnitUpgradeTemplates, StructureUpgradeTemplates)
     local MassRatioCheckPositive = GlobalMassUpgradeCostVsGlobalMassIncomeRatioSwarm(self, aiBrain, ratio, techLevel, '<' )
     local aiBrain = self:GetBrain()
+    local econ = AIUtils.AIGetEconomyNumbers(aiBrain)
     local BasePosition = aiBrain.BuilderManagers['MAIN'].Position
     local factionIndex = aiBrain:GetFactionIndex()
     local UpgradingBuilding = 0
@@ -163,7 +166,12 @@ function ExtractorUpgradeSwarm(self, aiBrain, MassExtractorUnitList, ratio, tech
         end
     end
     
-    if not MassRatioCheckPositive and aiBrain:GetEconomyStoredRatio('MASS') < 1.00 then
+    if 
+    not MassRatioCheckPositive 
+    --and aiBrain:GetEconomyStored('MASS') < 200 
+    --and econ.MassEfficiencyOverTime >= 1.0 
+    --and econ.EnergyEfficiencyOverTime >= 1.04 
+    then
       
         if UpgradingBuilding > 0 or table.getn(MassExtractorUnitList) < 8 then
             return false
@@ -184,6 +192,7 @@ end
 function GlobalMassUpgradeCostVsGlobalMassIncomeRatioSwarm(self, aiBrain, ratio, techLevel, compareType)
 
     local GlobalUpgradeCost = 0
+    local econ = AIUtils.AIGetEconomyNumbers(aiBrain)
     local unitsBuilding = aiBrain:GetListOfUnits(categories.MASSEXTRACTION * (categories.TECH1 + categories.TECH2), true)
     local numBuilding = 0
     
@@ -193,7 +202,7 @@ function GlobalMassUpgradeCostVsGlobalMassIncomeRatioSwarm(self, aiBrain, ratio,
             GlobalUpgradeCost = 10
             MassIncomeLost = 2
         else
-            GlobalUpgradeCost = 26
+            GlobalUpgradeCost = 24
             MassIncomeLost = 6
         end
     end
