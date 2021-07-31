@@ -570,6 +570,11 @@ function AirStrengthRatioGreaterThan( aiBrain, value )
 end
 
 function AirStrengthRatioLessThan ( aiBrain, value )
+
+    if aiBrain.MyAirRatio <= .01 then
+        return false
+    end
+
 	return aiBrain.MyAirRatio < value
 end
 

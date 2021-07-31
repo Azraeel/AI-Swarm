@@ -6,37 +6,45 @@ local UCBC = '/lua/editor/UnitCountBuildConditions.lua'
 -- ===================================================-======================================================== --
 BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                               -- BuilderGroupName, initalized from AIBaseTemplates in "\lua\AI\AIBaseTemplates\"
     BuildersType = 'PlatoonFormBuilder',
-    -- =============== --
-    --    Factories    --
-    -- =============== --
+    -- ================== --
+    --  Factories Assist  --
+    -- ================== --
+
     Builder {
-        BuilderName = 'Basic Engineer Assist Engineer',
+        BuilderName = 'Engineer Assist Factory',
         PlatoonTemplate = 'EngineerAssistALLTECH',
         Priority = 1000,
-        InstanceCount = 75,
+        InstanceCount = 10,
         BuilderConditions = {
-            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.07, 0.01 } },
+            { EBC, 'GreaterThanEconStorageCurrent', { 200, 2000}},
 
-            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.0, 1.0 }},
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.8, 1.0 }}, 
         },
         BuilderType = 'Any',
         BuilderData = {
             Assist = {
                 AssistLocation = 'LocationType',
-                PermanentAssist = false,
-                AssisteeType = 'Engineer',
+                AssisteeType = 'Factory',
+                AssistRange = 120,
                 AssistClosestUnit = true, 
-                AssistUntilFinished = false,
-                Time = 75,
+                BeingBuiltCategories = {'LAND MOBILE'},        -- Unitcategories must be type string
+                AssistUntilFinished = true,
+                Time = 40,
             },
         }
     },
 
+    -- ===================== --
+    --   Factories Upgrade   --
+    -- ===================== --
+
     Builder { BuilderName = 'S1 Assist 1st T2 Factory Upgrade',
         PlatoonTemplate = 'EngineerAssist',
         Priority = 150,
-        InstanceCount = 20,
+        InstanceCount = 5,
         BuilderConditions = {
+            { EBC, 'GreaterThanEconStorageCurrent', { 200, 2000}},
+
             { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.0, 1.0 }},
         },
         BuilderType = 'Any',
@@ -55,8 +63,10 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
     Builder { BuilderName = 'S1 Assist 1st T3 Factory Upgrade',
         PlatoonTemplate = 'EngineerAssist',
         Priority = 200,
-        InstanceCount = 20,
+        InstanceCount = 5,
         BuilderConditions = {
+            { EBC, 'GreaterThanEconStorageCurrent', { 200, 2000}},
+
             { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.0, 1.0 }},
         },
         BuilderType = 'Any',
@@ -77,6 +87,8 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
         Priority = 210,
         InstanceCount = 5,
         BuilderConditions = {
+            { EBC, 'GreaterThanEconStorageCurrent', { 200, 2000}},
+
             { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.0, 1.0 }},
         },
         BuilderType = 'Any',
@@ -95,8 +107,10 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
     Builder { BuilderName = 'S2 Assist Factory Upgrade',
         PlatoonTemplate = 'T2EngineerAssist',
         Priority = 250,
-        InstanceCount = 20,
+        InstanceCount = 5,
         BuilderConditions = {
+            { EBC, 'GreaterThanEconStorageCurrent', { 200, 2000}},
+
             { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.0, 1.0 }},
         },
         BuilderType = 'Any',
@@ -121,11 +135,11 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
         Priority = 590,
         InstanceCount = 3,
         BuilderConditions = {
-            { EBC, 'GreaterThanEconIncomeSwarm', { 2.0, 20.0 } },
-
             { EBC, 'LessThanEnergyTrend', { 0.0 } },     
 
-            { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.75, 0.0 }},
+            { EBC, 'GreaterThanEconStorageCurrent', { 200, 2000}},
+
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.0, 0.0 }},
         },
         BuilderType = 'Any',
         BuilderData = {
@@ -146,11 +160,11 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
         Priority = 605,
         InstanceCount = 3,
         BuilderConditions = {
-            { EBC, 'GreaterThanEconIncomeSwarm', { 2.0, 20.0 } },
-
             { EBC, 'LessThanEnergyTrend', { 0.0 } },     
 
-            { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.75, 0.0 }},
+            { EBC, 'GreaterThanEconStorageCurrent', { 200, 2000}},
+
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.0, 0.0 }},
         },
         BuilderType = 'Any',
         BuilderData = {
@@ -171,11 +185,11 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
         Priority = 650,
         InstanceCount = 3,
         BuilderConditions = {
-            { EBC, 'GreaterThanEconIncomeSwarm', { 40.0, 500.0 } },
-
             { EBC, 'LessThanEnergyTrend', { 0.0 } },     
 
-            { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.75, 0.0 }},
+            { EBC, 'GreaterThanEconStorageCurrent', { 200, 2000}},
+
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.0, 0.0 }},
         },
         BuilderType = 'Any',
         BuilderData = {
@@ -196,11 +210,11 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
         Priority = 650,
         InstanceCount = 3,
         BuilderConditions = {
-            { EBC, 'GreaterThanEconIncomeSwarm', { 40.0, 500.0 } },
-
             { EBC, 'LessThanEnergyTrend', { 0.0 } },     
 
-            { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.75, 0.0 }},
+            { EBC, 'GreaterThanEconStorageCurrent', { 200, 2000}},
+
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.0, 0.0 }},
         },
         BuilderType = 'Any',
         BuilderData = {
@@ -221,6 +235,8 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
         Priority = 565,
         InstanceCount = 10,
         BuilderConditions = {
+            { EBC, 'GreaterThanEconStorageCurrent', { 200, 2000}},
+
             { EBC, 'GreaterThanEconIncomeSwarm', { 0.2, 2 } },
         },
         BuilderType = 'Any',
@@ -245,7 +261,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
         Priority = 590,
         InstanceCount = 3,
         BuilderConditions = {
-            { EBC, 'LessThanEconStorageRatioSwarm', { 0.20, 2.0}},
+            { EBC, 'GreaterThanEconStorageCurrent', { 200, 2000}},
 
             { UCBC, 'BuildingGreaterAtLocation', { 'LocationType', 0, categories.STRUCTURE * categories.MASSPRODUCTION - categories.TECH1 }},
         },
@@ -267,7 +283,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
     --    General Assist   --
     -- =================== --
     Builder {
-        BuilderName = 'All Engineer Assist Engineer',
+        BuilderName = 'All Engineer Assist',
         PlatoonTemplate = 'EngineerAssistALLTECH',
         Priority = 950,
         InstanceCount = 50,
@@ -276,7 +292,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
 
             { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.0, 1.0 }},
 
-            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.03, 0.01}},
+            { EBC, 'GreaterThanEconStorageCurrent', { 200, 2000}},
             
             { UCBC, 'LocationEngineersBuildingAssistanceGreater', { 'LocationType', 0, categories.TECH2 + categories.TECH3 + categories.EXPERIMENTAL } },
         },
@@ -293,6 +309,29 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
         }
     },
 
+    Builder {
+        BuilderName = 'Basic Engineer Assist',
+        PlatoonTemplate = 'EngineerAssistALLTECH',
+        Priority = 1000,
+        InstanceCount = 75,
+        BuilderConditions = {
+            { EBC, 'GreaterThanEconStorageCurrent', { 200, 2000}},
+
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.0, 1.0 }},
+        },
+        BuilderType = 'Any',
+        BuilderData = {
+            Assist = {
+                AssistLocation = 'LocationType',
+                PermanentAssist = false,
+                AssisteeType = 'Engineer',
+                AssistClosestUnit = true, 
+                AssistUntilFinished = false,
+                Time = 75,
+            },
+        }
+    },
+
     -- ============ --
     --    Paragon   --
     -- ============ --
@@ -302,6 +341,8 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
         InstanceCount = 50,
         BuilderConditions = {
             { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.07, 1.1 }},
+
+            { EBC, 'GreaterThanEconStorageCurrent', { 200, 2000}},
 
             { EBC, 'GreaterThanMassTrendSwarm', { 0.0 } },
         },
@@ -325,7 +366,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
         Priority = 1500,
         InstanceCount = 65,
         BuilderConditions = {
-            { EBC, 'GreaterThanEconIncomeSwarm', { 8.5, 200 } },
+            { EBC, 'GreaterThanEconStorageCurrent', { 200, 2000}},
 
             { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.02, 1.03 }},
 
@@ -353,7 +394,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
         Priority = 1500,
         InstanceCount = 65,
         BuilderConditions = {
-            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.01, 0.1}},
+            { EBC, 'GreaterThanEconStorageCurrent', { 200, 2000}},
 
             { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.01, 1.03 }},
 
@@ -382,7 +423,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
         Priority = 1500,
         InstanceCount = 50,
         BuilderConditions = {
-            { EBC, 'GreaterThanEconIncomeSwarm', { 4.5, 50 } },
+            { EBC, 'GreaterThanEconStorageCurrent', { 200, 2000}},
 
             { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.02, 1.04 }},
 
@@ -407,7 +448,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
         Priority = 1500,
         InstanceCount = 30,
         BuilderConditions = {
-            { EBC, 'GreaterThanEconIncomeSwarm', { 4.5, 100 } },
+            { EBC, 'GreaterThanEconStorageCurrent', { 200, 2000}},
 
             { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.03, 1.04 }},
 
@@ -432,7 +473,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
         Priority = 1400,
         InstanceCount = 30,
         BuilderConditions = {
-            { EBC, 'GreaterThanEconIncomeSwarm', { 8.5, 200 } },
+            { EBC, 'GreaterThanEconStorageCurrent', { 200, 2000}},
 
             { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.04, 1.05 }},
 
@@ -460,6 +501,8 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
         BuilderConditions = {
             { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.01, 1.03 }},
 
+            { EBC, 'GreaterThanEconStorageCurrent', { 200, 2000}},
+
             { UCBC, 'UnitsGreaterAtLocation', { 'LocationType', 0, 'NUKE STRUCTURE'}},
         },
         BuilderType = 'Any',
@@ -485,6 +528,8 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
         InstanceCount = 15,
         BuilderConditions = {
             { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.0, 1.03 }},
+
+            { EBC, 'GreaterThanEconStorageCurrent', { 200, 2000}},
 
             { EBC, 'GreaterThanMassTrendSwarm', { 0.0 } },
         },
@@ -513,6 +558,8 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
         BuilderConditions = {
             { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.0, 1.03 }},
 
+            { EBC, 'GreaterThanEconStorageCurrent', { 200, 2000}},
+
             { EBC, 'GreaterThanMassTrendSwarm', { 0.0 } },
 
             { UCBC, 'UnfinishedUnitsAtLocationSwarm', { 'LocationType' }},
@@ -529,6 +576,8 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
         InstanceCount = 10,
         BuilderConditions = {
             { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.0, 1.03 }},
+
+            { EBC, 'GreaterThanEconStorageCurrent', { 200, 2000}},
 
             { EBC, 'GreaterThanMassTrendSwarm', { 0.0 } },
 
@@ -550,6 +599,8 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
         BuilderConditions = {
             { EBC, 'GreaterThanEconTrendSwarm', { 0.0, 0.0 } }, 
 
+            { EBC, 'GreaterThanEconStorageCurrent', { 200, 2000}},
+
             { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.01, 1.02 }},
 
             { UCBC, 'DamagedStructuresInArea', { 'LocationType', }},
@@ -568,6 +619,8 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
         InstanceCount = 1,
         BuilderConditions = {
             { EBC, 'GreaterThanEconTrendSwarm', { 0.0, 0.0 } }, 
+
+            { EBC, 'GreaterThanEconStorageCurrent', { 200, 2000}},
 
             { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.01, 1.02 }},
 
@@ -591,9 +644,11 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Reclaim',                     
     Builder { BuilderName = 'Swarm Reclaim Mass - Opener',
         PlatoonTemplate = 'S1Reclaim',
         Priority = 595,
-        InstanceCount = 4,
+        InstanceCount = 2,
         BuilderConditions = {
-            { EBC, 'LessThanEconStorageRatioSwarm', { 1.0, 2.0}},
+            { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 0, categories.ENGINEER * categories.TECH1 }},
+
+            { EBC, 'LessThanEconStorageRatioSwarm', { 0.8, 2.0}},
 
             { UCBC, 'BuildOnlyOnLocationSwarm', { 'LocationType', 'MAIN' } },
         },
@@ -606,8 +661,10 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Reclaim',                     
     Builder { BuilderName = 'Swarm Reclaim Resource - Additional',
         PlatoonTemplate = 'S1Reclaim',
         Priority = 595,
-        InstanceCount = 4,
+        InstanceCount = 2,
         BuilderConditions = {
+            { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 0, categories.ENGINEER * categories.TECH1 }},
+
             { EBC, 'LessThanEconStorageRatioSwarm', { 0.6, 1}}, 
         },
         BuilderData = {
