@@ -427,7 +427,6 @@ Platoon = Class(SwarmPlatoonClass) {
             target = self:FindClosestUnit('Attack', 'Enemy', true, categories.ALLUNITS - categories.SCOUT - categories.WALL)
 
             if target then
-                LOG("On my way to a target")
                 blip = target:GetBlip(armyIndex)
                 self:Stop()
                 self:AggressiveMoveToLocation(table.copy(target:GetPosition()))
@@ -438,11 +437,6 @@ Platoon = Class(SwarmPlatoonClass) {
             else
                 -- merge with nearby platoons
                 local DidIMerge = self:MergeWithNearbyPlatoonsSwarm('HuntAISwarm', 100)
-                if DidIMerge then 
-                    LOG("Yes I Merged, Sir.")
-                else 
-                    LOG("Nope Did Not Merge.")
-                end
             end
             
             coroutine.yield(30)
@@ -518,7 +512,7 @@ Platoon = Class(SwarmPlatoonClass) {
             -- only get a new target and make a move command if the target is dead or after 10 seconds
             if not target or target.Dead then
 
-                self:MergeWithNearbyPlatoonsSwarm('LandAttackAISwarm', 35)
+                self:MergeWithNearbyPlatoonsSwarm('LandAttackAISwarm', 100)
 
                 coroutine.yield(10)
 
@@ -2433,7 +2427,7 @@ Platoon = Class(SwarmPlatoonClass) {
                 if not bValidUnits then
                     continue
                 end
-                --LOG("*AI DEBUG: Merging platoons " .. self.BuilderName .. ": (" .. platPos[1] .. ", " .. platPos[3] .. ") and " .. aPlat.BuilderName .. ": (" .. allyPlatPos[1] .. ", " .. allyPlatPos[3] .. ")")
+                LOG("*AI DEBUG: Merging platoons " .. self.BuilderName .. ": (" .. platPos[1] .. ", " .. platPos[3] .. ") and " .. aPlat.BuilderName .. ": (" .. allyPlatPos[1] .. ", " .. allyPlatPos[3] .. ")")
                 aiBrain:AssignUnitsToPlatoon(self, validUnits, 'Attack', 'GrowthFormation')
                 bMergedPlatoons = true
             end
@@ -4109,7 +4103,7 @@ Platoon = Class(SwarmPlatoonClass) {
                 continue
             end
 
-            self:MergeWithNearbyPlatoonsSwarm('AttackForceAISwarm', 35)
+            self:MergeWithNearbyPlatoonsSwarm('AttackForceAISwarm', 100)
 
 
             -- rebuild formation
@@ -4446,11 +4440,17 @@ Platoon = Class(SwarmPlatoonClass) {
         if bestMarker then
             self.LastMarker[2] = self.LastMarker[1]
             self.LastMarker[1] = bestMarker.Position
+
             --LOG("GuardMarker: Attacking " .. bestMarker.Name)
             local path, reason = AIAttackUtils.PlatoonGenerateSafePathTo(aiBrain, self.MovementLayer, GetPlatoonPosition(self), bestMarker.Position, 100 , maxPathDistance)
             local success, bestGoalPos = AIAttackUtils.CheckPlatoonPathingEx(self, bestMarker.Position)
             IssueClearCommands(GetPlatoonUnits(self))
             if path then
+
+                self:MergeWithNearbyPlatoonsSwarm('MassRaidSwarm', 100)
+
+                coroutine.yield(10)
+
                 local position = GetPlatoonPosition(self)
                 if not success or VDist2(position[1], position[3], bestMarker.Position[1], bestMarker.Position[3]) > 512 then
                     usedTransports = AIAttackUtils.SendPlatoonWithTransportsNoCheck(aiBrain, self, bestMarker.Position, true)
