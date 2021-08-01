@@ -8,6 +8,24 @@ local IBC = '/lua/editor/InstantBuildConditions.lua'
 
 local BasePanicZone, BaseMilitaryZone, BaseEnemyZone = import('/mods/AI-Swarm/lua/AI/swarmutilities.lua').GetDangerZoneRadii()
 
+local HaveLessThanThreeT2LandFactoryACU = function( self, aiBrain )
+	
+	if table.getn( aiBrain:GetListOfUnits( categories.FACTORY * categories.LAND * categories.TECH2, false, true )) >= 3 then
+        return 0, false
+	end
+	
+	return self.Priority,true
+end
+
+local HaveLessThanThreeT2AirFactoryACU = function( self, aiBrain )
+	
+	if table.getn( aiBrain:GetListOfUnits( categories.FACTORY * categories.AIR * categories.TECH2, false, true )) >= 3 then
+        return 0, false
+	end
+	
+	return self.Priority,true
+end
+
 -- The Commander needs to fully become an Engineer, Combat doesnt suit him or the AI.
 -- Not really sure if he should have a military usage tbf.
 -- Done
@@ -377,9 +395,15 @@ BuilderGroup {
 
     Builder {
         BuilderName = 'Swarm Commander Land Factory Mass > MassStorage',
+
         PlatoonTemplate = 'CommanderBuilder',
+
         Priority = 650,
+
+        PriorityFunction = HaveLessThanThreeT2LandFactoryACU,
+
         DelayEqualBuildPlattons = {'Factories', 3},
+
         BuilderConditions = {
             { UCBC, 'CheckBuildPlattonDelay', { 'Factories' }},
 
@@ -409,9 +433,15 @@ BuilderGroup {
 
     Builder {
         BuilderName = 'Swarm Commander Land Factory - Land Ratio',
+
         PlatoonTemplate = 'CommanderBuilder',
+
         Priority = 650,
+
+        PriorityFunction = HaveLessThanThreeT2LandFactoryACU,
+
         DelayEqualBuildPlattons = {'Factories', 3},
+
         BuilderConditions = {
             { UCBC, 'CheckBuildPlattonDelay', { 'Factories' }},
 
@@ -441,9 +471,15 @@ BuilderGroup {
 
     Builder {
         BuilderName = 'Swarm Commander Air Factory Mass > MassStorage',
+
         PlatoonTemplate = 'CommanderBuilder',
+
         Priority = 650,
+
+        PriorityFunction = HaveLessThanThreeT2AirFactoryACU,
+
         DelayEqualBuildPlattons = {'Factories', 3},
+
         BuilderConditions = {
             { UCBC, 'CheckBuildPlattonDelay', { 'Factories' }},
 
@@ -471,9 +507,15 @@ BuilderGroup {
 
     Builder {
         BuilderName = 'Swarm Commander Air Factory - Air Ratio',
+        
         PlatoonTemplate = 'CommanderBuilder',
+
         Priority = 650,
+
+        PriorityFunction = HaveLessThanThreeT2AirFactoryACU,
+
         DelayEqualBuildPlattons = {'Factories', 3},
+
         BuilderConditions = {
             { UCBC, 'CheckBuildPlattonDelay', { 'Factories' }},
 
