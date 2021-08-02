@@ -326,7 +326,9 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Builders',
         BuilderConditions = {
             { UCBC, 'CheckBuildPlattonDelay', { 'Scouts' }},
 
-            { UCBC, 'EnemyUnitsLessAtLocationRadiusSwarm', {  BasePanicZone, 'LocationType', 1, categories.AIR * categories.MOBILE * (categories.BOMBER + categories.GROUNDATTACK) - categories.ENGINEER - categories.AIR - categories.SCOUT }},
+            { EBC, 'GreaterThanEconStorageCurrent', { 200, 2000}},
+
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.7, 0.8 }},
 
             { SIBC, 'HaveLessThanUnitsForMapSize', { {[256] = 8, [512] = 12, [1024] = 18, [2048] = 20, [4096] = 20}, categories.AIR * categories.SCOUT}},
 
@@ -347,7 +349,9 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Builders',
         BuilderConditions = {
             { UCBC, 'CheckBuildPlattonDelay', { 'Scouts' }},
 
-            { UCBC, 'EnemyUnitsLessAtLocationRadiusSwarm', {  BasePanicZone, 'LocationType', 1, categories.AIR * categories.MOBILE * categories.TECH3 * (categories.BOMBER + categories.GROUNDATTACK) - categories.ENGINEER - categories.AIR - categories.SCOUT }},
+            { EBC, 'GreaterThanEconStorageCurrent', { 200, 2000}},
+
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.9, 1.1 }},
 
             { SIBC, 'HaveLessThanUnitsForMapSize', { {[256] = 4, [512] = 8, [1024] = 12, [2048] = 16, [4096] = 20}, categories.AIR * categories.SCOUT}},
 
