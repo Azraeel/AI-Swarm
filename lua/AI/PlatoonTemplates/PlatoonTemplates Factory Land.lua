@@ -4,6 +4,7 @@ PlatoonTemplate { Name = 'T1LandOpeningQueue',
             { 'uel0201', 1, 3, 'Attack', 'none' },		-- Striker Medium Tank
             { 'uel0105', 1, 2, 'Support', 'None' },     -- Engineer
             { 'uel0201', 1, 3, 'Attack', 'none' },      -- Striker Medium Tank
+            { 'uel0104', 1, 1, 'Attack', 'none' },      -- Mobile Anti-Air
             { 'uel0105', 1, 1, 'Support', 'None' },     -- Engineer
             { 'uel0201', 1, 3, 'Attack', 'none' },      -- Striker Medium Tank
             { 'uel0105', 1, 1, 'Support', 'None' },     -- Engineer
@@ -12,6 +13,7 @@ PlatoonTemplate { Name = 'T1LandOpeningQueue',
             { 'ual0201', 1, 4, 'Attack', 'none' },		-- Light Hover tank
             { 'ual0105', 1, 2, 'Support', 'None' },     -- Engineer
             { 'ual0201', 1, 3, 'Attack', 'none' },      -- Light Hover tank
+            { 'ual0104', 1, 1, 'Attack', 'none' },      -- Mobile Anti-Air
             { 'ual0105', 1, 1, 'Support', 'None' },     -- Engineer
             { 'ual0201', 1, 3, 'Attack', 'none' },      -- Light Hover tank
             { 'ual0105', 1, 1, 'Support', 'None' },     -- Engineer
@@ -20,6 +22,7 @@ PlatoonTemplate { Name = 'T1LandOpeningQueue',
             { 'url0107', 1, 3, 'Attack', 'none' },		-- Mantis
             { 'url0105', 1, 2, 'Support', 'None' },     -- Engineer
             { 'url0107', 1, 3, 'Attack', 'none' },      -- Mantis
+            { 'url0104', 1, 1, 'Attack', 'none' },      -- Mobile Anti-Air
             { 'url0105', 1, 1, 'Support', 'None' },     -- Engineer
             { 'url0107', 1, 3, 'Attack', 'none' },      -- Mantis
             { 'url0105', 1, 1, 'Support', 'None' },     -- Engineer
@@ -28,6 +31,7 @@ PlatoonTemplate { Name = 'T1LandOpeningQueue',
             { 'xsl0201', 1, 3, 'Attack', 'none' },		-- Medium Tank
             { 'xsl0105', 1, 2, 'Support', 'None' },     -- Engineer
             { 'xsl0201', 1, 3, 'Attack', 'none' },      -- Medium Tank
+            { 'xsl0104', 1, 1, 'Attack', 'none' },      -- Mobile Anti-Air
             { 'xsl0105', 1, 1, 'Support', 'None' },     -- Engineer
             { 'xsl0201', 1, 3, 'Attack', 'none' },      -- Medium Tank
             { 'xsl0105', 1, 1, 'Support', 'None' },     -- Engineer
