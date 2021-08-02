@@ -170,9 +170,9 @@ BuilderGroup {
 
             { UCBC, 'UnitCapCheckLess', { .8 } },
 
-            { EBC, 'GreaterThanMassTrendSwarm', { 0.0 } },
+            { EBC, 'GreaterThanMassTrendSwarm', { 0.8 } },
 
-            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.08, 0.50 } },
+            { EBC, 'GreaterThanEconStorageCurrent', { 200, 2000}},
 
             { UCBC, 'HaveGreaterThanUnitsWithCategory', { 4, categories.STRUCTURE * categories.MASSEXTRACTION * (categories.TECH2 + categories.TECH3) }},
 
@@ -207,9 +207,9 @@ BuilderGroup {
 
             { UCBC, 'UnitCapCheckLess', { .8 } },
 
-            { EBC, 'GreaterThanMassTrendSwarm', { 0.0 } },
+            { EBC, 'GreaterThanMassTrendSwarm', { 0.8 } },
 
-            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.1, 0.50 } }, 
+            { EBC, 'GreaterThanEconStorageCurrent', { 200, 2000}},
 
             { UCBC, 'HaveGreaterThanUnitsWithCategory', { 8, categories.STRUCTURE * categories.MASSEXTRACTION * (categories.TECH2 + categories.TECH3) }},
 
