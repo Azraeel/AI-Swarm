@@ -8,7 +8,34 @@ local MABC = '/lua/editor/MarkerBuildConditions.lua'
 local BasePanicZone, BaseMilitaryZone, BaseEnemyZone = import('/mods/AI-Swarm/lua/AI/swarmutilities.lua').GetDangerZoneRadii()
 
 local MaxCapFactory = 0.015 -- 0.015% of all units can be factories (STRUCTURE * FACTORY)
-local MaxCapStructure = 0.12                                                    -- 12% of all units can be structures (STRUCTURE -MASSEXTRACTION -DEFENSE -FACTORY)
+local MaxCapStructure = 0.12 -- 12% of all units can be structures (STRUCTURE -MASSEXTRACTION -DEFENSE -FACTORY)
+
+local HaveLessThanThreeT2LandFactory = function( self, aiBrain )
+	
+	if table.getn( aiBrain:GetListOfUnits( categories.FACTORY * categories.LAND * categories.TECH2, false, true )) >= 3 then
+        return 0, false
+	end
+	
+	return self.Priority,true
+end
+
+local HaveLessThanThreeT2AirFactory = function( self, aiBrain )
+	
+	if table.getn( aiBrain:GetListOfUnits( categories.FACTORY * categories.AIR * categories.TECH2, false, true )) >= 3 then
+        return 0, false
+	end
+	
+	return self.Priority,true
+end
+
+local HaveLessThanThreeT2NavalFactory = function( self, aiBrain )
+	
+	if table.getn( aiBrain:GetListOfUnits( categories.FACTORY * categories.NAVAL * categories.TECH2, false, true )) >= 3 then
+        return 0, false
+	end
+	
+	return self.Priority,true
+end
 
 -- ===================================================-======================================================== --
 -- ==                                       Early T1 Phase - Adaptive                                        == --
@@ -48,9 +75,15 @@ BuilderGroup {
     -- ================== --
     Builder {
         BuilderName = 'Swarm Naval Factory Mass > MassStorage',
+
         PlatoonTemplate = 'EngineerBuilderALLTECH',
+
         Priority = 600,
+
+        PriorityFunction = HaveLessThanThreeT2NavalFactory,
+
         DelayEqualBuildPlattons = {'Factories', 3},
+
         BuilderConditions = {
             { UCBC, 'CheckBuildPlattonDelay', { 'Factories' }},
             
@@ -79,9 +112,15 @@ BuilderGroup {
 
     Builder {
         BuilderName = 'Swarm Naval Factory Enemy - Outnumbered',
+        
         PlatoonTemplate = 'EngineerBuilderALLTECH',
+
         Priority = 650,
+
+        PriorityFunction = HaveLessThanThreeT2NavalFactory,
+
         DelayEqualBuildPlattons = {'Factories', 3},
+
         BuilderConditions = {
             { UCBC, 'CheckBuildPlattonDelay', { 'Factories' }},
 
@@ -114,9 +153,15 @@ BuilderGroup { BuilderGroupName = 'Swarm Adaptive Factory Build',
 
     Builder {
         BuilderName = 'Swarm Land Factory Mass > MassStorage',
+
         PlatoonTemplate = 'EngineerBuilderALLTECH',
+
         Priority = 650,
+
+        PriorityFunction = HaveLessThanThreeT2LandFactory,
+
         DelayEqualBuildPlattons = {'Factories', 3},
+
         BuilderConditions = {
             { UCBC, 'CheckBuildPlattonDelay', { 'Factories' }},
 
@@ -146,9 +191,15 @@ BuilderGroup { BuilderGroupName = 'Swarm Adaptive Factory Build',
     
     Builder {
         BuilderName = 'Swarm Land Factory Enemy - Land Ratio',
+
         PlatoonTemplate = 'EngineerBuilderALLTECH',
+
         Priority = 650,
+
+        PriorityFunction = HaveLessThanThreeT2LandFactory,
+
         DelayEqualBuildPlattons = {'Factories', 3},
+
         BuilderConditions = {
             { UCBC, 'CheckBuildPlattonDelay', { 'Factories' }},
 
@@ -178,9 +229,15 @@ BuilderGroup { BuilderGroupName = 'Swarm Adaptive Factory Build',
 
     Builder {
         BuilderName = 'Swarm Air Factory Mass > MassStorage',
+
         PlatoonTemplate = 'EngineerBuilderALLTECH',
+
         Priority = 650,
+
         DelayEqualBuildPlattons = {'Factories', 3},
+
+        PriorityFunction = HaveLessThanThreeT2AirFactory,
+
         BuilderConditions = {
             { UCBC, 'CheckBuildPlattonDelay', { 'Factories' }},
 
@@ -208,9 +265,15 @@ BuilderGroup { BuilderGroupName = 'Swarm Adaptive Factory Build',
 
     Builder {
         BuilderName = 'Swarm Air Factory > Air Ratio',
+
         PlatoonTemplate = 'EngineerBuilderALLTECH',
+
         Priority = 650,
+
+        PriorityFunction = HaveLessThanThreeT2AirFactory,
+
         DelayEqualBuildPlattons = {'Factories', 3},
+
         BuilderConditions = {
             { UCBC, 'CheckBuildPlattonDelay', { 'Factories' }},
 
@@ -241,10 +304,17 @@ BuilderGroup { BuilderGroupName = 'Swarm Factory Builders Expansions',
     BuildersType = 'EngineerBuilder',
     
     Builder { BuilderName = 'All Land Factory Expansions',
+
         PlatoonTemplate = 'EngineerBuilderALLTECH',
+
         Priority = 650,
+
+        PriorityFunction = HaveLessThanThreeT2LandFactory,
+
         InstanceCount = 1,                                                      -- Number of plattons that will be formed with this template.
+
         DelayEqualBuildPlattons = {'Factories', 3},
+
         BuilderConditions = {
             { UCBC, 'CheckBuildPlattonDelay', { 'Factories' }},
 
@@ -272,10 +342,17 @@ BuilderGroup { BuilderGroupName = 'Swarm Factory Builders Expansions',
     },
 
     Builder { BuilderName = 'All Air Factory Expansions',
+
         PlatoonTemplate = 'EngineerBuilderALLTECH',
+
         Priority = 650,
+
+        PriorityFunction = HaveLessThanThreeT2AirFactory,
+
         InstanceCount = 1,
+
         DelayEqualBuildPlattons = {'Factories', 3},
+
         BuilderConditions = {
             { UCBC, 'CheckBuildPlattonDelay', { 'Factories' }},
 
