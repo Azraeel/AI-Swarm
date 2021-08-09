@@ -540,44 +540,6 @@ BuilderGroup {
         },        
     },
 
-    --[[ Builder {
-        BuilderName = 'AI-Swarm Standard Land (120) P',
-
-        PlatoonTemplate = 'AISwarm LandAttack Micro - Intercept', 
-
-        Priority = 652,
-
-        InstanceCount = 2,
-
-        BuilderType = 'Any',
-
-        BuilderConditions = { 
-            { MIBC, 'CanPathToCurrentEnemySwarm', { true, 'LocationType' } },
-
-            { UCBC, 'UnitsGreaterAtEnemySwarm', { 0 , categories.MOBILE * categories.LAND - categories.SCOUT } },
-
-            { UCBC, 'EnemyUnitsGreaterAtLocationRadiusSwarm', {  BasePanicZone, 'LocationType', 0, categories.MOBILE * categories.LAND - categories.SCOUT - categories.NAVAL}}, 
-        },
-        BuilderData = {
-            AttackEnemyStrength = 120,
-            SearchRadius = BasePanicZone,
-            GetTargetsFromBase = false,
-            RequireTransport = false, 
-            AggressiveMove = false, 
-            IgnorePathing = true,
-            TargetSearchCategory = categories.MOBILE * categories.LAND - categories.SCOUT - categories.WALL,                        
-            MoveToCategories = {
-                categories.EXPERIMENTAL,
-                categories.MOBILE * categories.LAND * categories.INDIRECTFIRE - categories.SCOUT,
-                categories.MOBILE * categories.LAND * categories.DIRECTFIRE - categories.SCOUT,
-                categories.MOBILE * categories.LAND * categories.ANTIAIR,
-                categories.STRUCTURE * categories.ANTIAIR,
-                categories.STRUCTURE * categories.DEFENSE,
-                categories.ALLUNITS,
-            },
-        },        
-    }, ]]--
-
     Builder {
         BuilderName = 'AISwarm T1 Spam',     
 
@@ -618,8 +580,6 @@ BuilderGroup {
 
             { MIBC, 'CanPathToCurrentEnemySwarm', { true, 'LocationType' } },
 
-            { UCBC, 'LandStrengthRatioGreaterThan', { 0.6 } },
-
             { UCBC, 'EnemyUnitsGreaterAtLocationRadiusSwarm', {  BaseMilitaryZone, 'LocationType', 0, categories.MOBILE * categories.LAND - categories.NAVAL}}, -- radius, LocationType, unitCount, categoryEnemy
         },
         BuilderData = {
@@ -658,8 +618,6 @@ BuilderGroup {
 
             { MIBC, 'CanPathToCurrentEnemySwarm', { true, 'LocationType' } },
 
-            { UCBC, 'LandStrengthRatioGreaterThan', { 0.6 } },
-
             { UCBC, 'EnemyUnitsGreaterAtLocationRadiusSwarm', {  BaseMilitaryZone, 'LocationType', 0, categories.MOBILE * categories.LAND - categories.NAVAL}}, -- radius, LocationType, unitCount, categoryEnemy
         },
         BuilderData = {
@@ -697,8 +655,6 @@ BuilderGroup {
             { UCBC, 'ScalePlatoonSizeSwarm', { 'LocationType', 'LAND', categories.MOBILE * categories.LAND - categories.ENGINEER - categories.EXPERIMENTAL } },
 
             { MIBC, 'CanPathToCurrentEnemySwarm', { true, 'LocationType' } },
-
-            { UCBC, 'LandStrengthRatioGreaterThan', { 0.6 } },
 
             { UCBC, 'EnemyUnitsGreaterAtLocationRadiusSwarm', {  BaseMilitaryZone, 'LocationType', 0, categories.MOBILE * categories.LAND - categories.NAVAL}}, -- radius, LocationType, unitCount, categoryEnemy
         },
