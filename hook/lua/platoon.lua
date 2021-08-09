@@ -433,12 +433,11 @@ Platoon = Class(SwarmPlatoonClass) {
                 --DUNCAN - added to try and stop AI getting stuck.
                 --local position = AIUtils.RandomLocation(target:GetPosition()[1],target:GetPosition()[3])
                 --self:MoveToLocation(position, false)
-                coroutine.yield(170)
+                coroutine.yield(150)
             else
                 -- merge with nearby platoons
                 local DidIMerge = self:MergeWithNearbyPlatoonsSwarm('HuntAISwarm', 100)
             end
-            
             coroutine.yield(30)
         end
     end,

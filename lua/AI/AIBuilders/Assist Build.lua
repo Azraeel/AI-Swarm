@@ -233,7 +233,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
     Builder { BuilderName = 'S1 Assist HYDROCARBON Turbo',
         PlatoonTemplate = 'EngineerAssist',
         Priority = 565,
-        InstanceCount = 10,
+        InstanceCount = 2,
         BuilderConditions = {
             { EBC, 'GreaterThanEconStorageCurrent', { 200, 2000}},
 
@@ -286,15 +286,15 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
         BuilderName = 'All Engineer Assist',
         PlatoonTemplate = 'EngineerAssistALLTECH',
         Priority = 950,
-        InstanceCount = 50,
+        InstanceCount = 30,
         BuilderConditions = {
             { EBC, 'GreaterThanEconTrend', { 0.0, 0.0 } },
 
             { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.0, 1.0 }},
 
             { EBC, 'GreaterThanEconStorageCurrent', { 200, 2000}},
-            
-            { UCBC, 'LocationEngineersBuildingAssistanceGreater', { 'LocationType', 0, categories.TECH2 + categories.TECH3 + categories.EXPERIMENTAL } },
+
+            { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 0, categories.ENGINEER }},
         },
         BuilderType = 'Any',
         BuilderData = {
@@ -302,32 +302,9 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
                 AssistLocation = 'LocationType',
                 BeingBuiltCategories = {'TECH2', 'TECH3', 'EXPERIMENTAL'},               -- Unitcategories must be type string
                 PermanentAssist = false,
-                AssisteeType = 'Engineer',
+                AssisteeType = 'Structure',
                 AssistClosestUnit = true,                                       -- Assist the closest unit instead unit with the least number of assisters
-                Time = 75,
-            },
-        }
-    },
-
-    Builder {
-        BuilderName = 'Basic Engineer Assist',
-        PlatoonTemplate = 'EngineerAssistALLTECH',
-        Priority = 1000,
-        InstanceCount = 75,
-        BuilderConditions = {
-            { EBC, 'GreaterThanEconStorageCurrent', { 200, 2000}},
-
-            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.0, 1.0 }},
-        },
-        BuilderType = 'Any',
-        BuilderData = {
-            Assist = {
-                AssistLocation = 'LocationType',
-                PermanentAssist = false,
-                AssisteeType = 'Engineer',
-                AssistClosestUnit = true, 
-                AssistUntilFinished = false,
-                Time = 75,
+                Time = 40,
             },
         }
     },
