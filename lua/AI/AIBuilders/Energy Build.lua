@@ -108,9 +108,7 @@ BuilderGroup {
         BuilderConditions = {
             { MABC, 'CanBuildOnHydroSwarm', { 'LocationType', 240, -1000, 2, 1, 'AntiSurface', 1 }},            
 
-            { EBC, 'GreaterThanEconIncomeSwarm',  { 1, 4.0}}, 
-
-            { EBC, 'LessThanEconStorageRatio', { 2.0, 0.75 } },
+            { EBC, 'GreaterThanEconIncomeSwarm',  { 1.0, 4.0}}, 
 
             { UCBC, 'CheckBuildPlattonDelay', { 'Energy' }},
         },

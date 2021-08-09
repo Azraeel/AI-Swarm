@@ -119,7 +119,7 @@ BuilderGroup {
            
             { UCBC, 'EnemyUnitsGreaterAtLocationRadiusSwarm', {  BasePanicZone, 'LocationType', 10, categories.ALLUNITS - categories.ENGINEER - categories.AIR - categories.SCOUT }}, -- radius, LocationType, unitCount, categoryEnemy
        
-            { UCBC, 'HaveGreaterThanUnitsWithCategory', { 5, categories.STRUCTURE * categories.FACTORY * categories.LAND } },
+            { UCBC, 'HaveGreaterThanUnitsWithCategory', { 2, categories.STRUCTURE * categories.FACTORY * categories.LAND } },
         },
         BuilderType = 'Any',                                                  
     },
@@ -157,7 +157,7 @@ BuilderGroup {
          
             { UCBC, 'EnemyUnitsGreaterAtLocationRadiusSwarm', {  BaseMilitaryZone, 'LocationType', 10, categories.ALLUNITS - categories.ENGINEER - categories.AIR - categories.SCOUT }}, -- radius, LocationType, unitCount, categoryEnemy
 
-            { UCBC, 'HaveGreaterThanUnitsWithCategory', { 5, categories.STRUCTURE * categories.FACTORY * categories.LAND } },
+            { UCBC, 'HaveGreaterThanUnitsWithCategory', { 3, categories.STRUCTURE * categories.FACTORY * categories.LAND } },
         },
         BuilderType = 'Any',                                              
     },
@@ -195,7 +195,7 @@ BuilderGroup {
          
             { UCBC, 'EnemyUnitsGreaterAtLocationRadiusSwarm', {  BaseEnemyZone, 'LocationType', 20, categories.ALLUNITS - categories.ENGINEER - categories.AIR - categories.SCOUT }}, -- radius, LocationType, unitCount, categoryEnemy
 
-            { UCBC, 'HaveGreaterThanUnitsWithCategory', { 5, categories.STRUCTURE * categories.FACTORY * categories.LAND } },
+            { UCBC, 'HaveGreaterThanUnitsWithCategory', { 4, categories.STRUCTURE * categories.FACTORY * categories.LAND } },
         },
         BuilderType = 'Any',                                              
     },
