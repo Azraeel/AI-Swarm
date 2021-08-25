@@ -63,7 +63,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Scout Builders',
 
             { UCBC, 'HaveLessThanUnitsWithCategory', { 2, categories.LAND * categories.MOBILE * categories.SCOUT - categories.ENGINEER }},
         },
-        BuilderType = 'Land',
+        BuilderType = 'LandT1',
     },
 }
 
@@ -93,12 +93,12 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',
 
             { UCBC, 'HaveGreaterThanUnitsWithCategory', { 2, categories.MOBILE * categories.ENGINEER }},
         },
-        BuilderType = 'Land', 
+        BuilderType = 'LandT1', 
     },
 
-    Builder { BuilderName = 'Swarm-AI - T1 Land Standard Queue',
+    Builder { BuilderName = 'T1LandDFTank - Swarm',
 
-        PlatoonTemplate = 'T1LandStandardQueue',
+        PlatoonTemplate = 'T1LandDFTank',
 
         Priority = 500,
 
@@ -112,8 +112,32 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',
             { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.02, 0.1}},
 
             { MIBC, 'CanPathToCurrentEnemySwarm', { true, 'LocationType' } },
+
+            { UCBC, 'PoolLessAtLocation', { 'LocationType', 6, categories.LAND * categories.MOBILE * categories.DIRECTFIRE }},
         },
-        BuilderType = 'Land',
+        BuilderType = 'LandT1',
+    },
+
+    Builder { BuilderName = 'T1LandArtillery - Swarm',
+
+        PlatoonTemplate = 'T1LandArtillery',
+
+        Priority = 500,
+
+        PriorityFunction = UniversalT1Land,
+
+        BuilderConditions = {
+            { UCBC, 'UnitCapCheckLess', { 0.90 } },
+
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.7, 0.8 }},
+
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.02, 0.1}},
+
+            { MIBC, 'CanPathToCurrentEnemySwarm', { true, 'LocationType' } },
+
+            { UCBC, 'PoolLessAtLocation', { 'LocationType', 2, categories.LAND * categories.MOBILE * categories.INDIRECTFIRE }},
+        },
+        BuilderType = 'LandT1',
     },
 
     Builder { BuilderName = 'T1LandAA - Swarm',
@@ -137,7 +161,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',
 
             { UCBC, 'PoolLessAtLocation', { 'LocationType', 3, categories.LAND * categories.MOBILE * categories.ANTIAIR }},
         },
-        BuilderType = 'Land',
+        BuilderType = 'LandT1',
     },
 
     Builder { BuilderName = 'T1LandAA - Swarm - Emergency',
@@ -163,7 +187,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',
 
             { UCBC, 'LocationFactoriesBuildingLess', { 'LocationType', 1, categories.LAND * categories.MOBILE * categories.ANTIAIR }},
         },
-        BuilderType = 'Land',
+        BuilderType = 'LandT1'
     },
 
     -- ============ --
@@ -190,7 +214,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',
 
             { UCBC, 'PoolLessAtLocation', { 'LocationType', 40, categories.DIRECTFIRE * categories.LAND * categories.TECH2 }},
         },
-        BuilderType = 'Land',
+        BuilderType = 'LandT2',
     },
 
     Builder { BuilderName = 'T2AttackTank - Swarm',
@@ -214,7 +238,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',
 
             { UCBC, 'PoolLessAtLocation', { 'LocationType', 40, categories.DIRECTFIRE * categories.LAND * categories.TECH2 }},
         },
-        BuilderType = 'Land',
+        BuilderType = 'LandT2',
     },
 
     Builder { BuilderName = 'T2LandArtillery - Swarm',
@@ -240,7 +264,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',
 
             { UCBC, 'HaveGreaterThanUnitsWithCategory', { 6, categories.LAND * categories.MOBILE * categories.DIRECTFIRE * categories.TECH2 - categories.ENGINEER }},
         },
-        BuilderType = 'Land',
+        BuilderType = 'LandT2',
     },
 
 
@@ -269,7 +293,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',
 
             { UCBC, 'PoolLessAtLocation', { 'LocationType', 3, categories.MOBILE * categories.LAND * categories.SHIELD }},
         },
-        BuilderType = 'Land',
+        BuilderType = 'LandT2',
     },
 
     Builder { BuilderName = 'T2LandAA - Swarm',
@@ -297,7 +321,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',
 
             { UCBC, 'HaveGreaterThanUnitsWithCategory', { 5, categories.LAND * categories.MOBILE * categories.DIRECTFIRE * (categories.TECH2 + categories.TECH3) - categories.ENGINEER }},
         },
-        BuilderType = 'Land',
+        BuilderType = 'LandT2',
     },
 
     -- ============ --
@@ -323,7 +347,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',
 
             { UCBC, 'PoolLessAtLocation', { 'LocationType', 55, categories.DIRECTFIRE * categories.LAND * categories.TECH3 }},
         },
-        BuilderType = 'Land',
+        BuilderType = 'LandT3',
     },
 
     Builder { BuilderName = 'T3LandBot - Swarm',
@@ -348,7 +372,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',
 
             { UCBC, 'PoolLessAtLocation', { 'LocationType', 55, categories.DIRECTFIRE * categories.LAND * categories.TECH3 }},
         },
-        BuilderType = 'Land',
+        BuilderType = 'LandT3',
     },
 
     Builder { BuilderName = 'T3LightBot - Swarm',
@@ -373,7 +397,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',
 
             { UCBC, 'PoolLessAtLocation', { 'LocationType', 55, categories.DIRECTFIRE * categories.LAND * categories.TECH3 }},
         },
-        BuilderType = 'Land',
+        BuilderType = 'LandT3',
     },
 
     Builder { BuilderName = 'T3SniperBots - Swarm',
@@ -394,7 +418,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',
 
             { UCBC, 'HaveGreaterThanUnitsWithCategory', { 6, categories.LAND * categories.MOBILE * categories.DIRECTFIRE * categories.TECH3 - categories.ENGINEER }},
         },
-        BuilderType = 'Land',
+        BuilderType = 'LandT3',
     },
 
     Builder { BuilderName = 'T3LandArtillery - Swarm',
@@ -415,7 +439,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',
 
             { UCBC, 'HaveGreaterThanUnitsWithCategory', { 6, categories.LAND * categories.MOBILE * categories.DIRECTFIRE * categories.TECH3 - categories.ENGINEER }},
         },
-        BuilderType = 'Land',
+        BuilderType = 'LandT3',
     },
 
     Builder { BuilderName = 'T3MobileMissile - Swarm',
@@ -436,7 +460,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',
 
             { UCBC, 'HaveGreaterThanUnitsWithCategory', { 6, categories.LAND * categories.MOBILE * categories.DIRECTFIRE * categories.TECH3 - categories.ENGINEER }},
         },
-        BuilderType = 'Land',
+        BuilderType = 'LandT3',
     },
 
     Builder { BuilderName = 'T3LandAA - Swarm',
@@ -457,7 +481,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',
 
             { UCBC, 'PoolLessAtLocation', { 'LocationType', 2, categories.LAND * categories.MOBILE * categories.ANTIAIR * categories.TECH3 }},
         },
-        BuilderType = 'Land',
+        BuilderType = 'LandT3',
     },
 }
 
