@@ -189,7 +189,7 @@ function AIExecuteBuildStructure(aiBrain, builder, buildingType, closeToBuilder,
                 if VDist3( v.Position, SourcePosition ) <= maxdistance then
                 
                     if CanBuildStructureAt( aiBrain, testunit, v.Position ) then
-                        mlist[counter+1] = v
+                        mlist[counter] = v
                         counter = counter + 1
                     end
                     

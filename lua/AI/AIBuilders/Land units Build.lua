@@ -91,14 +91,14 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',
 
             { MIBC, 'CanPathToCurrentEnemySwarm', { true, 'LocationType' } },
 
-            { UCBC, 'HaveGreaterThanUnitsWithCategory', { 2, categories.MOBILE * categories.ENGINEER }},
+            { UCBC, 'HaveGreaterThanUnitsWithCategory', { 0, categories.MOBILE * categories.ENGINEER }},
         },
         BuilderType = 'Land', 
     },
 
-    Builder { BuilderName = 'Swarm-AI - T1 Land Standard Queue',
+    Builder { BuilderName = 'T1LandDFTank - Swarm',
 
-        PlatoonTemplate = 'T1LandStandardQueue',
+        PlatoonTemplate = 'T1LandDFTank',
 
         Priority = 500,
 
@@ -112,6 +112,30 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',
             { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.02, 0.1}},
 
             { MIBC, 'CanPathToCurrentEnemySwarm', { true, 'LocationType' } },
+
+            { UCBC, 'PoolLessAtLocation', { 'LocationType', 6, categories.LAND * categories.MOBILE * categories.DIRECTFIRE }},
+        },
+        BuilderType = 'Land',
+    },
+
+    Builder { BuilderName = 'T1LandArtillery  - Swarm',
+
+        PlatoonTemplate = 'T1LandArtillery',
+
+        Priority = 500,
+
+        PriorityFunction = UniversalT1Land,
+
+        BuilderConditions = {
+            { UCBC, 'UnitCapCheckLess', { 0.90 } },
+
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.7, 0.8 }},
+
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.02, 0.1}},
+
+            { MIBC, 'CanPathToCurrentEnemySwarm', { true, 'LocationType' } },
+
+            { UCBC, 'PoolLessAtLocation', { 'LocationType', 2, categories.LAND * categories.MOBILE * categories.INDIRECTFIRE }},
         },
         BuilderType = 'Land',
     },
@@ -918,7 +942,7 @@ BuilderGroup {
         BuilderName = 'AISwarm Raid Early Game',
         PlatoonTemplate = 'AISwarm Mass Raid',
         Priority = 1000,
-        InstanceCount = 2,
+        InstanceCount = 3,
         BuilderType = 'Any',
         BuilderConditions = {  
             { MIBC, 'CanPathToCurrentEnemySwarm', { true, 'LocationType' } },
