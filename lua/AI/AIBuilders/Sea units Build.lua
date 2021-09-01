@@ -82,7 +82,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Naval Builders',
             { UCBC, 'PoolLessAtLocation', { 'LocationType', 10, categories.FRIGATE * categories.NAVAL }},
         },
 
-        BuilderType = 'SeaT1',
+        BuilderType = 'Sea',
 
     },
 
@@ -106,7 +106,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Naval Builders',
             { UCBC, 'PoolLessAtLocation', { 'LocationType', 5, categories.T1SUBMARINE * categories.NAVAL }},
         },
 
-        BuilderType = 'SeaT1',
+        BuilderType = 'Sea',
 
     },
 
@@ -133,7 +133,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Naval Builders',
             { UCBC, 'PoolLessAtLocation', { 'LocationType', 10, categories.DESTROYER * categories.NAVAL * categories.TECH2 }},
         },
 
-        BuilderType = 'SeaT2',
+        BuilderType = 'Sea',
 
     },
 
@@ -157,7 +157,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Naval Builders',
             { UCBC, 'PoolLessAtLocation', { 'LocationType', 3, categories.CRUISER * categories.NAVAL * categories.TECH2 }},
         },
 
-        BuilderType = 'SeaT2',
+        BuilderType = 'Sea',
 
     },
 
@@ -181,7 +181,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Naval Builders',
             { UCBC, 'PoolLessAtLocation', { 'LocationType', 5, categories.CRUISER * categories.NAVAL * categories.TECH2 }},
         },
 
-        BuilderType = 'SeaT2',
+        BuilderType = 'Sea',
 
     },
 
@@ -205,7 +205,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Naval Builders',
             { UCBC, 'PoolLessAtLocation', { 'LocationType', 3, categories.T2SUBMARINE * categories.NAVAL * categories.TECH2 }},
         },
 
-        BuilderType = 'SeaT2',
+        BuilderType = 'Sea',
 
     },
 
@@ -229,7 +229,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Naval Builders',
             { UCBC, 'PoolLessAtLocation', { 'LocationType', 1, categories.SHIELD * categories.NAVAL * categories.TECH2 }},
         },
 
-        BuilderType = 'SeaT2',
+        BuilderType = 'Sea',
 
     },
 
@@ -253,7 +253,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Naval Builders',
             { UCBC, 'PoolLessAtLocation', { 'LocationType', 1, categories.STEALTH * categories.NAVAL * categories.TECH2 }},
         },
 
-        BuilderType = 'SeaT2',
+        BuilderType = 'Sea',
 
     },
 
@@ -276,7 +276,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Naval Builders',
             { UCBC, 'PoolLessAtLocation', { 'LocationType', 6, categories.BATTLESHIP * categories.NAVAL * categories.TECH3 }},
         },
 
-        BuilderType = 'SeaT3',
+        BuilderType = 'Sea',
 
     },
 
@@ -298,7 +298,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Naval Builders',
             { UCBC, 'PoolLessAtLocation', { 'LocationType', 5, categories.CRUISER * categories.NAVAL * categories.TECH3 }},
         },
 
-        BuilderType = 'SeaT3',
+        BuilderType = 'Sea',
 
     },
 
@@ -321,7 +321,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Naval Builders',
 
             { UCBC, 'PoolLessAtLocation', { 'LocationType', 5, categories.CRUISER * categories.NAVAL * categories.TECH2 }},
         },
-        BuilderType = 'SeaT3',
+        BuilderType = 'Sea',
     },
 
     Builder { BuilderName = 'T3SubKiller - Swarm',
@@ -341,7 +341,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Naval Builders',
 
             { UCBC, 'PoolLessAtLocation', { 'LocationType', 10, categories.SUBMERSIBLE * categories.NAVAL * categories.TECH3 }},
         },
-        BuilderType = 'SeaT3',
+        BuilderType = 'Sea',
     },
 
     Builder { BuilderName = 'T3MissileBoat - Swarm',
@@ -360,7 +360,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Naval Builders',
             { UCBC, 'PoolLessAtLocation', { 'LocationType', 2, categories.BATTLESHIP * categories.INDIRECTFIRE * categories.NAVAL * categories.TECH3 }},
         },
 
-        BuilderType = 'SeaT3',
+        BuilderType = 'Sea',
     },
 
     Builder { BuilderName = 'T3SeaNukeSub - Swarm',
@@ -380,7 +380,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Naval Builders',
 
             { UCBC, 'PoolLessAtLocation', { 'LocationType', 1, categories.NUKE * categories.NAVAL * categories.TECH3 }},
         },
-        BuilderType = 'SeaT3',
+        BuilderType = 'Sea',
     },
 }
 

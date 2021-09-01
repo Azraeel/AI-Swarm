@@ -74,31 +74,6 @@ BuilderGroup {
         }
     },
 
-    --[[ Builder {
-        BuilderName = 'Swarm Power Hydrocarbon Rush',
-        PlatoonTemplate = 'EngineerBuilder',
-        Priority = 675,
-        DelayEqualBuildPlattons = {'Energy', 1},
-        InstanceCount = 1,
-        BuilderConditions = {
-            { MABC, 'CanBuildOnHydroSwarm', { 'LocationType', 50, -1000, 15, 1, 'AntiSurface', 1 }},          
-
-            { UCBC, 'HaveLessThanUnitsWithCategory', { 1, categories.HYDROCARBON } },
-
-            { EBC, 'GreaterThanEconIncomeSwarm',  { 0.2, 2.0}}, 
-
-            { UCBC, 'CheckBuildPlattonDelay', { 'Energy' }},
-        },
-        BuilderType = 'Any',
-        BuilderData = {
-            Construction = {
-                BuildStructures = {
-                    'T1HydroCarbon',
-                }
-            }
-        }
-    }, ]]--
-
     Builder {
         BuilderName = 'Swarm Power Hydrocarbon Normal',
         PlatoonTemplate = 'EngineerBuilder',

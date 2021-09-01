@@ -232,8 +232,8 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
 
     Builder { BuilderName = 'S1 Assist HYDROCARBON Turbo',
         PlatoonTemplate = 'EngineerAssist',
-        Priority = 565,
-        InstanceCount = 2,
+        Priority = 650,
+        InstanceCount = 1,
         BuilderConditions = {
             { EBC, 'GreaterThanEconStorageCurrent', { 200, 2000}},
 

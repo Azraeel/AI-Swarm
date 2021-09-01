@@ -45,7 +45,7 @@ BuilderGroup {
 
         PriorityFunction = HaveLessThanTwoT2AirFactory,
 
-        BuilderType = 'AirT1',
+        BuilderType = 'Air',
 
         BuilderConditions = {
             { UCBC, 'AirStrengthRatioGreaterThan', { 2.5 } },
@@ -67,7 +67,7 @@ BuilderGroup {
 
         PriorityFunction = HaveLessThanTwoT2AirFactory,
 
-        BuilderType = 'AirT1',
+        BuilderType = 'Air',
 
         BuilderConditions = {
             { UCBC, 'AirStrengthRatioGreaterThan', { 2.5 } },
@@ -93,7 +93,7 @@ BuilderGroup {
 
         PriorityFunction = HaveLessThanTwoT3AirFactory,
 
-        BuilderType = 'AirT2',
+        BuilderType = 'Air',
 
         BuilderConditions = {
             { UCBC, 'AirStrengthRatioGreaterThan', { 2.5 } },
@@ -115,7 +115,7 @@ BuilderGroup {
 
         Priority = 775,
 
-        BuilderType = 'AirT2',
+        BuilderType = 'Air',
 
         BuilderConditions = {
             { UCBC, 'AirStrengthRatioGreaterThan', { 2.5 } },
@@ -135,8 +135,6 @@ BuilderGroup {
 
         Priority = 775,
 
-        BuilderType = 'AirT2',
-
         BuilderConditions = {
             { UCBC, 'AirStrengthRatioGreaterThan', { 2.5 } },
 
@@ -150,6 +148,7 @@ BuilderGroup {
 
             { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.02, 0.01}},
         },
+        BuilderType = 'Air',
     },
 
     -- ============ --
@@ -163,8 +162,6 @@ BuilderGroup {
 
         Priority = 1000,
 
-        BuilderType = 'AirT3',
-
         BuilderConditions = {
             { UCBC, 'AirStrengthRatioGreaterThan', { 2.5 } },
 
@@ -174,6 +171,7 @@ BuilderGroup {
 
             { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.02, 0.01}},
         },
+        BuilderType = 'Air',
     },
 
     Builder {
@@ -182,8 +180,6 @@ BuilderGroup {
         PlatoonTemplate = 'T3AirGunship',
 
         Priority = 1000,
-
-        BuilderType = 'AirT3',
 
         BuilderConditions = {
             { UCBC, 'AirStrengthRatioGreaterThan', { 2.5 } },
@@ -194,5 +190,6 @@ BuilderGroup {
 
             { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.02, 0.01}},
         },
+        BuilderType = 'Air',
     }, 
 }

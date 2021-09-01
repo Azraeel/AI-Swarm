@@ -15,7 +15,7 @@ AIBrain = Class(SwarmAIBrainClass) {
             --LOG('* AI-Swarm: OnCreateAI() found AI-Swarm  Name: ('..self.Name..') - personality: ('..per..') ')
 
             self.Swarm = true
-            self.HasLayerTBuilders = true
+
             self:ForkThread(self.ParseIntelThreadSwarm)
 
         end
