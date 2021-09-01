@@ -951,7 +951,7 @@ BuilderGroup {
 
             --{ UCBC, 'NeedMassPointShare', {}},
 
-            { UCBC, 'HaveGreaterThanUnitsWithCategory', { 0, categories.MOBILE * categories.LAND }},      	
+            { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 0, categories.MOBILE * categories.LAND * categories.DIRECTFIRE - categories.ENGINEER }},      	
         },
         BuilderData = {
             SearchRadius = 512,
@@ -1000,7 +1000,7 @@ BuilderGroup {
 
             --{ UCBC, 'NeedMassPointShare', {}},
 
-            { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 2, categories.MOBILE * categories.LAND - categories.ENGINEER } },
+            { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 2, categories.MOBILE * categories.LAND * categories.DIRECTFIRE - categories.ENGINEER } },
         },
         BuilderData = {
             SearchRadius = 512,
@@ -1049,7 +1049,7 @@ BuilderGroup {
 
             --{ UCBC, 'NeedMassPointShare', {}},
 
-            { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 2, categories.MOBILE * categories.LAND - categories.ENGINEER } },
+            { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 2, categories.MOBILE * categories.LAND * categories.DIRECTFIRE - categories.ENGINEER } },
         },
         BuilderData = {
             SearchRadius = 512,
