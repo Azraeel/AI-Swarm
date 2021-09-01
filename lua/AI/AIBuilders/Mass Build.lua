@@ -11,12 +11,6 @@ local MaxCapStructure = 0.25
 -- I need a function or something, that does not allow engineers in a certain radius to build something. 
 -- This is a issue mostly with factories, engineers walking all the way back to base to build factory from 300 distances away.
 
--- My Engineers just do not want to expand correctly.
--- They do the most funky shit and it seems every AI expands better then Swarm with Engineers.
--- I am baffled currently as to why, very frustrating :(
--- This is very rough on my confidence right now, and I do not currently have the answers to solve my consistent Engineer problems and unreliability.
--- It leads to very strange choices and such from his Engineers which almost always leads to his death.
-
 BuilderGroup {
     BuilderGroupName = 'S1 MassBuilders',                       
     BuildersType = 'EngineerBuilder',
@@ -29,7 +23,7 @@ BuilderGroup {
         BuilderConditions = {
             { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 0, categories.ENGINEER * categories.TECH1 }},
 
-            { MABC, 'CanBuildOnMassSwarm', { 'LocationType', 240, -500, 2, 1, 'AntiSurface', 1}},
+            { MABC, 'CanBuildOnMassSwarm', { 'LocationType', 240, -500, 1, 1, 'AntiSurface', 1}},
         },
         BuilderType = 'Any',
         BuilderData = {
@@ -38,7 +32,7 @@ BuilderGroup {
                 RepeatBuild = true,
                 MaxRange = 240,
                 ThreatMin = -1000,
-                ThreatMax = 2,
+                ThreatMax = 1,
                 ThreatRings = 1,
                 ThreatType = 'AntiSurface',
                 BuildStructures = {
@@ -60,7 +54,7 @@ BuilderGroup {
 
             { UCBC, 'EnemyUnitsLessAtLocationRadiusSwarm', {  BaseMilitaryZone, 'LocationType', 10, categories.ALLUNITS - categories.ENGINEER - categories.AIR - categories.SCOUT }},
 
-            { MABC, 'CanBuildOnMassSwarm', { 'LocationType', 480, -500, 2, 1, 'AntiSurface', 1}},
+            { MABC, 'CanBuildOnMassSwarm', { 'LocationType', 480, -500, 1, 1, 'AntiSurface', 1}},
         },
         BuilderType = 'Any',
         BuilderData = {
@@ -69,7 +63,7 @@ BuilderGroup {
                 RepeatBuild = true,
                 MaxRange = 480,
                 ThreatMin = -1000,
-                ThreatMax = 2,
+                ThreatMax = 1,
                 ThreatRings = 1,
                 ThreatType = 'AntiSurface',
                 BuildStructures = {
@@ -91,7 +85,7 @@ BuilderGroup {
 
             { UCBC, 'EnemyUnitsLessAtLocationRadiusSwarm', {  BaseMilitaryZone, 'LocationType', 10, categories.ALLUNITS - categories.ENGINEER - categories.AIR - categories.SCOUT }},
 
-            { MABC, 'CanBuildOnMassSwarm', { 'LocationType', 1000, -500, 2, 1, 'AntiSurface', 1}},
+            { MABC, 'CanBuildOnMassSwarm', { 'LocationType', 1000, -500, 1, 1, 'AntiSurface', 1}},
         },
         BuilderType = 'Any',
         BuilderData = {
@@ -100,7 +94,7 @@ BuilderGroup {
                 RepeatBuild = true,
                 MaxRange = 1000,
                 ThreatMin = -1000,
-                ThreatMax = 2,
+                ThreatMax = 1,
                 ThreatRings = 1,
                 ThreatType = 'AntiSurface',
                 BuildStructures = {

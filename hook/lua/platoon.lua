@@ -33,6 +33,7 @@ local KillThread = KillThread
 SwarmPlatoonClass = Platoon
 Platoon = Class(SwarmPlatoonClass) {
 
+
     PlatoonDisband = function(self)
         local aiBrain = self:GetBrain()
         if not aiBrain.Swarm then
@@ -46,7 +47,7 @@ Platoon = Class(SwarmPlatoonClass) {
 
                 if aiBrain:GetEconomyStoredRatio('ENERGY') > 0.50 then
                     local MABC = import('/lua/editor/MarkerBuildConditions.lua')
-                    if MABC.CanBuildOnMassSwarm(aiBrain, 'MAIN', 1000, -500, 2, 1, 'AntiSurface', 1) then 
+                    if MABC.CanBuildOnMassSwarm(aiBrain, 'MAIN', 1000, -500, 20, 1, 'AntiSurface', 1) then 
                         self:SetAIPlan('EngineerBuildAI')
                         return
                     end
@@ -54,7 +55,7 @@ Platoon = Class(SwarmPlatoonClass) {
 
             end
     
-            self:AggressiveMoveToLocation(aiBrain.BuilderManagers['MAIN'].Position)
+            self:MoveToLocation(aiBrain.BuilderManagers['MAIN'].Position, false)
 
             coroutine.yield(10)
 
@@ -66,7 +67,7 @@ Platoon = Class(SwarmPlatoonClass) {
                 count = count + 1
                 if aiBrain:GetEconomyStoredRatio('ENERGY') > 0.50 then
                     local MABC = import('/lua/editor/MarkerBuildConditions.lua')
-                    if MABC.CanBuildOnMassSwarm(aiBrain, 'MAIN', 1000, -500, 2, 1, 'AntiSurface', 1) then 
+                    if MABC.CanBuildOnMassSwarm(aiBrain, 'MAIN', 1000, -500, 20, 1, 'AntiSurface', 1) then 
                         --LOG("Ooga Booga RepeatBuild is " .. repr(self.BuilderName) .. " " .. repr(self.PlatoonData.Construction.RepeatBuild))
                         self:SetAIPlan('EngineerBuildAI')
                         return
