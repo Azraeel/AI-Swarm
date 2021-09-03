@@ -90,11 +90,11 @@ Platoon = Class(SwarmPlatoonClass) {
         
     end, 
 
-    PoolDistressAI = function(self)
+    BaseManagersDistressAI  = function(self)
         -- Only use this with AI-Swarm
         local aiBrain = self:GetBrain()
         if not aiBrain.Swarm then
-            return SwarmPlatoonClass.PoolDistressAI(self)
+            return SwarmPlatoonClass.BaseManagersDistressAI(self)
         end
         SWARMWAIT(10)
         -- We are leaving this forked thread here because we don't need it.
@@ -2455,9 +2455,11 @@ Platoon = Class(SwarmPlatoonClass) {
             if aiBrain.HasParagon then
                 -- if we have a paragon, upgrade mex as fast as possible. Mabye we lose the paragon and need mex again.
                 ratio = 1.0
-            elseif aiBrain:GetEconomyIncome('MASS') > 500 then
-                --LOG('* AI-Swarm: Mass over 500. Eco running with 50%')
-                ratio = 0.60
+            elseif aiBrain:GetEconomyIncome('MASS') > 1000 then
+                --LOG('* AI-Swarm: Mass over 1000. Eco running with 75%')
+                ratio = 0.75
+            elseif (SWARMTIME() > 600 and aiBrain.SelfAllyExtractor > aiBrain.MassMarker / 1.5) then -- 12 * 60
+                ratio = 0.50
             elseif SWARMTIME() > 1500 then -- 32 * 60
                 ratio = 0.50
             elseif SWARMTIME() > 1200 then -- 22 * 60
@@ -3568,7 +3570,7 @@ Platoon = Class(SwarmPlatoonClass) {
         local aiBrain = self:GetBrain()
 
         if not aiBrain.InterestList then
-            aiBrain:BuildScoutLocations()
+            aiBrain:BuildScoutLocationsSwarm()
         end
 
         if scout:TestToggleCaps('RULEUTC_CloakToggle') then
@@ -3700,7 +3702,7 @@ Platoon = Class(SwarmPlatoonClass) {
 
 
         if not aiBrain.InterestList then
-            aiBrain:BuildScoutLocations()
+            aiBrain:BuildScoutLocationsSwarm()
         end
 
 

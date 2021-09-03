@@ -27,33 +27,11 @@ AIBrain = Class(SwarmAIBrainClass) {
     end,
 
     InitializeSkirmishSystems = function(self)
-        if not self.Swarm then
-            return SwarmAIBrainClass.InitializeSkirmishSystems(self)
-        end
+        SwarmAIBrainClass.InitializeSkirmishSystems(self)
 
-        if self.BrainType == 'Human' then
-            return
-        end
-
-        self.BrainArmy.SelfThreatIs = {
-            Air = {},
-            Extractor = 0,
-            ExtractorCount = 0,
-            MassMarker = 0,
-            MassMarkerBuildable = 0,
-            AllyExtractorCount = 0,
-            AllyExtractor = 0,
-            AllyLandThreat = 0,
-            AntiAirNow = 0,
-            AirNow = 0,
-            LandNow = 0,
-            NavalNow = 0,
-            NavalSubNow = 0,
-        }
-
-        self.EnemyArmy.ACU = {}
+        self.EnemyACU = {}
         for _, v in ArmyBrains do
-            self.EnemyArmy.ACU[v:GetArmyIndex()] = {
+            self.EnemyACU[v:GetArmyIndex()] = {
                 Position = {},
                 LastSpotted = 0,
                 Threat = 0,
@@ -63,19 +41,7 @@ AIBrain = Class(SwarmAIBrainClass) {
             }
         end
 
-        self.EnemyArmy.EnemyThreatIs = {
-            Air = 0,
-            AntiAir = 0,
-            Land = 0,
-            Extractor = 0,
-            ExtractorCount = 0,
-            Naval = 0,
-            NavalSub = 0,
-            DefenseAir = 0,
-            DefenseSurface = 0,
-            DefenseSub = 0,
-            ACUGunUpgrades = 0,
-        }
+        --return
     end,
 
     ExpansionHelpThread = function(self)
@@ -133,8 +99,137 @@ AIBrain = Class(SwarmAIBrainClass) {
                 SWARMINSERT(MassMarker, v)
             end
         end
-        self.BrainArmy.SelfThreatIs.MassMarker = markerCount
-        self.BrainArmy.SelfThreatIs.MassMarkerBuildable = massMarkerBuildable
+        self.MassMarker = markerCount
+        self.MassMarkerBuildable = massMarkerBuildable
+    end,
+
+    BuildScoutLocationsSwarm = function(self)
+        local aiBrain = self
+        local opponentStarts = {}
+        local allyStarts = {}
+
+        if not aiBrain.InterestList then
+            aiBrain.InterestList = {}
+            aiBrain.IntelData.HiPriScouts = 0
+            aiBrain.IntelData.AirHiPriScouts = 0
+            aiBrain.IntelData.AirLowPriScouts = 0
+
+            -- Add each enemy's start location to the InterestList as a new sub table
+            aiBrain.InterestList.HighPriority = {}
+            aiBrain.InterestList.LowPriority = {}
+            aiBrain.InterestList.MustScout = {}
+
+            local myArmy = ScenarioInfo.ArmySetup[self.Name]
+            local MarkerList = AIUtils.AIGetMarkerLocations(aiBrain, 'Mass')
+
+            if MarkerList >= 1 then 
+                do
+                table.insert(aiBrain.InterestList.HighPriority,
+                    {
+                        Position = MarkerList,
+                        LastScouted = 0,
+                    }
+                )
+                end
+            end
+                
+            if ScenarioInfo.Options.TeamSpawn == 'fixed' then
+                -- Spawn locations were fixed. We know exactly where our opponents are.
+                -- Don't scout areas owned by us or our allies.
+                local numOpponents = 0
+                for i = 1, 16 do
+                    local army = ScenarioInfo.ArmySetup['ARMY_' .. i]
+                    local startPos = ScenarioUtils.GetMarker('ARMY_' .. i).position
+                    if army and startPos then
+                        if army.ArmyIndex ~= myArmy.ArmyIndex and (army.Team ~= myArmy.Team or army.Team == 1) then
+                        -- Add the army start location to the list of interesting spots.
+                        opponentStarts['ARMY_' .. i] = startPos
+                        numOpponents = numOpponents + 1
+                        table.insert(aiBrain.InterestList.HighPriority,
+                            {
+                                Position = startPos,
+                                LastScouted = 0,
+                            }
+                        )
+                        else
+                            allyStarts['ARMY_' .. i] = startPos
+                        end
+                    end
+                end
+
+                aiBrain.NumOpponents = numOpponents
+
+                -- For each vacant starting location, check if it is closer to allied or enemy start locations (within 100 ogrids)
+                -- If it is closer to enemy territory, flag it as high priority to scout.
+                local starts = AIUtils.AIGetMarkerLocations(aiBrain, 'Start Location')
+                for _, loc in starts do
+                    -- If vacant
+                    if not opponentStarts[loc.Name] and not allyStarts[loc.Name] then
+                        local closestDistSq = 999999999
+                        local closeToEnemy = false
+
+                        for _, pos in opponentStarts do
+                            local distSq = VDist2Sq(pos[1], pos[3], loc.Position[1], loc.Position[3])
+                            -- Make sure to scout for bases that are near equidistant by giving the enemies 100 ogrids
+                            if distSq-10000 < closestDistSq then
+                                closestDistSq = distSq-10000
+                                closeToEnemy = true
+                            end
+                        end
+
+                        for _, pos in allyStarts do
+                            local distSq = VDist2Sq(pos[1], pos[3], loc.Position[1], loc.Position[3])
+                            if distSq < closestDistSq then
+                                closestDistSq = distSq
+                                closeToEnemy = false
+                                break
+                            end
+                        end
+
+                        if closeToEnemy then
+                            table.insert(aiBrain.InterestList.LowPriority,
+                                {
+                                    Position = loc.Position,
+                                    LastScouted = 0,
+                                }
+                            )
+                        end
+                    end
+                end
+
+            else -- Spawn locations were random. We don't know where our opponents are. Add all non-ally start locations to the scout list
+                local numOpponents = 0
+                for i = 1, 16 do
+                    local army = ScenarioInfo.ArmySetup['ARMY_' .. i]
+                    local startPos = ScenarioUtils.GetMarker('ARMY_' .. i).position
+
+                    if army and startPos then
+                        if army.ArmyIndex == myArmy.ArmyIndex or (army.Team == myArmy.Team and army.Team ~= 1) then
+                            allyStarts['ARMY_' .. i] = startPos
+                        else
+                            numOpponents = numOpponents + 1
+                        end
+                    end
+                end
+
+                aiBrain.NumOpponents = numOpponents
+
+                -- If the start location is not ours or an ally's, it is suspicious
+                local starts = AIUtils.AIGetMarkerLocations(aiBrain, 'Start Location')
+                for _, loc in starts do
+                    -- If vacant
+                    if not allyStarts[loc.Name] then
+                        table.insert(aiBrain.InterestList.LowPriority,
+                            {
+                                Position = loc.Position,
+                                LastScouted = 0,
+                            }
+                        )
+                    end
+                end
+            end
+            aiBrain:ForkThread(self.ParseIntelThread)
+        end
     end,
 
     StrategicMonitorThreadSwarm = function(self, ALLBPS)
@@ -254,30 +349,30 @@ AIBrain = Class(SwarmAIBrainClass) {
                         end
                     end
                     if gunBool then
-                        self.EnemyArmy.ACU[enemyIndex].Gun = true
+                        self.EnemyACU[enemyIndex].Gun = true
                         --LOG('Gun Upgrade Present on army '..enemy.Nickname)
                     else
-                        self.EnemyArmy.ACU[enemyIndex].Gun = false
+                        self.EnemyACU[enemyIndex].Gun = false
                     end
                     if self.CheatEnabled then
-                        self.EnemyArmy.ACU[enemyIndex].Hp = acuHealth
-                        self.EnemyArmy.ACU[enemyIndex].LastSpotted = lastSpotted
-                        --LOG('Cheat is enabled and acu has '..acuHealth..' Health '..'Brain intel says '..self.EnemyArmy.ACU[enemyIndex].Hp)
+                        self.EnemyACU[enemyIndex].Hp = acuHealth
+                        self.EnemyACU[enemyIndex].LastSpotted = lastSpotted
+                        --LOG('Cheat is enabled and acu has '..acuHealth..' Health '..'Brain intel says '..self.EnemyACU[enemyIndex].Hp)
                     end
                 end
             end
         end
-        self.EnemyArmy.EnemyThreatIs.ACUGunUpgrades = enemyACUGun
-        self.EnemyArmy.EnemyThreatIs.Air = enemyAirThreat
-        self.EnemyArmy.EnemyThreatIs.AntiAir = enemyAntiAirThreat
-        self.EnemyArmy.EnemyThreatIs.Extractor = enemyExtractorthreat
-        self.EnemyArmy.EnemyThreatIs.ExtractorCount = enemyExtractorCount
-        self.EnemyArmy.EnemyThreatIs.Naval = enemyNavalThreat
-        self.EnemyArmy.EnemyThreatIs.NavalSub = enemyNavalSubThreat
-        self.EnemyArmy.EnemyThreatIs.Land = enemyLandThreat
-        self.EnemyArmy.EnemyThreatIs.DefenseAir = enemyDefenseAir
-        self.EnemyArmy.EnemyThreatIs.DefenseSurface = enemyDefenseSurface
-        self.EnemyArmy.EnemyThreatIs.DefenseSub = enemyDefenseSub
+        self.EnemyACUGunUpgrades = enemyACUGun
+        self.EnemyAir = enemyAirThreat
+        self.EnemyAntiAir = enemyAntiAirThreat
+        self.EnemyExtractor = enemyExtractorthreat
+        self.EnemyExtractorCount = enemyExtractorCount
+        self.EnemyNaval = enemyNavalThreat
+        self.EnemyNavalSub = enemyNavalSubThreat
+        self.EnemyLand = enemyLandThreat
+        self.EnemyDefenseAir = enemyDefenseAir
+        self.EnemyDefenseSurface = enemyDefenseSurface
+        self.EnemyDefenseSub = enemyDefenseSub
         --LOG('Completing Threat Check'..GetGameTick())
     end,
 
@@ -300,8 +395,8 @@ AIBrain = Class(SwarmAIBrainClass) {
             antiAirThreat = antiAirThreat + bp.AirThreatLevel
         end
         --LOG('My Air Threat is'..airthreat)
-        self.BrainArmy.SelfThreatIs.AirNow = airthreat
-        self.BrainArmy.SelfThreatIs.AntiAirNow = antiAirThreat
+        self.SelfAirNow = airthreat
+        self.SelfAntiAirNow = antiAirThreat
         
         SWARMWAIT(1)
         local brainExtractors = GetListOfUnits( self, categories.STRUCTURE * categories.MASSEXTRACTION, false, false)
@@ -314,8 +409,8 @@ AIBrain = Class(SwarmAIBrainClass) {
             selfExtractorThreat = selfExtractorThreat + exBp.EconomyThreatLevel
             selfExtractorCount = selfExtractorCount + 1
         end
-        self.BrainArmy.SelfThreatIs.Extractor = selfExtractorThreat
-        self.BrainArmy.SelfThreatIs.ExtractorCount = selfExtractorCount
+        self.SelfExtractor = selfExtractorThreat
+        self.SelfExtractorCount = selfExtractorCount
         local allyBrains = {}
         for index, brain in ArmyBrains do
             if index ~= self:GetArmyIndex() then
@@ -345,9 +440,9 @@ AIBrain = Class(SwarmAIBrainClass) {
                 end
             end
         end
-        self.BrainArmy.SelfThreatIs.AllyExtractorCount = allyExtractorCount + selfExtractorCount
-        self.BrainArmy.SelfThreatIs.AllyExtractor = allyExtractorthreat + selfExtractorThreat
-        self.BrainArmy.SelfThreatIs.AllyLandThreat = allyLandThreat
+        self.SelfAllyExtractorCount = allyExtractorCount + selfExtractorCount
+        self.SelfAllyExtractor = allyExtractorthreat + selfExtractorThreat
+        self.SelfAllyLandThreat = allyLandThreat
         SWARMWAIT(1)
         local brainNavalUnits = GetListOfUnits( self, (categories.MOBILE * categories.NAVAL) + (categories.NAVAL * categories.FACTORY) + (categories.NAVAL * categories.DEFENSE), false, false)
         local navalThreat = 0
@@ -357,8 +452,8 @@ AIBrain = Class(SwarmAIBrainClass) {
             navalThreat = navalThreat + bp.AirThreatLevel + bp.SubThreatLevel + bp.SurfaceThreatLevel
             navalSubThreat = navalSubThreat + bp.SubThreatLevel
         end
-        self.BrainArmy.SelfThreatIs.NavalNow = navalThreat
-        self.BrainArmy.SelfThreatIs.NavalSubNow = navalSubThreat
+        self.SelfNavalNow = navalThreat
+        self.SelfNavalSubNow = navalSubThreat
 
         SWARMWAIT(1)
         local brainLandUnits = GetListOfUnits( self, categories.MOBILE * categories.LAND * (categories.DIRECTFIRE + categories.INDIRECTFIRE) - categories.COMMAND , false, false)
@@ -367,7 +462,7 @@ AIBrain = Class(SwarmAIBrainClass) {
             bp = ALLBPS[v.UnitId].Defense
             landThreat = landThreat + bp.SurfaceThreatLevel
         end
-        self.BrainArmy.SelfThreatIs.LandNow = landThreat
+        self.SelfLandNow = landThreat
         --LOG('Self LandThreat is '..self.BrainArmy.SelfThreat.LandNow)
     end,
 
@@ -403,8 +498,8 @@ AIBrain = Class(SwarmAIBrainClass) {
                 end
             end ]]--    
 
-            local enemyLandThreat = self.EnemyArmy.EnemyThreatIs.Land
-            local landThreat = self.BrainArmy.SelfThreatIs.LandNow
+            local enemyLandThreat = self.EnemyLand
+            local landThreat = self.SelfLandNow
 
             if enemyLandThreat ~= 0 then
                 if landThreat == 0 then
@@ -436,8 +531,8 @@ AIBrain = Class(SwarmAIBrainClass) {
                 end
             end ]]--
 
-            local enemyAirThreat = self.EnemyArmy.EnemyThreatIs.Air
-            local airthreat = self.BrainArmy.SelfThreatIs.AirNow
+            local enemyAirThreat = self.EnemyAir
+            local airthreat = self.SelfAirNow
 
             if enemyAirThreat ~= 0 then
                 if airthreat == 0 then
@@ -469,8 +564,8 @@ AIBrain = Class(SwarmAIBrainClass) {
                 end
             end ]]--
 
-            local enemyNavalThreat = self.EnemyArmy.EnemyThreatIs.Naval
-            local navalThreat = self.BrainArmy.SelfThreatIs.NavalNow
+            local enemyNavalThreat = self.EnemyNaval
+            local navalThreat = self.SelfNavalNow
     
             if enemyNavalThreat ~= 0 then
                 if navalThreat == 0 then
