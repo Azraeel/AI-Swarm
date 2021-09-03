@@ -47,6 +47,8 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Builders',
 
         Priority = 500,
 
+        PriorityFunction = HaveLessThanTwoT3AirFactory,
+
         BuilderConditions = {
             { UCBC, 'AirStrengthRatioLessThan', { 4 } },
 
@@ -326,7 +328,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Builders',
         BuilderConditions = {
             { UCBC, 'CheckBuildPlattonDelay', { 'Scouts' }},
 
-            { EBC, 'GreaterThanEconStorageCurrent', { 200, 2000}},
+            { EBC, 'GreaterThanEconStorageCurrent', { 100, 2000}},
 
             { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.7, 0.8 }},
 
@@ -349,7 +351,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Builders',
         BuilderConditions = {
             { UCBC, 'CheckBuildPlattonDelay', { 'Scouts' }},
 
-            { EBC, 'GreaterThanEconStorageCurrent', { 200, 2000}},
+            { EBC, 'GreaterThanEconStorageCurrent', { 100, 2000}},
 
             { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.9, 1.1 }},
 

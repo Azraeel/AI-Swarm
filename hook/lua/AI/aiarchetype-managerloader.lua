@@ -11,6 +11,8 @@ SwarmExecutePlanFunction = ExecutePlan
 function ExecutePlan(aiBrain)
 
     if aiBrain.Swarm then
+        aiBrain:ForkThread(BaseTargetManagerThreadSwarm, aiBrain)
+        --aiBrain:ForkThread(MarkerGridThreatManagerThreadSwarm, aiBrain)
         aiBrain:ForkThread(EcoManagerThreadSwarm, aiBrain)
     end
 
@@ -394,7 +396,7 @@ function BaseTargetManagerThreadSwarm(aiBrain)
     while GetGameTimeSeconds() < 25 + aiBrain:GetArmyIndex() do
        coroutine.yield(10)
     end
-    LOG('* AI-Swarm: Function BaseTargetManagerThread() started. ['..aiBrain.Nickname..']')
+    --LOG('* AI-Swarm: Function BaseTargetManagerThread() started. ['..aiBrain.Nickname..']')
     local BasePanicZone, BaseMilitaryZone, BaseEnemyZone = import('/mods/AI-Swarm/lua/AI/swarmutilities.lua').GetDangerZoneRadii()
     local targets = {}
     local baseposition, radius
@@ -546,7 +548,7 @@ function MarkerGridThreatManagerThreadSwarm(aiBrain)
     while GetGameTimeSeconds() < 30 + aiBrain:GetArmyIndex() do
         coroutine.yield(10)
     end
-    LOG('* AI-Swarm: Function MarkerGridThreatManagerThread() started. ['..aiBrain.Nickname..']')
+    --LOG('* AI-Swarm: Function MarkerGridThreatManagerThread() started. ['..aiBrain.Nickname..']')
     local AIAttackUtils = import('/lua/ai/aiattackutilities.lua')
     local numTargetTECH123 = 0
     local numTargetTECH4 = 0
@@ -612,5 +614,5 @@ function MarkerGridThreatManagerThreadSwarm(aiBrain)
             HighestThreat[armyIndex].TargetLocation = HighestThreat[armyIndex].Location
         end
     end
-end
+end 
 
