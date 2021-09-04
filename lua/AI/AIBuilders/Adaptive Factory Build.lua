@@ -232,7 +232,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Adaptive Factory Build',
 
         PlatoonTemplate = 'EngineerBuilderALLTECH',
 
-        Priority = 650,
+        Priority = 645,
 
         DelayEqualBuildPlattons = {'Factories', 3},
 

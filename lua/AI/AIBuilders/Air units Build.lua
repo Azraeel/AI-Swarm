@@ -35,10 +35,31 @@ end
 
 BuilderGroup { BuilderGroupName = 'Swarm Air Builders',
     BuildersType = 'FactoryBuilder',
-    
+
     -- ============ --
     --    TECH 1    --
     -- ============ --
+
+    -- This Specific Builder Covers the first 6 Minutes.
+    -- In Which Swarm is promised to open with a third air factory.
+    -- So Due to the construct of our normal air builders.
+    -- We put this in to cover our finish maybe 5 or 10 Inteceptors. 
+    Builder {
+        BuilderName = 'T1 Air Opening Queue',
+
+        PlatoonTemplate = 'SwarmAIT1AirOpeningQueue',
+
+        Priority = 500,
+
+        BuilderConditions = {
+            { UCBC, 'LessThanGameTimeSeconds', { 60 * 5 } },
+
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.7, 0.8 }},
+
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.02, 0.1}},
+        },
+        BuilderType = 'Air',
+    }, 
 
     Builder {
         BuilderName = 'Swarm-AI - T1 Air Fighter',
@@ -69,7 +90,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Builders',
         PriorityFunction = HaveLessThanTwoT2AirFactory,
 
         BuilderConditions = {
-            { UCBC, 'AirStrengthRatioGreaterThan', { 2 } },
+            { UCBC, 'AirStrengthRatioGreaterThan', { 1.5 } },
 
             { EBC, 'GreaterThanEconStorageCurrent', { 200, 2000}},
 
@@ -88,7 +109,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Builders',
         PriorityFunction = HaveLessThanTwoT2AirFactory,
 
         BuilderConditions = {
-            { UCBC, 'AirStrengthRatioGreaterThan', { 2 } },
+            { UCBC, 'AirStrengthRatioGreaterThan', { 1.5 } },
 
             { EBC, 'GreaterThanEconStorageCurrent', { 200, 2000}},
 
@@ -110,7 +131,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Builders',
         PriorityFunction = HaveLessThanTwoT3AirFactory,
 
         BuilderConditions = {
-            { UCBC, 'AirStrengthRatioGreaterThan', { 2 } },
+            { UCBC, 'AirStrengthRatioGreaterThan', { 1.5 } },
 
             { EBC, 'GreaterThanEconStorageCurrent', { 200, 2000}},
 
@@ -129,7 +150,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Builders',
         PriorityFunction = HaveLessThanTwoT3AirFactory,
 
         BuilderConditions = {
-            { UCBC, 'AirStrengthRatioGreaterThan', { 2 } },
+            { UCBC, 'AirStrengthRatioGreaterThan', { 1.5 } },
 
             { EBC, 'GreaterThanEconStorageCurrent', { 200, 2000}},
 
@@ -148,7 +169,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Builders',
         BuilderConditions = {
             { UCBC, 'UnitsGreaterAtEnemySwarm', { 0 , categories.NAVAL * categories.MOBILE } },
 
-            { UCBC, 'AirStrengthRatioGreaterThan', { 2 } },
+            { UCBC, 'AirStrengthRatioGreaterThan', { 1.5 } },
 
             { EBC, 'GreaterThanEconStorageCurrent', { 200, 2000}},
 
@@ -190,7 +211,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Builders',
         BuilderConditions = {
             { UCBC, 'UnitCapCheckLess', { 0.90 } },
 
-            { UCBC, 'AirStrengthRatioGreaterThan', { 2 } },
+            { UCBC, 'AirStrengthRatioGreaterThan', { 1.5 } },
 
             { EBC, 'GreaterThanEconStorageCurrent', { 200, 2000}},
 
@@ -209,7 +230,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Builders',
         BuilderConditions = {
             { UCBC, 'UnitCapCheckLess', { 0.90 } },
 
-            { UCBC, 'AirStrengthRatioGreaterThan', { 2 } },
+            { UCBC, 'AirStrengthRatioGreaterThan', { 1.5 } },
 
             { EBC, 'GreaterThanEconStorageCurrent', { 200, 2000}},
 
@@ -228,7 +249,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Builders',
         BuilderConditions = {
             { UCBC, 'UnitsGreaterAtEnemySwarm', { 0 , categories.NAVAL * categories.MOBILE } },
 
-            { UCBC, 'AirStrengthRatioGreaterThan', { 3 } },
+            { UCBC, 'AirStrengthRatioGreaterThan', { 2 } },
 
             { EBC, 'GreaterThanEconStorageCurrent', { 200, 2000}},
 
@@ -245,6 +266,8 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Builders',
         PlatoonTemplate = 'T1AirTransport',
         Priority = 510, 
         BuilderConditions = {
+            { UCBC, 'AirStrengthRatioGreaterThan', { 1 } },
+
             { EBC, 'GreaterThanEconTrendSwarm', { 0.3, 12.0 } },
 
             { EBC, 'GreaterThanEconStorageCurrent', { 200, 2000}},
@@ -269,6 +292,8 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Builders',
         PlatoonTemplate = 'T2AirTransport',
         Priority = 603,
         BuilderConditions = {
+            { UCBC, 'AirStrengthRatioGreaterThan', { 1 } },
+
             { EBC, 'GreaterThanEconTrendSwarm', { 0.3, 12.0 } },
 
             { EBC, 'GreaterThanEconStorageCurrent', { 200, 2000}},
@@ -293,6 +318,8 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Builders',
         PlatoonTemplate = 'T3AirTransport',
         Priority = 707,
         BuilderConditions = {
+            { UCBC, 'AirStrengthRatioGreaterThan', { 1 } },
+
             { MIBC, 'FactionIndex', { 1 }}, -- 1: UEF, 2: Aeon, 3: Cybran, 4: Seraphim, 5: Nomads 
             
             { EBC, 'GreaterThanEconTrendSwarm', { 0.3, 12.0 } },
@@ -328,7 +355,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Builders',
         BuilderConditions = {
             { UCBC, 'CheckBuildPlattonDelay', { 'Scouts' }},
 
-            { EBC, 'GreaterThanEconStorageCurrent', { 100, 2000}},
+            { EBC, 'GreaterThanEconStorageCurrent', { 200, 2000}},
 
             { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.7, 0.8 }},
 
@@ -351,7 +378,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Builders',
         BuilderConditions = {
             { UCBC, 'CheckBuildPlattonDelay', { 'Scouts' }},
 
-            { EBC, 'GreaterThanEconStorageCurrent', { 100, 2000}},
+            { EBC, 'GreaterThanEconStorageCurrent', { 200, 2000}},
 
             { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.9, 1.1 }},
 
@@ -804,7 +831,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Formers',
                 categories.ALLUNITS,
             },
         },
-        BuilderConditions = {                                                  
+        BuilderConditions = {         
             { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 2, categories.MOBILE * categories.AIR * (categories.GROUNDATTACK + categories.BOMBER) - categories.ENGINEER } }, 
         },
         BuilderType = 'Any',                                                 
@@ -861,7 +888,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Formers',
                 categories.ALLUNITS,
             },
         },
-        BuilderConditions = {                                                   
+        BuilderConditions = {                  
             { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 5, categories.MOBILE * categories.AIR * (categories.GROUNDATTACK + categories.BOMBER) - categories.ENGINEER } }, 
         },
         BuilderType = 'Any',                                                    
@@ -895,6 +922,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Formers',
         },
         BuilderConditions = {                                                   
             { UCBC, 'AirStrengthRatioGreaterThan', { 1.3 } },
+
             { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 5, categories.MOBILE * categories.AIR * categories.GROUNDATTACK - categories.ENGINEER } }, 
         },
         BuilderType = 'Any',                                                    
@@ -926,6 +954,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Formers',
         },
         BuilderConditions = {                                                   
             { UCBC, 'AirStrengthRatioGreaterThan', { 1.3 } },
+
             { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 5, categories.MOBILE * categories.AIR * categories.BOMBER - categories.ENGINEER } }, 
         },
         BuilderType = 'Any',                                                    
@@ -974,6 +1003,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Formers',
         },
         BuilderConditions = {                                                  
             { UCBC, 'AirStrengthRatioGreaterThan', { 1.3 } },
+
             { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 5, categories.MOBILE * categories.AIR * categories.BOMBER - categories.ENGINEER } }, 
         },
         BuilderType = 'Any',                                                   
@@ -1022,6 +1052,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Formers',
         },
         BuilderConditions = {                                                 
             { UCBC, 'AirStrengthRatioGreaterThan', { 1.3 } },
+
             { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 5, categories.MOBILE * categories.AIR * categories.BOMBER - categories.ENGINEER } }, 
         },
         BuilderType = 'Any',                                                   
@@ -1067,6 +1098,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Formers',
         },
         BuilderConditions = {                                                   
             { UCBC, 'AirStrengthRatioGreaterThan', { 1.5 } },
+
             { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 20, categories.MOBILE * categories.AIR * categories.BOMBER - categories.ENGINEER } },
         },
         BuilderType = 'Any',                                                    

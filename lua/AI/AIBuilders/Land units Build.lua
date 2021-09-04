@@ -23,9 +23,9 @@ if not categories.STEALTHFIELD then categories.STEALTHFIELD = categories.SHIELD 
 
 local UniversalT1Land = function( self, aiBrain )
 	
-	if GetGameTimeSeconds() > 1200 then
+	if GetGameTimeSeconds() > 1800 then
         return 0, false
-    elseif aiBrain.MyLandRatio > 2 then
+    elseif aiBrain.MyLandRatio > 1.5 then
 		return 0, false
     elseif table.getn( aiBrain:GetListOfUnits( categories.FACTORY * categories.LAND * categories.TECH2, false, true )) >= 3 then
         return 0, false
@@ -522,6 +522,12 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Scout Formers',
 -- or in some other condition when Swarm needs to be more effective with his land units instead of just HuntAI Straight at the Enemy.
 -- Problems for another day though.
 
+-- Threat Ratio Tuning has been more effective then I thought it would be.
+-- He's be able to really turn merging into an effective tool and really not overextend via HuntAI and EnemyZone Formers not forming till he absolutely knows he's in a winning position.
+-- This needs to be continually expanded upon especially to his Air which needs to effectively support his land platoons and his naval platoons.
+-- Yes I know I have about 3 Paragraphs for Land Formers lol don't judge me I like typing ok :)
+-- Tuning is obviously my most favorite part of AI Development.... Oh Gosh now I'm just rumbling. 
+
 BuilderGroup {
     BuilderGroupName = 'AISwarm Platoon Builder',
     BuildersType = 'PlatoonFormBuilder', 
@@ -577,6 +583,8 @@ BuilderGroup {
 
         BuilderConditions = {
             { UCBC, 'ScalePlatoonSizeSwarm', { 'LocationType', 'LAND', categories.MOBILE * categories.LAND * (categories.DIRECTFIRE + categories.INDIRECTFIRE) - categories.ENGINEER - categories.EXPERIMENTAL } },
+
+            { UCBC, 'LandStrengthRatioGreaterThan', { 1.2 } },
 
             { MIBC, 'CanPathToCurrentEnemySwarm', { true, 'LocationType' } },
         },
@@ -940,25 +948,28 @@ BuilderGroup {
     
     Builder {
         BuilderName = 'AISwarm Raid Early Game',
+
         PlatoonTemplate = 'AISwarm Mass Raid',
+
         Priority = 1000,
+
         InstanceCount = 3,
+
         BuilderType = 'Any',
+
         BuilderConditions = {  
             { MIBC, 'CanPathToCurrentEnemySwarm', { true, 'LocationType' } },
 
             { UCBC, 'LessThanGameTimeSeconds', { 240 } },
 
-            --{ UCBC, 'NeedMassPointShare', {}},
-
             { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 0, categories.MOBILE * categories.LAND * categories.DIRECTFIRE - categories.ENGINEER }},      	
         },
         BuilderData = {
-            SearchRadius = 512,
+            SearchRadius = BaseEnemyZone,
             LocationType = 'LocationType',
             IncludeWater = false,
             IgnoreFriendlyBase = true,
-            MaxPathDistance = 512, 
+            MaxPathDistance = BaseEnemyZone, 
             FindHighestThreat = false,			
             MaxThreatThreshold = 3000,		
             MinThreatThreshold = 1000,		    
@@ -988,26 +999,31 @@ BuilderGroup {
     },
 
     Builder {
-        BuilderName = 'Swarm Mass Raid Standard',                            
-        PlatoonTemplate = 'AISwarm Mass Raid Large',                         
-        Priority = 652,                                                      
-        InstanceCount = 2,                                                     
+        BuilderName = 'Swarm Mass Raid Standard',       
+
+        PlatoonTemplate = 'AISwarm Mass Raid Large',    
+
+        Priority = 652,                                     
+
+        InstanceCount = 2,                              
+
         BuilderType = 'Any',
+
         BuilderConditions = {   
-            { UCBC, 'ScalePlatoonSizeSwarm', { 'LocationType', 'LAND', categories.MOBILE * categories.LAND - categories.ENGINEER - categories.EXPERIMENTAL } },
+            --{ UCBC, 'ScalePlatoonSizeSwarm', { 'LocationType', 'LAND', categories.MOBILE * categories.LAND - categories.ENGINEER - categories.EXPERIMENTAL } },
+
+            { UCBC, 'LessThanGameTimeSeconds', { 720 } },
             
             { MIBC, 'CanPathToCurrentEnemySwarm', { true, 'LocationType' } },
-
-            --{ UCBC, 'NeedMassPointShare', {}},
 
             { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 2, categories.MOBILE * categories.LAND * categories.DIRECTFIRE - categories.ENGINEER } },
         },
         BuilderData = {
-            SearchRadius = 512,
+            SearchRadius = BaseEnemyZone,
             LocationType = 'LocationType',
             IncludeWater = false,
             IgnoreFriendlyBase = true,
-            MaxPathDistance = 512, 
+            MaxPathDistance = BaseEnemyZone, 
             FindHighestThreat = false,			
             MaxThreatThreshold = 6000,		
             MinThreatThreshold = 1000,		    
@@ -1037,26 +1053,35 @@ BuilderGroup {
     },
 
     Builder {
-        BuilderName = 'Swarm Mass Raid Standard - Extended',                            
-        PlatoonTemplate = 'AISwarm Mass Raid Large',                         
-        Priority = 652,                                                      
-        InstanceCount = 1,                                                     
+        BuilderName = 'Swarm Mass Raid Standard - Extended', 
+
+        PlatoonTemplate = 'AISwarm Mass Raid Large',               
+
+        Priority = 652,                                     
+
+        InstanceCount = 2,                            
+
         BuilderType = 'Any',
+
         BuilderConditions = {   
-            { UCBC, 'ScalePlatoonSizeSwarm', { 'LocationType', 'LAND', categories.MOBILE * categories.LAND - categories.ENGINEER - categories.EXPERIMENTAL } },
+            --{ UCBC, 'ScalePlatoonSizeSwarm', { 'LocationType', 'LAND', categories.MOBILE * categories.LAND - categories.ENGINEER - categories.EXPERIMENTAL } },
+
+            { UCBC, 'GreaterThanGameTimeSeconds', { 720 } },
+
+            { UCBC, 'LessThanGameTimeSeconds', { 1500 } },
+
+            { UCBC, 'LandStrengthRatioGreaterThan', { 1 } },
             
             { MIBC, 'CanPathToCurrentEnemySwarm', { true, 'LocationType' } },
-
-            --{ UCBC, 'NeedMassPointShare', {}},
 
             { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 2, categories.MOBILE * categories.LAND * categories.DIRECTFIRE - categories.ENGINEER } },
         },
         BuilderData = {
-            SearchRadius = 512,
+            SearchRadius = BaseEnemyZone,
             LocationType = 'LocationType',
             IncludeWater = false,
             IgnoreFriendlyBase = true,
-            MaxPathDistance = 512, 
+            MaxPathDistance = BaseEnemyZone, 
             FindHighestThreat = false,			
             MaxThreatThreshold = 6000,		
             MinThreatThreshold = 1000,		    
@@ -1134,7 +1159,7 @@ BuilderGroup {
         BuilderConditions = {
             { MIBC, 'GreaterThanGameTime', { 1800 } }, 
 
-            { UCBC, 'LandStrengthRatioGreaterThan', { 3 } },
+            { UCBC, 'LandStrengthRatioGreaterThan', { 2 } },
 
             { MIBC, 'CanPathToCurrentEnemySwarm', { true, 'LocationType' } },
         },
@@ -1170,7 +1195,7 @@ BuilderGroup {
         BuilderConditions = {
             { MIBC, 'GreaterThanGameTime', { 1800 } }, 
 
-            { UCBC, 'LandStrengthRatioGreaterThan', { 3 } },
+            { UCBC, 'LandStrengthRatioGreaterThan', { 2 } },
             
             { MIBC, 'CanPathToCurrentEnemySwarm', { true, 'LocationType' } },
         },

@@ -4,7 +4,29 @@
 -- Yes more builders but Swarm has the lowest count for Builders of All AI, so I feel comfortable increasing this count a little.
 
 PlatoonTemplate {
-    Name = 'SwarmAIFighterGroup',
+    Name = 'SwarmAIT1AirOpeningQueue',
+    FactionSquads = {
+        UEF = {
+            { 'uea0101', 1, 1, 'attack', 'GrowthFormation' },
+            { 'uea0102', 1, 2, 'attack', 'None' },
+        },
+        Aeon = {
+            { 'uaa0101', 1, 1, 'attack', 'GrowthFormation' },
+            { 'uaa0102', 1, 2, 'attack', 'None' },
+        },
+        Cybran = {
+            { 'ura0101', 1, 1, 'attack', 'GrowthFormation' },
+            { 'ura0102', 1, 2, 'attack', 'None' },
+        },
+        Seraphim = {
+            { 'xsa0101', 1, 1, 'attack', 'GrowthFormation' },
+            { 'xsa0102', 1, 2, 'attack', 'None' },
+        },
+    }
+}
+
+PlatoonTemplate {
+    Name = 'SwarmAIT1FighterGroup',
     FactionSquads = {
         UEF = {
             { 'uea0101', 1, 1, 'attack', 'GrowthFormation' },

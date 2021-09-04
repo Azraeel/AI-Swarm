@@ -474,7 +474,7 @@ BuilderGroup {
 
         PlatoonTemplate = 'CommanderBuilder',
 
-        Priority = 650,
+        Priority = 645,
 
         PriorityFunction = HaveLessThanThreeT2AirFactoryACU,
 
