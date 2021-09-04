@@ -1,5 +1,29 @@
+local import = import
+
 local ScenarioUtils = import('/lua/sim/ScenarioUtilities.lua')
 local AIUtils = import('/lua/ai/aiutilities.lua')
+
+local SWARMGETN = table.getn
+local SWARMINSERT = table.insert
+local SWARMREMOVE = table.remove
+local SWARMWAIT = coroutine.yield
+local SWARMFLOOR = math.floor
+local SWARMMAX = math.max
+local SWARMMIN = math.min
+local SWARMABS = math.abs
+local SWARMTIME = GetGameTimeSeconds
+local SWARMENTITY = EntityCategoryContains
+local SWARMPARSE =  ParseEntityCategory
+
+local VDist2 = VDist2
+local VDist2Sq = VDist2Sq
+local VDist3 = VDist3
+
+local GetThreatsAroundPosition = moho.aibrain_methods.GetThreatsAroundPosition
+local IsUnitState = moho.unit_methods.IsUnitState
+local AssignUnitsToPlatoon = moho.aibrain_methods.AssignUnitsToPlatoon
+local GetFractionComplete = moho.entity_methods.GetFractionComplete
+local GetAIBrain = moho.unit_methods.GetAIBrain
 
 --Extractor Upgrading needs a complete rework, though honestly I do not have the skill to rewrite this completely nor the skill to use Sprouto or Relly's code right now.
 
@@ -23,7 +47,7 @@ function ExtractorPauseSwarm(self, aiBrain, MassExtractorUnitList, ratio, techLe
         if unit
             and not unit.Dead
             and not unit:GetFractionComplete() < 1
-            and EntityCategoryContains(ParseEntityCategory(techLevel), unit)
+            and SWARMENTITY(SWARMPARSE(techLevel), unit)
         then
 
             if unit:IsUnitState('Upgrading') then
@@ -61,7 +85,7 @@ function ExtractorPauseSwarm(self, aiBrain, MassExtractorUnitList, ratio, techLe
 
     if aiBrain:GetEconomyStoredRatio('ENERGY') <= 0.25 then
         if UpgradingBuilding then
-            if UpgradingBuildingNum <= 0 and table.getn(MassExtractorUnitList) >= 8 then
+            if UpgradingBuildingNum <= 0 and SWARMGETN(MassExtractorUnitList) >= 8 then
             else
                 UpgradingBuilding:SetPaused( true )
                 return true
@@ -75,7 +99,7 @@ function ExtractorPauseSwarm(self, aiBrain, MassExtractorUnitList, ratio, techLe
         if MassRatioCheckPositive then
             PausedUpgradingBuilding:SetPaused( false )
             return true
-        elseif not MassRatioCheckPositive and UpgradingBuildingNum < 1 and table.getn(MassExtractorUnitList) >= 8 or econ.MassEfficiencyOverTime > 1.02 and aiBrain:GetEconomyStored('MASS') >= 200 then
+        elseif not MassRatioCheckPositive and UpgradingBuildingNum < 1 and SWARMGETN(MassExtractorUnitList) >= 8 or econ.MassEfficiencyOverTime > 1.02 and aiBrain:GetEconomyStored('MASS') >= 200 then
             PausedUpgradingBuilding:SetPaused( false )
             return true
         end
@@ -119,7 +143,7 @@ function ExtractorUpgradeSwarm(self, aiBrain, MassExtractorUnitList, ratio, tech
             or v.Dead
             or v:BeenDestroyed()
             or v:IsPaused()
-            or not EntityCategoryContains(ParseEntityCategory(techLevel), v)
+            or not SWARMENTITY(SWARMPARSE(techLevel), v)
             or v:GetFractionComplete() < 1
         then
             continue
@@ -137,7 +161,7 @@ function ExtractorUpgradeSwarm(self, aiBrain, MassExtractorUnitList, ratio, tech
 
             UnitBeingUpgradeFactionIndex = FactionToIndex[v.factionCategory] or factionIndex
 
-            if EntityCategoryContains(categories.MOBILE, v) then
+            if SWARMENTITY(categories.MOBILE, v) then
                 TempID = aiBrain:FindUpgradeBP(v:GetUnitId(), UnitUpgradeTemplates[UnitBeingUpgradeFactionIndex])
 
                 if not TempID then
@@ -153,7 +177,7 @@ function ExtractorUpgradeSwarm(self, aiBrain, MassExtractorUnitList, ratio, tech
 
             end 
 
-            if TempID and EntityCategoryContains(categories.STRUCTURE, v) and not v:CanBuild(TempID) then
+            if TempID and SWARMENTITY(categories.STRUCTURE, v) and not v:CanBuild(TempID) then
 
                 --WARN('['..string.gsub(debug.getinfo(1).source, ".*\\(.*.lua)", "%1")..', line:'..debug.getinfo(1).currentline..'] *UnitUpgradeAI ERROR: Can\'t upgrade structure with StructureUpgradeTemplate: ' .. repr(v:GetUnitId()) )
 
@@ -173,7 +197,7 @@ function ExtractorUpgradeSwarm(self, aiBrain, MassExtractorUnitList, ratio, tech
     --and econ.EnergyEfficiencyOverTime >= 1.04 
     then
       
-        if UpgradingBuilding > 0 or table.getn(MassExtractorUnitList) < 8 then
+        if UpgradingBuilding > 0 or SWARMGETN(MassExtractorUnitList) < 8 then
             return false
         end
 
@@ -181,7 +205,7 @@ function ExtractorUpgradeSwarm(self, aiBrain, MassExtractorUnitList, ratio, tech
 
     if upgradeID and upgradeBuilding then
         IssueUpgrade({upgradeBuilding}, upgradeID)
-        coroutine.yield(100)
+        SWARMWAIT(100)
         return true
     end
 
@@ -301,7 +325,7 @@ function ReclaimAIThreadSwarm(platoon,self,aiBrain)
             local WreckDist = 0
             local WrackCount = 0
 
-            if props and table.getn( props ) > 0 then
+            if props and SWARMGETN( props ) > 0 then
                 for _, p in props do
                     local WreckPos = p.CachePosition
                     -- Start Blacklisted Props
@@ -319,7 +343,7 @@ function ReclaimAIThreadSwarm(platoon,self,aiBrain)
                         continue
                     end
 					
-                    if (MassStorageRatio <= EnergyStorageRatio and p.MaxMassReclaim and p.MaxMassReclaim > 1) or (GetGameTimeSeconds() > 240 and MassStorageRatio > EnergyStorageRatio and p.MaxEnergyReclaim and p.MaxEnergyReclaim > 1) then
+                    if (MassStorageRatio <= EnergyStorageRatio and p.MaxMassReclaim and p.MaxMassReclaim > 1) or (SWARMTIME() > 240 and MassStorageRatio > EnergyStorageRatio and p.MaxEnergyReclaim and p.MaxEnergyReclaim > 1) then
                         WreckDist = VDist2(SelfPos[1], SelfPos[3], WreckPos[1], WreckPos[3])
                         WrackCount = WrackCount + 1
                         if WreckDist < NearestWreckDist or NearestWreckDist == -1 then
@@ -341,7 +365,7 @@ function ReclaimAIThreadSwarm(platoon,self,aiBrain)
             end
 
             if NearestWreckDist == -1 then
-                scanrange = math.floor(scanrange + 100)
+                scanrange = SWARMFLOOR(scanrange + 100)
                 if scanrange > 512 then -- 5 Km
                     IssueClearCommands({self})
                     scanrange = 25
@@ -352,14 +376,14 @@ function ReclaimAIThreadSwarm(platoon,self,aiBrain)
                     PropBlacklist = {}
                 end
          
-            elseif math.floor(NearestWreckDist) < scanrange then
-                scanrange = math.floor(NearestWreckDist)
+            elseif SWARMFLOOR(NearestWreckDist) < scanrange then
+                scanrange = SWARMFLOOR(NearestWreckDist)
                 if scanrange < 25 then
                     scanrange = 25
                 end
             end
 
-            scanKM = math.floor(10000/512*NearestWreckDist)
+            scanKM = SWARMFLOOR(10000/512*NearestWreckDist)
             if NearestWreckDist > 20 and not self.Dead then
                 if NearestWreckPos[1] < playablearea[1]+21 then
                     NearestWreckPos[1] = playablearea[1]+21
@@ -378,7 +402,7 @@ function ReclaimAIThreadSwarm(platoon,self,aiBrain)
                     self.blocked = self.blocked + 1
                     if self.blocked > 10 then
                         self.blocked = 0
-                        table.insert (PropBlacklist, NearestWreckPos)
+                        SWARMINSERT (PropBlacklist, NearestWreckPos)
                     end
                 else
                     self.blocked = 0
@@ -388,11 +412,11 @@ function ReclaimAIThreadSwarm(platoon,self,aiBrain)
                 end
 
             end 
-            coroutine.yield(10)
+            SWARMWAIT(10)
             if not self.Dead and self:IsUnitState("Moving") then
              
                 while self and not self.Dead and self:IsUnitState("Moving") do
-                    coroutine.yield(10)
+                    SWARMWAIT(10)
                 end
                 scanrange = 25
             end
@@ -405,13 +429,13 @@ function ReclaimAIThreadSwarm(platoon,self,aiBrain)
             if HomeDist > 36 then
                
                 StartMoveDestination(self, {basePosition[1], basePosition[2], basePosition[3]})
-                coroutine.yield(10)
+                SWARMWAIT(10)
                 if not self.Dead and self:IsUnitState("Moving") then
                     while self and not self.Dead and self:IsUnitState("Moving") and (MassStorageRatio == 1 or EnergyStorageRatio == 1) and HomeDist > 30 do
                         MassStorageRatio = aiBrain:GetEconomyStoredRatio('MASS')
                         EnergyStorageRatio = aiBrain:GetEconomyStoredRatio('ENERGY')
                         HomeDist = VDist2(SelfPos[1], SelfPos[3], basePosition[1], basePosition[3])
-                        coroutine.yield(30)
+                        SWARMWAIT(30)
                     end
                     IssueClearCommands({self})
                     scanrange = 25
@@ -421,7 +445,7 @@ function ReclaimAIThreadSwarm(platoon,self,aiBrain)
                 return
             end
         end
-        coroutine.yield(10)
+        SWARMWAIT(10)
     end
 end
 
@@ -434,7 +458,7 @@ function StartMoveDestination(self,destination)
         count = count + 1
         IssueClearCommands({self})
         IssueMove( {self}, destination )
-        coroutine.yield(10)
+        SWARMWAIT(10)
     end
 end
 
@@ -450,10 +474,10 @@ end
 function UnderAttackSwarm(cdr)
     local CDRHealth = ComHealth(cdr)
     if CDRHealth - (cdr.HealthOLD or CDRHealth) < -1 then
-        cdr.LastDamaged = GetGameTimeSeconds()
+        cdr.LastDamaged = SWARMTIME()
     end
     cdr.HealthOLD = CDRHealth
-    if GetGameTimeSeconds() - cdr.LastDamaged < 4 then
+    if SWARMTIME() - cdr.LastDamaged < 4 then
         return true
     else
         return false
@@ -511,19 +535,19 @@ end
 
 function GetDangerZoneRadii(bool)
     
-    local BaseMilitaryZone = math.max( ScenarioInfo.size[1]-50, ScenarioInfo.size[2]-50 ) / 2
-    BaseMilitaryZone = math.max( 250, BaseMilitaryZone )
+    local BaseMilitaryZone = SWARMMAX( ScenarioInfo.size[1]-50, ScenarioInfo.size[2]-50 ) / 2
+    BaseMilitaryZone = SWARMMAX( 250, BaseMilitaryZone )
 
     local BasePanicZone = BaseMilitaryZone / 2
-    BasePanicZone = math.max( 60, BasePanicZone )
-    BasePanicZone = math.min( 120, BasePanicZone )
+    BasePanicZone = SWARMMAX( 60, BasePanicZone )
+    BasePanicZone = SWARMMIN( 120, BasePanicZone )
 
-    local BaseEnemyZone = math.max( ScenarioInfo.size[1], ScenarioInfo.size[2] ) * 1.5
+    local BaseEnemyZone = SWARMMAX( ScenarioInfo.size[1], ScenarioInfo.size[2] ) * 1.5
   
     if bool then
-        LOG('* AI-Swarm: BasePanicZone= '..math.floor( BasePanicZone * 0.01953125 ) ..' Km - ('..BasePanicZone..' units)' )
-        LOG('* AI-Swarm: BaseMilitaryZone= '..math.floor( BaseMilitaryZone * 0.01953125 )..' Km - ('..BaseMilitaryZone..' units)' )
-        LOG('* AI-Swarm: BaseEnemyZone= '..math.floor( BaseEnemyZone * 0.01953125 )..' Km - ('..BaseEnemyZone..' units)' )
+        LOG('* AI-Swarm: BasePanicZone= '..SWARMFLOOR( BasePanicZone * 0.01953125 ) ..' Km - ('..BasePanicZone..' units)' )
+        LOG('* AI-Swarm: BaseMilitaryZone= '..SWARMFLOOR( BaseMilitaryZone * 0.01953125 )..' Km - ('..BaseMilitaryZone..' units)' )
+        LOG('* AI-Swarm: BaseEnemyZone= '..SWARMFLOOR( BaseEnemyZone * 0.01953125 )..' Km - ('..BaseEnemyZone..' units)' )
     end
 
     return BasePanicZone, BaseMilitaryZone, BaseEnemyZone
@@ -560,29 +584,29 @@ function AirScoutPatrolSwarmAIThread(self, aiBrain)
             targetArea = mustScoutArea.Position
 
         --2) Scout "unknown threat" areas with a threat higher than 5
-        elseif table.getn(unknownThreats) > 0 and unknownThreats[1][3] > 5 then
+        elseif SWARMGETN(unknownThreats) > 0 and unknownThreats[1][3] > 5 then
             aiBrain:AddScoutArea({unknownThreats[1][1], 0, unknownThreats[1][2]})
 
         --3) Scout high priority locations
         elseif aiBrain.IntelData.AirHiPriScouts < aiBrain.NumOpponents and aiBrain.IntelData.AirLowPriScouts < 1
-        and table.getn(aiBrain.InterestList.HighPriority) > 0 then
+        and SWARMGETN(aiBrain.InterestList.HighPriority) > 0 then
             aiBrain.IntelData.AirHiPriScouts = aiBrain.IntelData.AirHiPriScouts + 1
 
             highPri = true
 
             targetData = aiBrain.InterestList.HighPriority[1]
-            targetData.LastScouted = GetGameTimeSeconds()
+            targetData.LastScouted = SWARMTIME()
             targetArea = targetData.Position
 
             aiBrain:SortScoutingAreas(aiBrain.InterestList.HighPriority)
 
         --4) Every time we scout NumOpponents number of high priority locations, scout a low priority location
-        elseif aiBrain.IntelData.AirLowPriScouts < 1 and table.getn(aiBrain.InterestList.LowPriority) > 0 then
+        elseif aiBrain.IntelData.AirLowPriScouts < 1 and SWARMGETN(aiBrain.InterestList.LowPriority) > 0 then
             aiBrain.IntelData.AirHiPriScouts = 0
             aiBrain.IntelData.AirLowPriScouts = aiBrain.IntelData.AirLowPriScouts + 1
 
             targetData = aiBrain.InterestList.LowPriority[1]
-            targetData.LastScouted = GetGameTimeSeconds()
+            targetData.LastScouted = SWARMTIME()
             targetArea = targetData.Position
 
             aiBrain:SortScoutingAreas(aiBrain.InterestList.LowPriority)
@@ -604,7 +628,7 @@ function AirScoutPatrolSwarmAIThread(self, aiBrain)
                     if mustScoutArea then
                         for idx,loc in aiBrain.InterestList.MustScout do
                             if loc == mustScoutArea then
-                               table.remove(aiBrain.InterestList.MustScout, idx)
+                               SWARMREMOVE(aiBrain.InterestList.MustScout, idx)
                                break
                             end
                         end
@@ -617,12 +641,12 @@ function AirScoutPatrolSwarmAIThread(self, aiBrain)
                     break
                 end
 
-                coroutine.yield(50)
+                SWARMWAIT(50)
             end
         else
-            coroutine.yield(10)
+            SWARMWAIT(10)
         end
-        coroutine.yield(5)
+        SWARMWAIT(5)
     end
 end
 
@@ -632,7 +656,7 @@ function DisperseUnitsToRallyPoints( aiBrain, units, position, rallypointtable )
 
         local rallypoints = AIGetMarkersAroundLocation(aiBrain, 'Rally Point', position, 90)
     
-        if table.getn(rallypoints) < 1 then
+        if SWARMGETN(rallypoints) < 1 then
         
             rallypoints = AIGetMarkersAroundLocation(aiBrain, 'Naval Rally Point', position, 90)
             
@@ -642,15 +666,15 @@ function DisperseUnitsToRallyPoints( aiBrain, units, position, rallypointtable )
         
         for _,v in rallypoints do
         
-            table.insert( rallypointtable, v.Position )
+            SWARMINSERT( rallypointtable, v.Position )
             
         end
         
     end
 
-    if table.getn(rallypointtable) > 0 then
+    if SWARMGETN(rallypointtable) > 0 then
     
-        local rallycount = table.getn(rallypointtable)
+        local rallycount = SWARMGETN(rallypointtable)
         
         for _,u in units do
         
@@ -735,13 +759,13 @@ function AIGetMassMarkerLocations(aiBrain, includeWater, waterOnly)
                 if v.type == 'Mass' then
                     if waterOnly then
                         if PositionInWater(v.position) then
-                            table.insert(markerList, {Position = v.position, Name = k})
+                            SWARMINSERT(markerList, {Position = v.position, Name = k})
                         end
                     elseif includeWater then
-                        table.insert(markerList, {Position = v.position, Name = k})
+                        SWARMINSERT(markerList, {Position = v.position, Name = k})
                     else
                         if not PositionInWater(v.position) then
-                            table.insert(markerList, {Position = v.position, Name = k})
+                            SWARMINSERT(markerList, {Position = v.position, Name = k})
                         end
                     end
                 end
@@ -768,32 +792,32 @@ function TMLAIThreadSwarm(platoon,self,aiBrain)
     while aiBrain:PlatoonExists(platoon) and self and not self.Dead do
         local target = false
         while self and not self.Dead and self:GetTacticalSiloAmmoCount() < 2 do
-            coroutine.yield(10)
+            SWARMWAIT(10)
         end
         while self and not self.Dead and self:IsPaused() do
-            coroutine.yield(10)
+            SWARMWAIT(10)
         end
         while self and not self.Dead and self:GetTacticalSiloAmmoCount() > 1 and not target and not self:IsPaused() do
             target = false
             while self and not self.Dead and not target do
-                coroutine.yield(10)
+                SWARMWAIT(10)
                 while self and not self.Dead and not self:IsIdleState() do
-                    coroutine.yield(10)
+                    SWARMWAIT(10)
                 end
                 if self.Dead then return end
                 target = FindTargetUnit(self, minRadius, maxRadius, MaxLoad)
             end
         end
-        if self and not self.Dead and target and not target.Dead and MissileTimer < GetGameTimeSeconds() then
-            MissileTimer = GetGameTimeSeconds() + 1
-            if EntityCategoryContains(categories.STRUCTURE, target) then
+        if self and not self.Dead and target and not target.Dead and MissileTimer < SWARMTIME() then
+            MissileTimer = SWARMTIME() + 1
+            if SWARMENTITY(categories.STRUCTURE, target) then
                 if self:GetTacticalSiloAmmoCount() >= MaxLoad then
                     IssueTactical({self}, target)
                 end
             else
                 targPos = LeadTarget(self, target)
                 if targPos and targPos[1] > 0 and targPos[3] > 0 then
-                    if EntityCategoryContains(categories.EXPERIMENTAL - categories.AIR, target) or self:GetTacticalSiloAmmoCount() >= MaxLoad then
+                    if SWARMENTITY(categories.EXPERIMENTAL - categories.AIR, target) or self:GetTacticalSiloAmmoCount() >= MaxLoad then
                         IssueTactical({self}, targPos)
                     end
                 else
@@ -801,7 +825,7 @@ function TMLAIThreadSwarm(platoon,self,aiBrain)
                 end
             end
         end
-        coroutine.yield(10)
+        SWARMWAIT(10)
     end
 end
 
@@ -817,28 +841,28 @@ function FindTargetUnit(self, minRadius, maxRadius, MaxLoad)
     local uBP
     for k, v in targets do
         -- Only check if Unit is 100% builded and not AIR
-        if not v.Dead and not v:BeenDestroyed() and v:GetFractionComplete() == 1 and EntityCategoryContains(categories.SELECTABLE - categories.AIR, v) then
+        if not v.Dead and not v:BeenDestroyed() and v:GetFractionComplete() == 1 and SWARMENTITY(categories.SELECTABLE - categories.AIR, v) then
             -- Get Target Data
             uBP = v:GetBlueprint()
             UnitHealth = uBP.Defense.Health or 1
             -- Check Targets
-            if not v:BeenDestroyed() and EntityCategoryContains(categories.COMMAND, v) and (not IsProtected(self,v:GetPosition())) then
+            if not v:BeenDestroyed() and SWARMENTITY(categories.COMMAND, v) and (not IsProtected(self,v:GetPosition())) then
                 AllTargets[1] = v
-            elseif not v:BeenDestroyed() and (UnitHealth > MaxHealthpoints or (UnitHealth == MaxHealthpoints and v.distance < AllTargets[2].distance)) and EntityCategoryContains(categories.EXPERIMENTAL * categories.MOBILE, v) and (not IsProtected(self,v:GetPosition())) then
+            elseif not v:BeenDestroyed() and (UnitHealth > MaxHealthpoints or (UnitHealth == MaxHealthpoints and v.distance < AllTargets[2].distance)) and SWARMENTITY(categories.EXPERIMENTAL * categories.MOBILE, v) and (not IsProtected(self,v:GetPosition())) then
                 AllTargets[2] = v
                 MaxHealthpoints = UnitHealth
-            elseif not v:BeenDestroyed() and UnitHealth > MaxHealthpoints and EntityCategoryContains(categories.MOBILE, v) and uBP.StrategicIconName == 'icon_experimental_generic' and (not IsProtected(self,v:GetPosition())) then
+            elseif not v:BeenDestroyed() and UnitHealth > MaxHealthpoints and SWARMENTITY(categories.MOBILE, v) and uBP.StrategicIconName == 'icon_experimental_generic' and (not IsProtected(self,v:GetPosition())) then
                 AllTargets[3] = v
                 MaxHealthpoints = UnitHealth
-            elseif not v:BeenDestroyed() and (not AllTargets[5] or v.distance < AllTargets[5].distance) and EntityCategoryContains(categories.STRUCTURE - categories.WALL, v) and (not IsProtected(self,v:GetPosition())) then
+            elseif not v:BeenDestroyed() and (not AllTargets[5] or v.distance < AllTargets[5].distance) and SWARMENTITY(categories.STRUCTURE - categories.WALL, v) and (not IsProtected(self,v:GetPosition())) then
                 AllTargets[5] = v
                 break
             elseif not v:BeenDestroyed() and v:IsMoving() == false then
-                if (not AllTargets[4] or v.distance < AllTargets[4].distance) and EntityCategoryContains(categories.TECH3 * categories.MOBILE * categories.INDIRECTFIRE, v) and (not IsProtected(self,v:GetPosition())) then
+                if (not AllTargets[4] or v.distance < AllTargets[4].distance) and SWARMENTITY(categories.TECH3 * categories.MOBILE * categories.INDIRECTFIRE, v) and (not IsProtected(self,v:GetPosition())) then
                     AllTargets[4] = v
-                elseif (not AllTargets[6] or v.distance < AllTargets[6].distance) and EntityCategoryContains(categories.ENGINEER - categories.STATIONASSISTPOD, v) and (not IsProtected(self,v:GetPosition())) then
+                elseif (not AllTargets[6] or v.distance < AllTargets[6].distance) and SWARMENTITY(categories.ENGINEER - categories.STATIONASSISTPOD, v) and (not IsProtected(self,v:GetPosition())) then
                     AllTargets[6] = v
-                elseif (not AllTargets[7] or v.distance < AllTargets[7].distance) and EntityCategoryContains(categories.MOBILE, v) and (not IsProtected(self,v:GetPosition())) then
+                elseif (not AllTargets[7] or v.distance < AllTargets[7].distance) and SWARMENTITY(categories.MOBILE, v) and (not IsProtected(self,v:GetPosition())) then
                     AllTargets[7] = v
                 end
             end
@@ -889,13 +913,13 @@ function LeadTarget(launcher, target)
         -- 1st position of target
         TargetPos = target:GetPosition()
         TargetStartPosition = {TargetPos[1], 0, TargetPos[3]}
-        coroutine.yield(10)
+        SWARMWAIT(10)
         -- 2nd position of target after 1 second
         TargetPos = target:GetPosition()
         Target1SecPos = {TargetPos[1], 0, TargetPos[3]}
         XmovePerSec = (TargetStartPosition[1] - Target1SecPos[1])
         YmovePerSec = (TargetStartPosition[3] - Target1SecPos[3])
-        coroutine.yield(10)
+        SWARMWAIT(10)
         -- 3rd position of target after 2 seconds to verify straight movement
         TargetPos = target:GetPosition()
         Target2SecPos = {TargetPos[1], TargetPos[2], TargetPos[3]}
@@ -917,7 +941,7 @@ function LeadTarget(launcher, target)
     end
     -- Get height difference between launcher position and target position
     -- Adjust for height difference by dividing the height difference by the missiles max speed
-    local HeightDifference = math.abs(fromheight - toheight) / 12
+    local HeightDifference = SWARMABS(fromheight - toheight) / 12
     -- Speed up time is distance the missile will travel while reaching max speed (~22.47 MapUnits)
     -- divided by the missiles max speed (12) which is equal to 1.8725 seconds flight time
     local SpeedUpTime = 22.47 / 12
@@ -988,12 +1012,12 @@ function GetEnemyUnitsInSphereOnRadar(aiBrain, position, minRadius, maxRadius)
     end
     local SelfArmyIndex = aiBrain:GetArmyIndex()
     local RadEntities = {}
-    coroutine.yield(1)
+    SWARMWAIT(1)
     local lagstopper = 0
     for Index, EnemyUnit in UnitsinRec do
         lagstopper = lagstopper + 1
         if lagstopper > 20 then
-            coroutine.yield(1)
+            SWARMWAIT(1)
             lagstopper = 0
         end
         if (not EnemyUnit.Dead) and IsEnemy( SelfArmyIndex, EnemyUnit:GetArmy() ) then
@@ -1010,7 +1034,7 @@ function GetEnemyUnitsInSphereOnRadar(aiBrain, position, minRadius, maxRadius)
                     if blip:IsOnRadar(SelfArmyIndex) or blip:IsSeenEver(SelfArmyIndex) then
                         if not blip:BeenDestroyed() and not blip:IsKnownFake(SelfArmyIndex) and not blip:IsMaybeDead(SelfArmyIndex) then
                             EnemyUnit.distance = dist
-                            table.insert(RadEntities, EnemyUnit)
+                            SWARMINSERT(RadEntities, EnemyUnit)
                         end
                     end
                 end
@@ -1030,18 +1054,18 @@ function IsProtected(self,position)
     if not UnitsinRec then
         return false
     end
-    coroutine.yield(1)
+    SWARMWAIT(1)
     local lagstopper = 0
     local counter = 0
     for _, EnemyUnit in UnitsinRec do
         counter = counter + 1
         lagstopper = lagstopper + 1
         if lagstopper > 20 then
-            coroutine.yield(1)
+            SWARMWAIT(1)
             lagstopper = 0
         end
         if (not EnemyUnit.Dead) and IsEnemy( self:GetArmy(), EnemyUnit:GetArmy() ) then
-            if EntityCategoryContains(categories.ANTIMISSILE * categories.TECH2 * categories.STRUCTURE, EnemyUnit) then
+            if SWARMENTITY(categories.ANTIMISSILE * categories.TECH2 * categories.STRUCTURE, EnemyUnit) then
                 local EnemyPosition = EnemyUnit:GetPosition()
                 local dist = VDist2(position[1], position[3], EnemyPosition[1], EnemyPosition[3])
                 if dist <= maxRadius then

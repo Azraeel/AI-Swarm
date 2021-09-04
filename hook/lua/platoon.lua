@@ -445,7 +445,7 @@ Platoon = Class(SwarmPlatoonClass) {
                 SWARMWAIT(150)
             else
                 -- merge with nearby platoons
-                local DidIMerge = self:MergeWithNearbyPlatoonsSwarm('HuntAISwarm', 100)
+                local DidIMerge = self:MergeWithNearbyPlatoonsSwarm('HuntAISwarm', 100, 50)
             end
             SWARMWAIT(30)
         end
@@ -520,7 +520,7 @@ Platoon = Class(SwarmPlatoonClass) {
             -- only get a new target and make a move command if the target is dead or after 10 seconds
             if not target or target.Dead then
 
-                self:MergeWithNearbyPlatoonsSwarm('LandAttackAISwarm', 100)
+                self:MergeWithNearbyPlatoonsSwarm('LandAttackAISwarm', 100, 40)
 
                 SWARMWAIT(10)
 
@@ -2369,7 +2369,7 @@ Platoon = Class(SwarmPlatoonClass) {
     --   Returns:
     --       nil
     -------------------------------------------------------
-    MergeWithNearbyPlatoonsSwarm = function(self, planName, radius)
+    MergeWithNearbyPlatoonsSwarm = function(self, planName, radius, maxMergeNumber)
         -- check to see we're not near an ally base
         local aiBrain = self:GetBrain()
         if not aiBrain then
@@ -2384,6 +2384,19 @@ Platoon = Class(SwarmPlatoonClass) {
         if not platPos then
             return
         end
+
+        local platUnits = GetPlatoonUnits(self)
+        local platCount = 0
+
+        for _, u in platUnits do
+            if not u.Dead then
+                platCount = platCount + 1
+            end
+        end
+
+        if (maxMergeNumber and platCount > maxMergeNumber) or platCount < 1 then
+            return
+        end 
 
         local radiusSq = radius*radius
         -- if we're too close to a base, forget it
@@ -4113,7 +4126,7 @@ Platoon = Class(SwarmPlatoonClass) {
                 continue
             end
 
-            self:MergeWithNearbyPlatoonsSwarm('AttackForceAISwarm', 100)
+            self:MergeWithNearbyPlatoonsSwarm('AttackForceAISwarm', 100, 50)
 
 
             -- rebuild formation
@@ -4457,7 +4470,7 @@ Platoon = Class(SwarmPlatoonClass) {
             IssueClearCommands(GetPlatoonUnits(self))
             if path then
 
-                self:MergeWithNearbyPlatoonsSwarm('MassRaidSwarm', 100)
+                self:MergeWithNearbyPlatoonsSwarm('MassRaidSwarm', 100, 30)
 
                 SWARMWAIT(10)
 

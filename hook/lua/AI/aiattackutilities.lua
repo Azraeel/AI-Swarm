@@ -1,3 +1,5 @@
+local VDist2Sq = VDist2Sq
+
 -- Uveso Functions
 function CanGraphAreaTo_OLD(startPos, destPos, layer)
     local startNode = GetClosestPathNodeInRadiusByLayer(startPos, 100, layer)

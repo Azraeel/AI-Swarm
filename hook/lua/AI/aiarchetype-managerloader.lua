@@ -1,9 +1,25 @@
 --WARN('['..string.gsub(debug.getinfo(1).source, ".*\\(.*.lua)", "%1")..', line:'..debug.getinfo(1).currentline..'] * AI-Swarm: offset aiarchetype-managerloader.lua' )
 
+local import = import
+local type = type
+
+local SWARMGETN = table.getn
+local SWARMWAIT = coroutine.yield
+local SWARMMAX = math.max
+local SWARMFLOOR = math.floor
+local SWARMTIME = GetGameTimeSeconds
+
+local VDist2 = VDist2
+
+local ForkThread = ForkThread
+
+local GetThreatAtPosition = moho.aibrain_methods.GetThreatAtPosition
+local GetUnitsAroundPoint = moho.aibrain_methods.GetUnitsAroundPoint
+local GetFractionComplete = moho.entity_methods.GetFractionComplete
+local GetAIBrain = moho.unit_methods.GetAIBrain
+
 local BuffSwarm = import('/lua/sim/Buff.lua')
-local lastCall = GetGameTimeSeconds()
-
-
+local lastCall = SWARMTIME()
 
 
 SwarmExecutePlanFunction = ExecutePlan
@@ -49,8 +65,8 @@ function SetArmyPoolBuffSwarm(aiBrain, CheatMult, BuildMult)
 end
 
 function EcoManagerThreadSwarm(aiBrain)
-    while GetGameTimeSeconds() < 15 + aiBrain:GetArmyIndex() do
-        coroutine.yield(10)
+    while SWARMTIME() < 15 + aiBrain:GetArmyIndex() do
+        SWARMWAIT(10)
     end
     local personality = ScenarioInfo.ArmySetup[aiBrain.Name].AIPersonality
     local CheatMultOption = tonumber(ScenarioInfo.Options.CheatMult)
@@ -58,8 +74,8 @@ function EcoManagerThreadSwarm(aiBrain)
     local CheatMult = CheatMultOption
     local BuildMult = BuildMultOption
     if CheatMultOption ~= BuildMultOption then
-        CheatMultOption = math.max(CheatMultOption,BuildMultOption)
-        BuildMultOption = math.max(CheatMultOption,BuildMultOption)
+        CheatMultOption = SWARMMAX(CheatMultOption,BuildMultOption)
+        BuildMultOption = SWARMMAX(CheatMultOption,BuildMultOption)
         ScenarioInfo.Options.CheatMult = tostring(CheatMultOption)
         ScenarioInfo.Options.BuildMult = tostring(BuildMultOption)
     end
@@ -75,7 +91,7 @@ function EcoManagerThreadSwarm(aiBrain)
     local bussy
     while aiBrain.Result ~= "defeat" do
         --LOG('* AI-Swarm: Function EcoManagerThreadSwarm() beat. ['..aiBrain.Nickname..']')
-        coroutine.yield(5)
+        SWARMWAIT(5)
         Engineers = aiBrain:GetListOfUnits(categories.ENGINEER - categories.STATIONASSISTPOD - categories.COMMAND - categories.SUBCOMMANDER, false, false) -- also gets unbuilded units (planed to build)
         StationPods = aiBrain:GetListOfUnits(categories.STATIONASSISTPOD, false, false) -- also gets unbuilded units (planed to build)
         paragons = aiBrain:GetListOfUnits(categories.STRUCTURE * categories.EXPERIMENTAL * categories.ECONOMIC * categories.ENERGYPRODUCTION * categories.MASSPRODUCTION, false, false)
@@ -95,8 +111,8 @@ function EcoManagerThreadSwarm(aiBrain)
         -- Cheatbuffs
         if personality == 'swarmeternal' then
             -- Check every 30 seconds for new armyStats to change ECO
-            if (GetGameTimeSeconds() > 60 * 1) and lastCall+10 < GetGameTimeSeconds() then
-                local lastCall = GetGameTimeSeconds()
+            if (SWARMTIME() > 60 * 1) and lastCall+10 < SWARMTIME() then
+                local lastCall = SWARMTIME()
                 --score of all players (unitcount)
                 allyScore = 0
                 enemyScore = 0
@@ -104,11 +120,11 @@ function EcoManagerThreadSwarm(aiBrain)
                     if ArmyIsCivilian(brain:GetArmyIndex()) then
                         --NOOP
                     elseif IsAlly( aiBrain:GetArmyIndex(), brain:GetArmyIndex() ) then
-                        --allyScore = allyScore + table.getn(brain:GetListOfUnits( (categories.MOBILE + categories.DEFENSE) - categories.MASSEXTRACTION - categories.ENGINEER - categories.SCOUT, false, false))
-                        allyScore = allyScore + table.getn(brain:GetListOfUnits( categories.MOBILE - categories.MASSEXTRACTION - categories.ENGINEER - categories.SCOUT, false, false))
+                        --allyScore = allyScore + SWARMGETN(brain:GetListOfUnits( (categories.MOBILE + categories.DEFENSE) - categories.MASSEXTRACTION - categories.ENGINEER - categories.SCOUT, false, false))
+                        allyScore = allyScore + SWARMGETN(brain:GetListOfUnits( categories.MOBILE - categories.MASSEXTRACTION - categories.ENGINEER - categories.SCOUT, false, false))
                     elseif IsEnemy( aiBrain:GetArmyIndex(), brain:GetArmyIndex() ) then
-                        --enemyScore = enemyScore + table.getn(brain:GetListOfUnits( (categories.MOBILE + categories.DEFENSE) - categories.MASSEXTRACTION - categories.ENGINEER - categories.SCOUT, false, false))
-                        enemyScore = enemyScore + table.getn(brain:GetListOfUnits( categories.MOBILE - categories.MASSEXTRACTION - categories.ENGINEER - categories.SCOUT, false, false))
+                        --enemyScore = enemyScore + SWARMGETN(brain:GetListOfUnits( (categories.MOBILE + categories.DEFENSE) - categories.MASSEXTRACTION - categories.ENGINEER - categories.SCOUT, false, false))
+                        enemyScore = enemyScore + SWARMGETN(brain:GetListOfUnits( categories.MOBILE - categories.MASSEXTRACTION - categories.ENGINEER - categories.SCOUT, false, false))
                     end
                 end
                 if enemyScore ~= 0 then
@@ -121,24 +137,24 @@ function EcoManagerThreadSwarm(aiBrain)
                 end
 
                 -- Increase cheatfactor to +1.5 after 50 Minute gametime
-                if GetGameTimeSeconds() > 60 * 50 then
+                if SWARMTIME() > 60 * 50 then
                     CheatMult = CheatMult + 0.1
                     BuildMult = BuildMult + 0.1
                     if CheatMult < tonumber(CheatMultOption) then CheatMult = tonumber(CheatMultOption) end
                     if BuildMult < tonumber(BuildMultOption) then BuildMult = tonumber(BuildMultOption) end
                     if CheatMult > tonumber(CheatMultOption) + 1.5 then CheatMult = tonumber(CheatMultOption) + 1.5 end
                     if BuildMult > tonumber(BuildMultOption) + 1.5 then BuildMult = tonumber(BuildMultOption) + 1.5 end
-                    --LOG('* ECO + ally('..allyScore..') enemy('..enemyScore..') - ArmyRatio: '..math.floor(MyArmyRatio)..'% - Build/CheatMult old: '..math.floor(tonumber(ScenarioInfo.Options.BuildMult)*10)..' '..math.floor(tonumber(ScenarioInfo.Options.CheatMult)*10)..' - new: '..math.floor(BuildMult*10)..' '..math.floor(CheatMult*10)..'')
+                    --LOG('* ECO + ally('..allyScore..') enemy('..enemyScore..') - ArmyRatio: '..SWARMFLOOR(MyArmyRatio)..'% - Build/CheatMult old: '..SWARMFLOOR(tonumber(ScenarioInfo.Options.BuildMult)*10)..' '..SWARMFLOOR(tonumber(ScenarioInfo.Options.CheatMult)*10)..' - new: '..SWARMFLOOR(BuildMult*10)..' '..SWARMFLOOR(CheatMult*10)..'')
                     SetArmyPoolBuffSwarm(aiBrain, CheatMult, BuildMult)
                 -- Increase cheatfactor to +0.2 after 8 Minute gametime
-                elseif GetGameTimeSeconds() > 60 * 8 then
+                elseif SWARMTIME() > 60 * 8 then
                     CheatMult = CheatMult + 0.1
                     BuildMult = BuildMult + 0.1
                     if CheatMult < tonumber(CheatMultOption) then CheatMult = tonumber(CheatMultOption) end
                     if BuildMult < tonumber(BuildMultOption) then BuildMult = tonumber(BuildMultOption) end
                     if CheatMult > tonumber(CheatMultOption) + 0.2 then CheatMult = tonumber(CheatMultOption) + 0.2 end
                     if BuildMult > tonumber(BuildMultOption) + 0.2 then BuildMult = tonumber(BuildMultOption) + 0.2 end
-                    --LOG('* ECO + ally('..allyScore..') enemy('..enemyScore..') - ArmyRatio: '..math.floor(MyArmyRatio)..'% - Build/CheatMult old: '..math.floor(tonumber(ScenarioInfo.Options.BuildMult)*10)..' '..math.floor(tonumber(ScenarioInfo.Options.CheatMult)*10)..' - new: '..math.floor(BuildMult*10)..' '..math.floor(CheatMult*10)..'')
+                    --LOG('* ECO + ally('..allyScore..') enemy('..enemyScore..') - ArmyRatio: '..SWARMFLOOR(MyArmyRatio)..'% - Build/CheatMult old: '..SWARMFLOOR(tonumber(ScenarioInfo.Options.BuildMult)*10)..' '..SWARMFLOOR(tonumber(ScenarioInfo.Options.CheatMult)*10)..' - new: '..SWARMFLOOR(BuildMult*10)..' '..SWARMFLOOR(CheatMult*10)..'')
                     SetArmyPoolBuffSwarm(aiBrain, CheatMult, BuildMult)
                 -- Increase ECO if we have less than 40% of the enemy units
                 elseif MyArmyRatio < 35 then
@@ -146,27 +162,27 @@ function EcoManagerThreadSwarm(aiBrain)
                     BuildMult = BuildMult + 0.1
                     if CheatMult > tonumber(CheatMultOption) + 8 then CheatMult = tonumber(CheatMultOption) + 8 end
                     if BuildMult > tonumber(BuildMultOption) + 8 then BuildMult = tonumber(BuildMultOption) + 8 end
-                    --LOG('* ECO + ally('..allyScore..') enemy('..enemyScore..') - ArmyRatio: '..math.floor(MyArmyRatio)..'% - Build/CheatMult old: '..math.floor(tonumber(ScenarioInfo.Options.BuildMult)*10)..' '..math.floor(tonumber(ScenarioInfo.Options.CheatMult)*10)..' - new: '..math.floor(BuildMult*10)..' '..math.floor(CheatMult*10)..'')
+                    --LOG('* ECO + ally('..allyScore..') enemy('..enemyScore..') - ArmyRatio: '..SWARMFLOOR(MyArmyRatio)..'% - Build/CheatMult old: '..SWARMFLOOR(tonumber(ScenarioInfo.Options.BuildMult)*10)..' '..SWARMFLOOR(tonumber(ScenarioInfo.Options.CheatMult)*10)..' - new: '..SWARMFLOOR(BuildMult*10)..' '..SWARMFLOOR(CheatMult*10)..'')
                     SetArmyPoolBuffSwarm(aiBrain, CheatMult, BuildMult)
                 elseif MyArmyRatio < 55 then
                     CheatMult = CheatMult + 0.3
                     if CheatMult > tonumber(CheatMultOption) + 6 then CheatMult = tonumber(CheatMultOption) + 6 end
                     if BuildMult ~= tonumber(BuildMultOption) then BuildMult = tonumber(BuildMultOption) end
-                    --LOG('* ECO + ally('..allyScore..') enemy('..enemyScore..') - ArmyRatio: '..math.floor(MyArmyRatio)..'% - Build/CheatMult old: '..math.floor(tonumber(ScenarioInfo.Options.BuildMult)*10)..' '..math.floor(tonumber(ScenarioInfo.Options.CheatMult)*10)..' - new: '..math.floor(BuildMult*10)..' '..math.floor(CheatMult*10)..'')
+                    --LOG('* ECO + ally('..allyScore..') enemy('..enemyScore..') - ArmyRatio: '..SWARMFLOOR(MyArmyRatio)..'% - Build/CheatMult old: '..SWARMFLOOR(tonumber(ScenarioInfo.Options.BuildMult)*10)..' '..SWARMFLOOR(tonumber(ScenarioInfo.Options.CheatMult)*10)..' - new: '..SWARMFLOOR(BuildMult*10)..' '..SWARMFLOOR(CheatMult*10)..'')
                     SetArmyPoolBuffSwarm(aiBrain, CheatMult, BuildMult)
                 -- Increase ECO if we have less than 85% of the enemy units
                 elseif MyArmyRatio < 75 then
                     CheatMult = CheatMult + 0.2
                     if CheatMult > tonumber(CheatMultOption) + 4 then CheatMult = tonumber(CheatMultOption) + 4 end
                     if BuildMult ~= tonumber(BuildMultOption) then BuildMult = tonumber(BuildMultOption) end
-                    --LOG('* ECO + ally('..allyScore..') enemy('..enemyScore..') - ArmyRatio: '..math.floor(MyArmyRatio)..'% - Build/CheatMult old: '..math.floor(tonumber(ScenarioInfo.Options.BuildMult)*10)..' '..math.floor(tonumber(ScenarioInfo.Options.CheatMult)*10)..' - new: '..math.floor(BuildMult*10)..' '..math.floor(CheatMult*10)..'')
+                    --LOG('* ECO + ally('..allyScore..') enemy('..enemyScore..') - ArmyRatio: '..SWARMFLOOR(MyArmyRatio)..'% - Build/CheatMult old: '..SWARMFLOOR(tonumber(ScenarioInfo.Options.BuildMult)*10)..' '..SWARMFLOOR(tonumber(ScenarioInfo.Options.CheatMult)*10)..' - new: '..SWARMFLOOR(BuildMult*10)..' '..SWARMFLOOR(CheatMult*10)..'')
                     SetArmyPoolBuffSwarm(aiBrain, CheatMult, BuildMult)
                 -- Decrease ECO if we have to much units
                 elseif MyArmyRatio < 95 then
                     CheatMult = CheatMult + 0.1
                     if CheatMult > tonumber(CheatMultOption) + 3 then CheatMult = tonumber(CheatMultOption) + 3 end
                     if BuildMult ~= tonumber(BuildMultOption) then BuildMult = tonumber(BuildMultOption) end
-                    --LOG('* ECO + ally('..allyScore..') enemy('..enemyScore..') - ArmyRatio: '..math.floor(MyArmyRatio)..'% - Build/CheatMult old: '..math.floor(tonumber(ScenarioInfo.Options.BuildMult)*10)..' '..math.floor(tonumber(ScenarioInfo.Options.CheatMult)*10)..' - new: '..math.floor(BuildMult*10)..' '..math.floor(CheatMult*10)..'')
+                    --LOG('* ECO + ally('..allyScore..') enemy('..enemyScore..') - ArmyRatio: '..SWARMFLOOR(MyArmyRatio)..'% - Build/CheatMult old: '..SWARMFLOOR(tonumber(ScenarioInfo.Options.BuildMult)*10)..' '..SWARMFLOOR(tonumber(ScenarioInfo.Options.CheatMult)*10)..' - new: '..SWARMFLOOR(BuildMult*10)..' '..SWARMFLOOR(CheatMult*10)..'')
                     SetArmyPoolBuffSwarm(aiBrain, CheatMult, BuildMult)
                 -- Decrease ECO if we have to much units
                 elseif MyArmyRatio > 125 then
@@ -174,13 +190,13 @@ function EcoManagerThreadSwarm(aiBrain)
                     BuildMult = BuildMult - 0.1
                     if CheatMult < 0.9 then CheatMult = 0.9 end
                     if BuildMult < 0.9 then BuildMult = 0.9 end
-                    --LOG('* ECO + ally('..allyScore..') enemy('..enemyScore..') - ArmyRatio: '..math.floor(MyArmyRatio)..'% - Build/CheatMult old: '..math.floor(tonumber(ScenarioInfo.Options.BuildMult)*10)..' '..math.floor(tonumber(ScenarioInfo.Options.CheatMult)*10)..' - new: '..math.floor(BuildMult*10)..' '..math.floor(CheatMult*10)..'')
+                    --LOG('* ECO + ally('..allyScore..') enemy('..enemyScore..') - ArmyRatio: '..SWARMFLOOR(MyArmyRatio)..'% - Build/CheatMult old: '..SWARMFLOOR(tonumber(ScenarioInfo.Options.BuildMult)*10)..' '..SWARMFLOOR(tonumber(ScenarioInfo.Options.CheatMult)*10)..' - new: '..SWARMFLOOR(BuildMult*10)..' '..SWARMFLOOR(CheatMult*10)..'')
                     SetArmyPoolBuffSwarm(aiBrain, CheatMult, BuildMult)
                 elseif MyArmyRatio > 105 then
                     CheatMult = CheatMult - 0.1
                     if CheatMult < 1.0 then CheatMult = 1.0 end
                     if BuildMult ~= tonumber(BuildMultOption) then BuildMult = tonumber(BuildMultOption) end
-                    --LOG('* ECO + ally('..allyScore..') enemy('..enemyScore..') - ArmyRatio: '..math.floor(MyArmyRatio)..'% - Build/CheatMult old: '..math.floor(tonumber(ScenarioInfo.Options.BuildMult)*10)..' '..math.floor(tonumber(ScenarioInfo.Options.CheatMult)*10)..' - new: '..math.floor(BuildMult*10)..' '..math.floor(CheatMult*10)..'')
+                    --LOG('* ECO + ally('..allyScore..') enemy('..enemyScore..') - ArmyRatio: '..SWARMFLOOR(MyArmyRatio)..'% - Build/CheatMult old: '..SWARMFLOOR(tonumber(ScenarioInfo.Options.BuildMult)*10)..' '..SWARMFLOOR(tonumber(ScenarioInfo.Options.CheatMult)*10)..' - new: '..SWARMFLOOR(BuildMult*10)..' '..SWARMFLOOR(CheatMult*10)..'')
                     SetArmyPoolBuffSwarm(aiBrain, CheatMult, BuildMult)
                 -- Normal ECO
                 else -- MyArmyRatio > 85  MyArmyRatio <= 100
@@ -198,7 +214,7 @@ function EcoManagerThreadSwarm(aiBrain)
                         BuildMult = BuildMult + 0.1
                         if BuildMult > tonumber(BuildMultOption) then BuildMult = tonumber(BuildMultOption) end
                     end
-                    --LOG('* ECO + ally('..allyScore..') enemy('..enemyScore..') - ArmyRatio: '..math.floor(MyArmyRatio)..'% - Build/CheatMult old: '..math.floor(tonumber(ScenarioInfo.Options.BuildMult)*10)..' '..math.floor(tonumber(ScenarioInfo.Options.CheatMult)*10)..' - new: '..math.floor(BuildMult*10)..' '..math.floor(CheatMult*10)..'')
+                    --LOG('* ECO + ally('..allyScore..') enemy('..enemyScore..') - ArmyRatio: '..SWARMFLOOR(MyArmyRatio)..'% - Build/CheatMult old: '..SWARMFLOOR(tonumber(ScenarioInfo.Options.BuildMult)*10)..' '..SWARMFLOOR(tonumber(ScenarioInfo.Options.CheatMult)*10)..' - new: '..SWARMFLOOR(BuildMult*10)..' '..SWARMFLOOR(CheatMult*10)..'')
                     SetArmyPoolBuffSwarm(aiBrain, CheatMult, BuildMult)
                 end
             end
@@ -393,8 +409,8 @@ end
 
 function BaseTargetManagerThreadSwarm(aiBrain)
     --        LOG('location manager '..repr(aiBrain.NukedArea))
-    while GetGameTimeSeconds() < 25 + aiBrain:GetArmyIndex() do
-       coroutine.yield(10)
+    while SWARMTIME() < 25 + aiBrain:GetArmyIndex() do
+       SWARMWAIT(10)
     end
     --LOG('* AI-Swarm: Function BaseTargetManagerThread() started. ['..aiBrain.Nickname..']')
     local BasePanicZone, BaseMilitaryZone, BaseEnemyZone = import('/mods/AI-Swarm/lua/AI/swarmutilities.lua').GetDangerZoneRadii()
@@ -407,7 +423,7 @@ function BaseTargetManagerThreadSwarm(aiBrain)
         --LOG('* AI-Swarm: Function BaseTargetManagerThread() beat. ['..aiBrain.Nickname..']')
         ClosestTarget = nil
         distance = 8192
-        coroutine.yield(50)
+        SWARMWAIT(50)
         if not baseposition then
             if aiBrain:PBMHasPlatoonList() then
                 for k,v in aiBrain.PBM.Locations do
@@ -438,7 +454,7 @@ function BaseTargetManagerThreadSwarm(aiBrain)
                 end
             end
         end
-        coroutine.yield(1)
+        SWARMWAIT(1)
         -- Search for experimentals in BaseMilitaryZone
         if not ClosestTarget then
             targets = aiBrain:GetUnitsAroundPoint(categories.EXPERIMENTAL - categories.AIR - categories.INSIGNIFICANTUNIT, baseposition, BaseMilitaryZone, 'Enemy')
@@ -454,7 +470,7 @@ function BaseTargetManagerThreadSwarm(aiBrain)
                 end
             end
         end
-        coroutine.yield(1)
+        SWARMWAIT(1)
         -- Search for Paragons in EnemyZone
         if not ClosestTarget then
             targets = aiBrain:GetUnitsAroundPoint(categories.EXPERIMENTAL * categories.ECONOMIC, baseposition, BaseEnemyZone, 'Enemy')
@@ -470,7 +486,7 @@ function BaseTargetManagerThreadSwarm(aiBrain)
                 end
             end
         end
-        coroutine.yield(1)
+        SWARMWAIT(1)
         -- Search for High Threat Area
         if not ClosestTarget and HighestThreat[armyIndex].TargetLocation then
             -- search for any unit in this area
@@ -490,7 +506,7 @@ function BaseTargetManagerThreadSwarm(aiBrain)
                 end
             end
         end
-        coroutine.yield(1)
+        SWARMWAIT(1)
         -- Search for Shields in EnemyZone
         if not ClosestTarget then
             targets = aiBrain:GetUnitsAroundPoint(categories.STRUCTURE * categories.SHIELD, baseposition, BaseEnemyZone, 'Enemy')
@@ -506,7 +522,7 @@ function BaseTargetManagerThreadSwarm(aiBrain)
                 end
             end
         end
-        coroutine.yield(1)
+        SWARMWAIT(1)
         -- Search for experimentals in EnemyZone
         if not ClosestTarget then
             targets = aiBrain:GetUnitsAroundPoint(categories.EXPERIMENTAL - categories.AIR - categories.INSIGNIFICANTUNIT, baseposition, BaseEnemyZone, 'Enemy')
@@ -522,7 +538,7 @@ function BaseTargetManagerThreadSwarm(aiBrain)
                 end
             end
         end
-        coroutine.yield(1)
+        SWARMWAIT(1)
         -- Search for T3 Factories / Gates in EnemyZone
         if not ClosestTarget then
             targets = aiBrain:GetUnitsAroundPoint((categories.STRUCTURE * categories.GATE) + (categories.STRUCTURE * categories.FACTORY * categories.TECH3 - categories.SUPPORTFACTORY), baseposition, BaseEnemyZone, 'Enemy')
@@ -545,8 +561,8 @@ end
 --OLD: - Highest:0.023910 - Average:0.017244
 --NEW: - Highest:0.002929 - Average:0.002018
 function MarkerGridThreatManagerThreadSwarm(aiBrain)
-    while GetGameTimeSeconds() < 30 + aiBrain:GetArmyIndex() do
-        coroutine.yield(10)
+    while SWARMTIME() < 30 + aiBrain:GetArmyIndex() do
+        SWARMWAIT(10)
     end
     --LOG('* AI-Swarm: Function MarkerGridThreatManagerThread() started. ['..aiBrain.Nickname..']')
     local AIAttackUtils = import('/lua/ai/aiattackutilities.lua')
@@ -607,7 +623,7 @@ function MarkerGridThreatManagerThreadSwarm(aiBrain)
                 end
             end
             -- Wait after checking a layer, so we need 0.4 seconds for all 4 layers.
-            coroutine.yield(1)
+            SWARMWAIT(1)
         end
         if HighestThreat[armyIndex].ThreatCount > 1 then
             HighestThreat[armyIndex].TargetThreat = HighestThreat[armyIndex].ThreatCount

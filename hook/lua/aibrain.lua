@@ -124,7 +124,7 @@ AIBrain = Class(SwarmAIBrainClass) {
 
             if MarkerList >= 1 then 
                 do
-                table.insert(aiBrain.InterestList.HighPriority,
+                SWARMINSERT(aiBrain.InterestList.HighPriority,
                     {
                         Position = MarkerList,
                         LastScouted = 0,
@@ -145,7 +145,7 @@ AIBrain = Class(SwarmAIBrainClass) {
                         -- Add the army start location to the list of interesting spots.
                         opponentStarts['ARMY_' .. i] = startPos
                         numOpponents = numOpponents + 1
-                        table.insert(aiBrain.InterestList.HighPriority,
+                        SWARMINSERT(aiBrain.InterestList.HighPriority,
                             {
                                 Position = startPos,
                                 LastScouted = 0,
@@ -187,7 +187,7 @@ AIBrain = Class(SwarmAIBrainClass) {
                         end
 
                         if closeToEnemy then
-                            table.insert(aiBrain.InterestList.LowPriority,
+                            SWARMINSERT(aiBrain.InterestList.LowPriority,
                                 {
                                     Position = loc.Position,
                                     LastScouted = 0,

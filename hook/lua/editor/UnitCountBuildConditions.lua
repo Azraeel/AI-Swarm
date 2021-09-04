@@ -4,29 +4,6 @@ WARN('['..string.gsub(debug.getinfo(1).source, ".*\\(.*.lua)", "%1")..', line:'.
 
 local BASEPOSTITIONSSWARM = {}
 local mapSizeX, mapSizeZ = GetMapSize()
-local PlatoonExists = moho.aibrain_methods.PlatoonExists
-local GetPlatoonUnits = moho.platoon_methods.GetPlatoonUnits
-local IsUnitState = moho.unit_methods.IsUnitState
-local AssignUnitsToPlatoon = moho.aibrain_methods.AssignUnitsToPlatoon
-local GetPlatoonPosition = moho.platoon_methods.GetPlatoonPosition
-local GetBrain = moho.platoon_methods.GetBrain
-local PlatoonCategoryCount = moho.platoon_methods.PlatoonCategoryCount
-
-local SWARMCOPY = table.copy
-local SWARMSORT = table.sort
-local SWARMTIME = GetGameTimeSeconds
-local SWARMFLOOR = math.floor
-local SWARMENTITY = EntityCategoryContains
-local SWARMINSERT = table.insert
-local SWARMCAT = table.cat
-
-local VDist2Sq = VDist2Sq
-local VDist3 = VDist3
-
-local ForkThread = ForkThread
-local ForkTo = ForkThread
-
-local KillThread = KillThread
 
 --{ UCBC, 'ReturnTrue', {} },
 function ReturnTrue(aiBrain)

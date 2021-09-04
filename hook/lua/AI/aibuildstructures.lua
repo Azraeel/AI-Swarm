@@ -1,3 +1,10 @@
+local import = import 
+
+local SWARMSORT = table.sort
+local SWARMCOPY = table.copy
+local SWARMGETN = table.sort
+
+local VDist3 = VDist3
 
 -- AI-Swarm: Hook for Replace factory buildtemplate to find a better buildplace not too close to the center of the base
 local AntiSpamList = {}
@@ -177,7 +184,7 @@ function AIExecuteBuildStructure(aiBrain, builder, buildingType, closeToBuilder,
         local maxlist = constructionData.MaxChoices or 1
 
         --LOG("SourcePosition is " .. repr(SourcePosition))
-        table.sort( markerlist, function (a,b) return VDist3( a.Position, SourcePosition ) < VDist3( b.Position, SourcePosition ) end )
+        SWARMSORT( markerlist, function (a,b) return VDist3( a.Position, SourcePosition ) < VDist3( b.Position, SourcePosition ) end )
 
 		local CanBuildStructureAt = moho.aibrain_methods.CanBuildStructureAt    
         --LOG("*AI DEBUG: Markerlist is " .. repr(markerlist))
@@ -208,7 +215,7 @@ function AIExecuteBuildStructure(aiBrain, builder, buildingType, closeToBuilder,
                 --LOG("*AI DEBUG "..aiBrain.Nickname.." finds "..table.getn(markerTable).." "..repr(buildingType).." markers")
 
                 -- pick one of the points randomly
-				location = table.copy( markerTable[ Random(1,table.getn(markerTable)) ] )
+				location = SWARMCOPY( markerTable[ Random(1,SWARMGETN(markerTable)) ] )
                 --LOG("*AI DEBUG at marker is " .. aiBrain:GetThreatAtPosition(location, tRings, true, 'AntiSurface'))
             end
 		end	

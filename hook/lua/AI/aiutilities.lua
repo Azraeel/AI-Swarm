@@ -1,3 +1,21 @@
+local import = import
+
+local SWARMREMOVE = table.remove
+local SWARMGETN = table.getn
+local SWARMINSERT = table.insert
+local SWARMWAIT = coroutine.yield
+local SWARMTIME = GetGameTimeSeconds
+local SWARMPI = math.pi
+local SWARMSIN = math.sin
+local SWARMCOS = math.cos
+local SWARMENTITY = EntityCategoryContains
+local SWARMPARSE = ParseEntityCategory
+
+local VDist2 = VDist2
+
+local GetNumUnitsAroundPoint = moho.aibrain_methods.GetNumUnitsAroundPoint
+local GetUnitsAroundPoint = moho.aibrain_methods.GetUnitsAroundPoint
+local GetAIBrain = moho.unit_methods.GetAIBrain
 
 -- AI-Swarm: Helper function for targeting
 function ValidateLayerSwarm(UnitPos,MovementLayer)
@@ -34,8 +52,8 @@ function IsNukeBlastAreaSwarm(aiBrain, TargetPosition)
     -- check if the target is inside a nuke blast radius
     if aiBrain.NukedArea then
         for i, data in aiBrain.NukedArea or {} do
-            if data.NukeTime + 50 <  GetGameTimeSeconds() then
-                table.remove(aiBrain.NukedArea, i)
+            if data.NukeTime + 50 <  SWARMTIME() then
+                SWARMREMOVE(aiBrain.NukedArea, i)
             elseif VDist2(TargetPosition[1], TargetPosition[3], data.Location[1], data.Location[3]) < 40 then
                 return true
             end
@@ -60,7 +78,7 @@ function AIFindNearestCategoryTargetInRangeSwarm(aiBrain, platoon, squad, positi
     end
     local AttackEnemyStrength = platoon.PlatoonData.AttackEnemyStrength or 300
     local platoonUnits = platoon:GetPlatoonUnits()
-    local PlatoonStrength = table.getn(platoonUnits)
+    local PlatoonStrength = SWARMGETN(platoonUnits)
     local IgnoreTargetLayerCheck = platoon.PlatoonData.IgnoreTargetLayerCheck
     
     local enemyIndex = false
@@ -117,7 +135,7 @@ function AIFindNearestCategoryTargetInRangeSwarm(aiBrain, platoon, squad, positi
                 if targetRange < distance then
                     EnemyStrength = 0
                     -- check if this is the right enemy
-                    if not EntityCategoryContains(category, Target) then continue end
+                    if not SWARMENTITY(category, Target) then continue end
                     -- check if the target is on the same layer then the attacker
                     if not IgnoreTargetLayerCheck then
                         if not ValidateAttackLayerSwarm(position, TargetPosition) then continue end
@@ -125,7 +143,7 @@ function AIFindNearestCategoryTargetInRangeSwarm(aiBrain, platoon, squad, positi
                     -- check if the Target is still alive, matches our target priority and can be attacked from our platoon
                     if not platoon:CanAttackTarget(squad, Target) then continue end
                     --LOG('* AIFindNearestCategoryTargetInRange: canAttack CHECKED')
-                    if platoon.MovementLayer == 'Land' and EntityCategoryContains(categories.AIR, Target) then continue end
+                    if platoon.MovementLayer == 'Land' and SWARMENTITY(categories.AIR, Target) then continue end
 
                     local blip = Target:GetBlip(MyArmyIndex)
                     if blip then
@@ -199,7 +217,7 @@ function AIFindNearestCategoryTargetInRangeSwarm(aiBrain, platoon, squad, positi
                 end
                 count = count + 1
                 if count > 300 then -- 300 
-                    coroutine.yield(1)
+                    SWARMWAIT(1)
                     count = 0
                 end
                 -- DEBUG; use the first target we can path to it.
@@ -221,7 +239,7 @@ end
 
 function AIFindNearestCategoryTargetInRangeCDRSwarm(aiBrain, position, maxRange, MoveToCategories, enemyBrain)
     if type(TargetSearchCategory) == 'string' then
-        TargetSearchCategory = ParseEntityCategory(TargetSearchCategory)
+        TargetSearchCategory = SWARMPARSE(TargetSearchCategory)
     end
     local enemyIndex = false
     local MyArmyIndex = aiBrain:GetArmyIndex()
@@ -243,7 +261,7 @@ function AIFindNearestCategoryTargetInRangeCDRSwarm(aiBrain, position, maxRange,
         for _, v in MoveToCategories do
             category = v
             if type(category) == 'string' then
-                category = ParseEntityCategory(category)
+                category = SWARMPARSE(category)
             end
             distance = maxRange
             --LOG('* AIFindNearestCategoryTargetInRangeSwarm: numTargets '..table.getn(TargetsInRange)..'  ')
@@ -256,7 +274,7 @@ function AIFindNearestCategoryTargetInRangeCDRSwarm(aiBrain, position, maxRange,
                 -- check if we have a special player as enemy
                 if enemyBrain and enemyIndex and enemyBrain ~= enemyIndex then continue end
                 -- check if the Target is still alive, matches our target priority and can be attacked from our platoon
-                if not Target.Dead and EntityCategoryContains(category, Target) then
+                if not Target.Dead and SWARMENTITY(category, Target) then
                     -- yes... we need to check if we got friendly units with GetUnitsAroundPoint(_, _, _, 'Enemy')
                     if not IsEnemy( MyArmyIndex, Target:GetAIBrain():GetArmyIndex() ) then continue end
                     if Target.ReclaimInProgress then
@@ -279,9 +297,9 @@ function AIFindNearestCategoryTargetInRangeCDRSwarm(aiBrain, position, maxRange,
             if TargetUnit then
                 return TargetUnit
             end
-           coroutine.yield(1)
+            SWARMWAIT(1)
         end
-        coroutine.yield(1)
+        SWARMWAIT(1)
     end
     return TargetUnit
 end
@@ -327,9 +345,9 @@ function AIFindNearestCategoryTargetInCloseRangeSwarm(platoon, aiBrain, squad, p
                 -- check if the Target is still alive, matches our target priority and can be attacked from our platoon
                 if not platoon:CanAttackTarget(squad, Target) then continue end
                 --LOG('* AIFindNearestCategoryTargetInRange: canAttack '..repr(canAttack))
-                if platoon.MovementLayer == 'Land' and EntityCategoryContains(categories.AIR, Target) then continue end
+                if platoon.MovementLayer == 'Land' and SWARMENTITY(categories.AIR, Target) then continue end
                 -- check if the Target is still alive, matches our target priority and can be attacked from our platoon
-                if not Target.Dead and EntityCategoryContains(category, Target) then
+                if not Target.Dead and SWARMENTITY(category, Target) then
                     -- yes... we need to check if we got friendly units with GetUnitsAroundPoint(_, _, _, 'Enemy')
                     if not IsEnemy( MyArmyIndex, Target.Army ) then continue end
                     if Target.ReclaimInProgress then
@@ -352,9 +370,9 @@ function AIFindNearestCategoryTargetInCloseRangeSwarm(platoon, aiBrain, squad, p
             if TargetUnit then
                 return TargetUnit
             end
-           coroutine.yield(5)
+            SWARMWAIT(5)
         end
-        coroutine.yield(5)
+        SWARMWAIT(5)
     end
     return TargetUnit
 end
@@ -365,9 +383,9 @@ function points(original,radius,num)
     while nnn < num do
         local xxx = 0
         local yyy = 0
-        xxx = original[1] + radius * math.cos (nnn/num* (2 * math.pi))
-        yyy = original[3] + radius * math.sin (nnn/num* (2 * math.pi))
-        table.insert(coords, {xxx, yyy})
+        xxx = original[1] + radius * SWARMCOS (nnn/num* (2 * SWARMPI))
+        yyy = original[3] + radius * SWARMSIN (nnn/num* (2 * SWARMPI))
+        SWARMINSERT(coords, {xxx, yyy})
         nnn = nnn + 1
     end
     for k, v in ipairs(coords) do
