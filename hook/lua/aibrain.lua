@@ -5,6 +5,11 @@ local SWARMGETN = table.getn
 local SWARMINSERT = table.insert
 local SWARMWAIT = coroutine.yield
 
+local VDist2Sq = VDist2Sq
+
+local GetListOfUnits = moho.aibrain_methods.GetListOfUnits
+local CanBuildStructureAt = moho.aibrain_methods.CanBuildStructureAt
+
 SwarmAIBrainClass = AIBrain
 AIBrain = Class(SwarmAIBrainClass) {
 

@@ -19,11 +19,13 @@ BuilderGroup {
         InstanceCount = 2,                                                     
         DelayEqualBuildPlattons = {'Energy', 3},
         BuilderConditions = {
+            { UCBC, 'HaveLessThanUnitsWithCategory', { 1, categories.ENERGYPRODUCTION - categories.TECH1 - categories.COMMAND } },
+
+            { UCBC, 'HaveLessThanUnitsInCategoryBeingBuilt', { 1, categories.STRUCTURE * categories.ENERGYPRODUCTION * (categories.TECH2 + categories.TECH3) }},
+            
             { UCBC, 'CheckBuildPlattonDelay', { 'Energy' }},
 
             { EBC, 'LessThanEnergyTrend', { 0.0 } },             
-
-            { UCBC, 'HaveLessThanUnitsWithCategory', { 1, categories.ENERGYPRODUCTION * categories.TECH2 } },
         },
         BuilderType = 'Any',
         BuilderData = {
@@ -51,13 +53,13 @@ BuilderGroup {
         InstanceCount = 3,                                                     
         DelayEqualBuildPlattons = {'Energy', 3},
         BuilderConditions = {
+            { UCBC, 'HaveLessThanUnitsWithCategory', { 1, categories.ENERGYPRODUCTION - categories.TECH1 - categories.COMMAND } },
+            
             { UCBC, 'CheckBuildPlattonDelay', { 'Energy' }},
 
             { EBC, 'GreaterThanEconStorageCurrent', { 200, 2000}},
 
             { EBC, 'LessThanEnergyTrend', { 4.0 } },
-
-            { UCBC, 'HaveLessThanUnitsWithCategory', { 1, categories.ENERGYPRODUCTION - categories.TECH1 - categories.COMMAND } },
         },
         BuilderType = 'Any',
         BuilderData = {

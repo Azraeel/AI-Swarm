@@ -325,13 +325,13 @@ BuilderGroup {
         PlatoonTemplate = 'CommanderAssist',
         Priority = 650,
         BuilderConditions = {
-            { EBC, 'GreaterThanMassTrendSwarm', { 0.0 } },
+            { EBC, 'LessThanEnergyTrend', { 0.0 } }, 
 
-            { EBC, 'GreaterThanEconStorageCurrent', { 200, 2000}},
+            { EBC, 'GreaterThanEconStorageCurrent', { 200, 0}},
 
-            { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.95, 0.6 }},
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.0, 0.0 }},
 
-            { UCBC, 'HaveGreaterThanUnitsInCategoryBeingBuiltAtLocationSwarm', { 'LocationType', 0, categories.STRUCTURE * categories.ENERGYPRODUCTION - categories.TECH1 }},
+            { UCBC, 'HaveGreaterThanUnitsInCategoryBeingBuiltAtLocationSwarm', { 'LocationType', 0, categories.STRUCTURE * categories.ENERGYPRODUCTION }},
         },
         BuilderType = 'Any',
         BuilderData = {
@@ -354,9 +354,11 @@ BuilderGroup {
         PlatoonTemplate = 'CommanderBuilder',
         Priority = 650,
         BuilderConditions = {
-            { EBC, 'LessThanEnergyTrend', { 4.0 } },             -- Ratio from 0 to 1. (1=100%)
-
             { UCBC, 'HaveLessThanUnitsWithCategory', { 1, categories.ENERGYPRODUCTION - categories.TECH1 - categories.COMMAND } },
+
+            { UCBC, 'HaveLessThanUnitsInCategoryBeingBuilt', { 1, categories.STRUCTURE * categories.ENERGYPRODUCTION * (categories.TECH2 + categories.TECH3) }},
+
+            { EBC, 'LessThanEnergyTrend', { 4.0 } },             -- Ratio from 0 to 1. (1=100%)
         },
         BuilderType = 'Any',
         BuilderData = {
@@ -377,9 +379,11 @@ BuilderGroup {
         PlatoonTemplate = 'CommanderBuilder',
         Priority = 645,
         BuilderConditions = {
-            { EBC, 'EnergyToMassRatioIncome', { 10.0, '<=' } },  -- True if we have less than 10 times more Energy then Mass income ( 100 <= 10 = true )
-
             { UCBC, 'HaveLessThanUnitsWithCategory', { 1, categories.ENERGYPRODUCTION - categories.TECH1 - categories.COMMAND } },
+
+            { UCBC, 'HaveLessThanUnitsInCategoryBeingBuilt', { 1, categories.STRUCTURE * categories.ENERGYPRODUCTION * (categories.TECH2 + categories.TECH3) }},
+
+            { EBC, 'EnergyToMassRatioIncome', { 10.0, '<=' } },  -- True if we have less than 10 times more Energy then Mass income ( 100 <= 10 = true )
         },
         BuilderType = 'Any',
         BuilderData = {

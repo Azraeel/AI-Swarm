@@ -21,6 +21,8 @@ local SWARMINSERT = table.insert
 local SWARMCAT = table.cat
 local SWARMWAIT = coroutine.yield
 local SWARMFLOOR = math.floor
+local SWARMATAN2 = math.atan2
+local SWARMRANDOM = math.random
 local SWARMMIN = math.min
 local SWARMMAX = math.max
 local SWARMSIN = math.sin
@@ -1181,7 +1183,7 @@ Platoon = Class(SwarmPlatoonClass) {
             -- Run away from experimentals. (move out of experimental wepon range)
             -- MKB Max distance to experimental DistBase/2 or EnemyExperimentalWepRange + 100. whatever is bigger
             if aiBrain.ACUChampionSwarm.EnemyExperimentalPos and VDist2( cdr.position[1], cdr.position[3], aiBrain.ACUChampionSwarm.EnemyExperimentalPos[1][1], aiBrain.ACUChampionSwarm.EnemyExperimentalPos[1][3] ) < aiBrain.ACUChampionSwarm.EnemyExperimentalWepRange + 30 then
-                alpha = math.atan2 (aiBrain.ACUChampionSwarm.EnemyExperimentalPos[1][3] - cdr.position[3] ,aiBrain.ACUChampionSwarm.EnemyExperimentalPos[1][1] - cdr.position[1])
+                alpha = SWARMATAN2 (aiBrain.ACUChampionSwarm.EnemyExperimentalPos[1][3] - cdr.position[3] ,aiBrain.ACUChampionSwarm.EnemyExperimentalPos[1][1] - cdr.position[1])
                 x = aiBrain.ACUChampionSwarm.EnemyExperimentalPos[1][1] - SWARMCOS(alpha) * (aiBrain.ACUChampionSwarm.EnemyExperimentalWepRange + 30)
                 y = aiBrain.ACUChampionSwarm.EnemyExperimentalPos[1][3] - SWARMSIN(alpha) * (aiBrain.ACUChampionSwarm.EnemyExperimentalWepRange + 30)
                 smartPos = { x, GetTerrainHeight( x, y), y }
@@ -1206,7 +1208,7 @@ Platoon = Class(SwarmPlatoonClass) {
                     if RangeMod < 0 then RangeMod = 0 end
                     if RangeMod > 10 then RangeMod = 10 end
                     -- Weapoon fire is not blocked, move to the target at Max Weapon Range.
-                    alpha = math.atan2 (MoveToTargetPos[3] - cdr.position[3] ,MoveToTargetPos[1] - cdr.position[1])
+                    alpha = SWARMATAN2 (MoveToTargetPos[3] - cdr.position[3] ,MoveToTargetPos[1] - cdr.position[1])
                     x = MoveToTargetPos[1] - SWARMCOS(alpha) * (cdr.MaxWeaponRange * 0.9 - RangeMod)
                     y = MoveToTargetPos[3] - SWARMSIN(alpha) * (cdr.MaxWeaponRange * 0.9 - RangeMod)
                     smartPos = { x, GetTerrainHeight( x, y), y }
@@ -1223,7 +1225,7 @@ Platoon = Class(SwarmPlatoonClass) {
                 elseif not EnemyBehindMe and CDRHealth > 30 and FocusTargetPos and MoveToTargetPos then
                     ReachedBase = true
                     BraveDEBUG['ReachedBase'] = 1
-                    alpha = math.atan2 (MoveToTargetPos[3] - cdr.position[3] ,MoveToTargetPos[1] - cdr.position[1])
+                    alpha = SWARMATAN2 (MoveToTargetPos[3] - cdr.position[3] ,MoveToTargetPos[1] - cdr.position[1])
                     x = MoveToTargetPos[1] - SWARMCOS(alpha) * (50)
                     y = MoveToTargetPos[3] - SWARMSIN(alpha) * (50)
                     smartPos = { x, GetTerrainHeight( x, y), y }
@@ -1494,15 +1496,15 @@ Platoon = Class(SwarmPlatoonClass) {
                 -- calculate a position behind the unit we want to cover (behind unit from enemy view)
                 if NavigatorGoal and FocusTargetPos then
                     -- if we have a target, then move behind the ACU
-                    alpha = math.atan2 (NavigatorGoal[3] - FocusTargetPos[3] ,NavigatorGoal[1] - FocusTargetPos[1])
+                    alpha = SWARMATAN2 (NavigatorGoal[3] - FocusTargetPos[3] ,NavigatorGoal[1] - FocusTargetPos[1])
                     x = cdr.smartPos[1] + SWARMCOS(alpha) * DistToACU
                     y = cdr.smartPos[3] + SWARMSIN(alpha) * DistToACU
                     smartPos = { x, GetTerrainHeight( x, y), y }
                 else
                     -- Move so the ACU is between units and Base
-                    --alpha = math.atan2 (cdr.position[3] - cdr.CDRHome[3] ,cdr.position[1] - cdr.CDRHome[1])
+                    --alpha = SWARMATAN2 (cdr.position[3] - cdr.CDRHome[3] ,cdr.position[1] - cdr.CDRHome[1])
                     -- Move so our support units are between ACU and base
-                    alpha = math.atan2 (cdr.CDRHome[3] - cdr.position[3] ,cdr.CDRHome[1] - cdr.position[1])
+                    alpha = SWARMATAN2 (cdr.CDRHome[3] - cdr.position[3] ,cdr.CDRHome[1] - cdr.position[1])
                     x = cdr.smartPos[1] + SWARMCOS(alpha) * DistToACU
                     y = cdr.smartPos[3] + SWARMSIN(alpha) * DistToACU
                     smartPos = { x, GetTerrainHeight( x, y), y }
@@ -3614,7 +3616,7 @@ Platoon = Class(SwarmPlatoonClass) {
                     estartX, estartZ = aiBrain:GetCurrentEnemy():GetArmyStartPos()
                 end
                 startX, startZ = aiBrain:GetArmyStartPos()
-                local rng = math.random(1,3)
+                local rng = SWARMRANDOM(1,3)
                 if rng == 1 then
                     patrolPositionX = (estartX + startX) / 2.2
                     patrolPositionZ = (estartZ + startZ) / 2.2
@@ -4878,6 +4880,7 @@ Platoon = Class(SwarmPlatoonClass) {
         local CoverIndex = 0
         local UnitMassCost = {}
         local maxRadius = self.PlatoonData.SearchRadius or 100
+        local maxRadius = SWARMMAX(maxRadius, (maxRadius * aiBrain.MyLandRatio) )
         local WantsTransport = self.PlatoonData.RequireTransport
         local GetTargetsFromBase = self.PlatoonData.GetTargetsFromBase
         local DirectMoveEnemyBase = self.PlatoonData.DirectMoveEnemyBase
@@ -5041,6 +5044,7 @@ Platoon = Class(SwarmPlatoonClass) {
             else
                 target = nil
                 path = nil
+                LastTargetPos = nil
                 -- no target, land units just wait for new targets, air and naval units return to their base
                 if HERODEBUGSwarm then
                     self:RenamePlatoon('No target returning home')
@@ -5261,7 +5265,7 @@ Platoon = Class(SwarmPlatoonClass) {
                                 -- Weapoon fire is blocked, move to the target as close as possible.
                                 smartPos = { LastTargetPos[1] + (Random(-5, 5)/10), LastTargetPos[2], LastTargetPos[3] + (Random(-5, 5)/10) }
                             else
-                                alpha = math.atan2 (LastTargetPos[3] - unitPos[3] ,LastTargetPos[1] - unitPos[1])
+                                alpha = SWARMATAN2 (LastTargetPos[3] - unitPos[3] ,LastTargetPos[1] - unitPos[1])
                                 x = LastTargetPos[1] - SWARMCOS(alpha) * (unit.MaxWeaponRange or MaxPlatoonWeaponRange)
                                 y = LastTargetPos[3] - SWARMSIN(alpha) * (unit.MaxWeaponRange or MaxPlatoonWeaponRange)
                                 smartPos = { x, GetTerrainHeight( x, y), y }
@@ -5297,7 +5301,7 @@ Platoon = Class(SwarmPlatoonClass) {
                                     unit.IamLost = 0
                                 end
                                 if unit.IamLost > 5 then
-                                    WARN('* AI-Swarm: We have a LOST (stucked) unit. Killing it!!! Distance to platoon: '..SWARMFLOOR(VDist2( unitPos[1], unitPos[3], PlatoonCenterPosition[1], PlatoonCenterPosition[3]))..' pos: ( '..SWARMFLOOR(unitPos[1])..' , '..SWARMFLOOR(unitPos[3])..' )' )
+                                    SPEW('* AI-Swarm: We have a LOST (stucked) unit. Killing it!!! Distance to platoon: '..SWARMFLOOR(VDist2( unitPos[1], unitPos[3], PlatoonCenterPosition[1], PlatoonCenterPosition[3]))..' pos: ( '..SWARMFLOOR(unitPos[1])..' , '..SWARMFLOOR(unitPos[3])..' )' )
                                     -- stucked units can't be unstucked, even with a forked thread and hammering movement commands. Let's kill it !!!
                                     unit:Kill()
                                 end
@@ -5366,7 +5370,7 @@ Platoon = Class(SwarmPlatoonClass) {
                             UnitToCover = UnitMassCost[CoverIndex]
                             -- calculate a position behind the unit we want to cover (behind unit from enemy view)
                             if UnitToCover.smartPos and UnitToCover.TargetPos then
-                                alpha = math.atan2 (UnitToCover.smartPos[3] - UnitToCover.TargetPos[3] ,UnitToCover.smartPos[1] - UnitToCover.TargetPos[1])
+                                alpha = SWARMATAN2 (UnitToCover.smartPos[3] - UnitToCover.TargetPos[3] ,UnitToCover.smartPos[1] - UnitToCover.TargetPos[1])
                                 x = UnitToCover.smartPos[1] + SWARMCOS(alpha) * 4
                                 y = UnitToCover.smartPos[3] + SWARMSIN(alpha) * 4
                                 smartPos = { x, GetTerrainHeight( x, y), y }
