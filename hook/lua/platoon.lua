@@ -101,8 +101,12 @@ Platoon = Class(SwarmPlatoonClass) {
         -- This shit is annoying!
         -- Want to get this properly working with Swarm One Day.
         KillThread(CurrentThread())
-     end,
+    end,
 
+    -- The Magical Tether System or well... 1 line of code.
+    -- local maxRadius = SWARMMAX(maxRadius, (maxRadius * aiBrain.MyAirRatio) ) 
+    -- This adjust the maxRadius Air Platoons are willing to go out onto depending on the LandRatio
+    -- This eliminates a lot of threat data assessment by just having them see if we are losing or winning
     InterceptorAISwarm = function(self)
         --if UseHeroPlatoonswarm then
         --    self:HeroFightPlatoonSwarm()
@@ -158,7 +162,6 @@ Platoon = Class(SwarmPlatoonClass) {
         local path
         local reason
         local maxRadius = self.PlatoonData.SearchRadius or 100
-        --local maxRadius = SWARMMAX(maxRadius, (maxRadius * aiBrain.MyAirRatio) ) -- Whoops, this doesn't work :)
         local PlatoonPos = self:GetPlatoonPosition()
         local LastTargetPos = PlatoonPos
         local basePosition
@@ -263,6 +266,10 @@ Platoon = Class(SwarmPlatoonClass) {
         end
     end,
 
+    -- The Magical Tether System or well... 1 line of code.
+    -- local maxRadius = SWARMMAX(maxRadius, (maxRadius * aiBrain.MyAirRatio) ) 
+    -- This adjust the maxRadius Air Platoons are willing to go out onto depending on the LandRatio
+    -- This eliminates a lot of threat data assessment by just having them see if we are losing or winning
     BomberGunshipAISwarm = function(self)
         --if 1==1 then
         --    self:HeroFightPlatoonSwarm()
@@ -318,7 +325,6 @@ Platoon = Class(SwarmPlatoonClass) {
         local path
         local reason
         local maxRadius = self.PlatoonData.SearchRadius or 100
-        --local maxRadius = SWARMMAX(maxRadius, (maxRadius * aiBrain.MyAirRatio) ) -- Whoops, this doesn't work :)
         local PlatoonPos = self:GetPlatoonPosition()
         local LastTargetPos = PlatoonPos
         local basePosition
@@ -514,15 +520,16 @@ Platoon = Class(SwarmPlatoonClass) {
         local basePosition = aiBrain.BuilderManagers['MAIN'].Position
         local losttargetnum = 0
         local TargetSearchCategory = self.PlatoonData.TargetSearchCategory or 'ALLUNITS'
+        local maxRadius = SWARMMAX(maxRadius, (maxRadius * aiBrain.MyLandRatio) )
         while aiBrain:PlatoonExists(self) do
 
             PlatoonPos = self:GetPlatoonPosition()
             -- only get a new target and make a move command if the target is dead or after 10 seconds
             if not target or target.Dead then
 
-                self:MergeWithNearbyPlatoonsSwarm('LandAttackAISwarm', 100, 40)
+                self:MergeWithNearbyPlatoonsSwarm('LandAttackAISwarm', 100, 35)
 
-                SWARMWAIT(10)
+                SWARMWAIT(5)
 
                 UnitWithPath, UnitNoPath, path, reason = AIUtils.AIFindNearestCategoryTargetInRangeSwarm(aiBrain, self, 'Attack', PlatoonPos, maxRadius, MoveToCategories, TargetSearchCategory, false )
                 if UnitWithPath then
@@ -651,6 +658,7 @@ Platoon = Class(SwarmPlatoonClass) {
         local basePosition = PlatoonPos   -- Platoons will be created near a base, so we can return to this position if we don't have targets.
         local losttargetnum = 0
         local TargetSearchCategory = self.PlatoonData.TargetSearchCategory or 'ALLUNITS'
+        local maxRadius = SWARMMAX(maxRadius, (maxRadius * aiBrain.MyNavalRatio) )
         while aiBrain:PlatoonExists(self) do
             PlatoonPos = self:GetPlatoonPosition()
             -- only get a new target and make a move command if the target is dead or after 10 seconds
@@ -3372,6 +3380,7 @@ Platoon = Class(SwarmPlatoonClass) {
         self:SetPrioritizedTargetList('Attack', WeaponTargetCategories)
         local TargetSearchCategory = self.PlatoonData.TargetSearchCategory or 'ALLUNITS'
         local maxRadius = self.PlatoonData.SearchRadius or 100
+        local maxRadius = SWARMMAX(maxRadius, (maxRadius * aiBrain.MyLandRatio) )
         -- search for a target
         local Target
         while not Target do
@@ -4128,6 +4137,7 @@ Platoon = Class(SwarmPlatoonClass) {
 
             self:MergeWithNearbyPlatoonsSwarm('AttackForceAISwarm', 100, 50)
 
+            SWARMWAIT(5)
 
             -- rebuild formation
             platoonUnits = GetPlatoonUnits(self)
@@ -4470,9 +4480,9 @@ Platoon = Class(SwarmPlatoonClass) {
             IssueClearCommands(GetPlatoonUnits(self))
             if path then
 
-                self:MergeWithNearbyPlatoonsSwarm('MassRaidSwarm', 100, 30)
+                self:MergeWithNearbyPlatoonsSwarm('MassRaidSwarm', 100, 25)
 
-                SWARMWAIT(10)
+                SWARMWAIT(5)
 
                 local position = GetPlatoonPosition(self)
                 if not success or VDist2(position[1], position[3], bestMarker.Position[1], bestMarker.Position[3]) > 512 then

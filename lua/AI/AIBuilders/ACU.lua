@@ -229,6 +229,8 @@ BuilderGroup {
             },
         },
         BuilderConditions = {                         
+            { UCBC, 'GreaterThanGameTimeSeconds', { 60*8 } },
+            
             { UCBC, 'CheckBuildPlattonDelay', { 'ACUFORM' }},
                                      
             { EBC, 'GreaterThanEconIncome',  { 2.0, 50.0}},
@@ -447,7 +449,7 @@ BuilderGroup {
 
             { UCBC, 'CanPathLandBaseToLandTargetsSwarm', {  'LocationType', categories.STRUCTURE * categories.FACTORY * categories.LAND }},
 
-            { UCBC, 'LandStrengthRatioLessThan', { 1 } },
+            { UCBC, 'LandStrengthRatioLessThan', { 1.5 } },
 
             { EBC, 'MassToFactoryRatioBaseCheck', { 'LocationType' } },
 

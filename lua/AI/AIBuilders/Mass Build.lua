@@ -52,13 +52,13 @@ BuilderGroup {
         BuilderName = 'Swarm Mass 480',
         PlatoonTemplate = 'EngineerBuilder',
         Priority = 655,
-        InstanceCount = 4,
+        InstanceCount = 2,
         BuilderConditions = {
             { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 0, categories.ENGINEER * categories.TECH1 }},
 
-            { UCBC, 'LandStrengthRatioGreaterThan', { 0.7 } },
+            { UCBC, 'LandStrengthRatioGreaterThan', { 0.6 } },
 
-            { UCBC, 'EnemyUnitsLessAtLocationRadiusSwarm', {  BaseMilitaryZone, 'LocationType', 10, categories.ALLUNITS - categories.ENGINEER - categories.AIR - categories.SCOUT }},
+            --{ UCBC, 'EnemyUnitsLessAtLocationRadiusSwarm', {  BaseMilitaryZone, 'LocationType', 10, categories.ALLUNITS - categories.ENGINEER - categories.AIR - categories.SCOUT }},
 
             { MABC, 'CanBuildOnMassSwarm', { 'LocationType', 480, -500, 2, 1, 'AntiSurface', 1}},
         },
@@ -83,13 +83,13 @@ BuilderGroup {
         BuilderName = 'Swarm Mass 1000',
         PlatoonTemplate = 'EngineerBuilder',
         Priority = 655,
-        InstanceCount = 4,
+        InstanceCount = 2,
         BuilderConditions = {
             { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 0, categories.ENGINEER * categories.TECH1 }},
 
-            { UCBC, 'LandStrengthRatioGreaterThan', { 0.7 } },
+            { UCBC, 'LandStrengthRatioGreaterThan', { 0.6 } },
 
-            { UCBC, 'EnemyUnitsLessAtLocationRadiusSwarm', {  BaseMilitaryZone, 'LocationType', 10, categories.ALLUNITS - categories.ENGINEER - categories.AIR - categories.SCOUT }},
+            --{ UCBC, 'EnemyUnitsLessAtLocationRadiusSwarm', {  BaseMilitaryZone, 'LocationType', 10, categories.ALLUNITS - categories.ENGINEER - categories.AIR - categories.SCOUT }},
 
             { MABC, 'CanBuildOnMassSwarm', { 'LocationType', 1000, -500, 2, 1, 'AntiSurface', 1}},
         },

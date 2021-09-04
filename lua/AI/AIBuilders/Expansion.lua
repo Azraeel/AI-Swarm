@@ -146,6 +146,8 @@ BuilderGroup {
         Priority = 510,                                                  
         InstanceCount = 1,                                                 
         BuilderConditions = {
+            { UCBC, 'LandStrengthRatioLessThan', { 1 } },
+
             { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 0, categories.ENGINEER * categories.TECH2 - categories.COMMAND - categories.STATIONASSISTPOD }},
 
             { UCBC, 'ExpansionAreaNeedsEngineer', { 'LocationType', 1000, 5, 500, 1, 'AntiSurface' } },
@@ -192,6 +194,8 @@ BuilderGroup {
         Priority = 510,                                                  
         InstanceCount = 1,                                                 
         BuilderConditions = {
+            { UCBC, 'LandStrengthRatioLessThan', { 1 } },
+            
             { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 3, categories.ENGINEER * categories.TECH2 - categories.COMMAND - categories.STATIONASSISTPOD }},
 
             { UCBC, 'ExpansionAreaNeedsEngineer', { 'LocationType', 1000, 5, 500, 1, 'AntiSurface' } },

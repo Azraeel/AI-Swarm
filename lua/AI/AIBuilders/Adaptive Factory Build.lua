@@ -205,7 +205,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Adaptive Factory Build',
 
             { UCBC, 'CanPathLandBaseToLandTargetsSwarm', {  'LocationType', categories.STRUCTURE * categories.FACTORY * categories.LAND }},
 
-            { UCBC, 'LandStrengthRatioLessThan', { 1 } },
+            { UCBC, 'LandStrengthRatioLessThan', { 1.5 } },
 
             { EBC, 'MassToFactoryRatioBaseCheck', { 'LocationType' } },
 
@@ -320,7 +320,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Factory Builders Expansions',
 
             { UCBC, 'CanPathLandBaseToLandTargetsSwarm', {  'LocationType', categories.STRUCTURE * categories.FACTORY * categories.LAND }},
 
-            { UCBC, 'LandStrengthRatioLessThan', { 1 } },
+            { UCBC, 'LandStrengthRatioLessThan', { 1.5 } },
 
             { EBC, 'MassToFactoryRatioBaseCheck', { 'LocationType' } },
 

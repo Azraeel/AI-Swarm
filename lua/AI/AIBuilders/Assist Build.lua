@@ -137,7 +137,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
         BuilderConditions = {
             { EBC, 'LessThanEnergyTrend', { 0.0 } },     
 
-            { EBC, 'GreaterThanEconStorageCurrent', { 200, 2000}},
+            { EBC, 'GreaterThanEconStorageCurrent', { 200, 0}},
 
             { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.0, 0.0 }},
         },
@@ -162,7 +162,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
         BuilderConditions = {
             { EBC, 'LessThanEnergyTrend', { 0.0 } },     
 
-            { EBC, 'GreaterThanEconStorageCurrent', { 200, 2000}},
+            { EBC, 'GreaterThanEconStorageCurrent', { 200, 0}},
 
             { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.0, 0.0 }},
         },
@@ -187,7 +187,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
         BuilderConditions = {
             { EBC, 'LessThanEnergyTrend', { 0.0 } },     
 
-            { EBC, 'GreaterThanEconStorageCurrent', { 200, 2000}},
+            { EBC, 'GreaterThanEconStorageCurrent', { 200, 0}},
 
             { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.0, 0.0 }},
         },
@@ -212,7 +212,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
         BuilderConditions = {
             { EBC, 'LessThanEnergyTrend', { 0.0 } },     
 
-            { EBC, 'GreaterThanEconStorageCurrent', { 200, 2000}},
+            { EBC, 'GreaterThanEconStorageCurrent', { 200, 0}},
 
             { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.0, 0.0 }},
         },
@@ -235,9 +235,11 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
         Priority = 650,
         InstanceCount = 1,
         BuilderConditions = {
-            { EBC, 'GreaterThanEconStorageCurrent', { 200, 2000}},
+            { EBC, 'LessThanEnergyTrend', { 0.0 } },  
 
-            { EBC, 'GreaterThanEconIncomeSwarm', { 0.2, 2 } },
+            { EBC, 'GreaterThanEconStorageCurrent', { 200, 0}},
+
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.0, 0.0 }},
         },
         BuilderType = 'Any',
         BuilderData = {

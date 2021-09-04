@@ -468,8 +468,10 @@ AIBrain = Class(SwarmAIBrainClass) {
 
     -- Needs to be expanded on sooner or later. Unit Cap was only a replacement for Threat, until we clean threat up in the FAF DB. 
     -- Eventually, I will personally do this with the rest of AI Development Team and we will PR our complete threat reviewal towards the FAF Github.
-    -- Surpisely Accurate
-    -- Might make my own threats for tiers and such.
+    -- Surpisely Semi-Accurate
+
+    -- Now we use actual Threat from Units instead of Unit Cap.
+    -- Extremely Accurate
     ParseIntelThreadSwarm = function(self)
 
         --LOG("*AI DEBUG "..self.Nickname.." ParseIntelThreadSwarm begins")
@@ -479,24 +481,7 @@ AIBrain = Class(SwarmAIBrainClass) {
 		-----------------
         while self.Swarm do
 
-            SWARMWAIT(30)
-
-            --[[ allyScore = 0
-            enemyScore = 0
-
-            for k, brain in ArmyBrains do
-
-                if ArmyIsCivilian(brain:GetArmyIndex()) then
-                  
-                elseif IsAlly( self:GetArmyIndex(), brain:GetArmyIndex() ) then
-
-                    allyScore = allyScore + SWARMGETN(self:GetListOfUnits( categories.MOBILE * categories.LAND - categories.ENGINEER - categories.SCOUT, false, false))
-
-                elseif IsEnemy( self:GetArmyIndex(), brain:GetArmyIndex() ) then
-
-                    enemyScore = enemyScore + SWARMGETN(brain:GetListOfUnits( categories.MOBILE * categories.LAND - categories.ENGINEER - categories.SCOUT, false, false))
-                end
-            end ]]--    
+            SWARMWAIT(30)  
 
             local enemyLandThreat = self.EnemyLand
             local landThreat = self.SelfLandNow
@@ -509,27 +494,6 @@ AIBrain = Class(SwarmAIBrainClass) {
             else
                 self.MyLandRatio = 0.01
             end
-        
-
-            --LOG("*AI DEBUG "..self.Nickname.." First Phase Ends")
-
-
-            --[[ allyScore = 0
-            enemyScore = 0
-
-            for k, brain in ArmyBrains do
-
-                if ArmyIsCivilian(brain:GetArmyIndex()) then
-                   
-                elseif IsAlly( self:GetArmyIndex(), brain:GetArmyIndex() ) then
-
-                    allyScore = allyScore + SWARMGETN(self:GetListOfUnits( categories.MOBILE * categories.AIR - categories.ENGINEER - categories.SCOUT, false, false))
-
-                elseif IsEnemy( self:GetArmyIndex(), brain:GetArmyIndex() ) then
-
-                    enemyScore = enemyScore + SWARMGETN(brain:GetListOfUnits( categories.MOBILE * categories.AIR - categories.ENGINEER - categories.SCOUT, false, false))
-                end
-            end ]]--
 
             local enemyAirThreat = self.EnemyAir
             local airthreat = self.SelfAirNow
@@ -542,27 +506,6 @@ AIBrain = Class(SwarmAIBrainClass) {
             else
                 self.MyAirRatio = 0.01
             end
-    
-
-            --LOG("*AI DEBUG "..self.Nickname.." Second Phase Ends")
-
-
-            --[[ allyScore = 0
-            enemyScore = 0
-
-            for k, brain in ArmyBrains do
-
-                if ArmyIsCivilian(brain:GetArmyIndex()) then
-                   
-                elseif IsAlly( self:GetArmyIndex(), brain:GetArmyIndex() ) then
-
-                    allyScore = allyScore + SWARMGETN(self:GetListOfUnits( categories.MOBILE * categories.NAVAL - categories.ENGINEER - categories.SCOUT, false, false))
-
-                elseif IsEnemy( self:GetArmyIndex(), brain:GetArmyIndex() ) then
-
-                    enemyScore = enemyScore + SWARMGETN(brain:GetListOfUnits( categories.MOBILE * categories.NAVAL - categories.ENGINEER - categories.SCOUT, false, false))
-                end
-            end ]]--
 
             local enemyNavalThreat = self.EnemyNaval
             local navalThreat = self.SelfNavalNow
