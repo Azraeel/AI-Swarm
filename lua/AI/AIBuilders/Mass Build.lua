@@ -117,11 +117,13 @@ BuilderGroup {
         BuilderConditions = {
             { UCBC, 'HaveGreaterThanUnitsWithCategory', { 2, categories.STRUCTURE * categories.ENERGYPRODUCTION * categories.TECH3 }},
 
-            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.05, 0.95}}, 
-
-            { EBC, 'LessThanEconStorageRatio', { 0.75, 2 } },
-
             { UCBC, 'HaveUnitRatioSwarm', { 0.3, categories.STRUCTURE * categories.MASSFABRICATION, '<=',categories.STRUCTURE * categories.ENERGYPRODUCTION * categories.TECH3 } },
+
+            { EBC, 'GreaterThanEnergyTrend', { 0.0 } },   
+
+            { EBC, 'GreaterThanEconStorageCurrent', { 200, 2000}},
+
+            { EBC, 'LessThanEconStorageRatio', { 0.35, 2 } },
         },
         BuilderType = 'Any',
         BuilderData = {
@@ -176,17 +178,19 @@ BuilderGroup {
 
             { UCBC, 'UnitCapCheckLess', { .8 } },
 
-            { EBC, 'GreaterThanMassTrendSwarm', { 0.8 } },
-
-            { EBC, 'GreaterThanEconStorageCurrent', { 200, 2000}},
+            { MABC, 'MarkerLessThanDistance',  { 'Mass', 275, -3, 0, 0}},
+            
+            { UCBC, 'AdjacencyCheck', { 'LocationType', categories.STRUCTURE * categories.MASSEXTRACTION * (categories.TECH2 + categories.TECH3), 250, 'ueb1106' } },
 
             { UCBC, 'HaveGreaterThanUnitsWithCategory', { 4, categories.STRUCTURE * categories.MASSEXTRACTION * (categories.TECH2 + categories.TECH3) }},
 
             { UCBC, 'HaveLessThanUnitsInCategoryBeingBuilt', { 4,  categories.STRUCTURE * categories.MASSSTORAGE }},
 
-            { MABC, 'MarkerLessThanDistance',  { 'Mass', 275, -3, 0, 0}},
-            
-            { UCBC, 'AdjacencyCheck', { 'LocationType', categories.STRUCTURE * categories.MASSEXTRACTION * (categories.TECH2 + categories.TECH3), 250, 'ueb1106' } },
+            { EBC, 'GreaterThanMassTrendSwarm', { 1.2 } },
+
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.02, 1.03 }}, 
+
+            { EBC, 'GreaterThanEconStorageCurrent', { 200, 2000}},
         },
         BuilderData = {
             Construction = {
@@ -212,18 +216,20 @@ BuilderGroup {
             { UCBC, 'GreaterThanGameTimeSeconds', { 60 * 15 } },
 
             { UCBC, 'UnitCapCheckLess', { .8 } },
-
-            { EBC, 'GreaterThanMassTrendSwarm', { 0.8 } },
-
-            { EBC, 'GreaterThanEconStorageCurrent', { 200, 2000}},
+            
+            { MABC, 'MarkerLessThanDistance',  { 'Mass', 775, -3, 0, 0}},
+           
+            { UCBC, 'AdjacencyCheck', { 'LocationType', categories.STRUCTURE * categories.MASSEXTRACTION * (categories.TECH2 + categories.TECH3), 750, 'ueb1106' } },
 
             { UCBC, 'HaveGreaterThanUnitsWithCategory', { 8, categories.STRUCTURE * categories.MASSEXTRACTION * (categories.TECH2 + categories.TECH3) }},
 
             { UCBC, 'HaveLessThanUnitsInCategoryBeingBuilt', { 8,  categories.STRUCTURE * categories.MASSSTORAGE }},
 
-            { MABC, 'MarkerLessThanDistance',  { 'Mass', 775, -3, 0, 0}},
-           
-            { UCBC, 'AdjacencyCheck', { 'LocationType', categories.STRUCTURE * categories.MASSEXTRACTION * (categories.TECH2 + categories.TECH3), 750, 'ueb1106' } },
+            { EBC, 'GreaterThanMassTrendSwarm', { 1.6 } },
+
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.02, 1.03 }}, 
+
+            { EBC, 'GreaterThanEconStorageCurrent', { 200, 2000}},
         },
         BuilderData = {
             Construction = {
