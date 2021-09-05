@@ -63,6 +63,8 @@ function IsNukeBlastAreaSwarm(aiBrain, TargetPosition)
 end
 
 -- AI-Swarm: Target function
+-- Rework Target Function to understand actual Threat instead of using Number of Units to determine whether situation is winnable or not.
+-- Unit to Unit can be extremely incorrect.
 function AIFindNearestCategoryTargetInRangeSwarm(aiBrain, platoon, squad, position, maxRange, MoveToCategories, TargetSearchCategory, enemyBrain)
     if not maxRange then
         return false, false, false, 'NoRange'
