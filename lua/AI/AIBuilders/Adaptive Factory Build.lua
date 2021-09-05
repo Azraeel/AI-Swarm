@@ -148,6 +148,10 @@ BuilderGroup {
     },
 }
 
+-- Perhaps adjusting the Factory Priority and Such depending on aiBrain.SelfExtractorCount is Viable?
+-- Perhaps turning back on factory incase Mass Income Late Game allows additional factory building specifically.
+-- Straight up building on T2-T3 Factories. 
+
 BuilderGroup { BuilderGroupName = 'Swarm Adaptive Factory Build',
     BuildersType = 'EngineerBuilder',
 

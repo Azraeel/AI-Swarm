@@ -594,10 +594,10 @@ Platoon = Class(SwarmPlatoonClass) {
                     LastTargetPos = target:GetPosition()
                     self:SetPlatoonFormationOverride('AttackFormation')
                     self:AttackTarget(target)
-                    WaitSeconds(2)
+                    SWARMWAIT(20)
                 end
             end
-            WaitSeconds(1)
+            SWARMWAIT(10)
         end
     end,
 
@@ -714,10 +714,10 @@ Platoon = Class(SwarmPlatoonClass) {
                     LastTargetPos = target:GetPosition()
                     self:SetPlatoonFormationOverride('AttackFormation')
                     self:AttackTarget(target)
-                    WaitSeconds(2)
+                    SWARMWAIT(20)
                 end
             end
-            WaitSeconds(1)
+            SWARMWAIT(10)
         end
     end,
     
@@ -2311,7 +2311,7 @@ Platoon = Class(SwarmPlatoonClass) {
         end
         local count = 0
         repeat
-            WaitSeconds(2)
+            SWARMWAIT(20)
             if not aiBrain:PlatoonExists(self) then
                 return
             end
@@ -2471,6 +2471,10 @@ Platoon = Class(SwarmPlatoonClass) {
         return false
     end,
 
+
+    -- September 4, 2021 - Begin Reworking the ExtractorUpgradeAI to make more internal usage of new Data from AiBrain.
+    -- Hopefully we can eliminate the need for Timed Increases to the Ratio of Eco to Army.
+    -- Making this adjust to the actual situation instead of Time is critical for Swarm.
     ExtractorUpgradeAISwarm = function(self)
         --LOG('* AI-Swarm: +++ ExtractorUpgradeAISwarm: START')
         local aiBrain = self:GetBrain()
@@ -2672,7 +2676,7 @@ Platoon = Class(SwarmPlatoonClass) {
             if dist < 20 then
                 --LOG('* AI-Swarm: * ForceReturnToNavalBaseAISwarm: We are home! disband!')
                 -- Wait some second, so all platoon units have time to reach the base.
-                WaitSeconds(5)
+                SWARMWAIT(50)
                 self:Stop()
                 break
             end
@@ -2686,7 +2690,7 @@ Platoon = Class(SwarmPlatoonClass) {
                 self:Stop()
                 break
             end
-            WaitSeconds(5)
+            SWARMWAIT(50)
         end
         -- Disband the platoon so the locationmanager can assign a new task to the units.
         SWARMWAIT(30)
@@ -2758,12 +2762,12 @@ Platoon = Class(SwarmPlatoonClass) {
                             end
                         end
                     end
-                    WaitSeconds(5)
+                    SWARMWAIT(50)
                 end
             end
             -- Reaching this point means we have no special target and our arty is using it's own weapon target priorities.
             -- So we are still attacking targets at this point.
-            WaitSeconds(5)
+            SWARMWAIT(50)
         end
     end,
 
@@ -3546,7 +3550,7 @@ Platoon = Class(SwarmPlatoonClass) {
             local target = false
             local blip = false
             while unit:GetTacticalSiloAmmoCount() < 1 or not target do
-                WaitSeconds(7)
+                SWARMWAIT(70)
                 target = false
                 while not target do
 
@@ -3562,7 +3566,7 @@ Platoon = Class(SwarmPlatoonClass) {
                     if target then
                         break
                     end
-                    WaitSeconds(3)
+                    SWARMWAIT(30)
                     if not aiBrain:PlatoonExists(self) then
                         return
                     end
@@ -3572,7 +3576,7 @@ Platoon = Class(SwarmPlatoonClass) {
                 --LOG('*AI DEBUG: Firing Tactical Missile at enemy swine!')
                 IssueTactical({unit}, target)
             end
-            WaitSeconds(3)
+            SWARMWAIT(30)
         end
     end,
     
@@ -3604,7 +3608,7 @@ Platoon = Class(SwarmPlatoonClass) {
         end
 
         if patrol == true then
-            local patrolTime = self.PlatoonData.PatrolTime or 30
+            local patrolTime = self.PlatoonData.PatrolTime or 300
             local estartX = nil
             local estartZ = nil
             local startX = nil
@@ -3636,7 +3640,7 @@ Platoon = Class(SwarmPlatoonClass) {
                 IssuePatrol(patrolunits, AIUtils.RandomLocation(patrolPositionX, patrolPositionZ))
                 IssuePatrol(patrolunits, AIUtils.RandomLocation(patrolPositionX, patrolPositionZ))
                 IssuePatrol(patrolunits, AIUtils.RandomLocation(patrolPositionX, patrolPositionZ))
-                WaitSeconds(patrolTime)
+                SWARMWAIT(patrolTime)
                 self:MoveToLocation({startX, 0, startZ}, false)
                 self:PlatoonDisband()
                 return
@@ -3993,7 +3997,7 @@ Platoon = Class(SwarmPlatoonClass) {
             local oldPlatPos = self:GetPlatoonPosition()
             local StuckCount = 0
             repeat
-                WaitSeconds(5)
+                SWARMWAIT(50)
                 platLoc = self:GetPlatoonPosition()
                 if VDist3(oldPlatPos, platLoc) < 1 then
                     StuckCount = StuckCount + 1
@@ -4009,7 +4013,7 @@ Platoon = Class(SwarmPlatoonClass) {
             -- if we're supposed to guard for some time
             if moveNext == 'None' then
                 -- this won't be 0... see above
-                WaitSeconds(guardTimer)
+                SWARMWAIT(guardTimer)
                 self:PlatoonDisband()
                 return
             end
@@ -4021,7 +4025,7 @@ Platoon = Class(SwarmPlatoonClass) {
             -- we're there... wait here until we're done
             local numGround = aiBrain:GetNumUnitsAroundPoint((categories.LAND + categories.NAVAL + categories.STRUCTURE), bestMarker.Position, 15, 'Enemy')
             while numGround > 0 and aiBrain:PlatoonExists(self) do
-                WaitSeconds(Random(5,10))
+                SWARMWAIT(60)
                 numGround = aiBrain:GetNumUnitsAroundPoint((categories.LAND + categories.NAVAL + categories.STRUCTURE), bestMarker.Position, 15, 'Enemy')
             end
 
@@ -4259,7 +4263,7 @@ Platoon = Class(SwarmPlatoonClass) {
                 SWARMWAIT(50)
             else
                 -- wait a little longer if we're stuck so that we have a better chance to move
-                WaitSeconds(Random(5,11) + 2 * stuckCount)
+                SWARMWAIT(Random(50,110) + 20 * stuckCount)
             end
             SWARMWAIT(1)
         end
@@ -4295,7 +4299,7 @@ Platoon = Class(SwarmPlatoonClass) {
                     if target then
                         break
                     end
-                    WaitSeconds(1) --DUNCAN - was 3
+                    SWARMWAIT(10) --DUNCAN - was 3
                     if not aiBrain:PlatoonExists(self) then
                         return
                     end
@@ -4333,7 +4337,7 @@ Platoon = Class(SwarmPlatoonClass) {
                     end
                 end
             end
-            WaitSeconds(7)
+            SWARMWAIT(70)
         end
     end,
 
@@ -4605,7 +4609,7 @@ Platoon = Class(SwarmPlatoonClass) {
                     self.DistressCall = true
                 end
             end
-            WaitSeconds(checkTime)
+            SWARMWAIT(checkTime)
         end
     end,
 
@@ -4638,7 +4642,7 @@ Platoon = Class(SwarmPlatoonClass) {
                         self:Stop()
                         local cmd = self:AggressiveMoveToLocation(distressLocation)
                         repeat
-                            WaitSeconds(reactionTime)
+                            SWARMWAIT(reactionTime)
                             if not aiBrain:PlatoonExists(self) then
                                 return
                             end
@@ -4660,7 +4664,7 @@ Platoon = Class(SwarmPlatoonClass) {
                     self:SetAIPlan(oldPlan)
                 end
             end
-            WaitSeconds(11)
+            SWARMWAIT(110)
         end
     end,
 
