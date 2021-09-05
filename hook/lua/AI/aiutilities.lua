@@ -1,3 +1,5 @@
+WARN('['..string.gsub(debug.getinfo(1).source, ".*\\(.*.lua)", "%1")..', line:'..debug.getinfo(1).currentline..'] * AI-Swarm: offset aiutilities.lua' )
+
 local import = import
 
 local SWARMREMOVE = table.remove
@@ -13,6 +15,7 @@ local SWARMPARSE = ParseEntityCategory
 
 local VDist2 = VDist2
 
+local GetThreatAtPosition = moho.aibrain_methods.GetThreatAtPosition
 local GetNumUnitsAroundPoint = moho.aibrain_methods.GetNumUnitsAroundPoint
 local GetUnitsAroundPoint = moho.aibrain_methods.GetUnitsAroundPoint
 local GetAIBrain = moho.unit_methods.GetAIBrain
@@ -80,7 +83,7 @@ function AIFindNearestCategoryTargetInRangeSwarm(aiBrain, platoon, squad, positi
     end
     local AttackEnemyStrength = platoon.PlatoonData.AttackEnemyStrength or 300
     local platoonUnits = platoon:GetPlatoonUnits()
-    local PlatoonStrength = SWARMGETN(platoonUnits)
+    --local PlatoonStrength = SWARMGETN(platoonUnits)
     local IgnoreTargetLayerCheck = platoon.PlatoonData.IgnoreTargetLayerCheck
     
     local enemyIndex = false
@@ -121,7 +124,7 @@ function AIFindNearestCategoryTargetInRangeSwarm(aiBrain, platoon, squad, positi
     local UnitWithPath = false
     local UnitNoPath = false
     local count = 0
-    local TargetsInRange, EnemyStrength, TargetPosition, distance, targetRange, success, bestGoalPos
+    local TargetsInRange, PlatoonStrength, PlatoonStrengthAir, EnemyStrength, TargetPosition, distance, targetRange, success, bestGoalPos
     for _, range in RangeList do
         TargetsInRange = aiBrain:GetUnitsAroundPoint(TargetSearchCategory, position, range, 'Enemy')
         --LOG('* AIFindNearestCategoryTargetInRange: numTargets '..table.getn(TargetsInRange)..'  ')
@@ -163,19 +166,51 @@ function AIFindNearestCategoryTargetInRangeSwarm(aiBrain, platoon, squad, positi
                                     if Target.CaptureInProgress then continue end
                                     if not aiBrain:PlatoonExists(platoon) then
                                         return false, false, false, 'NoPlatoonExists'
-                                    end
+                                    end 
                                     if platoon.MovementLayer == 'Land' then
-                                        EnemyStrength = aiBrain:GetNumUnitsAroundPoint( (categories.STRUCTURE + categories.MOBILE) * (categories.DIRECTFIRE + categories.INDIRECTFIRE) , TargetPosition, 50, 'Enemy' )
+                                        PlatoonStrength = platoon:CalculatePlatoonThreat('AntiSurface', categories.ALLUNITS)
                                     elseif platoon.MovementLayer == 'Air' then
-                                        EnemyStrength = aiBrain:GetNumUnitsAroundPoint( (categories.STRUCTURE + categories.MOBILE) * categories.ANTIAIR , TargetPosition, 60, 'Enemy' )
+                                        PlatoonStrengthAir = platoon:CalculatePlatoonThreat('AntiAir', categories.ALLUNITS)
                                     elseif platoon.MovementLayer == 'Water' then
-                                        EnemyStrength = aiBrain:GetNumUnitsAroundPoint( (categories.STRUCTURE + categories.MOBILE) * (categories.DIRECTFIRE + categories.INDIRECTFIRE + categories.ANTINAVY) , TargetPosition, 50, 'Enemy' )
+                                        PlatoonStrength = platoon:CalculatePlatoonThreat('AntiSurface', categories.ALLUNITS)
                                     elseif platoon.MovementLayer == 'Amphibious' then
-                                        EnemyStrength = aiBrain:GetNumUnitsAroundPoint( (categories.STRUCTURE + categories.MOBILE) * (categories.DIRECTFIRE + categories.INDIRECTFIRE + categories.ANTINAVY) , TargetPosition, 50, 'Enemy' )
+                                        PlatoonStrength = platoon:CalculatePlatoonThreat('AntiSurface', categories.ALLUNITS)
+                                    end
+                                    
+                                    -- Ok, we are here. This is our redone threat function that is using "GetThreatAtPosition" referencing the TargetPosition a Radius and a ThreatType
+                                    -- The Above Function Calculates OUR OWN Platoon's Threat so that we can compare threats by dividing a hundred to see if its below or above a hundred
+                                    -- so that threat always comes back at a reasonable number like 150 so our platoon is 50% stronger then the Enemy's for Example.
+                                    -- This will allow much much more reasonable engagements by our platoons HOWEVER I need to log this more in-depth because I am seeing some weird Disbanding
+                                    -- After implementing this what I think is happening is some severe threat numbers being too low or too high or something along those lines which of course I kind of expected.
+                                    
+                                    if platoon.MovementLayer == 'Land' then
+                                        EnemyStrength = GetThreatAtPosition( aiBrain, TargetPosition, 50, true, 'AntiSurface')
+                                    elseif platoon.MovementLayer == 'Air' then
+                                        EnemyStrength = GetThreatAtPosition( aiBrain, TargetPosition, 60, true, 'AntiAir')
+                                    elseif platoon.MovementLayer == 'Water' then
+                                        EnemyStrength = GetThreatAtPosition( aiBrain, TargetPosition, 50, true, 'AntiSurface')
+                                    elseif platoon.MovementLayer == 'Amphibious' then
+                                        EnemyStrength = GetThreatAtPosition( aiBrain, TargetPosition, 50, true, 'AntiSurface')
                                     end
                                     --LOG('PlatoonStrength / 100 * AttackEnemyStrength <= '..(PlatoonStrength / 100 * AttackEnemyStrength)..' || EnemyStrength = '..EnemyStrength)
                                     -- Only attack if we have a chance to win
-                                    if PlatoonStrength / 100 * AttackEnemyStrength < EnemyStrength then continue end
+                                    if platoon.MovementLayer == 'Land' then
+                                        if PlatoonStrength / 100 * AttackEnemyStrength < EnemyStrength then 
+                                            continue 
+                                        end
+                                    elseif platoon.MovementLayer == 'Air' then
+                                        if PlatoonStrengthAir / 100 * AttackEnemyStrength < EnemyStrength then 
+                                            continue 
+                                        end
+                                    elseif platoon.MovementLayer == 'Water' then
+                                        if PlatoonStrength / 100 * AttackEnemyStrength < EnemyStrength then 
+                                            continue 
+                                        end
+                                    elseif platoon.MovementLayer == 'Amphibious' then
+                                        if PlatoonStrength / 100 * AttackEnemyStrength < EnemyStrength then 
+                                            continue 
+                                        end
+                                    end
                                     --LOG('* AIFindNearestCategoryTargetInRange: PlatoonGenerateSafePathTo ')
                                     path, reason = AIAttackUtils.PlatoonGenerateSafePathTo(aiBrain, platoon.MovementLayer, position, TargetPosition, platoon.PlatoonData.NodeWeight or 10 )
                                     -- Check if we found a path with markers
