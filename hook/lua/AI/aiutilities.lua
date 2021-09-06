@@ -15,6 +15,7 @@ local SWARMPARSE = ParseEntityCategory
 
 local VDist2 = VDist2
 
+local GetThreatsAroundPosition = moho.aibrain_methods.GetThreatsAroundPosition
 local GetThreatAtPosition = moho.aibrain_methods.GetThreatAtPosition
 local GetNumUnitsAroundPoint = moho.aibrain_methods.GetNumUnitsAroundPoint
 local GetUnitsAroundPoint = moho.aibrain_methods.GetUnitsAroundPoint
@@ -167,6 +168,14 @@ function AIFindNearestCategoryTargetInRangeSwarm(aiBrain, platoon, squad, positi
                                     if not aiBrain:PlatoonExists(platoon) then
                                         return false, false, false, 'NoPlatoonExists'
                                     end 
+
+                                    -- Some Platoons are returning Nil PlatoonStrength Values which is interesting 
+                                    -- Some return 7 or 4, extremely low values however GetThreatsAroundPosition returns large tables of 80+
+                                    -- Clearly something is wrong, but I am currently not to sure as of what perhaps the threat values are being inflated
+                                    -- or perhaps CalculatePlatoonThreat is being funky? 
+                                    -- Currently Unknown
+                                    -- Another Day to let this sink in mayhaps. 
+                                    
                                     if platoon.MovementLayer == 'Land' then
                                         PlatoonStrength = platoon:CalculatePlatoonThreat('AntiSurface', categories.ALLUNITS)
                                     elseif platoon.MovementLayer == 'Air' then
@@ -176,23 +185,25 @@ function AIFindNearestCategoryTargetInRangeSwarm(aiBrain, platoon, squad, positi
                                     elseif platoon.MovementLayer == 'Amphibious' then
                                         PlatoonStrength = platoon:CalculatePlatoonThreat('AntiSurface', categories.ALLUNITS)
                                     end
+                                    LOG("Our Platoon Strength is " .. repr(PlatoonStrength))
                                     
-                                    -- Ok, we are here. This is our redone threat function that is using "GetThreatAtPosition" referencing the TargetPosition a Radius and a ThreatType
+                                    -- Ok, we are here. This is our redone threat function that is using "GetThreatsAroundPosition" referencing the TargetPosition a Radius and a ThreatType
                                     -- The Above Function Calculates OUR OWN Platoon's Threat so that we can compare threats by dividing a hundred to see if its below or above a hundred
                                     -- so that threat always comes back at a reasonable number like 150 so our platoon is 50% stronger then the Enemy's for Example.
                                     -- This will allow much much more reasonable engagements by our platoons HOWEVER I need to log this more in-depth because I am seeing some weird Disbanding
                                     -- After implementing this what I think is happening is some severe threat numbers being too low or too high or something along those lines which of course I kind of expected.
                                     
                                     if platoon.MovementLayer == 'Land' then
-                                        EnemyStrength = GetThreatAtPosition( aiBrain, TargetPosition, 50, true, 'AntiSurface')
+                                        EnemyStrength = GetThreatsAroundPosition( aiBrain, TargetPosition, 50, true, 'AntiSurface')
                                     elseif platoon.MovementLayer == 'Air' then
-                                        EnemyStrength = GetThreatAtPosition( aiBrain, TargetPosition, 60, true, 'AntiAir')
+                                        EnemyStrength = GetThreatsAroundPosition( aiBrain, TargetPosition, 60, true, 'AntiAir')
                                     elseif platoon.MovementLayer == 'Water' then
-                                        EnemyStrength = GetThreatAtPosition( aiBrain, TargetPosition, 50, true, 'AntiSurface')
+                                        EnemyStrength = GetThreatsAroundPosition( aiBrain, TargetPosition, 50, true, 'AntiSurface')
                                     elseif platoon.MovementLayer == 'Amphibious' then
-                                        EnemyStrength = GetThreatAtPosition( aiBrain, TargetPosition, 50, true, 'AntiSurface')
+                                        EnemyStrength = GetThreatsAroundPosition( aiBrain, TargetPosition, 50, true, 'AntiSurface')
                                     end
                                     --LOG('PlatoonStrength / 100 * AttackEnemyStrength <= '..(PlatoonStrength / 100 * AttackEnemyStrength)..' || EnemyStrength = '..EnemyStrength)
+                                    LOG("The Enemy Strength is " .. repr(EnemyStrength))
                                     -- Only attack if we have a chance to win
                                     if platoon.MovementLayer == 'Land' then
                                         if PlatoonStrength / 100 * AttackEnemyStrength < EnemyStrength then 

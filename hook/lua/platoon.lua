@@ -602,10 +602,10 @@ Platoon = Class(SwarmPlatoonClass) {
     end,
 
     NavalAttackAISwarm = function(self)
-        if UseHeroPlatoonswarm then
-            self:HeroFightPlatoonSwarm()
-            return
-        end
+        --if UseHeroPlatoonswarm then
+        --    self:HeroFightPlatoonSwarm()
+        --    return
+        --end
         AIAttackUtils.GetMostRestrictiveLayer(self) -- this will set self.MovementLayer to the platoon
         -- Search all platoon units and activate Stealth and Cloak (mostly Modded units)
         local platoonUnits = self:GetPlatoonUnits()
