@@ -3,6 +3,7 @@ WARN('['..string.gsub(debug.getinfo(1).source, ".*\\(.*.lua)", "%1")..', line:'.
 local import = import
 
 local SWARMREMOVE = table.remove
+local SWARMCOPY = table.copy
 local SWARMGETN = table.getn
 local SWARMINSERT = table.insert
 local SWARMWAIT = coroutine.yield
@@ -19,6 +20,7 @@ local GetThreatsAroundPosition = moho.aibrain_methods.GetThreatsAroundPosition
 local GetThreatAtPosition = moho.aibrain_methods.GetThreatAtPosition
 local GetNumUnitsAroundPoint = moho.aibrain_methods.GetNumUnitsAroundPoint
 local GetUnitsAroundPoint = moho.aibrain_methods.GetUnitsAroundPoint
+local PlatoonExists = moho.aibrain_methods.PlatoonExists
 local GetAIBrain = moho.unit_methods.GetAIBrain
 
 -- AI-Swarm: Helper function for targeting
@@ -135,7 +137,7 @@ function AIFindNearestCategoryTargetInRangeSwarm(aiBrain, platoon, squad, positi
                 if Target.Dead or Target:BeenDestroyed() then
                     continue
                 end
-                TargetPosition = Target:GetPosition()
+                TargetPosition = SWARMCOPY(Target:GetPosition())
                 targetRange = VDist2(position[1],position[3],TargetPosition[1],TargetPosition[3])
                 --LOG('* AIFindNearestCategoryTargetInRange: targetRange '..repr(targetRange))
                 if targetRange < distance then
@@ -165,7 +167,7 @@ function AIFindNearestCategoryTargetInRangeSwarm(aiBrain, platoon, squad, positi
                                     -- we can't attack units while reclaim or capture is in progress
                                     if Target.ReclaimInProgress then continue end
                                     if Target.CaptureInProgress then continue end
-                                    if not aiBrain:PlatoonExists(platoon) then
+                                    if not PlatoonExists(platoon) then
                                         return false, false, false, 'NoPlatoonExists'
                                     end 
 
@@ -193,17 +195,22 @@ function AIFindNearestCategoryTargetInRangeSwarm(aiBrain, platoon, squad, positi
                                     -- This will allow much much more reasonable engagements by our platoons HOWEVER I need to log this more in-depth because I am seeing some weird Disbanding
                                     -- After implementing this what I think is happening is some severe threat numbers being too low or too high or something along those lines which of course I kind of expected.
                                     
+                                    -- Ok so dug a bit deeper and now I can see the threat clearer however platoons are still not forming correctly for some reason that's unknown to me as of right now.
+                                    -- I can also see the coordinates and have done some controlled test to see if the threat is CORRECT and so I'm no longer questioning myself on some things.
+                                    -- Also corrected the radius to rings because the FAF Documentation was incorrect in its args.
+                                    -- I will continue investigation tomorrow after School.
+
                                     if platoon.MovementLayer == 'Land' then
-                                        EnemyStrength = GetThreatsAroundPosition( aiBrain, TargetPosition, 50, true, 'AntiSurface')
+                                        EnemyStrength = GetThreatsAroundPosition( aiBrain, TargetPosition, 0, true, 'AntiSurface')
                                     elseif platoon.MovementLayer == 'Air' then
-                                        EnemyStrength = GetThreatsAroundPosition( aiBrain, TargetPosition, 60, true, 'AntiAir')
+                                        EnemyStrength = GetThreatsAroundPosition( aiBrain, TargetPosition, 0, true, 'AntiAir')
                                     elseif platoon.MovementLayer == 'Water' then
-                                        EnemyStrength = GetThreatsAroundPosition( aiBrain, TargetPosition, 50, true, 'AntiSurface')
+                                        EnemyStrength = GetThreatsAroundPosition( aiBrain, TargetPosition, 0, true, 'AntiSurface')
                                     elseif platoon.MovementLayer == 'Amphibious' then
-                                        EnemyStrength = GetThreatsAroundPosition( aiBrain, TargetPosition, 50, true, 'AntiSurface')
+                                        EnemyStrength = GetThreatsAroundPosition( aiBrain, TargetPosition, 0, true, 'AntiSurface')
                                     end
                                     --LOG('PlatoonStrength / 100 * AttackEnemyStrength <= '..(PlatoonStrength / 100 * AttackEnemyStrength)..' || EnemyStrength = '..EnemyStrength)
-                                    LOG("The Enemy Strength is " .. repr(EnemyStrength))
+                                    LOG("The Enemy Strength is " .. repr(GetThreatsAroundPosition( aiBrain, TargetPosition, 0, true, 'AntiSurface')) ..  " " .. repr(TargetPosition))
                                     -- Only attack if we have a chance to win
                                     if platoon.MovementLayer == 'Land' then
                                         if PlatoonStrength / 100 * AttackEnemyStrength < EnemyStrength then 
