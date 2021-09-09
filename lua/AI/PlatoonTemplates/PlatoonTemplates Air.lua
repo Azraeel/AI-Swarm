@@ -107,7 +107,7 @@ PlatoonTemplate {
 }
 
 PlatoonTemplate {
-    Name = 'GunshipAttack',
+    Name = 'AntiGround Gunship 5 100',
     Plan = 'BomberGunshipAISwarm',
     GlobalSquads = {
         { categories.MOBILE * categories.AIR * categories.GROUNDATTACK - categories.BOMBER - categories.EXPERIMENTAL - categories.TRANSPORTFOCUS - categories.SCOUT, 5, 100, 'Attack', 'GrowthFormation' },
