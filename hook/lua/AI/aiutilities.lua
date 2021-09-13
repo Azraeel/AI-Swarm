@@ -167,7 +167,7 @@ function AIFindNearestCategoryTargetInRangeSwarm(aiBrain, platoon, squad, positi
                                     -- we can't attack units while reclaim or capture is in progress
                                     if Target.ReclaimInProgress then continue end
                                     if Target.CaptureInProgress then continue end
-                                    if not PlatoonExists(platoon) then
+                                    if not aiBrain:PlatoonExists(platoon) then
                                         return false, false, false, 'NoPlatoonExists'
                                     end 
 
@@ -187,7 +187,7 @@ function AIFindNearestCategoryTargetInRangeSwarm(aiBrain, platoon, squad, positi
                                     elseif platoon.MovementLayer == 'Amphibious' then
                                         PlatoonStrength = platoon:CalculatePlatoonThreat('AntiSurface', categories.ALLUNITS)
                                     end
-                                    LOG("Our Platoon Strength is " .. repr(PlatoonStrength))
+                                    --LOG("Our Platoon Strength is " .. repr(PlatoonStrength))
                                     
                                     -- Ok, we are here. This is our redone threat function that is using "GetThreatsAroundPosition" referencing the TargetPosition a Radius and a ThreatType
                                     -- The Above Function Calculates OUR OWN Platoon's Threat so that we can compare threats by dividing a hundred to see if its below or above a hundred
@@ -200,6 +200,9 @@ function AIFindNearestCategoryTargetInRangeSwarm(aiBrain, platoon, squad, positi
                                     -- Also corrected the radius to rings because the FAF Documentation was incorrect in its args.
                                     -- I will continue investigation tomorrow after School.
 
+                                    -- Ok so after reviewing the code, like last week (lol) I realized that it wasn't threat numbers something else is disbanding the platoons rapidly and then banding them again
+                                    -- However I havn't had time to log such things (cough) anyhow I'll probably log it sometime this week or smth idk. 
+
                                     if platoon.MovementLayer == 'Land' then
                                         EnemyStrength = GetThreatsAroundPosition( aiBrain, TargetPosition, 0, true, 'AntiSurface')
                                     elseif platoon.MovementLayer == 'Air' then
@@ -210,7 +213,7 @@ function AIFindNearestCategoryTargetInRangeSwarm(aiBrain, platoon, squad, positi
                                         EnemyStrength = GetThreatsAroundPosition( aiBrain, TargetPosition, 0, true, 'AntiSurface')
                                     end
                                     --LOG('PlatoonStrength / 100 * AttackEnemyStrength <= '..(PlatoonStrength / 100 * AttackEnemyStrength)..' || EnemyStrength = '..EnemyStrength)
-                                    LOG("The Enemy Strength is " .. repr(GetThreatsAroundPosition( aiBrain, TargetPosition, 0, true, 'AntiSurface')) ..  " " .. repr(TargetPosition))
+                                    --LOG("The Enemy Strength is " .. repr(GetThreatsAroundPosition( aiBrain, TargetPosition, 0, true, 'AntiSurface')) ..  " " .. repr(TargetPosition))
                                     -- Only attack if we have a chance to win
                                     if platoon.MovementLayer == 'Land' then
                                         if PlatoonStrength / 100 * AttackEnemyStrength < EnemyStrength then 
