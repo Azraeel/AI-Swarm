@@ -4,6 +4,7 @@ local import = import
 local type = type
 
 local SWARMGETN = table.getn
+local SWARMDEEPCOPY = table.deepcopy
 local SWARMWAIT = coroutine.yield
 local SWARMMAX = math.max
 local SWARMFLOOR = math.floor
@@ -19,6 +20,7 @@ local GetFractionComplete = moho.entity_methods.GetFractionComplete
 local GetAIBrain = moho.unit_methods.GetAIBrain
 
 local BuffSwarm = import('/lua/sim/Buff.lua')
+local HighestThreat = {}
 
 SwarmExecutePlanFunction = ExecutePlan
 
@@ -26,16 +28,16 @@ function ExecutePlan(aiBrain)
 
     if aiBrain.Swarm then
         --aiBrain:ForkThread(MarkerGridThreatManagerThreadSwarm, aiBrain) -- Starts at Minute 1
-        aiBrain:ForkThread(BaseTargetManagerThreadSwarm, aiBrain) -- Starts at Minute 2 
-        aiBrain:ForkThread(EcoManagerThreadSwarm, aiBrain) -- Starts at Minute 4 
+        aiBrain:ForkThread(BaseTargetManagerThreadSwarm, aiBrain) -- Starts at Minute 2
+        aiBrain:ForkThread(TimedCheatThreadSwarm, aiBrain) -- Starts at AIEternalDelay [Refer to -> LobbyOptions]
     end
 
     return SwarmExecutePlanFunction(aiBrain)
 
 end
 
-function EcoManagerThreadSwarm(aiBrain)
-    while SWARMTIME() < 60*4 + aiBrain:GetArmyIndex() do
+function TimedCheatThreadSwarm(aiBrain)
+    while SWARMTIME() < ScenarioInfo.Options.AIEternalDelay * 60 + aiBrain:GetArmyIndex() do
         SWARMWAIT(10)
     end
 
@@ -47,13 +49,13 @@ function EcoManagerThreadSwarm(aiBrain)
         aiBrain.BuildMult = SWARMMAX(aiBrain.CheatMult,aiBrain.BuildMult)
     end
 
-    --LOG('* AI-Swarm: Function EcoManagerThreadSwarm() started! CheatFactor:('..repr(aiBrain.CheatMult)..') - BuildFactor:('..repr(aiBrain.BuildMult)..') ['..aiBrain.Nickname..']')
+    --LOG('* AI-Swarm: Function TimedCheatThreadSwarm() started! CheatFactor:('..repr(aiBrain.CheatMult)..') - BuildFactor:('..repr(aiBrain.BuildMult)..') ['..aiBrain.Nickname..']')
     local paragons = {}
     local lastCall = 0
     local ParaComplete
 
     local function SetArmyPoolBuffSwarm(aiBrain, CheatMult, BuildMult)
-
+        LOG('Setting new values for aiBrain.CheatMult:'..aiBrain.CheatMult..' - aiBrain.BuildMult:'..aiBrain.BuildMult)
         local BuffSwarm = BuffSwarm
         
         -- Modify Buildrate buff
@@ -79,40 +81,43 @@ function EcoManagerThreadSwarm(aiBrain)
     end
     
     while aiBrain.Result ~= "defeat" do
-        --LOG('* AI-Swarm: Function EcoManagerThreadSwarm() beat. ['..aiBrain.Nickname..']')
-        SWARMWAIT(5)
-        paragons = aiBrain:GetListOfUnits(categories.STRUCTURE * categories.EXPERIMENTAL * categories.ECONOMIC * categories.ENERGYPRODUCTION * categories.MASSPRODUCTION, false, false)
-        ParaComplete = 0
+        --LOG('* AI-Swarm: Function TimedCheatThreadSwarm() beat. ['..aiBrain.Nickname..']')
 
-        for unitNum, unit in paragons do
-            if unit:GetFractionComplete() >= 1 then
-                ParaComplete = ParaComplete + 1
-            end
-        end
+        SWARMWAIT(1)
 
-        if ParaComplete >= 1 then
-            aiBrain.HasParagon = true
-        else
-            aiBrain.HasParagon = false
-        end
         -- Cheatbuffs
         if personality == 'swarmeternal' then
             --LOG('* AI-Swarm: SwarmEternal beat. ['..aiBrain.Nickname..']')
-            local MyLandRatio = aiBrain.MyLandRatio
 
-            -- Check every 60 seconds
+            paragons = aiBrain:GetListOfUnits(categories.STRUCTURE * categories.EXPERIMENTAL * categories.ECONOMIC * categories.ENERGYPRODUCTION * categories.MASSPRODUCTION, false, false)
+            ParaComplete = 0
+
+            for unitNum, unit in paragons do
+                if unit:GetFractionComplete() >= 1 then
+                    ParaComplete = ParaComplete + 1
+                end
+            end
+
+            if ParaComplete >= 1 then
+                aiBrain.HasParagon = true
+            else
+                aiBrain.HasParagon = false
+            end
 
             -- I do not know why but the Cheat works... however it does not work at the same time.
             -- I always wondered why Eternal's Cheat was so fucked. It was rapidly go up and down for no reason.
             -- I need to farther debug this to figure out what is causing this.
-            
-            if (SWARMTIME() > ScenarioInfo.Options.AIEternalDelay * 60) and lastCall + 60 < SWARMTIME() then
+
+            -- Check every 60 seconds
+
+            if lastCall + 60 < SWARMTIME() then
                 lastCall = SWARMTIME()
+                --LOG('What is our current LastCall ' .. repr(lastCall))
                 aiBrain.CheatMult = aiBrain.CheatMult + ScenarioInfo.Options.AIEternalIncrease  -- with the default of 0.025, +0.1 after 4 min. +1.0 after 40 min.
                 aiBrain.BuildMult = aiBrain.BuildMult + ScenarioInfo.Options.AIEternalIncrease
                 if aiBrain.CheatMult > 8 then aiBrain.CheatMult = 8 end
                 if aiBrain.BuildMult > 8 then aiBrain.BuildMult = 8 end
-                LOG('Setting new values for aiBrain.CheatMult:'..aiBrain.CheatMult..' - aiBrain.BuildMult:'..aiBrain.BuildMult)
+                --LOG('Setting new values for aiBrain.CheatMult:'..aiBrain.CheatMult..' - aiBrain.BuildMult:'..aiBrain.BuildMult)
                 SetArmyPoolBuffSwarm(aiBrain, aiBrain.CheatMult, aiBrain.BuildMult)
             end
         end
