@@ -148,7 +148,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
                 AssisteeType = 'Structure',
                 AssistRange = 200,
                 AssistClosestUnit = true,                                       -- Assist the closest unit instead unit with the least number of assisters
-                BeingBuiltCategories = {'STRUCTURE ENERGYPRODUCTION TECH2', 'STRUCTURE ENERGYPRODUCTION TECH3'},-- Unitcategories must be type string
+                BeingBuiltCategories = {'STRUCTURE ENERGYPRODUCTION TECH1', 'STRUCTURE ENERGYPRODUCTION TECH2', 'STRUCTURE ENERGYPRODUCTION TECH3'},-- Unitcategories must be type string
                 AssistUntilFinished = false,
                 Time = 75,
             },
@@ -302,7 +302,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
         BuilderData = {
             Assist = {
                 AssistLocation = 'LocationType',
-                BeingBuiltCategories = {'TECH2', 'TECH3', 'EXPERIMENTAL'},               -- Unitcategories must be type string
+                BeingBuiltCategories = {'TECH1', 'TECH2', 'TECH3', 'EXPERIMENTAL'},               -- Unitcategories must be type string
                 PermanentAssist = false,
                 AssisteeType = 'Structure',
                 AssistClosestUnit = true,                                       -- Assist the closest unit instead unit with the least number of assisters
