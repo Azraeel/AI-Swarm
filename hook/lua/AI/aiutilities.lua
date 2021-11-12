@@ -1,9 +1,6 @@
-WARN('['..string.gsub(debug.getinfo(1).source, ".*\\(.*.lua)", "%1")..', line:'..debug.getinfo(1).currentline..'] * AI-Swarm: offset aiutilities.lua' )
-
 local import = import
 
 local SWARMREMOVE = table.remove
-local SWARMCOPY = table.copy
 local SWARMGETN = table.getn
 local SWARMINSERT = table.insert
 local SWARMWAIT = coroutine.yield
@@ -16,11 +13,8 @@ local SWARMPARSE = ParseEntityCategory
 
 local VDist2 = VDist2
 
-local GetThreatsAroundPosition = moho.aibrain_methods.GetThreatsAroundPosition
-local GetThreatAtPosition = moho.aibrain_methods.GetThreatAtPosition
 local GetNumUnitsAroundPoint = moho.aibrain_methods.GetNumUnitsAroundPoint
 local GetUnitsAroundPoint = moho.aibrain_methods.GetUnitsAroundPoint
-local PlatoonExists = moho.aibrain_methods.PlatoonExists
 local GetAIBrain = moho.unit_methods.GetAIBrain
 
 -- AI-Swarm: Helper function for targeting
@@ -69,8 +63,6 @@ function IsNukeBlastAreaSwarm(aiBrain, TargetPosition)
 end
 
 -- AI-Swarm: Target function
--- Rework Target Function to understand actual Threat instead of using Number of Units to determine whether situation is winnable or not.
--- Unit to Unit can be extremely incorrect.
 function AIFindNearestCategoryTargetInRangeSwarm(aiBrain, platoon, squad, position, maxRange, MoveToCategories, TargetSearchCategory, enemyBrain)
     if not maxRange then
         return false, false, false, 'NoRange'
@@ -86,7 +78,7 @@ function AIFindNearestCategoryTargetInRangeSwarm(aiBrain, platoon, squad, positi
     end
     local AttackEnemyStrength = platoon.PlatoonData.AttackEnemyStrength or 300
     local platoonUnits = platoon:GetPlatoonUnits()
-    --local PlatoonStrength = SWARMGETN(platoonUnits)
+    local PlatoonStrength = SWARMGETN(platoonUnits)
     local IgnoreTargetLayerCheck = platoon.PlatoonData.IgnoreTargetLayerCheck
     
     local enemyIndex = false
@@ -127,7 +119,7 @@ function AIFindNearestCategoryTargetInRangeSwarm(aiBrain, platoon, squad, positi
     local UnitWithPath = false
     local UnitNoPath = false
     local count = 0
-    local TargetsInRange, PlatoonStrength, PlatoonStrengthAir, EnemyStrength, TargetPosition, distance, targetRange, success, bestGoalPos
+    local TargetsInRange, EnemyStrength, TargetPosition, distance, targetRange, success, bestGoalPos
     for _, range in RangeList do
         TargetsInRange = aiBrain:GetUnitsAroundPoint(TargetSearchCategory, position, range, 'Enemy')
         --LOG('* AIFindNearestCategoryTargetInRange: numTargets '..table.getn(TargetsInRange)..'  ')
@@ -137,7 +129,7 @@ function AIFindNearestCategoryTargetInRangeSwarm(aiBrain, platoon, squad, positi
                 if Target.Dead or Target:BeenDestroyed() then
                     continue
                 end
-                TargetPosition = SWARMCOPY(Target:GetPosition())
+                TargetPosition = Target:GetPosition()
                 targetRange = VDist2(position[1],position[3],TargetPosition[1],TargetPosition[3])
                 --LOG('* AIFindNearestCategoryTargetInRange: targetRange '..repr(targetRange))
                 if targetRange < distance then
@@ -169,71 +161,22 @@ function AIFindNearestCategoryTargetInRangeSwarm(aiBrain, platoon, squad, positi
                                     if Target.CaptureInProgress then continue end
                                     if not aiBrain:PlatoonExists(platoon) then
                                         return false, false, false, 'NoPlatoonExists'
-                                    end 
-
-                                    -- Some Platoons are returning Nil PlatoonStrength Values which is interesting 
-                                    -- Some return 7 or 4, extremely low values however GetThreatsAroundPosition returns large tables of 80+
-                                    -- Clearly something is wrong, but I am currently not to sure as of what perhaps the threat values are being inflated
-                                    -- or perhaps CalculatePlatoonThreat is being funky? 
-                                    -- Currently Unknown
-                                    -- Another Day to let this sink in mayhaps. 
-                                    
-                                    if platoon.MovementLayer == 'Land' then
-                                        PlatoonStrength = platoon:CalculatePlatoonThreat('AntiSurface', categories.ALLUNITS)
-                                    elseif platoon.MovementLayer == 'Air' then
-                                        PlatoonStrengthAir = platoon:CalculatePlatoonThreat('AntiAir', categories.ALLUNITS)
-                                    elseif platoon.MovementLayer == 'Water' then
-                                        PlatoonStrength = platoon:CalculatePlatoonThreat('AntiSurface', categories.ALLUNITS)
-                                    elseif platoon.MovementLayer == 'Amphibious' then
-                                        PlatoonStrength = platoon:CalculatePlatoonThreat('AntiSurface', categories.ALLUNITS)
                                     end
-                                    --LOG("Our Platoon Strength is " .. repr(PlatoonStrength))
-                                    
-                                    -- Ok, we are here. This is our redone threat function that is using "GetThreatsAroundPosition" referencing the TargetPosition a Radius and a ThreatType
-                                    -- The Above Function Calculates OUR OWN Platoon's Threat so that we can compare threats by dividing a hundred to see if its below or above a hundred
-                                    -- so that threat always comes back at a reasonable number like 150 so our platoon is 50% stronger then the Enemy's for Example.
-                                    -- This will allow much much more reasonable engagements by our platoons HOWEVER I need to log this more in-depth because I am seeing some weird Disbanding
-                                    -- After implementing this what I think is happening is some severe threat numbers being too low or too high or something along those lines which of course I kind of expected.
-                                    
-                                    -- Ok so dug a bit deeper and now I can see the threat clearer however platoons are still not forming correctly for some reason that's unknown to me as of right now.
-                                    -- I can also see the coordinates and have done some controlled test to see if the threat is CORRECT and so I'm no longer questioning myself on some things.
-                                    -- Also corrected the radius to rings because the FAF Documentation was incorrect in its args.
-                                    -- I will continue investigation tomorrow after School.
-
-                                    -- Ok so after reviewing the code, like last week (lol) I realized that it wasn't threat numbers something else is disbanding the platoons rapidly and then banding them again
-                                    -- However I havn't had time to log such things (cough) anyhow I'll probably log it sometime this week or smth idk. 
-
                                     if platoon.MovementLayer == 'Land' then
-                                        EnemyStrength = GetThreatsAroundPosition( aiBrain, TargetPosition, 0, true, 'AntiSurface')
+                                        EnemyStrength = aiBrain:GetNumUnitsAroundPoint( (categories.STRUCTURE + categories.MOBILE) * (categories.DIRECTFIRE + categories.INDIRECTFIRE) , TargetPosition, 50, 'Enemy' )
                                     elseif platoon.MovementLayer == 'Air' then
-                                        EnemyStrength = GetThreatsAroundPosition( aiBrain, TargetPosition, 0, true, 'AntiAir')
+                                        EnemyStrength = aiBrain:GetNumUnitsAroundPoint( (categories.STRUCTURE + categories.MOBILE) * categories.ANTIAIR , TargetPosition, 60, 'Enemy' )
                                     elseif platoon.MovementLayer == 'Water' then
-                                        EnemyStrength = GetThreatsAroundPosition( aiBrain, TargetPosition, 0, true, 'AntiSurface')
+                                        EnemyStrength = aiBrain:GetNumUnitsAroundPoint( (categories.STRUCTURE + categories.MOBILE) * (categories.DIRECTFIRE + categories.INDIRECTFIRE + categories.ANTINAVY) , TargetPosition, 50, 'Enemy' )
                                     elseif platoon.MovementLayer == 'Amphibious' then
-                                        EnemyStrength = GetThreatsAroundPosition( aiBrain, TargetPosition, 0, true, 'AntiSurface')
+                                        EnemyStrength = aiBrain:GetNumUnitsAroundPoint( (categories.STRUCTURE + categories.MOBILE) * (categories.DIRECTFIRE + categories.INDIRECTFIRE + categories.ANTINAVY) , TargetPosition, 50, 'Enemy' )
                                     end
                                     --LOG('PlatoonStrength / 100 * AttackEnemyStrength <= '..(PlatoonStrength / 100 * AttackEnemyStrength)..' || EnemyStrength = '..EnemyStrength)
-                                    --LOG("The Enemy Strength is " .. repr(GetThreatsAroundPosition( aiBrain, TargetPosition, 0, true, 'AntiSurface')) ..  " " .. repr(TargetPosition))
                                     -- Only attack if we have a chance to win
-                                    if platoon.MovementLayer == 'Land' then
-                                        if PlatoonStrength / 100 * AttackEnemyStrength < EnemyStrength then 
-                                            continue 
-                                        end
-                                    elseif platoon.MovementLayer == 'Air' then
-                                        if PlatoonStrengthAir / 100 * AttackEnemyStrength < EnemyStrength then 
-                                            continue 
-                                        end
-                                    elseif platoon.MovementLayer == 'Water' then
-                                        if PlatoonStrength / 100 * AttackEnemyStrength < EnemyStrength then 
-                                            continue 
-                                        end
-                                    elseif platoon.MovementLayer == 'Amphibious' then
-                                        if PlatoonStrength / 100 * AttackEnemyStrength < EnemyStrength then 
-                                            continue 
-                                        end
-                                    end
+                                    if PlatoonStrength / 100 * AttackEnemyStrength < EnemyStrength then continue end
                                     --LOG('* AIFindNearestCategoryTargetInRange: PlatoonGenerateSafePathTo ')
                                     path, reason = AIAttackUtils.PlatoonGenerateSafePathTo(aiBrain, platoon.MovementLayer, position, TargetPosition, platoon.PlatoonData.NodeWeight or 10 )
+                                    --LOG('What is Reason ' .. repr(reason))
                                     -- Check if we found a path with markers
                                     if path then
                                         UnitWithPath = Target

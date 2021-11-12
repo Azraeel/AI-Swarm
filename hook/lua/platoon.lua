@@ -180,6 +180,7 @@ Platoon = Class(SwarmPlatoonClass) {
         local DistanceToBase = 0
         local TargetSearchCategory = self.PlatoonData.TargetSearchCategory or 'ALLUNITS'
         local maxRadius = SWARMMAX(maxRadius, (maxRadius * aiBrain.MyAirRatio) )
+        LOG('What is Max Radius ' .. (maxRadius))
         while aiBrain:PlatoonExists(self) do
             PlatoonPos = self:GetPlatoonPosition()
             if not GetTargetsFromBase then
@@ -460,10 +461,10 @@ Platoon = Class(SwarmPlatoonClass) {
     end,
 
     LandAttackAISwarm = function(self)
-        if UseHeroPlatoonswarm then
-            self:HeroFightPlatoonSwarm()
-            return
-        end
+        --if UseHeroPlatoonswarm then
+        --    self:HeroFightPlatoonSwarm()
+        --    return
+        --end
         AIAttackUtils.GetMostRestrictiveLayer(self) -- this will set self.MovementLayer to the platoon
         -- Search all platoon units and activate Stealth and Cloak (mostly Modded units)
         local platoonUnits = self:GetPlatoonUnits()
@@ -4960,7 +4961,7 @@ Platoon = Class(SwarmPlatoonClass) {
                     self:RenamePlatoon('target to far from base')
                     SWARMWAIT(1)
                 end
-            end
+           end
             -- check if the platoon died while the targetting function was searching for targets
             if not aiBrain:PlatoonExists(self) then
                 return
@@ -5108,9 +5109,6 @@ Platoon = Class(SwarmPlatoonClass) {
                             SWARMWAIT(1)
                         end
                         self:ForceReturnToNearestBaseAISwarm()
-                        if aiBrain:PlatoonExists(self) then
-                            self:PlatoonDisband()
-                        end
                         return
                     else
                         if HERODEBUGSwarm then
@@ -5386,9 +5384,10 @@ Platoon = Class(SwarmPlatoonClass) {
                             end
                             -- check if the move position is new or target has moved
                             if VDist2( smartPos[1], smartPos[3], unit.smartPos[1], unit.smartPos[3] ) > 0.7 then
-                                -- clear move commands if we have queued more than 1
-                                if SWARMGETN(unit:GetCommandQueue()) > 1 then
+                                -- clear move commands if we have queued more than 2
+                                if SWARMGETN(unit:GetCommandQueue()) > 2 then
                                     IssueClearCommands({unit})
+                                    SWARMWAIT(3)
                                 end
                                 -- if our target is dead, jump out of the "for _, unit in self:GetPlatoonUnits() do" loop
                                 IssueMove({unit}, smartPos )
