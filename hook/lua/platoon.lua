@@ -179,7 +179,7 @@ Platoon = Class(SwarmPlatoonClass) {
         local LastTargetCheck
         local DistanceToBase = 0
         local TargetSearchCategory = self.PlatoonData.TargetSearchCategory or 'ALLUNITS'
-        local maxRadius = SWARMMAX(maxRadius, (maxRadius * aiBrain.MyAirRatio) )
+        --local maxRadius = SWARMMAX(maxRadius, (maxRadius * aiBrain.MyAirRatio) )
         --LOG('What is Max Radius ' .. (maxRadius))
         while aiBrain:PlatoonExists(self) do
             PlatoonPos = self:GetPlatoonPosition()
@@ -343,7 +343,7 @@ Platoon = Class(SwarmPlatoonClass) {
         local LastTargetCheck
         local DistanceToBase = 0
         local TargetSearchCategory = self.PlatoonData.TargetSearchCategory or 'ALLUNITS'
-        local maxRadius = SWARMMAX(maxRadius, (maxRadius * aiBrain.MyAirRatio) )
+        --local maxRadius = SWARMMAX(maxRadius, (maxRadius * aiBrain.MyAirRatio) )
         while aiBrain:PlatoonExists(self) do
             PlatoonPos = self:GetPlatoonPosition()
             if not GetTargetsFromBase then

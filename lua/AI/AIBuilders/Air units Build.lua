@@ -536,7 +536,9 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Formers',
                 categories.MOBILE * categories.AIR,
             },
         },
-        BuilderConditions = {                                             
+        BuilderConditions = {         
+            { UCBC, 'AirStrengthRatioGreaterThan', { 1.3 } },
+
             { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 20, categories.MOBILE * categories.AIR * categories.ANTIAIR - categories.ENGINEER } },    
         },
         BuilderType = 'Any',                                                   
@@ -564,6 +566,8 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Formers',
             },
         },
         BuilderConditions = {           
+            { UCBC, 'AirStrengthRatioGreaterThan', { 1.5 } },
+
             { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 40, categories.MOBILE * categories.AIR * categories.ANTIAIR - categories.ENGINEER } },                                          
         },
         BuilderType = 'Any',                                                  
