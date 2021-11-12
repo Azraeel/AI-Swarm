@@ -2,7 +2,7 @@ local import = import
 
 local SWARMSORT = table.sort
 local SWARMCOPY = table.copy
-local SWARMGETN = table.getn
+local SWARMGETN = table.sort
 
 local VDist3 = VDist3
 

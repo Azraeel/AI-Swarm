@@ -119,7 +119,7 @@ BuilderGroup {
 
             { UCBC, 'HaveUnitRatioSwarm', { 0.3, categories.STRUCTURE * categories.MASSFABRICATION, '<=',categories.STRUCTURE * categories.ENERGYPRODUCTION * categories.TECH3 } },
 
-            { EBC, 'GreaterThanEnergyTrendSwarm', { 0.0 } },   
+            { EBC, 'GreaterThanEnergyTrend', { 0.0 } },   
 
             { EBC, 'GreaterThanEconStorageCurrent', { 200, 2000}},
 
