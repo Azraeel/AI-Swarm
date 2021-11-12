@@ -2479,15 +2479,49 @@ Platoon = Class(SwarmPlatoonClass) {
     ExtractorUpgradeAISwarm = function(self)
         --LOG('* AI-Swarm: +++ ExtractorUpgradeAISwarm: START')
         local aiBrain = self:GetBrain()
+        local mapSizeX, mapSizeZ = GetMapSize()
         --local personality = ScenarioInfo.ArmySetup[aiBrain.Name].AIPersonality
         while aiBrain:PlatoonExists(self) do
             local ratio = 0.10
-            if aiBrain.HasParagon then
-                -- if we have a paragon, upgrade mex as fast as possible. Mabye we lose the paragon and need mex again.
-                ratio = 1.0
-            elseif aiBrain:GetEconomyIncome('MASS') > 1000 then
-                --LOG('* AI-Swarm: Mass over 1000. Eco running with 75%')
-                ratio = 0.75
+
+            if mapSizeX > 200 and mapSizeZ > 200 then
+
+            elseif (SWARMTIME() > 600 and aiBrain.SelfAllyExtractor > aiBrain.MassMarker / 1.5) then -- 12 * 60
+                ratio = 0.20
+            elseif SWARMTIME() > 1500 then -- 32 * 60
+                ratio = 0.20
+            elseif SWARMTIME() > 1200 then -- 22 * 60
+                ratio = 0.10
+            elseif SWARMTIME() > 900 then -- 17 * 60
+                ratio = 0.05
+            elseif SWARMTIME() > 600 then -- 12 * 60
+                ratio = 0.05
+            elseif SWARMTIME() > 240 then -- 4 * 60
+                ratio = 0.00
+            elseif SWARMTIME() <= 240 then -- 4 * 60 run the first 4 minutes with 0% Eco and 100% Army
+                ratio = 0.00
+            end
+
+            if mapSizeX > 500 and mapSizeZ > 500 then
+
+            elseif (SWARMTIME() > 600 and aiBrain.SelfAllyExtractor > aiBrain.MassMarker / 1.5) then -- 12 * 60
+                ratio = 0.50
+            elseif SWARMTIME() > 1500 then -- 32 * 60
+                ratio = 0.30
+            elseif SWARMTIME() > 1200 then -- 22 * 60
+                ratio = 0.20
+            elseif SWARMTIME() > 900 then -- 17 * 60
+                ratio = 0.15
+            elseif SWARMTIME() > 600 then -- 12 * 60
+                ratio = 0.10
+            elseif SWARMTIME() > 240 then -- 4 * 60
+                ratio = 0.05
+            elseif SWARMTIME() <= 240 then -- 4 * 60 run the first 4 minutes with 0% Eco and 100% Army
+                ratio = 0.00
+            end
+
+            if mapSizeX > 1000 and mapSizeZ > 1000 then
+
             elseif (SWARMTIME() > 600 and aiBrain.SelfAllyExtractor > aiBrain.MassMarker / 1.5) then -- 12 * 60
                 ratio = 0.50
             elseif SWARMTIME() > 1500 then -- 32 * 60
@@ -2503,8 +2537,10 @@ Platoon = Class(SwarmPlatoonClass) {
             elseif SWARMTIME() <= 240 then -- 4 * 60 run the first 4 minutes with 0% Eco and 100% Army
                 ratio = 0.00
             end
+
             local platoonUnits = self:GetPlatoonUnits()
             local MassExtractorUnitList = aiBrain:GetListOfUnits(categories.MASSEXTRACTION * (categories.TECH1 + categories.TECH2 + categories.TECH3), false, false)
+
             -- Check if we can pause/unpause TECH3 Extractors (for more energy)
             if not SwarmUtils.ExtractorPauseSwarm( self, aiBrain, MassExtractorUnitList, ratio, 'TECH3') then
                 -- Check if we can pause/unpause TECH2 Extractors

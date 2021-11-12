@@ -25,9 +25,9 @@ local UniversalT1Land = function( self, aiBrain )
 	
 	if GetGameTimeSeconds() > 1800 then
         return 0, false
-    elseif aiBrain.MyLandRatio > 1.5 then
+    elseif aiBrain.MyLandRatio > 2.0 then
 		return 0, false
-    elseif table.getn( aiBrain:GetListOfUnits( categories.FACTORY * categories.LAND * categories.TECH2, false, true )) >= 3 then
+    elseif table.getn( aiBrain:GetListOfUnits( categories.FACTORY * categories.LAND * categories.TECH2, false, true )) >= 5 then
         return 0, false
 	end
 	
