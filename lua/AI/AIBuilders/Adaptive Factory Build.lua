@@ -281,7 +281,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Adaptive Factory Build',
         BuilderConditions = {
             { UCBC, 'CheckBuildPlattonDelay', { 'Factories' }},
 
-            { UCBC, 'AirStrengthRatioLessThan', { 0.8 } },
+            { UCBC, 'AirStrengthRatioLessThan', { 1.0 } },
 
             { EBC, 'GreaterThanEconStorageCurrent', { 200, 2000}},
 
