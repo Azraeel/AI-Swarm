@@ -939,7 +939,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Formers',
         BuilderData = {
             SearchRadius = BaseMilitaryZone,                                          
             GetTargetsFromBase = false,                                        
-            AggressiveMove = false,                                            
+            AggressiveMove = true,                                            
             AttackEnemyStrength = 33,                                           
             IgnorePathing = false,                                             
             TargetSearchCategory = categories.MASSEXTRACTION,                  
@@ -1020,7 +1020,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Formers',
         BuilderData = {
             SearchRadius = BaseEnemyZone,                                    
             GetTargetsFromBase = false,                                      
-            AggressiveMove = false,                                        
+            AggressiveMove = true,                                        
             AttackEnemyStrength = 0,                                         
             IgnorePathing = false,                                             
             TargetSearchCategory = categories.STRUCTURE + categories.ENGINEER - categories.STATIONASSISTPOD,                 
@@ -1058,6 +1058,140 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Formers',
             { UCBC, 'AirStrengthRatioGreaterThan', { 1.3 } },
 
             { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 5, categories.MOBILE * categories.AIR * categories.BOMBER - categories.ENGINEER } }, 
+        },
+        BuilderType = 'Any',                                                   
+    },
+
+    Builder {
+        BuilderName = 'Swarm T3 Bomber Anti-Mass 1 2',                            
+        PlatoonTemplate = 'Swarm T3 Bomber Intercept 1 2',                          
+        Priority = 70,                                                   
+        InstanceCount = 2,                                                  
+        BuilderData = {
+            SearchRadius = BaseEnemyZone,                                    
+            GetTargetsFromBase = false,                                      
+            AggressiveMove = true,                                        
+            AttackEnemyStrength = 100,                                         
+            IgnorePathing = true,                                             
+            TargetSearchCategory = categories.MASSEXTRACTION + categories.COMMAND - categories.TECH1 - categories.STATIONASSISTPOD,                 
+            MoveToCategories = {                                              
+                categories.MASSEXTRACTION - categories.TECH1,
+                categories.ENERGYPRODUCTION - categories.TECH1,
+                categories.FACTORY - categories.TECH1,
+                categories.ALLUNITS - categories.TECH1,
+            },
+            WeaponTargetCategories = {                                          
+                categories.MASSEXTRACTION,
+                categories.COMMAND,
+                categories.ALLUNITS,
+            },
+        },
+        BuilderConditions = {                                                 
+            { UCBC, 'AirStrengthRatioGreaterThan', { 1.0 } },
+
+            { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 0, categories.MOBILE * categories.AIR * categories.BOMBER * categories.TECH3 - categories.ENGINEER } }, 
+        },
+        BuilderType = 'Any',                                                   
+    },
+
+    Builder {
+        BuilderName = 'Swarm T3 Bomber Snipe 2 5',                            
+        PlatoonTemplate = 'Swarm T3 Bomber Intercept 2 5',                          
+        Priority = 70,                                                   
+        InstanceCount = 2,                                                  
+        BuilderData = {
+            SearchRadius = BaseEnemyZone,                                    
+            GetTargetsFromBase = false,                                      
+            AggressiveMove = true,                                        
+            AttackEnemyStrength = 100,                                         
+            IgnorePathing = true,                                             
+            TargetSearchCategory = categories.COMMAND + categories.MASSEXTRACTION - categories.TECH1 - categories.STATIONASSISTPOD,                 
+            MoveToCategories = {                                              
+                categories.COMMAND,
+                categories.SUBCOMMANDER,
+                categories.MASSEXTRACTION - categories.TECH1,
+                categories.ENERGYPRODUCTION - categories.TECH1,
+                categories.FACTORY - categories.TECH1,
+                categories.ALLUNITS - categories.TECH1,
+            },
+            WeaponTargetCategories = {                                          
+                categories.MASSEXTRACTION,
+                categories.COMMAND,
+                categories.ALLUNITS,
+            },
+        },
+        BuilderConditions = {                                                 
+            { UCBC, 'AirStrengthRatioGreaterThan', { 1.2 } },
+
+            { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 5, categories.MOBILE * categories.AIR * categories.BOMBER * categories.TECH3 - categories.ENGINEER } }, 
+        },
+        BuilderType = 'Any',                                                   
+    },
+
+    Builder {
+        BuilderName = 'Swarm T3 Bomber Snipe 5 10',                            
+        PlatoonTemplate = 'Swarm T3 Bomber Intercept 5 10',                          
+        Priority = 70,                                                   
+        InstanceCount = 1,                                                  
+        BuilderData = {
+            SearchRadius = BaseEnemyZone,                                    
+            GetTargetsFromBase = false,                                      
+            AggressiveMove = true,                                        
+            AttackEnemyStrength = 100,                                         
+            IgnorePathing = true,                                             
+            TargetSearchCategory = categories.COMMAND + categories.MASSEXTRACTION - categories.TECH1 - categories.STATIONASSISTPOD,                 
+            MoveToCategories = {                                              
+                categories.COMMAND,
+                categories.SUBCOMMANDER,
+                categories.MASSEXTRACTION - categories.TECH1,
+                categories.ENERGYPRODUCTION - categories.TECH1,
+                categories.FACTORY - categories.TECH1,
+                categories.ALLUNITS - categories.TECH1,
+            },
+            WeaponTargetCategories = {                                          
+                categories.MASSEXTRACTION,
+                categories.COMMAND,
+                categories.ALLUNITS,
+            },
+        },
+        BuilderConditions = {                                                 
+            { UCBC, 'AirStrengthRatioGreaterThan', { 1.3 } },
+
+            { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 10, categories.MOBILE * categories.AIR * categories.BOMBER * categories.TECH3 - categories.ENGINEER } }, 
+        },
+        BuilderType = 'Any',                                                   
+    },
+
+    Builder {
+        BuilderName = 'Swarm T3 Bomber Snipe 20 30',                            
+        PlatoonTemplate = 'Swarm T3 Bomber Intercept 20 30',                          
+        Priority = 70,                                                   
+        InstanceCount = 1,                                                  
+        BuilderData = {
+            SearchRadius = BaseEnemyZone,                                    
+            GetTargetsFromBase = false,                                      
+            AggressiveMove = true,                                        
+            AttackEnemyStrength = 100,                                         
+            IgnorePathing = true,                                             
+            TargetSearchCategory = categories.COMMAND + categories.MASSEXTRACTION - categories.TECH1 - categories.STATIONASSISTPOD,                 
+            MoveToCategories = {                                              
+                categories.COMMAND,
+                categories.SUBCOMMANDER,
+                categories.MASSEXTRACTION - categories.TECH1,
+                categories.ENERGYPRODUCTION - categories.TECH1,
+                categories.FACTORY - categories.TECH1,
+                categories.ALLUNITS - categories.TECH1,
+            },
+            WeaponTargetCategories = {                                          
+                categories.MASSEXTRACTION,
+                categories.COMMAND,
+                categories.ALLUNITS,
+            },
+        },
+        BuilderConditions = {                                                 
+            { UCBC, 'AirStrengthRatioGreaterThan', { 1.5 } },
+
+            { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 20, categories.MOBILE * categories.AIR * categories.BOMBER * categories.TECH3 - categories.ENGINEER } }, 
         },
         BuilderType = 'Any',                                                   
     },

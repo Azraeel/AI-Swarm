@@ -545,7 +545,7 @@ BuilderGroup {
     BuilderGroupName = 'AISwarm Platoon Builder',
     BuildersType = 'PlatoonFormBuilder', 
 
-    Builder {
+    --[[ Builder {
         BuilderName = 'AI-Swarm Standard Land (200) P',
 
         PlatoonTemplate = 'AISwarm LandAttack Micro - Intercept', 
@@ -581,7 +581,7 @@ BuilderGroup {
                 categories.ALLUNITS,
             },
         },        
-    },
+    }, ]]--
 
     Builder {
         BuilderName = 'AISwarm T1 Spam',     

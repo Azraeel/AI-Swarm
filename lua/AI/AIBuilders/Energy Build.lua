@@ -54,6 +54,8 @@ BuilderGroup {
         DelayEqualBuildPlattons = {'Energy', 3},
         BuilderConditions = {
             { UCBC, 'HaveLessThanUnitsWithCategory', { 1, categories.ENERGYPRODUCTION - categories.TECH1 - categories.COMMAND } },
+
+            { UCBC, 'HaveLessThanUnitsInCategoryBeingBuilt', { 1, categories.STRUCTURE * categories.ENERGYPRODUCTION * (categories.TECH2 + categories.TECH3) }},
             
             { UCBC, 'CheckBuildPlattonDelay', { 'Energy' }},
 
@@ -83,7 +85,7 @@ BuilderGroup {
         DelayEqualBuildPlattons = {'Energy', 1},
         InstanceCount = 1,
         BuilderConditions = {
-            { MABC, 'CanBuildOnHydroSwarm', { 'LocationType', 240, -1000, 2, 1, 'AntiSurface', 1 }},            
+            { MABC, 'CanBuildOnHydroSwarm', { 'LocationType', 240, -1000, 4, 1, 'AntiSurface', 1 }},            
 
             { EBC, 'GreaterThanEconIncomeSwarm',  { 1.0, 4.0}}, 
 

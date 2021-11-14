@@ -109,171 +109,7 @@ Platoon = Class(SwarmPlatoonClass) {
     -- local maxRadius = SWARMMAX(maxRadius, (maxRadius * aiBrain.MyAirRatio) ) 
     -- This adjust the maxRadius Air Platoons are willing to go out onto depending on the LandRatio
     -- This eliminates a lot of threat data assessment by just having them see if we are losing or winning
-    InterceptorAISwarm = function(self)
-        --if UseHeroPlatoonswarm then
-        --    self:HeroFightPlatoonSwarm()
-        --    return
-        --end
-        AIAttackUtils.GetMostRestrictiveLayer(self) 
-
-        local aiBrain = self:GetBrain()
-
-        local platoonUnits = self:GetPlatoonUnits()
-
-        local PlatoonStrength = SWARMGETN(platoonUnits)
-
-        if platoonUnits and PlatoonStrength > 0 then
-            for k, v in platoonUnits do
-                if not v.Dead then
-
-                    if v:TestToggleCaps('RULEUTC_StealthToggle') then
-                        
-                        v:SetScriptBit('RULEUTC_StealthToggle', false)
-                    end
-
-                    if v:TestToggleCaps('RULEUTC_CloakToggle') then
-                        
-                        v:SetScriptBit('RULEUTC_CloakToggle', false)
-                    end
-                    
-                    v:RemoveCommandCap('RULEUCC_Reclaim')
-                    v:RemoveCommandCap('RULEUCC_Repair')
-                end
-            end
-        end
-
-        local MoveToCategories = {}
-        if self.PlatoonData.MoveToCategories then
-            for k,v in self.PlatoonData.MoveToCategories do
-                SWARMINSERT(MoveToCategories, v )
-            end
-        else
-            LOG('* AI-Swarm: * InterceptorAISwarm: MoveToCategories missing in platoon '..self.BuilderName)
-        end
-        local WeaponTargetCategories = {}
-        if self.PlatoonData.WeaponTargetCategories then
-            for k,v in self.PlatoonData.WeaponTargetCategories do
-                SWARMINSERT(WeaponTargetCategories, v )
-            end
-        elseif self.PlatoonData.MoveToCategories then
-            WeaponTargetCategories = MoveToCategories
-        end
-        self:SetPrioritizedTargetList('Attack', WeaponTargetCategories)
-        local target
-        local bAggroMove = self.PlatoonData.AggressiveMove
-        local path
-        local reason
-        local maxRadius = self.PlatoonData.SearchRadius or 100
-        local PlatoonPos = self:GetPlatoonPosition()
-        local LastTargetPos = PlatoonPos
-        local basePosition
-        if self.MovementLayer == 'Water' then
-            -- we could search for the nearest naval base here, but buildposition is almost at the same location
-            basePosition = PlatoonPos
-        else
-            -- land and air units are assigned to mainbase
-            basePosition = aiBrain.BuilderManagers['MAIN'].Position
-        end
-        local GetTargetsFromBase = self.PlatoonData.GetTargetsFromBase
-        local GetTargetsFrom = basePosition
-        local LastTargetCheck
-        local DistanceToBase = 0
-        local TargetSearchCategory = self.PlatoonData.TargetSearchCategory or 'ALLUNITS'
-        --local maxRadius = SWARMMAX(maxRadius, (maxRadius * aiBrain.MyAirRatio) )
-        --LOG('What is Max Radius ' .. (maxRadius))
-        while aiBrain:PlatoonExists(self) do
-            PlatoonPos = self:GetPlatoonPosition()
-            if not GetTargetsFromBase then
-                GetTargetsFrom = PlatoonPos
-            else
-                DistanceToBase = VDist2(PlatoonPos[1] or 0, PlatoonPos[3] or 0, basePosition[1] or 0, basePosition[3] or 0)
-                if DistanceToBase > maxRadius then
-                    target = nil
-                end
-            end
-            -- only get a new target and make a move command if the target is dead
-            if not target or target.Dead or target:BeenDestroyed() then
-                UnitWithPath, UnitNoPath, path, reason = AIUtils.AIFindNearestCategoryTargetInRangeSwarm(aiBrain, self, 'Attack', GetTargetsFrom, maxRadius, MoveToCategories, TargetSearchCategory, false )
-                if UnitWithPath then
-                    --LOG('* AI-Swarm: *InterceptorAISwarm: found UnitWithPath')
-                    self:Stop()
-                    target = UnitWithPath
-                    if self.PlatoonData.IgnorePathing then
-                        self:AttackTarget(UnitWithPath)
-                    elseif path then
-                        self:MovePathSwarm(aiBrain, path, bAggroMove, UnitWithPath)
-                    -- if we dont have a path, but UnitWithPath is true, then we have no map markers but PathCanTo() found a direct path
-                    else
-                        self:MoveDirectSwarm(aiBrain, bAggroMove, UnitWithPath)
-                    end
-                    -- We moved to the target, attack it now if its still exists
-                    if aiBrain:PlatoonExists(self) and UnitWithPath and not UnitWithPath.Dead and not UnitWithPath:BeenDestroyed() then
-                        self:AttackTarget(UnitWithPath)
-                    end
-                elseif UnitNoPath then
-                    --LOG('* AI-Swarm: *InterceptorAISwarm: found UnitNoPath')
-                    self:Stop()
-                    target = UnitNoPath
-                    self:Stop()
-                    if self.MovementLayer == 'Air' then
-                        self:AttackTarget(UnitNoPath)
-                    else
-                        self:SimpleReturnToBaseSwarm(basePosition)
-                    end
-                else
-                    --LOG('* AI-Swarm: *InterceptorAISwarm: no target found '..repr(reason))
-                    -- we have no target return to main base
-                    self:Stop()
-                    if self.MovementLayer == 'Air' then
-                        if VDist2(PlatoonPos[1] or 0, PlatoonPos[3] or 0, basePosition[1] or 0, basePosition[3] or 0) > 30 then
-                            self:MoveToLocation(basePosition, false)
-                        else
-                            -- we are at home and we don't have a target. Disband!
-                            if aiBrain:PlatoonExists(self) then
-                                self:PlatoonDisband()
-                                return
-                            end
-                        end
-                    else
-                        if not self.SuicideMode then
-                            self.SuicideMode = true
-                            self.PlatoonData.AttackEnemyStrength = 1000
-                            self.PlatoonData.GetTargetsFromBase = false
-                            self.PlatoonData.MoveToCategories = { categories.EXPERIMENTAL, categories.TECH3, categories.TECH2, categories.ALLUNITS }
-                            self.PlatoonData.WeaponTargetCategories = { categories.EXPERIMENTAL, categories.TECH3, categories.TECH2, categories.ALLUNITS }
-                            self:InterceptorAISwarm()
-                        else
-                            self:SimpleReturnToBaseSwarm(basePosition)
-                        end
-                    end
-                end
-            -- targed exists and is not dead
-            end
-            SWARMWAIT(1)
-            if aiBrain:PlatoonExists(self) and target and not target.Dead then
-                LastTargetPos = target:GetPosition()
-                -- check if we are still inside the attack radius and be sure the area is not a nuke blast area
-                if VDist2(basePosition[1] or 0, basePosition[3] or 0, LastTargetPos[1] or 0, LastTargetPos[3] or 0) < maxRadius then
-                    self:Stop()
-                    if self.PlatoonData.IgnorePathing or VDist2(PlatoonPos[1] or 0, PlatoonPos[3] or 0, LastTargetPos[1] or 0, LastTargetPos[3] or 0) < 60 then
-                        self:AttackTarget(target)
-                    else
-                        self:MoveToLocation(LastTargetPos, false)
-                    end
-                    SWARMWAIT(10)
-                else
-                    target = nil
-                end
-            end
-            SWARMWAIT(10)
-        end
-    end,
-
-    -- The Magical Tether System or well... 1 line of code.
-    -- local maxRadius = SWARMMAX(maxRadius, (maxRadius * aiBrain.MyAirRatio) ) 
-    -- This adjust the maxRadius Air Platoons are willing to go out onto depending on the LandRatio
-    -- This eliminates a lot of threat data assessment by just having them see if we are losing or winning
-    BomberGunshipAISwarm = function(self)
+    AirAISwarm = function(self)
         --if 1==1 then
         --    self:HeroFightPlatoonSwarm()
         --    return
@@ -461,10 +297,10 @@ Platoon = Class(SwarmPlatoonClass) {
     end,
 
     LandAttackAISwarm = function(self)
-        --if UseHeroPlatoonswarm then
-        --    self:HeroFightPlatoonSwarm()
-        --    return
-        --end
+        if UseHeroPlatoonswarm then
+            self:HeroFightPlatoonSwarm()
+            return
+        end
         AIAttackUtils.GetMostRestrictiveLayer(self) -- this will set self.MovementLayer to the platoon
         -- Search all platoon units and activate Stealth and Cloak (mostly Modded units)
         local platoonUnits = self:GetPlatoonUnits()
@@ -530,7 +366,7 @@ Platoon = Class(SwarmPlatoonClass) {
             -- only get a new target and make a move command if the target is dead or after 10 seconds
             if not target or target.Dead then
 
-                self:MergeWithNearbyPlatoonsSwarm('LandAttackAISwarm', 100, 35)
+                self:MergeWithNearbyPlatoonsSwarm('LandAttackAISwarm', 100, 25)
 
                 SWARMWAIT(5)
 
@@ -4178,7 +4014,7 @@ Platoon = Class(SwarmPlatoonClass) {
                 continue
             end
 
-            self:MergeWithNearbyPlatoonsSwarm('AttackForceAISwarm', 100, 50)
+            self:MergeWithNearbyPlatoonsSwarm('AttackForceAISwarm', 100, 35)
 
             SWARMWAIT(5)
 
@@ -4523,7 +4359,7 @@ Platoon = Class(SwarmPlatoonClass) {
             IssueClearCommands(GetPlatoonUnits(self))
             if path then
 
-                self:MergeWithNearbyPlatoonsSwarm('MassRaidSwarm', 100, 25)
+                self:MergeWithNearbyPlatoonsSwarm('MassRaidSwarm', 100, 15)
 
                 SWARMWAIT(5)
 
@@ -4705,9 +4541,6 @@ Platoon = Class(SwarmPlatoonClass) {
         end
     end,
 
-
-    -- HeroFightPlatoon Function is extremely slow, leading to platoons which use this function having awful and insanely slow reactions.
-    -- Most likely will be using this less and less.
     HeroFightPlatoonSwarm = function(self)
         local aiBrain = self:GetBrain()
         local personality = ScenarioInfo.ArmySetup[aiBrain.Name].AIPersonality

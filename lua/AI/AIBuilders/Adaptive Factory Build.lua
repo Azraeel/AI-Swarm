@@ -281,7 +281,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Adaptive Factory Build',
         BuilderConditions = {
             { UCBC, 'CheckBuildPlattonDelay', { 'Factories' }},
 
-            { UCBC, 'AirStrengthRatioLessThan', { 1 } },
+            { UCBC, 'AirStrengthRatioLessThan', { 0.8 } },
 
             { EBC, 'GreaterThanEconStorageCurrent', { 200, 2000}},
 
@@ -324,7 +324,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Factory Builders Expansions',
 
             { UCBC, 'CanPathLandBaseToLandTargetsSwarm', {  'LocationType', categories.STRUCTURE * categories.FACTORY * categories.LAND }},
 
-            { UCBC, 'LandStrengthRatioLessThan', { 1.5 } },
+            { UCBC, 'LandStrengthRatioLessThan', { 1.25 } },
 
             { EBC, 'MassToFactoryRatioBaseCheck', { 'LocationType' } },
 
@@ -351,7 +351,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Factory Builders Expansions',
 
         Priority = 650,
 
-        PriorityFunction = HaveLessThanThreeT2AirFactory,
+        PriorityFunction = HaveLessThanThreeT2AirFactory, 
 
         InstanceCount = 1,
 
@@ -362,7 +362,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Factory Builders Expansions',
 
             { UCBC, 'CanPathNavalBaseToNavalTargetsSwarm', {  'LocationType', categories.STRUCTURE * categories.FACTORY * categories.AIR }},
 
-            { UCBC, 'AirStrengthRatioLessThan', { 1 } },
+            { UCBC, 'AirStrengthRatioLessThan', { 0.75 } },
 
             { EBC, 'MassToFactoryRatioBaseCheck', { 'LocationType' } },
 

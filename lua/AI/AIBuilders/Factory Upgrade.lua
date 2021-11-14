@@ -13,6 +13,12 @@ local MaxCapStructure = 0.12
 -- Will Clean This File up when I have time
 -- Build Conditions are all out of wack and do tons of unneeded checks.
 -- Performance Heavy this LUA is.
+-- This file was cleaned up
+
+-- When he goes T2 land, ITS LAND ALL THE WAY - When he goes t2 air, ITS AIR ALL THE WAY
+-- This behavior is predictable and cripples him in one way or the other, needs to be doing both air and land upgrades especially in a 1v1
+-- This builds up especially when we go Land and then we reach three t2 land factories and we stop building land factories. 
+-- At this point, our engineers only have a choice to build t1 air factories at expansions, so we get expansions with 7 new t1 air factories when we dont need them.
 
 -- ===================================================-======================================================== --
 -- ==                             Upgrade Factories Land/Air/Sea                                             == --
