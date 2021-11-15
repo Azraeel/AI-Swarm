@@ -595,7 +595,7 @@ BuilderGroup {
         BuilderType = 'Any',
 
         BuilderConditions = {
-            { UCBC, 'ScalePlatoonSizeSwarm', { 'LocationType', 'LAND', categories.MOBILE * categories.LAND * (categories.DIRECTFIRE + categories.INDIRECTFIRE) - categories.ENGINEER - categories.EXPERIMENTAL } },
+            { UCBC, 'ScalePlatoonSizeSwarm', { 'LocationType', 'LAND', categories.MOBILE * categories.LAND * categories.MOBILE * categories.TECH1 - categories.ANTIAIR - categories.ENGINEER - categories.SCOUT } },
 
             { UCBC, 'LandStrengthRatioGreaterThan', { 1.2 } },
 
@@ -621,7 +621,7 @@ BuilderGroup {
         BuilderType = 'Any',
 
         BuilderConditions = { 
-            { UCBC, 'ScalePlatoonSizeSwarm', { 'LocationType', 'LAND', categories.MOBILE * categories.LAND - categories.ENGINEER - categories.EXPERIMENTAL } },
+            { UCBC, 'ScalePlatoonSizeSwarm', { 'LocationType', 'LAND', categories.MOBILE * categories.LAND + (categories.MOBILE * categories.EXPERIMENTAL) - categories.ANTIAIR - categories.ENGINEER - categories.SCOUT } },
 
             { MIBC, 'CanPathToCurrentEnemySwarm', { true, 'LocationType' } },
 
@@ -633,7 +633,7 @@ BuilderGroup {
             GetTargetsFromBase = true,
             RequireTransport = false, 
             AggressiveMove = true, 
-            IgnorePathing = false,
+            IgnorePathing = true,
             TargetSearchCategory = categories.MOBILE * categories.LAND - categories.SCOUT - categories.WALL,                        
             MoveToCategories = {
                 categories.EXPERIMENTAL,
@@ -643,6 +643,14 @@ BuilderGroup {
                 categories.STRUCTURE * categories.ANTIAIR,
                 categories.STRUCTURE * categories.DEFENSE,
                 categories.ALLUNITS,
+            },
+            WeaponTargetCategories = {                                          
+                categories.EXPERIMENTAL * categories.LAND,
+                categories.COMMAND,
+                categories.INDIRECTFIRE * categories.LAND,
+                categories.DIRECTFIRE * categories.LAND,
+                categories.ANTIAIR * categories.LAND,
+                categories.MOBILE * categories.LAND,
             },
         },        
     },
@@ -659,7 +667,7 @@ BuilderGroup {
         BuilderType = 'Any',
 
         BuilderConditions = { 
-            { UCBC, 'ScalePlatoonSizeSwarm', { 'LocationType', 'LAND', categories.MOBILE * categories.LAND - categories.ENGINEER - categories.EXPERIMENTAL } },
+            { UCBC, 'ScalePlatoonSizeSwarm', { 'LocationType', 'LAND', categories.MOBILE * categories.LAND + (categories.MOBILE * categories.EXPERIMENTAL) - categories.ANTIAIR - categories.ENGINEER - categories.SCOUT } },
 
             { MIBC, 'CanPathToCurrentEnemySwarm', { true, 'LocationType' } },
 
@@ -671,7 +679,7 @@ BuilderGroup {
             GetTargetsFromBase = true,
             RequireTransport = false, 
             AggressiveMove = true, 
-            IgnorePathing = false,
+            IgnorePathing = true,
             TargetSearchCategory = categories.MOBILE * categories.LAND - categories.SCOUT - categories.WALL,                        
             MoveToCategories = {
                 categories.EXPERIMENTAL,
@@ -681,6 +689,14 @@ BuilderGroup {
                 categories.STRUCTURE * categories.ANTIAIR,
                 categories.STRUCTURE * categories.DEFENSE,
                 categories.ALLUNITS,
+            },
+            WeaponTargetCategories = {                                          
+                categories.EXPERIMENTAL * categories.LAND,
+                categories.COMMAND,
+                categories.INDIRECTFIRE * categories.LAND,
+                categories.DIRECTFIRE * categories.LAND,
+                categories.ANTIAIR * categories.LAND,
+                categories.MOBILE * categories.LAND,
             },
         },        
     },
@@ -697,7 +713,7 @@ BuilderGroup {
         BuilderType = 'Any',
 
         BuilderConditions = { 
-            { UCBC, 'ScalePlatoonSizeSwarm', { 'LocationType', 'LAND', categories.MOBILE * categories.LAND - categories.ENGINEER - categories.EXPERIMENTAL } },
+            { UCBC, 'ScalePlatoonSizeSwarm', { 'LocationType', 'LAND', categories.MOBILE * categories.LAND + (categories.MOBILE * categories.EXPERIMENTAL) - categories.ANTIAIR - categories.ENGINEER - categories.SCOUT } },
 
             { MIBC, 'CanPathToCurrentEnemySwarm', { true, 'LocationType' } },
 
@@ -709,7 +725,7 @@ BuilderGroup {
             GetTargetsFromBase = true,
             RequireTransport = false, 
             AggressiveMove = true, 
-            IgnorePathing = false,
+            IgnorePathing = true,
             TargetSearchCategory = categories.MOBILE * categories.LAND - categories.SCOUT - categories.WALL,                        
             MoveToCategories = {
                 categories.EXPERIMENTAL,
@@ -719,6 +735,14 @@ BuilderGroup {
                 categories.STRUCTURE * categories.ANTIAIR,
                 categories.STRUCTURE * categories.DEFENSE,
                 categories.ALLUNITS,
+            },
+            WeaponTargetCategories = {                                          
+                categories.EXPERIMENTAL * categories.LAND,
+                categories.COMMAND,
+                categories.INDIRECTFIRE * categories.LAND,
+                categories.DIRECTFIRE * categories.LAND,
+                categories.ANTIAIR * categories.LAND,
+                categories.MOBILE * categories.LAND,
             },
         },        
     }, 
@@ -736,7 +760,7 @@ BuilderGroup {
         BuilderType = 'Any',
 
         BuilderConditions = { 
-            { UCBC, 'ScalePlatoonSizeSwarm', { 'LocationType', 'LAND', categories.MOBILE * categories.LAND - categories.ENGINEER - categories.EXPERIMENTAL } },
+            { UCBC, 'ScalePlatoonSizeSwarm', { 'LocationType', 'LAND', categories.MOBILE * categories.LAND + (categories.MOBILE * categories.EXPERIMENTAL) - categories.ANTIAIR - categories.ENGINEER - categories.SCOUT } },
 
             { MIBC, 'CanPathToCurrentEnemySwarm', { true, 'LocationType' } },
 
@@ -776,7 +800,7 @@ BuilderGroup {
         BuilderType = 'Any',
 
         BuilderConditions = { 
-            { UCBC, 'ScalePlatoonSizeSwarm', { 'LocationType', 'LAND', categories.MOBILE * categories.LAND - categories.ENGINEER - categories.EXPERIMENTAL } },
+            { UCBC, 'ScalePlatoonSizeSwarm', { 'LocationType', 'LAND', categories.MOBILE * categories.LAND + (categories.MOBILE * categories.EXPERIMENTAL) - categories.ANTIAIR - categories.ENGINEER - categories.SCOUT } },
 
             { MIBC, 'CanPathToCurrentEnemySwarm', { true, 'LocationType' } },
 
@@ -816,7 +840,7 @@ BuilderGroup {
         BuilderType = 'Any',
 
         BuilderConditions = { 
-            { UCBC, 'ScalePlatoonSizeSwarm', { 'LocationType', 'LAND', categories.MOBILE * categories.LAND - categories.ENGINEER - categories.EXPERIMENTAL } },
+            { UCBC, 'ScalePlatoonSizeSwarm', { 'LocationType', 'LAND', categories.MOBILE * categories.LAND + (categories.MOBILE * categories.EXPERIMENTAL) - categories.ANTIAIR - categories.ENGINEER - categories.SCOUT } },
 
             { MIBC, 'CanPathToCurrentEnemySwarm', { true, 'LocationType' } },
 

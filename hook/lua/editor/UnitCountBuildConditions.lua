@@ -590,19 +590,19 @@ function ScalePlatoonSizeSwarm(aiBrain, locationType, type, unitCategory)
                 return true
             end
         elseif currentTime < 480 then
-            if PoolGreaterAtLocation(aiBrain, locationType, 6, unitCategory) then
+            if PoolGreaterAtLocation(aiBrain, locationType, 5, unitCategory) then
                 return true
             end
         elseif currentTime < 660 then
-            if PoolGreaterAtLocation(aiBrain, locationType, 8, unitCategory) then
+            if PoolGreaterAtLocation(aiBrain, locationType, 6, unitCategory) then
                 return true
             end
         elseif currentTime > 700 then
-            if PoolGreaterAtLocation(aiBrain, locationType, 9, unitCategory) then
+            if PoolGreaterAtLocation(aiBrain, locationType, 7, unitCategory) then
                 return true
             end
         elseif currentTime > 900 then
-            if PoolGreaterAtLocation(aiBrain, locationType, 10, unitCategory) then
+            if PoolGreaterAtLocation(aiBrain, locationType, 8, unitCategory) then
                 return true
             end
         else
