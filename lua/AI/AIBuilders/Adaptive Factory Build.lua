@@ -393,7 +393,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Gate Builders',                        
         BuilderConditions = {
         	{ EBC, 'GreaterThanEconEfficiencyOverTime', { 1.01, 1.02 }},
 
-            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.05, 0.50}},
+            { EBC, 'GreaterThanEconStorageCurrent', { 200, 2000}},
 
             { UCBC, 'HaveGreaterThanUnitsWithCategory', { 0, categories.STRUCTURE * categories.ENERGYPRODUCTION * categories.TECH3 } },
 
@@ -418,9 +418,9 @@ BuilderGroup { BuilderGroupName = 'Swarm Gate Builders',                        
         PlatoonTemplate = 'T3EngineerBuilder',
         Priority = 1300,
         BuilderConditions = {
-        	{ EBC, 'GreaterThanEconEfficiencyOverTime', { 1.01, 1.02 }},
+        	{ EBC, 'GreaterThanEconEfficiencyOverTime', { 1.02, 1.03 }},
 
-            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.075, 0.75}},
+            { EBC, 'GreaterThanEconStorageCurrent', { 200, 2000}},
 
             { UCBC, 'HaveGreaterThanUnitsWithCategory', { 0, categories.STRUCTURE * categories.ENERGYPRODUCTION * categories.TECH3 } },
 
@@ -455,7 +455,9 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Staging Platform Builders',        
             
             { EBC, 'GreaterThanEconTrendSwarm', { 0.0, 0.0 } }, 
 
-            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.04, 0.8}},
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.0, 1.0 }},
+
+            { EBC, 'GreaterThanEconStorageCurrent', { 200, 2000}},
            
             { UCBC, 'HaveLessThanUnitsInCategoryBeingBuilt', { 1, categories.STRUCTURE * categories.AIRSTAGINGPLATFORM }},
         },
@@ -481,7 +483,9 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Staging Platform Builders',        
 
             { EBC, 'GreaterThanEconTrendSwarm', { 0.0, 0.0 } },
 
-            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.15, 0.95}}, 
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.02, 1.03 }},
+
+            { EBC, 'GreaterThanEconStorageCurrent', { 200, 2000}},
 
             { UCBC, 'HaveLessThanUnitsInCategoryBeingBuilt', { 1, categories.STRUCTURE * categories.AIRSTAGINGPLATFORM }},
 
