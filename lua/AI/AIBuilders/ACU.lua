@@ -154,6 +154,8 @@ BuilderGroup {
         BuilderConditions = {                                                  
    
             { UCBC, 'GreaterThanGameTimeSeconds', { 60*6 } },
+
+            { UCBC, 'LessThanGameTimeSeconds', { 60*20 } },
          
             { UCBC, 'EnemyUnitsGreaterAtLocationRadiusSwarm', {  BaseMilitaryZone, 'LocationType', 10, categories.ALLUNITS - categories.ENGINEER - categories.AIR - categories.SCOUT }}, -- radius, LocationType, unitCount, categoryEnemy
 
@@ -190,8 +192,9 @@ BuilderGroup {
             },
         },
         BuilderConditions = {                                                  
-   
             { UCBC, 'GreaterThanGameTimeSeconds', { 60*8 } },
+
+            { UCBC, 'LessThanGameTimeSeconds', { 60*20 } },
          
             { UCBC, 'EnemyUnitsGreaterAtLocationRadiusSwarm', {  BaseEnemyZone, 'LocationType', 20, categories.ALLUNITS - categories.ENGINEER - categories.AIR - categories.SCOUT }}, -- radius, LocationType, unitCount, categoryEnemy
 

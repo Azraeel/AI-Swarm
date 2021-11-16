@@ -29,7 +29,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Shields Builder',
         BuilderConditions = {
             { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.0, 1.1 }},
 
-            { EBC, 'GreaterThanEnergyIncomeSwarm', { 100 }},
+            { EBC, 'GreaterThanEnergyIncomeSwarm', { 200 }},
 
             { EBC, 'GreaterThanEconStorageCurrent', { 200, 2000}},
             

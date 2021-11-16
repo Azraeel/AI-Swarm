@@ -4915,7 +4915,7 @@ Platoon = Class(SwarmPlatoonClass) {
                                 SWARMWAIT(1)
                             end
                             --self:RenamePlatoon('MoveOnlyWithTransport')
-                            self:MoveWithTransport(aiBrain, bAggroMove, target, basePosition, ExperimentalInPlatoon, MaxPlatoonWeaponRange, TargetSearchCategory)
+                            self:MoveWithTransportSwarm(aiBrain, bAggroMove, target, basePosition, ExperimentalInPlatoon, MaxPlatoonWeaponRange, TargetSearchCategory)
                         end
                     end
                 end
@@ -4982,6 +4982,9 @@ Platoon = Class(SwarmPlatoonClass) {
                             SWARMWAIT(1)
                         end
                         self:ForceReturnToNearestBaseAISwarm()
+                        if aiBrain:PlatoonExists(self) then
+                            self:PlatoonDisband()
+                        end
                         return
                     else
                         if HERODEBUGSwarm then
@@ -5257,10 +5260,9 @@ Platoon = Class(SwarmPlatoonClass) {
                             end
                             -- check if the move position is new or target has moved
                             if VDist2( smartPos[1], smartPos[3], unit.smartPos[1], unit.smartPos[3] ) > 0.7 then
-                                -- clear move commands if we have queued more than 2
-                                if SWARMGETN(unit:GetCommandQueue()) > 2 then
+                                -- clear move commands if we have queued more than 1
+                                if SWARMGETN(unit:GetCommandQueue()) > 1 then
                                     IssueClearCommands({unit})
-                                    SWARMWAIT(3)
                                 end
                                 -- if our target is dead, jump out of the "for _, unit in self:GetPlatoonUnits() do" loop
                                 IssueMove({unit}, smartPos )
