@@ -636,7 +636,7 @@ BuilderGroup {
         BuilderData = {
             AttackEnemyStrength = 80,
             SearchRadius = BaseMilitaryZone,
-            GetTargetsFromBase = false,
+            GetTargetsFromBase = true,
             RequireTransport = false, 
             AggressiveMove = true, 
             IgnorePathing = true,
@@ -682,7 +682,7 @@ BuilderGroup {
         BuilderData = {
             AttackEnemyStrength = 100,
             SearchRadius = BaseMilitaryZone,
-            GetTargetsFromBase = false,
+            GetTargetsFromBase = true,
             RequireTransport = false, 
             AggressiveMove = true, 
             IgnorePathing = true,
@@ -728,7 +728,7 @@ BuilderGroup {
         BuilderData = {
             AttackEnemyStrength = 120,
             SearchRadius = BaseMilitaryZone,
-            GetTargetsFromBase = false,
+            GetTargetsFromBase = true,
             RequireTransport = false, 
             AggressiveMove = true, 
             IgnorePathing = true,
