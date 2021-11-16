@@ -71,7 +71,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Builders',
         PriorityFunction = HaveLessThanTwoT3AirFactory,
 
         BuilderConditions = {
-            { UCBC, 'AirStrengthRatioLessThan', { 4 } },
+            { UCBC, 'AirStrengthRatioLessThan', { 3 } },
 
             { EBC, 'GreaterThanEconStorageCurrent', { 200, 2000}},
 
@@ -90,7 +90,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Builders',
         PriorityFunction = HaveLessThanTwoT2AirFactory,
 
         BuilderConditions = {
-            { UCBC, 'AirStrengthRatioGreaterThan', { 1.5 } },
+            { UCBC, 'AirStrengthRatioGreaterThan', { 1 } },
 
             { EBC, 'GreaterThanEconStorageCurrent', { 200, 2000}},
 
@@ -109,7 +109,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Builders',
         PriorityFunction = HaveLessThanTwoT2AirFactory,
 
         BuilderConditions = {
-            { UCBC, 'AirStrengthRatioGreaterThan', { 1.5 } },
+            { UCBC, 'AirStrengthRatioGreaterThan', { 1 } },
 
             { EBC, 'GreaterThanEconStorageCurrent', { 200, 2000}},
 
@@ -131,7 +131,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Builders',
         PriorityFunction = HaveLessThanTwoT3AirFactory,
 
         BuilderConditions = {
-            { UCBC, 'AirStrengthRatioGreaterThan', { 1.5 } },
+            { UCBC, 'AirStrengthRatioGreaterThan', { 1 } },
 
             { EBC, 'GreaterThanEconStorageCurrent', { 200, 2000}},
 
@@ -150,7 +150,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Builders',
         PriorityFunction = HaveLessThanTwoT3AirFactory,
 
         BuilderConditions = {
-            { UCBC, 'AirStrengthRatioGreaterThan', { 1.5 } },
+            { UCBC, 'AirStrengthRatioGreaterThan', { 1 } },
 
             { EBC, 'GreaterThanEconStorageCurrent', { 200, 2000}},
 
@@ -169,7 +169,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Builders',
         BuilderConditions = {
             { UCBC, 'UnitsGreaterAtEnemySwarm', { 0 , categories.NAVAL * categories.MOBILE } },
 
-            { UCBC, 'AirStrengthRatioGreaterThan', { 1.5 } },
+            { UCBC, 'AirStrengthRatioGreaterThan', { 1 } },
 
             { EBC, 'GreaterThanEconStorageCurrent', { 200, 2000}},
 
@@ -192,7 +192,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Builders',
         BuilderConditions = {
             { UCBC, 'UnitCapCheckLess', { 0.90 } },
 
-            { UCBC, 'AirStrengthRatioLessThan', { 4 } },
+            { UCBC, 'AirStrengthRatioLessThan', { 3 } },
 
             { EBC, 'GreaterThanEconStorageCurrent', { 200, 2000}},
 
@@ -211,7 +211,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Builders',
         BuilderConditions = {
             { UCBC, 'UnitCapCheckLess', { 0.90 } },
 
-            { UCBC, 'AirStrengthRatioGreaterThan', { 1.5 } },
+            { UCBC, 'AirStrengthRatioGreaterThan', { 1 } },
 
             { EBC, 'GreaterThanEconStorageCurrent', { 200, 2000}},
 
@@ -230,7 +230,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Builders',
         BuilderConditions = {
             { UCBC, 'UnitCapCheckLess', { 0.90 } },
 
-            { UCBC, 'AirStrengthRatioGreaterThan', { 1.5 } },
+            { UCBC, 'AirStrengthRatioGreaterThan', { 1 } },
 
             { EBC, 'GreaterThanEconStorageCurrent', { 200, 2000}},
 
@@ -249,7 +249,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Builders',
         BuilderConditions = {
             { UCBC, 'UnitsGreaterAtEnemySwarm', { 0 , categories.NAVAL * categories.MOBILE } },
 
-            { UCBC, 'AirStrengthRatioGreaterThan', { 2 } },
+            { UCBC, 'AirStrengthRatioGreaterThan', { 1.5 } },
 
             { EBC, 'GreaterThanEconStorageCurrent', { 200, 2000}},
 
@@ -350,18 +350,14 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Builders',
 
         PriorityFunction = HaveLessThanTwoT3AirFactory,
 
-        DelayEqualBuildPlattons = {'Scouts', 10},
-
         BuilderConditions = {
-            { UCBC, 'CheckBuildPlattonDelay', { 'Scouts' }},
+            { UCBC, 'LocationFactoriesBuildingLess', { 'LocationType', 2, categories.AIR * categories.SCOUT } },
 
             { EBC, 'GreaterThanEconStorageCurrent', { 200, 2000}},
 
             { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.7, 0.8 }},
 
             { SIBC, 'HaveLessThanUnitsForMapSize', { {[256] = 8, [512] = 12, [1024] = 18, [2048] = 20, [4096] = 20}, categories.AIR * categories.SCOUT}},
-
-            { UCBC, 'LocationFactoriesBuildingLess', { 'LocationType', 1, categories.AIR * categories.SCOUT } },
         },
         BuilderType = 'Air',
     },
@@ -373,18 +369,14 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Builders',
 
         Priority = 500,
 
-        DelayEqualBuildPlattons = {'Scouts', 10},
-
         BuilderConditions = {
-            { UCBC, 'CheckBuildPlattonDelay', { 'Scouts' }},
+            { UCBC, 'LocationFactoriesBuildingLess', { 'LocationType', 2, categories.AIR * categories.SCOUT } },
 
             { EBC, 'GreaterThanEconStorageCurrent', { 200, 2000}},
 
             { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.9, 1.1 }},
 
             { SIBC, 'HaveLessThanUnitsForMapSize', { {[256] = 4, [512] = 8, [1024] = 12, [2048] = 16, [4096] = 20}, categories.AIR * categories.SCOUT}},
-
-            { UCBC, 'LocationFactoriesBuildingLess', { 'LocationType', 1, categories.AIR * categories.SCOUT } },
         },
         BuilderType = 'Air',
     },

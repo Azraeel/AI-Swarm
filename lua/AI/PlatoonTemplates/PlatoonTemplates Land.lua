@@ -9,16 +9,8 @@ PlatoonTemplate {
 }
 
 PlatoonTemplate {
-    Name = 'AISwarm LandAttack Micro - Intercept',
-    Plan = 'InterceptorAISwarm',
-    GlobalSquads = {
-        { categories.MOBILE * categories.LAND + (categories.MOBILE * categories.EXPERIMENTAL) - categories.ANTIAIR - categories.ENGINEER - categories.SCOUT, 2, 6, 'attack', 'none' },
-    },
-}
-
-PlatoonTemplate {
     Name = 'AISwarm LandAttack Micro - Standard',
-    Plan = 'LandAttackAISwarm',
+    Plan = 'HeroFightPlatoonSwarm',
     GlobalSquads = {
         { categories.MOBILE * categories.LAND + (categories.MOBILE * categories.EXPERIMENTAL) - categories.ANTIAIR - categories.ENGINEER - categories.SCOUT, 4, 50, 'attack', 'none' },
     },
@@ -191,7 +183,7 @@ PlatoonTemplate {
         UEF = {
             { 'del0204', 1, 1, 'attack', 'None' },
         },
-        Cybran = { #DUNCAN - Was UEF in orig
+        Cybran = { 
             { 'drl0204', 1, 1, 'attack', 'None' },
         },
     },

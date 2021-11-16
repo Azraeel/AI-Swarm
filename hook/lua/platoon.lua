@@ -4802,6 +4802,10 @@ Platoon = Class(SwarmPlatoonClass) {
             end
             -- wait a bit here, so continue commands can't deadloop/freeze the game
             SWARMWAIT(3)
+
+            self:MergeWithNearbyPlatoonsSwarm('HeroFightPlatoonSwarm', 100, 25)
+
+            SWARMWAIT(5)
             if self.UsingTransport then
                 continue
             end

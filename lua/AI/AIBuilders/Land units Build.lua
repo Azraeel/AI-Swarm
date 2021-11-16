@@ -545,44 +545,6 @@ BuilderGroup {
     BuilderGroupName = 'AISwarm Platoon Builder',
     BuildersType = 'PlatoonFormBuilder', 
 
-    --[[ Builder {
-        BuilderName = 'AI-Swarm Standard Land (200) P',
-
-        PlatoonTemplate = 'AISwarm LandAttack Micro - Intercept', 
-
-        Priority = 652,
-
-        InstanceCount = 3,
-
-        BuilderType = 'Any',
-
-        BuilderConditions = { 
-            { MIBC, 'CanPathToCurrentEnemySwarm', { true, 'LocationType' } },
-
-            { UCBC, 'UnitsGreaterAtEnemySwarm', { 0 , categories.MOBILE * categories.LAND - categories.SCOUT } },
-
-            { UCBC, 'EnemyUnitsGreaterAtLocationRadiusSwarm', {  BasePanicZone, 'LocationType', 0, categories.MOBILE * categories.LAND - categories.SCOUT - categories.NAVAL}}, 
-        },
-        BuilderData = {
-            AttackEnemyStrength = 200,
-            SearchRadius = BasePanicZone,
-            GetTargetsFromBase = true,
-            RequireTransport = false, 
-            AggressiveMove = false, 
-            IgnorePathing = true,
-            TargetSearchCategory = categories.MOBILE * categories.LAND - categories.SCOUT - categories.WALL,                        
-            MoveToCategories = {
-                categories.EXPERIMENTAL,
-                categories.MOBILE * categories.LAND * categories.INDIRECTFIRE - categories.SCOUT,
-                categories.MOBILE * categories.LAND * categories.DIRECTFIRE - categories.SCOUT,
-                categories.MOBILE * categories.LAND * categories.ANTIAIR,
-                categories.STRUCTURE * categories.ANTIAIR,
-                categories.STRUCTURE * categories.DEFENSE,
-                categories.ALLUNITS,
-            },
-        },        
-    }, ]]--
-
     Builder {
         BuilderName = 'AISwarm T1 Spam',     
 
@@ -610,6 +572,50 @@ BuilderGroup {
     },
 
     Builder {
+        BuilderName = 'AI-Swarm Standard Land (200) P',
+
+        PlatoonTemplate = 'AISwarm LandAttack Micro - Standard', 
+
+        Priority = 650,
+
+        InstanceCount = 4,
+
+        BuilderType = 'Any',
+
+        BuilderConditions = { 
+            { MIBC, 'CanPathToCurrentEnemySwarm', { true, 'LocationType' } },
+
+            { UCBC, 'EnemyUnitsGreaterAtLocationRadiusSwarm', {  BasePanicZone, 'LocationType', 0, categories.MOBILE * categories.LAND - categories.NAVAL}}, -- radius, LocationType, unitCount, categoryEnemy
+        },
+        BuilderData = {
+            AttackEnemyStrength = 200,
+            SearchRadius = BasePanicZone,
+            GetTargetsFromBase = true,
+            RequireTransport = false, 
+            AggressiveMove = true, 
+            IgnorePathing = true,
+            TargetSearchCategory = categories.MOBILE * categories.LAND - categories.SCOUT - categories.WALL,                        
+            MoveToCategories = {
+                categories.EXPERIMENTAL,
+                categories.MOBILE * categories.LAND * categories.INDIRECTFIRE - categories.SCOUT,
+                categories.MOBILE * categories.LAND * categories.DIRECTFIRE - categories.SCOUT,
+                categories.MOBILE * categories.LAND * categories.ANTIAIR,
+                categories.STRUCTURE * categories.ANTIAIR,
+                categories.STRUCTURE * categories.DEFENSE,
+                categories.ALLUNITS,
+            },
+            WeaponTargetCategories = {                                          
+                categories.EXPERIMENTAL * categories.LAND,
+                categories.COMMAND,
+                categories.INDIRECTFIRE * categories.LAND,
+                categories.DIRECTFIRE * categories.LAND,
+                categories.ANTIAIR * categories.LAND,
+                categories.MOBILE * categories.LAND,
+            },
+        },        
+    },
+
+    Builder {
         BuilderName = 'AI-Swarm Standard Land (80) M',
 
         PlatoonTemplate = 'AISwarm LandAttack Micro - Standard', 
@@ -630,7 +636,7 @@ BuilderGroup {
         BuilderData = {
             AttackEnemyStrength = 80,
             SearchRadius = BaseMilitaryZone,
-            GetTargetsFromBase = true,
+            GetTargetsFromBase = false,
             RequireTransport = false, 
             AggressiveMove = true, 
             IgnorePathing = true,
@@ -676,7 +682,7 @@ BuilderGroup {
         BuilderData = {
             AttackEnemyStrength = 100,
             SearchRadius = BaseMilitaryZone,
-            GetTargetsFromBase = true,
+            GetTargetsFromBase = false,
             RequireTransport = false, 
             AggressiveMove = true, 
             IgnorePathing = true,
@@ -722,7 +728,7 @@ BuilderGroup {
         BuilderData = {
             AttackEnemyStrength = 120,
             SearchRadius = BaseMilitaryZone,
-            GetTargetsFromBase = true,
+            GetTargetsFromBase = false,
             RequireTransport = false, 
             AggressiveMove = true, 
             IgnorePathing = true,
