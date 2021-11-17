@@ -42,8 +42,8 @@ BaseBuilderTemplate {
         -----------------------------------------------------------------------------
         -- ==== Energy ==== --
         -----------------------------------------------------------------------------
-        -- Build Power Tech 1,2,3
-        'S123 Energy Builders',                       -- Priority = 1100
+        -- Build Power Tech 2 & 3
+        'SExpansion23 Energy Builders',                       
 
         -----------------------------------------------------------------------------
         -- ==== Factory ==== --
@@ -137,10 +137,10 @@ BaseBuilderTemplate {
 
     BaseSettings = {
         FactoryCount = {
-            Land = 0,
-            Air = 0,
+            Land = 8,
+            Air = 4,
             Sea = 0,
-            Gate = 2,
+            Gate = 1,
         },
         EngineerCount = {
             Tech1 = 2,

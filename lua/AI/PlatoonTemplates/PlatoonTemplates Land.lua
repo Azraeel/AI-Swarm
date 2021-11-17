@@ -10,7 +10,7 @@ PlatoonTemplate {
 
 PlatoonTemplate {
     Name = 'AISwarm LandAttack Micro - Standard',
-    Plan = 'HeroFightPlatoonSwarm',
+    Plan = 'LandAttackAISwarm',
     GlobalSquads = {
         { categories.MOBILE * categories.LAND + (categories.MOBILE * categories.EXPERIMENTAL) - categories.ANTIAIR - categories.ENGINEER - categories.SCOUT, 4, 50, 'attack', 'none' },
     },

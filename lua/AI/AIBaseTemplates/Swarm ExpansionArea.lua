@@ -24,12 +24,6 @@ BaseBuilderTemplate {
         'Swarm Engineer Reclaim',
 
         -----------------------------------------------------------------------------
-        -- ==== Energy ==== --
-        -----------------------------------------------------------------------------
-        -- Build Power Tech 1,2,3
-        'S123 Energy Builders',                       -- Priority = 1100
-
-        -----------------------------------------------------------------------------
         -- ==== Factory ==== --
         -----------------------------------------------------------------------------
         -- Build Land/Air Factories
@@ -57,19 +51,6 @@ BaseBuilderTemplate {
         -- ==== Air Units FORMER==== --
         -----------------------------------------------------------------------------
         'Swarm Air Formers',
-        
-        -----------------------------------------------------------------------------
-        -- ==== EXPERIMENTALS BUILDER ==== --
-        -----------------------------------------------------------------------------
-        'Swarm Land Experimental Builders',
-        'Swarm Air Experimental Builders',
-        
-        -----------------------------------------------------------------------------
-        -- ==== EXPERIMENTALS FORMER ==== --
-        -----------------------------------------------------------------------------
-        'Swarm Land Experimental Formers',
-        'Swarm Air Experimental Formers',
-
         -----------------------------------------------------------------------------
         -- ==== Structure Shield BUILDER ==== --
         -----------------------------------------------------------------------------
@@ -79,8 +60,6 @@ BaseBuilderTemplate {
         -----------------------------------------------------------------------------
         -- ==== Defenses BUILDER ==== --
         -----------------------------------------------------------------------------
-        'Swarm Strategic Builder',
-        'Strategic Platoon Formers',
         'Swarm T2 Tactical Missile Defenses Builder',
         'Swarm SMD Builder',
         'Swarm Defense Plus Builders',
@@ -118,16 +97,16 @@ BaseBuilderTemplate {
 
     BaseSettings = {
         FactoryCount = {
-            Land = 0,
-            Air = 0,
+            Land = 3,
+            Air = 1,
             Sea = 0,
-            Gate = 1,
+            Gate = 0,
         },
         EngineerCount = {
             Tech1 = 1,
             Tech2 = 2,
             Tech3 = 1,
-            SCU = 1,
+            SCU = 0,
         },
         MassToFactoryValues = {
             T1Value = 6,

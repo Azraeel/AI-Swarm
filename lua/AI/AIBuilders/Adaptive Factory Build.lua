@@ -322,6 +322,8 @@ BuilderGroup { BuilderGroupName = 'Swarm Factory Builders Expansions',
         BuilderConditions = {
             { UCBC, 'CheckBuildPlattonDelay', { 'Factories' }},
 
+            { UCBC, 'FactoryCapCheck', { 'LocationType', 'Land' } },
+
             { UCBC, 'CanPathLandBaseToLandTargetsSwarm', {  'LocationType', categories.STRUCTURE * categories.FACTORY * categories.LAND }},
 
             { UCBC, 'LandStrengthRatioLessThan', { 1.25 } },
@@ -330,9 +332,9 @@ BuilderGroup { BuilderGroupName = 'Swarm Factory Builders Expansions',
 
             { EBC, 'GreaterThanEconStorageCurrent', { 200, 2000}},
 
-            { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.9, 1.0 }}, 
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.0, 1.0 }}, 
 
-            { UCBC, 'HaveLessThanUnitsInCategoryBeingBuilt', { 2, categories.STRUCTURE * categories.FACTORY * categories.LAND * categories.TECH1 }},
+            { UCBC, 'HaveLessThanUnitsInCategoryBeingBuilt', { 1, categories.STRUCTURE * categories.FACTORY * categories.LAND * categories.TECH1 }},
         },
         BuilderType = 'Any',
         BuilderData = {
@@ -360,6 +362,8 @@ BuilderGroup { BuilderGroupName = 'Swarm Factory Builders Expansions',
         BuilderConditions = {
             { UCBC, 'CheckBuildPlattonDelay', { 'Factories' }},
 
+            { UCBC, 'FactoryCapCheck', { 'LocationType', 'Air' } },
+
             { UCBC, 'CanPathNavalBaseToNavalTargetsSwarm', {  'LocationType', categories.STRUCTURE * categories.FACTORY * categories.AIR }},
 
             { UCBC, 'AirStrengthRatioLessThan', { 0.75 } },
@@ -368,9 +372,9 @@ BuilderGroup { BuilderGroupName = 'Swarm Factory Builders Expansions',
 
             { EBC, 'GreaterThanEconStorageCurrent', { 200, 2000}},
 
-            { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.9, 1.0 }}, 
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.0, 1.01 }}, 
 
-            { UCBC, 'HaveLessThanUnitsInCategoryBeingBuilt', { 2, categories.STRUCTURE * categories.FACTORY * categories.AIR * categories.TECH1 }},
+            { UCBC, 'HaveLessThanUnitsInCategoryBeingBuilt', { 1, categories.STRUCTURE * categories.FACTORY * categories.AIR * categories.TECH1 }},
         },
         BuilderType = 'Any',
         BuilderData = {
@@ -391,9 +395,11 @@ BuilderGroup { BuilderGroupName = 'Swarm Gate Builders',                        
         PlatoonTemplate = 'T3EngineerBuilder',
         Priority = 1350,
         BuilderConditions = {
-        	{ EBC, 'GreaterThanEconEfficiencyOverTime', { 1.01, 1.02 }},
+        	{ EBC, 'GreaterThanEconEfficiencyOverTime', { 1.02, 1.03 }},
 
             { EBC, 'GreaterThanEconStorageCurrent', { 200, 2000}},
+
+            { UCBC, 'IsEngineerNotBuildingSwarm', { categories.STRUCTURE * categories.GATE * categories.TECH3 }},
 
             { UCBC, 'HaveGreaterThanUnitsWithCategory', { 0, categories.STRUCTURE * categories.ENERGYPRODUCTION * categories.TECH3 } },
 
@@ -418,11 +424,13 @@ BuilderGroup { BuilderGroupName = 'Swarm Gate Builders',                        
         PlatoonTemplate = 'T3EngineerBuilder',
         Priority = 1300,
         BuilderConditions = {
-        	{ EBC, 'GreaterThanEconEfficiencyOverTime', { 1.02, 1.03 }},
+        	{ EBC, 'GreaterThanEconEfficiencyOverTime', { 1.03, 1.04 }},
 
             { EBC, 'GreaterThanEconStorageCurrent', { 200, 2000}},
 
-            { UCBC, 'HaveGreaterThanUnitsWithCategory', { 0, categories.STRUCTURE * categories.ENERGYPRODUCTION * categories.TECH3 } },
+            { UCBC, 'IsEngineerNotBuildingSwarm', { categories.STRUCTURE * categories.GATE * categories.TECH3 }},
+
+            { UCBC, 'HaveGreaterThanUnitsWithCategory', { 1, categories.STRUCTURE * categories.ENERGYPRODUCTION * categories.TECH3 } },
 
             { UCBC, 'BuildNotOnLocationSwarm', { 'LocationType', 'MAIN' } },
 

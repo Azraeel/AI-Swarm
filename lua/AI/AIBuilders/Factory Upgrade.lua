@@ -68,7 +68,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Factory Upgrader Rush',
 
             { EBC, 'GreaterThanEconTrendSwarm', { 1.2, 11.0 } },
 
-            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.04, 1.1 }},
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.04, 1.07 }},
             
             { UCBC, 'HaveLessThanUnitsInCategoryBeingUpgradeSwarm', { 1, categories.STRUCTURE * categories.FACTORY * categories.TECH2 * categories.RESEARCH }},
         },
@@ -238,7 +238,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Factory Upgrader Rush',
 
             { EBC, 'GreaterThanEconTrendSwarm', { 0.7, 16.0 } },
 
-            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.04, 1.07 }},
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.04, 1.05 }},
           
             { UCBC, 'HaveLessThanUnitsInCategoryBeingUpgradeSwarm', { 1, categories.STRUCTURE * categories.FACTORY * categories.TECH1 }},
         },
@@ -262,7 +262,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Factory Upgrader Rush',
 
             { EBC, 'GreaterThanEconTrendSwarm', { 1.2, 31.0 } },
 
-            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.04, 1.1 }},
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.04, 1.07 }},
             
             { UCBC, 'HaveLessThanUnitsInCategoryBeingUpgradeSwarm', { 1, categories.STRUCTURE * categories.FACTORY * categories.TECH2 * categories.RESEARCH }},
         },
