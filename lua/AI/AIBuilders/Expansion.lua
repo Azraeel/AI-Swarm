@@ -71,7 +71,7 @@ BuilderGroup {
 
             { EBC, 'GreaterThanEconStorageCurrent', { 200, 2000}},
 
-            { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.8, 1.0 }}, 
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.9, 1.0 }}, 
 
             { UCBC, 'StartLocationNeedsEngineer', { 'LocationType', 250, -1000, 5, 1, 'AntiSurface' } },
 
@@ -112,7 +112,7 @@ BuilderGroup {
 
             { EBC, 'GreaterThanEconStorageCurrent', { 200, 2000}},
 
-            { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.8, 1.0 }}, 
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.9, 1.0 }}, 
 
             { UCBC, 'ExpansionAreaNeedsEngineer', { 'LocationType', 250, -1000, 5, 1, 'AntiSurface' } },
 
@@ -248,7 +248,7 @@ BuilderGroup {
 
             { EBC, 'GreaterThanEconStorageCurrent', { 250, 1000}},
 
-            { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.8, 1.0 }}, 
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.9, 1.0 }}, 
 
             { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 0, categories.ENGINEER * categories.TECH1 - categories.COMMAND - categories.STATIONASSISTPOD }},
 

@@ -21,14 +21,10 @@ if not categories.STEALTHFIELD then categories.STEALTHFIELD = categories.SHIELD 
 --end
 
 
-local UniversalT1Land = function( self, aiBrain )
+local WeHaveAnAdvantage = function( self, aiBrain )
 	
-	if GetGameTimeSeconds() > 1800 then
-        return 0, false
-    elseif aiBrain.MyLandRatio > 2.0 then
+	if aiBrain.MyLandRatio > 3.0 then
 		return 0, false
-    elseif table.getn( aiBrain:GetListOfUnits( categories.FACTORY * categories.LAND * categories.TECH2, false, true )) >= 5 then
-        return 0, false
 	end
 	
 	return self.Priority,true
@@ -87,7 +83,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',
 
             { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.7, 0.8 }},
 
-            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.02, 0.1}},
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.01, 0.1}},
 
             { MIBC, 'CanPathToCurrentEnemySwarm', { true, 'LocationType' } },
 
@@ -102,14 +98,14 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',
 
         Priority = 500,
 
-        PriorityFunction = UniversalT1Land,
+        PriorityFunction = WeHaveAnAdvantage,
 
         BuilderConditions = {
             { UCBC, 'UnitCapCheckLess', { 0.90 } },
 
             { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.7, 0.8 }},
 
-            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.02, 0.1}},
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.01, 0.1}},
 
             { MIBC, 'CanPathToCurrentEnemySwarm', { true, 'LocationType' } },
 
@@ -124,14 +120,14 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',
 
         Priority = 500,
 
-        PriorityFunction = UniversalT1Land,
+        PriorityFunction = WeHaveAnAdvantage,
 
         BuilderConditions = {
             { UCBC, 'UnitCapCheckLess', { 0.90 } },
 
             { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.7, 0.8 }},
 
-            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.02, 0.1}},
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.01, 0.1}},
 
             { MIBC, 'CanPathToCurrentEnemySwarm', { true, 'LocationType' } },
 
@@ -146,7 +142,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',
 
         Priority = 500,
 
-        PriorityFunction = UniversalT1Land,
+        PriorityFunction = WeHaveAnAdvantage,
 
         BuilderConditions = {
             { UCBC, 'UnitCapCheckLess', { 0.90 } },
@@ -155,7 +151,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',
 
             { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.7, 0.8 }},
 
-            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.02, 0.1}},
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.01, 0.1}},
 
             { MIBC, 'CanPathToCurrentEnemySwarm', { true, 'LocationType' } },
 
@@ -170,7 +166,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',
 
         Priority = 510,
 
-        PriorityFunction = UniversalT1Land,
+        PriorityFunction = WeHaveAnAdvantage,
 
         BuilderConditions = {
             { UCBC, 'UnitCapCheckLess', { 0.90 } },
@@ -179,7 +175,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',
 
             { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.7, 0.8 }},
 
-            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.02, 0.1}},
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.01, 0.1}},
 
             { MIBC, 'CanPathToCurrentEnemySwarm', { true, 'LocationType' } },
 
@@ -206,7 +202,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',
 
             { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.75, 0.9 }},
 
-            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.02, 0.1}},
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.01, 0.1}},
 
             { MIBC, 'CanPathToCurrentEnemySwarm', { true, 'LocationType' } },
 
@@ -230,7 +226,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',
 
             { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.75, 0.9 }},
 
-            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.02, 0.1}},
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.01, 0.1}},
 
             { MIBC, 'CanPathToCurrentEnemySwarm', { true, 'LocationType' } },
 
@@ -254,7 +250,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',
 
             { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.75, 0.9 }},
 
-            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.02, 0.1}},
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.01, 0.1}},
 
             { MIBC, 'CanPathToCurrentEnemySwarm', { true, 'LocationType' } },
 
@@ -281,7 +277,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',
 
             { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.75, 0.9 }},
 
-            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.02, 0.1}},
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.01, 0.1}},
 
             { MIBC, 'CanPathToCurrentEnemySwarm', { true, 'LocationType' } },
 
@@ -311,7 +307,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',
 
             { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.75, 0.9 }},
 
-            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.02, 0.1}},
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.01, 0.1}},
 
             { MIBC, 'CanPathToCurrentEnemySwarm', { true, 'LocationType' } },
 
@@ -335,7 +331,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',
 
             { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.9, 0.95 }},
 
-            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.02, 0.1}},
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.01, 0.1}},
 
             { MIBC, 'CanPathToCurrentEnemySwarm', { true, 'LocationType' } },
 
@@ -360,7 +356,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',
 
             { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.9, 0.95 }},
 
-            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.02, 0.1}},
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.01, 0.1}},
 
             { MIBC, 'CanPathToCurrentEnemySwarm', { true, 'LocationType' } },
 
@@ -383,7 +379,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',
 
             { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.85, 0.9 }},
 
-            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.02, 0.1}},
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.01, 0.1}},
 
             { MIBC, 'CanPathToCurrentEnemySwarm', { true, 'LocationType' } },
 
@@ -408,7 +404,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',
 
             { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.9, 0.95 }},
 
-            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.02, 0.1}},
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.01, 0.1}},
 
             { UCBC, 'HaveGreaterThanUnitsWithCategory', { 1, categories.FACTORY * categories.LAND * categories.TECH3 }},
 
@@ -429,7 +425,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',
 
             { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.9, 0.95 }},
 
-            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.02, 0.1}},
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.01, 0.1}},
 
             { MIBC, 'CanPathToCurrentEnemySwarm', { true, 'LocationType' } },
 
@@ -450,7 +446,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',
 
             { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.9, 0.95 }},
 
-            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.02, 0.1}},
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.01, 0.1}},
 
             { MIBC, 'CanPathToCurrentEnemySwarm', { true, 'LocationType' } },
 
@@ -473,7 +469,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',
 
             { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.9, 0.95 }},
 
-            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.02, 0.1}},
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.01, 0.1}},
 
             { UCBC, 'HaveGreaterThanUnitsWithCategory', { 0, categories.FACTORY * categories.LAND * categories.TECH3 }},
 
@@ -640,7 +636,7 @@ BuilderGroup {
             SearchRadius = BaseMilitaryZone,
             GetTargetsFromBase = true,
             RequireTransport = false, 
-            AggressiveMove = false, 
+            AggressiveMove = true, 
             IgnorePathing = false,
             TargetSearchCategory = categories.MOBILE * categories.LAND - categories.SCOUT - categories.WALL,                        
             MoveToCategories = {
@@ -686,7 +682,7 @@ BuilderGroup {
             SearchRadius = BaseMilitaryZone,
             GetTargetsFromBase = true,
             RequireTransport = false, 
-            AggressiveMove = false, 
+            AggressiveMove = true, 
             IgnorePathing = false,
             TargetSearchCategory = categories.MOBILE * categories.LAND - categories.SCOUT - categories.WALL,                        
             MoveToCategories = {
@@ -732,7 +728,7 @@ BuilderGroup {
             SearchRadius = BaseMilitaryZone,
             GetTargetsFromBase = true,
             RequireTransport = false, 
-            AggressiveMove = false, 
+            AggressiveMove = true, 
             IgnorePathing = false,
             TargetSearchCategory = categories.MOBILE * categories.LAND - categories.SCOUT - categories.WALL,                        
             MoveToCategories = {
@@ -781,7 +777,7 @@ BuilderGroup {
             SearchRadius = BaseEnemyZone,
             GetTargetsFromBase = false,
             RequireTransport = false, 
-            AggressiveMove = false, 
+            AggressiveMove = true, 
             IgnorePathing = false,
             TargetSearchCategory = categories.STRUCTURE + categories.ECONOMIC - categories.SCOUT - categories.WALL,                        
             MoveToCategories = {
@@ -821,7 +817,7 @@ BuilderGroup {
             SearchRadius = BaseEnemyZone,
             GetTargetsFromBase = false,
             RequireTransport = false, 
-            AggressiveMove = false, 
+            AggressiveMove = true, 
             IgnorePathing = false,
             TargetSearchCategory = categories.STRUCTURE + categories.ECONOMIC - categories.SCOUT - categories.WALL,                        
             MoveToCategories = {
@@ -861,7 +857,7 @@ BuilderGroup {
             SearchRadius = BaseEnemyZone,
             GetTargetsFromBase = false,
             RequireTransport = false, 
-            AggressiveMove = false, 
+            AggressiveMove = true, 
             IgnorePathing = false,
             TargetSearchCategory = categories.STRUCTURE + categories.ECONOMIC - categories.SCOUT - categories.WALL,                        
             MoveToCategories = {
@@ -1050,7 +1046,7 @@ BuilderGroup {
 
         Priority = 652,                                     
 
-        InstanceCount = 2,                              
+        InstanceCount = 4,                              
 
         BuilderType = 'Any',
 
