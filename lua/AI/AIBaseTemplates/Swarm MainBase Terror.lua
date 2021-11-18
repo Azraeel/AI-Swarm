@@ -63,7 +63,6 @@ BaseBuilderTemplate {
         'S3 SACU Formers',
 
         'Swarm AI Defense Formers',
-        'Swarm AI United Land Formers', 
 
         -----------------------------------------------------------------------------
         -- ==== Air Units BUILDER ==== --

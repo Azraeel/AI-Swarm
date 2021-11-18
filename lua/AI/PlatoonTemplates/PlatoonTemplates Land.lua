@@ -108,46 +108,6 @@ PlatoonTemplate {
     },
 }
 
------------------------
-
--- Archived As This is Mainly for Sorian Edit AI Mod Now -- 
-
--- Archived Unlocked --
-
------------------------
-
-PlatoonTemplate {
-    Name = 'AI-Swarm Attack Force - United Land - Small',
-    Plan = 'AttackForceAISwarm',    
-    GlobalSquads = {
-        { categories.LAND * categories.MOBILE * categories.EXPERIMENTAL - categories.SCOUT - categories.ENGINEER, 0, 5, 'attack', 'none' },
-
-        { categories.LAND * categories.MOBILE * categories.DIRECTFIRE - categories.SCOUT - categories.ENGINEER - categories.EXPERIMENTAL, 15, 40, 'attack', 'none' },
-
-        { categories.LAND * categories.MOBILE * categories.INDIRECTFIRE - categories.SCOUT - categories.ENGINEER - categories.EXPERIMENTAL, 4, 15, 'artillery', 'none' },
-
-        { categories.LAND * categories.MOBILE * categories.ANTIAIR - categories.SCOUT - categories.ENGINEER - categories.EXPERIMENTAL, 0, 8, 'guard', 'none' },
-
-        { categories.LAND * categories.MOBILE - categories.SCOUT - categories.ENGINEER - categories.EXPERIMENTAL, 1, 5, 'support', 'none' },
-    },
-}
-
-PlatoonTemplate {
-    Name = 'AI-Swarm Attack Force - United Land - Large',
-    Plan = 'AttackForceAISwarm',    
-    GlobalSquads = {
-        { categories.LAND * categories.MOBILE * categories.EXPERIMENTAL - categories.SCOUT - categories.ENGINEER, 1, 10, 'attack', 'none' },
-
-        { categories.LAND * categories.MOBILE * categories.DIRECTFIRE - categories.SCOUT - categories.ENGINEER - categories.EXPERIMENTAL, 40, 100, 'attack', 'none' },
-
-        { categories.LAND * categories.MOBILE * categories.INDIRECTFIRE - categories.SCOUT - categories.ENGINEER - categories.EXPERIMENTAL, 10, 30, 'artillery', 'none' },
-
-        { categories.LAND * categories.MOBILE * categories.ANTIAIR - categories.SCOUT - categories.ENGINEER - categories.EXPERIMENTAL, 0, 15, 'guard', 'none' },
-
-        { categories.LAND * categories.MOBILE - categories.SCOUT - categories.ENGINEER - categories.EXPERIMENTAL, 3, 9, 'support', 'none' },
-    },
-} 
-
 PlatoonTemplate {
     Name = 'S1 LandDFBot',
     FactionSquads = {

@@ -4416,7 +4416,7 @@ Platoon = Class(SwarmPlatoonClass) {
         --LOG('* AI-RNG: Best Marker Selected is at position'..repr(bestMarker.Position))
         
         if bestMarker.Position == nil and SWARMTIME() > 900 then
-            --LOG('Best Marker position was nil and game time greater than 15 mins, switch to hunt ai')
+            --LOG('Best Marker position was nil and game time greater than 15 mins, switch to HeroFightPlatoonSwarm AI')
             return self:HeroFightPlatoonSwarm()
         elseif bestMarker.Position == nil then
             --LOG('Best Marker position was nil, select random')

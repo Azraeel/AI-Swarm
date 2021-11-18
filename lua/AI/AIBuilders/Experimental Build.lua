@@ -28,7 +28,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Experimental Builders',
 
             { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.02, 1.03 }},
 
-            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.02, 0.1}},
+            { EBC, 'GreaterThanEconStorageCurrent', { 200, 2000}},
             
             { EBC, 'GreaterThanMassTrendSwarm', { 0.0 } },
         },
@@ -68,7 +68,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Experimental Builders',
 
             { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.02, 1.03 }},
 
-            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.02, 0.1}},
+            { EBC, 'GreaterThanEconStorageCurrent', { 200, 2000}},
 
             { EBC, 'GreaterThanMassTrendSwarm', { 0.0 } },
 
@@ -118,7 +118,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Experimental Builders',
 
             { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.02, 1.03 }},
 
-            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.02, 0.1}},
+            { EBC, 'GreaterThanEconStorageCurrent', { 200, 2000}},
         },
 
         BuilderType = 'Any',
@@ -167,7 +167,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Experimental Builders',
 
             { EBC, 'GreaterThanMassTrendSwarm', { 0.0 } },
 
-            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.02, 0.1}},
+            { EBC, 'GreaterThanEconStorageCurrent', { 200, 2000}},
         },
 
         BuilderType = 'Any',
@@ -214,7 +214,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Experimental Builders',
 
             { EBC, 'GreaterThanMassTrendSwarm', { 0.0 } },
 
-            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.02, 0.1}},
+            { EBC, 'GreaterThanEconStorageCurrent', { 200, 2000}},
         },
 
         BuilderType = 'Any',
@@ -266,7 +266,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Naval Experimental Builders',
 
             { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.02, 1.03 }},      
             
-            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.02, 0.1}},
+            { EBC, 'GreaterThanEconStorageCurrent', { 200, 2000}},
 
             { UCBC, 'HaveLessThanUnitsInCategoryBeingBuilt', { 2, categories.MOBILE * categories.EXPERIMENTAL }},
         },

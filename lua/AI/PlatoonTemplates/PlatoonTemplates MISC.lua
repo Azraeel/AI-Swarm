@@ -73,7 +73,7 @@ PlatoonTemplate {
     Name = 'AddSACUToACUChampionPlatoon',
     Plan = 'SwarmPlatoonMerger',
     GlobalSquads = {
-        { categories.SUBCOMMANDER, 1, 1, 'support', 'none' }
+        { categories.SUBCOMMANDER - categories.RASPRESET - categories.ENGINEERPRESET, 1, 1, 'support', 'none' }
     },
 }
 PlatoonTemplate {

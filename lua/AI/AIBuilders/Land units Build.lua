@@ -30,9 +30,9 @@ local WeHaveAnAdvantage = function( self, aiBrain )
 	return self.Priority,true
 end
 
-local HaveLessThanThreeT3LandFactory = function( self, aiBrain )
+local HaveLessThanFiveT3LandFactory = function( self, aiBrain )
 	
-	if table.getn( aiBrain:GetListOfUnits( categories.FACTORY * categories.LAND * categories.TECH3, false, true )) < 3 then
+	if table.getn( aiBrain:GetListOfUnits( categories.FACTORY * categories.LAND * categories.TECH3, false, true )) < 5 then
 	
 		return 500, true
 		
@@ -195,7 +195,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',
 
         Priority = 500,
 
-        PriorityFunction = HaveLessThanThreeT3LandFactory,
+        PriorityFunction = HaveLessThanFiveT3LandFactory,
 
         BuilderConditions = {
             { UCBC, 'UnitCapCheckLess', { 0.90 } },
@@ -219,7 +219,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',
 
         Priority = 500,
 
-        PriorityFunction = HaveLessThanThreeT3LandFactory,
+        PriorityFunction = HaveLessThanFiveT3LandFactory,
 
         BuilderConditions = {
             { UCBC, 'UnitCapCheckLess', { 0.90 } },
@@ -243,7 +243,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',
 
         Priority = 500,
 
-        PriorityFunction = HaveLessThanThreeT3LandFactory,
+        PriorityFunction = HaveLessThanFiveT3LandFactory,
 
         BuilderConditions = {
             { UCBC, 'UnitCapCheckLess', { 0.90 } },
@@ -298,7 +298,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',
 
         Priority = 500,
 
-        PriorityFunction = HaveLessThanThreeT3LandFactory,
+        PriorityFunction = HaveLessThanFiveT3LandFactory,
 
         BuilderConditions = {
             { UCBC, 'UnitCapCheckLess', { 0.90 } },
@@ -555,7 +555,7 @@ BuilderGroup {
         BuilderConditions = {
             { UCBC, 'ScalePlatoonSizeSwarm', { 'LocationType', 'LAND', categories.MOBILE * categories.LAND * categories.MOBILE * categories.TECH1 - categories.ANTIAIR - categories.ENGINEER - categories.SCOUT } },
 
-            { UCBC, 'LandStrengthRatioGreaterThan', { 1.2 } },
+            { UCBC, 'LandStrengthRatioGreaterThan', { 1.5 } },
 
             { MIBC, 'CanPathToCurrentEnemySwarm', { true, 'LocationType' } },
         },
@@ -586,12 +586,12 @@ BuilderGroup {
             { UCBC, 'EnemyUnitsGreaterAtLocationRadiusSwarm', {  BasePanicZone, 'LocationType', 0, categories.MOBILE * categories.LAND - categories.NAVAL}}, -- radius, LocationType, unitCount, categoryEnemy
         },
         BuilderData = {
-            AttackEnemyStrength = 200,
+            AttackEnemyStrength = 1000,
             SearchRadius = BasePanicZone,
             GetTargetsFromBase = true,
             RequireTransport = false, 
             AggressiveMove = true, 
-            IgnorePathing = true,
+            IgnorePathing = false,
             TargetSearchCategory = categories.MOBILE * categories.LAND - categories.SCOUT - categories.WALL,                        
             MoveToCategories = {
                 categories.EXPERIMENTAL,
@@ -1150,82 +1150,5 @@ BuilderGroup {
             },
         },
     },
-}
-
-BuilderGroup {
-    BuilderGroupName = 'Swarm AI United Land Formers',                         
-    BuildersType = 'PlatoonFormBuilder', 
-
-    Builder {
-        BuilderName = 'AI-Swarm Attack Force - United Land - Small',
-        PlatoonTemplate = 'AI-Swarm Attack Force - United Land - Small',
-        PlatoonAddPlans = {'PlatoonCallForHelpAISwarm', 'DistressResponseAISwarm'},
-        Priority = 700,
-        InstanceCount = 2,
-        BuilderType = 'Any',
-        BuilderData = {
-            ThreatSupport = 75,
-            DistressRange = 50,
-            NeverGuardBases = false,
-            NeverGuardEngineers = true,
-			UseFormation = 'GrowthFormation',
-			AggressiveMove = true,
-            ThreatWeights = {
-                PrimaryTargetThreatType = 'Land',
-                PrimaryThreatWeight = 20,
-                SecondaryTargetThreatType = 'Economy',
-                SecondaryThreatWeight = 8.5,
-                WeakAttackThreatWeight = 2,
-                StrongAttackThreatWeight = 15,
-                IgnoreThreatLessThan = 3,
-                IgnoreCommanderStrength = true,
-                EnemyThreatRings = 1,
-                TargetCurrentEnemy = false,
-            },
-        },        
-        BuilderConditions = {
-            { MIBC, 'GreaterThanGameTime', { 1800 } }, 
-
-            { UCBC, 'LandStrengthRatioGreaterThan', { 2 } },
-
-            { MIBC, 'CanPathToCurrentEnemySwarm', { true, 'LocationType' } },
-        },
-    },
-
-    Builder {
-        BuilderName = 'AI-Swarm Attack Force - United Land - Large',
-        PlatoonTemplate = 'AI-Swarm Attack Force - United Land - Large',
-        PlatoonAddPlans = {'PlatoonCallForHelpAISwarm', 'DistressResponseAISwarm'},
-        Priority = 700,
-        InstanceCount = 2,
-        BuilderType = 'Any',
-        BuilderData = {
-            ThreatSupport = 75,
-            DistressRange = 50,
-            NeverGuardBases = false,
-            NeverGuardEngineers = true,
-			UseFormation = 'GrowthFormation',
-			AggressiveMove = true,
-            ThreatWeights = {
-                PrimaryTargetThreatType = 'Land',
-                PrimaryThreatWeight = 14,
-                SecondaryTargetThreatType = 'Economy',
-                SecondaryThreatWeight = 10,
-                WeakAttackThreatWeight = 1,
-                StrongAttackThreatWeight = 19,
-                IgnoreThreatLessThan = 5,
-                IgnoreCommanderStrength = true,
-                EnemyThreatRings = 1,
-                TargetCurrentEnemy = false,
-            },
-        },        
-        BuilderConditions = {
-            { MIBC, 'GreaterThanGameTime', { 1800 } }, 
-
-            { UCBC, 'LandStrengthRatioGreaterThan', { 2 } },
-            
-            { MIBC, 'CanPathToCurrentEnemySwarm', { true, 'LocationType' } },
-        },
-    }, 
 }
 
