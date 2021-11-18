@@ -636,7 +636,7 @@ BuilderGroup {
             SearchRadius = BaseMilitaryZone,
             GetTargetsFromBase = true,
             RequireTransport = false, 
-            AggressiveMove = false, 
+            AggressiveMove = true, 
             IgnorePathing = false,
             TargetSearchCategory = categories.MOBILE * categories.LAND - categories.SCOUT - categories.WALL,                        
             MoveToCategories = {
@@ -682,7 +682,7 @@ BuilderGroup {
             SearchRadius = BaseMilitaryZone,
             GetTargetsFromBase = true,
             RequireTransport = false, 
-            AggressiveMove = false, 
+            AggressiveMove = true, 
             IgnorePathing = false,
             TargetSearchCategory = categories.MOBILE * categories.LAND - categories.SCOUT - categories.WALL,                        
             MoveToCategories = {
@@ -728,7 +728,7 @@ BuilderGroup {
             SearchRadius = BaseMilitaryZone,
             GetTargetsFromBase = true,
             RequireTransport = false, 
-            AggressiveMove = false, 
+            AggressiveMove = true, 
             IgnorePathing = false,
             TargetSearchCategory = categories.MOBILE * categories.LAND - categories.SCOUT - categories.WALL,                        
             MoveToCategories = {
@@ -777,7 +777,7 @@ BuilderGroup {
             SearchRadius = BaseEnemyZone,
             GetTargetsFromBase = false,
             RequireTransport = false, 
-            AggressiveMove = false, 
+            AggressiveMove = true, 
             IgnorePathing = false,
             TargetSearchCategory = categories.STRUCTURE + categories.ECONOMIC - categories.SCOUT - categories.WALL,                        
             MoveToCategories = {
@@ -817,7 +817,7 @@ BuilderGroup {
             SearchRadius = BaseEnemyZone,
             GetTargetsFromBase = false,
             RequireTransport = false, 
-            AggressiveMove = false, 
+            AggressiveMove = true, 
             IgnorePathing = false,
             TargetSearchCategory = categories.STRUCTURE + categories.ECONOMIC - categories.SCOUT - categories.WALL,                        
             MoveToCategories = {
@@ -857,7 +857,7 @@ BuilderGroup {
             SearchRadius = BaseEnemyZone,
             GetTargetsFromBase = false,
             RequireTransport = false, 
-            AggressiveMove = false, 
+            AggressiveMove = true, 
             IgnorePathing = false,
             TargetSearchCategory = categories.STRUCTURE + categories.ECONOMIC - categories.SCOUT - categories.WALL,                        
             MoveToCategories = {
@@ -1046,7 +1046,7 @@ BuilderGroup {
 
         Priority = 652,                                     
 
-        InstanceCount = 4,                              
+        InstanceCount = 2,                              
 
         BuilderType = 'Any',
 
@@ -1100,7 +1100,7 @@ BuilderGroup {
 
         Priority = 652,                                     
 
-        InstanceCount = 2,                            
+        InstanceCount = 1,                            
 
         BuilderType = 'Any',
 
@@ -1150,20 +1150,6 @@ BuilderGroup {
             },
         },
     },
-
-    --[[ Builder {
-        BuilderName = 'Base Response - AI-Swarm',
-        PlatoonTemplate = 'AISwarm - Guard Base',
-        Priority =  490,
-        BuilderConditions = {
-            { MIBC, 'GreaterThanGameTime', { 600 } },  
-        },
-        BuilderData = {
-            LocationType = 'LocationType',
-        },
-        InstanceCount = 1,
-        BuilderType = 'Any',
-    }, ]]--
 }
 
 BuilderGroup {

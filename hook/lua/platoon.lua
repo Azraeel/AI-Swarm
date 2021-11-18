@@ -360,9 +360,9 @@ Platoon = Class(SwarmPlatoonClass) {
             -- only get a new target and make a move command if the target is dead or after 10 seconds
             if not target or target.Dead then
 
-                self:MergeWithNearbyPlatoonsSwarm('LandAttackAISwarm', 40, 20)
+                --self:MergeWithNearbyPlatoonsSwarm('LandAttackAISwarm', 40, 20)
 
-                SWARMWAIT(5)
+                --SWARMWAIT(5)
 
                 UnitWithPath, UnitNoPath, path, reason = AIUtils.AIFindNearestCategoryTargetInRangeSwarm(aiBrain, self, 'Attack', PlatoonPos, maxRadius, MoveToCategories, TargetSearchCategory, false )
                 if UnitWithPath then
@@ -3410,7 +3410,7 @@ Platoon = Class(SwarmPlatoonClass) {
             end
         end
         SWARMWAIT(50)
-        self:LandAttackAISwarm()
+        self:HeroFightPlatoonSwarm()
         if aiBrain:PlatoonExists(self) then
             self:PlatoonDisband()
         end
@@ -4417,7 +4417,7 @@ Platoon = Class(SwarmPlatoonClass) {
         
         if bestMarker.Position == nil and SWARMTIME() > 900 then
             --LOG('Best Marker position was nil and game time greater than 15 mins, switch to hunt ai')
-            return self:LandAttackAISwarm()
+            return self:HeroFightPlatoonSwarm()
         elseif bestMarker.Position == nil then
             --LOG('Best Marker position was nil, select random')
             if SWARMGETN(markerLocations) <= 2 then
