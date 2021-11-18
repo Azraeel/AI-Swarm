@@ -47,7 +47,7 @@ function ValidateAttackLayerSwarm(position, TargetPosition)
     return false
 end
 
--- AI-Uveso: Helper function for targeting
+-- AI-Swarm: Helper function for targeting
 function IsNukeBlastAreaSwarm(aiBrain, TargetPosition)
     -- check if the target is inside a nuke blast radius
     if aiBrain.NukedArea then

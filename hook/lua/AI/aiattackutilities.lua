@@ -1,6 +1,6 @@
 local VDist2Sq = VDist2Sq
 
--- Uveso Functions
+-- Swarm Functions
 function CanGraphAreaTo_OLD(startPos, destPos, layer)
     local startNode = GetClosestPathNodeInRadiusByLayer(startPos, 100, layer)
     local endNode = false
