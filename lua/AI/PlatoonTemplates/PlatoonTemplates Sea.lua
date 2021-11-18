@@ -1,6 +1,6 @@
 PlatoonTemplate {
     Name = 'Swarm Sea Attack',
-    Plan = 'NavalAttackAISwarm',
+    Plan = 'HeroFightPlatoonSwarm',
     GlobalSquads = {
         { categories.MOBILE * categories.NAVAL + (categories.NAVAL * categories.EXPERIMENTAL) - categories.CARRIER - categories.ENGINEER - categories.NUKE, 1, 100, 'Attack', 'none' }
     },
