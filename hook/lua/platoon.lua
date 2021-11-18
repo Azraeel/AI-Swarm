@@ -3,6 +3,8 @@ WARN('['..string.gsub(debug.getinfo(1).source, ".*\\(.*.lua)", "%1")..', line:'.
 local SwarmUtils = import('/mods/AI-Swarm/lua/AI/Swarmutilities.lua')
 local HERODEBUGSwarm = false
 local CHAMPIONDEBUGswarm = false 
+local MarkerSwitchDist = 25
+local MarkerSwitchDistEXP = 45
 
 local PlatoonExists = moho.aibrain_methods.PlatoonExists
 local GetPlatoonUnits = moho.platoon_methods.GetPlatoonUnits
@@ -1884,7 +1886,7 @@ Platoon = Class(SwarmPlatoonClass) {
             else
                 self:MoveToLocation(path[i], false)
             end
-            if HERODEBUG then
+            if HERODEBUGSwarm then
                 self:RenamePlatoonSwarm('MovePathSwarm: moving to path['..i..'] '..repr(path[i]))
             end
             while aiBrain:PlatoonExists(self) do
@@ -1936,7 +1938,7 @@ Platoon = Class(SwarmPlatoonClass) {
                 if bAggroMove then
                     numEnemyUnits = aiBrain:GetNumUnitsAroundPoint(EnemyThreatCategory, PlatoonPosition, MaxPlatoonWeaponRange + 20 , 'Enemy')
                     if numEnemyUnits > 0 then
-                        if HERODEBUG then
+                        if HERODEBUGSwarm then
                             self:RenamePlatoonSwarm('MovePathSwarm: cancel move, enemies nearby')
                         end
                         return
@@ -1945,7 +1947,7 @@ Platoon = Class(SwarmPlatoonClass) {
                 SWARMWAIT(10)
             end
         end
-        if HERODEBUG then
+        if HERODEBUGSwarm then
             self:RenamePlatoonSwarm('MovePathSwarm: destination reached; dist:'..distEnd)
         end
     end,
