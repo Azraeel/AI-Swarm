@@ -21,6 +21,8 @@ local VDist2Sq = VDist2Sq
 local VDist3 = VDist3
 
 local GetThreatsAroundPosition = moho.aibrain_methods.GetThreatsAroundPosition
+local GetUnitsAroundPoint = moho.aibrain_methods.GetUnitsAroundPoint
+local CanBuildStructureAt = moho.aibrain_methods.CanBuildStructureAt
 local IsUnitState = moho.unit_methods.IsUnitState
 local AssignUnitsToPlatoon = moho.aibrain_methods.AssignUnitsToPlatoon
 local GetFractionComplete = moho.entity_methods.GetFractionComplete
@@ -309,6 +311,115 @@ function GetAssisteesSwarm(aiBrain, locationType, assisteeType, buildingCategory
     end
 
     return false
+end
+
+function EngineerTryReclaimCaptureAreaSwarm(aiBrain, eng, pos, pointRadius)
+    if not pos then
+        return false
+    end
+    if not pointRadius then
+        pointRadius = 15
+    end
+    local Reclaiming = false
+    --Temporary for troubleshooting
+    --local GetBlueprint = moho.entity_methods.GetBlueprint
+    -- Check if enemy units are at location
+    local checkUnits = GetUnitsAroundPoint(aiBrain, (categories.STRUCTURE + categories.MOBILE) - categories.AIR, pos, pointRadius, 'Enemy')
+    -- reclaim units near our building place.
+    if checkUnits and SWARMGETN(checkUnits) > 0 then
+        for num, unit in checkUnits do
+            --temporary for troubleshooting
+            --unitdesc = GetBlueprint(unit).Description
+            if unit.Dead or unit:BeenDestroyed() then
+                continue
+            end
+            if not IsEnemy( aiBrain:GetArmyIndex(), unit:GetAIBrain():GetArmyIndex() ) then
+                continue
+            end
+            if unit:IsCapturable() and not EntityCategoryContains(categories.TECH1 * (categories.MOBILE + categories.WALL), unit) then 
+                --LOG('* AI-RNG: Unit is capturable and not category t1 mobile'..unitdesc)
+                -- if we can capture the unit/building then do so
+                unit.CaptureInProgress = true
+                IssueCapture({eng}, unit)
+            else
+                --LOG('* AI-RNG: We are going to reclaim the unit'..unitdesc)
+                -- if we can't capture then reclaim
+                unit.ReclaimInProgress = true
+                IssueReclaim({eng}, unit)
+            end
+        end
+        Reclaiming = true
+    end
+    -- reclaim rocks etc or we can't build mexes or hydros
+    local Reclaimables = GetReclaimablesInRect(Rect(pos[1], pos[3], pos[1], pos[3]))
+    if Reclaimables and SWARMGETN( Reclaimables ) > 0 then
+        for k,v in Reclaimables do
+            if v.MaxMassReclaim and v.MaxMassReclaim > 0 or v.MaxEnergyReclaim and v.MaxEnergyReclaim > 0 then
+                IssueReclaim({eng}, v)
+            end
+        end
+    end
+    return Reclaiming
+end
+
+function AIGetSortedMassLocationsThreatSwarm(aiBrain, minDist, maxDist, tMin, tMax, tRings, tType, position)
+
+    local threatCheck = false
+    local maxDistance = 2000
+    local minDistance = 0
+    local VDist2Sq = VDist2Sq
+
+
+    local startX, startZ
+    
+    if position then
+        startX = position[1]
+        startZ = position[3]
+    else
+        startX, startZ = aiBrain:GetArmyStartPos()
+    end
+    if maxDist and minDist then
+        maxDistance = maxDist * maxDist
+        minDistance = minDist * minDist
+    end
+
+    if tMin and tMax and tType then
+        threatCheck = true
+    else
+        threatCheck = false
+    end
+
+    local markerList = GetMarkersByType('Mass')
+    SWARMSORT(markerList, function(a,b) return VDist2Sq(a.Position[1],a.Position[3], startX,startZ) < VDist2Sq(b.Position[1],b.Position[3], startX,startZ) end)
+    --LOG('Sorted Mass Marker List '..repr(markerList))
+    local newList = {}
+    for _, v in markerList do
+        -- check distance to map border. (game engine can't build mass closer then 8 mapunits to the map border.) 
+        if v.Position[1] <= 8 or v.Position[1] >= ScenarioInfo.size[1] - 8 or v.Position[3] <= 8 or v.Position[3] >= ScenarioInfo.size[2] - 8 then
+            -- mass marker is too close to border, skip it.
+            continue
+        end
+        if VDist2Sq(v.Position[1], v.Position[3], startX, startZ) < minDistance then
+            continue
+        end
+        if VDist2Sq(v.Position[1], v.Position[3], startX, startZ) > maxDistance  then
+            --LOG('Current Distance of marker..'..VDist2Sq(v.Position[1], v.Position[3], startX, startZ))
+            --LOG('Max Distance'..maxDistance)
+            --LOG('mass marker MaxDistance Reached, breaking loop')
+            break
+        end
+        if CanBuildStructureAt(aiBrain, 'ueb1103', v.Position) then
+            if threatCheck then
+                if GetThreatAtPosition(aiBrain, v.Position, 0, true, tType) >= tMax then
+                    --LOG('mass marker threatMax Reached, continuing')
+                    continue
+                end
+            end
+            table.insert(newList, v)
+        end
+    end
+    --LOG('Return marker list has '..RNGGETN(newList)..' entries')
+    return newList
 end
 
 local PropBlacklist = {}

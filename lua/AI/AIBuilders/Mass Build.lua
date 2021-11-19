@@ -29,17 +29,17 @@ BuilderGroup {
         BuilderConditions = {
             { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 0, categories.ENGINEER * categories.TECH1 }},
 
-            { MABC, 'CanBuildOnMassSwarm', { 'LocationType', 240, -500, 2, 1, 'AntiSurface', 1}},
+            { MABC, 'CanBuildOnMassDistanceSwarm', { 'LocationType', 0, 240, nil, nil, 0, 'AntiSurface', 1}},
         },
         BuilderType = 'Any',
         BuilderData = {
             Construction = {
-                BuildClose = true,
                 RepeatBuild = true,
-                MaxRange = 240,
-                ThreatMin = -1000,
-                ThreatMax = 2,
-                ThreatRings = 1,
+                Type = 'Mass',
+                MaxDistance = 240,
+                ThreatMin = -500,
+                ThreatMax = 5,
+                ThreatRings = 0,
                 ThreatType = 'AntiSurface',
                 BuildStructures = {
                     'T1Resource',
@@ -60,17 +60,17 @@ BuilderGroup {
 
             --{ UCBC, 'EnemyUnitsLessAtLocationRadiusSwarm', {  BaseMilitaryZone, 'LocationType', 10, categories.ALLUNITS - categories.ENGINEER - categories.AIR - categories.SCOUT }},
 
-            { MABC, 'CanBuildOnMassSwarm', { 'LocationType', 480, -500, 2, 1, 'AntiSurface', 1}},
+            { MABC, 'CanBuildOnMassDistanceSwarm', { 'LocationType', 0, 480, nil, nil, 0, 'AntiSurface', 1}},
         },
         BuilderType = 'Any',
         BuilderData = {
             Construction = {
-                BuildClose = true,
                 RepeatBuild = true,
-                MaxRange = 480,
-                ThreatMin = -1000,
-                ThreatMax = 2,
-                ThreatRings = 1,
+                Type = 'Mass',
+                MaxDistance = 480,
+                ThreatMin = -500,
+                ThreatMax = 5,
+                ThreatRings = 0,
                 ThreatType = 'AntiSurface',
                 BuildStructures = {
                     'T1Resource',
@@ -91,17 +91,17 @@ BuilderGroup {
 
             --{ UCBC, 'EnemyUnitsLessAtLocationRadiusSwarm', {  BaseMilitaryZone, 'LocationType', 10, categories.ALLUNITS - categories.ENGINEER - categories.AIR - categories.SCOUT }},
 
-            { MABC, 'CanBuildOnMassSwarm', { 'LocationType', 1000, -500, 2, 1, 'AntiSurface', 1}},
+            { MABC, 'CanBuildOnMassDistanceSwarm', { 'LocationType', 0, 1000, nil, nil, 0, 'AntiSurface', 1}},
         },
         BuilderType = 'Any',
         BuilderData = {
             Construction = {
-                BuildClose = true,
                 RepeatBuild = true,
-                MaxRange = 1000,
-                ThreatMin = -1000,
-                ThreatMax = 2,
-                ThreatRings = 1,
+                Type = 'Mass',
+                MaxDistance = 1000,
+                ThreatMin = -500,
+                ThreatMax = 5,
+                ThreatRings = 0,
                 ThreatType = 'AntiSurface',
                 BuildStructures = {
                     'T1Resource',

@@ -1,33 +1,74 @@
+local SwarmUtils = import('/mods/AI-Swarm/lua/AI/Swarmutilities.lua')
+local GetNumUnitsAroundPoint = moho.aibrain_methods.GetNumUnitsAroundPoint
+local CanBuildStructureAt = moho.aibrain_methods.CanBuildStructureAt
+
 local import = import 
 
 local SWARMSORT = table.sort
+local SWARMINSERT = table.insert
 local SWARMCOPY = table.copy
 local SWARMGETN = table.getn
 
+local SWARMABS = math.abs
+local SWARMFLOOR = math.floor
+
 local VDist3 = VDist3
 
--- AI-Swarm: Hook for Replace factory buildtemplate to find a better buildplace not too close to the center of the base
-local AntiSpamList = {}
-SwarmAIExecuteBuildStructure = AIExecuteBuildStructure
-function AIExecuteBuildStructure(aiBrain, builder, buildingType, closeToBuilder, relative, buildingTemplate, baseTemplate, reference, constructionData)
-    -- Only use this with AI-Swarm
+SwarmAddToBuildQueue = AddToBuildQueue
+function AddToBuildQueue(aiBrain, builder, whatToBuild, buildLocation, relative)
     if not aiBrain.Swarm then
-        return SwarmAIExecuteBuildStructure(aiBrain, builder, buildingType, closeToBuilder, relative, buildingTemplate, baseTemplate, reference, constructionData)
+        return SwarmAddToBuildQueue(aiBrain, builder, whatToBuild, buildLocation, relative)
     end
+    if not builder.EngineerBuildQueue then
+        builder.EngineerBuildQueue = {}
+    end
+    -- put in build queue.. but will be removed afterwards... just so that it can iteratively find new spots to build
+    SwarmUtils.EngineerTryReclaimCaptureAreaSwarm(aiBrain, builder, BuildToNormalLocation(buildLocation)) 
+    aiBrain:BuildStructure(builder, whatToBuild, buildLocation, false)
+    local newEntry = {whatToBuild, buildLocation, relative}
+    SWARMINSERT(builder.EngineerBuildQueue, newEntry)
+end
+
+function AIBuildBaseTemplateOrderedSwarm(aiBrain, builder, buildingType , closeToBuilder, relative, buildingTemplate, baseTemplate, reference, constructionData)
     local factionIndex = aiBrain:GetFactionIndex()
     local whatToBuild = aiBrain:DecideWhatToBuild(builder, buildingType, buildingTemplate)
-    local FactionIndexToName = {[1] = 'UEF', [2] = 'AEON', [3] = 'CYBRAN', [4] = 'SERAPHIM', [5] = 'NOMADS' }
-    local AIFactionName = FactionIndexToName[factionIndex] or 'Unknown'
+    if whatToBuild then
+        if IsResource(buildingType) then
+            return AIExecuteBuildStructureRNG(aiBrain, builder, buildingType , closeToBuilder, relative, buildingTemplate, baseTemplate, reference)
+        else
+            for l,bType in baseTemplate do
+                for m,bString in bType[1] do
+                    if bString == buildingType then
+                        for n,position in bType do
+                            if n > 1 and aiBrain:CanBuildStructureAt(whatToBuild, BuildToNormalLocation(position)) then
+                                 AddToBuildQueue(aiBrain, builder, whatToBuild, position, false)
+                                 table.remove(bType,n)
+                                 return DoHackyLogic(buildingType, builder)
+                            end # if n > 1 and can build structure at
+                        end # for loop
+                        break
+                    end # if bString == builderType
+                end # for loop
+            end # for loop
+        end # end else
+    end # if what to build
+    return # unsuccessful build
+end
+
+
+local AntiSpamList = {}
+function AIExecuteBuildStructureSwarm(aiBrain, builder, buildingType, closeToBuilder, relative, buildingTemplate, baseTemplate, reference, constructionData)
+    local factionIndex = aiBrain:GetFactionIndex()
+    local whatToBuild = aiBrain:DecideWhatToBuild(builder, buildingType, buildingTemplate)
     -- If the c-engine can't decide what to build, then search the build template manually.
     if not whatToBuild then
         if AntiSpamList[buildingType] then
             return false
         end
-        SPEW('*AIExecuteBuildStructure: c-function DecideWhatToBuild() failed! - AI-faction: index('..factionIndex..') '..AIFactionName..', Building Type: '..repr(buildingType)..', engineer-faction: '..repr(builder.factionCategory))
+        local FactionIndexToName = {[1] = 'UEF', [2] = 'AEON', [3] = 'CYBRAN', [4] = 'SERAPHIM', [5] = 'NOMADS', [6] = 'ARM', [7] = 'CORE' }
+        local AIFactionName = FactionIndexToName[factionIndex]
+        SPEW('*AIExecuteBuildStructure: We cant decide whatToBuild! AI-faction: '..AIFactionName..', Building Type: '..repr(buildingType)..', engineer-faction: '..repr(builder.factionCategory))
         -- Get the UnitId for the actual buildingType
-        if not buildingTemplate then
-            WARN('*AIExecuteBuildStructure: Function was called without a buildingTemplate!')
-        end
         local BuildUnitWithID
         for Key, Data in buildingTemplate do
             if Data[1] and Data[2] and Data[1] == buildingType then
@@ -82,7 +123,7 @@ function AIExecuteBuildStructure(aiBrain, builder, buildingType, closeToBuilder,
         else
             SPEW('*AIExecuteBuildStructure: Engineer with Techlevel ('..HasTech..') can build TECH'..NeedTech..' BuildUnitWithID: '..repr(BuildUnitWithID))
         end
-      
+
         HasFaction = builder.factionCategory
         NeedFaction = string.upper(__blueprints[string.lower(BuildUnitWithID)].General.FactionName)
         if HasFaction ~= NeedFaction then
@@ -91,7 +132,7 @@ function AIExecuteBuildStructure(aiBrain, builder, buildingType, closeToBuilder,
         else
             SPEW('*AIExecuteBuildStructure: AI-faction: '..AIFactionName..', Engineer with faction ('..HasFaction..') can build faction ('..NeedFaction..') - BuildUnitWithID: '..repr(BuildUnitWithID))
         end
-       
+
         local IsRestricted = import('/lua/game.lua').IsRestricted
         if IsRestricted(BuildUnitWithID, GetFocusArmy()) then
             WARN('*AIExecuteBuildStructure: Unit is Restricted!!! Building Type: '..repr(buildingType)..', faction: '..repr(builder.factionCategory)..' - Unit:'..BuildUnitWithID)
@@ -99,174 +140,53 @@ function AIExecuteBuildStructure(aiBrain, builder, buildingType, closeToBuilder,
             return false
         end
 
-        WARN('*AIExecuteBuildStructure: All checks passed, forcing enginner TECH'..HasTech..' '..HasFaction..' '..builder:GetBlueprint().BlueprintId..' to build TECH'..NeedTech..' '..buildingType..' '..BuildUnitWithID..'')
-        whatToBuild = BuildUnitWithID
-        --return false
-    else
-        -- Sometimes the AI is building a unit that is different from the buildingTemplate table. So we validate the unitID here.
-        -- Looks like it never occurred, or i missed the warntext. For now, we don't need it
-        for Key, Data in buildingTemplate do
-            if Data[1] and Data[2] and Data[1] == buildingType then
-                if whatToBuild ~= Data[2] then
-                    WARN('*AIExecuteBuildStructure: Missmatch whatToBuild: '..whatToBuild..' ~= buildingTemplate.Data[2]: '..repr(Data[2]))
-                    whatToBuild = Data[2]
-                end
-                break
-            end
-        end
+        WARN('*AIExecuteBuildStructure: DecideWhatToBuild call failed for Building Type: '..repr(buildingType)..', faction: '..repr(builder.factionCategory)..' - Unit:'..BuildUnitWithID)
+        return false
     end
     -- find a place to build it (ignore enemy locations if it's a resource)
     -- build near the base the engineer is part of, rather than the engineer location
     local relativeTo
     if closeToBuilder then
         relativeTo = builder:GetPosition()
-        --LOG('*AIExecuteBuildStructure: Searching for Buildplace near Engineer'..repr(relativeTo))
+    elseif builder.BuilderManagerData and builder.BuilderManagerData.EngineerManager then
+        relativeTo = builder.BuilderManagerData.EngineerManager:GetLocationCoords()
     else
-        if builder.BuilderManagerData and builder.BuilderManagerData.EngineerManager then
-            relativeTo = builder.BuilderManagerData.EngineerManager.Location
-            --LOG('*AIExecuteBuildStructure: Searching for Buildplace near BuilderManager ')
-        else
-            local startPosX, startPosZ = aiBrain:GetArmyStartPos()
-            relativeTo = {startPosX, 0, startPosZ}
-            --LOG('*AIExecuteBuildStructure: Searching for Buildplace near ArmyStartPos ')
-        end
+        local startPosX, startPosZ = aiBrain:GetArmyStartPos()
+        relativeTo = {startPosX, 0, startPosZ}
     end
     local location = false
-    local buildingTypeReplace
-    local whatToBuildReplace
-
-    -- if we wnat to build a factory use the Seraphim Awassa for a bigger build place
-    if buildingType == 'T1LandFactory' or buildingType == 'T1AirFactory' then
-        buildingTypeReplace = 'T4AirExperimental1'
-        whatToBuildReplace = 'xsa0402'
-    elseif buildingType == 'T1SeaFactory' then
-        buildingTypeReplace = 'T4SeaExperimental1'
-        whatToBuildReplace = 'ues0401'
-    end
-
     if IsResource(buildingType) then
-        
-        local constructionData = builder.PlatoonHandle.PlatoonData.Construction
-
-        --location = aiBrain:FindPlaceToBuild(buildingType, whatToBuild, baseTemplate, relative, closeToBuilder, 'Enemy', relativeTo[1], relativeTo[3], 5)
-        -- OK - Here is an important piece of code particularily for Engineers building Mass Extractors
-		-- Notice the final parameter ?  It's supposed to tell the command to ignore places with threat greater than that
-		-- If so -- it has no specific range or threat types associated with it - which means we have no idea what it's measuring
-		-- Most certainly it won't be related to any threat check we do elsewhere in our code - as far as I can tell.
-		-- The biggest result - ENGINEERS GO WANDERING INTO HARMS WAY FREQUENTLY -- I'm going to try various values
-		-- I am now passing along the engineers ThreatMax from his platoon (if it's there)
-        --location = aiBrain:FindPlaceToBuild( buildingType, whatToBuild, baseTemplate, relative, engineer, 'Enemy', SourcePosition[1], SourcePosition[3], constructionData.ThreatMax or 7.5)	
-    
-        local AIUtils = '/lua/ai/aiutilities.lua'
-
-        local testunit = 'ueb1102'  -- Hydrocarbon
-        local testtype = 'Hydrocarbon'
-        
-        if buildingType != 'T1HydroCarbon' then
-            testunit = 'ueb1103'    -- Extractor
-            testtype = 'Mass'
-        end
-
-        --LOG("*AI DEBUG: Data is " .. repr(testtype) .. " " .. repr(constructionData))
-		local markerlist = import(AIUtils).AIGetMarkerLocations(aiBrain, testtype)
-        --LOG("*AI DEBUG: BuilderManagers Location is " .. repr(builder.BuilderManagerData.LocationType))
-        local SourcePosition = aiBrain.BuilderManagers[builder.BuilderManagerData.LocationType].Position or false
-        
-		local mlist = {}
-		local counter = 0
-        
-        local mindistance = constructionData.MinRange or 0
-        local maxdistance = constructionData.MaxRange or 500
-        local tMin = constructionData.ThreatMin or 0
-        local tMax = constructionData.ThreatMax or 20
-        local tRings = constructionData.ThreatRings or 0
-        local tType = constructionData.ThreatType or 'AntiSurface'
-        local maxlist = constructionData.MaxChoices or 1
-
-        --LOG("SourcePosition is " .. repr(SourcePosition))
-        SWARMSORT( markerlist, function (a,b) return VDist3( a.Position, SourcePosition ) < VDist3( b.Position, SourcePosition ) end )
-
-		local CanBuildStructureAt = moho.aibrain_methods.CanBuildStructureAt    
-        --LOG("*AI DEBUG: Markerlist is " .. repr(markerlist))
-    
-		for _,v in markerlist do
-            
-            if VDist3( v.Position, SourcePosition ) >= mindistance then
-            
-                if VDist3( v.Position, SourcePosition ) <= maxdistance then
-                
-                    if CanBuildStructureAt( aiBrain, testunit, v.Position ) then
-                        mlist[counter] = v
-                        counter = counter + 1
-                    end
-                    
-                end
-                
-            end
-            
-		end
-		
-		if counter > 0 then
-            
-			local markerTable = import(AIUtils).AISortMarkersFromLastPos(aiBrain, mlist, maxlist, tMin, tMax, tRings, tType, SourcePosition)
-
-			if markerTable then
-            
-                --LOG("*AI DEBUG "..aiBrain.Nickname.." finds "..table.getn(markerTable).." "..repr(buildingType).." markers")
-
-                -- pick one of the points randomly
-				location = SWARMCOPY( markerTable[ Random(1,SWARMGETN(markerTable)) ] )
-                --LOG("*AI DEBUG at marker is " .. aiBrain:GetThreatAtPosition(location, tRings, true, 'AntiSurface'))
-            end
-		end	
-
-        -- if no result or out of range - then abort
-		if not location or VDist3( SourcePosition, location ) > constructionData.MaxRange then
-        
-			builder.PlatoonHandle:SetAIPlan('ReturnToBaseAI', aiBrain)
-            
-            location = false
-            
-		end
-
-        if location then
- 	
-            relativeLoc = { location[1], 0, location[3] }
-
+        if buildingType != 'T1HydroCarbon' and constructionData.MexThreat then
+            --LOG('MexThreat Builder Type')
+            local threatMin = -9999
+            local threatMax = 9999
+            local threatRings = 0
+            local threatType = 'AntiSurface'
+            local markerTable = SwarmUtils.AIGetSortedMassLocationsThreatSwarm(aiBrain, constructionData.MinDistance, constructionData.MaxDistance, constructionData.ThreatMin, constructionData.ThreatMax, constructionData.ThreatRings, constructionData.ThreatType, relativeTo)
             relative = false
-        
-            location = {relativeLoc[1],relativeLoc[3]}
-        
-            if constructionData.RepeatBuild then
-            
-                -- loop builders have minimum range to start with
-                -- reduced after first build
-                constructionData.MinRange = 0
+            for _,v in markerTable do
+                if VDist3( v.Position, relativeTo ) <= constructionData.MaxDistance and VDist3( v.Position, relativeTo ) >= constructionData.MinDistance then
+                    if CanBuildStructureAt(aiBrain, 'ueb1103', v.Position) then
+                        --LOG('MassPoint found for engineer')
+                        location = SWARMCOPY(markerTable[Random(1,SWARMGETN(markerTable))])
+                        location = {location.Position[1], location.Position[3], location.Position[2]}
+                        --LOG('Location is '..repr(location))
+                        break
+                    end
+                end
             end
-            
-		end 
-        --location = aiBrain:FindPlaceToBuild(buildingType, whatToBuild, baseTemplate, relative, closeToBuilder, 'Enemy', relativeTo[1], relativeTo[3], 5)
-    else
-        location = aiBrain:FindPlaceToBuild(buildingTypeReplace or buildingType, whatToBuildReplace or whatToBuild, baseTemplate, relative, closeToBuilder, nil, relativeTo[1], relativeTo[3])
-    end
-
-    -- if it's a reference, look around with offsets
-    if not location and reference then
-        for num,offsetCheck in RandomIter({1,2,3,4,5,6,7,8}) do
-            location = aiBrain:FindPlaceToBuild(buildingTypeReplace or buildingType, whatToBuildReplace or whatToBuild, BaseTmplFile['MovedTemplates'..offsetCheck][factionIndex], relative, closeToBuilder, nil, relativeTo[1], relativeTo[3])
-            if location then
-                break
+            if not location and EntityCategoryContains(categories.COMMAND,builder) then
+                --LOG('Location Returned by marker table is '..repr(location))
+                return false
             end
+        else
+            location = aiBrain:FindPlaceToBuild(buildingType, whatToBuild, baseTemplate, relative, closeToBuilder, 'Enemy', relativeTo[1], relativeTo[3], 5)
         end
-    end
-
-    -- fallback in case we can't find a place to build with experimental template
-    if not location and not IsResource(buildingType) then
+    else
         location = aiBrain:FindPlaceToBuild(buildingType, whatToBuild, baseTemplate, relative, closeToBuilder, nil, relativeTo[1], relativeTo[3])
     end
-
-    -- fallback in case we can't find a place to build with experimental template
-    if not location and not IsResource(buildingType) then
+    -- if it's a reference, look around with offsets
+    if not location and reference then
         for num,offsetCheck in RandomIter({1,2,3,4,5,6,7,8}) do
             location = aiBrain:FindPlaceToBuild(buildingType, whatToBuild, BaseTmplFile['MovedTemplates'..offsetCheck][factionIndex], relative, closeToBuilder, nil, relativeTo[1], relativeTo[3])
             if location then
@@ -274,33 +194,30 @@ function AIExecuteBuildStructure(aiBrain, builder, buildingType, closeToBuilder,
             end
         end
     end
-
     -- if we have no place to build, then maybe we have a modded/new buildingType. Lets try 'T1LandFactory' as dummy and search for a place to build near base
     if not location and not IsResource(buildingType) and builder.BuilderManagerData and builder.BuilderManagerData.EngineerManager then
         --LOG('*AIExecuteBuildStructure: Find no place to Build! - buildingType '..repr(buildingType)..' - ('..builder.factionCategory..') Trying again with T1LandFactory and RandomIter. Searching near base...')
-        relativeTo = builder.BuilderManagerData.EngineerManager.Location
+        relativeTo = builder.BuilderManagerData.EngineerManager:GetLocationCoords()
         for num,offsetCheck in RandomIter({1,2,3,4,5,6,7,8}) do
-            location = aiBrain:FindPlaceToBuild('T1LandFactory', 'ueb0101', BaseTmplFile['MovedTemplates'..offsetCheck][factionIndex], relative, closeToBuilder, nil, relativeTo[1], relativeTo[3])
+            location = aiBrain:FindPlaceToBuild('T1LandFactory', whatToBuild, BaseTmplFile['MovedTemplates'..offsetCheck][factionIndex], relative, closeToBuilder, nil, relativeTo[1], relativeTo[3])
             if location then
                 --LOG('*AIExecuteBuildStructure: Yes! Found a place near base to Build! - buildingType '..repr(buildingType))
                 break
             end
         end
     end
-
     -- if we still have no place to build, then maybe we have really no place near the base to build. Lets search near engineer position
     if not location and not IsResource(buildingType) then
         --LOG('*AIExecuteBuildStructure: Find still no place to Build! - buildingType '..repr(buildingType)..' - ('..builder.factionCategory..') Trying again with T1LandFactory and RandomIter. Searching near Engineer...')
         relativeTo = builder:GetPosition()
         for num,offsetCheck in RandomIter({1,2,3,4,5,6,7,8}) do
-            location = aiBrain:FindPlaceToBuild('T1LandFactory', 'ueb0101', BaseTmplFile['MovedTemplates'..offsetCheck][factionIndex], relative, closeToBuilder, nil, relativeTo[1], relativeTo[3])
+            location = aiBrain:FindPlaceToBuild('T1LandFactory', whatToBuild, BaseTmplFile['MovedTemplates'..offsetCheck][factionIndex], relative, closeToBuilder, nil, relativeTo[1], relativeTo[3])
             if location then
                 --LOG('*AIExecuteBuildStructure: Yes! Found a place near engineer to Build! - buildingType '..repr(buildingType))
                 break
             end
         end
     end
-
     -- if we have a location, build!
     if location then
         local relativeLoc = BuildToNormalLocation(location)
@@ -308,11 +225,160 @@ function AIExecuteBuildStructure(aiBrain, builder, buildingType, closeToBuilder,
             relativeLoc = {relativeLoc[1] + relativeTo[1], relativeLoc[2] + relativeTo[2], relativeLoc[3] + relativeTo[3]}
         end
         -- put in build queue.. but will be removed afterwards... just so that it can iteratively find new spots to build
-        --LOG('*AIExecuteBuildStructure: AI-faction: index('..factionIndex..') '..repr(AIFactionName)..', Building Type: '..repr(buildingType)..', engineer-faction: '..repr(builder.factionCategory))
         AddToBuildQueue(aiBrain, builder, whatToBuild, NormalToBuildLocation(relativeLoc), false)
         return true
     end
     -- At this point we're out of options, so move on to the next thing
-    --WARN('*AIExecuteBuildStructure: c-function FindPlaceToBuild() failed! AI-faction: index('..factionIndex..') '..repr(AIFactionName)..', Building Type: '..repr(buildingType)..', engineer-faction: '..repr(builder.factionCategory))
+    return false
+end
+
+-- AI-Swarm: Hook for Replace factory buildtemplate to find a better buildplace not too close to the center of the base
+-- Here Lies YeeOldeSwarmAIExecuteBuildStructure May It Rest In Peace!
+
+function AIBuildAdjacencyPrioritySwarm(aiBrain, builder, buildingType , closeToBuilder, relative, buildingTemplate, baseTemplate, reference, cons)
+    --LOG('beginning adjacencypriority')
+    local whatToBuild = aiBrain:DecideWhatToBuild(builder, buildingType, buildingTemplate)
+    local VDist3Sq = VDist3Sq
+    local Centered=cons.Centered
+    local function normalposition(vec)
+        return {vec[1],GetSurfaceHeight(vec[1],vec[2]),vec[2]}
+    end
+    local function heightbuildpos(vec)
+        return {vec[1],vec[2],GetSurfaceHeight(vec[1],vec[2])}
+    end
+    if whatToBuild then
+        local unitSize = aiBrain:GetUnitBlueprint(whatToBuild).Physics
+        local template = {}
+        SWARMINSERT(template, {})
+        SWARMINSERT(template[1], { buildingType })
+        --LOG('reference contains '..repr(table.getn(reference))..' items')
+        for _,x in reference do
+            for k,v in x do
+                if not Centered then
+                    if not v.Dead then
+                        local targetSize = v:GetBlueprint().Physics
+                        local targetPos = v:GetPosition()
+                        local differenceX=SWARMABS(targetSize.SkirtSizeX-unitSize.SkirtSizeX)
+                        local offsetX=SWARMFLOOR(differenceX/2)
+                        local differenceZ=SWARMABS(targetSize.SkirtSizeZ-unitSize.SkirtSizeZ)
+                        local offsetZ=SWARMFLOOR(differenceZ/2)
+                        local offsetfactory=0
+                        if EntityCategoryContains(categories.FACTORY, v) and (buildingType=='T1LandFactory' or buildingType=='T2SupportLandFactory' or buildingType=='T3SupportLandFactory') then
+                            offsetfactory=2
+                        end
+                        -- Top/bottom of unit
+                        for i=-offsetX,offsetX do
+                            local testPos = { targetPos[1] + (i * 1), targetPos[3]-targetSize.SkirtSizeZ/2-(unitSize.SkirtSizeZ/2)-offsetfactory, 0 }
+                            local testPos2 = { targetPos[1] + (i * 1), targetPos[3]+targetSize.SkirtSizeZ/2+(unitSize.SkirtSizeZ/2)+offsetfactory, 0 }
+                            -- check if the buildplace is to close to the border or inside buildable area
+                            if testPos[1] > 8 and testPos[1] < ScenarioInfo.size[1] - 8 and testPos[2] > 8 and testPos[2] < ScenarioInfo.size[2] - 8 then
+                                --ForkThread(SWARMtemporaryrenderbuildsquare,testPos,unitSize.SkirtSizeX,unitSize.SkirtSizeZ)
+                                --table.insert(template[1], testPos)
+                                if CanBuildStructureAt(aiBrain, whatToBuild, normalposition(testPos)) then
+                                    if cons.AvoidCategory and GetNumUnitsAroundPoint(aiBrain, cons.AvoidCategory, normalposition(testPos), cons.maxRadius, 'Ally')<cons.maxUnits then
+                                        AddToBuildQueue(aiBrain, builder, whatToBuild, heightbuildpos(testPos), false)
+                                        return true
+                                    elseif not cons.AvoidCategory then
+                                        AddToBuildQueue(aiBrain, builder, whatToBuild, heightbuildpos(testPos), false)
+                                        return true
+                                    end
+                                end
+                            end
+                            if testPos2[1] > 8 and testPos2[1] < ScenarioInfo.size[1] - 8 and testPos2[2] > 8 and testPos2[2] < ScenarioInfo.size[2] - 8 then
+                                --ForkThread(SWARMtemporaryrenderbuildsquare,testPos2,unitSize.SkirtSizeX,unitSize.SkirtSizeZ)
+                                --table.insert(template[1], testPos2)
+                                if CanBuildStructureAt(aiBrain, whatToBuild, normalposition(testPos2)) then
+                                    if cons.AvoidCategory and GetNumUnitsAroundPoint(aiBrain, cons.AvoidCategory, normalposition(testPos2), cons.maxRadius, 'Ally')<cons.maxUnits then
+                                        AddToBuildQueue(aiBrain, builder, whatToBuild, heightbuildpos(testPos2), false)
+                                        return true
+                                    elseif not cons.AvoidCategory then
+                                        AddToBuildQueue(aiBrain, builder, whatToBuild, heightbuildpos(testPos2), false)
+                                        return true
+                                    end
+                                end
+                            end
+                        end
+                        -- Sides of unit
+                        for i=-offsetZ,offsetZ do
+                            local testPos = { targetPos[1]-targetSize.SkirtSizeX/2-(unitSize.SkirtSizeX/2)-offsetfactory, targetPos[3] + (i * 1), 0 }
+                            local testPos2 = { targetPos[1]+targetSize.SkirtSizeX/2+(unitSize.SkirtSizeX/2)+offsetfactory, targetPos[3] + (i * 1), 0 }
+                            if testPos[1] > 8 and testPos[1] < ScenarioInfo.size[1] - 8 and testPos[2] > 8 and testPos[2] < ScenarioInfo.size[2] - 8 then
+                                --ForkThread(SWARMtemporaryrenderbuildsquare,testPos,unitSize.SkirtSizeX,unitSize.SkirtSizeZ)
+                                --table.insert(template[1], testPos)
+                                if CanBuildStructureAt(aiBrain, whatToBuild, normalposition(testPos)) then
+                                    if cons.AvoidCategory and GetNumUnitsAroundPoint(aiBrain, cons.AvoidCategory, normalposition(testPos), cons.maxRadius, 'Ally')<cons.maxUnits then
+                                        AddToBuildQueue(aiBrain, builder, whatToBuild, heightbuildpos(testPos), false)
+                                        return true
+                                    elseif not cons.AvoidCategory then
+                                        AddToBuildQueue(aiBrain, builder, whatToBuild, heightbuildpos(testPos), false)
+                                        return true
+                                    end
+                                end
+                            end
+                            if testPos2[1] > 8 and testPos2[1] < ScenarioInfo.size[1] - 8 and testPos2[2] > 8 and testPos2[2] < ScenarioInfo.size[2] - 8 then
+                                --ForkThread(SWARMtemporaryrenderbuildsquare,testPos2,unitSize.SkirtSizeX,unitSize.SkirtSizeZ)
+                                --table.insert(template[1], testPos2)
+                                if CanBuildStructureAt(aiBrain, whatToBuild, normalposition(testPos2)) then
+                                    if cons.AvoidCategory and GetNumUnitsAroundPoint(aiBrain, cons.AvoidCategory, normalposition(testPos2), cons.maxRadius, 'Ally')<cons.maxUnits then
+                                        AddToBuildQueue(aiBrain, builder, whatToBuild, heightbuildpos(testPos2), false)
+                                        return true
+                                    elseif not cons.AvoidCategory then
+                                        AddToBuildQueue(aiBrain, builder, whatToBuild, heightbuildpos(testPos2), false)
+                                        return true
+                                    end
+                                end
+                            end
+                        end
+                    end
+                else
+                    if not v.Dead then
+                        local targetSize = v:GetBlueprint().Physics
+                        local targetPos = v:GetPosition()
+                        targetPos[1] = targetPos[1]-- - (targetSize.SkirtSizeX/2)
+                        targetPos[3] = targetPos[3]-- - (targetSize.SkirtSizeZ/2)
+                        -- Top/bottom of unit
+                        local testPos = { targetPos[1], targetPos[3]-targetSize.SkirtSizeZ/2-(unitSize.SkirtSizeZ/2), 0 }
+                        local testPos2 = { targetPos[1], targetPos[3]+targetSize.SkirtSizeZ/2+(unitSize.SkirtSizeZ/2), 0 }
+                        -- check if the buildplace is to close to the border or inside buildable area
+                        if testPos[1] > 8 and testPos[1] < ScenarioInfo.size[1] - 8 and testPos[2] > 8 and testPos[2] < ScenarioInfo.size[2] - 8 then
+                            SWARMINSERT(template[1], testPos)
+                        end
+                        if testPos2[1] > 8 and testPos2[1] < ScenarioInfo.size[1] - 8 and testPos2[2] > 8 and testPos2[2] < ScenarioInfo.size[2] - 8 then
+                            SWARMINSERT(template[1], testPos2)
+                        end
+                        -- Sides of unit
+                        local testPos = { targetPos[1]+targetSize.SkirtSizeX/2 + (unitSize.SkirtSizeX/2), targetPos[3], 0 }
+                        local testPos2 = { targetPos[1]-targetSize.SkirtSizeX/2-(unitSize.SkirtSizeX/2), targetPos[3], 0 }
+                        if testPos[1] > 8 and testPos[1] < ScenarioInfo.size[1] - 8 and testPos[2] > 8 and testPos[2] < ScenarioInfo.size[2] - 8 then
+                            SWARMINSERT(template[1], testPos)
+                        end
+                        if testPos2[1] > 8 and testPos2[1] < ScenarioInfo.size[1] - 8 and testPos2[2] > 8 and testPos2[2] < ScenarioInfo.size[2] - 8 then
+                            SWARMINSERT(template[1], testPos2)
+                        end
+                    end
+                end
+            end
+            -- build near the base the engineer is part of, rather than the engineer location
+            local baseLocation = {nil, nil, nil}
+            if builder.BuildManagerData and builder.BuildManagerData.EngineerManager then
+                baseLocation = builder.BuildManagerdata.EngineerManager.Location
+            end
+            --ForkThread(SWARMrenderReference,template[1],unitSize.SkirtSizeX,unitSize.SkirtSizeZ)
+            local location = aiBrain:FindPlaceToBuild(buildingType, whatToBuild, template, false, builder, baseLocation[1], baseLocation[3])
+            if location then
+                if location[1] > 8 and location[1] < ScenarioInfo.size[1] - 8 and location[2] > 8 and location[2] < ScenarioInfo.size[2] - 8 then
+                    --LOG('Build '..repr(buildingType)..' at adjacency: '..repr(location) )
+                    AddToBuildQueue(aiBrain, builder, whatToBuild, location, false)
+                    return true
+                end
+            end
+        end
+        -- Build in a regular spot if adjacency not found
+        if cons.AdjRequired then
+            return false
+        else
+            return AIExecuteBuildStructure(aiBrain, builder, buildingType, builder, true,  buildingTemplate, baseTemplate)
+        end
+    end
     return false
 end

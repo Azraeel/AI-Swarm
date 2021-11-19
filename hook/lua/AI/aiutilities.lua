@@ -17,6 +17,22 @@ local GetNumUnitsAroundPoint = moho.aibrain_methods.GetNumUnitsAroundPoint
 local GetUnitsAroundPoint = moho.aibrain_methods.GetUnitsAroundPoint
 local GetAIBrain = moho.unit_methods.GetAIBrain
 
+function FindUnclutteredAreaSwarm(aiBrain, category, location, radius, maxUnits, maxRadius, avoidCat)
+    local units = aiBrain:GetUnitsAroundPoint(category, location, radius, 'Ally')
+    local index = aiBrain:GetArmyIndex()
+    local retUnits = {}
+    for _, v in units do
+        if not v.Dead and v:GetAIBrain():GetArmyIndex() == index then
+            local nearby = aiBrain:GetNumUnitsAroundPoint(avoidCat, v:GetPosition(), maxRadius, 'Ally')
+            if nearby < maxUnits then
+                SWARMINSERT(retUnits, v)
+            end
+        end
+    end
+
+    return retUnits
+end 
+
 -- AI-Swarm: Helper function for targeting
 function ValidateLayerSwarm(UnitPos,MovementLayer)
     -- Air can go everywhere

@@ -535,7 +535,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Scout Formers',
 -- Then we need to allow them to be able to see each others situation and give support not only in merging and retreating behaviors but also actually supporting each other in pushes.
 -- This new data has given me a lot of ideas that I didnt have in the pass. Next few months will see Swarm really step up his game hopefully. 
 -- Date noted - September 4th, 2021. 
--- P.S (I know this is a wall of text but for anyone reading in the future, this concept is crucial to Swarm's Ability to not only eco but hold an aggressive Opponent like RNG or DalliDilli)
+-- P.S (I know this is a wall of text but for anyone reading in the future, this concept is crucial to Swarm's Ability to not only eco but hold an aggressive Opponent like SWARM or DalliDilli)
 
 BuilderGroup {
     BuilderGroupName = 'AISwarm Platoon Builder',

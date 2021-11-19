@@ -1,12 +1,14 @@
 WARN('['..string.gsub(debug.getinfo(1).source, ".*\\(.*.lua)", "%1")..', line:'..debug.getinfo(1).currentline..'] * AI-Swarm: offset platoon.lua' )
 
 local SwarmUtils = import('/mods/AI-Swarm/lua/AI/Swarmutilities.lua')
+local MABC = import('/lua/editor/MarkerBuildConditions.lua')
 local HERODEBUGSwarm = false
 local CHAMPIONDEBUGswarm = false 
 local MarkerSwitchDist = 20
 local MarkerSwitchDistEXP = 40
 
 local PlatoonExists = moho.aibrain_methods.PlatoonExists
+local GetUnitsAroundPoint = moho.aibrain_methods.GetUnitsAroundPoint
 local GetPlatoonUnits = moho.platoon_methods.GetPlatoonUnits
 local AssignUnitsToPlatoon = moho.aibrain_methods.AssignUnitsToPlatoon
 local GetPlatoonPosition = moho.platoon_methods.GetPlatoonPosition
@@ -44,55 +46,6 @@ local KillThread = KillThread
 
 SwarmPlatoonClass = Platoon
 Platoon = Class(SwarmPlatoonClass) {
-
-    PlatoonDisband = function(self)
-        local aiBrain = self:GetBrain()
-        if not aiBrain.Swarm then
-            return SwarmPlatoonClass.PlatoonDisband(self)
-        end
-        if self.PlatoonData.Construction.RepeatBuild then
-            
-            local UCBC = import('/lua/editor/UnitCountBuildConditions.lua')
-
-            if UCBC.HaveUnitRatioVersusCapSwarm(aiBrain, 0.10, '<', categories.STRUCTURE * categories.MASSEXTRACTION) then
-
-                if aiBrain:GetEconomyStoredRatio('ENERGY') > 0.50 then
-                    local MABC = import('/lua/editor/MarkerBuildConditions.lua')
-                    if MABC.CanBuildOnMassSwarm(aiBrain, 'MAIN', 1000, -500, 2, 1, 'AntiSurface', 1) then 
-                        self:SetAIPlan('EngineerBuildAI')
-                        return
-                    end
-                end
-
-            end
-    
-            self:AggressiveMoveToLocation(aiBrain.BuilderManagers['MAIN'].Position)
-
-            SWARMWAIT(10)
-
-            local count = 1
-            local eng = self:GetPlatoonUnits()[1]
-
-            while eng and not eng.Dead and not (eng:IsIdleState()) and aiBrain:PlatoonExists(self) and count < 120 do
-                SWARMWAIT(10)
-                count = count + 1
-                if aiBrain:GetEconomyStoredRatio('ENERGY') > 0.50 then
-                    local MABC = import('/lua/editor/MarkerBuildConditions.lua')
-                    if MABC.CanBuildOnMassSwarm(aiBrain, 'MAIN', 1000, -500, 2, 1, 'AntiSurface', 1) then 
-                        --LOG("Ooga Booga RepeatBuild is " .. repr(self.BuilderName) .. " " .. repr(self.PlatoonData.Construction.RepeatBuild))
-                        self:SetAIPlan('EngineerBuildAI')
-                        return
-                    end
-                end
-            end
-
-            self.PlatoonData.Construction.RepeatBuild = nil
-
-        end
-        --LOG("Ooga Booga RepeatBuild is " .. repr(self.BuilderName) .. " " .. repr(self.PlatoonData.Construction.RepeatBuild))
-        SwarmPlatoonClass.PlatoonDisband(self)
-        
-    end, 
 
     BaseManagersDistressAI  = function(self)
         -- Only use this with AI-Swarm
@@ -2210,6 +2163,703 @@ Platoon = Class(SwarmPlatoonClass) {
         self:PlatoonDisband()
     end,
 
+    -------------------------------------------------------
+    --   Function: EngineerBuildAISWARM
+    --   Args:
+    --       self - the single-engineer platoon to run the AI on
+    --   Description:
+    --       a single-unit platoon made up of an engineer, this AI will determine
+    --       what needs to be built (based on platoon data set by the calling
+    --       abstraction, and then issue the build commands to the engineer
+    --   Returns:
+    --       nil (tail calls into a behavior function)
+    -------------------------------------------------------
+    EngineerBuildAISWARM = function(self)
+        local aiBrain = self:GetBrain()
+        local platoonUnits = GetPlatoonUnits(self)
+        local armyIndex = aiBrain:GetArmyIndex()
+        --local x,z = aiBrain:GetArmyStartPos()
+        local cons = self.PlatoonData.Construction
+        local buildingTmpl, buildingTmplFile, baseTmpl, baseTmplFile, baseTmplDefault
+
+        local eng
+        for k, v in platoonUnits do
+            if not v.Dead and EntityCategoryContains(categories.ENGINEER, v) then --DUNCAN - was construction
+                IssueClearCommands({v})
+                if not eng then
+                    eng = v
+                else
+                    IssueGuard({v}, eng)
+                end
+            end
+        end
+
+        if not eng or eng.Dead then
+            SWARMWAIT(1)
+            self:PlatoonDisband()
+            return
+        end
+        
+        --DUNCAN - added
+        if eng:IsUnitState('Building') or eng:IsUnitState('Upgrading') or eng:IsUnitState("Enhancing") then
+           return
+        end
+
+        local FactionToIndex  = { UEF = 1, AEON = 2, CYBRAN = 3, SERAPHIM = 4, NOMADS = 5}
+        local factionIndex = cons.FactionIndex or FactionToIndex[eng.factionCategory]
+
+        buildingTmplFile = import(cons.BuildingTemplateFile or '/lua/BuildingTemplates.lua')
+        baseTmplFile = import(cons.BaseTemplateFile or '/lua/BaseTemplates.lua')
+        baseTmplDefault = import('/lua/BaseTemplates.lua')
+        buildingTmpl = buildingTmplFile[(cons.BuildingTemplate or 'BuildingTemplates')][factionIndex]
+        baseTmpl = baseTmplFile[(cons.BaseTemplate or 'BaseTemplates')][factionIndex]
+
+        --LOG('*AI DEBUG: EngineerBuild AI ' .. eng.Sync.id)
+
+        if self.PlatoonData.NeedGuard then
+            eng.NeedGuard = true
+        end
+
+        -------- CHOOSE APPROPRIATE BUILD FUNCTION AND SETUP BUILD VARIABLES --------
+        local reference = false
+        local refName = false
+        local buildFunction
+        local closeToBuilder
+        local relative
+        local baseTmplList = {}
+
+        -- if we have nothing to build, disband!
+        if not cons.BuildStructures then
+            SWARMWAIT(1)
+            self:PlatoonDisband()
+            return
+        end
+        if cons.NearUnitCategory then
+            self:SetPrioritizedTargetList('support', {ParseEntityCategory(cons.NearUnitCategory)})
+            local unitNearBy = self:FindPrioritizedUnit('support', 'Ally', false, GetPlatoonPosition(self), cons.NearUnitRadius or 50)
+            --LOG("ENGINEER BUILD: " .. cons.BuildStructures[1] .." attempt near: ", cons.NearUnitCategory)
+            if unitNearBy then
+                reference = table.copy(unitNearBy:GetPosition())
+                -- get commander home position
+                --LOG("ENGINEER BUILD: " .. cons.BuildStructures[1] .." Near unit: ", cons.NearUnitCategory)
+                if cons.NearUnitCategory == 'COMMAND' and unitNearBy.CDRHome then
+                    reference = unitNearBy.CDRHome
+                end
+            else
+                reference = table.copy(eng:GetPosition())
+            end
+            relative = false
+            buildFunction = AIBuildStructures.AIExecuteBuildStructureSwarm
+            SWARMINSERT(baseTmplList, AIBuildStructures.AIBuildBaseTemplateFromLocation(baseTmpl, reference))
+        elseif cons.OrderedTemplate then
+            local relativeTo = table.copy(eng:GetPosition())
+            --LOG('relativeTo is'..repr(relativeTo))
+            relative = true
+            local tmpReference = aiBrain:FindPlaceToBuild('T2EnergyProduction', 'uab1201', baseTmplDefault['BaseTemplates'][factionIndex], relative, eng, nil, relativeTo[1], relativeTo[3])
+            if tmpReference then
+                reference = eng:CalculateWorldPositionFromRelative(tmpReference)
+            else
+                return
+            end
+            --LOG('reference is '..repr(reference))
+            --LOG('World Pos '..repr(tmpReference))
+            buildFunction = AIBuildStructures.AIBuildBaseTemplateOrderedSwarm
+            SWARMINSERT(baseTmplList, AIBuildStructures.AIBuildBaseTemplateFromLocation(baseTmpl, reference))
+            --LOG('baseTmpList is :'..repr(baseTmplList))
+        elseif cons.NearPerimeterPoints then
+            --LOG('NearPerimeterPoints')
+            reference = RUtils.GetBasePerimeterPoints(aiBrain, cons.Location or 'MAIN', cons.Radius or 60, cons.BasePerimeterOrientation or 'FRONT', cons.BasePerimeterSelection or false)
+            --LOG('referece is '..repr(reference))
+            relative = false
+            baseTmpl = baseTmplFile['ExpansionBaseTemplates'][factionIndex]
+            for k,v in reference do
+                SWARMINSERT(baseTmplList, AIBuildStructures.AIBuildBaseTemplateFromLocation(baseTmpl, v))
+            end
+            buildFunction = AIBuildStructures.AIBuildBaseTemplateOrderedSwarm
+        elseif cons.NearBasePatrolPoints then
+            relative = false
+            reference = AIUtils.GetBasePatrolPoints(aiBrain, cons.Location or 'MAIN', cons.Radius or 100)
+            baseTmpl = baseTmplFile['ExpansionBaseTemplates'][factionIndex]
+            for k,v in reference do
+                SWARMINSERT(baseTmplList, AIBuildStructures.AIBuildBaseTemplateFromLocation(baseTmpl, v))
+            end
+            -- Must use BuildBaseOrdered to start at the marker; otherwise it builds closest to the eng
+            buildFunction = AIBuildStructures.AIBuildBaseTemplateOrderedSwarm
+        elseif cons.FireBase and cons.FireBaseRange then
+            --DUNCAN - pulled out and uses alt finder
+            reference, refName = AIUtils.AIFindFirebaseLocation(aiBrain, cons.LocationType, cons.FireBaseRange, cons.NearMarkerType,
+                                                cons.ThreatMin, cons.ThreatMax, cons.ThreatRings, cons.ThreatType,
+                                                cons.MarkerUnitCount, cons.MarkerUnitCategory, cons.MarkerRadius)
+            if not reference or not refName then
+                self:PlatoonDisband()
+                return
+            end
+
+        elseif cons.NearMarkerType and cons.ExpansionBase then
+            local pos = aiBrain:PBMGetLocationCoords(cons.LocationType) or cons.Position or GetPlatoonPosition(self)
+            local radius = cons.LocationRadius or aiBrain:PBMGetLocationRadius(cons.LocationType) or 100
+
+            if cons.AggressiveExpansion then
+                --DUNCAN - pulled out and uses alt finder
+                --LOG('Aggressive Expansion Triggered')
+                reference, refName = AIUtils.AIFindAggressiveBaseLocation(aiBrain, cons.LocationType, cons.EnemyRange,
+                                                    cons.ThreatMin, cons.ThreatMax, cons.ThreatRings, cons.ThreatType)
+                if not reference or not refName then
+                    --LOG('No reference or refName from firebaselocaiton finder')
+                    self:PlatoonDisband()
+                    return
+                end
+            elseif cons.NearMarkerType == 'Expansion Area' then
+                reference, refName = AIUtils.AIFindExpansionAreaNeedsEngineer(aiBrain, cons.LocationType,
+                        (cons.LocationRadius or 100), cons.ThreatMin, cons.ThreatMax, cons.ThreatRings, cons.ThreatType)
+                -- didn't find a location to build at
+                if not reference or not refName then
+                    self:PlatoonDisband()
+                    return
+                end
+            elseif cons.NearMarkerType == 'Naval Area' then
+                reference, refName = AIUtils.AIFindNavalAreaNeedsEngineer(aiBrain, cons.LocationType,
+                        (cons.LocationRadius or 100), cons.ThreatMin, cons.ThreatMax, cons.ThreatRings, cons.ThreatType)
+                -- didn't find a location to build at
+                if not reference or not refName then
+                    --LOG('No reference or refname for Naval Area Expansion')
+                    self:PlatoonDisband()
+                    return
+                end
+            elseif cons.NearMarkerType == 'Unmarked Expansion' then
+                reference, refName = AIUtils.AIFindUnmarkedExpansionMarkerNeedsEngineer(aiBrain, cons.LocationType,
+                        (cons.LocationRadius or 100), cons.ThreatMin, cons.ThreatMax, cons.ThreatRings, cons.ThreatType)
+                -- didn't find a location to build at
+                --LOG('refName is : '..refName)
+                if not reference or not refName then
+                    --LOG('Unmarked Expansion Builder reference or refName missing')
+                    self:PlatoonDisband()
+                    return
+                end
+            elseif cons.NearMarkerType == 'Large Expansion Area' then
+                reference, refName = AIUtils.AIFindLargeExpansionMarkerNeedsEngineer(aiBrain, cons.LocationType,
+                        (cons.LocationRadius or 100), cons.ThreatMin, cons.ThreatMax, cons.ThreatRings, cons.ThreatType)
+                -- didn't find a location to build at
+                --LOG('refName is : '..refName)
+                if not reference or not refName then
+                    --LOG('Large Expansion Builder reference or refName missing')
+                    self:PlatoonDisband()
+                    return
+                end
+            else
+                --DUNCAN - use my alternative expansion finder on large maps below a certain time
+                local mapSizeX, mapSizeZ = GetMapSize()
+                if GetGameTimeSeconds() <= 780 and mapSizeX > 512 and mapSizeZ > 512 then
+                    reference, refName = AIUtils.AIFindFurthestStartLocationNeedsEngineer(aiBrain, cons.LocationType,
+                        (cons.LocationRadius or 100), cons.ThreatMin, cons.ThreatMax, cons.ThreatRings, cons.ThreatType)
+                    if not reference or not refName then
+                        reference, refName = AIUtils.AIFindStartLocationNeedsEngineer(aiBrain, cons.LocationType,
+                            (cons.LocationRadius or 100), cons.ThreatMin, cons.ThreatMax, cons.ThreatRings, cons.ThreatType)
+                    end
+                else
+                    reference, refName = AIUtils.AIFindStartLocationNeedsEngineer(aiBrain, cons.LocationType,
+                        (cons.LocationRadius or 100), cons.ThreatMin, cons.ThreatMax, cons.ThreatRings, cons.ThreatType)
+                end
+                -- didn't find a location to build at
+                if not reference or not refName then
+                    self:PlatoonDisband()
+                    return
+                end
+            end
+
+            -- If moving far from base, tell the assisting platoons to not go with
+            if cons.FireBase or cons.ExpansionBase then
+                local guards = eng:GetGuards()
+                for k,v in guards do
+                    if not v.Dead and v.PlatoonHandle then
+                        v.PlatoonHandle:PlatoonDisband()
+                    end
+                end
+            end
+
+            if not cons.BaseTemplate and (cons.NearMarkerType == 'Naval Area' or cons.NearMarkerType == 'Defensive Point' or cons.NearMarkerType == 'Expansion Area') then
+                baseTmpl = baseTmplFile['ExpansionBaseTemplates'][factionIndex]
+            end
+            if cons.ExpansionBase and refName then
+                --LOG('New Expansion Base being created')
+                AIBuildStructures.AINewExpansionBase(aiBrain, refName, reference, eng, cons)
+            end
+            relative = false
+            SWARMINSERT(baseTmplList, AIBuildStructures.AIBuildBaseTemplateFromLocation(baseTmpl, reference))
+            -- Must use BuildBaseOrdered to start at the marker; otherwise it builds closest to the eng
+            --buildFunction = AIBuildStructures.AIBuildBaseTemplateOrderedSwarm
+            buildFunction = AIBuildStructures.AIBuildBaseTemplate
+        elseif cons.NearMarkerType and cons.NearMarkerType == 'Defensive Point' then
+            baseTmpl = baseTmplFile['ExpansionBaseTemplates'][factionIndex]
+
+            relative = false
+            local pos = GetPlatoonPosition(self)
+            reference, refName = AIUtils.AIFindDefensivePointNeedsStructure(aiBrain, cons.LocationType, (cons.LocationRadius or 100),
+                            cons.MarkerUnitCategory, cons.MarkerRadius, cons.MarkerUnitCount, (cons.ThreatMin or 0), (cons.ThreatMax or 1),
+                            (cons.ThreatRings or 1), (cons.ThreatType or 'AntiSurface'))
+
+            SWARMINSERT(baseTmplList, AIBuildStructures.AIBuildBaseTemplateFromLocation(baseTmpl, reference))
+
+            buildFunction = AIBuildStructures.AIExecuteBuildStructureSwarm
+        elseif cons.NearMarkerType and cons.NearMarkerType == 'Naval Defensive Point' then
+            baseTmpl = baseTmplFile['ExpansionBaseTemplates'][factionIndex]
+
+            relative = false
+            local pos = GetPlatoonPosition(self)
+            reference, refName = AIUtils.AIFindNavalDefensivePointNeedsStructure(aiBrain, cons.LocationType, (cons.LocationRadius or 100),
+                            cons.MarkerUnitCategory, cons.MarkerRadius, cons.MarkerUnitCount, (cons.ThreatMin or 0), (cons.ThreatMax or 1),
+                            (cons.ThreatRings or 1), (cons.ThreatType or 'AntiSurface'))
+
+            SWARMINSERT(baseTmplList, AIBuildStructures.AIBuildBaseTemplateFromLocation(baseTmpl, reference))
+
+            buildFunction = AIBuildStructures.AIExecuteBuildStructureSwarm
+        elseif cons.NearMarkerType and (cons.NearMarkerType == 'Rally Point' or cons.NearMarkerType == 'Protected Experimental Construction') then
+            --DUNCAN - add so experimentals build on maps with no markers.
+            if not cons.ThreatMin or not cons.ThreatMax or not cons.ThreatRings then
+                cons.ThreatMin = -1000000
+                cons.ThreatMax = 1000000
+                cons.ThreatRings = 0
+            end
+            relative = false
+            local pos = GetPlatoonPosition(self)
+            reference, refName = AIUtils.AIGetClosestThreatMarkerLoc(aiBrain, cons.NearMarkerType, pos[1], pos[3],
+                                                            cons.ThreatMin, cons.ThreatMax, cons.ThreatRings)
+            if not reference then
+                reference = pos
+            end
+            SWARMINSERT(baseTmplList, AIBuildStructures.AIBuildBaseTemplateFromLocation(baseTmpl, reference))
+            buildFunction = AIBuildStructures.AIExecuteBuildStructureSwarm
+        elseif cons.NearMarkerType then
+            --WARN('*Data weird for builder named - ' .. self.BuilderName)
+            if not cons.ThreatMin or not cons.ThreatMax or not cons.ThreatRings then
+                cons.ThreatMin = -1000000
+                cons.ThreatMax = 1000000
+                cons.ThreatRings = 0
+            end
+            if not cons.BaseTemplate and (cons.NearMarkerType == 'Defensive Point' or cons.NearMarkerType == 'Expansion Area') then
+                baseTmpl = baseTmplFile['ExpansionBaseTemplates'][factionIndex]
+            end
+            relative = false
+            local pos = GetPlatoonPosition(self)
+            reference, refName = AIUtils.AIGetClosestThreatMarkerLoc(aiBrain, cons.NearMarkerType, pos[1], pos[3],
+                                                            cons.ThreatMin, cons.ThreatMax, cons.ThreatRings)
+            if cons.ExpansionBase and refName then
+                AIBuildStructures.AINewExpansionBase(aiBrain, refName, reference, (cons.ExpansionRadius or 100), cons.ExpansionTypes, nil, cons)
+            end
+            SWARMINSERT(baseTmplList, AIBuildStructures.AIBuildBaseTemplateFromLocation(baseTmpl, reference))
+            buildFunction = AIBuildStructures.AIExecuteBuildStructureSwarm
+        elseif cons.AdjacencyPriority then
+            relative = false
+            local pos = aiBrain.BuilderManagers[eng.BuilderManagerData.LocationType].EngineerManager.Location
+            local cats = {}
+            --LOG('setting up adjacencypriority... cats are '..repr(cons.AdjacencyPriority))
+            for _,v in cons.AdjacencyPriority do
+                SWARMINSERT(cats,v)
+            end
+            reference={}
+            if not pos or not pos then
+                SWARMWAIT(1)
+                self:PlatoonDisband()
+                return
+            end
+            for i,cat in cats do
+                -- convert text categories like 'MOBILE AIR' to 'categories.MOBILE * categories.AIR'
+                if type(cat) == 'string' then
+                    cat = ParseEntityCategory(cat)
+                end
+                local radius = (cons.AdjacencyDistance or 50)
+                local refunits=AIUtils.GetOwnUnitsAroundPoint(aiBrain, cat, pos, radius, cons.ThreatMin,cons.ThreatMax, cons.ThreatRings)
+                SWARMINSERT(reference,refunits)
+                --LOG('cat '..i..' had '..repr(SWARMGETN(refunits))..' units')
+            end
+            buildFunction = AIBuildStructures.AIBuildAdjacencyPrioritySwarm
+            SWARMINSERT(baseTmplList, baseTmpl)
+        elseif cons.AvoidCategory then
+            relative = false
+            local pos = aiBrain.BuilderManagers[eng.BuilderManagerData.LocationType].EngineerManager.Location
+            local cat = cons.AdjacencyCategory
+            -- convert text categories like 'MOBILE AIR' to 'categories.MOBILE * categories.AIR'
+            if type(cat) == 'string' then
+                cat = ParseEntityCategory(cat)
+            end
+            local avoidCat = cons.AvoidCategory
+            -- convert text categories like 'MOBILE AIR' to 'categories.MOBILE * categories.AIR'
+            if type(avoidCat) == 'string' then
+                avoidCat = ParseEntityCategory(avoidCat)
+            end
+            local radius = (cons.AdjacencyDistance or 50)
+            if not pos or not pos then
+                SWARMWAIT(1)
+                self:PlatoonDisband()
+                return
+            end
+            reference  = AIUtils.FindUnclutteredArea(aiBrain, cat, pos, radius, cons.maxUnits, cons.maxRadius, avoidCat)
+            buildFunction = AIBuildStructures.AIBuildAdjacency
+            SWARMINSERT(baseTmplList, baseTmpl)
+        elseif cons.AdjacencyCategory then
+            relative = false
+            local pos = aiBrain.BuilderManagers[eng.BuilderManagerData.LocationType].EngineerManager.Location
+            local cat = cons.AdjacencyCategory
+            -- convert text categories like 'MOBILE AIR' to 'categories.MOBILE * categories.AIR'
+            if type(cat) == 'string' then
+                cat = ParseEntityCategory(cat)
+            end
+            local radius = (cons.AdjacencyDistance or 50)
+            if not pos or not pos then
+                SWARMWAIT(1)
+                self:PlatoonDisband()
+                return
+            end
+            reference  = AIUtils.GetOwnUnitsAroundPoint(aiBrain, cat, pos, radius, cons.ThreatMin,
+                                                        cons.ThreatMax, cons.ThreatRings)
+            buildFunction = AIBuildStructures.AIBuildAdjacency
+            SWARMINSERT(baseTmplList, baseTmpl)
+        else
+            SWARMINSERT(baseTmplList, baseTmpl)
+            relative = true
+            reference = true
+            buildFunction = AIBuildStructures.AIExecuteBuildStructureSwarm
+        end
+        if cons.BuildClose then
+            closeToBuilder = eng
+        end
+        if cons.BuildStructures[1] == 'T1Resource' or cons.BuildStructures[1] == 'T2Resource' or cons.BuildStructures[1] == 'T3Resource' then
+            relative = true
+            closeToBuilder = eng
+            local guards = eng:GetGuards()
+            for k,v in guards do
+                if not v.Dead and v.PlatoonHandle and PlatoonExists(aiBrain, v.PlatoonHandle) then
+                    v.PlatoonHandle:PlatoonDisband()
+                end
+            end
+        end
+
+        --LOG("*AI DEBUG: Setting up Callbacks for " .. eng.Sync.id)
+        self.SetupEngineerCallbacksSWARM(eng)
+
+        -------- BUILD BUILDINGS HERE --------
+        for baseNum, baseListData in baseTmplList do
+            for k, v in cons.BuildStructures do
+                if PlatoonExists(aiBrain, self) then
+                    if not eng.Dead then
+                        local faction = SUtils.GetEngineerFaction(eng)
+                        if aiBrain.CustomUnits[v] and aiBrain.CustomUnits[v][faction] then
+                            local replacement = SUtils.GetTemplateReplacement(aiBrain, v, faction, buildingTmpl)
+                            if replacement then
+                                buildFunction(aiBrain, eng, v, closeToBuilder, relative, replacement, baseListData, reference, cons)
+                            else
+                                buildFunction(aiBrain, eng, v, closeToBuilder, relative, buildingTmpl, baseListData, reference, cons)
+                            end
+                        else
+                            buildFunction(aiBrain, eng, v, closeToBuilder, relative, buildingTmpl, baseListData, reference, cons)
+                        end
+                    else
+                        if PlatoonExists(aiBrain, self) then
+                            SWARMWAIT(1)
+                            self:PlatoonDisband()
+                            return
+                        end
+                    end
+                end
+            end
+        end
+
+        -- wait in case we're still on a base
+        if not eng.Dead then
+            local count = 0
+            while eng:IsUnitState('Attached') and count < 2 do
+                SWARMWAIT(60)
+                count = count + 1
+            end
+        end
+
+        if not eng:IsUnitState('Building') then
+            return self.ProcessBuildCommandSWARM(eng, false)
+        end
+    end,
+
+    SetupEngineerCallbacksSWARM = function(eng)
+        if eng and not eng.Dead and not eng.BuildDoneCallbackSet and eng.PlatoonHandle and PlatoonExists(eng:GetAIBrain(), eng.PlatoonHandle) then
+            import('/lua/ScenarioTriggers.lua').CreateUnitBuiltTrigger(eng.PlatoonHandle.EngineerBuildDoneSWARM, eng, categories.ALLUNITS)
+            eng.BuildDoneCallbackSet = true
+        end
+        if eng and not eng.Dead and not eng.CaptureDoneCallbackSet and eng.PlatoonHandle and PlatoonExists(eng:GetAIBrain(), eng.PlatoonHandle) then
+            import('/lua/ScenarioTriggers.lua').CreateUnitStopCaptureTrigger(eng.PlatoonHandle.EngineerCaptureDoneSWARM, eng)
+            eng.CaptureDoneCallbackSet = true
+        end
+        if eng and not eng.Dead and not eng.ReclaimDoneCallbackSet and eng.PlatoonHandle and PlatoonExists(eng:GetAIBrain(), eng.PlatoonHandle) then
+            import('/lua/ScenarioTriggers.lua').CreateUnitStopReclaimTrigger(eng.PlatoonHandle.EngineerReclaimDoneSWARM, eng)
+            eng.ReclaimDoneCallbackSet = true
+        end
+        if eng and not eng.Dead and not eng.FailedToBuildCallbackSet and eng.PlatoonHandle and PlatoonExists(eng:GetAIBrain(), eng.PlatoonHandle) then
+            import('/lua/ScenarioTriggers.lua').CreateOnFailedToBuildTrigger(eng.PlatoonHandle.EngineerFailedToBuildSWARM, eng)
+            eng.FailedToBuildCallbackSet = true
+        end
+    end,
+
+    EngineerBuildDoneSWARM = function(unit, params)
+        if not unit.PlatoonHandle then return end
+        if not unit.PlatoonHandle.PlanName == 'EngineerBuildAISWARM' then return end
+        --LOG("*AI DEBUG: Build done " .. unit.Sync.id)
+        if not unit.ProcessBuild then
+            unit.ProcessBuild = unit:ForkThread(unit.PlatoonHandle.ProcessBuildCommandSWARM, true)
+            unit.ProcessBuildDone = true
+        end
+    end,
+    EngineerCaptureDoneSWARM = function(unit, params)
+        if not unit.PlatoonHandle then return end
+        if not unit.PlatoonHandle.PlanName == 'EngineerBuildAISWARM' then return end
+        --LOG("*AI DEBUG: Capture done" .. unit.Sync.id)
+        if not unit.ProcessBuild then
+            unit.ProcessBuild = unit:ForkThread(unit.PlatoonHandle.ProcessBuildCommandSWARM, false)
+        end
+    end,
+    EngineerReclaimDoneSWARM = function(unit, params)
+        if not unit.PlatoonHandle then return end
+        if not unit.PlatoonHandle.PlanName == 'EngineerBuildAISWARM' then return end
+        --LOG("*AI DEBUG: Reclaim done" .. unit.Sync.id)
+        if not unit.ProcessBuild then
+            unit.ProcessBuild = unit:ForkThread(unit.PlatoonHandle.ProcessBuildCommandSWARM, false)
+        end
+    end,
+    EngineerFailedToBuildSWARM = function(unit, params)
+        if not unit.PlatoonHandle then return end
+        if not unit.PlatoonHandle.PlanName == 'EngineerBuildAISWARM' then return end
+        if unit.ProcessBuildDone and unit.ProcessBuild then
+            KillThread(unit.ProcessBuild)
+            unit.ProcessBuild = nil
+        end
+        if not unit.ProcessBuild then
+            unit.ProcessBuild = unit:ForkThread(unit.PlatoonHandle.ProcessBuildCommandSWARM, true)  --DUNCAN - changed to true
+        end
+    end,
+
+    -------------------------------------------------------
+    --   Function: ProcessBuildCommand
+    --   Args:
+    --       eng - the engineer that's gone through EngineerBuildAISWARM
+    --   Description:
+    --       Run after every build order is complete/fails.  Sets up the next
+    --       build order in queue, and if the engineer has nothing left to do
+    --       will return the engineer back to the army pool by disbanding the
+    --       the platoon.  Support function for EngineerBuildAISWARM
+    --   Returns:
+    --       nil (tail calls into a behavior function)
+    -------------------------------------------------------
+    ProcessBuildCommandSWARM = function(eng, removeLastBuild)
+        --DUNCAN - Trying to stop commander leaving projects
+        if (not eng) or eng.Dead or (not eng.PlatoonHandle) or eng.Combat or eng.Upgrading or eng.GoingHome then
+            return
+        end
+
+        local aiBrain = eng.PlatoonHandle:GetBrain()
+        if not aiBrain or eng.Dead or not eng.EngineerBuildQueue or SWARMGETN(eng.EngineerBuildQueue) == 0 then
+            if PlatoonExists(aiBrain, eng.PlatoonHandle) then
+                --LOG("*AI DEBUG: Disbanding Engineer Platoon in ProcessBuildCommand top " .. eng.Sync.id)
+                --if eng.CDRHome then --LOG('*AI DEBUG: Commander process build platoon disband...') end
+                if not eng.AssistSet and not eng.AssistPlatoon and not eng.UnitBeingAssist then
+                    --LOG('Disband engineer platoon start of process')
+                    eng.PlatoonHandle:PlatoonDisband()
+                end
+            end
+            if eng then eng.ProcessBuild = nil end
+            return
+        end
+
+        -- it wasn't a failed build, so we just finished something
+        if removeLastBuild then
+            table.remove(eng.EngineerBuildQueue, 1)
+        end
+
+        eng.ProcessBuildDone = false
+        IssueClearCommands({eng})
+        local commandDone = false
+        local PlatoonPos
+        while not eng.Dead and not commandDone and SWARMGETN(eng.EngineerBuildQueue) > 0  do
+            local whatToBuild = eng.EngineerBuildQueue[1][1]
+            local buildLocation = {eng.EngineerBuildQueue[1][2][1], 0, eng.EngineerBuildQueue[1][2][2]}
+            if GetTerrainHeight(buildLocation[1], buildLocation[3]) > GetSurfaceHeight(buildLocation[1], buildLocation[3]) then
+                --land
+                buildLocation[2] = GetTerrainHeight(buildLocation[1], buildLocation[3])
+            else
+                --water
+                buildLocation[2] = GetSurfaceHeight(buildLocation[1], buildLocation[3])
+            end
+            local buildRelative = eng.EngineerBuildQueue[1][3]
+            if not eng.NotBuildingThread then
+                eng.NotBuildingThread = eng:ForkThread(eng.PlatoonHandle.WatchForNotBuildingSWARM)
+            end
+            -- see if we can move there first
+            --LOG('Check if we can move to location')
+            --LOG('Unit is '..eng.UnitId)
+
+            if AIUtils.EngineerMoveWithSafePath(aiBrain, eng, buildLocation) then
+                if not eng or eng.Dead or not eng.PlatoonHandle or not PlatoonExists(aiBrain, eng.PlatoonHandle) then
+                    if eng then eng.ProcessBuild = nil end
+                    return
+                end
+                --[[if AIUtils.IsMex(whatToBuild) and (not aiBrain:CanBuildStructureAt(whatToBuild, buildLocation)) then
+                    LOG('Cant build at mass location')
+                    LOG('*AI DEBUG: EngineerBuild AI ' ..eng.Sync.id)
+                    LOG('Build location is '..repr(buildLocation))
+                    return
+                end]]
+                aiBrain:BuildStructure(eng, whatToBuild, {buildLocation[1], buildLocation[3], 0}, buildRelative)
+                local engStuckCount = 0
+                local Lastdist
+                local dist
+                while not eng.Dead do
+                    PlatoonPos = eng:GetPosition()
+                    dist = VDist2(PlatoonPos[1] or 0, PlatoonPos[3] or 0, buildLocation[1] or 0, buildLocation[3] or 0)
+                    if dist < 12 then
+                        break
+                    end
+                    if Lastdist ~= dist then
+                        engStuckCount = 0
+                        Lastdist = dist
+                    else
+                        engStuckCount = engStuckCount + 1
+                        --LOG('* AI-SWARM: * EngineerBuildAI: has no moved during move to build position look, adding one, current is '..engStuckCount)
+                        if engStuckCount > 40 and not eng:IsUnitState('Building') then
+                            --LOG('* AI-SWARM: * EngineerBuildAI: Stuck while moving to build position. Stuck='..engStuckCount)
+                            break
+                        end
+                    end
+                    if (whatToBuild == 'ueb1103' or whatToBuild == 'uab1103' or whatToBuild == 'urb1103' or whatToBuild == 'xsb1103') then
+                        if aiBrain:GetNumUnitsAroundPoint(categories.STRUCTURE * categories.MASSEXTRACTION, buildLocation, 1, 'Ally') > 0 then
+                            --LOG('Extractor already present with 1 radius, return')
+                            eng.PlatoonHandle:Stop()
+                            return
+                        end
+                    end
+                    if eng:IsUnitState("Moving") or eng:IsUnitState("Capturing") then
+                        if GetNumUnitsAroundPoint(aiBrain, categories.LAND * categories.ENGINEER * (categories.TECH1 + categories.TECH2), PlatoonPos, 10, 'Enemy') > 0 then
+                            local enemyEngineer = GetUnitsAroundPoint(aiBrain, categories.LAND * categories.ENGINEER * (categories.TECH1 + categories.TECH2), PlatoonPos, 10, 'Enemy')
+                            if enemyEngineer then
+                                local enemyEngPos
+                                for _, unit in enemyEngineer do
+                                    if unit and not unit.Dead and unit:GetFractionComplete() == 1 then
+                                        enemyEngPos = unit:GetPosition()
+                                        if VDist2Sq(PlatoonPos[1], PlatoonPos[3], enemyEngPos[1], enemyEngPos[3]) < 100 then
+                                            IssueStop({eng})
+                                            IssueClearCommands({eng})
+                                            IssueReclaim({eng}, enemyEngineer[1])
+                                            break
+                                        end
+                                    end
+                                end
+                            end
+                        end
+                    end
+                    if eng.Upgrading or eng.Combat then
+                        return
+                    end
+                    SWARMWAIT(7)
+                end
+                if not eng or eng.Dead or not eng.PlatoonHandle or not PlatoonExists(aiBrain, eng.PlatoonHandle) then
+                    if eng then eng.ProcessBuild = nil end
+                    return
+                end
+                -- cancel all commands, also the buildcommand for blocking mex to check for reclaim or capture
+                eng.PlatoonHandle:Stop()
+                -- check to see if we need to reclaim or capture...
+                SwarmUtils.EngineerTryReclaimCaptureAreaSwarm(aiBrain, eng, buildLocation, 10)
+                    -- check to see if we can repair
+                AIUtils.EngineerTryRepair(aiBrain, eng, whatToBuild, buildLocation)
+                        -- otherwise, go ahead and build the next structure there
+                --LOG('First marker location '..buildLocation[1]..':'..buildLocation[3])
+                --aiBrain:BuildStructure(eng, whatToBuild, {buildLocation[1], buildLocation[3], 0}, buildRelative)
+                aiBrain:BuildStructure(eng, whatToBuild, {buildLocation[1], buildLocation[3], 0}, buildRelative)
+                if (whatToBuild == 'ueb1103' or whatToBuild == 'uab1103' or whatToBuild == 'urb1103' or whatToBuild == 'xsb1103') and eng.PlatoonHandle.PlatoonData.Construction.RepeatBuild then
+                    --LOG('What to build was a mass extractor')
+                    if EntityCategoryContains(categories.ENGINEER - categories.COMMAND, eng) then
+                        local MexQueueBuild, MassMarkerTable = MABC.CanBuildOnMassEngSwarm(aiBrain, buildLocation, 30)
+                        if MexQueueBuild then
+                            --LOG('We can build on a mass marker within 30')
+                            --LOG(repr(MassMarkerTable))
+                            for _, v in MassMarkerTable do
+                                SwarmUtils.EngineerTryReclaimCaptureAreaSwarm(aiBrain, eng, v.MassSpot.position, 5)
+                                AIUtils.EngineerTryRepair(aiBrain, eng, whatToBuild, v.MassSpot.position)
+                                aiBrain:BuildStructure(eng, whatToBuild, {v.MassSpot.position[1], v.MassSpot.position[3], 0}, buildRelative)
+                                local newEntry = {whatToBuild, {v.MassSpot.position[1], v.MassSpot.position[3], 0}, buildRelative}
+                                SWARMINSERT(eng.EngineerBuildQueue, newEntry)
+                            end
+                        else
+                            --LOG('Cant find mass within distance')
+                        end
+                    end
+                end
+                if not eng.NotBuildingThread then
+                    eng.NotBuildingThread = eng:ForkThread(eng.PlatoonHandle.WatchForNotBuildingSWARM)
+                end
+                --LOG('Build commandDone set true')
+                commandDone = true
+            else
+                -- we can't move there, so remove it from our build queue
+                table.remove(eng.EngineerBuildQueue, 1)
+            end
+            SWARMWAIT(2)
+        end
+        --LOG('EnginerBuildQueue : '..SWARMGETN(eng.EngineerBuildQueue)..' Contents '..repr(eng.EngineerBuildQueue))
+        if not eng.Dead and SWARMGETN(eng.EngineerBuildQueue) <= 0 and eng.PlatoonHandle.PlatoonData.Construction.RepeatBuild then
+            --LOG('Starting RepeatBuild')
+            local engpos = eng:GetPosition()
+            if eng.PlatoonHandle.PlatoonData.Construction.RepeatBuild and eng.PlatoonHandle.PlanName then
+                --LOG('Repeat Build is set for :'..eng.Sync.id)
+                if eng.PlatoonHandle.PlatoonData.Construction.Type == 'Mass' then
+                    eng.PlatoonHandle:EngineerBuildAISWARM()
+                else
+                    WARN('Invalid Construction Type or Distance, Expected : Mass, number')
+                end
+            end
+        end
+        -- final check for if we should disband
+        if not eng or eng.Dead or SWARMGETN(eng.EngineerBuildQueue) <= 0 then
+            if eng.PlatoonHandle and PlatoonExists(aiBrain, eng.PlatoonHandle) then
+                --LOG('buildqueue 0 disband for'..eng.UnitId)
+                eng.PlatoonHandle:PlatoonDisband()
+            end
+            if eng then eng.ProcessBuild = nil end
+            return
+        end
+        if eng then eng.ProcessBuild = nil end
+    end,
+
+    WatchForNotBuildingSWARM = function(eng)
+        SWARMWAIT(10)
+        local aiBrain = eng:GetAIBrain()
+        local engPos = eng:GetPosition()
+
+        --DUNCAN - Trying to stop commander leaving projects, also added moving as well.
+        while not eng.Dead and not eng.PlatoonHandle.UsingTransport and (eng.GoingHome or eng.ProcessBuild != nil
+                  or eng.UnitBeingBuiltBehavior or not eng:IsIdleState()
+                 ) do
+            SWARMWAIT(30)
+
+            if eng:IsUnitState("Moving") or eng:IsUnitState("Capturing") then
+                if GetNumUnitsAroundPoint(aiBrain, categories.LAND * categories.ENGINEER * (categories.TECH1 + categories.TECH2), engPos, 10, 'Enemy') > 0 then
+                    local enemyEngineer = GetUnitsAroundPoint(aiBrain, categories.LAND * categories.ENGINEER * (categories.TECH1 + categories.TECH2), engPos, 10, 'Enemy')
+                    local enemyEngPos = enemyEngineer[1]:GetPosition()
+                    if VDist2Sq(engPos[1], engPos[3], enemyEngPos[1], enemyEngPos[3]) < 100 then
+                        IssueStop({eng})
+                        IssueClearCommands({eng})
+                        IssueReclaim({eng}, enemyEngineer[1])
+                    end
+                end
+            end
+        end
+
+        eng.NotBuildingThread = nil
+        if not eng.Dead and eng:IsIdleState() and SWARMGETN(eng.EngineerBuildQueue) != 0 and eng.PlatoonHandle and not eng.WaitingForTransport then
+            eng.PlatoonHandle.SetupEngineerCallbacksSWARM(eng)
+            if not eng.ProcessBuild then
+                --LOG('Forking Process Build Command with table remove')
+                eng.ProcessBuild = eng:ForkThread(eng.PlatoonHandle.ProcessBuildCommandSWARM, true)
+            end
+        end
+    end,
+
+
     -- 100% Relent0r's Work 
     ManagerEngineerAssistAISwarm = function(self)
         local aiBrain = self:GetBrain()
@@ -3718,16 +4368,16 @@ Platoon = Class(SwarmPlatoonClass) {
                     estartX, estartZ = aiBrain:GetCurrentEnemy():GetArmyStartPos()
                 end
                 startX, startZ = aiBrain:GetArmyStartPos()
-                local rng = SWARMRANDOM(1,3)
-                if rng == 1 then
+                local SWARM = SWARMRANDOM(1,3)
+                if SWARM == 1 then
                     patrolPositionX = (estartX + startX) / 2.2
                     patrolPositionZ = (estartZ + startZ) / 2.2
-                elseif rng == 2 then
+                elseif SWARM == 2 then
                     patrolPositionX = (estartX + startX) / 2
                     patrolPositionZ = (estartZ + startZ) / 2
                     patrolPositionX = (patrolPositionX + startX) / 2
                     patrolPositionZ = (patrolPositionZ + startZ) / 2
-                elseif rng == 3 then
+                elseif SWARM == 3 then
                     patrolPositionX = (estartX + startX) / 2
                     patrolPositionZ = (estartZ + startZ) / 2
                 end
@@ -4543,7 +5193,7 @@ Platoon = Class(SwarmPlatoonClass) {
             end
         end
 
-        --LOG('* AI-RNG: Best Marker Selected is at position'..repr(bestMarker.Position))
+        --LOG('* AI-SWARM: Best Marker Selected is at position'..repr(bestMarker.Position))
         
         if bestMarker.Position == nil and SWARMTIME() > 900 then
             --LOG('Best Marker position was nil and game time greater than 15 mins, switch to HeroFightPlatoonSwarm AI')
@@ -4597,13 +5247,13 @@ Platoon = Class(SwarmPlatoonClass) {
                 if not usedTransports then
                     local pathLength = SWARMGETN(path)
                     for i=1, pathLength - 1 do
-                        --LOG('* AI-RNG: * MassRaidRNG: moving to destination. i: '..i..' coords '..repr(path[i]))
+                        --LOG('* AI-SWARM: * MassRaidSWARM: moving to destination. i: '..i..' coords '..repr(path[i]))
                         if bAggroMove then
                             self:AggressiveMoveToLocation(path[i])
                         else
                             self:MoveToLocation(path[i], false)
                         end
-                        --LOG('* AI-RNG: * MassRaidRNG: moving to Waypoint')
+                        --LOG('* AI-SWARM: * MassRaidSWARM: moving to Waypoint')
                         local PlatoonPosition
                         local Lastdist
                         local dist
@@ -4626,12 +5276,12 @@ Platoon = Class(SwarmPlatoonClass) {
                             else
                                 Stuck = Stuck + 1
                                 if Stuck > 15 then
-                                    --LOG('* AI-RNG: * MassRaidRNG: Stucked while moving to Waypoint. Stuck='..Stuck..' - '..repr(path[i]))
+                                    --LOG('* AI-SWARM: * MassRaidSWARM: Stucked while moving to Waypoint. Stuck='..Stuck..' - '..repr(path[i]))
                                     self:Stop()
                                     break
                                 end
                             end
-                            WaitTicks(15)
+                            SWARMWAIT(15)
                         end
                     end
                 end
@@ -4661,7 +5311,7 @@ Platoon = Class(SwarmPlatoonClass) {
             local oldPlatPos = GetPlatoonPosition(self)
             local StuckCount = 0
             repeat
-                WaitTicks(50)
+                SWARMWAIT(50)
                 platLoc = GetPlatoonPosition(self)
                 if VDist3(oldPlatPos, platLoc) < 1 then
                     StuckCount = StuckCount + 1
@@ -4678,7 +5328,7 @@ Platoon = Class(SwarmPlatoonClass) {
             -- we're there... wait here until we're done
             local numGround = aiBrain:GetNumUnitsAroundPoint((categories.ENGINEER + categories.STRUCTURE), bestMarker.Position, 35, 'Enemy')
             while numGround > 0 and aiBrain:PlatoonExists(self) do
-                WaitTicks(30)
+                SWARMWAIT(30)
                 --LOG('Still enemy stuff around marker position')
                 numGround = aiBrain:GetNumUnitsAroundPoint((categories.ENGINEER + categories.STRUCTURE), bestMarker.Position, 35, 'Enemy')
             end
@@ -5526,30 +6176,3 @@ Platoon = Class(SwarmPlatoonClass) {
         end
     end,
 }
-
---T4 Kanonenbot
---Speed 0.8
---High 12
---Impact after 18 map units
-
---Schüssel
---Speed 0.8
---High 25
---Impact after 26 map units
-
---T4 Bomber
---Speed 2.0
---High 25
---Impact after 60
-
---T3 Bomber
---Speed 1.6
---High 20
---Impact after 
-
---T2 Kanonenbot
---Speed 1.2
---High 10
---Impact after 12  map units
-
-
