@@ -2,6 +2,7 @@ local import = import
 
 local ScenarioUtils = import('/lua/sim/ScenarioUtilities.lua')
 local AIUtils = import('/lua/ai/aiutilities.lua')
+local ToString = import('/lua/sim/CategoryUtils.lua').ToString
 
 local SWARMGETN = table.getn
 local SWARMINSERT = table.insert
@@ -288,6 +289,25 @@ function CompareBody(numOne, numTwo, compareType)
        error('*AI ERROR: Invalid compare type: ' .. compareType)
        return false
     end
+    return false
+end
+
+-- 100% Relent0r's Work 
+function GetAssisteesSwarm(aiBrain, locationType, assisteeType, buildingCategory, assisteeCategory)
+    if assisteeType == categories.FACTORY then
+        -- Sift through the factories in the location
+        local manager = aiBrain.BuilderManagers[locationType].FactoryManager
+        return manager:GetFactoriesWantingAssistance(buildingCategory, assisteeCategory)
+    elseif assisteeType == categories.ENGINEER then
+        local manager = aiBrain.BuilderManagers[locationType].EngineerManager
+        return manager:GetEngineersWantingAssistance(buildingCategory, assisteeCategory)
+    elseif assisteeType == categories.STRUCTURE then
+        local manager = aiBrain.BuilderManagers[locationType].PlatoonFormManager
+        return manager:GetUnitsBeingBuilt(buildingCategory, assisteeCategory)
+    else
+        error('*AI ERROR: Invalid assisteeType - ' .. ToString(assisteeType))
+    end
+
     return false
 end
 
@@ -650,107 +670,6 @@ function AirScoutPatrolSwarmAIThread(self, aiBrain)
     end
 end
 
-function DisperseUnitsToRallyPoints( aiBrain, units, position, rallypointtable )
-
-    if not rallypointtable then
-
-        local rallypoints = AIGetMarkersAroundLocation(aiBrain, 'Rally Point', position, 90)
-    
-        if SWARMGETN(rallypoints) < 1 then
-        
-            rallypoints = AIGetMarkersAroundLocation(aiBrain, 'Naval Rally Point', position, 90)
-            
-        end
-        
-        rallypointtable = {}
-        
-        for _,v in rallypoints do
-        
-            SWARMINSERT( rallypointtable, v.Position )
-            
-        end
-        
-    end
-
-    if SWARMGETN(rallypointtable) > 0 then
-    
-        local rallycount = SWARMGETN(rallypointtable)
-        
-        for _,u in units do
-        
-            local rp = rallypointtable[ Random( 1, rallycount) ]
-            
-            IssueMove( {u}, RandomLocation(rp[1],rp[3], 9))
-            
-        end
-        
-    else
-    
-        -- try and catch units being dispersed to what may now be a dead base --
-        -- the idea is to drop them back into an RTB which should find another base
-        --WARN("*AI DEBUG "..aiBrain.Nickname.." DISPERSE FAIL - No rally points at "..repr(position))
-
-        IssueClearCommands( units )
-
-        local ident = Random(1,999999)
-
-        returnpool = aiBrain:MakePlatoon('ReturnToBase '..tostring(ident), 'none' )
-
-        returnpool.PlanName = 'ReturnToBaseAI'
-        returnpool.BuilderName = 'DisperseFail'
-        
-        returnpool.BuilderLocation = false
-        returnpool.RTBLocation = false
-
-        import('/lua/ai/aiattackutilities.lua').GetMostRestrictiveLayer(returnpool) 
-
-        for _,u in units do
-
-            if not u.Dead then
-
-                aiBrain:AssignUnitsToPlatoon( returnpool, {u}, 'Unassigned', 'None' )
-                
-                u.PlatoonHandle = {returnpool}
-                u.PlatoonHandle.PlanName = 'ReturnToBaseAI'
-                
-            end
-            
-        end
-        
-        if returnpool.MovementLayer == "Land" then
-
-            -- dont use naval bases for land --
-            returnpool.BuilderLocation = AIFindClosestBuilderManagerName( aiBrain, returnpool:GetPlatoonPosition(), false )
-
-        else
-
-            if returnpool.MovementLayer == "Air" or returnpool.PlatoonLayer == "Amphibious" then
-
-                -- use any kind of base --
-                returnpool.BuilderLocation = AIFindClosestBuilderManagerName( aiBrain, returnpool:GetPlatoonPosition(), true, false )
-
-            else
-
-                -- use only naval bases --
-                returnpool.BuilderLocation = AIFindClosestBuilderManagerName( aiBrain, returnpool:GetPlatoonPosition(), true, true )
-
-            end
-
-        end
-
-        returnpool.RTBLocation = returnpool.BuilderLocation -- this should insure the RTB to that base
-
-        --LOG("*AI DEBUG "..aiBrain.Nickname.." DISPERSE FAIL Platoon at "..repr(returnpool:GetPlatoonPosition()).." submitted to RTB at "..repr(returnpool.BuilderLocation))
-
-        -- send the new platoon off to RTB
-        returnpool:SetAIPlan('ReturnToBaseAI', aiBrain)
-        
-    end
-
-    return
-    
-end
-
 function AIGetMassMarkerLocations(aiBrain, includeWater, waterOnly)
     local markerList = {}
         local markers = ScenarioUtils.GetMarkers()
@@ -895,6 +814,7 @@ function FindTargetUnit(self, minRadius, maxRadius, MaxLoad)
     end
     return false
 end
+
 function LeadTarget(launcher, target)
     -- Get launcher and target position
     local LauncherPos = launcher:GetPosition()

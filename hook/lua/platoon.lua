@@ -3,8 +3,8 @@ WARN('['..string.gsub(debug.getinfo(1).source, ".*\\(.*.lua)", "%1")..', line:'.
 local SwarmUtils = import('/mods/AI-Swarm/lua/AI/Swarmutilities.lua')
 local HERODEBUGSwarm = false
 local CHAMPIONDEBUGswarm = false 
-local MarkerSwitchDist = 25
-local MarkerSwitchDistEXP = 45
+local MarkerSwitchDist = 20
+local MarkerSwitchDistEXP = 40
 
 local PlatoonExists = moho.aibrain_methods.PlatoonExists
 local GetPlatoonUnits = moho.platoon_methods.GetPlatoonUnits
@@ -2209,6 +2209,134 @@ Platoon = Class(SwarmPlatoonClass) {
         end
         self:PlatoonDisband()
     end,
+
+    -- 100% Relent0r's Work 
+    ManagerEngineerAssistAISwarm = function(self)
+        local aiBrain = self:GetBrain()
+        local eng = GetPlatoonUnits(self)[1]
+        self:EconAssistBodySwarm()
+        SWARMWAIT(10)
+        if eng.Upgrading or eng.Combat then
+            --LOG('eng.Upgrading is True at start of assist function')
+        end
+        -- do we assist until the building is finished ?
+        if self.PlatoonData.Assist.AssistUntilFinished then
+            local guardedUnit
+            if eng.UnitBeingAssist then
+                guardedUnit = eng.UnitBeingAssist
+            else 
+                guardedUnit = eng:GetGuardedUnit()
+            end
+            -- loop as long as we are not dead and not idle
+            while eng and not eng.Dead and PlatoonExists(aiBrain, self) and not eng:IsIdleState() do
+                if not guardedUnit or guardedUnit.Dead or guardedUnit:BeenDestroyed() then
+                    break
+                end
+                -- stop if our target is finished
+                if guardedUnit:GetFractionComplete() == 1 and not guardedUnit:IsUnitState('Upgrading') then
+                    --LOG('* ManagerEngineerAssistAI: Engineer Builder ['..self.BuilderName..'] - ['..self.PlatoonData.Assist.AssisteeType..'] - Target unit ['..guardedUnit:GetBlueprint().BlueprintId..'] ('..guardedUnit:GetBlueprint().Description..') is finished')
+                    break
+                end
+                -- wait 1.5 seconds until we loop again
+                if eng.Upgrading or eng.Combat then
+                    --LOG('eng.Upgrading is True inside Assist function for assistuntilfinished')
+                end
+                SWARMWAIT(30)
+            end
+        else
+            if eng.Upgrading or eng.Combat then
+                --LOG('eng.Upgrading is True inside Assist function for assist time')
+            end
+            SWARMWAIT(self.PlatoonData.Assist.Time or 60)
+        end
+        if not PlatoonExists(aiBrain, self) then
+            return
+        end
+        self.AssistPlatoon = nil
+        eng.UnitBeingAssist = nil
+        self:Stop()
+        if eng.Upgrading then
+            --LOG('eng.Upgrading is True')
+        end
+        self:PlatoonDisband()
+    end,
+
+    -- 100% Relent0r's Work 
+    EconAssistBodySwarm = function(self)
+        local aiBrain = self:GetBrain()
+        local eng = GetPlatoonUnits(self)[1]
+        if not eng or eng:IsUnitState('Building') or eng:IsUnitState('Upgrading') or eng:IsUnitState("Enhancing") then
+           return
+        end
+        local assistData = self.PlatoonData.Assist
+        if not assistData.AssistLocation then
+            WARN('*AI WARNING: Builder '..repr(self.BuilderName)..' is missing AssistLocation')
+            return
+        end
+        if not assistData.AssisteeType then
+            WARN('*AI WARNING: Builder '..repr(self.BuilderName)..' is missing AssisteeType')
+            return
+        end
+        eng.AssistPlatoon = self
+        local assistee = false
+        local assistRange = assistData.AssistRange or 80
+        local platoonPos = self:GetPlatoonPosition()
+        local beingBuilt = assistData.BeingBuiltCategories or { categories.ALLUNITS }
+        local assisteeCat = assistData.AssisteeCategory or categories.ALLUNITS
+        if type(assisteeCat) == 'string' then
+            assisteeCat = ParseEntityCategory(assisteeCat)
+        end
+
+        -- loop through different categories we are looking for
+        for _,category in beingBuilt do
+            -- Track all valid units in the assist list so we can load balance for builders
+            local assistList = SwarmUtils.GetAssisteesSwarm(aiBrain, assistData.AssistLocation, assistData.AssisteeType, category, assisteeCat)
+            if SWARMGETN(assistList) > 0 then
+                -- only have one unit in the list; assist it
+                local low = false
+                local bestUnit = false
+                for k,v in assistList do
+                    --DUNCAN - check unit is inside assist range 
+                    local unitPos = v:GetPosition()
+                    local UnitAssist = v.UnitBeingBuilt or v.UnitBeingAssist or v
+                    local NumAssist = SWARMGETN(UnitAssist:GetGuards())
+                    local dist = VDist2(platoonPos[1], platoonPos[3], unitPos[1], unitPos[3])
+                    -- Find the closest unit to assist
+                    if assistData.AssistClosestUnit then
+                        if (not low or dist < low) and NumAssist < 20 and dist < assistRange then
+                            low = dist
+                            bestUnit = v
+                        end
+                    -- Find the unit with the least number of assisters; assist it
+                    else
+                        if (not low or NumAssist < low) and NumAssist < 20 and dist < assistRange then
+                            low = NumAssist
+                            bestUnit = v
+                        end
+                    end
+                end
+                assistee = bestUnit
+                break
+            end
+        end
+        -- assist unit
+        if assistee  then
+            self:Stop()
+            eng.AssistSet = true
+            eng.UnitBeingAssist = assistee.UnitBeingBuilt or assistee.UnitBeingAssist or assistee
+            --LOG('* EconAssistBody: Assisting now: ['..eng.UnitBeingAssist:GetBlueprint().BlueprintId..'] ('..eng.UnitBeingAssist:GetBlueprint().Description..')')
+            IssueGuard({eng}, eng.UnitBeingAssist)
+        else
+            self.AssistPlatoon = nil
+            eng.UnitBeingAssist = nil
+            if eng.Upgrading then
+                --LOG('eng.Upgrading is True')
+            end
+            -- stop the platoon from endless assisting
+            self:PlatoonDisband()
+        end
+    end,
+
 
     FinisherAISwarm = function(self)
         local aiBrain = self:GetBrain()

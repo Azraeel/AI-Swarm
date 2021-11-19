@@ -131,22 +131,6 @@ PlatoonTemplate {
 }
 
 PlatoonTemplate {
-    Name = 'T3EngineerBuildernoSUB',
-    Plan = 'EngineerBuildAI',
-    GlobalSquads = {
-        { categories.ENGINEER * categories.TECH3 - categories.SUBCOMMANDER, 1, 1, 'support', 'None' }
-    },
-}
-
-PlatoonTemplate {
-    Name = 'T3EngineerAssistnoSUB',
-    Plan = 'ManagerEngineerAssistAI',
-    GlobalSquads = {
-        { categories.ENGINEER * categories.TECH3 - categories.SUBCOMMANDER, 1, 1, 'support', 'None' }
-    },
-}
-
-PlatoonTemplate {
     Name = 'T3EngineerBuilderSUB',
     Plan = 'EngineerBuildAI',
     GlobalSquads = {
@@ -155,18 +139,10 @@ PlatoonTemplate {
 }
 
 PlatoonTemplate {
-    Name = 'T3EngineerAssistSUB',
-    Plan = 'ManagerEngineerAssistAI',
+    Name = 'T3EngineerBuildernoSUB',
+    Plan = 'EngineerBuildAI',
     GlobalSquads = {
-        { categories.ENGINEER * categories.SUBCOMMANDER * ( categories.ENGINEERPRESET + categories.RASPRESET ), 1, 1, 'support', 'None' }
-    },
-}
-
-PlatoonTemplate {
-    Name = 'EngineerAssistALLTECH',
-    Plan = 'ManagerEngineerAssistAI',
-    GlobalSquads = {
-        { categories.ENGINEER * (categories.TECH1 + categories.TECH2 + categories.TECH3), 1, 1, 'support', 'None' }
+        { categories.ENGINEER * categories.TECH3 - categories.SUBCOMMANDER, 1, 1, 'support', 'None' }
     },
 }
 
@@ -191,5 +167,45 @@ PlatoonTemplate {
     Plan = 'EngineerBuildAI',
     GlobalSquads = {
         { categories.ENGINEER * (categories.TECH3 + categories.RASPRESET + categories.ENGINEERPRESET), 1, 1, 'support', 'None' }
+    },
+}
+
+PlatoonTemplate {
+    Name = 'T1EngineerAssistSwarm',
+    Plan = 'ManagerEngineerAssistAISwarm',
+    GlobalSquads = {
+        { categories.ENGINEER * categories.TECH1, 1, 1, 'support', 'None' }
+    },
+}
+
+PlatoonTemplate {
+    Name = 'T2EngineerAssistSwarm',
+    Plan = 'ManagerEngineerAssistAISwarm',
+    GlobalSquads = {
+        { categories.ENGINEER * categories.TECH2, 1, 1, 'support', 'None' }
+    },
+}
+
+PlatoonTemplate {
+    Name = 'T3EngineerAssistnoSUB',
+    Plan = 'ManagerEngineerAssistAISwarm',
+    GlobalSquads = {
+        { categories.ENGINEER * categories.TECH3 - categories.SUBCOMMANDER, 1, 1, 'support', 'None' }
+    },
+}
+
+PlatoonTemplate {
+    Name = 'T3EngineerAssistSUB',
+    Plan = 'ManagerEngineerAssistAISwarm',
+    GlobalSquads = {
+        { categories.ENGINEER * categories.SUBCOMMANDER * ( categories.ENGINEERPRESET + categories.RASPRESET ), 1, 1, 'support', 'None' }
+    },
+}
+
+PlatoonTemplate {
+    Name = 'EngineerAssistALLTECH',
+    Plan = 'ManagerEngineerAssistAISwarm',
+    GlobalSquads = {
+        { categories.ENGINEER * (categories.TECH1 + categories.TECH2 + categories.TECH3), 1, 1, 'support', 'None' }
     },
 }
