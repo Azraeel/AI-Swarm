@@ -2249,7 +2249,7 @@ Platoon = Class(SwarmPlatoonClass) {
                 reference = SWARMCOPY(eng:GetPosition())
             end
             relative = false
-            buildFunction = AIBuildStructures.AIExecuteBuildStructure
+            buildFunction = AIBuildStructures.AIExecuteBuildStructureSwarm
             SWARMINSERT(baseTmplList, AIBuildStructures.AIBuildBaseTemplateFromLocation(baseTmpl, reference))
         elseif cons.Wall then
             local pos = aiBrain:PBMGetLocationCoords(cons.LocationType) or cons.Position or self:GetPlatoonPosition()
@@ -2448,7 +2448,7 @@ Platoon = Class(SwarmPlatoonClass) {
                 local radius = (cons.AdjacencyDistance or 50)
                 local refunits=AIUtils.GetOwnUnitsAroundPoint(aiBrain, cat, pos, radius, cons.ThreatMin,cons.ThreatMax, cons.ThreatRings)
                 SWARMINSERT(reference,refunits)
-                --LOG('cat '..i..' had '..repr(RNGGETN(refunits))..' units')
+                --LOG('cat '..i..' had '..repr(SWARMGETN(refunits))..' units')
             end
             buildFunction = AIBuildStructures.AIBuildAdjacencyPrioritySwarm
             SWARMINSERT(baseTmplList, baseTmpl)
@@ -2503,12 +2503,12 @@ Platoon = Class(SwarmPlatoonClass) {
                         if aiBrain.CustomUnits[v] and aiBrain.CustomUnits[v][faction] then
                             local replacement = SUtils.GetTemplateReplacement(aiBrain, v, faction, buildingTmpl)
                             if replacement then
-                                buildFunction(aiBrain, eng, v, closeToBuilder, relative, replacement, baseListData, reference, cons.NearMarkerType)
+                                buildFunction(aiBrain, eng, v, closeToBuilder, relative, replacement, baseListData, reference, cons)
                             else
-                                buildFunction(aiBrain, eng, v, closeToBuilder, relative, buildingTmpl, baseListData, reference, cons.NearMarkerType)
+                                buildFunction(aiBrain, eng, v, closeToBuilder, relative, buildingTmpl, baseListData, reference, cons)
                             end
                         else
-                            buildFunction(aiBrain, eng, v, closeToBuilder, relative, buildingTmpl, baseListData, reference, cons.NearMarkerType)
+                            buildFunction(aiBrain, eng, v, closeToBuilder, relative, buildingTmpl, baseListData, reference, cons)
                         end
                     else
                         if aiBrain:PlatoonExists(self) then
@@ -2529,7 +2529,7 @@ Platoon = Class(SwarmPlatoonClass) {
         end
 
         if not eng.Dead and not eng:IsUnitState('Building') then
-            return self.ProcessBuildCommand(eng, false)
+            return self.ProcessBuildCommandSwarm(eng, false)
         end
     end,
 
@@ -2614,6 +2614,7 @@ Platoon = Class(SwarmPlatoonClass) {
             return
         end
         local aiBrain = eng.PlatoonHandle:GetBrain()
+        local engPos = eng:GetPosition()
 
         if not aiBrain or eng.Dead or not eng.EngineerBuildQueue or SWARMEMPTY(eng.EngineerBuildQueue) then
             if aiBrain:PlatoonExists(eng.PlatoonHandle) then
@@ -2661,7 +2662,29 @@ Platoon = Class(SwarmPlatoonClass) {
                     if VDist2(PlatoonPos[1] or 0, PlatoonPos[3] or 0, buildLocation[1] or 0, buildLocation[3] or 0) < 12 then
                         break
                     end
-                    SWARMWAIT(1)
+                    if eng:IsUnitState("Moving") or eng:IsUnitState("Capturing") then
+                        if GetNumUnitsAroundPoint(aiBrain, categories.LAND * categories.ENGINEER * (categories.TECH1 + categories.TECH2), PlatoonPos, 10, 'Enemy') > 0 then
+                            local enemyEngineer = GetUnitsAroundPoint(aiBrain, categories.LAND * categories.ENGINEER * (categories.TECH1 + categories.TECH2), PlatoonPos, 10, 'Enemy')
+                            if enemyEngineer then
+                                local enemyEngPos
+                                for _, unit in enemyEngineer do
+                                    if unit and not unit.Dead and unit:GetFractionComplete() == 1 then
+                                        enemyEngPos = unit:GetPosition()
+                                        if VDist2Sq(PlatoonPos[1], PlatoonPos[3], enemyEngPos[1], enemyEngPos[3]) < 100 then
+                                            IssueStop({eng})
+                                            IssueClearCommands({eng})
+                                            IssueReclaim({eng}, enemyEngineer[1])
+                                            break
+                                        end
+                                    end
+                                end
+                            end
+                        end
+                    end
+                    if eng.Upgrading or eng.Combat then
+                        return
+                    end
+                    SWARMWAIT(7)
                 end
                 if not eng or eng.Dead or not eng.PlatoonHandle or not aiBrain:PlatoonExists(eng.PlatoonHandle) then
                     if eng then eng.ProcessBuild = nil end
@@ -2702,9 +2725,21 @@ Platoon = Class(SwarmPlatoonClass) {
     WatchForNotBuildingSwarm = function(eng)
         SWARMWAIT(10)
         local aiBrain = eng:GetAIBrain()
+        local engPos = eng:GetPosition()
 
         while not eng.Dead and not eng.PlatoonHandle.UsingTransport and (eng.GoingHome or eng.UnitBeingBuiltBehavior or eng.ProcessBuild != nil or not eng:IsIdleState()) do
             SWARMWAIT(30)
+            if eng:IsUnitState("Moving") or eng:IsUnitState("Capturing") then
+                if GetNumUnitsAroundPoint(aiBrain, categories.LAND * categories.ENGINEER * (categories.TECH1 + categories.TECH2), engPos, 10, 'Enemy') > 0 then
+                    local enemyEngineer = GetUnitsAroundPoint(aiBrain, categories.LAND * categories.ENGINEER * (categories.TECH1 + categories.TECH2), engPos, 10, 'Enemy')
+                    local enemyEngPos = enemyEngineer[1]:GetPosition()
+                    if VDist2Sq(engPos[1], engPos[3], enemyEngPos[1], enemyEngPos[3]) < 100 then
+                        IssueStop({eng})
+                        IssueClearCommands({eng})
+                        IssueReclaim({eng}, enemyEngineer[1])
+                    end
+                end
+            end
         end
 
         eng.NotBuildingThread = nil

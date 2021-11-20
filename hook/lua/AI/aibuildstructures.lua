@@ -6,6 +6,7 @@ local import = import
 
 local SWARMSORT = table.sort
 local SWARMINSERT = table.insert
+local SWARMREMOVE = table.remove
 local SWARMCOPY = table.copy
 local SWARMGETN = table.getn
 
@@ -34,16 +35,16 @@ function AIBuildBaseTemplateOrderedSwarm(aiBrain, builder, buildingType , closeT
     local whatToBuild = aiBrain:DecideWhatToBuild(builder, buildingType, buildingTemplate)
     if whatToBuild then
         if IsResource(buildingType) then
-            return AIExecuteBuildStructureRNG(aiBrain, builder, buildingType , closeToBuilder, relative, buildingTemplate, baseTemplate, reference)
+            return AIExecuteBuildStructureSwarm(aiBrain, builder, buildingType , closeToBuilder, relative, buildingTemplate, baseTemplate, reference)
         else
             for l,bType in baseTemplate do
                 for m,bString in bType[1] do
                     if bString == buildingType then
                         for n,position in bType do
                             if n > 1 and aiBrain:CanBuildStructureAt(whatToBuild, BuildToNormalLocation(position)) then
-                                 AddToBuildQueue(aiBrain, builder, whatToBuild, position, false)
-                                 table.remove(bType,n)
-                                 return DoHackyLogic(buildingType, builder)
+                                AddToBuildQueue(aiBrain, builder, whatToBuild, position, false)
+                                SWARMREMOVE(bType,n)
+                                return DoHackyLogic(buildingType, builder)
                             end # if n > 1 and can build structure at
                         end # for loop
                         break
@@ -240,6 +241,39 @@ function AIBuildAdjacencyPrioritySwarm(aiBrain, builder, buildingType , closeToB
     local whatToBuild = aiBrain:DecideWhatToBuild(builder, buildingType, buildingTemplate)
     local VDist3Sq = VDist3Sq
     local Centered=cons.Centered
+    local AdjacencyBias=cons.AdjacencyBias
+    local location = false
+    --LOG("What is Cons " .. repr(cons))
+    if aiBrain:GetCurrentEnemy() then
+        local estartX, estartZ = aiBrain:GetCurrentEnemy():GetArmyStartPos()
+        location = {estartX, GetSurfaceHeight(estartX,estartZ), estartZ}
+    else
+        location = false
+    end
+    --LOG("What is AdjacencyBiasd " .. repr(AdjacencyBias))
+    if AdjacencyBias then
+        --if not location then end
+        --LOG('Location is ' .. repr(location))
+        if AdjacencyBias=='Forward' then
+            --LOG("What is Reference " .. repr(reference))
+            for _,v in reference do
+                --LOG("What is V " .. repr(v))
+                table.sort(v,function(a,b) return VDist3Sq(a:GetPosition(),location)<VDist3Sq(b:GetPosition(),location) end)
+            end
+        elseif AdjacencyBias=='Back' then
+            for _,v in reference do
+                table.sort(v,function(a,b) return VDist3Sq(a:GetPosition(),location)>VDist3Sq(b:GetPosition(),location) end)
+            end
+        elseif AdjacencyBias=='BackClose' then
+            for _,v in reference do
+                table.sort(v,function(a,b) return VDist3Sq(a:GetPosition(),location)/VDist3Sq(a:GetPosition(),builder:GetPosition())>VDist3Sq(b:GetPosition(),location)/VDist3Sq(b:GetPosition(),builder:GetPosition()) end)
+            end
+        elseif AdjacencyBias=='ForwardClose' then
+            for _,v in reference do
+                table.sort(v,function(a,b) return VDist3Sq(a:GetPosition(),location)*VDist3Sq(a:GetPosition(),builder:GetPosition())<VDist3Sq(b:GetPosition(),location)*VDist3Sq(b:GetPosition(),builder:GetPosition()) end)
+            end
+        end
+    end
     local function normalposition(vec)
         return {vec[1],GetSurfaceHeight(vec[1],vec[2]),vec[2]}
     end

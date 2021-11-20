@@ -26,8 +26,11 @@ BuilderGroup {
         BuilderData = {
             Construction = {
                 BuildClose = false,
-                AdjacencyCategory = categories.STRUCTURE * categories.ENERGYPRODUCTION,
-                AdjacencyDistance = 50,
+                AdjacencyPriority = {
+                    categories.ENERGYPRODUCTION * categories.TECH3,
+                    categories.ENERGYPRODUCTION * categories.TECH2,
+                    categories.ENERGYPRODUCTION * categories.TECH1,
+                },
                 BuildStructures = {
                     'T1Radar',
                 },
@@ -55,8 +58,11 @@ BuilderGroup {
         BuilderType = 'Any',
         BuilderData = {
             Construction = {
-                AdjacencyCategory = categories.STRUCTURE * categories.ENERGYPRODUCTION * categories.TECH3,
-                AdjacencyDistance = 50,
+                AdjacencyPriority = {
+                    categories.ENERGYPRODUCTION * categories.TECH3,
+                    categories.ENERGYPRODUCTION * categories.TECH2,
+                    categories.ENERGYPRODUCTION * categories.TECH1,
+                },
                 BuildStructures = {
                     'T3Radar',
                 },
@@ -145,8 +151,11 @@ BuilderGroup {
         BuilderType = 'Any',
         BuilderData = {
             Construction = {
-                AdjacencyCategory = 'ENERGYPRODUCTION',
-                AdjacencyDistance = 100,
+                AdjacencyBias = 'BackClose',
+                AdjacencyPriority = {
+                    categories.STRUCTURE * categories.SHIELD,
+                    categories.ENERGYPRODUCTION * categories.TECH3,
+                },
                 BuildClose = false,
                 BuildStructures = {
                     'T3Optics',
@@ -178,8 +187,11 @@ BuilderGroup {
         BuilderType = 'Any',
         BuilderData = {
             Construction = {
-                AdjacencyCategory = 'ENERGYPRODUCTION',
-                AdjacencyDistance = 100,
+                AdjacencyBias = 'ForwardClose',
+                AdjacencyPriority = {
+                    categories.STRUCTURE * categories.SHIELD,
+                    categories.ENERGYPRODUCTION * categories.TECH3,
+                },
                 BuildClose = false,
                 BuildStructures = {
                     'T3Optics',

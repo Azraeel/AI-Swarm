@@ -184,6 +184,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Adaptive Factory Build',
         BuilderType = 'Any',
         BuilderData = {
             Construction = {
+                AdjacencyBias = 'Forward',
                 AdjacencyPriority = {
                     categories.MASSEXTRACTION,
                     categories.MASSPRODUCTION,
@@ -229,6 +230,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Adaptive Factory Build',
         BuilderData = {
             BuildClose = false,
             Construction = {
+                AdjacencyBias = 'Forward',
                 AdjacencyPriority = {
                     categories.MASSEXTRACTION,
                     categories.MASSPRODUCTION,
@@ -271,6 +273,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Adaptive Factory Build',
         BuilderData = {
             BuildClose = false,
             Construction = {
+                AdjacencyBias = 'Back',
                 AdjacencyPriority = {
                     categories.ENERGYPRODUCTION * categories.TECH3,
                     categories.ENERGYPRODUCTION * categories.TECH2,
@@ -315,6 +318,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Adaptive Factory Build',
         BuilderData = {
             BuildClose = false,
             Construction = {
+                AdjacencyBias = 'Back',
                 AdjacencyPriority = {
                     categories.ENERGYPRODUCTION * categories.TECH3,
                     categories.ENERGYPRODUCTION * categories.TECH2,
@@ -367,6 +371,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Factory Builders Expansions',
         BuilderType = 'Any',
         BuilderData = {
             Construction = {
+                AdjacencyBias = 'ForwardClose',
                 AdjacencyPriority = {
                     categories.MASSEXTRACTION,
                     categories.MASSPRODUCTION,
@@ -413,6 +418,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Factory Builders Expansions',
         BuilderType = 'Any',
         BuilderData = {
             Construction = {
+                AdjacencyBias = 'BackClose',
                 AdjacencyPriority = {
                     categories.ENERGYPRODUCTION * categories.TECH3,
                     categories.ENERGYPRODUCTION * categories.TECH2,

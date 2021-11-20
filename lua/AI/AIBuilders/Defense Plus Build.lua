@@ -131,8 +131,11 @@ BuilderGroup { BuilderGroupName = 'Swarm Defense Plus Builders Expansion',
         BuilderData = {
             NumAssistees = 1,
             Construction = {
-                AdjacencyCategory = 'STRUCTURE FACTORY',
-                AdjacencyDistance = 175,
+                AdjacencyBias = 'Forward',
+                AdjacencyPriority = {
+                    categories.STRUCTURE * categories.SHIELD,
+                    categories.STRUCTURE * categories.FACTORY,
+                },
                 BuildClose = false,
                 BuildStructures = {
                     'T1AADefense',
@@ -160,8 +163,11 @@ BuilderGroup { BuilderGroupName = 'Swarm Defense Plus Builders Expansion',
         BuilderData = {
             NumAssistees = 1,
             Construction = {
-                AdjacencyCategory = 'STRUCTURE FACTORY',
-                AdjacencyDistance = 175,
+                AdjacencyBias = 'Forward',
+                AdjacencyPriority = {
+                    categories.STRUCTURE * categories.SHIELD,
+                    categories.STRUCTURE * categories.FACTORY,
+                },
                 BuildClose = false,
                 BuildStructures = {
                     'T1GroundDefense',
@@ -189,8 +195,11 @@ BuilderGroup { BuilderGroupName = 'Swarm Defense Plus Builders Expansion',
         BuilderData = {
             NumAssistees = 1,
             Construction = {
-                AdjacencyCategory = 'STRUCTURE FACTORY',
-                AdjacencyDistance = 175,
+                AdjacencyBias = 'Forward',
+                AdjacencyPriority = {
+                    categories.STRUCTURE * categories.SHIELD,
+                    categories.STRUCTURE * categories.FACTORY,
+                },
                 BuildClose = false,
                 BuildStructures = {
                     'T2AADefense',
@@ -218,8 +227,11 @@ BuilderGroup { BuilderGroupName = 'Swarm Defense Plus Builders Expansion',
         BuilderData = {
             NumAssistees = 1,
             Construction = {
-                AdjacencyCategory = 'STRUCTURE FACTORY',
-                AdjacencyDistance = 175,
+                AdjacencyBias = 'Forward',
+                AdjacencyPriority = {
+                    categories.STRUCTURE * categories.SHIELD,
+                    categories.STRUCTURE * categories.FACTORY,
+                },
                 BuildClose = false,
                 BuildStructures = {
                     'T2GroundDefense',
@@ -245,8 +257,12 @@ BuilderGroup { BuilderGroupName = 'Swarm Defense Plus Builders Expansion',
         BuilderData = {
             NumAssistees = 1,
             Construction = {
-                AdjacencyCategory = 'STRUCTURE FACTORY',
-                AdjacencyDistance = 175,
+                AdjacencyBias = 'Forward',
+                AdjacencyPriority = {
+                    categories.STRUCTURE * categories.ENERGYPRODUCTION * (categories.TECH2 + categories.TECH3),
+                    categories.STRUCTURE * categories.SHIELD,
+                    categories.STRUCTURE * categories.FACTORY,
+                },
                 BuildClose = false,
                 BuildStructures = {
                     'T2Artillery',
@@ -274,8 +290,11 @@ BuilderGroup { BuilderGroupName = 'Swarm Defense Plus Builders Expansion',
         BuilderData = {
             NumAssistees = 1,
             Construction = {
-                AdjacencyCategory = 'STRUCTURE FACTORY',
-                AdjacencyDistance = 175,
+                AdjacencyBias = 'Forward',
+                AdjacencyPriority = {
+                    categories.STRUCTURE * categories.SHIELD,
+                    categories.STRUCTURE * categories.FACTORY,
+                },
                 BuildClose = false,
                 BuildStructures = {
                     'T3AADefense',

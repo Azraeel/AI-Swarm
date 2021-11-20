@@ -27,9 +27,11 @@ BuilderGroup { BuilderGroupName = 'Swarm Strategic Builder',
         BuilderType = 'Any',
         BuilderData = {
             Construction = {
-                AdjacencyCategory = 'STRUCTURE SHIELD, STRUCTURE ENERGYPRODUCTION',
-                AdjacencyDistance = 50,
-                AvoidCategory = categories.FACTORY,
+                AdjacencyBias = 'ForwardClose',
+                AdjacencyPriority = {
+                    categories.STRUCTURE * categories.SHIELD,
+                    categories.STRUCTURE * categories.ENERGYPRODUCTION - categories.TECH1,
+                },
                 maxUnits = 1,
                 maxRadius = 10,
                 BuildClose = false,
@@ -61,8 +63,11 @@ BuilderGroup { BuilderGroupName = 'Swarm Strategic Builder',
         BuilderType = 'Any',
         BuilderData = {
             Construction = {
-                AdjacencyCategory = categories.STRUCTURE * categories.SHIELD,
-                AdjacencyDistance = 50,
+                AdjacencyBias = 'ForwardClose',
+                AdjacencyPriority = {
+                    categories.STRUCTURE * categories.SHIELD,
+                    categories.STRUCTURE * categories.ENERGYPRODUCTION - categories.TECH1,
+                },
                 BuildClose = false,
                 BuildStructures = {
                     'T2StrategicMissile',
@@ -101,8 +106,11 @@ BuilderGroup { BuilderGroupName = 'Swarm Strategic Builder',
             Construction = {
                 DesiresAssist = true,
                 BuildClose = false,
-                AdjacencyCategory = categories.STRUCTURE * categories.SHIELD,
-                AvoidCategory = categories.STRUCTURE * categories.NUKE,
+                AdjacencyBias = 'BackClose',
+                AdjacencyPriority = {
+                    categories.STRUCTURE * categories.SHIELD,
+                    categories.STRUCTURE * categories.ENERGYPRODUCTION * categories.TECH3,
+                },
                 maxUnits = 1,
                 maxRadius = 20,
                 LocationType = 'LocationType',
@@ -142,8 +150,11 @@ BuilderGroup { BuilderGroupName = 'Swarm Strategic Builder',
             Construction = {
                 DesiresAssist = true,
                 BuildClose = false,
-                AdjacencyCategory = categories.STRUCTURE * categories.SHIELD,
-                AvoidCategory = categories.STRUCTURE * categories.NUKE,
+                AdjacencyBias = 'BackClose',
+                AdjacencyPriority = {
+                    categories.STRUCTURE * categories.SHIELD,
+                    categories.STRUCTURE * categories.ENERGYPRODUCTION * categories.TECH3,
+                },
                 maxUnits = 1,
                 maxRadius = 20,
                 LocationType = 'LocationType',
@@ -185,8 +196,11 @@ BuilderGroup { BuilderGroupName = 'Swarm Strategic Builder',
             Construction = {
                 DesiresAssist = true,
                 BuildClose = false,
-                AdjacencyCategory = categories.STRUCTURE * categories.SHIELD,
-                AvoidCategory = categories.STRUCTURE * categories.NUKE,
+                AdjacencyBias = 'BackClose',
+                AdjacencyPriority = {
+                    categories.STRUCTURE * categories.SHIELD,
+                    categories.STRUCTURE * categories.ENERGYPRODUCTION * categories.TECH3,
+                },
                 maxUnits = 1,
                 maxRadius = 20,
                 LocationType = 'LocationType',
@@ -224,6 +238,11 @@ BuilderGroup { BuilderGroupName = 'Swarm Strategic Builder',
             Construction = {
                 DesiresAssist = true,
                 BuildClose = false,
+                AdjacencyBias = 'Back',
+                AdjacencyPriority = {
+                    categories.STRUCTURE * categories.SHIELD,
+                    categories.STRUCTURE * categories.ENERGYPRODUCTION * categories.TECH3,
+                },
                 BuildStructures = {
                     'T3RapidArtillery',
                 },
@@ -259,6 +278,11 @@ BuilderGroup { BuilderGroupName = 'Swarm Strategic Builder',
             Construction = {
                 DesiresAssist = true,
                 BuildClose = false,
+                AdjacencyBias = 'Back',
+                AdjacencyPriority = {
+                    categories.STRUCTURE * categories.SHIELD,
+                    categories.STRUCTURE * categories.ENERGYPRODUCTION * categories.TECH3,
+                },
                 BuildStructures = {
                     'T4Artillery',
                 },
@@ -294,6 +318,11 @@ BuilderGroup { BuilderGroupName = 'Swarm Strategic Builder',
             Construction = {
                 DesiresAssist = true,
                 BuildClose = false,
+                AdjacencyBias = 'Back',
+                AdjacencyPriority = {
+                    categories.STRUCTURE * categories.SHIELD,
+                    categories.STRUCTURE * categories.ENERGYPRODUCTION * categories.TECH3,
+                },
                 BuildStructures = {
                     'T3Artillery',
                 },

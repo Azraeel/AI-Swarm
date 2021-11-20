@@ -443,6 +443,7 @@ BuilderGroup {
         BuilderType = 'Any',
         BuilderData = {
             Construction = {
+                AdjacencyBias = 'Forward',
                 AdjacencyPriority = {
                     categories.MASSEXTRACTION,
                     categories.MASSPRODUCTION,
@@ -488,6 +489,7 @@ BuilderGroup {
         BuilderData = {
             BuildClose = false,
             Construction = {
+                AdjacencyBias = 'Forward',
                 AdjacencyPriority = {
                     categories.MASSEXTRACTION,
                     categories.MASSPRODUCTION,
@@ -530,6 +532,7 @@ BuilderGroup {
         BuilderData = {
             BuildClose = false,
             Construction = {
+                AdjacencyBias = 'BackClose',
                 AdjacencyPriority = {
                     categories.ENERGYPRODUCTION * categories.TECH3,
                     categories.ENERGYPRODUCTION * categories.TECH2,
@@ -574,6 +577,7 @@ BuilderGroup {
         BuilderData = {
             BuildClose = false,
             Construction = {
+                AdjacencyBias = 'BackClose',
                 AdjacencyPriority = {
                     categories.ENERGYPRODUCTION * categories.TECH3,
                     categories.ENERGYPRODUCTION * categories.TECH2,
@@ -612,6 +616,7 @@ BuilderGroup {
         BuilderData = {
             BuildClose = true,
             Construction = {
+                AdjacencyBias = 'BackClose',
                 AdjacencyPriority = {
                     categories.ENERGYPRODUCTION * categories.TECH3,
                     categories.ENERGYPRODUCTION * categories.TECH2,

@@ -875,8 +875,11 @@ BuilderGroup { BuilderGroupName = 'Swarm Defense Anti Air Builders',
         BuilderData = {
         	NumAssistees = 1,
             Construction = {
-            	AdjacencyCategory = categories.STRUCTURE,
-                AvoidCategory = categories.STRUCTURE * categories.ANTIAIR * categories.TECH2,
+            	AdjacencyBias = 'Forward',
+                AdjacencyPriority = {
+                    categories.STRUCTURE * categories.SHIELD,
+                    categories.STRUCTURE * categories.FACTORY,
+                },
                 maxUnits = 1,
                 maxRadius = 10,
                 BuildClose = false,
@@ -907,8 +910,11 @@ BuilderGroup { BuilderGroupName = 'Swarm Defense Anti Air Builders',
         BuilderData = {
         	NumAssistees = 1,
             Construction = {
-            	AdjacencyCategory = categories.STRUCTURE,
-                AvoidCategory = categories.STRUCTURE * categories.ANTIAIR * categories.TECH3,
+            	AdjacencyBias = 'Forward',
+                AdjacencyPriority = {
+                    categories.STRUCTURE * categories.SHIELD,
+                    categories.STRUCTURE * categories.FACTORY,
+                },
                 maxUnits = 1,
                 maxRadius = 8,
                 BuildClose = false,

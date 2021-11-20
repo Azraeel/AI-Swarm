@@ -130,9 +130,10 @@ BuilderGroup {
             Construction = {
                 DesiresAssist = true,
                 NumAssistees = 4,
-                AdjacencyCategory = categories.STRUCTURE * categories.ENERGYPRODUCTION * categories.TECH3,
-                AdjacencyDistance = 80,
-                AvoidCategory = categories.MASSFABRICATION,
+                AdjacencyPriority = {
+                    categories.STRUCTURE * categories.SHIELD,
+                    categories.ENERGYPRODUCTION * categories.TECH3,
+                },
                 maxUnits = 1,
                 maxRadius = 15,
                 BuildClose = true,
