@@ -46,7 +46,7 @@ BuilderGroup {
     BuildersType = 'EngineerBuilder',
     Builder {
         BuilderName = 'S1 Sea Factory 1st',
-        PlatoonTemplate = 'EngineerBuilderALLTECH',
+        PlatoonTemplate = 'EngineerBuilderALLTECHSwarm',
         Priority = 655,
         DelayEqualBuildPlattons = {'Factories', 3},
         BuilderConditions = {
@@ -76,7 +76,7 @@ BuilderGroup {
     Builder {
         BuilderName = 'Swarm Naval Factory Mass > MassStorage',
 
-        PlatoonTemplate = 'EngineerBuilderALLTECH',
+        PlatoonTemplate = 'EngineerBuilderALLTECHSwarm',
 
         Priority = 600,
 
@@ -113,7 +113,7 @@ BuilderGroup {
     Builder {
         BuilderName = 'Swarm Naval Factory Enemy - Outnumbered',
         
-        PlatoonTemplate = 'EngineerBuilderALLTECH',
+        PlatoonTemplate = 'EngineerBuilderALLTECHSwarm',
 
         Priority = 650,
 
@@ -158,7 +158,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Adaptive Factory Build',
     Builder {
         BuilderName = 'Swarm Land Factory Mass > MassStorage',
 
-        PlatoonTemplate = 'EngineerBuilderALLTECH',
+        PlatoonTemplate = 'EngineerBuilderALLTECHSwarm',
 
         Priority = 650,
 
@@ -184,6 +184,12 @@ BuilderGroup { BuilderGroupName = 'Swarm Adaptive Factory Build',
         BuilderType = 'Any',
         BuilderData = {
             Construction = {
+                AdjacencyPriority = {
+                    categories.MASSEXTRACTION,
+                    categories.MASSPRODUCTION,
+                    categories.ENERGYPRODUCTION * categories.TECH2,
+                    categories.ENERGYPRODUCTION * categories.TECH1,
+                },
                 Location = 'LocationType',
                 BuildClose = false,
                 BuildStructures = {
@@ -196,7 +202,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Adaptive Factory Build',
     Builder {
         BuilderName = 'Swarm Land Factory Enemy - Land Ratio',
 
-        PlatoonTemplate = 'EngineerBuilderALLTECH',
+        PlatoonTemplate = 'EngineerBuilderALLTECHSwarm',
 
         Priority = 650,
 
@@ -223,6 +229,12 @@ BuilderGroup { BuilderGroupName = 'Swarm Adaptive Factory Build',
         BuilderData = {
             BuildClose = false,
             Construction = {
+                AdjacencyPriority = {
+                    categories.MASSEXTRACTION,
+                    categories.MASSPRODUCTION,
+                    categories.ENERGYPRODUCTION * categories.TECH2,
+                    categories.ENERGYPRODUCTION * categories.TECH1,
+                },
                 Location = 'LocationType',
                 BuildStructures = {
                     'T1LandFactory',
@@ -234,7 +246,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Adaptive Factory Build',
     Builder {
         BuilderName = 'Swarm Air Factory Mass > MassStorage',
 
-        PlatoonTemplate = 'EngineerBuilderALLTECH',
+        PlatoonTemplate = 'EngineerBuilderALLTECHSwarm',
 
         Priority = 645,
 
@@ -259,6 +271,14 @@ BuilderGroup { BuilderGroupName = 'Swarm Adaptive Factory Build',
         BuilderData = {
             BuildClose = false,
             Construction = {
+                AdjacencyPriority = {
+                    categories.ENERGYPRODUCTION * categories.TECH3,
+                    categories.ENERGYPRODUCTION * categories.TECH2,
+                    categories.HYDROCARBON,
+                    categories.ENERGYPRODUCTION * categories.TECH1,
+                    categories.MASSEXTRACTION,
+                    categories.MASSPRODUCTION,
+                },
                 Location = 'LocationType',
                 BuildStructures = {
                     'T1AirFactory',  
@@ -270,7 +290,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Adaptive Factory Build',
     Builder {
         BuilderName = 'Swarm Air Factory > Air Ratio',
 
-        PlatoonTemplate = 'EngineerBuilderALLTECH',
+        PlatoonTemplate = 'EngineerBuilderALLTECHSwarm',
 
         Priority = 650,
 
@@ -295,6 +315,14 @@ BuilderGroup { BuilderGroupName = 'Swarm Adaptive Factory Build',
         BuilderData = {
             BuildClose = false,
             Construction = {
+                AdjacencyPriority = {
+                    categories.ENERGYPRODUCTION * categories.TECH3,
+                    categories.ENERGYPRODUCTION * categories.TECH2,
+                    categories.HYDROCARBON,
+                    categories.ENERGYPRODUCTION * categories.TECH1,
+                    categories.MASSEXTRACTION,
+                    categories.MASSPRODUCTION,
+                },
                 Location = 'LocationType',
                 BuildStructures = {
                     'T1AirFactory',  
@@ -309,7 +337,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Factory Builders Expansions',
     
     Builder { BuilderName = 'All Land Factory Expansions',
 
-        PlatoonTemplate = 'EngineerBuilderALLTECH',
+        PlatoonTemplate = 'EngineerBuilderALLTECHSwarm',
 
         Priority = 650,
 
@@ -339,6 +367,12 @@ BuilderGroup { BuilderGroupName = 'Swarm Factory Builders Expansions',
         BuilderType = 'Any',
         BuilderData = {
             Construction = {
+                AdjacencyPriority = {
+                    categories.MASSEXTRACTION,
+                    categories.MASSPRODUCTION,
+                    categories.ENERGYPRODUCTION * categories.TECH2,
+                    categories.ENERGYPRODUCTION * categories.TECH1,
+                },
                 Location = 'LocationType',
                 BuildStructures = {
                     'T1LandFactory',
@@ -349,7 +383,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Factory Builders Expansions',
 
     Builder { BuilderName = 'All Air Factory Expansions',
 
-        PlatoonTemplate = 'EngineerBuilderALLTECH',
+        PlatoonTemplate = 'EngineerBuilderALLTECHSwarm',
 
         Priority = 650,
 
@@ -379,6 +413,14 @@ BuilderGroup { BuilderGroupName = 'Swarm Factory Builders Expansions',
         BuilderType = 'Any',
         BuilderData = {
             Construction = {
+                AdjacencyPriority = {
+                    categories.ENERGYPRODUCTION * categories.TECH3,
+                    categories.ENERGYPRODUCTION * categories.TECH2,
+                    categories.HYDROCARBON,
+                    categories.ENERGYPRODUCTION * categories.TECH1,
+                    categories.MASSEXTRACTION,
+                    categories.MASSPRODUCTION,
+                },
                 Location = 'LocationType',
                 BuildStructures = {
                     'T1AirFactory',
@@ -392,7 +434,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Gate Builders',                        
     BuildersType = 'EngineerBuilder',
     
     Builder { BuilderName = 'U-T3 Gate Cap - Main Base',
-        PlatoonTemplate = 'T3EngineerBuilder',
+        PlatoonTemplate = 'EngineerBuilderT3&SUBSwarm',
         Priority = 1350,
         BuilderConditions = {
         	{ EBC, 'GreaterThanEconEfficiencyOverTime', { 1.02, 1.03 }},
@@ -410,6 +452,11 @@ BuilderGroup { BuilderGroupName = 'Swarm Gate Builders',                        
         BuilderType = 'Any',
         BuilderData = {
             Construction = {
+                AdjacencyPriority = {
+                    categories.MASSPRODUCTION * categories.TECH3,
+                    categories.ENERGYPRODUCTION * categories.TECH3,
+                    categories.MASSEXTRACTION * categories.TECH3,
+                },
                 BuildClose = true,
                 Location = 'LocationType',
                 AdjacencyCategory = 'ENERGYPRODUCTION',
@@ -421,7 +468,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Gate Builders',                        
     },
 
     Builder { BuilderName = 'U-T3 Gate Cap - Expansions',
-        PlatoonTemplate = 'T3EngineerBuilder',
+        PlatoonTemplate = 'EngineerBuilderT3&SUBSwarm',
         Priority = 1300,
         BuilderConditions = {
         	{ EBC, 'GreaterThanEconEfficiencyOverTime', { 1.03, 1.04 }},
@@ -439,6 +486,11 @@ BuilderGroup { BuilderGroupName = 'Swarm Gate Builders',                        
         BuilderType = 'Any',
         BuilderData = {
             Construction = {
+                AdjacencyPriority = {
+                    categories.MASSPRODUCTION * categories.TECH3,
+                    categories.ENERGYPRODUCTION * categories.TECH3,
+                    categories.MASSEXTRACTION * categories.TECH3,
+                },
                 BuildClose = true,
                 Location = 'LocationType',
                 AdjacencyCategory = 'ENERGYPRODUCTION',
@@ -454,7 +506,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Staging Platform Builders',        
     BuildersType = 'EngineerBuilder',
     
     Builder { BuilderName = 'U-T1 Air Staging 1st',
-        PlatoonTemplate = 'EngineerBuilder',
+        PlatoonTemplate = 'T1EngineerBuilderSwarm',
         Priority = 600,
         BuilderConditions = {
             { UCBC, 'HaveLessThanUnitsWithCategory', { 1, categories.STRUCTURE * categories.AIRSTAGINGPLATFORM }},
@@ -482,7 +534,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Staging Platform Builders',        
         }
     },
     Builder { BuilderName = 'U-T1 Air Staging',
-        PlatoonTemplate = 'EngineerBuilder',
+        PlatoonTemplate = 'T1EngineerBuilderSwarm',
         Priority = 600,
         BuilderConditions = {
             { UCBC, 'HaveUnitRatioVersusEnemySwarm', { 0.05, categories.STRUCTURE * categories.AIRSTAGINGPLATFORM, '<', categories.MOBILE * categories.AIR } },
@@ -491,7 +543,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Staging Platform Builders',        
 
             { EBC, 'GreaterThanEconTrendSwarm', { 0.0, 0.0 } },
 
-            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.02, 1.03 }},
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.01, 1.02 }},
 
             { EBC, 'GreaterThanEconStorageCurrent', { 200, 2000}},
 

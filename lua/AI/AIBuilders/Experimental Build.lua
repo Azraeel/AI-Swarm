@@ -17,7 +17,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Experimental Builders',
         
     Builder { BuilderName = 'S Air Experimental',
 
-        PlatoonTemplate = 'T3EngineerBuilderSUB',
+        PlatoonTemplate = 'T3EngineerBuilderSUBSwarm',
 
         Priority = 950,
 
@@ -57,7 +57,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Experimental Builders',
     
     Builder { BuilderName = 'S Air Experimental - Satellite',
 
-        PlatoonTemplate = 'T3EngineerBuilderSUB',
+        PlatoonTemplate = 'T3EngineerBuilderSUBSwarm',
 
         Priority = 950,
 
@@ -103,7 +103,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Experimental Builders',
     Builder {
         BuilderName = 'S Land Experimental - 3',
 
-        PlatoonTemplate = 'T3EngineerBuilderSUB',
+        PlatoonTemplate = 'T3EngineerBuilderSUBSwarm',
 
         Priority = 950,
 
@@ -150,7 +150,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Experimental Builders',
     Builder {
         BuilderName = 'S Land Experimental - 2',
 
-        PlatoonTemplate = 'T3EngineerBuilderSUB',
+        PlatoonTemplate = 'T3EngineerBuilderSUBSwarm',
 
         Priority = 950,
 
@@ -199,7 +199,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Experimental Builders',
     Builder {
         BuilderName = 'S Land Experimental',
 
-        PlatoonTemplate = 'T3EngineerBuilderSUB',
+        PlatoonTemplate = 'T3EngineerBuilderSUBSwarm',
 
         Priority = 950,
 
@@ -253,7 +253,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Naval Experimental Builders',
     
     Builder { BuilderName = 'S Water Experimental',
 
-        PlatoonTemplate = 'T3EngineerBuilderSUB',
+        PlatoonTemplate = 'T3EngineerBuilderSUBSwarm',
 
         Priority = 950,
 

@@ -9,7 +9,7 @@ BuilderGroup {
     BuildersType = 'EngineerBuilder',
     Builder {
         BuilderName = 'S4 Paragon 1st mass40',
-        PlatoonTemplate = 'T3EngineerBuildernoSUB',
+        PlatoonTemplate = 'T3EngineerBuildernoSUBSwarm',
         Priority = 300,
         DelayEqualBuildPlattons = {'Paragon', 60},
         BuilderConditions = {
@@ -49,7 +49,7 @@ BuilderGroup {
     },
     Builder {
         BuilderName = 'S4 Paragon 1st 35min',
-        PlatoonTemplate = 'T3EngineerBuildernoSUB',
+        PlatoonTemplate = 'T3EngineerBuildernoSUBSwarm',
         Priority = 350,
         DelayEqualBuildPlattons = {'Paragon', 60},
         BuilderConditions = {
@@ -85,7 +85,7 @@ BuilderGroup {
     },
     Builder {
         BuilderName = 'S4 Paragon 1st HighTrend',
-        PlatoonTemplate = 'T3EngineerBuildernoSUB',
+        PlatoonTemplate = 'T3EngineerBuildernoSUBSwarm',
         Priority = 3500,
         DelayEqualBuildPlattons = {'Paragon', 60},
         BuilderConditions = {
@@ -123,7 +123,7 @@ BuilderGroup {
     },
     Builder {
         BuilderName = 'S4 Paragon 2nd',
-        PlatoonTemplate = 'T3EngineerBuildernoSUB',
+        PlatoonTemplate = 'T3EngineerBuildernoSUBSwarm',
         Priority = 350,
         BuilderConditions = {
             { UCBC, 'HasParagon', {} },
@@ -160,7 +160,7 @@ BuilderGroup {
     },
     Builder {
         BuilderName = 'S4 Paragon 3nd',
-        PlatoonTemplate = 'T3EngineerBuildernoSUB',
+        PlatoonTemplate = 'T3EngineerBuildernoSUBSwarm',
         Priority = 350,
         BuilderConditions = {
             { UCBC, 'HasParagon', {} },

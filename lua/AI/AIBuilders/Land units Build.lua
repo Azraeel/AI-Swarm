@@ -567,7 +567,7 @@ BuilderGroup {
 
     },
 
-    Builder {
+    --[[ Builder {
         BuilderName = 'AI-Swarm Standard Land (200) P',
 
         PlatoonTemplate = 'AISwarm LandAttack Micro - Standard', 
@@ -611,7 +611,7 @@ BuilderGroup {
                 categories.MOBILE * categories.LAND,
             },
         },        
-    },
+    }, ]]--
 
     Builder {
         BuilderName = 'AI-Swarm Standard Land (60) M',

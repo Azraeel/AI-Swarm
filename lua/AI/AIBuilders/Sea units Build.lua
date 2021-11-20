@@ -394,7 +394,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Sonar Builders',
     
     Builder { BuilderName = 'S1 Sonar',
 
-        PlatoonTemplate = 'EngineerBuilder',
+        PlatoonTemplate = 'T1EngineerBuilderSwarm',
 
         Priority = 200,
 

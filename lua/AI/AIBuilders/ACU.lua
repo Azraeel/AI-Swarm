@@ -34,7 +34,7 @@ BuilderGroup { BuilderGroupName = 'Swarm ACU Initial Opener',
     BuildersType = 'EngineerBuilder',    
     Builder {
         BuilderName = 'Swarm Commander First Factory',
-        PlatoonTemplate = 'CommanderBuilder',
+        PlatoonTemplate = 'CommanderBuilderSwarm',
         Priority = 5000,
         DelayEqualBuildPlattons = {'Factories', 3},
         BuilderConditions = {
@@ -49,6 +49,12 @@ BuilderGroup { BuilderGroupName = 'Swarm ACU Initial Opener',
         BuilderData = {
             BuildClose = false,
             Construction = {
+                AdjacencyPriority = {
+                    categories.MASSEXTRACTION,
+                    categories.MASSPRODUCTION,
+                    categories.ENERGYPRODUCTION * categories.TECH2,
+                    categories.ENERGYPRODUCTION * categories.TECH1,
+                },
                 Location = 'LocationType',
                 BuildStructures = {
                     'T1LandFactory',
@@ -59,7 +65,7 @@ BuilderGroup { BuilderGroupName = 'Swarm ACU Initial Opener',
 
     Builder {
         BuilderName = 'Swarm Commander Intial Mexes',
-        PlatoonTemplate = 'CommanderBuilder',
+        PlatoonTemplate = 'CommanderBuilderSwarm',
         Priority = 4900,
         BuilderConditions = {
             { MABC, 'CanBuildOnMassDistanceSwarm', { 'LocationType', 0, 12, nil, nil, 0, 'AntiSurface', 1}},
@@ -354,7 +360,7 @@ BuilderGroup {
 
     Builder {
         BuilderName = 'Swarm Commander Power low trend',
-        PlatoonTemplate = 'CommanderBuilder',
+        PlatoonTemplate = 'CommanderBuilderSwarm',
         Priority = 650,
         BuilderConditions = {
             { UCBC, 'HaveLessThanUnitsWithCategory', { 1, categories.ENERGYPRODUCTION - categories.TECH1 - categories.COMMAND } },
@@ -366,8 +372,11 @@ BuilderGroup {
         BuilderType = 'Any',
         BuilderData = {
             Construction = {
-                AdjacencyCategory = categories.STRUCTURE * categories.FACTORY * (categories.LAND + categories.AIR),
-                AdjacencyDistance = 100,
+                AdjacencyPriority = {
+                    categories.STRUCTURE * categories.FACTORY * categories.AIR,
+                    categories.RADAR * categories.STRUCTURE,
+                    categories.FACTORY * categories.STRUCTURE * categories.LAND,
+                },
                 BuildClose = true,
                 LocationType = 'LocationType',
                 BuildStructures = {
@@ -379,7 +388,7 @@ BuilderGroup {
 
     Builder {
         BuilderName = 'Swarm Commander Power MassRatio 10',
-        PlatoonTemplate = 'CommanderBuilder',
+        PlatoonTemplate = 'CommanderBuilderSwarm',
         Priority = 645,
         BuilderConditions = {
             { UCBC, 'HaveLessThanUnitsWithCategory', { 1, categories.ENERGYPRODUCTION - categories.TECH1 - categories.COMMAND } },
@@ -391,8 +400,11 @@ BuilderGroup {
         BuilderType = 'Any',
         BuilderData = {
             Construction = {
-                AdjacencyCategory = categories.STRUCTURE * categories.FACTORY * (categories.LAND + categories.AIR),
-                AdjacencyDistance = 50,
+                AdjacencyPriority = {
+                    categories.STRUCTURE * categories.FACTORY * categories.AIR,
+                    categories.RADAR * categories.STRUCTURE,
+                    categories.FACTORY * categories.STRUCTURE * categories.LAND,
+                },
                 BuildClose = true,
                 LocationType = 'LocationType',
                 BuildStructures = {
@@ -405,7 +417,7 @@ BuilderGroup {
     Builder {
         BuilderName = 'Swarm Commander Land Factory Mass > MassStorage',
 
-        PlatoonTemplate = 'CommanderBuilder',
+        PlatoonTemplate = 'CommanderBuilderSwarm',
 
         Priority = 650,
 
@@ -431,6 +443,12 @@ BuilderGroup {
         BuilderType = 'Any',
         BuilderData = {
             Construction = {
+                AdjacencyPriority = {
+                    categories.MASSEXTRACTION,
+                    categories.MASSPRODUCTION,
+                    categories.ENERGYPRODUCTION * categories.TECH2,
+                    categories.ENERGYPRODUCTION * categories.TECH1,
+                },
                 Location = 'LocationType',
                 BuildClose = true,
                 BuildStructures = {
@@ -443,7 +461,7 @@ BuilderGroup {
     Builder {
         BuilderName = 'Swarm Commander Land Factory - Land Ratio',
 
-        PlatoonTemplate = 'CommanderBuilder',
+        PlatoonTemplate = 'CommanderBuilderSwarm',
 
         Priority = 650,
 
@@ -470,6 +488,12 @@ BuilderGroup {
         BuilderData = {
             BuildClose = false,
             Construction = {
+                AdjacencyPriority = {
+                    categories.MASSEXTRACTION,
+                    categories.MASSPRODUCTION,
+                    categories.ENERGYPRODUCTION * categories.TECH2,
+                    categories.ENERGYPRODUCTION * categories.TECH1,
+                },
                 Location = 'LocationType',
                 BuildStructures = {
                     'T1LandFactory',  
@@ -481,7 +505,7 @@ BuilderGroup {
     Builder {
         BuilderName = 'Swarm Commander Air Factory Mass > MassStorage',
 
-        PlatoonTemplate = 'CommanderBuilder',
+        PlatoonTemplate = 'CommanderBuilderSwarm',
 
         Priority = 645,
 
@@ -506,6 +530,14 @@ BuilderGroup {
         BuilderData = {
             BuildClose = false,
             Construction = {
+                AdjacencyPriority = {
+                    categories.ENERGYPRODUCTION * categories.TECH3,
+                    categories.ENERGYPRODUCTION * categories.TECH2,
+                    categories.HYDROCARBON,
+                    categories.ENERGYPRODUCTION * categories.TECH1,
+                    categories.MASSEXTRACTION,
+                    categories.MASSPRODUCTION,
+                },
                 Location = 'LocationType',
                 BuildStructures = {
                     'T1AirFactory',  
@@ -517,7 +549,7 @@ BuilderGroup {
     Builder {
         BuilderName = 'Swarm Commander Air Factory - Air Ratio',
         
-        PlatoonTemplate = 'CommanderBuilder',
+        PlatoonTemplate = 'CommanderBuilderSwarm',
 
         Priority = 650,
 
@@ -542,6 +574,14 @@ BuilderGroup {
         BuilderData = {
             BuildClose = false,
             Construction = {
+                AdjacencyPriority = {
+                    categories.ENERGYPRODUCTION * categories.TECH3,
+                    categories.ENERGYPRODUCTION * categories.TECH2,
+                    categories.HYDROCARBON,
+                    categories.ENERGYPRODUCTION * categories.TECH1,
+                    categories.MASSEXTRACTION,
+                    categories.MASSPRODUCTION,
+                },
                 Location = 'LocationType',
                 BuildStructures = {
                     'T1AirFactory',  
@@ -552,7 +592,7 @@ BuilderGroup {
 
     Builder {
         BuilderName = 'Swarm Commander Air Factory - No Air Factory',
-        PlatoonTemplate = 'CommanderBuilder',
+        PlatoonTemplate = 'CommanderBuilderSwarm',
         Priority = 655,
         DelayEqualBuildPlattons = {'Factories', 3},
         BuilderConditions = {
@@ -572,6 +612,14 @@ BuilderGroup {
         BuilderData = {
             BuildClose = true,
             Construction = {
+                AdjacencyPriority = {
+                    categories.ENERGYPRODUCTION * categories.TECH3,
+                    categories.ENERGYPRODUCTION * categories.TECH2,
+                    categories.HYDROCARBON,
+                    categories.ENERGYPRODUCTION * categories.TECH1,
+                    categories.MASSEXTRACTION,
+                    categories.MASSPRODUCTION,
+                },
                 Location = 'LocationType',
                 BuildStructures = {
                     'T1AirFactory',  
@@ -589,7 +637,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Factory Builder',
     BuildersType = 'EngineerBuilder',
     Builder {
         BuilderName = 'Swarm Commander Factory Builder Land - Recover',
-        PlatoonTemplate = 'CommanderBuilder',
+        PlatoonTemplate = 'CommanderBuilderSwarm',
         Priority = 600,
         BuilderConditions = {
             { UCBC, 'HaveLessThanUnitsWithCategory', { 1, categories.STRUCTURE * categories.FACTORY * categories.LAND * (categories.TECH1 + categories.TECH2 + categories.TECH3) }},
@@ -601,6 +649,12 @@ BuilderGroup { BuilderGroupName = 'Swarm Factory Builder',
         BuilderType = 'Any',
         BuilderData = {
             Construction = {
+                AdjacencyPriority = {
+                    categories.MASSEXTRACTION,
+                    categories.MASSPRODUCTION,
+                    categories.ENERGYPRODUCTION * categories.TECH2,
+                    categories.ENERGYPRODUCTION * categories.TECH1,
+                },
             	DesiresAssist = true,
                 Location = 'LocationType',
                 BuildStructures = {
@@ -613,7 +667,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Factory Builder',
     -- Add a Watermap Ratio Condition to replace CanPathTo
     Builder {
         BuilderName = 'Swarm Commander Factory Builder Land - Watermap',
-        PlatoonTemplate = 'CommanderBuilder',
+        PlatoonTemplate = 'CommanderBuilderSwarm',
         Priority = 600,
         BuilderConditions = {
             { MIBC, 'CanPathToCurrentEnemySwarm', { false, 'LocationType' } },
@@ -627,6 +681,12 @@ BuilderGroup { BuilderGroupName = 'Swarm Factory Builder',
         BuilderType = 'Any',
         BuilderData = {
             Construction = {
+                AdjacencyPriority = {
+                    categories.MASSEXTRACTION,
+                    categories.MASSPRODUCTION,
+                    categories.ENERGYPRODUCTION * categories.TECH2,
+                    categories.ENERGYPRODUCTION * categories.TECH1,
+                },
             	DesiresAssist = true,
                 Location = 'LocationType',
                 BuildStructures = {
@@ -638,7 +698,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Factory Builder',
 
     Builder {
         BuilderName = 'Swarm Factory Builder Air - First - Watermap',
-        PlatoonTemplate = 'CommanderBuilder',
+        PlatoonTemplate = 'CommanderBuilderSwarm',
         Priority = 650,
         BuilderConditions = {
             { MIBC, 'CanPathToCurrentEnemySwarm', { false, 'LocationType' } },
@@ -652,6 +712,14 @@ BuilderGroup { BuilderGroupName = 'Swarm Factory Builder',
         BuilderType = 'Any',
         BuilderData = {
             Construction = {
+                AdjacencyPriority = {
+                    categories.ENERGYPRODUCTION * categories.TECH3,
+                    categories.ENERGYPRODUCTION * categories.TECH2,
+                    categories.HYDROCARBON,
+                    categories.ENERGYPRODUCTION * categories.TECH1,
+                    categories.MASSEXTRACTION,
+                    categories.MASSPRODUCTION,
+                },
                 Location = 'LocationType',
                 BuildStructures = {
                     'T1AirFactory',

@@ -23,7 +23,7 @@ BuilderGroup {
 
     Builder {
         BuilderName = 'Swarm Mass 240',
-        PlatoonTemplate = 'EngineerBuilder',
+        PlatoonTemplate = 'T1EngineerBuilderSwarm',
         Priority = 670,
         InstanceCount = 4,
         BuilderConditions = {
@@ -35,7 +35,7 @@ BuilderGroup {
         BuilderData = {
             Construction = {
                 RepeatBuild = true,
-                Type = 'Mass',
+                --Type = 'Mass',
                 MaxDistance = 240,
                 ThreatMin = -500,
                 ThreatMax = 5,
@@ -50,7 +50,7 @@ BuilderGroup {
 
     Builder {
         BuilderName = 'Swarm Mass 480',
-        PlatoonTemplate = 'EngineerBuilder',
+        PlatoonTemplate = 'T1EngineerBuilderSwarm',
         Priority = 655,
         InstanceCount = 2,
         BuilderConditions = {
@@ -66,7 +66,7 @@ BuilderGroup {
         BuilderData = {
             Construction = {
                 RepeatBuild = true,
-                Type = 'Mass',
+                --Type = 'Mass',
                 MaxDistance = 480,
                 ThreatMin = -500,
                 ThreatMax = 5,
@@ -81,7 +81,7 @@ BuilderGroup {
 
     Builder {
         BuilderName = 'Swarm Mass 1000',
-        PlatoonTemplate = 'EngineerBuilder',
+        PlatoonTemplate = 'T1EngineerBuilderSwarm',
         Priority = 655,
         InstanceCount = 2,
         BuilderConditions = {
@@ -97,7 +97,7 @@ BuilderGroup {
         BuilderData = {
             Construction = {
                 RepeatBuild = true,
-                Type = 'Mass',
+                --Type = 'Mass',
                 MaxDistance = 1000,
                 ThreatMin = -500,
                 ThreatMax = 5,
@@ -112,7 +112,7 @@ BuilderGroup {
 
     Builder {
         BuilderName = 'S3 Mass Fab',
-        PlatoonTemplate = 'EngineerBuilderT3&SUB',
+        PlatoonTemplate = 'EngineerBuilderT3&SUBSwarm',
         Priority = 1175,
         BuilderConditions = {
             { UCBC, 'HaveGreaterThanUnitsWithCategory', { 2, categories.STRUCTURE * categories.ENERGYPRODUCTION * categories.TECH3 }},
@@ -170,7 +170,7 @@ BuilderGroup {
     BuildersType = 'EngineerBuilder',
     Builder {
         BuilderName = 'Swarm Mass Adjacency Engineer - Ring',
-        PlatoonTemplate = 'EngineerBuilderALLTECH',
+        PlatoonTemplate = 'EngineerBuilderALLTECHSwarm',
         Priority = 1005,
         InstanceCount = 2,
         BuilderConditions = {
@@ -209,7 +209,7 @@ BuilderGroup {
     },
     Builder {
         BuilderName = 'Swarm Mass Adjacency Engineer - Outter Mexes - Ring',
-        PlatoonTemplate = 'EngineerBuilderALLTECH',
+        PlatoonTemplate = 'EngineerBuilderALLTECHSwarm',
         Priority = 1025,
         InstanceCount = 2,
         BuilderConditions = {

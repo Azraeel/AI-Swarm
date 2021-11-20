@@ -11,7 +11,7 @@ BuilderGroup {
     BuildersType = 'EngineerBuilder',
     Builder {
         BuilderName = 'S1 Radar',
-        PlatoonTemplate = 'EngineerBuilder',
+        PlatoonTemplate = 'T1EngineerBuilderSwarm',
         Priority = 600,
         BuilderConditions = {
             { UCBC, 'UnitsLessAtLocation', { 'LocationType', 1, (categories.RADAR + categories.OMNI) * categories.STRUCTURE}},
@@ -38,7 +38,7 @@ BuilderGroup {
 
     Builder {
         BuilderName = 'S3 Radar',
-        PlatoonTemplate = 'T3EngineerBuildernoSUB',
+        PlatoonTemplate = 'T3EngineerBuildernoSUBSwarm',
         Priority = 1000,
         BuilderConditions = {
 
@@ -67,7 +67,7 @@ BuilderGroup {
 
     Builder {
         BuilderName = 'S1 Reclaim T1+T2 Radar',
-        PlatoonTemplate = 'EngineerBuilder',
+        PlatoonTemplate = 'T1EngineerBuilderSwarm',
         PlatoonAIPlan = 'ReclaimStructuresAI',
         Priority = 790,
         InstanceCount = 2,

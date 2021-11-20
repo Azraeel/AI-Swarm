@@ -145,7 +145,7 @@ BuilderGroup {
 
     Builder {
         BuilderName = 'Swarm Commander Factory Builder Air - Watermap',
-        PlatoonTemplate = 'EngineerBuilderALLTECH',
+        PlatoonTemplate = 'EngineerBuilderALLTECHSwarm',
         Priority = 575,
         BuilderConditions = {
             { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.05, 0.50}},
@@ -170,7 +170,7 @@ BuilderGroup {
 
     Builder {
         BuilderName = 'Swarm Factory Builder Land - Watermap',
-        PlatoonTemplate = 'EngineerBuilderALLTECH',
+        PlatoonTemplate = 'EngineerBuilderALLTECHSwarm',
         Priority = 600,
         BuilderConditions = {
             { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.05, 0.50}},
@@ -195,7 +195,7 @@ BuilderGroup {
 
     Builder {
         BuilderName = 'Swarm Factory Builder Air - Watermap',
-        PlatoonTemplate = 'EngineerBuilderALLTECH',
+        PlatoonTemplate = 'EngineerBuilderALLTECHSwarm',
         Priority = 600,
         BuilderConditions = {
             { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.05, 0.50}},

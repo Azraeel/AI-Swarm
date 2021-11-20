@@ -11,7 +11,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Strategic Builder',
     BuildersType = 'EngineerBuilder',
     Builder {
         BuilderName = 'S2 TML Minimum',
-        PlatoonTemplate = 'T2EngineerBuilder',
+        PlatoonTemplate = 'T2EngineerBuilderSwarm',
         Priority = 1000,
         BuilderConditions = {
             { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.05, 1.1 }},
@@ -43,7 +43,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Strategic Builder',
                             
     Builder {
         BuilderName = 'S2 TML Maximum',
-        PlatoonTemplate = 'T2EngineerBuilder',
+        PlatoonTemplate = 'T2EngineerBuilderSwarm',
         Priority = 1000,
         BuilderConditions = {
             { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.05, 1.1 }},
@@ -74,7 +74,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Strategic Builder',
 
     Builder {
         BuilderName = 'Swarm SML Rush',
-        PlatoonTemplate = 'EngineerBuilderT3&SUB',
+        PlatoonTemplate = 'EngineerBuilderT3&SUBSwarm',
         Priority = 900,
         DelayEqualBuildPlattons = {'NukeBuilder', 3},
         InstanceCount = 1, 
@@ -115,7 +115,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Strategic Builder',
 
     Builder {
         BuilderName = 'Swarm SML Normal',
-        PlatoonTemplate = 'EngineerBuilderT3&SUB',
+        PlatoonTemplate = 'EngineerBuilderT3&SUBSwarm',
         Priority = 870,
         DelayEqualBuildPlattons = {'NukeBuilder', 3},
         InstanceCount = 1, 
@@ -156,7 +156,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Strategic Builder',
 
     Builder {
         BuilderName = 'Swarm SML Overwhelm',
-        PlatoonTemplate = 'EngineerBuilderT3&SUB',
+        PlatoonTemplate = 'EngineerBuilderT3&SUBSwarm',
         Priority = 850,
         DelayEqualBuildPlattons = {'NukeBuilder', 3},
         InstanceCount = 2, 
@@ -199,7 +199,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Strategic Builder',
 
     Builder {
         BuilderName = 'Swarm RapidArtillery',
-        PlatoonTemplate = 'T3EngineerBuilderSUB',
+        PlatoonTemplate = 'T3EngineerBuilderSUBSwarm',
         Priority = 1000,
         DelayEqualBuildPlattons = {'Artillery', 3},
         InstanceCount = 1,
@@ -234,7 +234,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Strategic Builder',
 
     Builder {
         BuilderName = 'Swarm T4 Artillery',
-        PlatoonTemplate = 'T3EngineerBuilderSUB',
+        PlatoonTemplate = 'T3EngineerBuilderSUBSwarm',
         Priority = 1000,
         DelayEqualBuildPlattons = {'Artillery', 3},
         InstanceCount = 1,
@@ -269,7 +269,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Strategic Builder',
 
     Builder {
         BuilderName = 'Swarm T3 Artillery',
-        PlatoonTemplate = 'T3EngineerBuilderSUB',
+        PlatoonTemplate = 'T3EngineerBuilderSUBSwarm',
         Priority = 1000,
         DelayEqualBuildPlattons = {'Artillery', 3},
         InstanceCount = 1,

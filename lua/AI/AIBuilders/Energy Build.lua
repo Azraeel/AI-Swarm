@@ -14,7 +14,7 @@ BuilderGroup {
     BuildersType = 'EngineerBuilder',
     Builder {
         BuilderName = 'Swarm Power low trend',
-        PlatoonTemplate = 'EngineerBuilder',
+        PlatoonTemplate = 'T1EngineerBuilderSwarm',
         Priority = 650,
         InstanceCount = 2,                                                     
         DelayEqualBuildPlattons = {'Energy', 3},
@@ -31,8 +31,11 @@ BuilderGroup {
         BuilderData = {
             NumAssistees = 1,
             Construction = {
-                AdjacencyCategory = categories.FACTORY * categories.STRUCTURE * (categories.AIR + categories.LAND),
-                AdjacencyDistance = 50,
+                AdjacencyPriority = {
+                    categories.STRUCTURE * categories.FACTORY * categories.AIR,
+                    categories.RADAR * categories.STRUCTURE,
+                    categories.FACTORY * categories.STRUCTURE * categories.LAND,
+                },
                 BuildClose = true,
                 LocationType = 'LocationType',
                 BuildStructures = {
@@ -48,7 +51,7 @@ BuilderGroup {
 
     Builder {
         BuilderName = 'Swarm Power low trend - Scale Power',
-        PlatoonTemplate = 'EngineerBuilder',
+        PlatoonTemplate = 'T1EngineerBuilderSwarm',
         Priority = 660,
         InstanceCount = 3,                                                     
         DelayEqualBuildPlattons = {'Energy', 3},
@@ -67,8 +70,11 @@ BuilderGroup {
         BuilderData = {
             NumAssistees = 1,
             Construction = {
-                AdjacencyCategory = categories.FACTORY * categories.STRUCTURE * (categories.AIR + categories.LAND),
-                AdjacencyDistance = 50,
+                AdjacencyPriority = {
+                    categories.STRUCTURE * categories.FACTORY * categories.AIR,
+                    categories.RADAR * categories.STRUCTURE,
+                    categories.FACTORY * categories.STRUCTURE * categories.LAND,
+                },
                 BuildClose = true,
                 LocationType = 'LocationType',
                 BuildStructures = {
@@ -80,7 +86,7 @@ BuilderGroup {
 
     Builder {
         BuilderName = 'Swarm Power Hydrocarbon Normal',
-        PlatoonTemplate = 'EngineerBuilder',
+        PlatoonTemplate = 'T1EngineerBuilderSwarm',
         Priority = 660,
         DelayEqualBuildPlattons = {'Energy', 1},
         InstanceCount = 1,
@@ -108,7 +114,7 @@ BuilderGroup {
 
     Builder {
         BuilderName = 'S2 Power',
-        PlatoonTemplate = 'T2EngineerBuilder',
+        PlatoonTemplate = 'T2EngineerBuilderSwarm',
         Priority = 1000,
         InstanceCount = 1,
         BuilderConditions = {
@@ -126,8 +132,12 @@ BuilderGroup {
             Construction = {
                 DesiresAssist = true,
                 BuildClose = false,
-                AdjacencyCategory = (categories.STRUCTURE * categories.SHIELD) + (categories.FACTORY * (categories.TECH3 + categories.TECH2 + categories.TECH1)),
-                AvoidCategory = categories.ENERGYPRODUCTION * categories.TECH2,
+                AdjacencyPriority = {
+                    categories.SHIELD * categories.STRUCTURE,
+                    categories.STRUCTURE * categories.FACTORY * categories.AIR,
+                    categories.RADAR * categories.STRUCTURE,
+                    categories.FACTORY * categories.STRUCTURE * categories.LAND,
+                },
                 maxUnits = 1,
                 maxRadius = 10,
                 LocationType = 'LocationType',
@@ -144,7 +154,7 @@ BuilderGroup {
 
     Builder {
         BuilderName = 'S3 Power',
-        PlatoonTemplate = 'EngineerBuilderT3&SUB',
+        PlatoonTemplate = 'EngineerBuilderT3&SUBSwarm',
         Priority = 2700,
         DelayEqualBuildPlattons = {'Energy', 10},
         InstanceCount = 1,
@@ -159,8 +169,14 @@ BuilderGroup {
             Construction = {
                 DesiresAssist = true,
                 BuildClose = false,
-                AdjacencyCategory = (categories.STRUCTURE * categories.SHIELD) + (categories.FACTORY * (categories.TECH3 + categories.TECH2 + categories.TECH1)),
-                AvoidCategory = categories.ENERGYPRODUCTION * categories.TECH3,
+                AdjacencyPriority = {
+                    categories.SHIELD * categories.STRUCTURE,
+                    categories.MASSPRODUCTION * categories.TECH3,
+                    categories.STRUCTURE * categories.GATE,
+                    categories.STRUCTURE * categories.FACTORY * categories.AIR,
+                    categories.RADAR * categories.STRUCTURE,
+                    categories.FACTORY * categories.STRUCTURE * categories.LAND,
+                },
                 maxUnits = 1,
                 maxRadius = 15,
                 LocationType = 'LocationType',
@@ -177,7 +193,7 @@ BuilderGroup {
 
     Builder {
         BuilderName = 'T1 Energy Storage Builder OverCharge',
-        PlatoonTemplate = 'EngineerBuilder',
+        PlatoonTemplate = 'T1EngineerBuilderSwarm',
         Priority = 800,
         BuilderConditions = {
             { MIBC, 'GreaterThanGameTime', { 300 } },
@@ -196,7 +212,7 @@ BuilderGroup {
     },
     Builder {
         BuilderName = 'T1 Energy Storage Builder',
-        PlatoonTemplate = 'EngineerBuilder',
+        PlatoonTemplate = 'T1EngineerBuilderSwarm',
         Priority = 500,
         BuilderConditions = {
             { MIBC, 'GreaterThanGameTime', { 600 } },
@@ -222,7 +238,7 @@ BuilderGroup {
 
     Builder {
         BuilderName = 'S1 Reclaim T1 Pgens',
-        PlatoonTemplate = 'EngineerBuilder',
+        PlatoonTemplate = 'T1EngineerBuilderSwarm',
         PlatoonAIPlan = 'ReclaimStructuresAI',
         Priority = 790,
         InstanceCount = 2,
@@ -240,7 +256,7 @@ BuilderGroup {
 
     Builder {
         BuilderName = 'S1 Reclaim T1 Pgens cap',
-        PlatoonTemplate = 'EngineerBuilder',
+        PlatoonTemplate = 'T1EngineerBuilderSwarm',
         PlatoonAIPlan = 'ReclaimStructuresAI',
         Priority = 790,
         InstanceCount = 2,
@@ -262,7 +278,7 @@ BuilderGroup {
 
     Builder {
         BuilderName = 'S1 Reclaim T2 Pgens',
-        PlatoonTemplate = 'EngineerBuilder',
+        PlatoonTemplate = 'T1EngineerBuilderSwarm',
         PlatoonAIPlan = 'ReclaimStructuresAI',
         Priority = 790,
         InstanceCount = 2,
@@ -280,7 +296,7 @@ BuilderGroup {
 
     Builder {
         BuilderName = 'S1 Reclaim T2 Pgens cap',
-        PlatoonTemplate = 'EngineerBuilder',
+        PlatoonTemplate = 'T1EngineerBuilderSwarm',
         PlatoonAIPlan = 'ReclaimStructuresAI',
         Priority = 790,
         InstanceCount = 2,
@@ -302,7 +318,7 @@ BuilderGroup {
 
     Builder {
         BuilderName = 'S1 Reclaim E storage cap',
-        PlatoonTemplate = 'EngineerBuilder',
+        PlatoonTemplate = 'T1EngineerBuilderSwarm',
         PlatoonAIPlan = 'ReclaimStructuresAI',
         Priority = 790,
         InstanceCount = 2,
@@ -330,7 +346,7 @@ BuilderGroup {
 
     Builder {
         BuilderName = 'S2 Power Expansion',
-        PlatoonTemplate = 'T2EngineerBuilder',
+        PlatoonTemplate = 'T2EngineerBuilderSwarm',
         Priority = 1000,
         InstanceCount = 1,
         BuilderConditions = {
@@ -348,8 +364,12 @@ BuilderGroup {
             Construction = {
                 DesiresAssist = true,
                 BuildClose = false,
-                AdjacencyCategory = (categories.STRUCTURE * categories.SHIELD) + (categories.FACTORY * (categories.TECH3 + categories.TECH2 + categories.TECH1)),
-                AvoidCategory = categories.ENERGYPRODUCTION * categories.TECH2,
+                AdjacencyPriority = {
+                    categories.SHIELD * categories.STRUCTURE,
+                    categories.STRUCTURE * categories.FACTORY * categories.AIR,
+                    categories.RADAR * categories.STRUCTURE,
+                    categories.FACTORY * categories.STRUCTURE * categories.LAND,
+                },
                 maxUnits = 1,
                 maxRadius = 10,
                 LocationType = 'LocationType',
@@ -366,7 +386,7 @@ BuilderGroup {
 
     Builder {
         BuilderName = 'S3 Power Expansion',
-        PlatoonTemplate = 'EngineerBuilderT3&SUB',
+        PlatoonTemplate = 'EngineerBuilderT3&SUBSwarm',
         Priority = 2700,
         DelayEqualBuildPlattons = {'Energy', 10},
         InstanceCount = 1,
@@ -383,8 +403,14 @@ BuilderGroup {
             Construction = {
                 DesiresAssist = true,
                 BuildClose = false,
-                AdjacencyCategory = (categories.STRUCTURE * categories.SHIELD) + (categories.FACTORY * (categories.TECH3 + categories.TECH2 + categories.TECH1)),
-                AvoidCategory = categories.ENERGYPRODUCTION * categories.TECH3,
+                AdjacencyPriority = {
+                    categories.SHIELD * categories.STRUCTURE,
+                    categories.MASSPRODUCTION * categories.TECH3,
+                    categories.STRUCTURE * categories.GATE,
+                    categories.STRUCTURE * categories.FACTORY * categories.AIR,
+                    categories.RADAR * categories.STRUCTURE,
+                    categories.FACTORY * categories.STRUCTURE * categories.LAND,
+                },
                 maxUnits = 1,
                 maxRadius = 15,
                 LocationType = 'LocationType',
@@ -401,7 +427,7 @@ BuilderGroup {
 
     Builder {
         BuilderName = 'S1 Reclaim T2 Pgens Expansion',
-        PlatoonTemplate = 'EngineerBuilder',
+        PlatoonTemplate = 'T1EngineerBuilderSwarm',
         PlatoonAIPlan = 'ReclaimStructuresAI',
         Priority = 790,
         InstanceCount = 2,
@@ -419,7 +445,7 @@ BuilderGroup {
 
     Builder {
         BuilderName = 'S1 Reclaim T2 Pgens Cap Expansion',
-        PlatoonTemplate = 'EngineerBuilder',
+        PlatoonTemplate = 'T1EngineerBuilderSwarm',
         PlatoonAIPlan = 'ReclaimStructuresAI',
         Priority = 790,
         InstanceCount = 2,

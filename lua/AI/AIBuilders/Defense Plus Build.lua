@@ -17,7 +17,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Defense Plus Builders',
 
     --[[ Builder {
         BuilderName = 'AI-Swarm T1 Mass Adjacency Defense Engineer',
-        PlatoonTemplate = 'EngineerBuilderALLTECH',
+        PlatoonTemplate = 'EngineerBuilderALLTECHSwarm',
         Priority = 800,
         BuilderConditions = {
             { UCBC, 'HaveGreaterThanUnitsWithCategory', { 0, 'MASSEXTRACTION TECH2, MASSEXTRACTION TECH3'}},
@@ -48,7 +48,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Defense Plus Builders',
 
     Builder {
         BuilderName = 'AI-Swarm T2 Mass Adjacency Defense Engineer',
-        PlatoonTemplate = 'EngineerBuilderT2T3',
+        PlatoonTemplate = 'EngineerBuilderT2T3Swarm',
         Priority = 900,
         BuilderConditions = {
             { UCBC, 'HaveGreaterThanUnitsWithCategory', { 2, 'MASSEXTRACTION TECH2, MASSEXTRACTION TECH3'}},
@@ -79,7 +79,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Defense Plus Builders',
 
     Builder {
         BuilderName = 'AI-Swarm T3 Mass Adjacency Defense Engineer',
-        PlatoonTemplate = 'EngineerBuilderT3&SUB',
+        PlatoonTemplate = 'EngineerBuilderT3&SUBSwarm',
         Priority = 940,
         BuilderConditions = {
             { UCBC, 'HaveGreaterThanUnitsWithCategory', { 4, 'MASSEXTRACTION TECH2, MASSEXTRACTION TECH3'}},
@@ -115,7 +115,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Defense Plus Builders Expansion',
 
     Builder {
         BuilderName = 'AI-Swarm T1 Base D AA Engineer - Response',
-        PlatoonTemplate = 'EngineerBuilderALLTECH',
+        PlatoonTemplate = 'EngineerBuilderALLTECHSwarm',
         Priority = 900,
         InstanceCount = 1,
         BuilderConditions = {
@@ -144,7 +144,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Defense Plus Builders Expansion',
 
     Builder {
         BuilderName = 'AI-Swarm T1 Base D PD Engineer - Response',
-        PlatoonTemplate = 'EngineerBuilderALLTECH',
+        PlatoonTemplate = 'EngineerBuilderALLTECHSwarm',
         Priority = 900,
         InstanceCount = 1,
         BuilderConditions = {
@@ -173,7 +173,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Defense Plus Builders Expansion',
 
     Builder {
         BuilderName = 'AI-Swarm T2 Base D AA Engineer - Response',
-        PlatoonTemplate = 'EngineerBuilderT2T3',
+        PlatoonTemplate = 'EngineerBuilderT2T3Swarm',
         Priority = 900,
         InstanceCount = 1,
         BuilderConditions = {
@@ -202,7 +202,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Defense Plus Builders Expansion',
 
     Builder {
         BuilderName = 'AI-Swarm T2 Base D PD Engineer - Response',
-        PlatoonTemplate = 'EngineerBuilderT2T3',
+        PlatoonTemplate = 'EngineerBuilderT2T3Swarm',
         Priority = 900,
         InstanceCount = 1,
         BuilderConditions = {
@@ -231,7 +231,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Defense Plus Builders Expansion',
 
     Builder {
         BuilderName = 'AI-Swarm T2 Base D Artillery Engineer - Response',
-        PlatoonTemplate = 'EngineerBuilderT2T3',
+        PlatoonTemplate = 'EngineerBuilderT2T3Swarm',
         Priority = 900,
         InstanceCount = 1,
         BuilderConditions = {
@@ -258,7 +258,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Defense Plus Builders Expansion',
 
     Builder {
         BuilderName = 'AI-Swarm T3 Base D Engineer AA - Response',
-        PlatoonTemplate = 'EngineerBuilderT3&SUB',
+        PlatoonTemplate = 'EngineerBuilderT3&SUBSwarm',
         Priority = 945,
         InstanceCount = 1,
         BuilderConditions = {
