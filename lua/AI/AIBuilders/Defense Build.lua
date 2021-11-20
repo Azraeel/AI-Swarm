@@ -570,9 +570,15 @@ BuilderGroup { BuilderGroupName = 'Swarm SMD Builder',
         InstanceCount = 1,
 
         BuilderConditions = {
-            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.05, 1.05 }},
+            { MIBC, 'GreaterThanGameTime', { 1800 } },
 
-            { EBC, 'GreaterThanEnergyIncomeSwarm', { 500 }},
+            { EBC, 'GreaterThanMassTrendSwarm', { 0.0 } },
+
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.01, 1.02 }},
+
+            { EBC, 'GreaterThanEconStorageCurrent', { 200, 2000}},     
+
+            { EBC, 'GreaterThanEnergyIncomeSwarm', { 200 }},
 
             { UCBC, 'HaveLessThanUnitsWithCategory', { 1, categories.STRUCTURE * categories.DEFENSE * categories.ANTIMISSILE * categories.TECH3 } },
 
@@ -581,12 +587,6 @@ BuilderGroup { BuilderGroupName = 'Swarm SMD Builder',
             { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 0, categories.ENGINEER * categories.TECH3}},
 
             { UCBC, 'BuildOnlyOnLocationSwarm', { 'LocationType', 'MAIN' } },
-
-            { MIBC, 'GreaterThanGameTime', { 1800 } },
-
-            { EBC, 'GreaterThanMassTrendSwarm', { 0.0 } },
-
-            { EBC, 'GreaterThanEconStorageCurrent', { 200, 2000}},     
         },
         BuilderType = 'Any',
         BuilderData = {
@@ -617,19 +617,19 @@ BuilderGroup { BuilderGroupName = 'Swarm SMD Builder',
         BuilderConditions = {
             { UCBC, 'HaveGreaterThanUnitsWithCategory', { 1, categories.ENERGYPRODUCTION * categories.TECH3 } },
             
-            { EBC, 'GreaterThanEnergyIncomeSwarm', { 500 }},
+            { EBC, 'GreaterThanEnergyIncomeSwarm', { 200 }},
+
+            { EBC, 'GreaterThanMassTrendSwarm', { 0.0 } },
+
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.02, 1.03 }},
+
+            { EBC, 'GreaterThanEconStorageCurrent', { 200, 2000}},
 
             { UCBC, 'HaveUnitRatioAtLocationSwarmRadiusVersusEnemy', { 1.20, 'LocationType', 90, categories.STRUCTURE * categories.DEFENSE * categories.ANTIMISSILE * categories.TECH3, '<', categories.SILO * categories.NUKE * (categories.TECH3 + categories.EXPERIMENTAL) } },
 
             { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 0, categories.ENGINEER * categories.TECH3}},
 
             { UCBC, 'BuildOnlyOnLocationSwarm', { 'LocationType', 'MAIN' } },
-
-            { EBC, 'GreaterThanMassTrendSwarm', { 0.0 } },
-
-            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.05, 1.05 }},
-
-            { EBC, 'GreaterThanEconStorageCurrent', { 200, 2000}},
         },
         BuilderType = 'Any',
         BuilderData = {
@@ -660,19 +660,19 @@ BuilderGroup { BuilderGroupName = 'Swarm SMD Builder',
         BuilderConditions = {
             { UCBC, 'HaveGreaterThanUnitsWithCategory', { 2, categories.ENERGYPRODUCTION * categories.TECH3 } },
             
-            { EBC, 'GreaterThanEnergyIncomeSwarm', { 500 }},
+            { EBC, 'GreaterThanEnergyIncomeSwarm', { 300 }},
+
+            { EBC, 'GreaterThanMassTrendSwarm', { 0.0 } },
+
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.03, 1.04 }},
+
+            { EBC, 'GreaterThanEconStorageCurrent', { 200, 2000}}, 
 
             { UCBC, 'HaveUnitRatioAtLocationSwarmRadiusVersusEnemy', { 3.00, 'LocationType', 90, categories.STRUCTURE * categories.DEFENSE * categories.ANTIMISSILE * categories.TECH3, '<', categories.SILO * categories.NUKE * categories.EXPERIMENTAL * categories.SERAPHIM } },
 
             { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 0, categories.ENGINEER * categories.TECH3}},
 
             { UCBC, 'BuildOnlyOnLocationSwarm', { 'LocationType', 'MAIN' } },
-
-            { EBC, 'GreaterThanMassTrendSwarm', { 0.0 } },
-
-            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.05, 1.1 }},
-
-            { EBC, 'GreaterThanEconStorageCurrent', { 200, 2000}}, 
         },
         BuilderType = 'Any',
         BuilderData = {
@@ -703,19 +703,19 @@ BuilderGroup { BuilderGroupName = 'Swarm SMD Builder',
         BuilderConditions = {
             { UCBC, 'HaveGreaterThanUnitsWithCategory', { 2, categories.ENERGYPRODUCTION * categories.TECH3 } },
             
-            { EBC, 'GreaterThanEnergyIncomeSwarm', { 500 }},
+            { EBC, 'GreaterThanEnergyIncomeSwarm', { 300 }},
+
+            { EBC, 'GreaterThanMassTrendSwarm', { 0.0 } },
+
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.03, 1.04 }},
+
+            { EBC, 'GreaterThanEconStorageCurrent', { 200, 2000}},    
         	
             { UCBC, 'HaveUnitRatioAtLocationSwarmRadiusVersusEnemy', { 1.50, 'LocationType', 90, categories.STRUCTURE * categories.DEFENSE * categories.ANTIMISSILE * categories.TECH3, '<',categories.SILO * categories.NUKE * (categories.TECH3 + categories.EXPERIMENTAL) } },
 
             { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 0, categories.ENGINEER * categories.TECH3}},
 
             { UCBC, 'BuildNotOnLocationSwarm', { 'LocationType', 'MAIN' } },
-
-            { EBC, 'GreaterThanMassTrendSwarm', { 0.0 } },
-
-            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.05, 1.1 }},
-
-            { EBC, 'GreaterThanEconStorageCurrent', { 200, 2000}},    
 
             { UCBC, 'HaveLessThanUnitsInCategoryBeingBuilt', { 1, categories.STRUCTURE * categories.DEFENSE * categories.ANTIMISSILE * (categories.TECH3 + categories.EXPERIMENTAL) } },
         },

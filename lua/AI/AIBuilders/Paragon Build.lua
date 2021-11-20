@@ -86,7 +86,7 @@ BuilderGroup {
     Builder {
         BuilderName = 'S4 Paragon 1st HighTrend',
         PlatoonTemplate = 'T3EngineerBuildernoSUBSwarm',
-        Priority = 3500,
+        Priority = 350,
         DelayEqualBuildPlattons = {'Paragon', 60},
         BuilderConditions = {
             { UCBC, 'HasNotParagon', {} },

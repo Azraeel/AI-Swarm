@@ -26,7 +26,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Experimental Builders',
         BuilderConditions = {
             { UCBC, 'UnitCapCheckLess', { 0.90 } },
 
-            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.02, 1.03 }},
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.01, 1.02 }},
 
             { EBC, 'GreaterThanEconStorageCurrent', { 200, 2000}},
             
@@ -66,7 +66,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Experimental Builders',
         BuilderConditions = {
             { UCBC, 'UnitCapCheckLess', { 0.90 } },
 
-            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.02, 1.03 }},
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.01, 1.02 }},
 
             { EBC, 'GreaterThanEconStorageCurrent', { 200, 2000}},
 
@@ -116,7 +116,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Experimental Builders',
 
             { EBC, 'GreaterThanMassTrendSwarm', { 0.0 } },
 
-            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.02, 1.03 }},
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.01, 1.02 }},
 
             { EBC, 'GreaterThanEconStorageCurrent', { 200, 2000}},
         },
@@ -163,7 +163,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Experimental Builders',
 
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
 
-            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.02, 1.03 }},
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.01, 1.02 }},
 
             { EBC, 'GreaterThanMassTrendSwarm', { 0.0 } },
 
@@ -210,7 +210,56 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Experimental Builders',
 
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
             
-            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.02, 1.03 }},
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.01, 1.02 }},
+
+            { EBC, 'GreaterThanMassTrendSwarm', { 0.0 } },
+
+            { EBC, 'GreaterThanEconStorageCurrent', { 200, 2000}},
+        },
+
+        BuilderType = 'Any',
+
+        BuilderData = {
+
+            NumAssistees = 3,
+            
+            Construction = {
+
+                DesiresAssist = true,
+
+                BuildClose = true,
+
+                AdjacencyCategory = categories.STRUCTURE * categories.SHIELD,
+
+                BuildStructures = {
+
+                    'T4LandExperimental1',
+
+                },
+
+                Location = 'LocationType',
+
+            }
+        }
+    },
+
+    Builder {
+        BuilderName = 'S Land Experimental - Rush',
+
+        PlatoonTemplate = 'T3EngineerBuildernoSUBSwarm',
+
+        Priority = 950,
+
+        InstanceCount = 1,
+
+        BuilderConditions = {
+            { UCBC, 'HaveLessThanUnitsWithCategory', { 1, categories.ENGINEERPRESET + categories.RASPRESET } },
+
+        	{ UCBC, 'HaveLessThanUnitsInCategoryBeingBuilt', { 1, categories.EXPERIMENTAL * categories.LAND}},
+
+            { UCBC, 'UnitCapCheckLess', { 0.95 } },
+            
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.05, 1.06 }},
 
             { EBC, 'GreaterThanMassTrendSwarm', { 0.0 } },
 

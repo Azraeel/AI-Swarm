@@ -303,4 +303,42 @@ BuilderGroup { BuilderGroupName = 'Swarm Defense Plus Builders Expansion',
             }
         }
     },
+
+    Builder {
+        BuilderName = 'AI-Swarm T3 Base D Engineer AA - Response To Ratio',
+        PlatoonTemplate = 'T3EngineerBuildernoSUBSwarm',
+        Priority = 1025,
+        InstanceCount = 1,                                      
+        BuilderConditions = {
+            { UCBC, 'AirStrengthRatioLessThan', { 1.5 } },
+
+            { EBC, 'GreaterThanMassTrendSwarm', { 0.0 } },
+
+            { EBC, 'GreaterThanEnergyIncomeSwarm', { 100 }},
+
+            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.02, 1.03 }},
+
+            { EBC, 'GreaterThanEconStorageCurrent', { 200, 2000}},
+
+            { UCBC, 'UnitsLessAtLocation', { 'LocationType', 10, categories.STRUCTURE * categories.DEFENSE * categories.ANTIAIR * categories.TECH3 }},
+        },
+        BuilderType = 'Any',
+        BuilderData = {
+        	NumAssistees = 1,
+            Construction = {
+            	AdjacencyBias = 'Forward',
+                AdjacencyPriority = {
+                    categories.STRUCTURE * categories.SHIELD,
+                    categories.STRUCTURE * categories.FACTORY,
+                },
+                maxUnits = 1,
+                maxRadius = 8,
+                BuildClose = false,
+                BuildStructures = {
+                    'T3AADefense',
+                },
+                Location = 'LocationType',
+            }
+        }
+    },  
 }
