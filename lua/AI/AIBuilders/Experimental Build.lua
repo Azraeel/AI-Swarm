@@ -12,6 +12,11 @@ local BasePanicZone, BaseMilitaryZone, BaseEnemyZone = import('/mods/AI-Swarm/lu
 -- from { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.03, 1.04 }},
 -- to { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.02, 1.03 }},
 
+-- Yet another reduction to Experimental Econ Efficiency :)
+-- from { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.02, 1.03 }},
+-- to { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.01, 1.02 }},
+-- Hopefully Encourage A Choice between Nukes & Experimentals and not always Nukes First!
+
 BuilderGroup { BuilderGroupName = 'Swarm Air Experimental Builders',                          
     BuildersType = 'EngineerBuilder',
         

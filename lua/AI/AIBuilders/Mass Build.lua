@@ -131,8 +131,8 @@ BuilderGroup {
                 DesiresAssist = true,
                 NumAssistees = 4,
                 AdjacencyPriority = {
-                    categories.STRUCTURE * categories.SHIELD,
                     categories.ENERGYPRODUCTION * categories.TECH3,
+                    categories.STRUCTURE * categories.SHIELD,
                 },
                 maxUnits = 1,
                 maxRadius = 15,
@@ -197,6 +197,7 @@ BuilderGroup {
             Construction = {
                 AdjacencyCategory = categories.STRUCTURE * categories.MASSEXTRACTION * (categories.TECH2 + categories.TECH3),
                 AdjacencyDistance = 250,
+                AdjRequired = true,
                 ThreatMin = -3,
                 ThreatMax = 0,
                 ThreatRings = 0,
@@ -236,6 +237,7 @@ BuilderGroup {
             Construction = {
                 AdjacencyCategory = categories.STRUCTURE * categories.MASSEXTRACTION * (categories.TECH2 + categories.TECH3),
                 AdjacencyDistance = 750,
+                AdjRequired = true,
                 ThreatMin = -3,
                 ThreatMax = 0,
                 ThreatRings = 0,

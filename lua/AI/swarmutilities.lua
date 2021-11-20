@@ -781,6 +781,114 @@ function AirScoutPatrolSwarmAIThread(self, aiBrain)
     end
 end
 
+CountSoonMassSpotsSwarm = function(aiBrain)
+    --LOG("Are we starting CountSoonMassSpotsSwarm")
+    local enemies={}
+    local VDist2Sq = VDist2Sq
+    for i,v in ArmyBrains do
+        if ArmyIsCivilian(v:GetArmyIndex()) or not IsEnemy(aiBrain:GetArmyIndex(),v:GetArmyIndex()) or v.Result=="defeat" then continue end
+        local index = v:GetArmyIndex()
+        local astartX, astartZ = v:GetArmyStartPos()
+        local aiBrainstart = {Position={astartX, GetTerrainHeight(astartX, astartZ), astartZ},army=i}
+        table.insert(enemies,aiBrainstart)
+    end
+    local startX, startZ = aiBrain:GetArmyStartPos()
+    table.sort(enemies,function(a,b) return VDist2Sq(a.Position[1],a.Position[3],startX,startZ)<VDist2Sq(b.Position[1],b.Position[3],startX,startZ) end)
+    while not aiBrain.cmanager do WaitTicks(20) end
+    if not aiBrain.expansionMex or not aiBrain.expansionMex[1].priority then
+        --initialize expansion priority
+        local starts = AIUtils.AIGetMarkerLocations(aiBrain, 'Start Location')
+        local Expands = AIUtils.AIGetMarkerLocations(aiBrain, 'Expansion Area')
+        local BigExpands = AIUtils.AIGetMarkerLocations(aiBrain, 'Large Expansion Area')
+        if not aiBrain.emanager then aiBrain.emanager={} end
+        aiBrain.emanager.expands = {}
+        aiBrain.emanager.enemies=enemies
+        aiBrain.emanager.enemy=enemies[1]
+        for _, v in Expands do
+            v.expandtype='expand'
+            v.mexnum=0
+            v.mextable={}
+            v.relevance=0
+            v.owner=nil
+            table.insert(aiBrain.emanager.expands,v)
+        end
+        for _, v in BigExpands do
+            v.expandtype='bigexpand'
+            v.mexnum=0
+            v.mextable={}
+            v.relevance=0
+            v.owner=nil
+            table.insert(aiBrain.emanager.expands,v)
+        end
+        for _, v in starts do
+            v.expandtype='start'
+            v.mexnum=0
+            v.mextable={}
+            v.relevance=0
+            v.owner=nil
+            table.insert(aiBrain.emanager.expands,v)
+        end
+        aiBrain.expansionMex={}
+        local expands={}
+        for k, v in Scenario.MasterChain._MASTERCHAIN_.Markers do
+            if v.type == 'Mass' then
+                table.sort(aiBrain.emanager.expands,function(a,b) return VDist2Sq(a.Position[1],a.Position[3],v.position[1],v.position[3])<VDist2Sq(b.Position[1],b.Position[3],v.position[1],v.position[3]) end)
+                if VDist3Sq(aiBrain.emanager.expands[1].Position,v.position)<25*25 then
+                    table.insert(aiBrain.emanager.expands[1].mextable,{v,Position = v.position, Name = k})
+                    aiBrain.emanager.expands[1].mexnum=aiBrain.emanager.expands[1].mexnum+1
+                    table.insert(aiBrain.expansionMex, {v,Position = v.position, Name = k,ExpandMex=true})
+                else
+                    table.insert(aiBrain.expansionMex, {v,Position = v.position, Name = k})
+                end
+            end
+        end
+        for _,v in aiBrain.expansionMex do
+            table.sort(aiBrain.emanager.expands,function(a,b) return VDist2Sq(a.Position[1],a.Position[3],v.Position[1],v.Position[3])<VDist2Sq(b.Position[1],b.Position[3],v.Position[1],v.Position[3]) end)
+            v.distsq=VDist2Sq(aiBrain.emanager.expands[1].Position[1],aiBrain.emanager.expands[1].Position[2],v.Position[1],v.Position[3])
+            if v.ExpandMex then
+                v.priority=aiBrain.emanager.expands[1].mexnum
+                v.expand=aiBrain.emanager.expands[1]
+                v.expand.taken=0
+                v.expand.takentime=0
+            else
+                v.priority=1
+            end
+        end
+    end
+    aiBrain.cmanager.unclaimedmexcount=0
+    local massmarkers={}
+        for _, v in Scenario.MasterChain._MASTERCHAIN_.Markers do
+            if v.type == 'Mass' then
+                if v.position[1] <= 8 or v.position[1] >= ScenarioInfo.size[1] - 8 or v.position[3] <= 8 or v.position[3] >= ScenarioInfo.size[2] - 8 then
+                    -- mass marker is too close to border, skip it.
+                    continue
+                end 
+                table.insert(massmarkers,v)
+            end
+        end
+    while aiBrain.Result ~= "defeat" do
+        local markercache=table.copy(massmarkers)
+        for _=0,10 do
+            local soonmexes={}
+            local unclaimedmexcount=0
+            for i,v in markercache do
+                if not CanBuildStructureAt(aiBrain, 'ueb1103', v.position) then 
+                    table.remove(markercache,i) 
+                    continue 
+                end
+                if aiBrain:GetNumUnitsAroundPoint(categories.MASSEXTRACTION + categories.ENGINEER, v.position, 50*ScenarioInfo.size[1]/256, 'Ally')>0 then
+                    unclaimedmexcount=unclaimedmexcount+1
+                    table.insert(soonmexes,{Position = v.position, Name = i})
+                end
+            end
+            aiBrain.cmanager.unclaimedmexcount=(aiBrain.cmanager.unclaimedmexcount+unclaimedmexcount)/2
+            aiBrain.emanager.soonmexes=soonmexes
+            --LOG(repr(aiBrain.Nickname)..' unclaimedmex='..repr(aiBrain.cmanager.unclaimedmexcount))
+            WaitTicks(20)
+        end
+    end
+end
+
 function AIGetMassMarkerLocations(aiBrain, includeWater, waterOnly)
     local markerList = {}
         local markers = ScenarioUtils.GetMarkers()

@@ -258,19 +258,20 @@ function AIBuildAdjacencyPrioritySwarm(aiBrain, builder, buildingType , closeToB
             --LOG("What is Reference " .. repr(reference))
             for _,v in reference do
                 --LOG("What is V " .. repr(v))
-                table.sort(v,function(a,b) return VDist3Sq(a:GetPosition(),location)<VDist3Sq(b:GetPosition(),location) end)
+                SWARMSORT(v,function(a,b) return VDist3Sq(a:GetPosition(),aiBrain.emanager.enemy.Position)<VDist3Sq(b:GetPosition(),aiBrain.emanager.enemy.Position) end)
+                --LOG("What is Enemy Position " .. repr(aiBrain.emanager.enemy.Position))
             end
         elseif AdjacencyBias=='Back' then
             for _,v in reference do
-                table.sort(v,function(a,b) return VDist3Sq(a:GetPosition(),location)>VDist3Sq(b:GetPosition(),location) end)
+                SWARMSORT(v,function(a,b) return VDist3Sq(a:GetPosition(),aiBrain.emanager.enemy.Position)>VDist3Sq(b:GetPosition(),aiBrain.emanager.enemy.Position) end)
             end
         elseif AdjacencyBias=='BackClose' then
             for _,v in reference do
-                table.sort(v,function(a,b) return VDist3Sq(a:GetPosition(),location)/VDist3Sq(a:GetPosition(),builder:GetPosition())>VDist3Sq(b:GetPosition(),location)/VDist3Sq(b:GetPosition(),builder:GetPosition()) end)
+                SWARMSORT(v,function(a,b) return VDist3Sq(a:GetPosition(),aiBrain.emanager.enemy.Position)/VDist3Sq(a:GetPosition(),builder:GetPosition())>VDist3Sq(b:GetPosition(),aiBrain.emanager.enemy.Position)/VDist3Sq(b:GetPosition(),builder:GetPosition()) end)
             end
         elseif AdjacencyBias=='ForwardClose' then
             for _,v in reference do
-                table.sort(v,function(a,b) return VDist3Sq(a:GetPosition(),location)*VDist3Sq(a:GetPosition(),builder:GetPosition())<VDist3Sq(b:GetPosition(),location)*VDist3Sq(b:GetPosition(),builder:GetPosition()) end)
+                SWARMSORT(v,function(a,b) return VDist3Sq(a:GetPosition(),aiBrain.emanager.enemy.Position)*VDist3Sq(a:GetPosition(),builder:GetPosition())<VDist3Sq(b:GetPosition(),aiBrain.emanager.enemy.Position)*VDist3Sq(b:GetPosition(),builder:GetPosition()) end)
             end
         end
     end

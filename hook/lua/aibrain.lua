@@ -1,5 +1,7 @@
 WARN('['..string.gsub(debug.getinfo(1).source, ".*\\(.*.lua)", "%1")..', line:'..debug.getinfo(1).currentline..'] * AI-Swarm: offset aibrain.lua' )
 
+local SwarmUtils = import('/mods/AI-Swarm/lua/AI/Swarmutilities.lua')
+
 local lastCall = 0
 local SWARMGETN = table.getn
 local SWARMINSERT = table.insert
@@ -26,6 +28,7 @@ AIBrain = Class(SwarmAIBrainClass) {
             self.Swarm = true
             self:ForkThread(self.ParseIntelThreadSwarm)
             self:ForkThread(self.StrategicMonitorThreadSwarm, ALLBPS)
+            self:ForkThread(SwarmUtils.CountSoonMassSpotsSwarm)
 
         end
 
@@ -34,6 +37,7 @@ AIBrain = Class(SwarmAIBrainClass) {
     InitializeSkirmishSystems = function(self)
         SwarmAIBrainClass.InitializeSkirmishSystems(self)
 
+        self.cmanager = {}
         self.EnemyACU = {}
         for _, v in ArmyBrains do
             self.EnemyACU[v:GetArmyIndex()] = {
