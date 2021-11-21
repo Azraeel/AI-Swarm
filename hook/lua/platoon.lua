@@ -2810,6 +2810,7 @@ Platoon = Class(SwarmPlatoonClass) {
         end
     end,
 
+    -- Credit to Chp2001 for this function 
     MexBuildAISwarm = function(self)
         local aiBrain = self:GetBrain()
         local platoonUnits = GetPlatoonUnits(self)

@@ -559,7 +559,7 @@ function EngineerMoveWithSafePathSwarmAdvanced(aiBrain, eng, destination, whatTo
                     local bool,markers=MABC.CanBuildOnMassEngSwarm(aiBrain, waypointPath, 30)
                     if bool then
                         --LOG('We can build on a mass marker within 30')
-                        --local massMarker = RUtils.GetClosestMassMarkerToPos(aiBrain, waypointPath)
+                        --local massMarker = SwarmUtils.GetClosestMassMarkerToPos(aiBrain, waypointPath)
                         --LOG('Mass Marker'..repr(massMarker))
                         --LOG('Attempting second mass marker')
                         for _,massMarker in markers do

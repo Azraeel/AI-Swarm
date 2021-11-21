@@ -112,7 +112,7 @@ function EngineerGeneratePathSwarm(aiBrain, startNode, endNode, threatType, thre
                 for ThreatWeight, PathNodes in ThreatWeightedPaths do
                     -- check if the path is older then 30 seconds.
                     if GameTime - 30 > PathNodes.settime then
-                        --LOG('* AI-RNG: GeneratePathRNG() Found old path: storetime: '..PathNodes.settime..' store+60sec: '..(PathNodes.settime + 30)..' actual time: '..GameTime..' timediff= '..(PathNodes.settime + 30 - GameTime) )
+                        --LOG('* AI-Swarm: GeneratePathSwarm() Found old path: storetime: '..PathNodes.settime..' store+60sec: '..(PathNodes.settime + 30)..' actual time: '..GameTime..' timediff= '..(PathNodes.settime + 30 - GameTime) )
                         -- delete the old path from the cache.
                         aiBrain.PathCache[StartNodeName][EndNodeName][ThreatWeight] = nil
                     end
