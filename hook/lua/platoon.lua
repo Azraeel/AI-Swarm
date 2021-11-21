@@ -2657,10 +2657,32 @@ Platoon = Class(SwarmPlatoonClass) {
                 -- issue buildcommand to block other engineers from caping mex/hydros or to reserve the buildplace
                 aiBrain:BuildStructure(eng, whatToBuild, {buildLocation[1], buildLocation[3], 0}, buildRelative)
                 -- wait until we are close to the buildplace so we have intel
+                local engStuckCount = 0
+                local Lastdist
+                local dist
                 while not eng.Dead do
                     PlatoonPos = eng:GetPosition()
-                    if VDist2(PlatoonPos[1] or 0, PlatoonPos[3] or 0, buildLocation[1] or 0, buildLocation[3] or 0) < 12 then
+                    dist = VDist2(PlatoonPos[1] or 0, PlatoonPos[3] or 0, buildLocation[1] or 0, buildLocation[3] or 0)
+                    if dist < 12 then
                         break
+                    end
+                    if Lastdist ~= dist then
+                        engStuckCount = 0
+                        Lastdist = dist
+                    else
+                        engStuckCount = engStuckCount + 1
+                        --LOG('* AI-Swarm: * EngineerBuildAISwarm: has no moved during move to build position look, adding one, current is '..engStuckCount)
+                        if engStuckCount > 40 and not eng:IsUnitState('Building') then
+                            --LOG('* AI-Swarm: * EngineerBuildAISwarm: Stuck while moving to build position. Stuck='..engStuckCount)
+                            break
+                        end
+                    end
+                    if (whatToBuild == 'ueb1103' or whatToBuild == 'uab1103' or whatToBuild == 'urb1103' or whatToBuild == 'xsb1103') then
+                        if aiBrain:GetNumUnitsAroundPoint(categories.STRUCTURE * categories.MASSEXTRACTION, buildLocation, 1, 'Ally') > 0 then
+                            --LOG('Extractor already present with 1 radius, return')
+                            eng.PlatoonHandle:Stop()
+                            return
+                        end
                     end
                     if eng:IsUnitState("Moving") or eng:IsUnitState("Capturing") then
                         if GetNumUnitsAroundPoint(aiBrain, categories.LAND * categories.ENGINEER * (categories.TECH1 + categories.TECH2), PlatoonPos, 10, 'Enemy') > 0 then
@@ -2698,6 +2720,25 @@ Platoon = Class(SwarmPlatoonClass) {
                 AIUtils.EngineerTryRepair(aiBrain, eng, whatToBuild, buildLocation)
                 -- otherwise, go ahead and build the next structure there
                 aiBrain:BuildStructure(eng, whatToBuild, {buildLocation[1], buildLocation[3], 0}, buildRelative)
+                if (whatToBuild == 'ueb1103' or whatToBuild == 'uab1103' or whatToBuild == 'urb1103' or whatToBuild == 'xsb1103') and eng.PlatoonHandle.PlatoonData.Construction.RepeatBuild then
+                    --LOG('What to build was a mass extractor')
+                    if EntityCategoryContains(categories.ENGINEER - categories.COMMAND, eng) then
+                        local MexQueueBuild, MassMarkerTable = MABC.CanBuildOnMassEngSwarm(aiBrain, buildLocation, 30)
+                        if MexQueueBuild then
+                            --LOG('We can build on a mass marker within 30')
+                            --LOG(repr(MassMarkerTable))
+                            for _, v in MassMarkerTable do
+                                SwarmUtils.EngineerTryReclaimCaptureAreaSwarm(aiBrain, eng, v.MassSpot.position, 5)
+                                AIUtils.EngineerTryRepair(aiBrain, eng, whatToBuild, v.MassSpot.position)
+                                aiBrain:BuildStructure(eng, whatToBuild, {v.MassSpot.position[1], v.MassSpot.position[3], 0}, buildRelative)
+                                local newEntry = {whatToBuild, {v.MassSpot.position[1], v.MassSpot.position[3], 0}, buildRelative}
+                                SWARMINSERT(eng.EngineerBuildQueue, newEntry)
+                            end
+                        else
+                            --LOG('Cant find mass within distance')
+                        end
+                    end
+                end
                 if not eng.NotBuildingThread then
                     eng.NotBuildingThread = eng:ForkThread(eng.PlatoonHandle.WatchForNotBuildingSwarm)
                 end
@@ -2706,11 +2747,25 @@ Platoon = Class(SwarmPlatoonClass) {
                 -- we can't move there, so remove it from our build queue
                 SWARMREMOVE(eng.EngineerBuildQueue, 1)
             end
+            SWARMWAIT(2)
+        end
+        --LOG('EnginerBuildQueue : '..RNGGETN(eng.EngineerBuildQueue)..' Contents '..repr(eng.EngineerBuildQueue))
+        if not eng.Dead and SWARMGETN(eng.EngineerBuildQueue) <= 0 and eng.PlatoonHandle.PlatoonData.Construction.RepeatBuild then
+            --LOG('Starting RepeatBuild')
+            local engpos = eng:GetPosition()
+            if eng.PlatoonHandle.PlatoonData.Construction.RepeatBuild and eng.PlatoonHandle.PlanName then
+                --LOG('Repeat Build is set for :'..eng.Sync.id)
+                if eng.PlatoonHandle.PlatoonData.Construction.Type == 'Mass' then
+                    eng.PlatoonHandle:EngineerBuildAISwarm()
+                else
+                    WARN('Invalid Construction Type or Distance, Expected : Mass, number')
+                end
+            end
         end
 
         -- final check for if we should disband
         if not eng or eng.Dead or SWARMEMPTY(eng.EngineerBuildQueue) then
-            if eng.PlatoonHandle and aiBrain:PlatoonExists(eng.PlatoonHandle) and not eng.PlatoonHandle.UsingTransport then
+            if eng.PlatoonHandle and PlatoonExists(aiBrain, eng.PlatoonHandle) and not eng.PlatoonHandle.UsingTransport then
                 if eng.PlatoonHandle.Construction.Construction.RepeatBuild and eng.PlatoonHandle.PlanName then
                     eng:SetAIPlan( platoon.PlanName, aiBrain)
                     return
@@ -2743,9 +2798,10 @@ Platoon = Class(SwarmPlatoonClass) {
         end
 
         eng.NotBuildingThread = nil
-        if not eng.Dead and eng:IsIdleState() and not SWARMEMPTY(eng.EngineerBuildQueue) and eng.PlatoonHandle then
+        if not eng.Dead and eng:IsIdleState() and not SWARMEMPTY(eng.EngineerBuildQueue) and eng.PlatoonHandle and not eng.WaitingForTransport then
             eng.PlatoonHandle.SetupEngineerCallbacksSwarm(eng)
             if not eng.ProcessBuild then
+                --LOG('Forking Process Build Command with table remove')
                 eng.ProcessBuild = eng:ForkThread(eng.PlatoonHandle.ProcessBuildCommandSwarm, true)
             end
         end

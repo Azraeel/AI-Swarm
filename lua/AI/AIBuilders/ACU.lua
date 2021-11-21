@@ -96,7 +96,7 @@ BuilderGroup {
         BuilderName = 'SC CDR Attack Panic',                                    
         PlatoonTemplate = 'CDR Attack Swarm',                                       
         Priority = 590,                                                    
-        InstanceCount = 100,                                                 
+        InstanceCount = 10,                                                 
         BuilderData = {
             SearchRadius = BasePanicZone,
             GetTargetsFromBase = true,                                          
@@ -134,7 +134,7 @@ BuilderGroup {
         BuilderName = 'SC CDR Attack Military - Usage',                                 
         PlatoonTemplate = 'CDR Attack Swarm',                                      
         Priority = 600,                                                    
-        InstanceCount = 100,                                                      
+        InstanceCount = 10,                                                      
         BuilderData = {
             SearchRadius = BaseMilitaryZone,
             GetTargetsFromBase = false,                                         
@@ -174,7 +174,7 @@ BuilderGroup {
         BuilderName = 'SC CDR Attack Enemy - Usage',                                 
         PlatoonTemplate = 'CDR Attack Swarm',                                      
         Priority = 610,                                                    
-        InstanceCount = 100,                                                      
+        InstanceCount = 10,                                                      
         BuilderData = {
             SearchRadius = BaseEnemyZone,
             GetTargetsFromBase = false,                                         
@@ -214,7 +214,7 @@ BuilderGroup {
         PlatoonTemplate = 'CDR Attack Swarm',                                      
         Priority = 580,                
         DelayEqualBuildPlattons = {'ACUFORM', 10},                                    
-        InstanceCount = 100,                                                      
+        InstanceCount = 10,                                                      
         BuilderData = {
             SearchRadius = 30,
             GetTargetsFromBase = false,                                         
@@ -252,7 +252,7 @@ BuilderGroup {
         PlatoonTemplate = 'CDR Attack Swarm',                                      
         Priority = 585,                
         DelayEqualBuildPlattons = {'ACUFORM', 10},                                    
-        InstanceCount = 100,                                                      
+        InstanceCount = 10,                                                      
         BuilderData = {
             SearchRadius = BasePanicZone,
             GetTargetsFromBase = false,                                         
@@ -443,7 +443,7 @@ BuilderGroup {
         BuilderType = 'Any',
         BuilderData = {
             Construction = {
-                AdjacencyBias = 'Forward',
+                AdjacencyBias = 'ForwardClose',
                 AdjacencyPriority = {
                     categories.MASSEXTRACTION,
                     categories.MASSPRODUCTION,
@@ -489,7 +489,7 @@ BuilderGroup {
         BuilderData = {
             BuildClose = false,
             Construction = {
-                AdjacencyBias = 'Forward',
+                AdjacencyBias = 'ForwardClose',
                 AdjacencyPriority = {
                     categories.MASSEXTRACTION,
                     categories.MASSPRODUCTION,
@@ -786,7 +786,7 @@ BuilderGroup {
         BuilderConditions = {
             { UCBC, 'HaveGreaterThanArmyPoolWithCategorySwarm', { 0, categories.SUBCOMMANDER} },
 
-            { UCBC, 'UnitsLessInPlatoonSwarm', { 'ACUChampionPlatoonSwarm', 2, categories.SUBCOMMANDER } },
+            { UCBC, 'UnitsLessInPlatoonSwarm', { 'ACUChampionPlatoonSwarm', 2, categories.SUBCOMMANDER - categories.RASPRESET - categories.ENGINEERPRESET } },
         },
         BuilderType = 'Any',
     },

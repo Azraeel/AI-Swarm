@@ -10,12 +10,7 @@ local MaxCapStructure = 0.25
 
 -- I need a function or something, that does not allow engineers in a certain radius to build something. 
 -- This is a issue mostly with factories, engineers walking all the way back to base to build factory from 300 distances away.
-
--- My Engineers just do not want to expand correctly.
--- They do the most funky shit and it seems every AI expands better then Swarm with Engineers.
--- I am baffled currently as to why, very frustrating :(
--- This is very rough on my confidence right now, and I do not currently have the answers to solve my consistent Engineer problems and unreliability.
--- It leads to very strange choices and such from his Engineers which almost always leads to his death.
+-- Fixed Said Issue mostly by introducing new AIBuildStructure and EngineerBuildAI
 
 BuilderGroup {
     BuilderGroupName = 'S1 MassBuilders',                       
@@ -35,10 +30,10 @@ BuilderGroup {
         BuilderData = {
             Construction = {
                 RepeatBuild = true,
-                --Type = 'Mass',
+                Type = 'Mass',
                 MaxDistance = 240,
                 ThreatMin = -500,
-                ThreatMax = 5,
+                ThreatMax = 50,
                 ThreatRings = 0,
                 ThreatType = 'AntiSurface',
                 BuildStructures = {
@@ -66,10 +61,10 @@ BuilderGroup {
         BuilderData = {
             Construction = {
                 RepeatBuild = true,
-                --Type = 'Mass',
+                Type = 'Mass',
                 MaxDistance = 480,
                 ThreatMin = -500,
-                ThreatMax = 5,
+                ThreatMax = 50,
                 ThreatRings = 0,
                 ThreatType = 'AntiSurface',
                 BuildStructures = {
@@ -97,10 +92,10 @@ BuilderGroup {
         BuilderData = {
             Construction = {
                 RepeatBuild = true,
-                --Type = 'Mass',
+                Type = 'Mass',
                 MaxDistance = 1000,
                 ThreatMin = -500,
-                ThreatMax = 5,
+                ThreatMax = 50,
                 ThreatRings = 0,
                 ThreatType = 'AntiSurface',
                 BuildStructures = {
