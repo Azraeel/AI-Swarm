@@ -1,3 +1,6 @@
+local SwarmUtils = import('/mods/AI-Swarm/lua/AI/Swarmutilities.lua')
+local MABC = import('/lua/editor/MarkerBuildConditions.lua')
+local AIAttackUtils = import('/lua/AI/aiattackutilities.lua')
 local import = import
 
 local SWARMREMOVE = table.remove
@@ -8,6 +11,7 @@ local SWARMTIME = GetGameTimeSeconds
 local SWARMPI = math.pi
 local SWARMSIN = math.sin
 local SWARMCOS = math.cos
+local SWARMFLOOR = math.floor
 local SWARMENTITY = EntityCategoryContains
 local SWARMPARSE = ParseEntityCategory
 
@@ -392,6 +396,191 @@ function AIFindNearestCategoryTargetInCloseRangeSwarm(platoon, aiBrain, squad, p
         SWARMWAIT(5)
     end
     return TargetUnit
+end
+
+-- Huge Credits to Relent0r 
+function EngineerMoveWithSafePathSwarm(aiBrain, unit, destination)
+    if not destination then
+        return false
+    end
+    local pos = unit:GetPosition()
+    -- don't check a path if we are in build range
+    if VDist2(pos[1], pos[3], destination[1], destination[3]) < 12 then
+        return true
+    end
+
+    -- first try to find a path with markers. 
+    local result, bestPos
+    local path, reason = AIAttackUtils.EngineerGenerateSafePathToSwarm(aiBrain, 'Amphibious', pos, destination)
+    --LOG('EngineerGenerateSafePathToSwarm reason is'..reason)
+    -- only use CanPathTo for distance closer then 200 and if we can't path with markers
+    if reason ~= 'PathOK' then
+        -- we will crash the game if we use CanPathTo() on all engineer movments on a map without markers. So we don't path at all.
+        if reason == 'NoGraph' then
+            result = true
+        elseif VDist2(pos[1], pos[3], destination[1], destination[3]) < 200 then
+            SPEW('* AI-Swarm: EngineerMoveWithSafePath(): executing CanPathTo(). LUA GenerateSafePathTo returned: ('..repr(reason)..') '..VDist2(pos[1], pos[3], destination[1], destination[3]))
+            -- be really sure we don't try a pathing with a destoryed c-object
+            if unit.Dead or unit:BeenDestroyed() or IsDestroyed(unit) then
+                SPEW('* AI-Swarm: Unit is death before calling CanPathTo()')
+                return false
+            end
+            result, bestPos = unit:CanPathTo(destination)
+        end 
+    end
+    local bUsedTransports = false
+    -- Increase check to 300 for transports
+    if (not result and reason ~= 'PathOK') or VDist2Sq(pos[1], pos[3], destination[1], destination[3]) > 250 * 250
+    and unit.PlatoonHandle and not EntityCategoryContains(categories.COMMAND, unit) then
+        -- If we can't path to our destination, we need, rather than want, transports
+        local needTransports = not result and reason ~= 'PathOK'
+        if VDist2Sq(pos[1], pos[3], destination[1], destination[3]) > 250 * 250 then
+            needTransports = true
+        end
+
+        -- Skip the last move... we want to return and do a build
+        --LOG('run SendPlatoonWithTransportsNoCheck')
+        unit.WaitingForTransport = true
+        bUsedTransports = AIAttackUtils.SendPlatoonWithTransportsNoCheck(aiBrain, unit.PlatoonHandle, destination, needTransports, true, false)
+        unit.WaitingForTransport = false
+        --LOG('finish SendPlatoonWithTransportsNoCheck')
+
+        if bUsedTransports then
+            return true
+        elseif VDist2Sq(pos[1], pos[3], destination[1], destination[3]) > 512 * 512 then
+            -- If over 512 and no transports dont try and walk!
+            return false
+        end
+    end
+
+    -- If we're here, we haven't used transports and we can path to the destination
+    if result or reason == 'PathOK' then
+        --LOG('* AI-Swarm: EngineerMoveWithSafePath(): result or reason == PathOK ')
+        if reason ~= 'PathOK' then
+            path, reason = AIAttackUtils.EngineerGenerateSafePathToSwarm(aiBrain, 'Amphibious', pos, destination)
+        end
+        if path then
+            --LOG('* AI-Swarm: EngineerMoveWithSafePath(): path 0 true')
+            local pathSize = SWARMGETN(path)
+            -- Move to way points (but not to destination... leave that for the final command)
+            for widx, waypointPath in path do
+                IssueMove({unit}, waypointPath)
+            end
+            IssueMove({unit}, destination)
+        else
+            IssueMove({unit}, destination)
+        end
+        return true
+    end
+    return false
+end
+
+-- Huge Credits to Chp2001
+function EngineerMoveWithSafePathSwarmAdvanced(aiBrain, eng, destination, whatToBuildM)
+    if not destination then
+        return false
+    end
+    local pos = eng:GetPosition()
+    -- don't check a path if we are in build range
+    if VDist2Sq(pos[1], pos[3], destination[1], destination[3]) < 144 then
+        return true
+    end
+
+    -- first try to find a path with markers. 
+    local result, bestPos
+    local path, reason = AIAttackUtils.EngineerGenerateSafePathToSwarm(aiBrain, 'Amphibious', pos, destination, nil, 300)
+    --LOG('EngineerGenerateSafePathToSwarm reason is'..reason)
+    -- only use CanPathTo for distance closer then 200 and if we can't path with markers
+    if reason ~= 'PathOK' then
+        -- we will crash the game if we use CanPathTo() on all engineer movments on a map without markers. So we don't path at all.
+        if reason == 'NoGraph' then
+            result = true
+        elseif VDist2Sq(pos[1], pos[3], destination[1], destination[3]) < 300*300 then
+            SPEW('* AI-Swarm: EngineerMoveWithSafePath(): executing CanPathTo(). LUA GenerateSafePathTo returned: ('..repr(reason)..') '..VDist2Sq(pos[1], pos[3], destination[1], destination[3]))
+            -- be really sure we don't try a pathing with a destoryed c-object
+            if eng.Dead or eng:BeenDestroyed() or IsDestroyed(eng) then
+                SPEW('* AI-Swarm: Unit is death before calling CanPathTo()')
+                return false
+            end
+            result, bestPos = eng:CanPathTo(destination)
+        end 
+    end
+    --LOG('EngineerGenerateSafePathToSwarm move to next bit')
+    local bUsedTransports = false
+    -- Increase check to 300 for transports
+    if (not result and reason ~= 'PathOK') or VDist2Sq(pos[1], pos[3], destination[1], destination[3]) > 300 * 300
+    and eng.PlatoonHandle and not EntityCategoryContains(categories.COMMAND, eng) then
+        -- If we can't path to our destination, we need, rather than want, transports
+        local needTransports = not result and reason ~= 'PathOK'
+        if VDist2Sq(pos[1], pos[3], destination[1], destination[3]) > 300 * 300 then
+            needTransports = true
+        end
+
+        -- Skip the last move... we want to return and do a build
+        --LOG('run SendPlatoonWithTransportsNoCheck')
+        eng.WaitingForTransport = true
+        bUsedTransports = AIAttackUtils.SendPlatoonWithTransportsNoCheck(aiBrain, eng.PlatoonHandle, destination, needTransports, true, false)
+        eng.WaitingForTransport = false
+        --LOG('finish SendPlatoonWithTransportsNoCheck')
+
+        if bUsedTransports then
+            return true
+        elseif VDist2Sq(pos[1], pos[3], destination[1], destination[3]) > 512 * 512 then
+            -- If over 512 and no transports dont try and walk!
+            return false
+        end
+    end
+
+    -- If we're here, we haven't used transports and we can path to the destination
+    if result or reason == 'PathOK' then
+        --LOG('* AI-Swarm: EngineerMoveWithSafePath(): result or reason == PathOK ')
+        if reason ~= 'PathOK' then
+            path, reason = AIAttackUtils.EngineerGenerateSafePathToSwarm(aiBrain, 'Amphibious', pos, destination)
+        end
+        if path then
+            --LOG('We have a path')
+            if not whatToBuildM then
+                local cons = eng.PlatoonHandle.PlatoonData.Construction
+                local buildingTmpl, buildingTmplFile, baseTmpl, baseTmplFile, baseTmplDefault
+                local factionIndex = aiBrain:GetFactionIndex()
+                buildingTmplFile = import(cons.BuildingTemplateFile or '/lua/BuildingTemplates.lua')
+                baseTmplFile = import(cons.BaseTemplateFile or '/lua/BaseTemplates.lua')
+                baseTmplDefault = import('/lua/BaseTemplates.lua')
+                buildingTmpl = buildingTmplFile[(cons.BuildingTemplate or 'BuildingTemplates')][factionIndex]
+                baseTmpl = baseTmplFile[(cons.BaseTemplate or 'BaseTemplates')][factionIndex]
+                whatToBuildM = aiBrain:DecideWhatToBuild(eng, 'T1Resource', buildingTmpl)
+            end
+            --LOG('* AI-Swarm: EngineerMoveWithSafePath(): path 0 true')
+            local pathSize = SWARMGETN(path)
+            -- Move to way points (but not to destination... leave that for the final command)
+            --LOG('We are issuing move commands for the path')
+            for widx, waypointPath in path do
+                if widx>=3 then
+                    local bool,markers=MABC.CanBuildOnMassEngSwarm(aiBrain, waypointPath, 30)
+                    if bool then
+                        --LOG('We can build on a mass marker within 30')
+                        --local massMarker = RUtils.GetClosestMassMarkerToPos(aiBrain, waypointPath)
+                        --LOG('Mass Marker'..repr(massMarker))
+                        --LOG('Attempting second mass marker')
+                        for _,massMarker in markers do
+                        SwarmUtils.EngineerTryReclaimCaptureAreaSwarm(aiBrain, eng, massMarker.Position)
+                        EngineerTryRepair(aiBrain, eng, whatToBuildM, massMarker.Position)
+                        aiBrain:BuildStructure(eng, whatToBuildM, {massMarker.Position[1], massMarker.Position[3], 0}, false)
+                        local newEntry = {whatToBuildM, {massMarker.Position[1], massMarker.Position[3], 0}, false}
+                        SWARMINSERT(eng.EngineerBuildQueue, newEntry)
+                        end
+                    end
+                end
+                if (widx - SWARMFLOOR(widx/2)*2)==0 or VDist3Sq(destination,waypointPath)<40*40 then continue end
+                IssueMove({eng}, waypointPath)
+            end
+            IssueMove({eng}, destination)
+        else
+            IssueMove({eng}, destination)
+        end
+        return true
+    end
+    return false
 end
 
 function points(original,radius,num)

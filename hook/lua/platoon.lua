@@ -2650,8 +2650,9 @@ Platoon = Class(SwarmPlatoonClass) {
                 eng.NotBuildingThread = eng:ForkThread(eng.PlatoonHandle.WatchForNotBuildingSwarm)
             end
             -- see if we can move there first
-            if AIUtils.EngineerMoveWithSafePath(aiBrain, eng, buildLocation) then
+            if AIUtils.EngineerMoveWithSafePathSwarm(aiBrain, eng, buildLocation) then
                 if not eng or eng.Dead or not eng.PlatoonHandle or not aiBrain:PlatoonExists(eng.PlatoonHandle) then
+                    if eng then eng.ProcessBuild = nil end
                     return
                 end
                 -- issue buildcommand to block other engineers from caping mex/hydros or to reserve the buildplace
@@ -2720,6 +2721,7 @@ Platoon = Class(SwarmPlatoonClass) {
                 AIUtils.EngineerTryRepair(aiBrain, eng, whatToBuild, buildLocation)
                 -- otherwise, go ahead and build the next structure there
                 aiBrain:BuildStructure(eng, whatToBuild, {buildLocation[1], buildLocation[3], 0}, buildRelative)
+                -- Credit to Chp2001/Relent0r for this block of code
                 if (whatToBuild == 'ueb1103' or whatToBuild == 'uab1103' or whatToBuild == 'urb1103' or whatToBuild == 'xsb1103') and eng.PlatoonHandle.PlatoonData.Construction.RepeatBuild then
                     --LOG('What to build was a mass extractor')
                     if EntityCategoryContains(categories.ENGINEER - categories.COMMAND, eng) then
@@ -2750,6 +2752,7 @@ Platoon = Class(SwarmPlatoonClass) {
             SWARMWAIT(2)
         end
         --LOG('EnginerBuildQueue : '..RNGGETN(eng.EngineerBuildQueue)..' Contents '..repr(eng.EngineerBuildQueue))
+        -- Credit to Chp2001/Relent0r for this block of code
         if not eng.Dead and SWARMGETN(eng.EngineerBuildQueue) <= 0 and eng.PlatoonHandle.PlatoonData.Construction.RepeatBuild then
             --LOG('Starting RepeatBuild')
             local engpos = eng:GetPosition()
@@ -2804,6 +2807,112 @@ Platoon = Class(SwarmPlatoonClass) {
                 --LOG('Forking Process Build Command with table remove')
                 eng.ProcessBuild = eng:ForkThread(eng.PlatoonHandle.ProcessBuildCommandSwarm, true)
             end
+        end
+    end,
+
+    MexBuildAISwarm = function(self)
+        local aiBrain = self:GetBrain()
+        local platoonUnits = GetPlatoonUnits(self)
+        local cons = self.PlatoonData.Construction
+        local buildingTmpl, buildingTmplFile, baseTmpl, baseTmplFile, baseTmplDefault
+        local eng=platoonUnits[1]
+        local VDist2Sq = VDist2Sq
+        self:Stop()
+        if not eng or eng.Dead then
+            SWARMWAIT(1)
+            self:PlatoonDisband()
+            return
+        end
+        if not eng.EngineerBuildQueue then
+            eng.EngineerBuildQueue={}
+        end
+        local factionIndex = aiBrain:GetFactionIndex()
+        buildingTmplFile = import(cons.BuildingTemplateFile or '/lua/BuildingTemplates.lua')
+        buildingTmpl = buildingTmplFile[(cons.BuildingTemplate or 'BuildingTemplates')][factionIndex]
+
+        --LOG("*AI DEBUG: Setting up Callbacks for " .. eng.Sync.id)
+        --self.SetupEngineerCallbacksSwarm(eng)
+        local whatToBuild = aiBrain:DecideWhatToBuild(eng, 'T1Resource', buildingTmpl)
+        -- wait in case we're still on a base
+        if not eng.Dead then
+            local count = 0
+            while eng:IsUnitState('Attached') and count < 2 do
+                SWARMWAIT(60)
+                count = count + 1
+            end
+        end
+        --eng:SetCustomName('MexBuild Platoon Checking for expansion mex')
+        --LOG('MexBuild Platoon Checking for expansion mex')
+        while not aiBrain.expansionMex do WaitSeconds(2) end
+        --eng:SetCustomName('MexBuild Platoon has found aiBrain.expansionMex')
+        local markerTable=SWARMCOPY(aiBrain.expansionMex)
+        if eng.Dead then self:PlatoonDisband() end
+        while PlatoonExists(aiBrain, self) and eng and not eng.Dead do
+            local platoonPos=self:GetPlatoonPosition()
+            SWARMSORT(markerTable,function(a,b) return VDist2Sq(a.Position[1],a.Position[3],platoonPos[1],platoonPos[3])/VDist3Sq(aiBrain.emanager.enemy.Position,a.Position)/a.priority/a.priority<VDist2Sq(b.Position[1],b.Position[3],platoonPos[1],platoonPos[3])/VDist3Sq(aiBrain.emanager.enemy.Position,b.Position)/b.priority/b.priority end)
+            local currentmexpos=nil
+            local curindex=nil
+            for i,v in markerTable do
+                if aiBrain:CanBuildStructureAt('ueb1103', v.Position) then
+                    currentmexpos=v.Position
+                    curindex=i
+                    --LOG('We can build at mex, breaking loop '..repr(currentmexpos))
+                    break
+                end
+            end
+            if not currentmexpos then self:PlatoonDisband() end
+            --LOG('currentmexpos has data')
+            if not AIUtils.EngineerMoveWithSafePathSwarmAdvanced(aiBrain, eng, currentmexpos, whatToBuild) then
+                SWARMREMOVE(markerTable,curindex) 
+                --LOG('No path to currentmexpos')
+                --eng:SetCustomName('MexBuild Platoon has no path to aiBrain.currentmexpos, removing and moving to next')
+                continue 
+            end
+            local firstmex=currentmexpos
+            local initialized=nil
+            --LOG('Firstmex '..repr(firstmex))
+            for _=0,3,1 do
+                if not currentmexpos then break end
+                local bool,markers=MABC.CanBuildOnMassEngSwarm(aiBrain, currentmexpos, 30)
+                if bool then
+                    --LOG('We can build on a mass marker within 30')
+                    --local massMarker = SwarmUtils.GetClosestMassMarkerToPos(aiBrain, waypointPath)
+                    --LOG('Mass Marker'..repr(markers))
+                    --LOG('Attempting second mass marker')
+                    for _,massMarker in markers do
+                    SwarmUtils.EngineerTryReclaimCaptureAreaSwarm(aiBrain, eng, massMarker.Position, 5)
+                    AIUtils.EngineerTryRepair(aiBrain, eng, whatToBuild, massMarker.Position)
+                    --eng:SetCustomName('MexBuild Platoon attempting to build in for loop')
+                    --LOG('MexBuild Platoon Checking for expansion mex')
+                    aiBrain:BuildStructure(eng, whatToBuild, {massMarker.Position[1], massMarker.Position[3], 0}, false)
+                    local newEntry = {whatToBuild, {massMarker.Position[1], massMarker.Position[3], 0}, false,Position=massMarker.Position}
+                    SWARMINSERT(eng.EngineerBuildQueue, newEntry)
+                    currentmexpos=massMarker.Position
+                    end
+                else
+                    --LOG('No markers reported')
+                    break
+                end
+            end
+            while not eng.Dead and 0<SWARMGETN(eng:GetCommandQueue()) or eng:IsUnitState('Building') or eng:IsUnitState("Moving") do
+                if eng:IsUnitState("Moving") and not initialized and VDist3Sq(self:GetPlatoonPosition(),firstmex)<12*12 then
+                    IssueClearCommands({eng})
+                    for _,v in eng.EngineerBuildQueue do
+                        SwarmUtils.EngineerTryReclaimCaptureAreaSwarm(aiBrain, eng, v.Position, 5)
+                        AIUtils.EngineerTryRepair(aiBrain, eng, v[1], v.Position)
+                        --eng:SetCustomName('MexBuild Platoon attempting to build in while loop')
+                        --LOG('MexBuild Platoon Checking for expansion mex')
+                        aiBrain:BuildStructure(eng, v[1],v[2],v[3])
+                    end
+                    initialized=true
+                end
+                SWARMWAIT(20)
+            end
+            --eng:SetCustomName('Reset EngineerBuildQueue')
+            --LOG('Reset EngineerBuildQueue')
+            eng.EngineerBuildQueue={}
+            IssueClearCommands({eng})
+            SWARMWAIT(20)
         end
     end,
 

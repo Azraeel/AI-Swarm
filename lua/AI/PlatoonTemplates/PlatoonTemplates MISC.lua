@@ -132,6 +132,14 @@ PlatoonTemplate {
 }
 
 PlatoonTemplate {
+    Name = 'T1EngineerBuilderMexSwarm',
+    Plan = 'MexBuildAISwarm',
+    GlobalSquads = {
+        { categories.ENGINEER * categories.TECH1 - categories.SUBCOMMANDER - categories.COMMAND, 1, 1, 'support', 'None' }
+    },        
+}
+
+PlatoonTemplate {
     Name = 'T2EngineerBuilderSwarm',
     Plan = 'EngineerBuildAISwarm',
     GlobalSquads = {
