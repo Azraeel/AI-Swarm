@@ -148,9 +148,9 @@ BuilderGroup {
 
             { EBC, 'GreaterThanEnergyTrendSwarm', { 0.0 } },   
 
-            { EBC, 'GreaterThanEconStorageCurrent', { 200, 2000}},
+            { EBC, 'GreaterThanEconStorageCurrentSwarm', { 200, 2000}},
 
-            { EBC, 'LessThanEconStorageRatio', { 0.35, 2 } },
+            { EBC, 'LessThanEconStorageRatioSwarm', { 0.35, 2 } },
         },
         BuilderType = 'Any',
         BuilderData = {
@@ -216,9 +216,9 @@ BuilderGroup {
 
             { EBC, 'GreaterThanMassTrendSwarm', { 1.2 } },
 
-            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.02, 1.03 }}, 
+            { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 1.02, 1.03 }}, 
 
-            { EBC, 'GreaterThanEconStorageCurrent', { 200, 2000}},
+            { EBC, 'GreaterThanEconStorageCurrentSwarm', { 200, 2000}},
         },
         BuilderData = {
             Construction = {
@@ -256,9 +256,9 @@ BuilderGroup {
 
             { EBC, 'GreaterThanMassTrendSwarm', { 1.6 } },
 
-            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.02, 1.03 }}, 
+            { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 1.02, 1.03 }}, 
 
-            { EBC, 'GreaterThanEconStorageCurrent', { 200, 2000}},
+            { EBC, 'GreaterThanEconStorageCurrentSwarm', { 200, 2000}},
         },
         BuilderData = {
             Construction = {

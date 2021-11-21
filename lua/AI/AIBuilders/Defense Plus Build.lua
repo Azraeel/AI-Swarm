@@ -24,7 +24,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Defense Plus Builders',
 
             { MABC, 'MarkerLessThanDistance',  { 'Mass', 600, -1, 0, 0}},
 
-            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.25, 1.2 }},
+            { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 1.25, 1.2 }},
 
             { UCBC, 'AdjacencyCheck', { 'LocationType', 'MASSEXTRACTION', 600, 'ueb2101' } },
         },
@@ -55,7 +55,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Defense Plus Builders',
 
             { MABC, 'MarkerLessThanDistance',  { 'Mass', 600, -1, 0, 0}},
 
-            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.25, 1.2 }},
+            { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 1.25, 1.2 }},
 
             { UCBC, 'AdjacencyCheck', { 'LocationType', 'MASSEXTRACTION', 600, 'ueb2101' } },
         },
@@ -86,7 +86,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Defense Plus Builders',
 
             { MABC, 'MarkerLessThanDistance',  { 'Mass', 600, -1, 0, 0}},
 
-            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.25, 1.3 }},
+            { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 1.25, 1.3 }},
 
             { UCBC, 'AdjacencyCheck', { 'LocationType', 'MASSEXTRACTION', 600, 'ueb2101' } },
         },
@@ -123,7 +123,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Defense Plus Builders Expansion',
 
             { TBC, 'EnemyThreatGreaterThanValueAtBase', { 'LocationType', 1, 'Air' } },
 
-            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.3, 1.2 }},
+            { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 1.3, 1.2 }},
 
             { UCBC, 'LocationEngineersBuildingLess', { 'LocationType', 1, categories.DEFENSE * categories.TECH1 * categories.STRUCTURE - categories.SHIELD - categories.ANTIMISSILE } },
         },
@@ -155,7 +155,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Defense Plus Builders Expansion',
 
             { TBC, 'EnemyThreatGreaterThanValueAtBase', { 'LocationType', 1, 'Land' } },
 
-            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.3, 1.2 }},
+            { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 1.3, 1.2 }},
 
             { UCBC, 'LocationEngineersBuildingLess', { 'LocationType', 1, categories.DEFENSE * categories.TECH1 * categories.STRUCTURE - categories.SHIELD - categories.ANTIMISSILE } },
         },
@@ -187,7 +187,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Defense Plus Builders Expansion',
 
             { TBC, 'EnemyThreatGreaterThanValueAtBase', { 'LocationType', 1, 'Air' } },
 
-            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.25, 1.2 }},
+            { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 1.25, 1.2 }},
 
             { UCBC, 'LocationEngineersBuildingLess', { 'LocationType', 1, categories.DEFENSE * categories.TECH2 * categories.STRUCTURE - categories.SHIELD - categories.ANTIMISSILE } },
         },
@@ -219,7 +219,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Defense Plus Builders Expansion',
 
             { TBC, 'EnemyThreatGreaterThanValueAtBase', { 'LocationType', 1, 'Land' } },
 
-            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.25, 1.2 }},
+            { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 1.25, 1.2 }},
 
             { UCBC, 'LocationEngineersBuildingLess', { 'LocationType', 1, categories.DEFENSE * categories.TECH2 * categories.STRUCTURE - categories.SHIELD - categories.ANTIMISSILE } },
         },
@@ -251,7 +251,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Defense Plus Builders Expansion',
 
             { TBC, 'EnemyThreatGreaterThanValueAtBase', { 'LocationType', 20, 'Land' } },
 
-            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.5, 1.0 }},
+            { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 1.5, 1.0 }},
         },
         BuilderType = 'Any',
         BuilderData = {
@@ -282,7 +282,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Defense Plus Builders Expansion',
 
             { TBC, 'EnemyThreatGreaterThanValueAtBase', { 'LocationType', 3, 'Air' } },
 
-            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.2, 1.2 }},
+            { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 1.2, 1.2 }},
 
             { UCBC, 'LocationEngineersBuildingLess', { 'LocationType', 1, categories.DEFENSE * categories.TECH3 * categories.STRUCTURE * (categories.ANTIAIR + categories.DIRECTFIRE) } },
         },
@@ -316,9 +316,9 @@ BuilderGroup { BuilderGroupName = 'Swarm Defense Plus Builders Expansion',
 
             { EBC, 'GreaterThanEnergyIncomeSwarm', { 100 }},
 
-            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.02, 1.03 }},
+            { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 1.02, 1.03 }},
 
-            { EBC, 'GreaterThanEconStorageCurrent', { 200, 2000}},
+            { EBC, 'GreaterThanEconStorageCurrentSwarm', { 200, 2000}},
 
             { UCBC, 'UnitsLessAtLocation', { 'LocationType', 10, categories.STRUCTURE * categories.DEFENSE * categories.ANTIAIR * categories.TECH3 }},
         },

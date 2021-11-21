@@ -1,6 +1,8 @@
 WARN('['..string.gsub(debug.getinfo(1).source, ".*\\(.*.lua)", "%1")..', line:'..debug.getinfo(1).currentline..'] * AI-Swarm: offset aibrain.lua' )
 
 local SwarmUtils = import('/mods/AI-Swarm/lua/AI/Swarmutilities.lua')
+local AIUtils = import('/lua/ai/AIUtilities.lua')
+local AIBehaviors = import('/lua/ai/AIBehaviors.lua')
 
 local lastCall = 0
 local SWARMGETN = table.getn
@@ -9,6 +11,21 @@ local SWARMWAIT = coroutine.yield
 
 local VDist2Sq = VDist2Sq
 
+local GetEconomyIncome = moho.aibrain_methods.GetEconomyIncome
+local GetEconomyRequested = moho.aibrain_methods.GetEconomyRequested
+local GetEconomyStored = moho.aibrain_methods.GetEconomyStored
+local GetListOfUnits = moho.aibrain_methods.GetListOfUnits
+local GiveResource = moho.aibrain_methods.GiveResource
+local GetThreatAtPosition = moho.aibrain_methods.GetThreatAtPosition
+local GetThreatsAroundPosition = moho.aibrain_methods.GetThreatsAroundPosition
+local GetUnitsAroundPoint = moho.aibrain_methods.GetUnitsAroundPoint
+local CanBuildStructureAt = moho.aibrain_methods.CanBuildStructureAt
+local GetConsumptionPerSecondMass = moho.unit_methods.GetConsumptionPerSecondMass
+local GetConsumptionPerSecondEnergy = moho.unit_methods.GetConsumptionPerSecondEnergy
+local GetProductionPerSecondMass = moho.unit_methods.GetProductionPerSecondMass
+local GetProductionPerSecondEnergy = moho.unit_methods.GetProductionPerSecondEnergy
+local GetEconomyTrend = moho.aibrain_methods.GetEconomyTrend
+local GetEconomyStoredRatio = moho.aibrain_methods.GetEconomyStoredRatio
 local GetListOfUnits = moho.aibrain_methods.GetListOfUnits
 local CanBuildStructureAt = moho.aibrain_methods.CanBuildStructureAt
 
@@ -36,8 +53,41 @@ AIBrain = Class(SwarmAIBrainClass) {
 
     InitializeSkirmishSystems = function(self)
         SwarmAIBrainClass.InitializeSkirmishSystems(self)
+        local mapSizeX, mapSizeZ = GetMapSize()
+
+        self.UpgradeIssued = 0
+        self.UpgradeIssuedPeriod = 100
+
+        self.EcoManager = {
+            EcoManagerTime = 30,
+            EcoManagerStatus = 'ACTIVE',
+            ExtractorUpgradeLimit = {
+                TECH1 = 1,
+                TECH2 = 1
+            },
+            ExtractorsUpgrading = {TECH1 = 0, TECH2 = 0},
+            EcoMultiplier = 1,
+        }
+
+        if mapSizeX < 1000 and mapSizeZ < 1000  then
+            self.UpgradeIssuedLimit = 1
+            self.EcoManager.ExtractorUpgradeLimit.TECH1 = 1
+        else
+            self.UpgradeIssuedLimit = 2
+            self.EcoManager.ExtractorUpgradeLimit.TECH1 = 2
+        end
+
+        self.UpgradeMode = 'Normal'
 
         self.cmanager = {}
+        -- Economy monitor for new skirmish - stores out econ over time to get trend over 10 seconds
+        self.EconomyData = {}
+        self.EconomyTicksMonitor = 80
+        self.EconomyCurrentTick = 1
+        --LOG("Starting EconomyMonitorSwarm")
+        self.EconomyMonitorThread = self:ForkThread(self.EconomyMonitorSwarm)
+        --LOG("EconomyMonitorSwarm Started")
+        self.EconomyOverTimeCurrent = {}
         self.EnemyACU = {}
         for _, v in ArmyBrains do
             self.EnemyACU[v:GetArmyIndex()] = {
@@ -50,7 +100,70 @@ AIBrain = Class(SwarmAIBrainClass) {
             }
         end
 
+        self:ForkThread(self.EcoExtractorUpgradeCheckSwarm)
+
         --return
+    end,
+
+    OnSpawnPreBuiltUnits = function(self)
+        if not self.Swarm then
+            return SwarmAIBrainClass.OnSpawnPreBuiltUnits(self)
+        end
+        local factionIndex = self:GetFactionIndex()
+        local resourceStructures = nil
+        local initialUnits = nil
+        local posX, posY = self:GetArmyStartPos()
+
+        if factionIndex == 1 then
+            resourceStructures = {'UEB1103', 'UEB1103', 'UEB1103', 'UEB1103'}
+            initialUnits = {'UEB0101', 'UEB1101', 'UEB1101', 'UEB1101', 'UEB1101'}
+        elseif factionIndex == 2 then
+            resourceStructures = {'UAB1103', 'UAB1103', 'UAB1103', 'UAB1103'}
+            initialUnits = {'UAB0101', 'UAB1101', 'UAB1101', 'UAB1101', 'UAB1101'}
+        elseif factionIndex == 3 then
+            resourceStructures = {'URB1103', 'URB1103', 'URB1103', 'URB1103'}
+            initialUnits = {'URB0101', 'URB1101', 'URB1101', 'URB1101', 'URB1101'}
+        elseif factionIndex == 4 then
+            resourceStructures = {'XSB1103', 'XSB1103', 'XSB1103', 'XSB1103'}
+            initialUnits = {'XSB0101', 'XSB1101', 'XSB1101', 'XSB1101', 'XSB1101'}
+        end
+
+        if resourceStructures then
+            -- Place resource structures down
+            for k, v in resourceStructures do
+                local unit = self:CreateResourceBuildingNearest(v, posX, posY)
+                local unitBp = unit:GetBlueprint()
+                if unit ~= nil and unitBp.Physics.FlattenSkirt then
+                    unit:CreateTarmac(true, true, true, false, false)
+                end
+                if unit ~= nil then
+                    if not self.StructurePool then
+                        SwarmUtils.CheckCustomPlatoonsSwarm(self)
+                    end
+                    local StructurePool = self.StructurePool
+                    self:AssignUnitsToPlatoon(StructurePool, {unit}, 'Support', 'none' )
+                    local upgradeID = unitBp.General.UpgradesTo or false
+                    --LOG('* AI-RNG: BlueprintID to upgrade to is : '..unitBp.General.UpgradesTo)
+                    if upgradeID and __blueprints[upgradeID] then
+                        SwarmUtils.StructureUpgradeInitializeSwarm(unit, self)
+                    end
+                    local unitTable = StructurePool:GetPlatoonUnits()
+                    --LOG('* AI-RNG: StructurePool now has :'..RNGGETN(unitTable))
+                end
+            end
+        end
+
+        if initialUnits then
+            -- Place initial units down
+            for k, v in initialUnits do
+                local unit = self:CreateUnitNearSpot(v, posX, posY)
+                if unit ~= nil and unit:GetBlueprint().Physics.FlattenSkirt then
+                    unit:CreateTarmac(true, true, true, false, false)
+                end
+            end
+        end
+
+        self.PreBuilt = true
     end,
 
     ExpansionHelpThread = function(self)
@@ -62,14 +175,6 @@ AIBrain = Class(SwarmAIBrainClass) {
         SWARMWAIT(10)
 
         KillThread(CurrentThread())
-    end,
-
-    InitializeEconomyState = function(self)
-
-        if not self.Swarm then
-            return SwarmAIBrainClass.InitializeEconomyState(self)
-        end
-
     end,
 
     OnIntelChange = function(self, blip, reconType, val)
@@ -91,6 +196,217 @@ AIBrain = Class(SwarmAIBrainClass) {
         KillThread(CurrentThread())
     end,
 
+    StrategicMonitorThreadSwarm = function(self, ALLBPS)
+
+        while true do 
+
+            self:SelfThreatCheckSwarm(ALLBPS)
+            self:EnemyThreatCheckSwarm(ALLBPS)
+            self:EconomyTacticalMonitorSwarm(ALLBPS)
+            self:CalculateMassMarkersSwarm()
+
+        end
+        SWARMWAIT(30)
+    end,
+
+    -- Spicy Sprouto Code Magic
+    EconomyMonitorSwarm = function(self)
+        --LOG("EconomyMonitor is Started Fully & Running")
+        -- This over time thread is based on Sprouto's LOUD AI.
+        self.EconomyData = { ['EnergyIncome'] = {}, ['EnergyRequested'] = {}, ['EnergyStorage'] = {}, ['EnergyTrend'] = {}, ['MassIncome'] = {}, ['MassRequested'] = {}, ['MassStorage'] = {}, ['MassTrend'] = {}, ['Period'] = 300 }
+        -- number of sample points
+        -- local point
+        local samplerate = 10
+        local samples = self.EconomyData['Period'] / samplerate
+    
+        -- create the table to store the samples
+        for point = 1, samples do
+            self.EconomyData['EnergyIncome'][point] = 0
+            self.EconomyData['EnergyRequested'][point] = 0
+            self.EconomyData['EnergyStorage'][point] = 0
+            self.EconomyData['EnergyTrend'][point] = 0
+            self.EconomyData['MassIncome'][point] = 0
+            self.EconomyData['MassRequested'][point] = 0
+            self.EconomyData['MassStorage'][point] = 0
+            self.EconomyData['MassTrend'][point] = 0
+        end    
+    
+        local SWARMMIN = math.min
+        local SWARMMAX = math.max
+        local SWARMWAIT = coroutine.yield
+    
+        -- array totals
+        local eIncome = 0
+        local mIncome = 0
+        local eRequested = 0
+        local mRequested = 0
+        local eStorage = 0
+        local mStorage = 0
+        local eTrend = 0
+        local mTrend = 0
+    
+        -- this will be used to multiply the totals
+        -- to arrive at the averages
+        local samplefactor = 1/samples
+    
+        local EcoData = self.EconomyData
+    
+        local EcoDataEnergyIncome = EcoData['EnergyIncome']
+        local EcoDataMassIncome = EcoData['MassIncome']
+        local EcoDataEnergyRequested = EcoData['EnergyRequested']
+        local EcoDataMassRequested = EcoData['MassRequested']
+        local EcoDataEnergyTrend = EcoData['EnergyTrend']
+        local EcoDataMassTrend = EcoData['MassTrend']
+        local EcoDataEnergyStorage = EcoData['EnergyStorage']
+        local EcoDataMassStorage = EcoData['MassStorage']
+        
+        local e,m
+    
+        while true do
+            --LOG("EconomyMonitor is Looping Properly")
+            for point = 1, samples do
+    
+                -- remove this point from the totals
+                eIncome = eIncome - EcoDataEnergyIncome[point]
+                mIncome = mIncome - EcoDataMassIncome[point]
+                eRequested = eRequested - EcoDataEnergyRequested[point]
+                mRequested = mRequested - EcoDataMassRequested[point]
+                eTrend = eTrend - EcoDataEnergyTrend[point]
+                mTrend = mTrend - EcoDataMassTrend[point]
+                
+                -- insert the new data --
+                EcoDataEnergyIncome[point] = GetEconomyIncome( self, 'ENERGY')
+                EcoDataMassIncome[point] = GetEconomyIncome( self, 'MASS')
+                EcoDataEnergyRequested[point] = GetEconomyRequested( self, 'ENERGY')
+                EcoDataMassRequested[point] = GetEconomyRequested( self, 'MASS')
+    
+                e = GetEconomyTrend( self, 'ENERGY')
+                m = GetEconomyTrend( self, 'MASS')
+    
+                if e then
+                    EcoDataEnergyTrend[point] = e
+                else
+                    EcoDataEnergyTrend[point] = 0.1
+                end
+                
+                if m then
+                    EcoDataMassTrend[point] = m
+                else
+                    EcoDataMassTrend[point] = 0.1
+                end
+    
+                -- add the new data to totals
+                eIncome = eIncome + EcoDataEnergyIncome[point]
+                mIncome = mIncome + EcoDataMassIncome[point]
+                eRequested = eRequested + EcoDataEnergyRequested[point]
+                mRequested = mRequested + EcoDataMassRequested[point]
+                eTrend = eTrend + EcoDataEnergyTrend[point]
+                mTrend = mTrend + EcoDataMassTrend[point]
+                
+                -- calculate new OverTime values --
+                self.EconomyOverTimeCurrent.EnergyIncome = eIncome * samplefactor
+                self.EconomyOverTimeCurrent.MassIncome = mIncome * samplefactor
+                self.EconomyOverTimeCurrent.EnergyRequested = eRequested * samplefactor
+                self.EconomyOverTimeCurrent.MassRequested = mRequested * samplefactor
+                self.EconomyOverTimeCurrent.EnergyEfficiencyOverTime = SWARMMIN( (eIncome * samplefactor) / (eRequested * samplefactor), 2)
+                self.EconomyOverTimeCurrent.MassEfficiencyOverTime = SWARMMIN( (mIncome * samplefactor) / (mRequested * samplefactor), 2)
+                self.EconomyOverTimeCurrent.EnergyTrendOverTime = eTrend * samplefactor
+                self.EconomyOverTimeCurrent.MassTrendOverTime = mTrend * samplefactor
+                
+                SWARMWAIT(samplerate)
+            end
+        end
+    end,
+
+    GetUpgradeSpec = function(self, unit)
+        local upgradeSpec = {}
+        
+        if EntityCategoryContains(categories.MASSEXTRACTION, unit) then
+            if self.UpgradeMode == 'Aggressive' then
+                upgradeSpec.MassLowTrigger = 0.80
+                upgradeSpec.EnergyLowTrigger = 0.95
+                upgradeSpec.MassHighTrigger = 2.0
+                upgradeSpec.EnergyHighTrigger = 99999
+                upgradeSpec.UpgradeCheckWait = 18
+                upgradeSpec.InitialDelay = 40
+                upgradeSpec.EnemyThreatLimit = 10
+                return upgradeSpec
+            elseif self.UpgradeMode == 'Normal' then
+                upgradeSpec.MassLowTrigger = 0.90
+                upgradeSpec.EnergyLowTrigger = 1.05
+                upgradeSpec.MassHighTrigger = 2.0
+                upgradeSpec.EnergyHighTrigger = 99999
+                upgradeSpec.UpgradeCheckWait = 18
+                upgradeSpec.InitialDelay = 70
+                upgradeSpec.EnemyThreatLimit = 5
+                return upgradeSpec
+            elseif self.UpgradeMode == 'Caution' then
+                upgradeSpec.MassLowTrigger = 1.0
+                upgradeSpec.EnergyLowTrigger = 1.2
+                upgradeSpec.MassHighTrigger = 2.0
+                upgradeSpec.EnergyHighTrigger = 99999
+                upgradeSpec.UpgradeCheckWait = 18
+                upgradeSpec.InitialDelay = 90
+                upgradeSpec.EnemyThreatLimit = 0
+                return upgradeSpec
+            end
+        else
+            --LOG('* AI-Swarm: Unit is not Mass Extractor')
+            upgradeSpec = false
+            return upgradeSpec
+        end
+    end,
+
+    EcoExtractorUpgradeCheckSwarm = function(self)
+        -- Keep track of how many extractors are currently upgrading
+            SWARMWAIT(5)
+            while true do
+                local upgradingExtractors = SwarmUtils.ExtractorsBeingUpgradedSwarm(self)
+                self.EcoManager.ExtractorsUpgrading.TECH1 = upgradingExtractors.TECH1
+                self.EcoManager.ExtractorsUpgrading.TECH2 = upgradingExtractors.TECH2
+                SWARMWAIT(30)
+            end
+        end,
+
+    GetEconomyOverTime = function(self)
+        if not self.Swarm then
+            return SwarmAIBrainClass.GetEconomyOverTime(self)
+        end
+    end,
+
+    EconomyTacticalMonitorSwarm = function(self, ALLBPS)
+
+        SWARMWAIT(5)
+
+        if self.CheatEnabled then
+            multiplier = tonumber(ScenarioInfo.Options.BuildMult)
+        else
+            multiplier = 1
+        end
+
+        local gameTime = GetGameTimeSeconds()
+        --LOG('gameTime is '..gameTime..' Upgrade Mode is '..self.UpgradeMode)
+        if gameTime < (240 / multiplier) then
+            self.UpgradeMode = 'Caution'
+        elseif gameTime > (240 / multiplier) and self.UpgradeMode == 'Caution' then
+            self.UpgradeMode = 'Normal'
+            self.UpgradeIssuedLimit = 1
+        elseif gameTime > (240 / multiplier) and self.UpgradeIssuedLimit == 1 and self.UpgradeMode == 'Aggressive' then
+            self.UpgradeIssuedLimit = self.UpgradeIssuedLimit + 1
+        end
+
+        if (gameTime > 1200 and self.BrainIntel.SelfThreat.AllyExtractorCount > self.BrainIntel.SelfThreat.MassMarker / 1.5) then
+            --LOG('Switch to agressive upgrade mode')
+            self.UpgradeMode = 'Aggressive'
+            self.EcoManager.ExtractorUpgradeLimit.TECH1 = 2
+        elseif gameTime > 1200 then
+            --LOG('Switch to normal upgrade mode')
+            self.UpgradeMode = 'Normal'
+            self.EcoManager.ExtractorUpgradeLimit.TECH1 = 1
+        end
+        SWARMWAIT(2)
+    end,
+        
     CalculateMassMarkersSwarm = function(self)
         local MassMarker = {}
         local massMarkerBuildable = 0
@@ -239,18 +555,6 @@ AIBrain = Class(SwarmAIBrainClass) {
             end
             aiBrain:ForkThread(self.ParseIntelThread)
         end
-    end,
-
-    StrategicMonitorThreadSwarm = function(self, ALLBPS)
-
-        while true do 
-
-            self:SelfThreatCheckSwarm(ALLBPS)
-            self:EnemyThreatCheckSwarm(ALLBPS)
-            self:CalculateMassMarkersSwarm()
-
-        end
-        SWARMWAIT(30)
     end,
 
     -- 100% Relent0r's Work
@@ -417,6 +721,22 @@ AIBrain = Class(SwarmAIBrainClass) {
             exBp = ALLBPS[v.UnitId].Defense
             selfExtractorThreat = selfExtractorThreat + exBp.EconomyThreatLevel
             selfExtractorCount = selfExtractorCount + 1
+            -- This bit is important. This is so that if the AI is given or captures any extractors it will start an upgrade thread and distress thread on them.
+            if (not v.Dead) and (not v.PlatoonHandle) then
+                --LOG('This extractor has no platoon handle')
+                if not self.StructurePool then
+                    SwarmUtils.CheckCustomPlatoonsSwarm(self)
+                end
+                local unitBp = v:GetBlueprint()
+                local StructurePool = self.StructurePool
+                --LOG('* AI-RNG: Assigning built extractor to StructurePool')
+                self:AssignUnitsToPlatoon(StructurePool, {v}, 'Support', 'none' )
+                local upgradeID = unitBp.General.UpgradesTo or false
+                if upgradeID and unitBp then
+                    --LOG('* AI-RNG: UpgradeID')
+                    SwarmUtils.StructureUpgradeInitializeSwarm(v, self)
+                end
+            end
         end
         self.SelfExtractor = selfExtractorThreat
         self.SelfExtractorCount = selfExtractorCount

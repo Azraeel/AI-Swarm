@@ -40,11 +40,11 @@ BuilderGroup { BuilderGroupName = 'Swarm Factory Upgrader Rush',
         
             { UCBC, 'BuildOnlyOnLocationSwarm', { 'LocationType', 'MAIN' } },
             
-            { EBC, 'GreaterThanEconStorageCurrent', { 200, 2000}},
+            { EBC, 'GreaterThanEconStorageCurrentSwarm', { 200, 2000}},
 
             { EBC, 'GreaterThanEconTrendSwarm', { 1.0, 8.0 } },
 
-            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.04, 1.05 }},
+            { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 1.03, 1.04 }},
             
             { UCBC, 'HaveLessThanUnitsInCategoryBeingUpgradeSwarm', { 1, categories.STRUCTURE * categories.FACTORY * categories.TECH1 }},
         },
@@ -58,17 +58,17 @@ BuilderGroup { BuilderGroupName = 'Swarm Factory Upgrader Rush',
         BuilderConditions = {
             { UCBC, 'CheckBuildPlattonDelay', { 'FactoryUpgrade' }},
 
-            { UCBC, 'HaveGreaterThanUnitsWithCategory', { 3, categories.LAND * categories.FACTORY * categories.STRUCTURE * categories.SUPPORTFACTORY * categories.TECH2} },
+            { UCBC, 'HaveGreaterThanUnitsWithCategory', { 2, categories.LAND * categories.FACTORY * categories.STRUCTURE * categories.SUPPORTFACTORY * categories.TECH2} },
            
             { UCBC, 'HaveLessThanUnitsWithCategory', { 1, categories.STRUCTURE * categories.FACTORY * categories.LAND * categories.RESEARCH * categories.TECH3 - categories.SUPPORTFACTORY } },
            
             { UCBC, 'BuildOnlyOnLocationSwarm', { 'LocationType', 'MAIN' } },
             
-            { EBC, 'GreaterThanEconStorageCurrent', { 200, 2000}},
+            { EBC, 'GreaterThanEconStorageCurrentSwarm', { 200, 2000}},
 
             { EBC, 'GreaterThanEconTrendSwarm', { 1.2, 11.0 } },
 
-            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.04, 1.07 }},
+            { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 1.04, 1.05 }},
             
             { UCBC, 'HaveLessThanUnitsInCategoryBeingUpgradeSwarm', { 1, categories.STRUCTURE * categories.FACTORY * categories.TECH2 * categories.RESEARCH }},
         },
@@ -87,11 +87,11 @@ BuilderGroup { BuilderGroupName = 'Swarm Factory Upgrader Rush',
 
             { UCBC, 'HaveGreaterThanUnitsWithCategory', { 0, categories.STRUCTURE * categories.FACTORY * categories.LAND * categories.RESEARCH * ( categories.TECH2 + categories.TECH3 ) - categories.SUPPORTFACTORY } },
 
-            { EBC, 'GreaterThanEconStorageCurrent', { 200, 2000}},
+            { EBC, 'GreaterThanEconStorageCurrentSwarm', { 200, 2000}},
 
             { EBC, 'GreaterThanEconTrendSwarm', { 0.4, 3.3 } },
 
-            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.03, 1.04 }},
+            { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 1.03, 1.04 }},
 
             { UCBC, 'HaveLessThanUnitsInCategoryBeingUpgradeSwarm', { 2, categories.STRUCTURE * categories.FACTORY * categories.LAND * categories.TECH1 }},
         },
@@ -112,11 +112,11 @@ BuilderGroup { BuilderGroupName = 'Swarm Factory Upgrader Rush',
            
             { UCBC, 'HaveGreaterThanUnitsWithCategory', { 0, categories.UEF * categories.SUPPORTFACTORY * categories.LAND * categories.TECH2 }},
             
-            { EBC, 'GreaterThanEconStorageCurrent', { 200, 2000}},
+            { EBC, 'GreaterThanEconStorageCurrentSwarm', { 200, 2000}},
 
             { EBC, 'GreaterThanEconTrendSwarm', { 0.8, 6.8 } },
 
-            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.04, 1.07 }},
+            { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 1.04, 1.07 }},
 
             { UCBC, 'HaveLessThanUnitsInCategoryBeingUpgradeSwarm', { 2, categories.STRUCTURE * categories.FACTORY * categories.LAND * categories.TECH2 }},
         },
@@ -136,11 +136,11 @@ BuilderGroup { BuilderGroupName = 'Swarm Factory Upgrader Rush',
             
             { UCBC, 'HaveGreaterThanUnitsWithCategory', { 0, categories.AEON * categories.SUPPORTFACTORY * categories.LAND * categories.TECH2 }},
           
-            { EBC, 'GreaterThanEconStorageCurrent', { 200, 2000}},
+            { EBC, 'GreaterThanEconStorageCurrentSwarm', { 200, 2000}},
 
             { EBC, 'GreaterThanEconTrendSwarm', { 0.8, 6.8 } },
 
-            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.04, 1.07 }},
+            { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 1.04, 1.07 }},
 
             { UCBC, 'HaveLessThanUnitsInCategoryBeingUpgradeSwarm', { 2, categories.STRUCTURE * categories.FACTORY * categories.LAND * categories.TECH2 }},
         },
@@ -160,11 +160,11 @@ BuilderGroup { BuilderGroupName = 'Swarm Factory Upgrader Rush',
           
             { UCBC, 'HaveGreaterThanUnitsWithCategory', { 0, categories.CYBRAN * categories.SUPPORTFACTORY * categories.LAND * categories.TECH2 }},
         
-            { EBC, 'GreaterThanEconStorageCurrent', { 200, 2000}},
+            { EBC, 'GreaterThanEconStorageCurrentSwarm', { 200, 2000}},
 
             { EBC, 'GreaterThanEconTrendSwarm', { 0.8, 6.8 } },
 
-            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.04, 1.07 }},
+            { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 1.04, 1.07 }},
             
             { UCBC, 'HaveLessThanUnitsInCategoryBeingUpgradeSwarm', { 2, categories.STRUCTURE * categories.FACTORY * categories.LAND * categories.TECH2 }},
         },
@@ -184,11 +184,11 @@ BuilderGroup { BuilderGroupName = 'Swarm Factory Upgrader Rush',
           
             { UCBC, 'HaveGreaterThanUnitsWithCategory', { 0, categories.SERAPHIM * categories.SUPPORTFACTORY * categories.LAND * categories.TECH2 }},
             
-            { EBC, 'GreaterThanEconStorageCurrent', { 200, 2000}},
+            { EBC, 'GreaterThanEconStorageCurrentSwarm', { 200, 2000}},
 
             { EBC, 'GreaterThanEconTrendSwarm', { 0.8, 6.8 } },
 
-            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.04, 1.07 }},
+            { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 1.04, 1.07 }},
 
             { UCBC, 'HaveLessThanUnitsInCategoryBeingUpgradeSwarm', { 2, categories.STRUCTURE * categories.FACTORY * categories.LAND * categories.TECH2 }},
         },
@@ -208,11 +208,11 @@ BuilderGroup { BuilderGroupName = 'Swarm Factory Upgrader Rush',
             
             { UCBC, 'HaveGreaterThanUnitsWithCategory', { 0, categories.SUPPORTFACTORY * categories.TECH2 * categories.LAND - categories.SERAPHIM - categories.CYBRAN - categories.AEON - categories.UEF }},
          
-            { EBC, 'GreaterThanEconStorageCurrent', { 200, 2000}},
+            { EBC, 'GreaterThanEconStorageCurrentSwarm', { 200, 2000}},
 
             { EBC, 'GreaterThanEconTrendSwarm', { 0.8, 6.8 } },
 
-            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.04, 1.07 }},
+            { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 1.04, 1.07 }},
 
             { UCBC, 'HaveLessThanUnitsInCategoryBeingUpgradeSwarm', { 2, categories.STRUCTURE * categories.FACTORY * categories.LAND * categories.TECH2 }},
         },
@@ -234,11 +234,11 @@ BuilderGroup { BuilderGroupName = 'Swarm Factory Upgrader Rush',
            
             { UCBC, 'BuildOnlyOnLocationSwarm', { 'LocationType', 'MAIN' } },
           
-            { EBC, 'GreaterThanEconStorageCurrent', { 200, 2000}},
+            { EBC, 'GreaterThanEconStorageCurrentSwarm', { 200, 2000}},
 
             { EBC, 'GreaterThanEconTrendSwarm', { 0.7, 16.0 } },
 
-            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.04, 1.05 }},
+            { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 1.03, 1.04 }},
           
             { UCBC, 'HaveLessThanUnitsInCategoryBeingUpgradeSwarm', { 1, categories.STRUCTURE * categories.FACTORY * categories.TECH1 }},
         },
@@ -258,11 +258,11 @@ BuilderGroup { BuilderGroupName = 'Swarm Factory Upgrader Rush',
       
             { UCBC, 'BuildOnlyOnLocationSwarm', { 'LocationType', 'MAIN' } },
          
-            { EBC, 'GreaterThanEconStorageCurrent', { 200, 2000}},
+            { EBC, 'GreaterThanEconStorageCurrentSwarm', { 200, 2000}},
 
             { EBC, 'GreaterThanEconTrendSwarm', { 1.2, 31.0 } },
 
-            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.04, 1.07 }},
+            { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 1.04, 1.05 }},
             
             { UCBC, 'HaveLessThanUnitsInCategoryBeingUpgradeSwarm', { 1, categories.STRUCTURE * categories.FACTORY * categories.TECH2 * categories.RESEARCH }},
         },
@@ -281,11 +281,11 @@ BuilderGroup { BuilderGroupName = 'Swarm Factory Upgrader Rush',
         
             { UCBC, 'HaveGreaterThanUnitsWithCategory', { 0, categories.STRUCTURE * categories.FACTORY * categories.AIR * categories.RESEARCH * ( categories.TECH2 + categories.TECH3 ) - categories.SUPPORTFACTORY } },
 
-            { EBC, 'GreaterThanEconStorageCurrent', { 200, 2000}},
+            { EBC, 'GreaterThanEconStorageCurrentSwarm', { 200, 2000}},
 
             { EBC, 'GreaterThanEconTrendSwarm', { 0.4, 8.6 } },
 
-            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.03, 1.06 }},
+            { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 1.03, 1.06 }},
       
             { UCBC, 'HaveLessThanUnitsInCategoryBeingUpgradeSwarm', { 2, categories.STRUCTURE * categories.FACTORY * categories.AIR * categories.TECH1 }},
         },
@@ -306,11 +306,11 @@ BuilderGroup { BuilderGroupName = 'Swarm Factory Upgrader Rush',
            
             { UCBC, 'HaveGreaterThanUnitsWithCategory', { 0, categories.UEF * categories.AIR * categories.SUPPORTFACTORY * categories.TECH2 }},
            
-            { EBC, 'GreaterThanEconStorageCurrent', { 200, 2000}},
+            { EBC, 'GreaterThanEconStorageCurrentSwarm', { 200, 2000}},
 
             { EBC, 'GreaterThanEconTrendSwarm', { 1.0, 26.0 } },
 
-            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.04, 1.08 }},
+            { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 1.04, 1.08 }},
          
             { UCBC, 'CheckBuildPlattonDelay', { 'FactoryUpgrade' }},
 
@@ -332,11 +332,11 @@ BuilderGroup { BuilderGroupName = 'Swarm Factory Upgrader Rush',
            
             { UCBC, 'HaveGreaterThanUnitsWithCategory', { 0, categories.AEON * categories.AIR * categories.SUPPORTFACTORY * categories.TECH2 }},
             
-            { EBC, 'GreaterThanEconStorageCurrent', { 200, 2000}},
+            { EBC, 'GreaterThanEconStorageCurrentSwarm', { 200, 2000}},
 
             { EBC, 'GreaterThanEconTrendSwarm', { 1.0, 26.0 } },
 
-            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.04, 1.08 }},
+            { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 1.04, 1.08 }},
          
             { UCBC, 'HaveLessThanUnitsInCategoryBeingUpgradeSwarm', { 2, categories.STRUCTURE * categories.FACTORY * categories.AIR * categories.TECH2 }},
         },
@@ -356,11 +356,11 @@ BuilderGroup { BuilderGroupName = 'Swarm Factory Upgrader Rush',
             
             { UCBC, 'HaveGreaterThanUnitsWithCategory', { 0, categories.CYBRAN * categories.AIR * categories.SUPPORTFACTORY * categories.TECH2 }},
            
-            { EBC, 'GreaterThanEconStorageCurrent', { 200, 2000}},
+            { EBC, 'GreaterThanEconStorageCurrentSwarm', { 200, 2000}},
 
             { EBC, 'GreaterThanEconTrendSwarm', { 1.0, 26.0 } },
 
-            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.04, 1.08 }},
+            { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 1.04, 1.08 }},
          
             { UCBC, 'HaveLessThanUnitsInCategoryBeingUpgradeSwarm', { 2, categories.STRUCTURE * categories.FACTORY * categories.AIR * categories.TECH2 }},
         },
@@ -380,11 +380,11 @@ BuilderGroup { BuilderGroupName = 'Swarm Factory Upgrader Rush',
             
             { UCBC, 'HaveGreaterThanUnitsWithCategory', { 0, categories.SERAPHIM * categories.AIR * categories.SUPPORTFACTORY * categories.TECH2 }},
             
-            { EBC, 'GreaterThanEconStorageCurrent', { 200, 2000}},
+            { EBC, 'GreaterThanEconStorageCurrentSwarm', { 200, 2000}},
 
             { EBC, 'GreaterThanEconTrendSwarm', { 1.0, 26.0 } },
 
-            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.04, 1.08 }},
+            { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 1.04, 1.08 }},
 
             { UCBC, 'HaveLessThanUnitsInCategoryBeingUpgradeSwarm', { 2, categories.STRUCTURE * categories.FACTORY * categories.AIR * categories.TECH2 }},
         },
@@ -404,11 +404,11 @@ BuilderGroup { BuilderGroupName = 'Swarm Factory Upgrader Rush',
            
             { UCBC, 'HaveGreaterThanUnitsWithCategory', { 0, categories.SUPPORTFACTORY * categories.TECH2 * categories.AIR - categories.SERAPHIM - categories.CYBRAN - categories.AEON - categories.UEF }},
            
-            { EBC, 'GreaterThanEconStorageCurrent', { 200, 2000}},
+            { EBC, 'GreaterThanEconStorageCurrentSwarm', { 200, 2000}},
 
             { EBC, 'GreaterThanEconTrendSwarm', { 1.0, 26.0 } },
 
-            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.04, 1.08 }},
+            { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 1.04, 1.08 }},
 
             { UCBC, 'HaveLessThanUnitsInCategoryBeingUpgradeSwarm', { 2, categories.STRUCTURE * categories.FACTORY * categories.AIR * categories.TECH2 }},
         },
@@ -434,11 +434,11 @@ BuilderGroup {
 
             { UCBC, 'HaveLessThanUnitsWithCategory', { 1, categories.STRUCTURE * categories.FACTORY * categories.NAVAL * categories.RESEARCH * (categories.TECH2 + categories.TECH3) - categories.SUPPORTFACTORY } },
            
-            { EBC, 'GreaterThanEconStorageCurrent', { 200, 2000}},
+            { EBC, 'GreaterThanEconStorageCurrentSwarm', { 200, 2000}},
 
             { EBC, 'GreaterThanEconTrendSwarm', { 0.9, 4.9 } },
 
-            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.04, 1.06 }},
+            { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 1.04, 1.05 }},
 
             { UCBC, 'HaveLessThanUnitsInCategoryBeingUpgradeSwarm', { 1, categories.STRUCTURE * categories.FACTORY * categories.TECH1 }},
         },
@@ -459,11 +459,11 @@ BuilderGroup {
        
             { UCBC, 'HaveLessThanUnitsWithCategory', { 1, categories.STRUCTURE * categories.FACTORY * categories.NAVAL * categories.RESEARCH * categories.TECH3 - categories.SUPPORTFACTORY } },
          
-            { EBC, 'GreaterThanEconStorageCurrent', { 200, 2000}},
+            { EBC, 'GreaterThanEconStorageCurrentSwarm', { 200, 2000}},
 
             { EBC, 'GreaterThanEconTrendSwarm', { 6.0, 28.0 } },
 
-            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.04, 1.1 }},
+            { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 1.05, 1.06 }},
 
             { UCBC, 'HaveLessThanUnitsInCategoryBeingUpgradeSwarm', { 1, categories.STRUCTURE * categories.FACTORY * categories.TECH2 * categories.RESEARCH - categories.SUPPORTFACTORY }},
         },
@@ -483,11 +483,11 @@ BuilderGroup {
  
             { UCBC, 'HaveGreaterThanUnitsWithCategory', { 0, categories.STRUCTURE * categories.FACTORY * categories.NAVAL * categories.RESEARCH * ( categories.TECH2 + categories.TECH3 ) - categories.SUPPORTFACTORY } },
 
-            { EBC, 'GreaterThanEconStorageCurrent', { 200, 2000}},
+            { EBC, 'GreaterThanEconStorageCurrentSwarm', { 200, 2000}},
 
             { EBC, 'GreaterThanEconTrendSwarm', { 0.9, 4.9 } },
 
-            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.03, 1.05 }},
+            { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 1.03, 1.05 }},
 
             { UCBC, 'HaveLessThanUnitsInCategoryBeingUpgradeSwarm', { 2, categories.STRUCTURE * categories.FACTORY * categories.NAVAL * categories.TECH1 }},
         },
@@ -509,11 +509,11 @@ BuilderGroup {
             
             { UCBC, 'HaveGreaterThanUnitsWithCategory', { 0, categories.UEF * categories.NAVAL * categories.SUPPORTFACTORY * categories.TECH2 }},
             
-            { EBC, 'GreaterThanEconStorageCurrent', { 200, 2000}},
+            { EBC, 'GreaterThanEconStorageCurrentSwarm', { 200, 2000}},
 
             { EBC, 'GreaterThanEconTrendSwarm', { 6.0, 28.0 } },
 
-            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.04, 1.08 }},
+            { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 1.04, 1.08 }},
 
             { UCBC, 'HaveLessThanUnitsInCategoryBeingUpgradeSwarm', { 2, categories.STRUCTURE * categories.FACTORY * categories.NAVAL * categories.TECH2 }},
         },
@@ -534,11 +534,11 @@ BuilderGroup {
           
             { UCBC, 'HaveGreaterThanUnitsWithCategory', { 0, categories.AEON * categories.NAVAL * categories.SUPPORTFACTORY * categories.TECH2 }},
       
-            { EBC, 'GreaterThanEconStorageCurrent', { 200, 2000}},
+            { EBC, 'GreaterThanEconStorageCurrentSwarm', { 200, 2000}},
 
             { EBC, 'GreaterThanEconTrendSwarm', { 6.0, 28.0 } },
 
-            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.04, 1.08 }},
+            { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 1.04, 1.08 }},
           
             { UCBC, 'HaveLessThanUnitsInCategoryBeingUpgradeSwarm', { 2, categories.STRUCTURE * categories.FACTORY * categories.NAVAL * categories.TECH2 }},
         },
@@ -559,11 +559,11 @@ BuilderGroup {
         
             { UCBC, 'HaveGreaterThanUnitsWithCategory', { 0, categories.CYBRAN * categories.NAVAL * categories.SUPPORTFACTORY * categories.TECH2 }},
   
-            { EBC, 'GreaterThanEconStorageCurrent', { 200, 2000}},
+            { EBC, 'GreaterThanEconStorageCurrentSwarm', { 200, 2000}},
 
             { EBC, 'GreaterThanEconTrendSwarm', { 6.0, 28.0 } },
 
-            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.04, 1.08 }},
+            { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 1.04, 1.08 }},
 
             { UCBC, 'HaveLessThanUnitsInCategoryBeingUpgradeSwarm', { 2, categories.STRUCTURE * categories.FACTORY * categories.NAVAL * categories.TECH2 }},
         },
@@ -584,11 +584,11 @@ BuilderGroup {
         
             { UCBC, 'HaveGreaterThanUnitsWithCategory', { 0, categories.SERAPHIM * categories.NAVAL * categories.SUPPORTFACTORY * categories.TECH2 }},
             
-            { EBC, 'GreaterThanEconStorageCurrent', { 200, 2000}},
+            { EBC, 'GreaterThanEconStorageCurrentSwarm', { 200, 2000}},
 
             { EBC, 'GreaterThanEconTrendSwarm', { 6.0, 28.0 } },
 
-            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.04, 1.08 }},
+            { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 1.04, 1.08 }},
 
             { UCBC, 'HaveLessThanUnitsInCategoryBeingUpgradeSwarm', { 2, categories.STRUCTURE * categories.FACTORY * categories.NAVAL * categories.TECH2 }},
         },
@@ -609,11 +609,11 @@ BuilderGroup {
         
             { UCBC, 'HaveGreaterThanUnitsWithCategory', { 0, categories.SUPPORTFACTORY * categories.TECH2 * categories.NAVAL - categories.SERAPHIM - categories.CYBRAN - categories.AEON - categories.UEF }},
       
-            { EBC, 'GreaterThanEconStorageCurrent', { 200, 2000}},
+            { EBC, 'GreaterThanEconStorageCurrentSwarm', { 200, 2000}},
 
             { EBC, 'GreaterThanEconTrendSwarm', { 6.0, 28.0 } },
 
-            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.04, 1.08 }},
+            { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 1.04, 1.08 }},
 
             { UCBC, 'HaveLessThanUnitsInCategoryBeingUpgradeSwarm', { 2, categories.STRUCTURE * categories.FACTORY * categories.NAVAL * categories.TECH2 }},
         },

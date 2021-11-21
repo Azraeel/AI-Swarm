@@ -52,9 +52,9 @@ BuilderGroup {
 
             { UCBC, 'LocationFactoriesBuildingLess', { 'LocationType', 3, categories.MOBILE * categories.AIR * categories.BOMBER } },
 
-            { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.7, 0.8 }},
+            { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 0.7, 0.8 }},
 
-            { EBC, 'GreaterThanEconStorageCurrent', { 200, 2000}},
+            { EBC, 'GreaterThanEconStorageCurrentSwarm', { 200, 2000}},
         },
     },
 
@@ -74,9 +74,9 @@ BuilderGroup {
 
             { UCBC, 'LocationFactoriesBuildingLess', { 'LocationType', 2, categories.MOBILE * categories.AIR * categories.GROUNDATTACK } },
 
-            { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.7, 0.8 }},
+            { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 0.7, 0.8 }},
 
-            { EBC, 'GreaterThanEconStorageCurrent', { 200, 2000}},
+            { EBC, 'GreaterThanEconStorageCurrentSwarm', { 200, 2000}},
         },
     },
     
@@ -100,9 +100,9 @@ BuilderGroup {
 
             { UCBC, 'LocationFactoriesBuildingLess', { 'LocationType', 2, categories.MOBILE * categories.AIR * categories.GROUNDATTACK * categories.TECH2 } },
 
-            { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.75, 1.0 }},
+            { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 0.75, 1.0 }},
 
-            { EBC, 'GreaterThanEconStorageCurrent', { 200, 2000}},
+            { EBC, 'GreaterThanEconStorageCurrentSwarm', { 200, 2000}},
         },
     },
 
@@ -122,9 +122,9 @@ BuilderGroup {
 
             { UCBC, 'LocationFactoriesBuildingLess', { 'LocationType', 2, categories.MOBILE * categories.AIR * categories.BOMBER * categories.TECH2 } },
 
-            { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.75, 1.0 }},
+            { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 0.75, 1.0 }},
 
-            { EBC, 'GreaterThanEconStorageCurrent', { 200, 2000}},
+            { EBC, 'GreaterThanEconStorageCurrentSwarm', { 200, 2000}},
         },
     },
 
@@ -144,9 +144,9 @@ BuilderGroup {
 
             { UCBC, 'UnitsGreaterAtEnemySwarm', { 0 , categories.NAVAL * categories.MOBILE } },
 
-            { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.75, 1.0 }},
+            { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 0.75, 1.0 }},
 
-            { EBC, 'GreaterThanEconStorageCurrent', { 200, 2000}},
+            { EBC, 'GreaterThanEconStorageCurrentSwarm', { 200, 2000}},
         },
         BuilderType = 'Air',
     },
@@ -167,9 +167,9 @@ BuilderGroup {
 
             { UCBC, 'LocationFactoriesBuildingLess', { 'LocationType', 2, categories.MOBILE * categories.AIR * categories.BOMBER * categories.TECH3 } },
 
-            { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.9, 1.1 }},
+            { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 0.9, 1.1 }},
 
-            { EBC, 'GreaterThanEconStorageCurrent', { 200, 2000}},
+            { EBC, 'GreaterThanEconStorageCurrentSwarm', { 200, 2000}},
         },
         BuilderType = 'Air',
     },
@@ -186,9 +186,9 @@ BuilderGroup {
 
             { UCBC, 'LocationFactoriesBuildingLess', { 'LocationType', 2, categories.MOBILE * categories.AIR * categories.GROUNDATTACK * categories.TECH3 } },
 
-            { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.9, 1.1 }},
+            { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 0.9, 1.1 }},
 
-            { EBC, 'GreaterThanEconStorageCurrent', { 200, 2000}},
+            { EBC, 'GreaterThanEconStorageCurrentSwarm', { 200, 2000}},
         },
         BuilderType = 'Air',
     }, 

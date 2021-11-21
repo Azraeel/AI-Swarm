@@ -195,9 +195,9 @@ BuilderGroup {
 
             { EBC, 'GreaterThanEconTrendSwarm', { 0.0, 0.0 } }, 
 
-            { EBC, 'GreaterThanEconStorageCurrent', { 200, 2000}},
+            { EBC, 'GreaterThanEconStorageCurrentSwarm', { 200, 2000}},
 
-            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.16, 1.1 }},
+            { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 1.16, 1.1 }},
         },
         BuilderType = 'Any',
         BuilderData = {
@@ -222,9 +222,9 @@ BuilderGroup {
 
             { EBC, 'GreaterThanEconTrendSwarm', { 0.0, 0.0 } }, 
 
-            { EBC, 'GreaterThanEconStorageCurrent', { 200, 2000}},
+            { EBC, 'GreaterThanEconStorageCurrentSwarm', { 200, 2000}},
 
-            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.16, 1.1 }},
+            { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 1.16, 1.1 }},
         },
         BuilderType = 'Any',
         BuilderData = {
@@ -252,9 +252,9 @@ BuilderGroup {
 
             { EBC, 'GreaterThanEconTrendSwarm', { 0.0, 0.0 } }, 
 
-            { EBC, 'GreaterThanEconStorageCurrent', { 200, 2000}},
+            { EBC, 'GreaterThanEconStorageCurrentSwarm', { 200, 2000}},
 
-            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.2, 1.12 }},
+            { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 1.2, 1.12 }},
 
             { UCBC, 'HaveLessThanUnitsInCategoryBeingUpgradeSwarm', { 3, categories.ENGINEERSTATION }},
         },
@@ -269,9 +269,9 @@ BuilderGroup {
 
             { EBC, 'GreaterThanEconTrendSwarm', { 0.0, 0.0 } },
 
-            { EBC, 'GreaterThanEconStorageCurrent', { 200, 2000}},
+            { EBC, 'GreaterThanEconStorageCurrentSwarm', { 200, 2000}},
 
-            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.16, 1.1 }},
+            { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 1.16, 1.1 }},
 
             { UCBC, 'HaveLessThanUnitsInCategoryBeingUpgradeSwarm', { 3, categories.ENGINEERSTATION }},
         },
@@ -286,9 +286,9 @@ BuilderGroup {
 
             { EBC, 'GreaterThanEconTrendSwarm', { 0.0, 0.0 } },
 
-            { EBC, 'GreaterThanEconStorageCurrent', { 200, 2000}},
+            { EBC, 'GreaterThanEconStorageCurrentSwarm', { 200, 2000}},
 
-            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.2, 1.12 }},       
+            { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 1.2, 1.12 }},       
 
             { UCBC, 'HaveLessThanUnitsInCategoryBeingUpgradeSwarm', { 3, categories.ENGINEERSTATION }},
         },
@@ -306,9 +306,9 @@ BuilderGroup { BuilderGroupName = 'Swarm SACU Builder',
         PlatoonTemplate = 'S3 SACU RAMBO preset 12345',
         Priority = 1010,
         BuilderConditions = { 
-            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.16, 1.1 }},
+            { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 1.16, 1.1 }},
 
-            { EBC, 'GreaterThanEconStorageCurrent', { 200, 2000}},
+            { EBC, 'GreaterThanEconStorageCurrentSwarm', { 200, 2000}},
 
             { UCBC, 'HaveLessThanUnitsWithCategory', { 20, categories.RAMBOPRESET } },
 
@@ -321,9 +321,9 @@ BuilderGroup { BuilderGroupName = 'Swarm SACU Builder',
         PlatoonTemplate = 'S3 SACU ENGINEER preset 12345',
         Priority = 1015,
         BuilderConditions = {
-            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.24, 1.2 }},
+            { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 1.24, 1.2 }},
 
-            { EBC, 'GreaterThanEconStorageCurrent', { 200, 2000}},
+            { EBC, 'GreaterThanEconStorageCurrentSwarm', { 200, 2000}},
 
             { MIBC, 'FactionIndex', { 1, 2, 3, 5 }}, -- 1: UEF, 2: Aeon, 3: Cybran, 4: Seraphim, 5: Nomads 
 

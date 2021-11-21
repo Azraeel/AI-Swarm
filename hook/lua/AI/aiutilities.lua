@@ -21,6 +21,12 @@ local GetNumUnitsAroundPoint = moho.aibrain_methods.GetNumUnitsAroundPoint
 local GetUnitsAroundPoint = moho.aibrain_methods.GetUnitsAroundPoint
 local GetAIBrain = moho.unit_methods.GetAIBrain
 
+function AIGetEconomyNumbers(aiBrain)
+    if not aiBrain.Swarm then
+        return AIGetEconomyNumbers(aiBrain)
+    end
+end
+
 function FindUnclutteredAreaSwarm(aiBrain, category, location, radius, maxUnits, maxRadius, avoidCat)
     local units = aiBrain:GetUnitsAroundPoint(category, location, radius, 'Ally')
     local index = aiBrain:GetArmyIndex()

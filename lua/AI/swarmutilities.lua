@@ -28,240 +28,63 @@ local AssignUnitsToPlatoon = moho.aibrain_methods.AssignUnitsToPlatoon
 local GetFractionComplete = moho.entity_methods.GetFractionComplete
 local GetAIBrain = moho.unit_methods.GetAIBrain
 
---Extractor Upgrading needs a complete rework, though honestly I do not have the skill to rewrite this completely nor the skill to use Sprouto or Relly's code right now.
-
-function ExtractorPauseSwarm(self, aiBrain, MassExtractorUnitList, ratio, techLevel)
-    local aiBrain = self:GetBrain()
-    local econ = AIUtils.AIGetEconomyNumbers(aiBrain)
-    local BasePosition = aiBrain.BuilderManagers['MAIN'].Position
-    local UpgradingBuilding = nil
-    local UpgradingBuildingNum = 0
-    local PausedUpgradingBuilding = nil
-    local PausedUpgradingBuildingNum = 0
-    local DisabledBuilding = nil
-    local DisabledBuildingNum = 0
-    local DistanceToBase = nil
-    local LowestDistanceToBase = nil
-    local IdleBuilding = nil
-    local BussyBuilding = nil
-    local IdleBuildingNum = 0
-
-    for unitNum, unit in MassExtractorUnitList do
-        if unit
-            and not unit.Dead
-            and not unit:GetFractionComplete() < 1
-            and SWARMENTITY(SWARMPARSE(techLevel), unit)
-        then
-
-            if unit:IsUnitState('Upgrading') then
-                if unit:IsPaused() then
-                    if not PausedUpgradingBuilding then
-                        PausedUpgradingBuilding = unit
-                    end
-                    PausedUpgradingBuildingNum = PausedUpgradingBuildingNum + 1
-                else
-                    if not UpgradingBuilding then
-                        UpgradingBuilding = unit
-                    end
-                    UpgradingBuildingNum = UpgradingBuildingNum + 1
-                end
-
-            elseif unit:GetScriptBit('RULEUTC_ProductionToggle') then
-                if not DisabledBuilding then
-                    DisabledBuilding = unit
-                end
-                DisabledBuildingNum = DisabledBuildingNum + 1
-            else
-                if not unit:IsPaused() then
-                    if not IdleBuilding then
-                        IdleBuilding = unit
-                    end
-                else
-                    unit:SetPaused( false )
-                end
-               IdleBuildingNum = IdleBuildingNum + 1
-            end
-
-        end
+function CheckCustomPlatoonsSwarm(aiBrain)
+    if not aiBrain.StructurePool then
+        --LOG('* AI-RNG: Creating Structure Pool Platoon')
+        local structurepool = aiBrain:MakePlatoon('StructurePool', 'none')
+        structurepool:UniquelyNamePlatoon('StructurePool')
+        structurepool.BuilderName = 'Structure Pool'
+        aiBrain.StructurePool = structurepool
     end
-    
-
-    if aiBrain:GetEconomyStoredRatio('ENERGY') <= 0.25 then
-        if UpgradingBuilding then
-            if UpgradingBuildingNum <= 0 and SWARMGETN(MassExtractorUnitList) >= 8 then
-            else
-                UpgradingBuilding:SetPaused( true )
-                return true
-            end
-        end 
-    end 
-
-    local MassRatioCheckPositive = GlobalMassUpgradeCostVsGlobalMassIncomeRatioSwarm( self, aiBrain, ratio, techLevel, '<' )
-
-    if PausedUpgradingBuilding then
-        if MassRatioCheckPositive then
-            PausedUpgradingBuilding:SetPaused( false )
-            return true
-        elseif not MassRatioCheckPositive and UpgradingBuildingNum < 1 and SWARMGETN(MassExtractorUnitList) >= 8 or econ.MassEfficiencyOverTime > 1.02 and aiBrain:GetEconomyStored('MASS') >= 200 then
-            PausedUpgradingBuilding:SetPaused( false )
-            return true
-        end
-    end
-
-    local MassRatioCheckNegative = GlobalMassUpgradeCostVsGlobalMassIncomeRatioSwarm( self, aiBrain, ratio, techLevel, '>=')
-    
-    if MassRatioCheckNegative then
-        if UpgradingBuildingNum > 0 then
-            if econ.MassEfficiencyOverTime < 1.02 and aiBrain:GetEconomyStored('MASS') <= 200 then
-                UpgradingBuilding:SetPaused( true )
-                return true
-            end
-        end
-    end
-    return false
-
 end
 
+-- 99% of the below was Sprouto's work
+function StructureUpgradeInitializeSwarm(finishedUnit, aiBrain)
+    local StructureUpgradeThreadSwarm = import('/lua/ai/aibehaviors.lua').StructureUpgradeThreadSwarm
+    local structurePool = aiBrain.StructurePool
+    local AssignUnitsToPlatoon = moho.aibrain_methods.AssignUnitsToPlatoon
+    --LOG('* AI-RNG: Structure Upgrade Initializing')
+    if EntityCategoryContains(categories.MASSEXTRACTION, finishedUnit) then
+        local extractorPlatoon = aiBrain:MakePlatoon('ExtractorPlatoon'..tostring(finishedUnit.Sync.id), 'none')
+        extractorPlatoon.BuilderName = 'ExtractorPlatoon'..tostring(finishedUnit.Sync.id)
+        extractorPlatoon.MovementLayer = 'Land'
+        --LOG('* AI-RNG: Assigning Extractor to new platoon')
+        AssignUnitsToPlatoon(aiBrain, extractorPlatoon, {finishedUnit}, 'Support', 'none')
+        finishedUnit.PlatoonHandle = extractorPlatoon
 
-function ExtractorUpgradeSwarm(self, aiBrain, MassExtractorUnitList, ratio, techLevel, UnitUpgradeTemplates, StructureUpgradeTemplates)
-    local MassRatioCheckPositive = GlobalMassUpgradeCostVsGlobalMassIncomeRatioSwarm(self, aiBrain, ratio, techLevel, '<' )
-    local aiBrain = self:GetBrain()
-    local econ = AIUtils.AIGetEconomyNumbers(aiBrain)
-    local BasePosition = aiBrain.BuilderManagers['MAIN'].Position
-    local factionIndex = aiBrain:GetFactionIndex()
-    local UpgradingBuilding = 0
-    local DistanceToBase = nil
-    local LowestDistanceToBase = nil
-    local upgradeID = nil
-    local upgradeBuilding = nil
-    local UnitPos = nil
-    local FactionToIndex  = { UEF = 1, AEON = 2, CYBRAN = 3, SERAPHIM = 4, NOMADS = 5}
-    local UnitBeingUpgradeFactionIndex = nil
-
-    for k, v in MassExtractorUnitList do
-
-        local TempID
-
-        if not v
-            or v.Dead
-            or v:BeenDestroyed()
-            or v:IsPaused()
-            or not SWARMENTITY(SWARMPARSE(techLevel), v)
-            or v:GetFractionComplete() < 1
-        then
-            continue
-        end
-
-        if v:IsUnitState('Upgrading') then
-            UpgradingBuilding = UpgradingBuilding + 1
-            continue
-        end
-
-        UnitPos = v:GetPosition()
-        DistanceToBase= VDist2(BasePosition[1] or 0, BasePosition[3] or 0, UnitPos[1] or 0, UnitPos[3] or 0)
-
-        if not LowestDistanceToBase or DistanceToBase < LowestDistanceToBase then
-
-            UnitBeingUpgradeFactionIndex = FactionToIndex[v.factionCategory] or factionIndex
-
-            if SWARMENTITY(categories.MOBILE, v) then
-                TempID = aiBrain:FindUpgradeBP(v:GetUnitId(), UnitUpgradeTemplates[UnitBeingUpgradeFactionIndex])
-
-                if not TempID then
-                    --WARN('['..string.gsub(debug.getinfo(1).source, ".*\\(.*.lua)", "%1")..', line:'..debug.getinfo(1).currentline..'] *UnitUpgradeAI ERROR: Can\'t find UnitUpgradeTemplate for mobile unit: ' .. repr(v:GetUnitId()) )
-                end
-
-            else
-                TempID = aiBrain:FindUpgradeBP(v:GetUnitId(), StructureUpgradeTemplates[UnitBeingUpgradeFactionIndex])
-
-                if not TempID then
-                    --WARN('['..string.gsub(debug.getinfo(1).source, ".*\\(.*.lua)", "%1")..', line:'..debug.getinfo(1).currentline..'] *UnitUpgradeAI ERROR: Can\'t find StructureUpgradeTemplate for structure: ' .. repr(v:GetUnitId()) )
-                end
-
-            end 
-
-            if TempID and SWARMENTITY(categories.STRUCTURE, v) and not v:CanBuild(TempID) then
-
-                --WARN('['..string.gsub(debug.getinfo(1).source, ".*\\(.*.lua)", "%1")..', line:'..debug.getinfo(1).currentline..'] *UnitUpgradeAI ERROR: Can\'t upgrade structure with StructureUpgradeTemplate: ' .. repr(v:GetUnitId()) )
-
-            elseif TempID then
-                upgradeID = TempID
-                upgradeBuilding = v
-                LowestDistanceToBase = DistanceToBase
-            end
-
+        if not finishedUnit.UpgradeThread then
+            --LOG('* AI-RNG: Forking Upgrade Thread')
+            upgradeSpec = aiBrain:GetUpgradeSpec(finishedUnit)
+            --LOG('* AI-RNG: UpgradeSpec'..repr(upgradeSpec))
+            finishedUnit.UpgradeThread = finishedUnit:ForkThread(StructureUpgradeThreadSwarm, aiBrain, upgradeSpec, false)
         end
     end
-    
-    if 
-    not MassRatioCheckPositive 
-    --and aiBrain:GetEconomyStored('MASS') < 200 
-    --and econ.MassEfficiencyOverTime >= 1.0 
-    --and econ.EnergyEfficiencyOverTime >= 1.04 
-    then
-      
-        if UpgradingBuilding > 0 or SWARMGETN(MassExtractorUnitList) < 8 then
-            return false
-        end
-
+    if finishedUnit.UpgradeThread then
+        finishedUnit.Trash:Add(finishedUnit.UpgradeThread)
     end
-
-    if upgradeID and upgradeBuilding then
-        IssueUpgrade({upgradeBuilding}, upgradeID)
-        SWARMWAIT(100)
-        return true
-    end
-
-    return false
 end
 
--- Helperfunction fro ExtractorUpgradeAISwarm. 
-function GlobalMassUpgradeCostVsGlobalMassIncomeRatioSwarm(self, aiBrain, ratio, techLevel, compareType)
+function ExtractorsBeingUpgradedSwarm(aiBrain)
+    -- Returns number of extractors upgrading
 
-    local GlobalUpgradeCost = 0
-    local econ = AIUtils.AIGetEconomyNumbers(aiBrain)
-    local unitsBuilding = aiBrain:GetListOfUnits(categories.MASSEXTRACTION * (categories.TECH1 + categories.TECH2), true)
-    local numBuilding = 0
-    
-    if compareType == '<' or compareType == '<=' then
-        numBuilding = 1
-        if techLevel == 'TECH1' then
-            GlobalUpgradeCost = 10
-            MassIncomeLost = 2
-        else
-            GlobalUpgradeCost = 24
-            MassIncomeLost = 6
-        end
-    end
-
-    local SingleUpgradeCost
+    local tech1ExtractorUpgrading = aiBrain:GetListOfUnits(categories.MASSEXTRACTION * categories.TECH1, true)
+    local tech2ExtractorUpgrading = aiBrain:GetListOfUnits(categories.MASSEXTRACTION * categories.TECH2, true)
+    local tech1ExtNumBuilding = 0
+    local tech2ExtNumBuilding = 0
+    -- own armyIndex
     local armyIndex = aiBrain:GetArmyIndex()
-   
-    for unitNum, unit in unitsBuilding do
-        if unit
-            and not unit:BeenDestroyed()
-            and not unit.Dead
-            and not unit:IsPaused()
-            and not unit:GetFractionComplete() < 1
-            and unit:IsUnitState('Upgrading')
-            and unit:GetAIBrain():GetArmyIndex() == armyIndex
-        then
-            numBuilding = numBuilding + 1
-            
-            local UpgraderBlueprint = unit:GetBlueprint()
-            local BeingUpgradeEconomy = __blueprints[UpgraderBlueprint.General.UpgradesTo].Economy
-            SingleUpgradeCost = (UpgraderBlueprint.Economy.BuildRate / BeingUpgradeEconomy.BuildTime) * BeingUpgradeEconomy.BuildCostMass
-            GlobalUpgradeCost = GlobalUpgradeCost + SingleUpgradeCost
+    -- loop over all units and search for upgrading units
+    for t1extKey, t1extrator in tech1ExtractorUpgrading do
+        if not t1extrator.Dead and not t1extrator:BeenDestroyed() and t1extrator:IsUnitState('Upgrading') and t1extrator:GetAIBrain():GetArmyIndex() == armyIndex then
+            tech1ExtNumBuilding = tech1ExtNumBuilding + 1
         end
     end
-   
-    local MassIncome = ( aiBrain:GetEconomyIncome('MASS') * 10 ) - MassIncomeLost
-
-    if MassIncome < 20 and ( compareType == '<' or compareType == '<=' ) then
-        return false
+    for t2extKey, t2extrator in tech2ExtractorUpgrading do
+        if not t2extrator.Dead and not t2extrator:BeenDestroyed() and t2extrator:IsUnitState('Upgrading') and t2extrator:GetAIBrain():GetArmyIndex() == armyIndex then
+            tech2ExtNumBuilding = tech2ExtNumBuilding + 1
+        end
     end
-
-    return CompareBody(GlobalUpgradeCost / MassIncome, ratio, compareType)
+    return {TECH1 = tech1ExtNumBuilding, TECH2 = tech2ExtNumBuilding}
 end
 
 function HaveUnitRatio(aiBrain, ratio, categoryOne, compareType, categoryTwo)

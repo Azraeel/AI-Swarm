@@ -25,7 +25,7 @@ BuilderGroup {
             
             { UCBC, 'CheckBuildPlattonDelay', { 'Energy' }},
 
-            { EBC, 'LessThanEnergyTrend', { 0.0 } },             
+            { EBC, 'LessThanEnergyTrendSwarm', { 0.0 } },             
         },
         BuilderType = 'Any',
         BuilderData = {
@@ -62,9 +62,9 @@ BuilderGroup {
             
             { UCBC, 'CheckBuildPlattonDelay', { 'Energy' }},
 
-            { EBC, 'GreaterThanEconStorageCurrent', { 200, 2000}},
+            { EBC, 'GreaterThanEconStorageCurrentSwarm', { 200, 2000}},
 
-            { EBC, 'LessThanEnergyTrend', { 4.0 } },
+            { EBC, 'LessThanEnergyTrendSwarm', { 4.0 } },
         },
         BuilderType = 'Any',
         BuilderData = {
@@ -122,7 +122,7 @@ BuilderGroup {
             
             { UCBC, 'HaveLessThanUnitsInCategoryBeingBuilt', { 1, categories.STRUCTURE * categories.ENERGYPRODUCTION * categories.TECH3 }},
             
-            { EBC, 'LessThanEnergyTrend', { 8.0 } },              -- Ratio from 0 to 1. (1=100%)
+            { EBC, 'LessThanEnergyTrendSwarm', { 8.0 } },              -- Ratio from 0 to 1. (1=100%)
 
             { UCBC, 'HaveLessThanUnitsInCategoryBeingBuilt', { 1, categories.STRUCTURE * categories.ENERGYPRODUCTION * categories.TECH2 }},
         },
@@ -161,7 +161,7 @@ BuilderGroup {
         BuilderConditions = {
             { UCBC, 'CheckBuildPlattonDelay', { 'Energy' }},
 
-            { EBC, 'LessThanEnergyTrend', { 0.0 } },              -- Ratio from 0 to 1. (1=100%)
+            { EBC, 'LessThanEnergyTrendSwarm', { 0.0 } },              -- Ratio from 0 to 1. (1=100%)
         },
         BuilderType = 'Any',
         BuilderData = {
@@ -217,7 +217,7 @@ BuilderGroup {
         BuilderConditions = {
             { MIBC, 'GreaterThanGameTime', { 600 } },
             { UCBC, 'UnitCapCheckLess', { .7 } },
-            { EBC, 'GreaterThanEconStorageCurrent', { 200, 2000}},
+            { EBC, 'GreaterThanEconStorageCurrentSwarm', { 200, 2000}},
             { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.01, 0.95 } },             -- Ratio from 0 to 1. (1=100%)
             { UCBC, 'HaveLessThanUnitsWithCategory', { 9, 'ENERGYSTORAGE' }},
         },
@@ -356,7 +356,7 @@ BuilderGroup {
             
             { UCBC, 'HaveLessThanUnitsInCategoryBeingBuilt', { 1, categories.STRUCTURE * categories.ENERGYPRODUCTION * categories.TECH3 }},
             
-            { EBC, 'LessThanEnergyTrend', { 8.0 } },              -- Ratio from 0 to 1. (1=100%)
+            { EBC, 'LessThanEnergyTrendSwarm', { 8.0 } },              -- Ratio from 0 to 1. (1=100%)
         },
         BuilderType = 'Any',
         BuilderData = {
@@ -395,7 +395,7 @@ BuilderGroup {
 
             { UCBC, 'IsEngineerNotBuildingSwarm', { categories.ENERGYPRODUCTION * categories.TECH3 }},
 
-            { EBC, 'LessThanEnergyTrend', { 0.0 } },              -- Ratio from 0 to 1. (1=100%)
+            { EBC, 'LessThanEnergyTrendSwarm', { 0.0 } },              -- Ratio from 0 to 1. (1=100%)
         },
         BuilderType = 'Any',
         BuilderData = {

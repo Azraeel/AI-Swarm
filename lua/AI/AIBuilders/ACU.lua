@@ -242,7 +242,7 @@ BuilderGroup {
             
             { UCBC, 'CheckBuildPlattonDelay', { 'ACUFORM' }},
                                      
-            { EBC, 'GreaterThanEconIncome',  { 2.0, 50.0}},
+            { EBC, 'GreaterThanEconIncomeSwarm',  { 2.0, 50.0}},
         },
         BuilderType = 'Any',                                              
     },
@@ -290,7 +290,7 @@ BuilderGroup {
         PlatoonTemplate = 'CommanderAssist',
         Priority = 550,
         BuilderConditions = {
-            { EBC, 'GreaterThanEconStorageCurrent', { 200, 2000}},
+            { EBC, 'GreaterThanEconStorageCurrentSwarm', { 200, 2000}},
 
             { UCBC, 'HaveGreaterThanUnitsInCategoryBeingBuiltAtLocationSwarm', { 'LocationType', 0, categories.STRUCTURE * categories.HYDROCARBON }},
         },
@@ -313,9 +313,9 @@ BuilderGroup {
         BuilderConditions = {
             { EBC, 'GreaterThanMassTrendSwarm', { 0.0 } },
 
-            { EBC, 'GreaterThanEconStorageCurrent', { 200, 2000}},
+            { EBC, 'GreaterThanEconStorageCurrentSwarm', { 200, 2000}},
 
-            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.0, 1.0 }},
+            { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 1.0, 1.0 }},
         },
         BuilderType = 'Any',
         BuilderData = {
@@ -334,11 +334,11 @@ BuilderGroup {
         PlatoonTemplate = 'CommanderAssist',
         Priority = 650,
         BuilderConditions = {
-            { EBC, 'LessThanEnergyTrend', { 0.0 } }, 
+            { EBC, 'LessThanEnergyTrendSwarm', { 0.0 } }, 
 
-            { EBC, 'GreaterThanEconStorageCurrent', { 200, 0}},
+            { EBC, 'GreaterThanEconStorageCurrentSwarm', { 200, 0}},
 
-            { EBC, 'GreaterThanEconEfficiencyOverTime', { 1.0, 0.0 }},
+            { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 1.0, 0.0 }},
 
             { UCBC, 'HaveGreaterThanUnitsInCategoryBeingBuiltAtLocationSwarm', { 'LocationType', 0, categories.STRUCTURE * categories.ENERGYPRODUCTION }},
         },
@@ -367,7 +367,7 @@ BuilderGroup {
 
             { UCBC, 'HaveLessThanUnitsInCategoryBeingBuilt', { 1, categories.STRUCTURE * categories.ENERGYPRODUCTION * (categories.TECH2 + categories.TECH3) }},
 
-            { EBC, 'LessThanEnergyTrend', { 4.0 } },             -- Ratio from 0 to 1. (1=100%)
+            { EBC, 'LessThanEnergyTrendSwarm', { 4.0 } },             -- Ratio from 0 to 1. (1=100%)
         },
         BuilderType = 'Any',
         BuilderData = {
@@ -395,7 +395,7 @@ BuilderGroup {
 
             { UCBC, 'HaveLessThanUnitsInCategoryBeingBuilt', { 1, categories.STRUCTURE * categories.ENERGYPRODUCTION * (categories.TECH2 + categories.TECH3) }},
 
-            { EBC, 'EnergyToMassRatioIncome', { 10.0, '<=' } },  -- True if we have less than 10 times more Energy then Mass income ( 100 <= 10 = true )
+            { EBC, 'EnergyToMassRatioIncomeSwarm', { 10.0, '<=' } },  -- True if we have less than 10 times more Energy then Mass income ( 100 <= 10 = true )
         },
         BuilderType = 'Any',
         BuilderData = {
@@ -430,11 +430,11 @@ BuilderGroup {
 
             { MIBC, 'CanPathToCurrentEnemySwarm', { true, 'LocationType' } }, 
             
-            { EBC, 'MassToFactoryRatioBaseCheck', { 'LocationType' } },
+            { EBC, 'MassToFactoryRatioBaseCheckSwarm', { 'LocationType' } },
 
-            { EBC, 'GreaterThanEconStorageCurrent', { 200, 2000}},
+            { EBC, 'GreaterThanEconStorageCurrentSwarm', { 200, 2000}},
 
-            { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.9, 1.0 }}, 
+            { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 0.9, 1.0 }}, 
 
             { UCBC, 'HaveLessThanUnitsInCategoryBeingBuilt', { 2, categories.STRUCTURE * categories.FACTORY * categories.TECH1 }},
            
@@ -477,11 +477,11 @@ BuilderGroup {
 
             { UCBC, 'LandStrengthRatioLessThan', { 1.5 } },
 
-            { EBC, 'MassToFactoryRatioBaseCheck', { 'LocationType' } },
+            { EBC, 'MassToFactoryRatioBaseCheckSwarm', { 'LocationType' } },
 
-            { EBC, 'GreaterThanEconStorageCurrent', { 200, 2000}},
+            { EBC, 'GreaterThanEconStorageCurrentSwarm', { 200, 2000}},
 
-            { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.9, 1.0 }}, 
+            { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 0.9, 1.0 }}, 
 
             { UCBC, 'HaveLessThanUnitsInCategoryBeingBuilt', { 2, categories.STRUCTURE * categories.FACTORY * categories.LAND * categories.TECH1 }},
         },
@@ -518,11 +518,11 @@ BuilderGroup {
         BuilderConditions = {
             { UCBC, 'CheckBuildPlattonDelay', { 'Factories' }},
 
-            { EBC, 'MassToFactoryRatioBaseCheck', { 'LocationType' } },
+            { EBC, 'MassToFactoryRatioBaseCheckSwarm', { 'LocationType' } },
 
-            { EBC, 'GreaterThanEconStorageCurrent', { 200, 2000}},
+            { EBC, 'GreaterThanEconStorageCurrentSwarm', { 200, 2000}},
 
-            { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.9, 1.0 }}, 
+            { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 0.9, 1.0 }}, 
 
             { UCBC, 'HaveLessThanUnitsInCategoryBeingBuilt', { 1, categories.STRUCTURE * categories.FACTORY * categories.AIR * categories.TECH1 }},
 
@@ -565,9 +565,9 @@ BuilderGroup {
 
             { UCBC, 'AirStrengthRatioLessThan', { 1 } },
 
-            { EBC, 'GreaterThanEconStorageCurrent', { 200, 2000}},
+            { EBC, 'GreaterThanEconStorageCurrentSwarm', { 200, 2000}},
 
-            { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.9, 1.0 }}, 
+            { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 0.9, 1.0 }}, 
 
             { UCBC, 'HaveLessThanUnitsInCategoryBeingBuilt', { 1, categories.STRUCTURE * categories.FACTORY * categories.AIR * categories.TECH1 }},
 
@@ -606,9 +606,9 @@ BuilderGroup {
 
             { UCBC, 'HaveGreaterThanUnitsWithCategory', { 1, categories.STRUCTURE * categories.FACTORY * categories.LAND } },
 
-            { EBC, 'GreaterThanEconStorageCurrent', { 200, 2000}},
+            { EBC, 'GreaterThanEconStorageCurrentSwarm', { 200, 2000}},
 
-            { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.8, 1.0 }}, 
+            { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 0.8, 1.0 }}, 
 
             { UCBC, 'HaveLessThanUnitsInCategoryBeingBuilt', { 1, categories.STRUCTURE * categories.FACTORY * categories.AIR * categories.TECH1 }},
         },
@@ -647,7 +647,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Factory Builder',
         BuilderConditions = {
             { UCBC, 'HaveLessThanUnitsWithCategory', { 1, categories.STRUCTURE * categories.FACTORY * categories.LAND * (categories.TECH1 + categories.TECH2 + categories.TECH3) }},
 
-            { EBC, 'GreaterThanEconStorageCurrent', { 200, 2000}},
+            { EBC, 'GreaterThanEconStorageCurrentSwarm', { 200, 2000}},
 
             { UCBC, 'CanPathLandBaseToLandTargetsSwarm', {  'LocationType', categories.STRUCTURE * categories.FACTORY * categories.LAND }},
         },
@@ -679,9 +679,9 @@ BuilderGroup { BuilderGroupName = 'Swarm Factory Builder',
 
             { UCBC, 'HaveLessThanUnitsWithCategory', { 3, categories.STRUCTURE * categories.FACTORY * categories.LAND * (categories.TECH1 + categories.TECH2 + categories.TECH3) }},
 
-            { EBC, 'GreaterThanEconStorageCurrent', { 200, 2000}},
+            { EBC, 'GreaterThanEconStorageCurrentSwarm', { 200, 2000}},
 
-            { EBC, 'GreaterThanEconEfficiencyOverTime', { 0.75, 0.9 }},
+            { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 0.75, 0.9 }},
         },
         BuilderType = 'Any',
         BuilderData = {
@@ -710,7 +710,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Factory Builder',
 
             { UCBC, 'HaveLessThanUnitsWithCategory', { 1, categories.STRUCTURE * categories.FACTORY * categories.AIR * (categories.TECH1 + categories.TECH2 + categories.TECH3) }},
 
-            { EBC, 'GreaterThanEconStorageCurrent', { 200, 2000}},
+            { EBC, 'GreaterThanEconStorageCurrentSwarm', { 200, 2000}},
 
             { UCBC, 'HaveLessThanUnitsInCategoryBeingBuilt', { 1, categories.STRUCTURE * categories.FACTORY * categories.AIR * categories.TECH1 }},
         },
