@@ -18,7 +18,7 @@ local SWARMWAIT = coroutine.yield
 
 -- 80% of the below was Sprouto's work
 function StructureUpgradeThreadSwarm(unit, aiBrain, upgradeSpec, bypasseco) 
-    LOG('* AI-Swarm: Starting structure thread upgrade for'..aiBrain.Nickname)
+    --LOG('* AI-Swarm: Starting structure thread upgrade for'..aiBrain.Nickname)
 
     local unitBp = unit:GetBlueprint()
     local upgradeID = unitBp.General.UpgradesTo or false

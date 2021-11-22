@@ -7,6 +7,8 @@ local AIBehaviors = import('/lua/ai/AIBehaviors.lua')
 local lastCall = 0
 local SWARMGETN = table.getn
 local SWARMINSERT = table.insert
+local SWARMMIN = math.min
+local SWARMMAX = math.max
 local SWARMWAIT = coroutine.yield
 
 local VDist2Sq = VDist2Sq
@@ -52,12 +54,54 @@ AIBrain = Class(SwarmAIBrainClass) {
     end,
 
     InitializeSkirmishSystems = function(self)
-        SwarmAIBrainClass.InitializeSkirmishSystems(self)
+        if not self.Swarm then
+            SwarmAIBrainClass.InitializeSkirmishSystems(self)
+        end
+
+        --LOG('* AI-Swarm: Custom Skirmish System for '..ScenarioInfo.ArmySetup[self.Name].AIPersonality)
+        -- Make sure we don't do anything for the human player!!!
+        if self.BrainType == 'Human' then
+            return
+        end
+
+        -- TURNING OFF AI POOL PLATOON, I MAY JUST REMOVE THAT PLATOON FUNCTIONALITY LATER
+        local poolPlatoon = self:GetPlatoonUniquelyNamed('ArmyPool')
+        if poolPlatoon then
+            poolPlatoon:TurnOffPoolAI()
+        end
+
         local mapSizeX, mapSizeZ = GetMapSize()
+        -- Stores handles to all builders for quick iteration and updates to all
+        self.BuilderHandles = {}
 
-        self.UpgradeIssued = 0
-        self.UpgradeIssuedPeriod = 100
+        -- Condition monitor for the whole brain
+        self.ConditionsMonitor = BrainConditionsMonitor.CreateConditionsMonitor(self)
 
+        -- Add default main location and setup the builder managers
+        self.NumBases = 0 -- AddBuilderManagers will increase the number
+
+        self.BuilderManagers = {}
+        SUtils.AddCustomUnitSupport(self)
+        self:AddBuilderManagers(self:GetStartVector3f(), 100, 'MAIN', false)
+
+        self:BaseMonitorInitialization()
+        local plat = self:GetPlatoonUniquelyNamed('ArmyPool')
+        plat:ForkThread(plat.BaseManagersDistressAI)
+
+        self.DeadBaseThread = self:ForkThread(self.DeadBaseMonitor)
+
+        self.EnemyPickerThread = self:ForkThread(self.PickEnemy)
+
+        -- Economy monitor for new skirmish - stores out econ over time to get trend over 10 seconds
+        self.EconomyData = {}
+        self.EconomyTicksMonitor = 80
+        self.EconomyCurrentTick = 1
+        --LOG("Starting EconomyMonitorSwarm")
+        self.EconomyMonitorThread = self:ForkThread(self.EconomyMonitorSwarm)
+        --LOG("EconomyMonitorSwarm Started")
+        self.EconomyOverTimeCurrent = {}
+
+        self:ForkThread(self.EcoExtractorUpgradeCheckSwarm)
         self.EcoManager = {
             EcoManagerTime = 30,
             EcoManagerStatus = 'ACTIVE',
@@ -69,6 +113,10 @@ AIBrain = Class(SwarmAIBrainClass) {
             EcoMultiplier = 1,
         }
 
+        self.UpgradeMode = 'Normal'
+        self.UpgradeIssued = 0
+        self.UpgradeIssuedPeriod = 100
+
         if mapSizeX < 1000 and mapSizeZ < 1000  then
             self.UpgradeIssuedLimit = 1
             self.EcoManager.ExtractorUpgradeLimit.TECH1 = 1
@@ -77,17 +125,8 @@ AIBrain = Class(SwarmAIBrainClass) {
             self.EcoManager.ExtractorUpgradeLimit.TECH1 = 2
         end
 
-        self.UpgradeMode = 'Normal'
 
         self.cmanager = {}
-        -- Economy monitor for new skirmish - stores out econ over time to get trend over 10 seconds
-        self.EconomyData = {}
-        self.EconomyTicksMonitor = 80
-        self.EconomyCurrentTick = 1
-        --LOG("Starting EconomyMonitorSwarm")
-        self.EconomyMonitorThread = self:ForkThread(self.EconomyMonitorSwarm)
-        --LOG("EconomyMonitorSwarm Started")
-        self.EconomyOverTimeCurrent = {}
         self.EnemyACU = {}
         for _, v in ArmyBrains do
             self.EnemyACU[v:GetArmyIndex()] = {
@@ -99,9 +138,6 @@ AIBrain = Class(SwarmAIBrainClass) {
                 Gun = false,
             }
         end
-
-        self:ForkThread(self.EcoExtractorUpgradeCheckSwarm)
-
         --return
     end,
 
@@ -164,6 +200,17 @@ AIBrain = Class(SwarmAIBrainClass) {
         end
 
         self.PreBuilt = true
+    end,
+
+    EconomyMonitor = function(self)
+
+        if not self.Swarm then
+            return SwarmAIBrainClass.EconomyMonitor(self)
+        end
+
+        SWARMWAIT(10)
+
+        KillThread(CurrentThread())
     end,
 
     ExpansionHelpThread = function(self)
@@ -324,9 +371,9 @@ AIBrain = Class(SwarmAIBrainClass) {
         if EntityCategoryContains(categories.MASSEXTRACTION, unit) then
             if self.UpgradeMode == 'Aggressive' then
                 upgradeSpec.MassLowTrigger = 0.80
-                upgradeSpec.EnergyLowTrigger = 0.95
+                upgradeSpec.EnergyLowTrigger = 1.0
                 upgradeSpec.MassHighTrigger = 2.0
-                upgradeSpec.EnergyHighTrigger = 99999
+                upgradeSpec.EnergyHighTrigger = 2.0
                 upgradeSpec.UpgradeCheckWait = 18
                 upgradeSpec.InitialDelay = 40
                 upgradeSpec.EnemyThreatLimit = 10
@@ -335,18 +382,18 @@ AIBrain = Class(SwarmAIBrainClass) {
                 upgradeSpec.MassLowTrigger = 0.90
                 upgradeSpec.EnergyLowTrigger = 1.05
                 upgradeSpec.MassHighTrigger = 2.0
-                upgradeSpec.EnergyHighTrigger = 99999
+                upgradeSpec.EnergyHighTrigger = 2.0
                 upgradeSpec.UpgradeCheckWait = 18
-                upgradeSpec.InitialDelay = 70
+                upgradeSpec.InitialDelay = 60
                 upgradeSpec.EnemyThreatLimit = 5
                 return upgradeSpec
             elseif self.UpgradeMode == 'Caution' then
                 upgradeSpec.MassLowTrigger = 1.0
-                upgradeSpec.EnergyLowTrigger = 1.2
+                upgradeSpec.EnergyLowTrigger = 1.10
                 upgradeSpec.MassHighTrigger = 2.0
-                upgradeSpec.EnergyHighTrigger = 99999
+                upgradeSpec.EnergyHighTrigger = 2.0
                 upgradeSpec.UpgradeCheckWait = 18
-                upgradeSpec.InitialDelay = 90
+                upgradeSpec.InitialDelay = 80
                 upgradeSpec.EnemyThreatLimit = 0
                 return upgradeSpec
             end
@@ -368,9 +415,27 @@ AIBrain = Class(SwarmAIBrainClass) {
             end
         end,
 
-    GetEconomyOverTime = function(self)
+    UnderEnergyThreshold = function(self)
         if not self.Swarm then
-            return SwarmAIBrainClass.GetEconomyOverTime(self)
+            return SwarmAIBrainClass.UnderEnergyThreshold(self)
+        end
+    end,
+
+    OverEnergyThreshold = function(self)
+        if not self.Swarm then
+            return SwarmAIBrainClass.OverEnergyThreshold(self)
+        end
+    end,
+
+    UnderMassThreshold = function(self)
+        if not self.Swarm then
+            return SwarmAIBrainClass.UnderMassThreshold(self)
+        end
+    end,
+
+    OverMassThreshold = function(self)
+        if not self.Swarm then
+            return SwarmAIBrainClass.OverMassThreshold(self)
         end
     end,
 
