@@ -290,7 +290,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
         Priority = 950,
         InstanceCount = 30,
         BuilderConditions = {
-            { EBC, 'GreaterThanEconTrendSwarm', { 0.0, 0.0 } },
+            { EBC, 'GreaterThanEconTrendOverTimeSwarm', { 0.0, 0.0 } },
 
             { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 1.0, 1.0 }},
 
@@ -576,7 +576,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
         Priority = 60,
         InstanceCount = 5,
         BuilderConditions = {
-            { EBC, 'GreaterThanEconTrendSwarm', { 0.0, 0.0 } }, 
+            { EBC, 'GreaterThanEconTrendOverTimeSwarm', { 0.0, 0.0 } }, 
 
             { EBC, 'GreaterThanEconStorageCurrentSwarm', { 200, 2000}},
 
@@ -597,7 +597,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
         Priority = 60,
         InstanceCount = 1,
         BuilderConditions = {
-            { EBC, 'GreaterThanEconTrendSwarm', { 0.0, 0.0 } }, 
+            { EBC, 'GreaterThanEconTrendOverTimeSwarm', { 0.0, 0.0 } }, 
 
             { EBC, 'GreaterThanEconStorageCurrentSwarm', { 200, 2000}},
 

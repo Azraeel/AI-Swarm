@@ -265,7 +265,7 @@ BuilderGroup {
         Priority = 790,
         InstanceCount = 2,
         BuilderConditions = {
-            { EBC, 'GreaterThanEconTrendSwarm', { 0.0, 1.0 } }, -- relative income
+            { EBC, 'GreaterThanEconTrendOverTimeSwarm', { 0.0, 1.0 } }, -- relative income
 
             { UCBC, 'HaveGreaterThanUnitsWithCategory', { 0, categories.STRUCTURE * categories.ENERGYPRODUCTION * (categories.TECH2 + categories.TECH3) }},
 
@@ -305,7 +305,7 @@ BuilderGroup {
         Priority = 790,
         InstanceCount = 2,
         BuilderConditions = {
-            { EBC, 'GreaterThanEconTrendSwarm', { 0.0, 50.0 } }, -- relative income
+            { EBC, 'GreaterThanEconTrendOverTimeSwarm', { 0.0, 50.0 } }, -- relative income
 
             { UCBC, 'HaveGreaterThanUnitsWithCategory', { 0, categories.STRUCTURE * categories.ENERGYPRODUCTION * categories.TECH3 }},
 
@@ -454,7 +454,7 @@ BuilderGroup {
         Priority = 790,
         InstanceCount = 2,
         BuilderConditions = {
-            { EBC, 'GreaterThanEconTrendSwarm', { 0.0, 50.0 } }, -- relative income
+            { EBC, 'GreaterThanEconTrendOverTimeSwarm', { 0.0, 50.0 } }, -- relative income
 
             { UCBC, 'HaveGreaterThanUnitsWithCategory', { 0, categories.STRUCTURE * categories.ENERGYPRODUCTION * categories.TECH3 }},
 

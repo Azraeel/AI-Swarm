@@ -519,7 +519,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Staging Platform Builders',        
           
             { UCBC, 'HaveGreaterThanUnitsWithCategory', { 1, categories.STRUCTURE * categories.ENERGYPRODUCTION * (categories.TECH2 + categories.TECH3) } },
             
-            { EBC, 'GreaterThanEconTrendSwarm', { 0.0, 0.0 } }, 
+            { EBC, 'GreaterThanEconTrendOverTimeSwarm', { 0.0, 0.0 } }, 
 
             { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 1.0, 1.0 }},
 
@@ -547,7 +547,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Staging Platform Builders',        
 
             { UCBC, 'HaveLessThanUnitsWithCategory', { 10, categories.STRUCTURE * categories.AIRSTAGINGPLATFORM }},
 
-            { EBC, 'GreaterThanEconTrendSwarm', { 0.0, 0.0 } },
+            { EBC, 'GreaterThanEconTrendOverTimeSwarm', { 0.0, 0.0 } },
 
             { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 1.01, 1.02 }},
 

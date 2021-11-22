@@ -42,7 +42,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Factory Upgrader Rush',
             
             { EBC, 'GreaterThanEconStorageCurrentSwarm', { 200, 2000}},
 
-            { EBC, 'GreaterThanEconTrendSwarm', { 1.0, 8.0 } },
+            { EBC, 'GreaterThanEconTrendOverTimeSwarm', { 1.0, 8.0 } },
 
             { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 1.03, 1.04 }},
             
@@ -66,7 +66,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Factory Upgrader Rush',
             
             { EBC, 'GreaterThanEconStorageCurrentSwarm', { 200, 2000}},
 
-            { EBC, 'GreaterThanEconTrendSwarm', { 1.2, 11.0 } },
+            { EBC, 'GreaterThanEconTrendOverTimeSwarm', { 1.2, 11.0 } },
 
             { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 1.04, 1.05 }},
             
@@ -89,7 +89,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Factory Upgrader Rush',
 
             { EBC, 'GreaterThanEconStorageCurrentSwarm', { 200, 2000}},
 
-            { EBC, 'GreaterThanEconTrendSwarm', { 0.4, 3.3 } },
+            { EBC, 'GreaterThanEconTrendOverTimeSwarm', { 0.4, 3.3 } },
 
             { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 1.01, 1.02 }},
 
@@ -114,7 +114,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Factory Upgrader Rush',
             
             { EBC, 'GreaterThanEconStorageCurrentSwarm', { 200, 2000}},
 
-            { EBC, 'GreaterThanEconTrendSwarm', { 0.8, 6.8 } },
+            { EBC, 'GreaterThanEconTrendOverTimeSwarm', { 0.8, 6.8 } },
 
             { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 1.03, 1.04 }},
 
@@ -138,7 +138,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Factory Upgrader Rush',
           
             { EBC, 'GreaterThanEconStorageCurrentSwarm', { 200, 2000}},
 
-            { EBC, 'GreaterThanEconTrendSwarm', { 0.8, 6.8 } },
+            { EBC, 'GreaterThanEconTrendOverTimeSwarm', { 0.8, 6.8 } },
 
             { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 1.03, 1.04 }},
 
@@ -162,7 +162,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Factory Upgrader Rush',
         
             { EBC, 'GreaterThanEconStorageCurrentSwarm', { 200, 2000}},
 
-            { EBC, 'GreaterThanEconTrendSwarm', { 0.8, 6.8 } },
+            { EBC, 'GreaterThanEconTrendOverTimeSwarm', { 0.8, 6.8 } },
 
             { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 1.03, 1.04 }},
             
@@ -186,7 +186,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Factory Upgrader Rush',
             
             { EBC, 'GreaterThanEconStorageCurrentSwarm', { 200, 2000}},
 
-            { EBC, 'GreaterThanEconTrendSwarm', { 0.8, 6.8 } },
+            { EBC, 'GreaterThanEconTrendOverTimeSwarm', { 0.8, 6.8 } },
 
             { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 1.03, 1.04 }},
 
@@ -210,7 +210,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Factory Upgrader Rush',
          
             { EBC, 'GreaterThanEconStorageCurrentSwarm', { 200, 2000}},
 
-            { EBC, 'GreaterThanEconTrendSwarm', { 0.8, 6.8 } },
+            { EBC, 'GreaterThanEconTrendOverTimeSwarm', { 0.8, 6.8 } },
 
             { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 1.03, 1.04 }},
 
@@ -236,7 +236,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Factory Upgrader Rush',
           
             { EBC, 'GreaterThanEconStorageCurrentSwarm', { 200, 2000}},
 
-            { EBC, 'GreaterThanEconTrendSwarm', { 0.7, 16.0 } },
+            { EBC, 'GreaterThanEconTrendOverTimeSwarm', { 0.7, 16.0 } },
 
             { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 1.03, 1.04 }},
           
@@ -260,7 +260,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Factory Upgrader Rush',
          
             { EBC, 'GreaterThanEconStorageCurrentSwarm', { 200, 2000}},
 
-            { EBC, 'GreaterThanEconTrendSwarm', { 1.2, 31.0 } },
+            { EBC, 'GreaterThanEconTrendOverTimeSwarm', { 1.2, 31.0 } },
 
             { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 1.04, 1.05 }},
             
@@ -283,7 +283,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Factory Upgrader Rush',
 
             { EBC, 'GreaterThanEconStorageCurrentSwarm', { 200, 2000}},
 
-            { EBC, 'GreaterThanEconTrendSwarm', { 0.4, 8.6 } },
+            { EBC, 'GreaterThanEconTrendOverTimeSwarm', { 0.4, 8.6 } },
 
             { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 1.01, 1.02 }},
       
@@ -308,7 +308,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Factory Upgrader Rush',
            
             { EBC, 'GreaterThanEconStorageCurrentSwarm', { 200, 2000}},
 
-            { EBC, 'GreaterThanEconTrendSwarm', { 1.0, 26.0 } },
+            { EBC, 'GreaterThanEconTrendOverTimeSwarm', { 1.0, 26.0 } },
 
             { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 1.03, 1.04 }},
          
@@ -334,7 +334,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Factory Upgrader Rush',
             
             { EBC, 'GreaterThanEconStorageCurrentSwarm', { 200, 2000}},
 
-            { EBC, 'GreaterThanEconTrendSwarm', { 1.0, 26.0 } },
+            { EBC, 'GreaterThanEconTrendOverTimeSwarm', { 1.0, 26.0 } },
 
             { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 1.03, 1.04 }},
          
@@ -358,7 +358,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Factory Upgrader Rush',
            
             { EBC, 'GreaterThanEconStorageCurrentSwarm', { 200, 2000}},
 
-            { EBC, 'GreaterThanEconTrendSwarm', { 1.0, 26.0 } },
+            { EBC, 'GreaterThanEconTrendOverTimeSwarm', { 1.0, 26.0 } },
 
             { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 1.03, 1.04 }},
          
@@ -382,7 +382,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Factory Upgrader Rush',
             
             { EBC, 'GreaterThanEconStorageCurrentSwarm', { 200, 2000}},
 
-            { EBC, 'GreaterThanEconTrendSwarm', { 1.0, 26.0 } },
+            { EBC, 'GreaterThanEconTrendOverTimeSwarm', { 1.0, 26.0 } },
 
             { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 1.03, 1.04 }},
 
@@ -406,7 +406,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Factory Upgrader Rush',
            
             { EBC, 'GreaterThanEconStorageCurrentSwarm', { 200, 2000}},
 
-            { EBC, 'GreaterThanEconTrendSwarm', { 1.0, 26.0 } },
+            { EBC, 'GreaterThanEconTrendOverTimeSwarm', { 1.0, 26.0 } },
 
             { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 1.03, 1.04 }},
 
@@ -436,7 +436,7 @@ BuilderGroup {
            
             { EBC, 'GreaterThanEconStorageCurrentSwarm', { 200, 2000}},
 
-            { EBC, 'GreaterThanEconTrendSwarm', { 0.9, 4.9 } },
+            { EBC, 'GreaterThanEconTrendOverTimeSwarm', { 0.9, 4.9 } },
 
             { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 1.04, 1.05 }},
 
@@ -461,7 +461,7 @@ BuilderGroup {
          
             { EBC, 'GreaterThanEconStorageCurrentSwarm', { 200, 2000}},
 
-            { EBC, 'GreaterThanEconTrendSwarm', { 6.0, 28.0 } },
+            { EBC, 'GreaterThanEconTrendOverTimeSwarm', { 6.0, 28.0 } },
 
             { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 1.05, 1.06 }},
 
@@ -485,7 +485,7 @@ BuilderGroup {
 
             { EBC, 'GreaterThanEconStorageCurrentSwarm', { 200, 2000}},
 
-            { EBC, 'GreaterThanEconTrendSwarm', { 0.9, 4.9 } },
+            { EBC, 'GreaterThanEconTrendOverTimeSwarm', { 0.9, 4.9 } },
 
             { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 1.03, 1.04 }},
 
@@ -511,7 +511,7 @@ BuilderGroup {
             
             { EBC, 'GreaterThanEconStorageCurrentSwarm', { 200, 2000}},
 
-            { EBC, 'GreaterThanEconTrendSwarm', { 6.0, 28.0 } },
+            { EBC, 'GreaterThanEconTrendOverTimeSwarm', { 6.0, 28.0 } },
 
             { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 1.04, 1.05 }},
 
@@ -536,7 +536,7 @@ BuilderGroup {
       
             { EBC, 'GreaterThanEconStorageCurrentSwarm', { 200, 2000}},
 
-            { EBC, 'GreaterThanEconTrendSwarm', { 6.0, 28.0 } },
+            { EBC, 'GreaterThanEconTrendOverTimeSwarm', { 6.0, 28.0 } },
 
             { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 1.04, 1.05 }},
           
@@ -561,7 +561,7 @@ BuilderGroup {
   
             { EBC, 'GreaterThanEconStorageCurrentSwarm', { 200, 2000}},
 
-            { EBC, 'GreaterThanEconTrendSwarm', { 6.0, 28.0 } },
+            { EBC, 'GreaterThanEconTrendOverTimeSwarm', { 6.0, 28.0 } },
 
             { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 1.04, 1.05 }},
 
@@ -586,7 +586,7 @@ BuilderGroup {
             
             { EBC, 'GreaterThanEconStorageCurrentSwarm', { 200, 2000}},
 
-            { EBC, 'GreaterThanEconTrendSwarm', { 6.0, 28.0 } },
+            { EBC, 'GreaterThanEconTrendOverTimeSwarm', { 6.0, 28.0 } },
 
             { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 1.04, 1.05 }},
 
@@ -611,7 +611,7 @@ BuilderGroup {
       
             { EBC, 'GreaterThanEconStorageCurrentSwarm', { 200, 2000}},
 
-            { EBC, 'GreaterThanEconTrendSwarm', { 6.0, 28.0 } },
+            { EBC, 'GreaterThanEconTrendOverTimeSwarm', { 6.0, 28.0 } },
 
             { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 1.04, 1.05 }},
 

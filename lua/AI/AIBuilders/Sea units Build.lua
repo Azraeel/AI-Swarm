@@ -439,7 +439,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Sonar Upgraders',
         BuilderConditions = {
             { UCBC, 'HaveGreaterThanUnitsWithCategory', { 0, categories.SONAR * categories.TECH1}},
 
-            { EBC, 'GreaterThanEconTrendSwarm', { 0.0, 0.0 } }, 
+            { EBC, 'GreaterThanEconTrendOverTimeSwarm', { 0.0, 0.0 } }, 
 
             { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.90, 0.90 } },  
         },
@@ -459,7 +459,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Sonar Upgraders',
             
             { MIBC, 'FactionIndex', { 1, 2, 3, 5 }},
 
-            { EBC, 'GreaterThanEconTrendSwarm', { 0.0, 0.0 } }, 
+            { EBC, 'GreaterThanEconTrendOverTimeSwarm', { 0.0, 0.0 } }, 
 
             { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.90, 0.90 } },
         },

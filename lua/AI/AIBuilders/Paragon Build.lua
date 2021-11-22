@@ -93,7 +93,7 @@ BuilderGroup {
 
             { UCBC, 'GreaterThanGameTimeSeconds', { 60*60 } },
 
-            { EBC, 'GreaterThanEconTrendSwarm', { 18.0, 270.0 } },                      
+            { EBC, 'GreaterThanEconTrendOverTimeSwarm', { 18.0, 270.0 } },                      
          
             { UCBC, 'CanBuildCategorySwarm', { categories.STRUCTURE * categories.EXPERIMENTAL * categories.ECONOMIC } },
 

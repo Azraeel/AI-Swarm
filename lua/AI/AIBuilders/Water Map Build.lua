@@ -16,7 +16,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Transports - Water Map',               
         PlatoonTemplate = 'T1AirTransport',
         Priority = 550, 
         BuilderConditions = {
-            { EBC, 'GreaterThanEconTrendSwarm', { 0.0, 0.0 } },
+            { EBC, 'GreaterThanEconTrendOverTimeSwarm', { 0.0, 0.0 } },
 
             { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 1.1, 1.12 }},
 
@@ -38,7 +38,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Transports - Water Map',               
         PlatoonTemplate = 'T2AirTransport',
         Priority = 650,
         BuilderConditions = {
-            { EBC, 'GreaterThanEconTrendSwarm', { 0.0, 0.0 } },
+            { EBC, 'GreaterThanEconTrendOverTimeSwarm', { 0.0, 0.0 } },
 
             { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 1.15, 1.2 }},
 
@@ -60,7 +60,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Transports - Water Map',               
         PlatoonTemplate = 'T3AirTransport',
         Priority = 750,
         BuilderConditions = {
-            { EBC, 'GreaterThanEconTrendSwarm', { 0.0, 0.0 } },
+            { EBC, 'GreaterThanEconTrendOverTimeSwarm', { 0.0, 0.0 } },
 
             { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 1.2, 1.25 }},
 

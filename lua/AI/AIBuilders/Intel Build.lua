@@ -20,7 +20,7 @@ BuilderGroup {
 
             { UCBC, 'HaveGreaterThanUnitsWithCategory', { 1, categories.STRUCTURE * categories.FACTORY * categories.LAND } },
 
-            { EBC, 'GreaterThanEconTrendSwarm', { 0.0, 5.0 }},
+            { EBC, 'GreaterThanEconTrendOverTimeSwarm', { 0.0, 5.0 }},
         },
         BuilderType = 'Any',
         BuilderData = {
@@ -49,7 +49,7 @@ BuilderGroup {
 
             { UCBC, 'HaveGreaterThanUnitsWithCategory', { 0, categories.STRUCTURE * categories.ENERGYPRODUCTION * categories.TECH3 }},
 
-            { EBC, 'GreaterThanEconTrendSwarm', { 1.5, 200.0 } }, -- relative income
+            { EBC, 'GreaterThanEconTrendOverTimeSwarm', { 1.5, 200.0 } }, -- relative income
 
             { UCBC, 'UnitsLessAtLocation', { 'LocationType', 1, categories.OMNI * categories.STRUCTURE } },
 
@@ -104,7 +104,7 @@ BuilderGroup {
         BuilderConditions = {
             { UCBC, 'HaveGreaterThanUnitsWithCategory', { 1, categories.STRUCTURE * categories.ENERGYPRODUCTION * categories.TECH3 } },
 
-            { EBC, 'GreaterThanEconTrendSwarm', { 0.0, 0.0 } }, 
+            { EBC, 'GreaterThanEconTrendOverTimeSwarm', { 0.0, 0.0 } }, 
    
             { UCBC, 'HaveLessThanUnitsInCategoryBeingUpgradeSwarm', { 1, categories.RADAR * categories.TECH1 }},
         },
@@ -119,7 +119,7 @@ BuilderGroup {
          
             { UCBC, 'HaveLessThanUnitsWithCategory', { 1, categories.OMNI * categories.STRUCTURE }},
            
-            { EBC, 'GreaterThanEconTrendSwarm', { 0.0, 0.0 } }, 
+            { EBC, 'GreaterThanEconTrendOverTimeSwarm', { 0.0, 0.0 } }, 
            
             { UCBC, 'HaveLessThanUnitsInCategoryBeingUpgradeSwarm', { 1, categories.RADAR * categories.TECH2 }},
         },
@@ -142,7 +142,7 @@ BuilderGroup {
 
             { EBC, 'GreaterThanEconIncomeOverTimeSwarm', { 15, 1500}},
 
-            { EBC, 'GreaterThanEconTrendSwarm', { 0.0, 0.0 } }, 
+            { EBC, 'GreaterThanEconTrendOverTimeSwarm', { 0.0, 0.0 } }, 
 
             { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.15, 0.50 } },          
 
@@ -180,7 +180,7 @@ BuilderGroup {
 
             { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.20, 0.50 } },  
 
-            { EBC, 'GreaterThanEconTrendSwarm', { 0.0, 0.0 } },
+            { EBC, 'GreaterThanEconTrendOverTimeSwarm', { 0.0, 0.0 } },
 
             { UCBC, 'HaveUnitRatioVersusCapSwarm', { MaxCapStructure , '<', categories.STRUCTURE - categories.MASSEXTRACTION - categories.DEFENSE - categories.FACTORY } },
         },

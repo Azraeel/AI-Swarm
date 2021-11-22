@@ -20,7 +20,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Strategic Builder',
 
             { EBC, 'GreaterThanEconStorageCurrentSwarm', { 200, 2000}},
 
-            { EBC, 'GreaterThanEconTrendSwarm', { 0.0, 0.0 } }, 
+            { EBC, 'GreaterThanEconTrendOverTimeSwarm', { 0.0, 0.0 } }, 
 
             { UCBC, 'UnitsLessAtLocation', { 'LocationType', 1, categories.TACTICALMISSILEPLATFORM}},
         },
@@ -54,7 +54,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Strategic Builder',
 
             { EBC, 'GreaterThanEconStorageCurrentSwarm', { 200, 2000}},
 
-            { EBC, 'GreaterThanEconTrendSwarm', { 0.0, 0.0 } },       
+            { EBC, 'GreaterThanEconTrendOverTimeSwarm', { 0.0, 0.0 } },       
 
             { UCBC, 'UnitsLessAtLocation', { 'LocationType', 1, categories.STRUCTURE * categories.TACTICALMISSILEPLATFORM}},
 
@@ -92,7 +92,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Strategic Builder',
 
             { EBC, 'GreaterThanEnergyIncomeOverTimeSwarm', { 500 }},
 
-            { EBC, 'GreaterThanEconTrendSwarm', { 0.0, 0.0 } },
+            { EBC, 'GreaterThanEconTrendOverTimeSwarm', { 0.0, 0.0 } },
 
             { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 1.1, 1.2 }},
 
@@ -138,7 +138,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Strategic Builder',
 
             { EBC, 'GreaterThanEnergyIncomeOverTimeSwarm', { 500 }},
 
-            { EBC, 'GreaterThanEconTrendSwarm', { 0.0, 0.0 } },
+            { EBC, 'GreaterThanEconTrendOverTimeSwarm', { 0.0, 0.0 } },
 
             { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 1.15, 1.1 }},
 
@@ -180,7 +180,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Strategic Builder',
 
             { EBC, 'GreaterThanEnergyIncomeOverTimeSwarm', { 500 }},
 
-            { EBC, 'GreaterThanEconTrendSwarm', { 0.0, 0.0 } },
+            { EBC, 'GreaterThanEconTrendOverTimeSwarm', { 0.0, 0.0 } },
 
             { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 1.25, 1.1 }},
 
@@ -232,7 +232,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Strategic Builder',
 
             { EBC, 'GreaterThanEnergyIncomeOverTimeSwarm', { 500 }},
 
-            { EBC, 'GreaterThanEconTrendSwarm', { 0.0, 0.0 } },
+            { EBC, 'GreaterThanEconTrendOverTimeSwarm', { 0.0, 0.0 } },
 
             { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 1.05, 1.06 }},
 
@@ -274,7 +274,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Strategic Builder',
 
             { EBC, 'GreaterThanEnergyIncomeOverTimeSwarm', { 500 }},
 
-            { EBC, 'GreaterThanEconTrendSwarm', { 0.0, 0.0 } },
+            { EBC, 'GreaterThanEconTrendOverTimeSwarm', { 0.0, 0.0 } },
 
             { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 1.05, 1.06 }},
 
@@ -316,7 +316,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Strategic Builder',
 
             { EBC, 'GreaterThanEnergyIncomeOverTimeSwarm', { 500 }},
 
-            { EBC, 'GreaterThanEconTrendSwarm', { 0.0, 0.0 } },
+            { EBC, 'GreaterThanEconTrendOverTimeSwarm', { 0.0, 0.0 } },
 
             { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 1.03, 1.04 }},
 

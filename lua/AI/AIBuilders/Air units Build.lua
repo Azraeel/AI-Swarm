@@ -268,7 +268,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Builders',
         BuilderConditions = {
             { UCBC, 'AirStrengthRatioGreaterThan', { 1 } },
 
-            { EBC, 'GreaterThanEconTrendSwarm', { 0.3, 12.0 } },
+            { EBC, 'GreaterThanEconTrendOverTimeSwarm', { 0.3, 12.0 } },
 
             { EBC, 'GreaterThanEconStorageCurrentSwarm', { 200, 2000}},
 
@@ -294,7 +294,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Builders',
         BuilderConditions = {
             { UCBC, 'AirStrengthRatioGreaterThan', { 1 } },
 
-            { EBC, 'GreaterThanEconTrendSwarm', { 0.3, 12.0 } },
+            { EBC, 'GreaterThanEconTrendOverTimeSwarm', { 0.3, 12.0 } },
 
             { EBC, 'GreaterThanEconStorageCurrentSwarm', { 200, 2000}},
 
@@ -322,7 +322,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Builders',
 
             { MIBC, 'FactionIndex', { 1 }}, -- 1: UEF, 2: Aeon, 3: Cybran, 4: Seraphim, 5: Nomads 
             
-            { EBC, 'GreaterThanEconTrendSwarm', { 0.3, 12.0 } },
+            { EBC, 'GreaterThanEconTrendOverTimeSwarm', { 0.3, 12.0 } },
 
             { EBC, 'GreaterThanEconStorageCurrentSwarm', { 200, 2000}},
 

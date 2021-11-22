@@ -193,7 +193,7 @@ BuilderGroup {
 
             { UCBC, 'EngineerGreaterAtLocation', { 'LocationType', 1, 'ENGINEER TECH2' } },
 
-            { EBC, 'GreaterThanEconTrendSwarm', { 0.0, 0.0 } }, 
+            { EBC, 'GreaterThanEconTrendOverTimeSwarm', { 0.0, 0.0 } }, 
 
             { EBC, 'GreaterThanEconStorageCurrentSwarm', { 200, 2000}},
 
@@ -220,7 +220,7 @@ BuilderGroup {
 
             { UCBC, 'EngineerGreaterAtLocation', { 'LocationType', 1, 'ENGINEER TECH2' } },
 
-            { EBC, 'GreaterThanEconTrendSwarm', { 0.0, 0.0 } }, 
+            { EBC, 'GreaterThanEconTrendOverTimeSwarm', { 0.0, 0.0 } }, 
 
             { EBC, 'GreaterThanEconStorageCurrentSwarm', { 200, 2000}},
 
@@ -250,7 +250,7 @@ BuilderGroup {
         BuilderConditions = {
             { MIBC, 'FactionIndex', { 1 }}, 
 
-            { EBC, 'GreaterThanEconTrendSwarm', { 0.0, 0.0 } }, 
+            { EBC, 'GreaterThanEconTrendOverTimeSwarm', { 0.0, 0.0 } }, 
 
             { EBC, 'GreaterThanEconStorageCurrentSwarm', { 200, 2000}},
 
@@ -267,7 +267,7 @@ BuilderGroup {
         BuilderConditions = {
             { MIBC, 'FactionIndex', { 3 }},
 
-            { EBC, 'GreaterThanEconTrendSwarm', { 0.0, 0.0 } },
+            { EBC, 'GreaterThanEconTrendOverTimeSwarm', { 0.0, 0.0 } },
 
             { EBC, 'GreaterThanEconStorageCurrentSwarm', { 200, 2000}},
 
@@ -284,7 +284,7 @@ BuilderGroup {
         BuilderConditions = {
             { MIBC, 'FactionIndex', { 3 }}, 
 
-            { EBC, 'GreaterThanEconTrendSwarm', { 0.0, 0.0 } },
+            { EBC, 'GreaterThanEconTrendOverTimeSwarm', { 0.0, 0.0 } },
 
             { EBC, 'GreaterThanEconStorageCurrentSwarm', { 200, 2000}},
 
