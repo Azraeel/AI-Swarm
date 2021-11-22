@@ -93,11 +93,11 @@ AIBrain = Class(SwarmAIBrainClass) {
         self.EnemyPickerThread = self:ForkThread(self.PickEnemy)
 
         -- Economy monitor for new skirmish - stores out econ over time to get trend over 10 seconds
-        self.EconomyData = {}
+        self.EconomyDataSwarm = {}
         self.EconomyTicksMonitor = 80
         self.EconomyCurrentTick = 1
         --LOG("Starting EconomyMonitorSwarm")
-        self.EconomyMonitorThread = self:ForkThread(self.EconomyMonitorSwarm)
+        self.EconomyMonitorThreadSwarm = self:ForkThread(self.EconomyMonitorSwarm)
         --LOG("EconomyMonitorSwarm Started")
         self.EconomyOverTimeCurrent = {}
 
@@ -260,22 +260,22 @@ AIBrain = Class(SwarmAIBrainClass) {
     EconomyMonitorSwarm = function(self)
         --LOG("EconomyMonitor is Started Fully & Running")
         -- This over time thread is based on Sprouto's LOUD AI.
-        self.EconomyData = { ['EnergyIncome'] = {}, ['EnergyRequested'] = {}, ['EnergyStorage'] = {}, ['EnergyTrend'] = {}, ['MassIncome'] = {}, ['MassRequested'] = {}, ['MassStorage'] = {}, ['MassTrend'] = {}, ['Period'] = 300 }
+        self.EconomyDataSwarm = { ['EnergyIncome'] = {}, ['EnergyRequested'] = {}, ['EnergyStorage'] = {}, ['EnergyTrend'] = {}, ['MassIncome'] = {}, ['MassRequested'] = {}, ['MassStorage'] = {}, ['MassTrend'] = {}, ['Period'] = 300 }
         -- number of sample points
         -- local point
         local samplerate = 10
-        local samples = self.EconomyData['Period'] / samplerate
+        local samples = self.EconomyDataSwarm['Period'] / samplerate
     
         -- create the table to store the samples
         for point = 1, samples do
-            self.EconomyData['EnergyIncome'][point] = 0
-            self.EconomyData['EnergyRequested'][point] = 0
-            self.EconomyData['EnergyStorage'][point] = 0
-            self.EconomyData['EnergyTrend'][point] = 0
-            self.EconomyData['MassIncome'][point] = 0
-            self.EconomyData['MassRequested'][point] = 0
-            self.EconomyData['MassStorage'][point] = 0
-            self.EconomyData['MassTrend'][point] = 0
+            self.EconomyDataSwarm['EnergyIncome'][point] = 0
+            self.EconomyDataSwarm['EnergyRequested'][point] = 0
+            self.EconomyDataSwarm['EnergyStorage'][point] = 0
+            self.EconomyDataSwarm['EnergyTrend'][point] = 0
+            self.EconomyDataSwarm['MassIncome'][point] = 0
+            self.EconomyDataSwarm['MassRequested'][point] = 0
+            self.EconomyDataSwarm['MassStorage'][point] = 0
+            self.EconomyDataSwarm['MassTrend'][point] = 0
         end    
     
         local SWARMMIN = math.min
@@ -296,7 +296,7 @@ AIBrain = Class(SwarmAIBrainClass) {
         -- to arrive at the averages
         local samplefactor = 1/samples
     
-        local EcoData = self.EconomyData
+        local EcoData = self.EconomyDataSwarm
     
         local EcoDataEnergyIncome = EcoData['EnergyIncome']
         local EcoDataMassIncome = EcoData['MassIncome']
