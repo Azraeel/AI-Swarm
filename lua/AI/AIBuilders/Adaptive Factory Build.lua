@@ -10,9 +10,9 @@ local BasePanicZone, BaseMilitaryZone, BaseEnemyZone = import('/mods/AI-Swarm/lu
 local MaxCapFactory = 0.015 -- 0.015% of all units can be factories (STRUCTURE * FACTORY)
 local MaxCapStructure = 0.12 -- 12% of all units can be structures (STRUCTURE -MASSEXTRACTION -DEFENSE -FACTORY)
 
-local HaveLessThanThreeT2LandFactory = function( self, aiBrain )
+local HaveLessThanFiveT2LandFactory = function( self, aiBrain )
 	
-	if table.getn( aiBrain:GetListOfUnits( categories.FACTORY * categories.LAND * categories.TECH2, false, true )) >= 3 then
+	if table.getn( aiBrain:GetListOfUnits( categories.FACTORY * categories.LAND * categories.TECH2, false, true )) >= 5 then
         return 0, false
 	end
 	
@@ -162,7 +162,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Adaptive Factory Build',
 
         Priority = 650,
 
-        PriorityFunction = HaveLessThanThreeT2LandFactory,
+        PriorityFunction = HaveLessThanFiveT2LandFactory,
 
         DelayEqualBuildPlattons = {'Factories', 3},
 
@@ -207,7 +207,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Adaptive Factory Build',
 
         Priority = 650,
 
-        PriorityFunction = HaveLessThanThreeT2LandFactory,
+        PriorityFunction = HaveLessThanFiveT2LandFactory,
 
         DelayEqualBuildPlattons = {'Factories', 3},
 
@@ -345,7 +345,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Factory Builders Expansions',
 
         Priority = 650,
 
-        PriorityFunction = HaveLessThanThreeT2LandFactory,
+        PriorityFunction = HaveLessThanFiveT2LandFactory,
 
         InstanceCount = 1,                                                      -- Number of plattons that will be formed with this template.
 

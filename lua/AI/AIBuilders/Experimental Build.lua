@@ -258,6 +258,8 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Experimental Builders',
         InstanceCount = 1,
 
         BuilderConditions = {
+            { UCBC, 'BuildOnlyOnLocationSwarm', { 'LocationType', 'MAIN' } },
+            
             { UCBC, 'HaveLessThanUnitsWithCategory', { 1, categories.ENGINEERPRESET + categories.RASPRESET } },
 
         	{ UCBC, 'HaveLessThanUnitsInCategoryBeingBuilt', { 1, categories.EXPERIMENTAL * categories.LAND}},

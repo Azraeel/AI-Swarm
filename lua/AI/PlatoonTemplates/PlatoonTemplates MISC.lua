@@ -56,24 +56,10 @@ PlatoonTemplate {
 }
 
 PlatoonTemplate {
-    Name = 'AddEngineerToACUChampionPlatoon',
-    Plan = 'SwarmPlatoonMerger',
-    GlobalSquads = {
-        { categories.ENGINEER * categories.TECH1 - categories.STATIONASSISTPOD, 1, 1, 'support', 'none' }
-    },
-}
-PlatoonTemplate {
     Name = 'AddShieldToACUChampionPlatoon',
     Plan = 'SwarmPlatoonMerger',
     GlobalSquads = {
         { (categories.MOBILE * categories.SHIELD) + (categories.MOBILE * categories.STEALTHFIELD) * (categories.TECH2 + categories.TECH3), 1, 1, 'support', 'none' }
-    },
-}
-PlatoonTemplate {
-    Name = 'AddSACUToACUChampionPlatoon',
-    Plan = 'SwarmPlatoonMerger',
-    GlobalSquads = {
-        { categories.SUBCOMMANDER - categories.RASPRESET - categories.ENGINEERPRESET, 1, 1, 'support', 'none' }
     },
 }
 PlatoonTemplate {
@@ -88,13 +74,6 @@ PlatoonTemplate {
     Plan = 'SwarmPlatoonMerger',
     GlobalSquads = {
         { categories.MOBILE * categories.LAND * categories.ANTIAIR, 1, 1, 'support', 'none' }
-    },
-}
-PlatoonTemplate {
-    Name = 'AddGunshipACUChampionPlatoon',
-    Plan = 'SwarmPlatoonMerger',
-    GlobalSquads = {
-        { categories.MOBILE * categories.AIR * categories.GROUNDATTACK - categories.TRANSPORTFOCUS, 1, 1, 'support', 'none' }
     },
 }
 

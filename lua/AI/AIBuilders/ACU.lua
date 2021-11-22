@@ -8,9 +8,9 @@ local IBC = '/lua/editor/InstantBuildConditions.lua'
 
 local BasePanicZone, BaseMilitaryZone, BaseEnemyZone = import('/mods/AI-Swarm/lua/AI/swarmutilities.lua').GetDangerZoneRadii()
 
-local HaveLessThanThreeT2LandFactoryACU = function( self, aiBrain )
+local HaveLessThanFiveT2LandFactoryACU = function( self, aiBrain )
 	
-	if table.getn( aiBrain:GetListOfUnits( categories.FACTORY * categories.LAND * categories.TECH2, false, true )) >= 3 then
+	if table.getn( aiBrain:GetListOfUnits( categories.FACTORY * categories.LAND * categories.TECH2, false, true )) >= 5 then
         return 0, false
 	end
 	
@@ -138,7 +138,7 @@ BuilderGroup {
         InstanceCount = 10,                                                      
         BuilderData = {
             SearchRadius = BaseMilitaryZone,
-            GetTargetsFromBase = false,                                         
+            GetTargetsFromBase = true,                                         
             RequireTransport = false,                                           
             AttackEnemyStrength = 2000,                                         
             IgnorePathing = true,                                              
@@ -178,7 +178,7 @@ BuilderGroup {
         InstanceCount = 10,                                                      
         BuilderData = {
             SearchRadius = BaseEnemyZone,
-            GetTargetsFromBase = false,                                         
+            GetTargetsFromBase = true,                                         
             RequireTransport = false,                                           
             AttackEnemyStrength = 2000,                                         
             IgnorePathing = true,                                              
@@ -428,7 +428,7 @@ BuilderGroup {
 
         Priority = 650,
 
-        PriorityFunction = HaveLessThanThreeT2LandFactoryACU,
+        PriorityFunction = HaveLessThanFiveT2LandFactoryACU,
 
         DelayEqualBuildPlattons = {'Factories', 3},
 
@@ -473,7 +473,7 @@ BuilderGroup {
 
         Priority = 650,
 
-        PriorityFunction = HaveLessThanThreeT2LandFactoryACU,
+        PriorityFunction = HaveLessThanFiveT2LandFactoryACU,
 
         DelayEqualBuildPlattons = {'Factories', 3},
 
@@ -750,22 +750,6 @@ BuilderGroup {
     BuilderGroupName = 'ACU Support Platoon Swarm',                               
     BuildersType = 'PlatoonFormBuilder',
     Builder {
-        BuilderName = 'Engineer to ACU Platoon Swarm',
-        PlatoonTemplate = 'AddEngineerToACUChampionPlatoon',
-        Priority = 0,
-        InstanceCount = 1,
-        FormRadius = 10000,
-        BuilderData = {
-            AIPlan = 'ACUChampionPlatoonSwarm',
-        },
-        BuilderConditions = {
-            { UCBC, 'HaveGreaterThanArmyPoolWithCategorySwarm', { 1, categories.ENGINEER * categories.TECH1 - categories.STATIONASSISTPOD } },
-
-            { UCBC, 'UnitsLessInPlatoonSwarm', { 'ACUChampionPlatoonSwarm', 1, categories.ENGINEER * categories.TECH1 - categories.STATIONASSISTPOD } },
-        },
-        BuilderType = 'Any',
-    },
-    Builder {
         BuilderName = 'Shield to ACU Platoon Swarm',
         PlatoonTemplate = 'AddShieldToACUChampionPlatoon',
         Priority = 10000,
@@ -778,22 +762,6 @@ BuilderGroup {
             { UCBC, 'HaveGreaterThanArmyPoolWithCategorySwarm', { 0, (categories.MOBILE * categories.SHIELD) + (categories.MOBILE * categories.STEALTHFIELD) * (categories.TECH2 + categories.TECH3) } },
 
             { UCBC, 'UnitsLessInPlatoonSwarm', { 'ACUChampionPlatoonSwarm', 2, (categories.MOBILE * categories.SHIELD) + (categories.MOBILE * categories.STEALTHFIELD) * (categories.TECH2 + categories.TECH3) } },
-        },
-        BuilderType = 'Any',
-    },
-    Builder {
-        BuilderName = 'SACU to ACU Platoon Swarm',
-        PlatoonTemplate = 'AddSACUToACUChampionPlatoon',
-        Priority = 10000,
-        InstanceCount = 1,
-        FormRadius = 10000,
-        BuilderData = {
-            AIPlan = 'ACUChampionPlatoonSwarm',
-        },
-        BuilderConditions = {
-            { UCBC, 'HaveGreaterThanArmyPoolWithCategorySwarm', { 0, categories.SUBCOMMANDER} },
-
-            { UCBC, 'UnitsLessInPlatoonSwarm', { 'ACUChampionPlatoonSwarm', 2, categories.SUBCOMMANDER - categories.RASPRESET - categories.ENGINEERPRESET } },
         },
         BuilderType = 'Any',
     },
@@ -826,22 +794,6 @@ BuilderGroup {
             { UCBC, 'HaveGreaterThanArmyPoolWithCategorySwarm', { 0, categories.MOBILE * categories.LAND * categories.ANTIAIR } },
 
             { UCBC, 'UnitsLessInPlatoonSwarm', { 'ACUChampionPlatoonSwarm', 3, categories.MOBILE * categories.LAND * categories.ANTIAIR } },
-        },
-        BuilderType = 'Any',
-    },
-    Builder {
-        BuilderName = 'Gunship to ACU Platoon Swarm',
-        PlatoonTemplate = 'AddGunshipACUChampionPlatoon',
-        Priority = 10000,
-        InstanceCount = 1,
-        FormRadius = 10000,
-        BuilderData = {
-            AIPlan = 'ACUChampionPlatoonSwarm',
-        },
-        BuilderConditions = {
-            { UCBC, 'HaveGreaterThanArmyPoolWithCategorySwarm', { 0, categories.MOBILE * categories.AIR * categories.GROUNDATTACK - categories.TRANSPORTFOCUS } },
-
-            { UCBC, 'UnitsLessInPlatoonSwarm', { 'ACUChampionPlatoonSwarm', 8, categories.MOBILE * categories.AIR * categories.GROUNDATTACK - categories.TRANSPORTFOCUS } },
         },
         BuilderType = 'Any',
     },

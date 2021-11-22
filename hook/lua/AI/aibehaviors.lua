@@ -210,12 +210,12 @@ function StructureUpgradeThreadSwarm(unit, aiBrain, upgradeSpec, bypasseco)
                 SWARMWAIT(10)
                 continue
             end
-            --[[
+            
             if (massEfficiency <= upgradeSpec.MassHighTrigger and energyEfficiency <= upgradeSpec.EnergyHighTrigger) then
                 --LOG('* AI-Swarm: hi_trigger_good = true')
             else
                 continue
-            end]]
+            end
 
             if ( massTrend >= massTrendNeeded and energyTrend >= energyTrendNeeded and energyTrend >= energyMaintenance )
 				or ( massStorage >= (massNeeded * .7) and energyStorage > (energyNeeded * .7) ) or bypasseco then

@@ -48,7 +48,7 @@ BuilderGroup {
         BuilderType = 'Air',
 
         BuilderConditions = {
-            { UCBC, 'AirStrengthRatioGreaterThan', { 2 } },
+            { UCBC, 'AirStrengthRatioGreaterThan', { 5 } },
 
             { UCBC, 'LocationFactoriesBuildingLess', { 'LocationType', 3, categories.MOBILE * categories.AIR * categories.BOMBER } },
 
@@ -70,7 +70,7 @@ BuilderGroup {
         BuilderType = 'Air',
 
         BuilderConditions = {
-            { UCBC, 'AirStrengthRatioGreaterThan', { 2 } },
+            { UCBC, 'AirStrengthRatioGreaterThan', { 5 } },
 
             { UCBC, 'LocationFactoriesBuildingLess', { 'LocationType', 2, categories.MOBILE * categories.AIR * categories.GROUNDATTACK } },
 
@@ -96,7 +96,7 @@ BuilderGroup {
         BuilderType = 'Air',
 
         BuilderConditions = {
-            { UCBC, 'AirStrengthRatioGreaterThan', { 2 } },
+            { UCBC, 'AirStrengthRatioGreaterThan', { 5 } },
 
             { UCBC, 'LocationFactoriesBuildingLess', { 'LocationType', 2, categories.MOBILE * categories.AIR * categories.GROUNDATTACK * categories.TECH2 } },
 
@@ -118,7 +118,7 @@ BuilderGroup {
         BuilderType = 'Air',
 
         BuilderConditions = {
-            { UCBC, 'AirStrengthRatioGreaterThan', { 2 } },
+            { UCBC, 'AirStrengthRatioGreaterThan', { 5 } },
 
             { UCBC, 'LocationFactoriesBuildingLess', { 'LocationType', 2, categories.MOBILE * categories.AIR * categories.BOMBER * categories.TECH2 } },
 
@@ -136,7 +136,7 @@ BuilderGroup {
         Priority = 775,
 
         BuilderConditions = {
-            { UCBC, 'AirStrengthRatioGreaterThan', { 2 } },
+            { UCBC, 'AirStrengthRatioGreaterThan', { 5 } },
 
             { MIBC, 'CanPathToCurrentEnemySwarm', { false, 'LocationType' } },
 
@@ -163,7 +163,7 @@ BuilderGroup {
         Priority = 1000,
 
         BuilderConditions = {
-            { UCBC, 'AirStrengthRatioGreaterThan', { 2 } },
+            { UCBC, 'AirStrengthRatioGreaterThan', { 5 } },
 
             { UCBC, 'LocationFactoriesBuildingLess', { 'LocationType', 2, categories.MOBILE * categories.AIR * categories.BOMBER * categories.TECH3 } },
 
@@ -182,7 +182,7 @@ BuilderGroup {
         Priority = 1000,
 
         BuilderConditions = {
-            { UCBC, 'AirStrengthRatioGreaterThan', { 2 } },
+            { UCBC, 'AirStrengthRatioGreaterThan', { 5 } },
 
             { UCBC, 'LocationFactoriesBuildingLess', { 'LocationType', 2, categories.MOBILE * categories.AIR * categories.GROUNDATTACK * categories.TECH3 } },
 
