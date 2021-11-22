@@ -21,7 +21,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Builders',
         BuilderConditions = {
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
 
-            { EBC, 'GreaterThanEconIncomeSwarm', { 0, 0 } },
+            { EBC, 'GreaterThanEconIncomeOverTimeSwarm', { 0, 0 } },
 
             { UCBC, 'HaveLessThanUnitsWithCategory', { 3, categories.MOBILE * categories.ENGINEER } },
          },
@@ -34,7 +34,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Builders',
         BuilderConditions = {
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
 
-            { EBC, 'GreaterThanEconIncomeSwarm', { 0, 0 } },
+            { EBC, 'GreaterThanEconIncomeOverTimeSwarm', { 0, 0 } },
 
             { UCBC, 'EngineerCapCheck', { 'LocationType', 'Tech1' } },
 
@@ -53,7 +53,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Builders',
         BuilderConditions = {
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
 
-            { EBC, 'GreaterThanEconIncomeSwarm', { 0, 0 } },
+            { EBC, 'GreaterThanEconIncomeOverTimeSwarm', { 0, 0 } },
 
             { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.98, 0.50 } }, 
 
@@ -88,7 +88,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Builders',
         BuilderConditions = {
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
 
-            { EBC, 'GreaterThanEconIncomeSwarm', { 0, 0 } },
+            { EBC, 'GreaterThanEconIncomeOverTimeSwarm', { 0, 0 } },
 
             { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.98, 0.50 } }, 
 
@@ -123,7 +123,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Builders',
         BuilderConditions = {
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
 
-            { EBC, 'GreaterThanEconIncomeSwarm', { 0, 0 } },
+            { EBC, 'GreaterThanEconIncomeOverTimeSwarm', { 0, 0 } },
 
             { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.98, 0.50 } }, 
 
@@ -144,7 +144,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Expansion Engineer Builders',
         BuilderConditions = {
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
 
-            { EBC, 'GreaterThanEconIncomeSwarm', { 0, 0 } },
+            { EBC, 'GreaterThanEconIncomeOverTimeSwarm', { 0, 0 } },
 
             { UCBC, 'EngineerCapCheck', { 'LocationType', 'Tech1' } },
          },
@@ -157,7 +157,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Expansion Engineer Builders',
         BuilderConditions = {
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
 
-            { EBC, 'GreaterThanEconIncomeSwarm', { 0, 0 } },
+            { EBC, 'GreaterThanEconIncomeOverTimeSwarm', { 0, 0 } },
 
             { UCBC, 'EngineerCapCheck', { 'LocationType', 'Tech2' } },
          },
@@ -170,7 +170,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Expansion Engineer Builders',
         BuilderConditions = {
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
 
-            { EBC, 'GreaterThanEconIncomeSwarm', { 0, 0 } },
+            { EBC, 'GreaterThanEconIncomeOverTimeSwarm', { 0, 0 } },
 
             { UCBC, 'EngineerCapCheck', { 'LocationType', 'Tech3' } },
          },

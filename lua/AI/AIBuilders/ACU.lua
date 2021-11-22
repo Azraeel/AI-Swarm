@@ -49,6 +49,7 @@ BuilderGroup { BuilderGroupName = 'Swarm ACU Initial Opener',
         BuilderData = {
             BuildClose = false,
             Construction = {
+                AdjacencyBias = 'ForwardClose',
                 AdjacencyPriority = {
                     categories.MASSEXTRACTION,
                     categories.MASSPRODUCTION,
@@ -242,7 +243,7 @@ BuilderGroup {
             
             { UCBC, 'CheckBuildPlattonDelay', { 'ACUFORM' }},
                                      
-            { EBC, 'GreaterThanEconIncomeSwarm',  { 2.0, 50.0}},
+            { EBC, 'GreaterThanEconIncomeOverTimeSwarm',  { 2.0, 50.0}},
         },
         BuilderType = 'Any',                                              
     },
@@ -367,7 +368,7 @@ BuilderGroup {
 
             { UCBC, 'HaveLessThanUnitsInCategoryBeingBuilt', { 1, categories.STRUCTURE * categories.ENERGYPRODUCTION * (categories.TECH2 + categories.TECH3) }},
 
-            { EBC, 'LessThanEnergyTrendSwarm', { 4.0 } },             -- Ratio from 0 to 1. (1=100%)
+            { EBC, 'LessThanEnergyTrendOverTimeSwarm', { 0.0 } },             
         },
         BuilderType = 'Any',
         BuilderData = {
@@ -376,6 +377,8 @@ BuilderGroup {
                     categories.STRUCTURE * categories.FACTORY * categories.AIR,
                     categories.RADAR * categories.STRUCTURE,
                     categories.FACTORY * categories.STRUCTURE * categories.LAND,
+                    categories.MASSEXTRACTION * categories.TECH1,
+                    categories.ENERGYSTORAGE,   
                 },
                 BuildClose = true,
                 LocationType = 'LocationType',
@@ -395,6 +398,8 @@ BuilderGroup {
 
             { UCBC, 'HaveLessThanUnitsInCategoryBeingBuilt', { 1, categories.STRUCTURE * categories.ENERGYPRODUCTION * (categories.TECH2 + categories.TECH3) }},
 
+            { EBC, 'GreaterThanMassStorageCurrentSwarm', { 200 } }, 
+
             { EBC, 'EnergyToMassRatioIncomeSwarm', { 10.0, '<=' } },  -- True if we have less than 10 times more Energy then Mass income ( 100 <= 10 = true )
         },
         BuilderType = 'Any',
@@ -404,6 +409,8 @@ BuilderGroup {
                     categories.STRUCTURE * categories.FACTORY * categories.AIR,
                     categories.RADAR * categories.STRUCTURE,
                     categories.FACTORY * categories.STRUCTURE * categories.LAND,
+                    categories.MASSEXTRACTION * categories.TECH1,
+                    categories.ENERGYSTORAGE,   
                 },
                 BuildClose = true,
                 LocationType = 'LocationType',

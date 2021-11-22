@@ -7,6 +7,14 @@ local GetEconomyIncome = moho.aibrain_methods.GetEconomyIncome
 local GetEconomyRequested = moho.aibrain_methods.GetEconomyRequested
 local GetEconomyStored = moho.aibrain_methods.GetEconomyStored
 
+function GreaterThanMassStorageCurrentSwarm(aiBrain, mStorage)
+
+    if (GetEconomyStored(aiBrain, 'MASS') >= mStorage) then
+        return true
+    end
+    return false
+end
+
 function GreaterThanEconStorageCurrentSwarm(aiBrain, mStorage, eStorage)
 
     if (GetEconomyStored(aiBrain, 'MASS') >= mStorage and GetEconomyStored(aiBrain, 'ENERGY') >= eStorage) then
@@ -129,6 +137,13 @@ function LessThanEnergyTrendOverTimeSwarm(aiBrain, EnergyTrend)
         return true
     end
     --LOG('GreaterThanEconTrendOverTime Returned False')
+    return false
+end
+
+function GreaterThanEnergyIncomeOverTimeSwarm(aiBrain, energyIncome)
+    if aiBrain.EconomyOverTimeCurrent.EnergyIncome > energyIncome then
+        return true
+    end
     return false
 end
 

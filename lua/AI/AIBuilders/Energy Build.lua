@@ -16,7 +16,7 @@ BuilderGroup {
         BuilderName = 'Swarm Power low trend',
         PlatoonTemplate = 'T1EngineerBuilderSwarm',
         Priority = 650,
-        InstanceCount = 2,                                                     
+        InstanceCount = 1,                                                     
         DelayEqualBuildPlattons = {'Energy', 3},
         BuilderConditions = {
             { UCBC, 'HaveLessThanUnitsWithCategory', { 1, categories.ENERGYPRODUCTION - categories.TECH1 - categories.COMMAND } },
@@ -25,7 +25,7 @@ BuilderGroup {
             
             { UCBC, 'CheckBuildPlattonDelay', { 'Energy' }},
 
-            { EBC, 'LessThanEnergyTrendSwarm', { 0.0 } },             
+            { EBC, 'LessThanEnergyTrendOverTimeSwarm', { 0.0 } },             
         },
         BuilderType = 'Any',
         BuilderData = {
@@ -35,6 +35,8 @@ BuilderGroup {
                     categories.STRUCTURE * categories.FACTORY * categories.AIR,
                     categories.RADAR * categories.STRUCTURE,
                     categories.FACTORY * categories.STRUCTURE * categories.LAND,
+                    categories.MASSEXTRACTION * categories.TECH1,
+                    categories.ENERGYSTORAGE,   
                 },
                 BuildClose = true,
                 LocationType = 'LocationType',
@@ -53,7 +55,7 @@ BuilderGroup {
         BuilderName = 'Swarm Power low trend - Scale Power',
         PlatoonTemplate = 'T1EngineerBuilderSwarm',
         Priority = 660,
-        InstanceCount = 3,                                                     
+        InstanceCount = 1,                                                     
         DelayEqualBuildPlattons = {'Energy', 3},
         BuilderConditions = {
             { UCBC, 'HaveLessThanUnitsWithCategory', { 1, categories.ENERGYPRODUCTION - categories.TECH1 - categories.COMMAND } },
@@ -62,9 +64,9 @@ BuilderGroup {
             
             { UCBC, 'CheckBuildPlattonDelay', { 'Energy' }},
 
-            { EBC, 'GreaterThanEconStorageCurrentSwarm', { 200, 2000}},
+            { EBC, 'GreaterThanMassStorageCurrentSwarm', { 200 }}, 
 
-            { EBC, 'LessThanEnergyTrendSwarm', { 4.0 } },
+            { EBC, 'LessThanEnergyTrendOverTimeSwarm', { 4.0 } },
         },
         BuilderType = 'Any',
         BuilderData = {
@@ -74,6 +76,8 @@ BuilderGroup {
                     categories.STRUCTURE * categories.FACTORY * categories.AIR,
                     categories.RADAR * categories.STRUCTURE,
                     categories.FACTORY * categories.STRUCTURE * categories.LAND,
+                    categories.MASSEXTRACTION * categories.TECH1,
+                    categories.ENERGYSTORAGE,   
                 },
                 BuildClose = true,
                 LocationType = 'LocationType',
@@ -87,13 +91,13 @@ BuilderGroup {
     Builder {
         BuilderName = 'Swarm Power Hydrocarbon Normal',
         PlatoonTemplate = 'T1EngineerBuilderSwarm',
-        Priority = 660,
+        Priority = 675,
         DelayEqualBuildPlattons = {'Energy', 1},
         InstanceCount = 1,
         BuilderConditions = {
             { MABC, 'CanBuildOnHydroSwarm', { 'LocationType', 240, -1000, 4, 1, 'AntiSurface', 1 }},            
 
-            { EBC, 'GreaterThanEconIncomeSwarm',  { 1.0, 4.0}}, 
+            { EBC, 'GreaterThanEconIncomeOverTimeSwarm',  { 1.0, 4.0}}, 
 
             { UCBC, 'CheckBuildPlattonDelay', { 'Energy' }},
         },
@@ -122,7 +126,7 @@ BuilderGroup {
             
             { UCBC, 'HaveLessThanUnitsInCategoryBeingBuilt', { 1, categories.STRUCTURE * categories.ENERGYPRODUCTION * categories.TECH3 }},
             
-            { EBC, 'LessThanEnergyTrendSwarm', { 8.0 } },              -- Ratio from 0 to 1. (1=100%)
+            { EBC, 'LessThanEnergyTrendOverTimeSwarm', { 8.0 } },              -- Ratio from 0 to 1. (1=100%)
 
             { UCBC, 'HaveLessThanUnitsInCategoryBeingBuilt', { 1, categories.STRUCTURE * categories.ENERGYPRODUCTION * categories.TECH2 }},
         },
@@ -161,7 +165,7 @@ BuilderGroup {
         BuilderConditions = {
             { UCBC, 'CheckBuildPlattonDelay', { 'Energy' }},
 
-            { EBC, 'LessThanEnergyTrendSwarm', { 0.0 } },              -- Ratio from 0 to 1. (1=100%)
+            { EBC, 'LessThanEnergyTrendOverTimeSwarm', { 0.0 } },              -- Ratio from 0 to 1. (1=100%)
         },
         BuilderType = 'Any',
         BuilderData = {
@@ -356,7 +360,7 @@ BuilderGroup {
             
             { UCBC, 'HaveLessThanUnitsInCategoryBeingBuilt', { 1, categories.STRUCTURE * categories.ENERGYPRODUCTION * categories.TECH3 }},
             
-            { EBC, 'LessThanEnergyTrendSwarm', { 8.0 } },              -- Ratio from 0 to 1. (1=100%)
+            { EBC, 'LessThanEnergyTrendOverTimeSwarm', { 8.0 } },              -- Ratio from 0 to 1. (1=100%)
         },
         BuilderType = 'Any',
         BuilderData = {
@@ -395,7 +399,7 @@ BuilderGroup {
 
             { UCBC, 'IsEngineerNotBuildingSwarm', { categories.ENERGYPRODUCTION * categories.TECH3 }},
 
-            { EBC, 'LessThanEnergyTrendSwarm', { 0.0 } },              -- Ratio from 0 to 1. (1=100%)
+            { EBC, 'LessThanEnergyTrendOverTimeSwarm', { 0.0 } },              -- Ratio from 0 to 1. (1=100%)
         },
         BuilderType = 'Any',
         BuilderData = {

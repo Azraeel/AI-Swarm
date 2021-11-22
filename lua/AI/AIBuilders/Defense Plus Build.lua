@@ -314,7 +314,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Defense Plus Builders Expansion',
 
             { EBC, 'GreaterThanMassTrendSwarm', { 0.0 } },
 
-            { EBC, 'GreaterThanEnergyIncomeSwarm', { 100 }},
+            { EBC, 'GreaterThanEnergyIncomeOverTimeSwarm', { 100 }},
 
             { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 1.02, 1.03 }},
 

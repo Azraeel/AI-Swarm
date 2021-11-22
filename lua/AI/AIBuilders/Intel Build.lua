@@ -140,7 +140,7 @@ BuilderGroup {
         BuilderConditions = {
             { UCBC, 'HaveLessThanUnitsWithCategory', { 1, categories.OPTICS * categories.AEON}},
 
-            { EBC, 'GreaterThanEconIncomeSwarm', { 15, 1500}},
+            { EBC, 'GreaterThanEconIncomeOverTimeSwarm', { 15, 1500}},
 
             { EBC, 'GreaterThanEconTrendSwarm', { 0.0, 0.0 } }, 
 
@@ -176,7 +176,7 @@ BuilderGroup {
         BuilderConditions = {
             { UCBC, 'HaveLessThanUnitsWithCategory', { 1, categories.OPTICS * categories.CYBRAN}},
 
-            { EBC, 'GreaterThanEconIncomeSwarm', { 15, 1500}},
+            { EBC, 'GreaterThanEconIncomeOverTimeSwarm', { 15, 1500}},
 
             { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.20, 0.50 } },  
 

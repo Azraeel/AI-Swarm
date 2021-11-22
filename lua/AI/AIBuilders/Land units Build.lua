@@ -55,7 +55,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Scout Builders',
 
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
 
-            { EBC, 'GreaterThanEconIncomeSwarm', { 0.2, 2 } },
+            { EBC, 'GreaterThanEconIncomeOverTimeSwarm', { 0.2, 2 } },
 
             { UCBC, 'HaveLessThanUnitsWithCategory', { 2, categories.LAND * categories.MOBILE * categories.SCOUT - categories.ENGINEER }},
         },
@@ -352,7 +352,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',
         BuilderConditions = {
             { UCBC, 'UnitCapCheckLess', { 0.90 } },
 
-            { EBC, 'GreaterThanEconIncomeSwarm', { 3.5, 100 } },
+            { EBC, 'GreaterThanEconIncomeOverTimeSwarm', { 3.5, 100 } },
 
             { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 0.9, 0.95 }},
 
@@ -994,7 +994,7 @@ BuilderGroup {
 
         Priority = 1000,
 
-        InstanceCount = 3,
+        InstanceCount = 2,
 
         BuilderType = 'Any',
 
