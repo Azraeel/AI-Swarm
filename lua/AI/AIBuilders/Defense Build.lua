@@ -263,7 +263,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Shields Upgrader',
         InstanceCount = 10,
 
         BuilderConditions = {
-            { EBC, 'GreaterThanMassTrendSwarm', { 0.0 } },
+            { EBC, 'GreaterThanMassTrendOverTimeSwarm', { 0.0 } },
 
             { EBC, 'GreaterThanEnergyIncomeOverTimeSwarm', { 100 }},
 
@@ -291,7 +291,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Shields Upgrader',
         InstanceCount = 10,
 
         BuilderConditions = {
-            { EBC, 'GreaterThanMassTrendSwarm', { 0.0 } },
+            { EBC, 'GreaterThanMassTrendOverTimeSwarm', { 0.0 } },
             
             { EBC, 'GreaterThanEnergyIncomeOverTimeSwarm', { 100 }},
 
@@ -319,7 +319,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Shields Upgrader',
         InstanceCount = 10,
 
         BuilderConditions = {
-            { EBC, 'GreaterThanMassTrendSwarm', { 0.0 } },
+            { EBC, 'GreaterThanMassTrendOverTimeSwarm', { 0.0 } },
 
             { EBC, 'GreaterThanEnergyIncomeOverTimeSwarm', { 100 }},
 
@@ -347,7 +347,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Shields Upgrader',
         InstanceCount = 10,
 
         BuilderConditions = {
-            { EBC, 'GreaterThanMassTrendSwarm', { 0.0 } },
+            { EBC, 'GreaterThanMassTrendOverTimeSwarm', { 0.0 } },
 
             { EBC, 'GreaterThanEnergyIncomeOverTimeSwarm', { 100 }},
 
@@ -375,7 +375,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Shields Upgrader',
         InstanceCount = 10,
 
         BuilderConditions = {
-            { EBC, 'GreaterThanMassTrendSwarm', { 0.0 } },
+            { EBC, 'GreaterThanMassTrendOverTimeSwarm', { 0.0 } },
 
             { EBC, 'GreaterThanEnergyIncomeOverTimeSwarm', { 100 }},
 
@@ -408,7 +408,7 @@ BuilderGroup { BuilderGroupName = 'Swarm T2 Tactical Missile Defenses Builder',
         InstanceCount = 1,
 
         BuilderConditions = {
-            { EBC, 'GreaterThanMassTrendSwarm', { 0.0 } },
+            { EBC, 'GreaterThanMassTrendOverTimeSwarm', { 0.0 } },
 
             { EBC, 'GreaterThanEnergyIncomeOverTimeSwarm', { 50 }},
 
@@ -447,7 +447,7 @@ BuilderGroup { BuilderGroupName = 'Swarm T2 Tactical Missile Defenses Builder',
         InstanceCount = 1,
 
         BuilderConditions = {
-            { EBC, 'GreaterThanMassTrendSwarm', { 0.0 } },
+            { EBC, 'GreaterThanMassTrendOverTimeSwarm', { 0.0 } },
 
             { EBC, 'GreaterThanEnergyIncomeOverTimeSwarm', { 50 }},
 
@@ -486,7 +486,7 @@ BuilderGroup { BuilderGroupName = 'Swarm T2 Tactical Missile Defenses Builder',
         InstanceCount = 1,
 
         BuilderConditions = {
-            { EBC, 'GreaterThanMassTrendSwarm', { 0.0 } },
+            { EBC, 'GreaterThanMassTrendOverTimeSwarm', { 0.0 } },
 
             { EBC, 'GreaterThanEnergyIncomeOverTimeSwarm', { 50 }},
 
@@ -525,7 +525,7 @@ BuilderGroup { BuilderGroupName = 'Swarm T2 Tactical Missile Defenses Builder',
         InstanceCount = 1,
 
         BuilderConditions = {
-            { EBC, 'GreaterThanMassTrendSwarm', { 0.0 } },
+            { EBC, 'GreaterThanMassTrendOverTimeSwarm', { 0.0 } },
 
             { EBC, 'GreaterThanEnergyIncomeOverTimeSwarm', { 100 }},
 
@@ -572,7 +572,7 @@ BuilderGroup { BuilderGroupName = 'Swarm SMD Builder',
         BuilderConditions = {
             { MIBC, 'GreaterThanGameTime', { 1800 } },
 
-            { EBC, 'GreaterThanMassTrendSwarm', { 0.0 } },
+            { EBC, 'GreaterThanMassTrendOverTimeSwarm', { 0.0 } },
 
             { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 1.01, 1.02 }},
 
@@ -619,7 +619,7 @@ BuilderGroup { BuilderGroupName = 'Swarm SMD Builder',
             
             { EBC, 'GreaterThanEnergyIncomeOverTimeSwarm', { 200 }},
 
-            { EBC, 'GreaterThanMassTrendSwarm', { 0.0 } },
+            { EBC, 'GreaterThanMassTrendOverTimeSwarm', { 0.0 } },
 
             { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 1.02, 1.03 }},
 
@@ -662,7 +662,7 @@ BuilderGroup { BuilderGroupName = 'Swarm SMD Builder',
             
             { EBC, 'GreaterThanEnergyIncomeOverTimeSwarm', { 300 }},
 
-            { EBC, 'GreaterThanMassTrendSwarm', { 0.0 } },
+            { EBC, 'GreaterThanMassTrendOverTimeSwarm', { 0.0 } },
 
             { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 1.03, 1.04 }},
 
@@ -705,7 +705,7 @@ BuilderGroup { BuilderGroupName = 'Swarm SMD Builder',
             
             { EBC, 'GreaterThanEnergyIncomeOverTimeSwarm', { 300 }},
 
-            { EBC, 'GreaterThanMassTrendSwarm', { 0.0 } },
+            { EBC, 'GreaterThanMassTrendOverTimeSwarm', { 0.0 } },
 
             { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 1.03, 1.04 }},
 
@@ -760,7 +760,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Defense Anti Ground Builders',
         PlatoonTemplate = 'T2EngineerBuilderSwarm',
         Priority = 950,
         BuilderConditions = {
-            { EBC, 'GreaterThanMassTrendSwarm', { 0.0 } },
+            { EBC, 'GreaterThanMassTrendOverTimeSwarm', { 0.0 } },
 
             { EBC, 'GreaterThanEnergyIncomeOverTimeSwarm', { 150 }},
 
@@ -798,7 +798,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Defense Anti Ground Builders',
         PlatoonTemplate = 'T3EngineerBuildernoSUBSwarm',
         Priority = 1000,
         BuilderConditions = {
-            { EBC, 'GreaterThanMassTrendSwarm', { 0.0 } },
+            { EBC, 'GreaterThanMassTrendOverTimeSwarm', { 0.0 } },
 
             { EBC, 'GreaterThanEnergyIncomeOverTimeSwarm', { 150 }},
 
@@ -861,7 +861,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Defense Anti Air Builders',
         Priority = 905,
         InstanceCount = 1,                                      
         BuilderConditions = {
-            { EBC, 'GreaterThanMassTrendSwarm', { 0.0 } },
+            { EBC, 'GreaterThanMassTrendOverTimeSwarm', { 0.0 } },
 
             { EBC, 'GreaterThanEnergyIncomeOverTimeSwarm', { 100 }},
 
@@ -896,7 +896,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Defense Anti Air Builders',
         Priority = 1025,
         InstanceCount = 1,                                      
         BuilderConditions = {
-            { EBC, 'GreaterThanMassTrendSwarm', { 0.0 } },
+            { EBC, 'GreaterThanMassTrendOverTimeSwarm', { 0.0 } },
 
             { EBC, 'GreaterThanEnergyIncomeOverTimeSwarm', { 100 }},
 

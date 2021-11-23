@@ -146,7 +146,7 @@ PlatoonTemplate {
     Name = 'EngineerBuilderALLTECHSwarm',
     Plan = 'EngineerBuildAISwarm',
     GlobalSquads = {
-        { categories.ENGINEER * (categories.TECH1 + categories.TECH2 + categories.TECH3) - categories.COMMAND, 1, 1, 'support', 'None' }
+        { categories.ENGINEER * (categories.TECH1 + categories.TECH2 + categories.TECH3 + categories.SUBCOMMANDER) - categories.COMMAND, 1, 1, 'support', 'None' }
     },
 }
 
@@ -202,6 +202,6 @@ PlatoonTemplate {
     Name = 'EngineerAssistALLTECH',
     Plan = 'ManagerEngineerAssistAISwarm',
     GlobalSquads = {
-        { categories.ENGINEER * (categories.TECH1 + categories.TECH2 + categories.TECH3) - categories.COMMAND, 1, 1, 'support', 'None' }
+        { categories.ENGINEER * (categories.TECH1 + categories.TECH2 + categories.TECH3 + categories.SUBCOMMANDER) - categories.COMMAND, 1, 1, 'support', 'None' }
     },
 }

@@ -312,11 +312,11 @@ BuilderGroup { BuilderGroupName = 'Swarm Defense Plus Builders Expansion',
         BuilderConditions = {
             { UCBC, 'AirStrengthRatioLessThan', { 1.5 } },
 
-            { EBC, 'GreaterThanMassTrendSwarm', { 0.0 } },
+            { EBC, 'GreaterThanMassTrendOverTimeSwarm', { 0.0 } },
 
             { EBC, 'GreaterThanEnergyIncomeOverTimeSwarm', { 100 }},
 
-            { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 1.02, 1.03 }},
+            { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 1.01, 1.02 }},
 
             { EBC, 'GreaterThanEconStorageCurrentSwarm', { 200, 2000}},
 

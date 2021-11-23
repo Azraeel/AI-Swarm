@@ -312,7 +312,7 @@ BuilderGroup {
         PlatoonTemplate = 'CommanderAssist',
         Priority = 550,
         BuilderConditions = {
-            { EBC, 'GreaterThanMassTrendSwarm', { 0.0 } },
+            { EBC, 'GreaterThanMassTrendOverTimeSwarm', { 0.0 } },
 
             { EBC, 'GreaterThanEconStorageCurrentSwarm', { 200, 2000}},
 

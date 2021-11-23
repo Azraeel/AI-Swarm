@@ -140,6 +140,16 @@ function GreaterThanEconTrendOverTimeSwarm(aiBrain, MassTrend, EnergyTrend)
     return false
 end
 
+function GreaterThanMassTrendOverTimeSwarm(aiBrain, MassTrend)
+
+    if aiBrain.EconomyOverTimeCurrent.MassTrendOverTime > MassTrend then
+        --LOG('GreaterThanEconTrendOverTime Returned True')
+        return true
+    end
+    --LOG('GreaterThanEconTrendOverTime Returned False')
+    return false
+end
+
 function GreaterThanEnergyTrendOverTimeSwarm(aiBrain, EnergyTrend)
 
     if aiBrain.EconomyOverTimeCurrent.EnergyTrendOverTime > EnergyTrend then

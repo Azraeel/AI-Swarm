@@ -214,7 +214,7 @@ BuilderGroup {
 
             { UCBC, 'HaveLessThanUnitsInCategoryBeingBuilt', { 4,  categories.STRUCTURE * categories.MASSSTORAGE }},
 
-            { EBC, 'GreaterThanMassTrendSwarm', { 1.2 } },
+            { EBC, 'GreaterThanMassTrendOverTimeSwarm', { 1.2 } },
 
             { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 1.02, 1.03 }}, 
 
@@ -254,7 +254,7 @@ BuilderGroup {
 
             { UCBC, 'HaveLessThanUnitsInCategoryBeingBuilt', { 8,  categories.STRUCTURE * categories.MASSSTORAGE }},
 
-            { EBC, 'GreaterThanMassTrendSwarm', { 1.6 } },
+            { EBC, 'GreaterThanMassTrendOverTimeSwarm', { 1.6 } },
 
             { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 1.02, 1.03 }}, 
 
