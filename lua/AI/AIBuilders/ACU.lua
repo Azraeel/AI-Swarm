@@ -570,7 +570,7 @@ BuilderGroup {
         BuilderConditions = {
             { UCBC, 'CheckBuildPlattonDelay', { 'Factories' }},
 
-            { UCBC, 'AirStrengthRatioLessThan', { 1 } },
+            { UCBC, 'AirStrengthRatioLessThan', { 1.5 } },
 
             { EBC, 'GreaterThanEconStorageCurrentSwarm', { 200, 2000}},
 

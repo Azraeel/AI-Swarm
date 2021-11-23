@@ -109,6 +109,8 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Builders',
         PriorityFunction = HaveLessThanTwoT2AirFactory,
 
         BuilderConditions = {
+            { MIBC, 'FactionIndex', { 3 }}, -- 1: UEF, 2: Aeon, 3: Cybran, 4: Seraphim, 5: Nomads 
+
             { UCBC, 'AirStrengthRatioGreaterThan', { 1 } },
 
             { EBC, 'GreaterThanEconStorageCurrentSwarm', { 200, 2000}},
@@ -344,7 +346,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Builders',
     Builder {
         BuilderName = 'Swarm-AI - T1 Air Scout',
 
-        PlatoonTemplate = 'T1AirScout',
+        PlatoonTemplate = 'T1AirScoutSwarm',
 
         Priority = 500,
 

@@ -28,8 +28,6 @@ local GetProductionPerSecondMass = moho.unit_methods.GetProductionPerSecondMass
 local GetProductionPerSecondEnergy = moho.unit_methods.GetProductionPerSecondEnergy
 local GetEconomyTrend = moho.aibrain_methods.GetEconomyTrend
 local GetEconomyStoredRatio = moho.aibrain_methods.GetEconomyStoredRatio
-local GetListOfUnits = moho.aibrain_methods.GetListOfUnits
-local CanBuildStructureAt = moho.aibrain_methods.CanBuildStructureAt
 
 SwarmAIBrainClass = AIBrain
 AIBrain = Class(SwarmAIBrainClass) {
@@ -460,7 +458,7 @@ AIBrain = Class(SwarmAIBrainClass) {
             self.UpgradeIssuedLimit = self.UpgradeIssuedLimit + 1
         end
 
-        if (gameTime > 1200 and self.BrainIntel.SelfThreat.AllyExtractorCount > self.BrainIntel.SelfThreat.MassMarker / 1.5) then
+        if (gameTime > 1200 and self.SelfAllyExtractor > self.MassMarker / 1.5) then
             --LOG('Switch to agressive upgrade mode')
             self.UpgradeMode = 'Aggressive'
             self.EcoManager.ExtractorUpgradeLimit.TECH1 = 2
@@ -760,7 +758,7 @@ AIBrain = Class(SwarmAIBrainClass) {
         -- Get AI strength
         local selfIndex = self:GetArmyIndex()
 
-        local brainAirUnits = GetListOfUnits( self, (categories.AIR * categories.MOBILE) - categories.TRANSPORTFOCUS - categories.SATELLITE - categories.EXPERIMENTAL, false, false)
+        local brainAirUnits = GetListOfUnits( self, categories.AIR * categories.MOBILE - categories.TRANSPORTFOCUS - categories.SATELLITE, false, false)
         local airthreat = 0
         local antiAirThreat = 0
         local bp
@@ -870,9 +868,6 @@ AIBrain = Class(SwarmAIBrainClass) {
 
         --LOG("*AI DEBUG "..self.Nickname.." ParseIntelThreadSwarm begins")
 
-        -----------------
-        --- LAND UNITS --
-		-----------------
         while self.Swarm do
 
             SWARMWAIT(30)  
@@ -881,36 +876,27 @@ AIBrain = Class(SwarmAIBrainClass) {
             local landThreat = self.SelfLandNow
 
             if enemyLandThreat ~= 0 then
-                if landThreat == 0 then
-                    landThreat = 1
-                end
-                self.MyLandRatio = 1/enemyLandThreat*landThreat
+                self.MyLandRatio = landThreat/enemyLandThreat
             else
-                self.MyLandRatio = 0.01
+                self.MyLandRatio = 1
             end
 
             local enemyAirThreat = self.EnemyAir
             local airthreat = self.SelfAirNow
 
             if enemyAirThreat ~= 0 then
-                if airthreat == 0 then
-                    airthreat = 1
-                end
-                self.MyAirRatio = 1/enemyAirThreat*airthreat
+                self.MyAirRatio = airthreat/enemyAirThreat
             else
-                self.MyAirRatio = 0.01
+                self.MyAirRatio = 1
             end
 
             local enemyNavalThreat = self.EnemyNaval
             local navalThreat = self.SelfNavalNow
     
             if enemyNavalThreat ~= 0 then
-                if navalThreat == 0 then
-                    navalThreat = 1
-                end
-                self.MyNavalRatio = 1/enemyNavalThreat*navalThreat
+                self.MyNavalRatio = navalThreat/enemyNavalThreat
             else
-                self.MyNavalRatio = 0.01
+                self.MyNavalRatio = 1
             end
 
             --LOG("*AI DEBUG "..self.Nickname.." Air Ratio is "..repr(self.MyAirRatio).." Land Ratio is "..repr(self.MyLandRatio).." Naval Ratio is "..repr(self.MyNavalRatio))

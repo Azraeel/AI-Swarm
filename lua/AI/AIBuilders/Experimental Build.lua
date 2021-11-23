@@ -34,6 +34,10 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Experimental Builders',
             { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 1.01, 1.02 }},
 
             { EBC, 'GreaterThanEconStorageCurrentSwarm', { 200, 2000}},
+
+            { EBC, 'GreaterThanEnergyIncomeOverTimeSwarm', { 750 }},
+
+            { EBC, 'GreaterThanEnergyTrendOverTimeSwarm', { 0.0 } },  
             
             { EBC, 'GreaterThanMassTrendOverTimeSwarm', { 0.0 } },
         },
@@ -75,6 +79,10 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Experimental Builders',
 
             { EBC, 'GreaterThanEconStorageCurrentSwarm', { 200, 2000}},
 
+            { EBC, 'GreaterThanEnergyIncomeOverTimeSwarm', { 750 }},
+
+            { EBC, 'GreaterThanEnergyTrendOverTimeSwarm', { 0.0 } },  
+
             { EBC, 'GreaterThanMassTrendOverTimeSwarm', { 0.0 } },
 
             { MIBC, 'GreaterThanGameTime', { 3600 } }, -- Need to figure out a better restriction for Satellite --
@@ -115,9 +123,13 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Experimental Builders',
         InstanceCount = 1,
 
         BuilderConditions = {
-        	{ UCBC, 'HaveLessThanUnitsInCategoryBeingBuilt', { 2, categories.EXPERIMENTAL * categories.LAND}},   	
+        	{ UCBC, 'HaveLessThanUnitsInCategoryBeingBuilt', { 1, categories.EXPERIMENTAL * categories.LAND}},   	
 
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
+
+            { EBC, 'GreaterThanEnergyIncomeOverTimeSwarm', { 750 }},
+
+            { EBC, 'GreaterThanEnergyTrendOverTimeSwarm', { 0.0 } },  
 
             { EBC, 'GreaterThanMassTrendOverTimeSwarm', { 0.0 } },
 
@@ -164,11 +176,15 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Experimental Builders',
         BuilderConditions = {
             { MIBC, 'FactionIndex', { 1, 2, 4, 5 }}, -- 1: UEF, 2: Aeon, 3: Cybran, 4: Seraphim, 5: Nomads 
 
-        	{ UCBC, 'HaveLessThanUnitsInCategoryBeingBuilt', { 2, categories.EXPERIMENTAL * categories.LAND}},
+        	{ UCBC, 'HaveLessThanUnitsInCategoryBeingBuilt', { 1, categories.EXPERIMENTAL * categories.LAND}},
 
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
 
             { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 1.01, 1.02 }},
+
+            { EBC, 'GreaterThanEnergyIncomeOverTimeSwarm', { 750 }},
+
+            { EBC, 'GreaterThanEnergyTrendOverTimeSwarm', { 0.0 } },  
 
             { EBC, 'GreaterThanMassTrendOverTimeSwarm', { 0.0 } },
 
@@ -211,11 +227,15 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Experimental Builders',
         InstanceCount = 1,
 
         BuilderConditions = {
-        	{ UCBC, 'HaveLessThanUnitsInCategoryBeingBuilt', { 2, categories.EXPERIMENTAL * categories.LAND}},
+        	{ UCBC, 'HaveLessThanUnitsInCategoryBeingBuilt', { 1, categories.EXPERIMENTAL * categories.LAND}},
 
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
             
             { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 1.01, 1.02 }},
+
+            { EBC, 'GreaterThanEnergyIncomeOverTimeSwarm', { 750 }},
+
+            { EBC, 'GreaterThanEnergyTrendOverTimeSwarm', { 0.0 } },  
 
             { EBC, 'GreaterThanMassTrendOverTimeSwarm', { 0.0 } },
 
@@ -268,6 +288,10 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Experimental Builders',
             
             { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 1.05, 1.06 }},
 
+            { EBC, 'GreaterThanEnergyIncomeOverTimeSwarm', { 500 }},
+
+            { EBC, 'GreaterThanEnergyTrendOverTimeSwarm', { 0.0 } },   
+
             { EBC, 'GreaterThanMassTrendOverTimeSwarm', { 0.0 } },
 
             { EBC, 'GreaterThanEconStorageCurrentSwarm', { 200, 2000}},
@@ -316,7 +340,11 @@ BuilderGroup { BuilderGroupName = 'Swarm Naval Experimental Builders',
         InstanceCount = 2,
 
         BuilderConditions = {
-            { UCBC, 'HaveGreaterThanUnitsWithCategory', { 0, categories.STRUCTURE * categories.FACTORY * categories.NAVAL * categories.TECH3 } },            
+            { UCBC, 'HaveGreaterThanUnitsWithCategory', { 0, categories.STRUCTURE * categories.FACTORY * categories.NAVAL * categories.TECH3 } },   
+            
+            { EBC, 'GreaterThanEnergyIncomeOverTimeSwarm', { 750 }},
+
+            { EBC, 'GreaterThanEnergyTrendOverTimeSwarm', { 0.0 } },   
 
             { EBC, 'GreaterThanMassTrendOverTimeSwarm', { 0.0 } },
 
@@ -324,7 +352,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Naval Experimental Builders',
             
             { EBC, 'GreaterThanEconStorageCurrentSwarm', { 200, 2000}},
 
-            { UCBC, 'HaveLessThanUnitsInCategoryBeingBuilt', { 2, categories.MOBILE * categories.EXPERIMENTAL }},
+            { UCBC, 'HaveLessThanUnitsInCategoryBeingBuilt', { 1, categories.MOBILE * categories.EXPERIMENTAL }},
         },
         BuilderType = 'Any',
 

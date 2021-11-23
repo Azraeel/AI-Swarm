@@ -179,3 +179,21 @@ PlatoonTemplate {
         { categories.AIR * categories.SCOUT * categories.TECH3, 1, 1, 'scout', 'None' },
     }
 }
+
+PlatoonTemplate {
+    Name = 'T1AirScoutSwarm',
+    FactionSquads = {
+        UEF = {
+            { 'uea0101', 3, 3, 'scout', 'GrowthFormation' }
+        },
+        Aeon = {
+            { 'uaa0101', 3, 3, 'scout', 'GrowthFormation' }
+        },
+        Cybran = {
+            { 'ura0101', 3, 3, 'scout', 'GrowthFormation' }
+        },
+        Seraphim = {
+            { 'xsa0101', 3, 3, 'scout', 'GrowthFormation' }
+        },
+    }
+}

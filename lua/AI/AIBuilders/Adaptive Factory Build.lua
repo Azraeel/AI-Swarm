@@ -111,7 +111,7 @@ BuilderGroup {
     },
 
     Builder {
-        BuilderName = 'Swarm Naval Factory Enemy - Outnumbered',
+        BuilderName = 'Swarm Naval Factory Enemy - Naval Ratio',
         
         PlatoonTemplate = 'EngineerBuilderALLTECHSwarm',
 
@@ -126,13 +126,13 @@ BuilderGroup {
 
             { EBC, 'MassToFactoryRatioBaseCheckSwarm', { 'LocationType' } },
 
+            { UCBC, 'NavalStrengthRatioLessThan', { 1.5 } },
+
             { EBC, 'GreaterThanEconStorageCurrentSwarm', { 250, 1000}},
 
             { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 0.9, 1.0 }},
 
             { UCBC, 'HaveLessThanUnitsInCategoryBeingBuilt', { 1, categories.STRUCTURE * categories.FACTORY * categories.NAVAL * categories.TECH1 }},
-
-            { UCBC, 'HaveUnitRatioVersusEnemySwarm', { 1.00, categories.STRUCTURE * categories.FACTORY * categories.NAVAL, '<',categories.STRUCTURE * categories.FACTORY * categories.NAVAL } },
         },
         BuilderType = 'Any',
         BuilderData = {
@@ -304,7 +304,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Adaptive Factory Build',
         BuilderConditions = {
             { UCBC, 'CheckBuildPlattonDelay', { 'Factories' }},
 
-            { UCBC, 'AirStrengthRatioLessThan', { 1.0 } },
+            { UCBC, 'AirStrengthRatioLessThan', { 1.5 } },
 
             { EBC, 'GreaterThanEconStorageCurrentSwarm', { 200, 2000}},
 
