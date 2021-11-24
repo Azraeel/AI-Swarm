@@ -618,11 +618,11 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
 -- ============== --
 --    Reclaim     --
 -- ============== --
-BuilderGroup { BuilderGroupName = 'Swarm Engineer Reclaim',                                -- BuilderGroupName, initalized from AIBaseTemplates in "\lua\AI\AIBaseTemplates\"
+BuilderGroup { BuilderGroupName = 'Swarm Engineer Reclaim Main',                                -- BuilderGroupName, initalized from AIBaseTemplates in "\lua\AI\AIBaseTemplates\"
     BuildersType = 'PlatoonFormBuilder',
 
     Builder { BuilderName = 'Swarm Reclaim Mass - Small Mass',
-        PlatoonTemplate = 'S1Reclaim',
+        PlatoonTemplate = 'Swarm T1Reclaim',
         Priority = 600,
         InstanceCount = 2,
         BuilderConditions = {
@@ -641,8 +641,8 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Reclaim',                     
     },
 
     Builder { BuilderName = 'Swarm Reclaim Resource - Medium Mass',
-        PlatoonTemplate = 'S1Reclaim',
-        Priority = 595,
+        PlatoonTemplate = 'Swarm T1Reclaim',
+        Priority = 600,
         InstanceCount = 2,
         BuilderConditions = {
             { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 0, categories.ENGINEER * categories.TECH1 }},
@@ -660,11 +660,11 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Reclaim',                     
     },
 
     Builder { BuilderName = 'Swarm Reclaim Resource - Big Mass',
-        PlatoonTemplate = 'S1Reclaim',
-        Priority = 350,
+        PlatoonTemplate = 'Swarm T1Reclaim',
+        Priority = 600,
         InstanceCount = 4,
         BuilderConditions = {
-            { UCBC, 'PoolGreaterAtLocation', { 'LocationType',  0, categories.ENGINEER * categories.TECH1 } },
+            { UCBC, 'PoolGreaterAtLocation', { 'LocationType',  1, categories.ENGINEER * categories.TECH1 } },
 
             { MIBC, 'CheckIfReclaimEnabledSwarm', {}},
 
@@ -679,11 +679,11 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Reclaim',                     
     },
 
     Builder { BuilderName = 'Swarm Reclaim Resource - Huge Mass',
-        PlatoonTemplate = 'S1Reclaim',
-        Priority = 350,
+        PlatoonTemplate = 'Swarm T1Reclaim',
+        Priority = 600,
         InstanceCount = 4,
         BuilderConditions = {
-            { UCBC, 'PoolGreaterAtLocation', { 'LocationType',  0, categories.ENGINEER * categories.TECH1 } },
+            { UCBC, 'PoolGreaterAtLocation', { 'LocationType',  2, categories.ENGINEER * categories.TECH1 } },
 
             { MIBC, 'CheckIfReclaimEnabledSwarm', {}},
 
@@ -698,3 +698,101 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Reclaim',                     
     }, 
 }
 
+BuilderGroup { BuilderGroupName = 'Swarm Engineer Reclaim Expansion',                                -- BuilderGroupName, initalized from AIBaseTemplates in "\lua\AI\AIBaseTemplates\"
+    BuildersType = 'PlatoonFormBuilder',
+
+    Builder { BuilderName = 'Swarm Reclaim Mass Expansion - Small Mass',
+        PlatoonTemplate = 'Swarm T1Reclaim',
+        Priority = 600,
+        InstanceCount = 6,
+        BuilderConditions = {
+            { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 0, categories.ENGINEER * categories.TECH1 }},
+
+            { MIBC, 'CheckIfReclaimEnabledSwarm', {}},
+
+            { EBC, 'LessThanEconStorageRatioSwarm', { 0.9, 1.0}}, 
+        },
+        BuilderData = {
+            LocationType = 'LocationType',
+            ReclaimTime = 80,
+            MinimumReclaim = 10
+        },
+        BuilderType = 'Any',
+    },
+
+    Builder { BuilderName = 'Swarm Reclaim Mass Expansion - Medium Mass',
+        PlatoonTemplate = 'Swarm T1Reclaim',
+        Priority = 600,
+        InstanceCount = 3,
+        BuilderConditions = {
+            { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 1, categories.ENGINEER * categories.TECH1 }},
+
+            { MIBC, 'CheckIfReclaimEnabledSwarm', {}},
+
+            { EBC, 'LessThanEconStorageRatioSwarm', { 0.9, 1.0}}, 
+        },
+        BuilderData = {
+            LocationType = 'LocationType',
+            ReclaimTime = 80,
+            MinimumReclaim = 20
+        },
+        BuilderType = 'Any',
+    },
+
+    Builder { BuilderName = 'Swarm T2 Reclaim Mass Expansion - Small Mass',
+        PlatoonTemplate = 'Swarm T2Reclaim',
+        Priority = 750,
+        InstanceCount = 2,
+        BuilderConditions = {
+            { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 1, categories.ENGINEER * categories.TECH2 - categories.STATIONASSISTPOD }},
+
+            { MIBC, 'CheckIfReclaimEnabledSwarm', {}},
+
+            { EBC, 'LessThanEconStorageRatioSwarm', { 0.8, 1.0}}, 
+        },
+        BuilderData = {
+            LocationType = 'LocationType',
+            ReclaimTime = 80,
+            MinimumReclaim = 40
+        },
+        BuilderType = 'Any',
+    },
+
+    Builder { BuilderName = 'Swarm T2 Reclaim Mass Expansion - Big Mass',
+        PlatoonTemplate = 'Swarm T2Reclaim',
+        Priority = 750,
+        InstanceCount = 2,
+        BuilderConditions = {
+            { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 2, categories.ENGINEER * categories.TECH2 - categories.STATIONASSISTPOD }},
+
+            { MIBC, 'CheckIfReclaimEnabledSwarm', {}},
+
+            { EBC, 'LessThanEconStorageRatioSwarm', { 0.8, 1.0}}, 
+        },
+        BuilderData = {
+            LocationType = 'LocationType',
+            ReclaimTime = 80,
+            MinimumReclaim = 80
+        },
+        BuilderType = 'Any',
+    },
+
+    Builder { BuilderName = 'Swarm T3 Reclaim Mass Expansion - Small Mass',
+        PlatoonTemplate = 'Swarm T3Reclaim',
+        Priority = 850,
+        InstanceCount = 2,
+        BuilderConditions = {
+            { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 2, categories.ENGINEER * categories.TECH3 - categories.STATIONASSISTPOD }},
+
+            { MIBC, 'CheckIfReclaimEnabledSwarm', {}},
+
+            { EBC, 'LessThanEconStorageRatioSwarm', { 0.6, 1.0}}, 
+        },
+        BuilderData = {
+            LocationType = 'LocationType',
+            ReclaimTime = 80,
+            MinimumReclaim = 120
+        },
+        BuilderType = 'Any',
+    },
+}

@@ -148,9 +148,11 @@ BuilderGroup {
         PlatoonTemplate = 'EngineerBuilderALLTECHSwarm',
         Priority = 575,
         BuilderConditions = {
-            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.05, 0.50}},
+            { EBC, 'MassToFactoryRatioBaseCheckSwarm', { 'LocationType' } },
 
-            { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 0.75, 0.9 }},
+            { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 0.9, 1.0 }}, 
+
+            { EBC, 'GreaterThanEconStorageCurrentSwarm', { 200, 2000}},
 
             { MIBC, 'CanPathToCurrentEnemySwarm', { false, 'LocationType' } },
 
@@ -173,9 +175,11 @@ BuilderGroup {
         PlatoonTemplate = 'EngineerBuilderALLTECHSwarm',
         Priority = 600,
         BuilderConditions = {
-            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.05, 0.50}},
+            { EBC, 'MassToFactoryRatioBaseCheckSwarm', { 'LocationType' } },
 
-            { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 0.75, 0.9 }},
+            { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 0.9, 1.0 }}, 
+
+            { EBC, 'GreaterThanEconStorageCurrentSwarm', { 200, 2000}},
 
             { MIBC, 'CanPathToCurrentEnemySwarm', { false, 'LocationType' } }, 
 
@@ -198,9 +202,11 @@ BuilderGroup {
         PlatoonTemplate = 'EngineerBuilderALLTECHSwarm',
         Priority = 600,
         BuilderConditions = {
-            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.05, 0.50}},
+            { EBC, 'MassToFactoryRatioBaseCheckSwarm', { 'LocationType' } },
 
-            { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 0.75, 0.9 }},
+            { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 0.9, 1.0 }}, 
+
+            { EBC, 'GreaterThanEconStorageCurrentSwarm', { 200, 2000}},
 
             { MIBC, 'CanPathToCurrentEnemySwarm', { false, 'LocationType' } },
 

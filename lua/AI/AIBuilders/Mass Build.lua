@@ -173,27 +173,6 @@ BuilderGroup {
 }
 
 BuilderGroup {
-    BuilderGroupName = 'S123 ExtractorUpgrades SWARM',                               
-    BuildersType = 'PlatoonFormBuilder',
-    Builder {
-        BuilderName = 'S1S Extractor upgrade',
-        PlatoonTemplate = 'AddToMassExtractorUpgradePlatoon',
-        Priority = 18400,
-        InstanceCount = 1,
-        FormRadius = 10000,
-        BuilderConditions = {
-            { UCBC, 'HaveGreaterThanArmyPoolWithCategorySwarm', { 0, categories.MASSEXTRACTION} },
-
-            { UCBC, 'GreaterThanGameTimeSeconds', { 240 } },
-        },
-        BuilderData = {
-            AIPlan = 'ExtractorUpgradeAISwarm',
-        },
-        BuilderType = 'Any',
-    },
-}
-
-BuilderGroup {
     BuilderGroupName = 'S1 MassStorage Builder',                        
     BuildersType = 'EngineerBuilder',
     Builder {

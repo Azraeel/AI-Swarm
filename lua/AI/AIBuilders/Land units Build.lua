@@ -1015,9 +1015,9 @@ BuilderGroup {
             MaxThreatThreshold = 3000,		
             MinThreatThreshold = 1000,		    
             AvoidBases = true,
-            AvoidBasesRadius = 100,
+            AvoidBasesRadius = 150,
             AggressiveMove = false,      
-            AvoidClosestRadius = 100,
+            AvoidClosestRadius = 75,
             UseFormation = 'None',
             TargetSearchCategory = categories.MASSPRODUCTION - categories.COMMAND,
             MoveToCategories = {                                                

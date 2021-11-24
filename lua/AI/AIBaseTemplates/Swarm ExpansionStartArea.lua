@@ -29,7 +29,7 @@ BaseBuilderTemplate {
         -- Assistees
         'Swarm Engineer Assistees',
         -- Reclaim mass
-        'Swarm Engineer Reclaim',
+        'Swarm Engineer Reclaim Expansion',
 
         -----------------------------------------------------------------------------
         -- ==== Mass ==== --
