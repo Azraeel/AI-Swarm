@@ -14,7 +14,6 @@ local SWARMMIN = math.min
 local SWARMABS = math.abs
 local SWARMTIME = GetGameTimeSeconds
 local SWARMENTITY = EntityCategoryContains
-local SWARMPARSE =  ParseEntityCategory
 
 local VDist2 = VDist2
 local VDist2Sq = VDist2Sq

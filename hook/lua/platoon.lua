@@ -33,7 +33,6 @@ local SWARMMAX = math.max
 local SWARMSIN = math.sin
 local SWARMCOS = math.cos
 local SWARMENTITY = EntityCategoryContains
-local SWARMPARSE = ParseEntityCategory
 local SWARMTIME = GetGameTimeSeconds
 
 local VDist2 = VDist2
@@ -2240,7 +2239,7 @@ Platoon = Class(SwarmPlatoonClass) {
             return
         end
         if cons.NearUnitCategory then
-            self:SetPrioritizedTargetList('support', {SWARMPARSE(cons.NearUnitCategory)})
+            self:SetPrioritizedTargetList('support', {ParseEntityCategory(cons.NearUnitCategory)})
             local unitNearBy = self:FindPrioritizedUnit('support', 'Ally', false, self:GetPlatoonPosition(), cons.NearUnitRadius or 50)
             --LOG("ENGINEER BUILD: " .. cons.BuildStructures[1] .." attempt near: ", cons.NearUnitCategory)
             if unitNearBy then
@@ -2415,12 +2414,12 @@ Platoon = Class(SwarmPlatoonClass) {
             local cat = cons.AdjacencyCategory
             -- convert text categories like 'MOBILE AIR' to 'categories.MOBILE * categories.AIR'
             if type(cat) == 'string' then
-                cat = SWARMPARSE(cat)
+                cat = ParseEntityCategory(cat)
             end
             local avoidCat = cons.AvoidCategory
             -- convert text categories like 'MOBILE AIR' to 'categories.MOBILE * categories.AIR'
             if type(avoidCat) == 'string' then
-                avoidCat = SWARMPARSE(avoidCat)
+                avoidCat = ParseEntityCategory(avoidCat)
             end
             local radius = (cons.AdjacencyDistance or 50)
             if not pos or not pos then
@@ -2448,7 +2447,7 @@ Platoon = Class(SwarmPlatoonClass) {
             for i,cat in cats do
                 -- convert text categories like 'MOBILE AIR' to 'categories.MOBILE * categories.AIR'
                 if type(cat) == 'string' then
-                    cat = SWARMPARSE(cat)
+                    cat = ParseEntityCategory(cat)
                 end
                 local radius = (cons.AdjacencyDistance or 50)
                 local refunits=AIUtils.GetOwnUnitsAroundPoint(aiBrain, cat, pos, radius, cons.ThreatMin,cons.ThreatMax, cons.ThreatRings)
@@ -2463,7 +2462,7 @@ Platoon = Class(SwarmPlatoonClass) {
             local cat = cons.AdjacencyCategory
             -- convert text categories like 'MOBILE AIR' to 'categories.MOBILE * categories.AIR'
             if type(cat) == 'string' then
-                cat = SWARMPARSE(cat)
+                cat = ParseEntityCategory(cat)
             end
             local radius = (cons.AdjacencyDistance or 50)
             local radius = (cons.AdjacencyDistance or 50)
@@ -2997,7 +2996,7 @@ Platoon = Class(SwarmPlatoonClass) {
         local beingBuilt = assistData.BeingBuiltCategories or { categories.ALLUNITS }
         local assisteeCat = assistData.AssisteeCategory or categories.ALLUNITS
         if type(assisteeCat) == 'string' then
-            assisteeCat = SWARMPARSE(assisteeCat)
+            assisteeCat = ParseEntityCategory(assisteeCat)
         end
 
         -- loop through different categories we are looking for
@@ -4982,7 +4981,7 @@ Platoon = Class(SwarmPlatoonClass) {
         if data.PrioritizedCategories then
             for k,v in data.PrioritizedCategories do
                 SWARMINSERT(atkPri, v)
-                SWARMINSERT(categoryList, SWARMPARSE(v))
+                SWARMINSERT(categoryList, ParseEntityCategory(v))
             end
         end
         SWARMINSERT(atkPri, 'ALLUNITS')
