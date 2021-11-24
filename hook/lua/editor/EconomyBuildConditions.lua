@@ -24,14 +24,14 @@ function GreaterThanEconStorageCurrentSwarm(aiBrain, mStorage, eStorage)
 end
 
 function GreaterThanEconStorageRatioSwarm(aiBrain, mStorageRatio, eStorageRatio)
-	if (GetEconomyStoredRatio(aiBrain,'ENERGY') *100) >= eStorageRatio and (GetEconomyStoredRatio(aiBrain,'MASS') *100) >= mStorageRatio then
+	if (GetEconomyStoredRatio(aiBrain,'MASS') *100) >= mStorageRatio and (GetEconomyStoredRatio(aiBrain,'ENERGY') *100) >= eStorageRatio then
         return true
     end
     return false
 end
 
 function LessThanEconStorageRatioSwarm(aiBrain, mStorageRatio, eStorageRatio)
-	if (GetEconomyStoredRatio(aiBrain,'ENERGY') *100) < eStorageRatio and (GetEconomyStoredRatio(aiBrain,'MASS') *100) < mStorageRatio then
+	if (GetEconomyStoredRatio(aiBrain,'MASS') *100) < mStorageRatio and (GetEconomyStoredRatio(aiBrain,'ENERGY') *100) < eStorageRatio then
         return true
     end
     return false
