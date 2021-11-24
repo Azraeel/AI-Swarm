@@ -1,12 +1,3 @@
-
-PlatoonTemplate {
-    Name = 'AddToMassExtractorUpgradePlatoon',
-    Plan = 'SwarmPlatoonMerger',
-    GlobalSquads = {
-        { categories.MASSEXTRACTION * (categories.TECH1 + categories.TECH2 + categories.TECH3) , 1, 300, 'support', 'none' }
-    },
-} 
-
 PlatoonTemplate {
     Name = 'AddToNukePlatoon',
     Plan = 'SwarmPlatoonMerger',
@@ -78,10 +69,26 @@ PlatoonTemplate {
 }
 
 PlatoonTemplate {
-    Name = 'S1Reclaim',
+    Name = 'Swarm T1Reclaim',
     Plan = 'ReclaimAISwarm',
     GlobalSquads = {
         { categories.ENGINEER * categories.TECH1 - categories.COMMAND, 1, 1, "support", "None" }
+    },
+}
+
+PlatoonTemplate {
+    Name = 'Swarm T2Reclaim',
+    Plan = 'ReclaimAISwarm',
+    GlobalSquads = {
+        { categories.ENGINEER * categories.TECH2 - categories.COMMAND, 1, 1, "support", "None" }
+    },
+}
+
+PlatoonTemplate {
+    Name = 'Swarm T3Reclaim',
+    Plan = 'ReclaimAISwarm',
+    GlobalSquads = {
+        { categories.ENGINEER * categories.TECH2 - categories.COMMAND, 1, 1, "support", "None" }
     },
 }
 

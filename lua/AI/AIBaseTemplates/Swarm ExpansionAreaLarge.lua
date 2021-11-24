@@ -17,12 +17,12 @@ BaseBuilderTemplate {
         -----------------------------------------------------------------------------
         -- ==== Engineer ==== --
         -----------------------------------------------------------------------------
-        -- Build Engineers Tech 1,2,3 and SACU
+        -- Build Engineers Tech 1,2,3
         'Swarm Expansion Engineer Builders',
         -- Assistees
         'Swarm Engineer Assistees',
         -- Reclaim mass
-        'Swarm Engineer Reclaim',
+        'Swarm Engineer Reclaim Expansion',
 
         -----------------------------------------------------------------------------
         -- ==== Factory ==== --
@@ -36,7 +36,6 @@ BaseBuilderTemplate {
         -- ==== Land Units BUILDER ==== --
         -----------------------------------------------------------------------------
         'Swarm Land Builders Ratio',
-        'Swarm SACU Builder',
 
         -----------------------------------------------------------------------------
         -- ==== Land Units FORMER==== --
@@ -80,13 +79,6 @@ BaseBuilderTemplate {
         'Swarm Factory Builder - Water Map',
         'Swarm Amphibious Formers',
 
-        -----------------------------------------------------------------------------
-        -- ==== FireBase BUILDER ==== --
-        -----------------------------------------------------------------------------
-
-
-        
-        -- We need this even if we have Omni View to get target informations for experimentals attack.
         -----------------------------------------------------------------------------
         -- ==== Scout BUILDER ==== --
         -----------------------------------------------------------------------------

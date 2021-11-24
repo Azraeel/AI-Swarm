@@ -32,12 +32,11 @@ BaseBuilderTemplate {
 
         -- Engineer Tasks
         'Swarm Engineer Assistees',
-        'Swarm Engineer Reclaim',
+        'Swarm Engineer Reclaim Main',
         'Swarm Engineering Support Builder',
 
         -- Build MassExtractors / Creators
         'S1 MassBuilders',
-        'S123 ExtractorUpgrades SWARM', 
         'S1 MassStorage Builder',
 
         -- Build Power Tech 1,2,3

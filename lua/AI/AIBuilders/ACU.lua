@@ -570,7 +570,7 @@ BuilderGroup {
         BuilderConditions = {
             { UCBC, 'CheckBuildPlattonDelay', { 'Factories' }},
 
-            { UCBC, 'AirStrengthRatioLessThan', { 1.5 } },
+            { UCBC, 'AirStrengthRatioLessThan', { 1 } },
 
             { EBC, 'GreaterThanEconStorageCurrentSwarm', { 200, 2000}},
 
@@ -686,9 +686,13 @@ BuilderGroup { BuilderGroupName = 'Swarm Factory Builder',
 
             { UCBC, 'HaveLessThanUnitsWithCategory', { 3, categories.STRUCTURE * categories.FACTORY * categories.LAND * (categories.TECH1 + categories.TECH2 + categories.TECH3) }},
 
+            { EBC, 'MassToFactoryRatioBaseCheckSwarm', { 'LocationType' } },
+
             { EBC, 'GreaterThanEconStorageCurrentSwarm', { 200, 2000}},
 
-            { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 0.75, 0.9 }},
+            { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 0.9, 1.0 }}, 
+
+            { UCBC, 'HaveLessThanUnitsInCategoryBeingBuilt', { 2, categories.STRUCTURE * categories.FACTORY * categories.TECH1 }},
         },
         BuilderType = 'Any',
         BuilderData = {
@@ -716,6 +720,10 @@ BuilderGroup { BuilderGroupName = 'Swarm Factory Builder',
             { MIBC, 'CanPathToCurrentEnemySwarm', { false, 'LocationType' } },
 
             { UCBC, 'HaveLessThanUnitsWithCategory', { 1, categories.STRUCTURE * categories.FACTORY * categories.AIR * (categories.TECH1 + categories.TECH2 + categories.TECH3) }},
+            
+            { EBC, 'MassToFactoryRatioBaseCheckSwarm', { 'LocationType' } },
+
+            { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 0.9, 1.0 }}, 
 
             { EBC, 'GreaterThanEconStorageCurrentSwarm', { 200, 2000}},
 

@@ -111,9 +111,16 @@ AIBrain = Class(SwarmAIBrainClass) {
             EcoMultiplier = 1,
         }
 
+        self.StartReclaimTableSwarm = {}
+        self.StartReclaimTakenSwarm = false
+
         self.UpgradeMode = 'Normal'
         self.UpgradeIssued = 0
         self.UpgradeIssuedPeriod = 100
+
+        -- Misc
+        self.ReclaimEnabledSwarm = true
+        self.ReclaimLastCheckSwarm = 0
 
         if mapSizeX < 1000 and mapSizeZ < 1000  then
             self.UpgradeIssuedLimit = 1

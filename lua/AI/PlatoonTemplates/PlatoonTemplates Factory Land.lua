@@ -1,39 +1,43 @@
 PlatoonTemplate { Name = 'T1LandOpeningQueue',
     FactionSquads = {
         UEF = {
-            { 'uel0201', 1, 2, 'Attack', 'none' },		-- Striker Medium Tank
+            { 'uel0201', 1, 3, 'Attack', 'none' },		-- Striker Medium Tank
             { 'uel0105', 1, 1, 'Support', 'None' },     -- Engineer
             { 'uel0104', 1, 1, 'Attack', 'none' },      -- Mobile Anti-Air
             { 'uel0201', 1, 2, 'Attack', 'none' },      -- Striker Medium Tank
-            --{ 'uel0105', 1, 1, 'Support', 'None' },     -- Engineer
+            { 'uel0105', 1, 1, 'Support', 'None' },     -- Engineer
             { 'uel0103', 1, 1, 'Attack', 'none' },      -- Artillery
+            --{ 'uel0201', 1, 2, 'Attack', 'none' },		-- Striker Medium Tank
             --{ 'uel0105', 1, 1, 'Support', 'None' },     -- Engineer
         },
         Aeon = {
-            { 'ual0201', 1, 2, 'Attack', 'none' },		-- Light Hover tank
+            { 'ual0201', 1, 3, 'Attack', 'none' },		-- Light Hover tank
             { 'ual0105', 1, 1, 'Support', 'None' },     -- Engineer
             { 'ual0104', 1, 1, 'Attack', 'none' },      -- Mobile Anti-Air
             { 'ual0201', 1, 2, 'Attack', 'none' },      -- Light Hover tank
-            --{ 'ual0105', 1, 1, 'Support', 'None' },     -- Engineer
+            { 'ual0105', 1, 1, 'Support', 'None' },     -- Engineer
             { 'ual0103', 1, 1, 'Attack', 'none' },      -- Artillery
+            --{ 'ual0201', 1, 2, 'Attack', 'none' },		-- Light Hover tank
             --{ 'ual0105', 1, 1, 'Support', 'None' },     -- Engineer
         },
         Cybran = {
-            { 'url0107', 1, 2, 'Attack', 'none' },		-- Mantis
+            { 'url0107', 1, 3, 'Attack', 'none' },		-- Mantis
             { 'url0105', 1, 1, 'Support', 'None' },     -- Engineer
             { 'url0104', 1, 1, 'Attack', 'none' },      -- Mobile Anti-Air
             { 'url0107', 1, 2, 'Attack', 'none' },      -- Mantis
-            --{ 'url0105', 1, 1, 'Support', 'None' },     -- Engineer
+            { 'url0105', 1, 1, 'Support', 'None' },     -- Engineer
             { 'url0103', 1, 1, 'Attack', 'none' },      -- Artillery
+            --{ 'url0107', 1, 2, 'Attack', 'none' },      -- Mantis
             --{ 'url0105', 1, 1, 'Support', 'None' },     -- Engineer
         },
         Seraphim = {
-            { 'xsl0201', 1, 2, 'Attack', 'none' },		-- Medium Tank
+            { 'xsl0201', 1, 3, 'Attack', 'none' },		-- Medium Tank
             { 'xsl0105', 1, 1, 'Support', 'None' },     -- Engineer
             { 'xsl0104', 1, 1, 'Attack', 'none' },      -- Mobile Anti-Air
             { 'xsl0201', 1, 2, 'Attack', 'none' },      -- Medium Tank
-            --{ 'xsl0105', 1, 1, 'Support', 'None' },     -- Engineer
+            { 'xsl0105', 1, 1, 'Support', 'None' },     -- Engineer
             { 'xsl0103', 1, 1, 'Attack', 'none' },      -- Artillery
+            --{ 'xsl0201', 1, 2, 'Attack', 'none' },		-- Medium Tank
             --{ 'xsl0105', 1, 1, 'Support', 'None' },     -- Engineer
         },
     }

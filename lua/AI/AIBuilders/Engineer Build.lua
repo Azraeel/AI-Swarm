@@ -21,8 +21,6 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Builders',
         BuilderConditions = {
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
 
-            { EBC, 'GreaterThanEconIncomeOverTimeSwarm', { 0, 0 } },
-
             { UCBC, 'HaveLessThanUnitsWithCategory', { 3, categories.MOBILE * categories.ENGINEER } },
          },
         BuilderType = 'All',
@@ -33,8 +31,6 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Builders',
         Priority = 1005,
         BuilderConditions = {
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
-
-            { EBC, 'GreaterThanEconIncomeOverTimeSwarm', { 0, 0 } },
 
             { UCBC, 'EngineerCapCheck', { 'LocationType', 'Tech1' } },
 
@@ -55,11 +51,13 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Builders',
 
             { EBC, 'GreaterThanEconIncomeOverTimeSwarm', { 0, 0 } },
 
-            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.98, 0.50 } }, 
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.95, 0.0 } }, 
 
             { UCBC, 'PoolLessAtLocation', { 'LocationType',  2, categories.MOBILE * categories.ENGINEER * categories.TECH1 } },
 
-            { UCBC, 'LocationFactoriesBuildingLess', { 'LocationType', 3, categories.MOBILE * categories.ENGINEER * categories.TECH1} },
+            { UCBC, 'LocationFactoriesBuildingLess', { 'LocationType', 2, categories.MOBILE * categories.ENGINEER * categories.TECH1} },
+
+            { UCBC, 'GreaterThanGameTimeSeconds', { 240 } }, -- Stops Excess Building Early Game on High Mass Maps
          },
         BuilderType = 'All',
     },
@@ -90,11 +88,11 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Builders',
 
             { EBC, 'GreaterThanEconIncomeOverTimeSwarm', { 0, 0 } },
 
-            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.98, 0.50 } }, 
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.95, 0.0 } }, 
 
             { UCBC, 'PoolLessAtLocation', { 'LocationType',  2, categories.MOBILE * categories.ENGINEER * categories.TECH2 } },
 
-            { UCBC, 'LocationFactoriesBuildingLess', { 'LocationType', 3, categories.MOBILE * categories.ENGINEER * categories.TECH2} },
+            { UCBC, 'LocationFactoriesBuildingLess', { 'LocationType', 2, categories.MOBILE * categories.ENGINEER * categories.TECH2} },
          },
         BuilderType = 'All',
     },
@@ -125,11 +123,11 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Builders',
 
             { EBC, 'GreaterThanEconIncomeOverTimeSwarm', { 0, 0 } },
 
-            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.98, 0.50 } }, 
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.95, 0.0 } }, 
 
             { UCBC, 'PoolLessAtLocation', { 'LocationType',  2, categories.MOBILE * categories.ENGINEER * categories.TECH3 } },
 
-            { UCBC, 'LocationFactoriesBuildingLess', { 'LocationType', 3, categories.MOBILE * categories.ENGINEER * categories.TECH3} },
+            { UCBC, 'LocationFactoriesBuildingLess', { 'LocationType', 2, categories.MOBILE * categories.ENGINEER * categories.TECH3} },
          },
         BuilderType = 'All',
     },
