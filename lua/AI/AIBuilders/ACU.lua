@@ -323,7 +323,6 @@ BuilderGroup {
             Assist = {
                 AssistLocation = 'LocationType',
                 BeingBuiltCategories = {'TECH1', 'TECH2', 'TECH3', 'EXPERIMENTAL'},               -- Unitcategories must be type string
-                PermanentAssist = false,
                 AssisteeType = 'Engineer',
                 AssistClosestUnit = true,                                       -- Assist the closest unit instead unit with the least number of assisters
                 Time = 75,
@@ -337,7 +336,7 @@ BuilderGroup {
         BuilderConditions = {
             { EBC, 'LessThanEnergyTrendSwarm', { 0.0 } }, 
 
-            { EBC, 'GreaterThanEconStorageCurrentSwarm', { 200, 0}},
+            { EBC, 'GreaterThanMassStorageCurrentSwarm', { 200 }},
 
             { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 1.0, 0.0 }},
 

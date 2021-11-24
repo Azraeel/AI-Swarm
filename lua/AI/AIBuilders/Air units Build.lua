@@ -415,7 +415,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Scout Formers',
     Builder {
         BuilderName = 'Swarm Former Scout Patrol DMZ T1',
         PlatoonTemplate = 'T1AirScoutFormSwarm',
-        InstanceCount = 4,
+        InstanceCount = 2,
         Priority = 900,
         BuilderConditions = {
             { UCBC, 'HaveGreaterThanUnitsWithCategory', { 0, categories.AIR * categories.SCOUT } },
@@ -431,7 +431,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Scout Formers',
     Builder {
         BuilderName = 'Swarm Former Scout Patrol DMZ T3',
         PlatoonTemplate = 'T3AirScoutFormSwarm',
-        InstanceCount = 4,
+        InstanceCount = 2,
         Priority = 900,
         BuilderData = {
             Patrol = true,

@@ -14,7 +14,6 @@ local SWARMMIN = math.min
 local SWARMABS = math.abs
 local SWARMTIME = GetGameTimeSeconds
 local SWARMENTITY = EntityCategoryContains
-local SWARMPARSE =  ParseEntityCategory
 
 local VDist2 = VDist2
 local VDist2Sq = VDist2Sq
@@ -507,6 +506,18 @@ function UnderAttackSwarm(cdr)
     else
         return false
     end
+end
+
+-- Decided to grab this from Chp2001, because the FBM rally placement sometimes is completely garbage
+function lerpy(vec1, vec2, distance)
+    -- Courtesy of chp2001
+    -- note the distance param is {distance, distance - weapon range}
+    -- vec1 is friendly unit, vec2 is enemy unit
+    local distanceFrac = distance[2] / distance[1]
+    local x = vec1[1] * (1 - distanceFrac) + vec2[1] * distanceFrac
+    local y = vec1[2] * (1 - distanceFrac) + vec2[2] * distanceFrac
+    local z = vec1[3] * (1 - distanceFrac) + vec2[3] * distanceFrac
+    return {x,y,z}
 end
 
 function RandomizePosition(position)

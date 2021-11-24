@@ -13,7 +13,6 @@ local SWARMSIN = math.sin
 local SWARMCOS = math.cos
 local SWARMFLOOR = math.floor
 local SWARMENTITY = EntityCategoryContains
-local SWARMPARSE = ParseEntityCategory
 
 local VDist2 = VDist2
 
@@ -260,7 +259,7 @@ end
 
 function AIFindNearestCategoryTargetInRangeCDRSwarm(aiBrain, position, maxRange, MoveToCategories, enemyBrain)
     if type(TargetSearchCategory) == 'string' then
-        TargetSearchCategory = SWARMPARSE(TargetSearchCategory)
+        TargetSearchCategory = ParseEntityCategory(TargetSearchCategory)
     end
     local enemyIndex = false
     local MyArmyIndex = aiBrain:GetArmyIndex()
@@ -282,7 +281,7 @@ function AIFindNearestCategoryTargetInRangeCDRSwarm(aiBrain, position, maxRange,
         for _, v in MoveToCategories do
             category = v
             if type(category) == 'string' then
-                category = SWARMPARSE(category)
+                category = ParseEntityCategory(category)
             end
             distance = maxRange
             --LOG('* AIFindNearestCategoryTargetInRangeSwarm: numTargets '..table.getn(TargetsInRange)..'  ')
