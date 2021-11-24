@@ -51,7 +51,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Builders',
 
             { EBC, 'GreaterThanEconIncomeOverTimeSwarm', { 0, 0 } },
 
-            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.98, 0.50 } }, 
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.95, 0.0 } }, 
 
             { UCBC, 'PoolLessAtLocation', { 'LocationType',  2, categories.MOBILE * categories.ENGINEER * categories.TECH1 } },
 
@@ -88,7 +88,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Builders',
 
             { EBC, 'GreaterThanEconIncomeOverTimeSwarm', { 0, 0 } },
 
-            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.98, 0.50 } }, 
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.95, 0.0 } }, 
 
             { UCBC, 'PoolLessAtLocation', { 'LocationType',  2, categories.MOBILE * categories.ENGINEER * categories.TECH2 } },
 
@@ -123,7 +123,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Builders',
 
             { EBC, 'GreaterThanEconIncomeOverTimeSwarm', { 0, 0 } },
 
-            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.98, 0.50 } }, 
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.95, 0.0 } }, 
 
             { UCBC, 'PoolLessAtLocation', { 'LocationType',  2, categories.MOBILE * categories.ENGINEER * categories.TECH3 } },
 
