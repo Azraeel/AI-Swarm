@@ -30,7 +30,7 @@ local GetAIBrain = moho.unit_methods.GetAIBrain
 
 function CheckCustomPlatoonsSwarm(aiBrain)
     if not aiBrain.StructurePool then
-        --LOG('* AI-RNG: Creating Structure Pool Platoon')
+        --LOG('* AI-Swarm: Creating Structure Pool Platoon')
         local structurepool = aiBrain:MakePlatoon('StructurePool', 'none')
         structurepool:UniquelyNamePlatoon('StructurePool')
         structurepool.BuilderName = 'Structure Pool'
@@ -43,19 +43,19 @@ function StructureUpgradeInitializeSwarm(finishedUnit, aiBrain)
     local StructureUpgradeThreadSwarm = import('/lua/ai/aibehaviors.lua').StructureUpgradeThreadSwarm
     local structurePool = aiBrain.StructurePool
     local AssignUnitsToPlatoon = moho.aibrain_methods.AssignUnitsToPlatoon
-    --LOG('* AI-RNG: Structure Upgrade Initializing')
+    --LOG('* AI-Swarm: Structure Upgrade Initializing')
     if EntityCategoryContains(categories.MASSEXTRACTION, finishedUnit) then
         local extractorPlatoon = aiBrain:MakePlatoon('ExtractorPlatoon'..tostring(finishedUnit.Sync.id), 'none')
         extractorPlatoon.BuilderName = 'ExtractorPlatoon'..tostring(finishedUnit.Sync.id)
         extractorPlatoon.MovementLayer = 'Land'
-        --LOG('* AI-RNG: Assigning Extractor to new platoon')
+        --LOG('* AI-Swarm: Assigning Extractor to new platoon')
         AssignUnitsToPlatoon(aiBrain, extractorPlatoon, {finishedUnit}, 'Support', 'none')
         finishedUnit.PlatoonHandle = extractorPlatoon
 
         if not finishedUnit.UpgradeThread then
-            --LOG('* AI-RNG: Forking Upgrade Thread')
+            --LOG('* AI-Swarm: Forking Upgrade Thread')
             upgradeSpec = aiBrain:GetUpgradeSpec(finishedUnit)
-            --LOG('* AI-RNG: UpgradeSpec'..repr(upgradeSpec))
+            --LOG('* AI-Swarm: UpgradeSpec'..repr(upgradeSpec))
             finishedUnit.UpgradeThread = finishedUnit:ForkThread(StructureUpgradeThreadSwarm, aiBrain, upgradeSpec, false)
         end
     end
@@ -160,12 +160,12 @@ function EngineerTryReclaimCaptureAreaSwarm(aiBrain, eng, pos, pointRadius)
                 continue
             end
             if unit:IsCapturable() and not EntityCategoryContains(categories.TECH1 * (categories.MOBILE + categories.WALL), unit) then 
-                --LOG('* AI-RNG: Unit is capturable and not category t1 mobile'..unitdesc)
+                --LOG('* AI-Swarm: Unit is capturable and not category t1 mobile'..unitdesc)
                 -- if we can capture the unit/building then do so
                 unit.CaptureInProgress = true
                 IssueCapture({eng}, unit)
             else
-                --LOG('* AI-RNG: We are going to reclaim the unit'..unitdesc)
+                --LOG('* AI-Swarm: We are going to reclaim the unit'..unitdesc)
                 -- if we can't capture then reclaim
                 unit.ReclaimInProgress = true
                 IssueReclaim({eng}, unit)
@@ -241,165 +241,236 @@ function AIGetSortedMassLocationsThreatSwarm(aiBrain, minDist, maxDist, tMin, tM
             table.insert(newList, v)
         end
     end
-    --LOG('Return marker list has '..RNGGETN(newList)..' entries')
+    --LOG('Return marker list has '..SWARMGETN(newList)..' entries')
     return newList
 end
 
 local PropBlacklist = {}
-function ReclaimAIThreadSwarm(platoon,self,aiBrain)
-    local scanrange = 25
-    local scanKM = 0
-    local playablearea
-    if  ScenarioInfo.MapData.PlayableRect then
-        playablearea = ScenarioInfo.MapData.PlayableRect
-    else
-        playablearea = {0, 0, ScenarioInfo.size[1], ScenarioInfo.size[2]}
+-- This uses a mix of Uveso's reclaim logic and Relent0r's Logic 
+function ReclaimSwarmAIThread(platoon, self, aiBrain)
+
+    --LOG('* AI-Swarm: Start Reclaim Function')
+    if aiBrain.StartReclaimTakenSwarm then
+        --LOG('StartReclaimTakenSwarm set to true')
+        --LOG('Start Reclaim Table has '..SWARMGETN(aiBrain.StartReclaimTableSwarm)..' items in it')
     end
-    local basePosition = aiBrain.BuilderManagers['MAIN'].Position
-    local MassStorageRatio
-    local EnergyStorageRatio
-    local SelfPos
+    IssueClearCommands({self})
+    local locationType = self.PlatoonData.LocationType
+    local initialRange = 40
+    local createTick = GetGameTick()
+    local reclaimLoop = 0
+    local VDist2 = VDist2
+
+    self.BadReclaimables = self.BadReclaimables or {}
+
     while aiBrain:PlatoonExists(platoon) and self and not self.Dead do
-        SelfPos = self:GetPosition()
-        MassStorageRatio = aiBrain:GetEconomyStoredRatio('MASS')
-        EnergyStorageRatio = aiBrain:GetEconomyStoredRatio('ENERGY')
-        if (MassStorageRatio < 1.00 or EnergyStorageRatio < 1.00) and not aiBrain.HasParagon then
-
-            local x1 = SelfPos[1]-scanrange
-            local y1 = SelfPos[3]-scanrange
-            local x2 = SelfPos[1]+scanrange
-            local y2 = SelfPos[3]+scanrange
-            if x1 < playablearea[1]+6 then x1 = playablearea[1]+6 end
-            if y1 < playablearea[2]+6 then y1 = playablearea[2]+6 end
-            if x2 > playablearea[3]-6 then x2 = playablearea[3]-6 end
-            if y2 > playablearea[4]-6 then y2 = playablearea[4]-6 end
-            local props = GetReclaimablesInRect(Rect(x1, y1, x2, y2))
-            local NearestWreckDist = -1
-            local NearestWreckPos = {}
-            local WreckDist = 0
-            local WrackCount = 0
-
-            if props and SWARMGETN( props ) > 0 then
-                for _, p in props do
-                    local WreckPos = p.CachePosition
-                    -- Start Blacklisted Props
-                    local blacklisted = false
-                    for _, BlackPos in PropBlacklist do
-                        if WreckPos[1] == BlackPos[1] and WreckPos[3] == BlackPos[3] then
-                            blacklisted = true
+        local engPos = self:GetPosition()
+        if not aiBrain.StartReclaimTakenSwarm then
+            --self:SetCustomName('StartReclaim Logic Start')
+            --LOG('Reclaim Function - Starting reclaim is false')
+            local sortedReclaimTable = {}
+            if SWARMGETN(aiBrain.StartReclaimTableSwarm) > 0 then
+                
+                --SWARMWAIT(10)
+                local reclaimCount = 0
+                aiBrain.StartReclaimTakenSwarm = true
+                for k, r in aiBrain.StartReclaimTableSwarm do
+                    if r.Reclaim and not IsDestroyed(r.Reclaim) then
+                        reclaimCount = reclaimCount + 1
+                        --LOG('Reclaim Function - Issuing reclaim')
+                        --LOG('Reclaim distance is '..r.Distance)
+                        IssueReclaim({self}, r.Reclaim)
+                        SWARMWAIT(20)
+                        local reclaimTimeout = 0
+                        while aiBrain:PlatoonExists(platoon) and r.Reclaim and (not IsDestroyed(r.Reclaim)) and (reclaimTimeout < 20) do
+                            reclaimTimeout = reclaimTimeout + 1
+                            --LOG('Waiting for reclaim to no longer exist')
+                            if aiBrain:GetEconomyStoredRatio('MASS') > 0.95 then
+                                self:SetPaused( true )
+                                SWARMWAIT(50)
+                                self:SetPaused( false )
+                            end
+                            SWARMWAIT(20)
+                        end
+                        --LOG('Reclaim Count is '..reclaimCount)
+                        if reclaimCount > 10 then
                             break
                         end
+                    else
+                        --LOG('Reclaim is no longer valid')
                     end
-                    if blacklisted then continue end
-                    -- End Blacklisted Props
-                    local BPID = p.AssociatedBP or "unknown"
-                    if BPID == 'ueb5101' or BPID == 'uab5101' or BPID == 'urb5101' or BPID == 'xsb5101' then 
-                        continue
-                    end
-					
-                    if (MassStorageRatio <= EnergyStorageRatio and p.MaxMassReclaim and p.MaxMassReclaim > 1) or (SWARMTIME() > 240 and MassStorageRatio > EnergyStorageRatio and p.MaxEnergyReclaim and p.MaxEnergyReclaim > 1) then
-                        WreckDist = VDist2(SelfPos[1], SelfPos[3], WreckPos[1], WreckPos[3])
-                        WrackCount = WrackCount + 1
-                        if WreckDist < NearestWreckDist or NearestWreckDist == -1 then
-                            NearestWreckDist = WreckDist
-                            NearestWreckPos = WreckPos
-                           
-                        end
-                        if NearestWreckDist < 20 then
-                          
-                            break
-                        end
-                    end
+                    --LOG('Set key to nil')
+                    aiBrain.StartReclaimTableSwarm[k] = nil
                 end
-            end
-
-            if self.Dead then
-			
-                return
-            end
-
-            if NearestWreckDist == -1 then
-                scanrange = SWARMFLOOR(scanrange + 100)
-                if scanrange > 512 then -- 5 Km
-                    IssueClearCommands({self})
-                    scanrange = 25
-                    local HomeDist = VDist2(SelfPos[1], SelfPos[3], basePosition[1], basePosition[3])
-                    if HomeDist > 50 then
-                        StartMoveDestination(self, {basePosition[1], basePosition[2], basePosition[3]})
-                    end
-                    PropBlacklist = {}
-                end
-         
-            elseif SWARMFLOOR(NearestWreckDist) < scanrange then
-                scanrange = SWARMFLOOR(NearestWreckDist)
-                if scanrange < 25 then
-                    scanrange = 25
-                end
-            end
-
-            scanKM = SWARMFLOOR(10000/512*NearestWreckDist)
-            if NearestWreckDist > 20 and not self.Dead then
-                if NearestWreckPos[1] < playablearea[1]+21 then
-                    NearestWreckPos[1] = playablearea[1]+21
-                end
-                if NearestWreckPos[1] > playablearea[3]-21 then
-                    NearestWreckPos[1] = playablearea[3]-21
-                end
-                if NearestWreckPos[3] < playablearea[2]+21 then
-                    NearestWreckPos[3] = playablearea[2]+21
-                end
-                if NearestWreckPos[3] > playablearea[4]-21 then
-                    NearestWreckPos[3] = playablearea[4]-21
-                end
-
-                if self.lastXtarget == NearestWreckPos[1] and self.lastYtarget == NearestWreckPos[3] then
-                    self.blocked = self.blocked + 1
-                    if self.blocked > 10 then
-                        self.blocked = 0
-                        SWARMINSERT (PropBlacklist, NearestWreckPos)
-                    end
+                --LOG('Pre Rebuild Reclaim table has '..SWARMGETN(aiBrain.StartReclaimTableSwarm)..' reclaim left')
+                aiBrain.StartReclaimTableSwarm = aiBrain:RebuildTable(aiBrain.StartReclaimTableSwarm)
+                --LOG('Reclaim table has '..SWARMGETN(aiBrain.StartReclaimTableSwarm)..' reclaim left')
+                
+                if SWARMGETN(aiBrain.StartReclaimTableSwarm) == 0 then
+                    --LOG('Start Reclaim Taken set to true')
+                    aiBrain.StartReclaimTakenSwarm = true
                 else
-                    self.blocked = 0
-                    self.lastXtarget = NearestWreckPos[1]
-                    self.lastYtarget = NearestWreckPos[3]
-                    StartMoveDestination(self, NearestWreckPos)
+                    --LOG('Start Reclaim table not empty, set StartReclaimTakenSwarm to false')
+                    aiBrain.StartReclaimTakenSwarm = false
                 end
-
-            end 
-            SWARMWAIT(10)
-            if not self.Dead and self:IsUnitState("Moving") then
-             
-                while self and not self.Dead and self:IsUnitState("Moving") do
-                    SWARMWAIT(10)
+                for i=1, 10 do
+                    --LOG('Waiting Ticks '..i)
+                    SWARMWAIT(20)
                 end
-                scanrange = 25
             end
-            IssueClearCommands({self})
-            IssueAggressiveMove({self}, self:GetPosition())
-            IssueAggressiveMove({self}, self:GetPosition())
-        else
-           
-            local HomeDist = VDist2(SelfPos[1], SelfPos[3], basePosition[1], basePosition[3])
-            if HomeDist > 36 then
-               
-                StartMoveDestination(self, {basePosition[1], basePosition[2], basePosition[3]})
-                SWARMWAIT(10)
-                if not self.Dead and self:IsUnitState("Moving") then
-                    while self and not self.Dead and self:IsUnitState("Moving") and (MassStorageRatio == 1 or EnergyStorageRatio == 1) and HomeDist > 30 do
-                        MassStorageRatio = aiBrain:GetEconomyStoredRatio('MASS')
-                        EnergyStorageRatio = aiBrain:GetEconomyStoredRatio('ENERGY')
-                        HomeDist = VDist2(SelfPos[1], SelfPos[3], basePosition[1], basePosition[3])
-                        SWARMWAIT(30)
+            --self:SetCustomName('StartReclaim logic end')
+        end
+        local furtherestReclaim = nil
+        local closestReclaim = nil
+        local closestDistance = 10000
+        local furtherestDistance = 0
+        local minRec = platoon.PlatoonData.MinimumReclaim
+        local x1 = engPos[1] - initialRange
+        local x2 = engPos[1] + initialRange
+        local z1 = engPos[3] - initialRange
+        local z2 = engPos[3] + initialRange
+        local rect = Rect(x1, z1, x2, z2)
+        local reclaimRect = {}
+        reclaimRect = GetReclaimablesInRect(rect)
+        if not engPos then
+            SWARMWAIT(1)
+            return
+        end
+
+        local reclaim = {}
+        local needEnergy = aiBrain:GetEconomyStoredRatio('ENERGY') < 0.5
+        --LOG('* AI-Swarm: Going through reclaim table')
+        --self:SetCustomName('Loop through reclaim table')
+        if reclaimRect and SWARMGETN( reclaimRect ) > 0 then
+            for k,v in reclaimRect do
+                if not IsProp(v) or self.BadReclaimables[v] then continue end
+                local rpos = v:GetCachePosition()
+                -- Start Blacklisted Props
+                local blacklisted = false
+                for _, BlackPos in PropBlacklist do
+                    if rpos[1] == BlackPos[1] and rpos[3] == BlackPos[3] then
+                        blacklisted = true
+                        break
                     end
-                    IssueClearCommands({self})
-                    scanrange = 25
                 end
-            else
-				
+                if blacklisted then continue end
+                -- End Blacklisted Props
+                if not needEnergy or v.MaxEnergyReclaim then
+                    if v.MaxMassReclaim and v.MaxMassReclaim >= minRec then
+                        if not self.BadReclaimables[v] then
+                            local recPos = v:GetCachePosition()
+                            local distance = VDist2(engPos[1], engPos[3], recPos[1], recPos[3])
+                            if distance < closestDistance then
+                                closestReclaim = recPos
+                                closestDistance = distance
+                            end
+                            if distance > furtherestDistance then -- and distance < closestDistance + 20
+                                furtherestReclaim = recPos
+                                furtherestDistance = distance
+                            end
+                            if furtherestDistance - closestDistance > 20 then
+                                break
+                            end
+                        end
+                    end
+                end
+            end
+        else
+            --self:SetCustomName('No reclaim, increase 100 from '..initialRange)
+            initialRange = initialRange + 100
+            --LOG('* AI-Swarm: initialRange is'..initialRange)
+            if initialRange > 300 then
+                --LOG('* AI-Swarm: Reclaim range > 300, Disabling Reclaim.')
+                PropBlacklist = {}
+                aiBrain.ReclaimEnabledSwarm = false
+                aiBrain.ReclaimLastCheckSwarm = SWARMTIME()
                 return
             end
+            SWARMWAIT(2)
+            continue
         end
-        SWARMWAIT(10)
+        if closestDistance == 10000 then
+            --self:SetCustomName('closestDistance return 10000')
+            initialRange = initialRange + 100
+            --LOG('* AI-Swarm: initialRange is'..initialRange)
+            if initialRange > 200 then
+                --LOG('* AI-Swarm: Reclaim range > 200, Disabling Reclaim.')
+                PropBlacklist = {}
+                aiBrain.ReclaimEnabledSwarm = false
+                aiBrain.ReclaimLastCheckSwarm = SWARMTIME()
+                return
+            end
+            SWARMWAIT(2)
+            continue
+        end
+        if self.Dead then 
+            return
+        end
+        --LOG('* AI-Swarm: Closest Distance is : '..closestDistance..'Furtherest Distance is :'..furtherestDistance)
+        -- Clear Commands first
+        IssueClearCommands({self})
+        --LOG('* AI-Swarm: Attempting move to closest reclaim')
+        --LOG('* AI-Swarm: Closest reclaim is '..repr(closestReclaim))
+        if not closestReclaim then
+            --self:SetCustomName('no closestDistance')
+            SWARMWAIT(2)
+            return
+        end
+        if self.lastXtarget == closestReclaim[1] and self.lastYtarget == closestReclaim[3] then
+            --self:SetCustomName('blocked reclaim')
+            self.blocked = self.blocked + 1
+            --LOG('* AI-Swarm: Reclaim Blocked + 1 :'..self.blocked)
+            if self.blocked > 3 then
+                self.blocked = 0
+                SWARMINSERT (PropBlacklist, closestReclaim)
+                --LOG('* AI-Swarm: Reclaim Added to blacklist')
+            end
+        else
+            self.blocked = 0
+            self.lastXtarget = closestReclaim[1]
+            self.lastYtarget = closestReclaim[3]
+            StartMoveDestination(self, closestReclaim)
+        end
+
+        --LOG('* AI-Swarm: Attempting agressive move to furtherest reclaim')
+        -- Clear Commands first
+        --self:SetCustomName('Aggressive move to reclaim')
+        IssueClearCommands({self})
+        IssueAggressiveMove({self}, furtherestReclaim)
+        local reclaiming = not self:IsIdleState()
+        local max_time = platoon.PlatoonData.ReclaimTime
+        local currentTime = 0
+        local idleCount = 0
+        while reclaiming do
+            --LOG('* AI-Swarm: Engineer is reclaiming')
+            --self:SetCustomName('reclaim loop start')
+            SWARMWAIT(200)
+            currentTime = currentTime + 20
+            if currentTime > max_time then
+                reclaiming = false
+            end
+            if self:IsIdleState() then
+                idleCount = idleCount + 1
+                if idleCount > 5 then
+                    reclaiming = false
+                end
+            end
+            --self:SetCustomName('reclaim loop end')
+        end
+        local basePosition = aiBrain.BuilderManagers['MAIN'].Position
+        local location = AIUtils.RandomLocation(basePosition[1],basePosition[3])
+        --LOG('* AI-Swarm: basePosition random location :'..repr(location))
+        IssueClearCommands({self})
+        StartMoveDestination(self, location)
+        SWARMWAIT(30)
+        --self:SetCustomName('moving back to base')
+        reclaimLoop = reclaimLoop + 1
+        if reclaimLoop == 5 then
+            --LOG('* AI-Swarm: reclaimLopp = 5 returning')
+            return
+        end
+        --self:SetCustomName('end of reclaim function')
+        SWARMWAIT(5)
     end
 end
 
@@ -617,7 +688,7 @@ CountSoonMassSpotsSwarm = function(aiBrain)
     end
     local startX, startZ = aiBrain:GetArmyStartPos()
     table.sort(enemies,function(a,b) return VDist2Sq(a.Position[1],a.Position[3],startX,startZ)<VDist2Sq(b.Position[1],b.Position[3],startX,startZ) end)
-    while not aiBrain.cmanager do WaitTicks(20) end
+    while not aiBrain.cmanager do SWARMWAIT(20) end
     if not aiBrain.expansionMex or not aiBrain.expansionMex[1].priority then
         --initialize expansion priority
         local starts = AIUtils.AIGetMarkerLocations(aiBrain, 'Start Location')
@@ -707,7 +778,7 @@ CountSoonMassSpotsSwarm = function(aiBrain)
             aiBrain.cmanager.unclaimedmexcount=(aiBrain.cmanager.unclaimedmexcount+unclaimedmexcount)/2
             aiBrain.emanager.soonmexes=soonmexes
             --LOG(repr(aiBrain.Nickname)..' unclaimedmex='..repr(aiBrain.cmanager.unclaimedmexcount))
-            WaitTicks(20)
+            SWARMWAIT(20)
         end
     end
 end

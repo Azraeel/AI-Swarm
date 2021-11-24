@@ -68,6 +68,21 @@ function CanPathToCurrentEnemySwarm(aiBrain, bool, LocationType)
     return false
 end
 
+function CheckIfReclaimEnabledSwarm(aiBrain)
+    if aiBrain.ReclaimEnabledSwarm == false then
+        --LOG('Reclaim Currently Disabled..validate last check time.')
+        if (GetGameTimeSeconds() - aiBrain.ReclaimLastCheckSwarm) > 300 then
+            --LOG('Last check time older than 5 minutes, re-enabling')
+            aiBrain.ReclaimEnabledSwarm = true
+            return true
+        else
+            return false
+        end
+    else
+        return true
+    end
+end
+
 function MapGreaterThanSwarm(aiBrain, sizeX, sizeZ)
     local mapSizeX, mapSizeZ = GetMapSize()
     if mapSizeX > sizeX or mapSizeZ > sizeZ then

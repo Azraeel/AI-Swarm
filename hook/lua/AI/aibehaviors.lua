@@ -13,12 +13,18 @@ local GetListOfUnits = moho.aibrain_methods.GetListOfUnits
 local GetPlatoonPosition = moho.platoon_methods.GetPlatoonPosition
 local PlatoonExists = moho.aibrain_methods.PlatoonExists
 
+local SWARMGETN = table.getn
+local SWARMSORT = table.sort
+local SWARMINSERT = table.insert
 local SWARMMIN = math.min
+local SWARMMAX = math.max
 local SWARMWAIT = coroutine.yield
 
 -- 80% of the below was Sprouto's work
 function StructureUpgradeThreadSwarm(unit, aiBrain, upgradeSpec, bypasseco) 
     --LOG('* AI-Swarm: Starting structure thread upgrade for'..aiBrain.Nickname)
+
+    GetStartingReclaimSwarm(aiBrain)
 
     local unitBp = unit:GetBlueprint()
     local upgradeID = unitBp.General.UpgradesTo or false
@@ -439,4 +445,43 @@ function ExtractorClosest(aiBrain, unit, unitBp)
         --LOG('Extractor is not closest to base')
         return false
     end
+end
+
+GetStartingReclaimSwarm = function(aiBrain)
+    --LOG('Reclaim Start Check')
+    local startReclaim
+    local posX, posZ = aiBrain:GetArmyStartPos()
+    --LOG('Start Positions X'..posX..' Z '..posZ)
+    local minRec = 10
+    local reclaimTable = {}
+    local reclaimScanArea = SWARMMAX(ScenarioInfo.size[1]-40, ScenarioInfo.size[2]-40) / 4
+    local reclaimTotal = 0
+    --LOG('Reclaim Scan Area is '..reclaimScanArea)
+    reclaimScanArea = SWARMMAX(50, reclaimScanArea)
+    reclaimScanArea = SWARMMIN(120, reclaimScanArea)
+    --Wait 10 seconds for the wrecks to become reclaim
+    --SWARMWAIT(100)
+    
+    startReclaim = GetReclaimablesInRect(posX - reclaimScanArea, posZ - reclaimScanArea, posX + reclaimScanArea, posZ + reclaimScanArea)
+    --LOG('Initial Reclaim Table size is '..SWARMGETN(startReclaim))
+    if startReclaim and SWARMGETN(startReclaim) > 0 then
+        for k,v in startReclaim do
+            if not IsProp(v) then continue end
+            if v.MaxMassReclaim and v.MaxMassReclaim >= minRec then
+                --LOG('High Value Reclaim is worth '..v.MaxMassReclaim)
+                local rpos = v:GetCachePosition()
+                SWARMINSERT(reclaimTable, { Reclaim = v, Distance = VDist2( rpos[1], rpos[3], posX, posZ ) })
+                --LOG('Distance to reclaim from main pos is '..VDist2( rpos[1], rpos[3], posX, posZ ))
+                reclaimTotal = reclaimTotal + v.MaxMassReclaim
+            end
+        end
+        --LOG('Sorting Reclaim table by distance ')
+        SWARMSORT(reclaimTable, function(a,b) return a.Distance < b.Distance end)
+        --LOG('Final Reclaim Table size is '..SWARMGETN(reclaimTable))
+        aiBrain.StartReclaimTableSwarm = reclaimTable
+        for k, v in aiBrain.StartReclaimTableSwarm do
+            --LOG('Table entry distance is '..v.Distance)
+        end
+    end
+    --LOG('Complete Get Starting Reclaim')
 end

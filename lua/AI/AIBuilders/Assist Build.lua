@@ -1,5 +1,6 @@
 local EBC = '/lua/editor/EconomyBuildConditions.lua'
 local UCBC = '/lua/editor/UnitCountBuildConditions.lua'
+local MIBC = '/lua/editor/MiscBuildConditions.lua'
 
 -- ===================================================-======================================================== --
 -- ==                                             Assistees                                                  == --
@@ -137,7 +138,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
         BuilderConditions = {
             { EBC, 'LessThanEnergyTrendSwarm', { 0.0 } },     
 
-            { EBC, 'GreaterThanEconStorageCurrentSwarm', { 200, 0}},
+            { EBC, 'GreaterThanMassStorageCurrentSwarm', { 200 }},
 
             { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 0.95, 0.0 }},
         },
@@ -162,7 +163,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
         BuilderConditions = {
             { EBC, 'LessThanEnergyTrendSwarm', { 0.0 } },     
 
-            { EBC, 'GreaterThanEconStorageCurrentSwarm', { 200, 0}},
+            { EBC, 'GreaterThanMassStorageCurrentSwarm', { 200 }},
 
             { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 0.95, 0.0 }},
         },
@@ -187,7 +188,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
         BuilderConditions = {
             { EBC, 'LessThanEnergyTrendSwarm', { 0.0 } },     
 
-            { EBC, 'GreaterThanEconStorageCurrentSwarm', { 200, 0}},
+            { EBC, 'GreaterThanMassStorageCurrentSwarm', { 200 }},
 
             { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 0.95, 0.0 }},
         },
@@ -212,7 +213,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
         BuilderConditions = {
             { EBC, 'LessThanEnergyTrendSwarm', { 0.0 } },     
 
-            { EBC, 'GreaterThanEconStorageCurrentSwarm', { 200, 0}},
+            { EBC, 'GreaterThanMassStorageCurrentSwarm', { 200 }},
 
             { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 0.95, 0.0 }},
         },
@@ -237,7 +238,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
         BuilderConditions = {
             { EBC, 'LessThanEnergyTrendSwarm', { 0.0 } },  
 
-            { EBC, 'GreaterThanEconStorageCurrentSwarm', { 200, 0}},
+            { EBC, 'GreaterThanMassStorageCurrentSwarm', { 200 }},
 
             { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 0.95, 0.0 }},
         },
@@ -620,70 +621,80 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
 BuilderGroup { BuilderGroupName = 'Swarm Engineer Reclaim',                                -- BuilderGroupName, initalized from AIBaseTemplates in "\lua\AI\AIBaseTemplates\"
     BuildersType = 'PlatoonFormBuilder',
 
-    Builder { BuilderName = 'Swarm Reclaim Mass - Opener',
+    Builder { BuilderName = 'Swarm Reclaim Mass - Small Mass',
+        PlatoonTemplate = 'S1Reclaim',
+        Priority = 600,
+        InstanceCount = 2,
+        BuilderConditions = {
+            { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 0, categories.ENGINEER * categories.TECH1 }},
+
+            { MIBC, 'CheckIfReclaimEnabledSwarm', {}},
+
+            { EBC, 'LessThanEconStorageRatioSwarm', { 0.9, 1.0}}, 
+        },
+        BuilderData = {
+            LocationType = 'LocationType',
+            ReclaimTime = 80,
+            MinimumReclaim = 10
+        },
+        BuilderType = 'Any',
+    },
+
+    Builder { BuilderName = 'Swarm Reclaim Resource - Medium Mass',
         PlatoonTemplate = 'S1Reclaim',
         Priority = 595,
         InstanceCount = 2,
         BuilderConditions = {
             { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 0, categories.ENGINEER * categories.TECH1 }},
 
-            { EBC, 'LessThanEconStorageRatioSwarm', { 0.8, 2.0}},
+            { MIBC, 'CheckIfReclaimEnabledSwarm', {}},
 
-            { UCBC, 'BuildOnlyOnLocationSwarm', { 'LocationType', 'MAIN' } },
+            { EBC, 'LessThanEconStorageRatioSwarm', { 0.8, 1.0}}, 
         },
         BuilderData = {
             LocationType = 'LocationType',
+            ReclaimTime = 80,
+            MinimumReclaim = 20
         },
         BuilderType = 'Any',
     },
 
-    Builder { BuilderName = 'Swarm Reclaim Resource - Additional',
-        PlatoonTemplate = 'S1Reclaim',
-        Priority = 595,
-        InstanceCount = 2,
-        BuilderConditions = {
-            { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 0, categories.ENGINEER * categories.TECH1 }},
-
-            { EBC, 'LessThanEconStorageRatioSwarm', { 0.6, 1}}, 
-        },
-        BuilderData = {
-            LocationType = 'LocationType',
-        },
-        BuilderType = 'Any',
-    },
-
-    --[[ Builder { BuilderName = 'S1 Reclaim Resource 3',
+    Builder { BuilderName = 'Swarm Reclaim Resource - Big Mass',
         PlatoonTemplate = 'S1Reclaim',
         Priority = 350,
         InstanceCount = 4,
         BuilderConditions = {
-            { UCBC, 'HaveGreaterThanUnitsWithCategory', { 0, categories.MOBILE * categories.ENGINEER * categories.TECH2}},
+            { UCBC, 'PoolGreaterAtLocation', { 'LocationType',  0, categories.ENGINEER * categories.TECH1 } },
 
-            { EBC, 'LessThanEconStorageRatioSwarm', { 0.9, 2}}, 
+            { MIBC, 'CheckIfReclaimEnabledSwarm', {}},
 
-            { UCBC, 'PoolGreaterAtLocation', { 'LocationType',  1, categories.MOBILE * categories.ENGINEER * categories.TECH1 } },
+            { EBC, 'LessThanEconStorageRatioSwarm', { 0.7, 1.0}}, 
         },
         BuilderData = {
             LocationType = 'LocationType',
+            ReclaimTime = 80,
+            MinimumReclaim = 40
         },
         BuilderType = 'Any',
     },
 
-    Builder { BuilderName = 'S1 Reclaim Resource 4',
+    Builder { BuilderName = 'Swarm Reclaim Resource - Huge Mass',
         PlatoonTemplate = 'S1Reclaim',
         Priority = 350,
         InstanceCount = 4,
         BuilderConditions = {
-            { UCBC, 'HaveGreaterThanUnitsWithCategory', { 0, categories.MOBILE * categories.ENGINEER * categories.TECH3}},
+            { UCBC, 'PoolGreaterAtLocation', { 'LocationType',  0, categories.ENGINEER * categories.TECH1 } },
 
-            { EBC, 'LessThanEconStorageRatioSwarm', { 0.9, 2}},
+            { MIBC, 'CheckIfReclaimEnabledSwarm', {}},
 
-            { UCBC, 'PoolGreaterAtLocation', { 'LocationType',  1, categories.MOBILE * categories.ENGINEER * categories.TECH1 } },
+            { EBC, 'LessThanEconStorageRatioSwarm', { 0.6, 1.0}},
         },
         BuilderData = {
             LocationType = 'LocationType',
+            ReclaimTime = 80,
+            MinimumReclaim = 80
         },
         BuilderType = 'Any', 
-    }, ]]--
+    }, 
 }
 
