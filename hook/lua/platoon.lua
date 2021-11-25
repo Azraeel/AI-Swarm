@@ -65,7 +65,7 @@ Platoon = Class(SwarmPlatoonClass) {
     -- local maxRadius = SWARMMAX(maxRadius, (maxRadius * aiBrain.MyAirRatio) ) 
     -- This adjust the maxRadius Air Platoons are willing to go out onto depending on the LandRatio
     -- This eliminates a lot of threat data assessment by just having them see if we are losing or winning
-    -- Looking to reenable for V265 of Swarm, requires LOTS of testing and logging
+    -- Looking to reenable for V266 of Swarm, requires LOTS of testing and logging
     AirAISwarm = function(self)
         AIAttackUtils.GetMostRestrictiveLayer(self) 
 
