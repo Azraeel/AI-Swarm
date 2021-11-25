@@ -291,7 +291,7 @@ BuilderGroup {
         PlatoonTemplate = 'CommanderAssist',
         Priority = 550,
         BuilderConditions = {
-            { EBC, 'GreaterThanEconStorageCurrentSwarm', { 200, 2000}},
+            { EBC, 'GreaterThanMassStorageCurrentSwarm', { 200 }},
 
             { UCBC, 'HaveGreaterThanUnitsInCategoryBeingBuiltAtLocationSwarm', { 'LocationType', 0, categories.STRUCTURE * categories.HYDROCARBON }},
         },
@@ -299,10 +299,12 @@ BuilderGroup {
         BuilderData = {
             Assist = {
                 AssistLocation = 'LocationType',
-                AssisteeType = 'Structure',
-                AssistRange = 25,
-                BeingBuiltCategories = {'STRUCTURE HYDROCARBON'},
+                AssisteeType = categories.STRUCTURE,
+                AssistClosestUnit = true,   
                 AssistUntilFinished = true,
+                AssistRange = 25,
+                BeingBuiltCategories = {categories.STRUCTURE * categories.HYDROCARBON},
+                Time = 75,
             },
         }
     }, 
@@ -322,9 +324,11 @@ BuilderGroup {
         BuilderData = {
             Assist = {
                 AssistLocation = 'LocationType',
-                BeingBuiltCategories = {'TECH1', 'TECH2', 'TECH3', 'EXPERIMENTAL'},               -- Unitcategories must be type string
-                AssisteeType = 'Engineer',
+                AssisteeType = categories.STRUCTURE,
                 AssistClosestUnit = true,                                       -- Assist the closest unit instead unit with the least number of assisters
+                AssistUntilFinished = true,
+                AssistRange = 100,
+                BeingBuiltCategories = {categories.TECH1 + categories.TECH2 + categories.TECH3 + categories.EXPERIMENTAL},               -- Unitcategories must be type string
                 Time = 75,
             },
         }
@@ -346,10 +350,12 @@ BuilderGroup {
         BuilderData = {
             Assist = {
                 AssistLocation = 'LocationType',
-                AssisteeType = 'Structure',
-                AssistRange = 200,
-                BeingBuiltCategories = {'STRUCTURE ENERGYPRODUCTION TECH1', 'STRUCTURE ENERGYPRODUCTION TECH2', 'STRUCTURE ENERGYPRODUCTION TECH3'},-- Unitcategories must be type string
+                AssisteeType = categories.STRUCTURE,
+                AssistClosestUnit = true,   
                 AssistUntilFinished = true,
+                AssistRange = 100,
+                BeingBuiltCategories = {categories.STRUCTURE * categories.ENERGYPRODUCTION * (categories.TECH1 + categories.TECH2 + categories.TECH3)},-- Unitcategories must be type string
+                Time = 75,
             },
         }
     },
