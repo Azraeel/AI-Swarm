@@ -535,7 +535,7 @@ BuilderGroup {
         BuilderConditions = {
             { UCBC, 'ScalePlatoonSizeSwarm', { 'LocationType', 'LAND', categories.MOBILE * categories.LAND * categories.MOBILE * categories.TECH1 - categories.ANTIAIR - categories.ENGINEER - categories.SCOUT } },
 
-            { UCBC, 'LandStrengthRatioGreaterThan', { 1.5 } },
+            { UCBC, 'LandStrengthRatioGreaterThan', { 2 } },
 
             { MIBC, 'CanPathToCurrentEnemySwarm', { true, 'LocationType' } },
         },
