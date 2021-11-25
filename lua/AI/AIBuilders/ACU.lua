@@ -288,7 +288,7 @@ BuilderGroup {
 
     Builder {
         BuilderName = 'SC Assist Hydro',
-        PlatoonTemplate = 'CommanderAssist',
+        PlatoonTemplate = 'CommanderAssistSwarm',
         Priority = 550,
         BuilderConditions = {
             { EBC, 'GreaterThanMassStorageCurrentSwarm', { 200 }},
@@ -311,7 +311,7 @@ BuilderGroup {
 
     Builder {
         BuilderName = 'SC Assist Standard',
-        PlatoonTemplate = 'CommanderAssist',
+        PlatoonTemplate = 'CommanderAssistSwarm',
         Priority = 550,
         BuilderConditions = {
             { EBC, 'GreaterThanMassTrendOverTimeSwarm', { 0.0 } },
@@ -335,7 +335,7 @@ BuilderGroup {
     },
 
     Builder { BuilderName = 'SC Assist Energy',
-        PlatoonTemplate = 'CommanderAssist',
+        PlatoonTemplate = 'CommanderAssistSwarm',
         Priority = 650,
         BuilderConditions = {
             { EBC, 'LessThanEnergyTrendSwarm', { 0.0 } }, 

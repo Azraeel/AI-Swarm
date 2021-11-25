@@ -174,6 +174,14 @@ PlatoonTemplate {
 }
 
 PlatoonTemplate {
+    Name = 'CommanderAssistSwarm',
+    Plan = 'ManagerEngineerAssistAISwarm',
+    GlobalSquads = {
+        { categories.COMMAND, 1, 1, 'support', 'None' },
+    },
+}
+
+PlatoonTemplate {
     Name = 'T1EngineerAssistSwarm',
     Plan = 'ManagerEngineerAssistAISwarm',
     GlobalSquads = {
