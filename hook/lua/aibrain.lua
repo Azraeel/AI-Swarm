@@ -901,7 +901,7 @@ AIBrain = Class(SwarmAIBrainClass) {
     -- Extremely Accurate
     ParseIntelThreadSwarm = function(self)
 
-        LOG("*AI DEBUG "..self.Nickname.." ParseIntelThreadSwarm begins")
+        --LOG("*AI DEBUG "..self.Nickname.." ParseIntelThreadSwarm begins")
 
         while self.Swarm do
 
@@ -934,7 +934,7 @@ AIBrain = Class(SwarmAIBrainClass) {
                 self.MyNavalRatio = 1
             end
 
-            LOG("*AI DEBUG "..self.Nickname.." Air Ratio is "..repr(self.MyAirRatio).." Land Ratio is "..repr(self.MyLandRatio).." Naval Ratio is "..repr(self.MyNavalRatio))
+            --LOG("*AI DEBUG "..self.Nickname.." Air Ratio is "..repr(self.MyAirRatio).." Land Ratio is "..repr(self.MyLandRatio).." Naval Ratio is "..repr(self.MyNavalRatio))
         end
     end,
 }
