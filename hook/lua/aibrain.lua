@@ -71,12 +71,20 @@ AIBrain = Class(SwarmAIBrainClass) {
         local mapSizeX, mapSizeZ = GetMapSize()
         -- Stores handles to all builders for quick iteration and updates to all
         self.BuilderHandles = {}
+        self.IMAPConfigSwarm = {
+            OgridRadius = 0,
+            IMAPSize = 0,
+            Rings = 0,
+        }
 
         -- Condition monitor for the whole brain
         self.ConditionsMonitor = BrainConditionsMonitor.CreateConditionsMonitor(self)
 
         -- Add default main location and setup the builder managers
         self.NumBases = 0 -- AddBuilderManagers will increase the number
+
+        self:IMAPConfigurationSwarm()
+        -- Begin the base monitor process
 
         self.BuilderManagers = {}
         SUtils.AddCustomUnitSupport(self)
@@ -651,6 +659,33 @@ AIBrain = Class(SwarmAIBrainClass) {
                 end
             end
             aiBrain:ForkThread(self.ParseIntelThread)
+        end
+    end,
+
+    IMAPConfigurationSwarm = function(self, ALLBPS)
+        -- Used to configure imap values, used for setting threat ring sizes depending on map size to try and get a somewhat decent radius
+        local maxmapdimension = math.max(ScenarioInfo.size[1],ScenarioInfo.size[2])
+
+        if maxmapdimension == 256 then
+            self.IMAPConfigSwarm.OgridRadius = 11.5
+            self.IMAPConfigSwarm.IMAPSize = 16
+            self.IMAPConfigSwarm.Rings = 3
+        elseif maxmapdimension == 512 then
+            self.IMAPConfigSwarm.OgridRadius = 22.5
+            self.IMAPConfigSwarm.IMAPSize = 32
+            self.IMAPConfigSwarm.Rings = 2
+        elseif maxmapdimension == 1024 then
+            self.IMAPConfigSwarm.OgridRadius = 45.0
+            self.IMAPConfigSwarm.IMAPSize = 64
+            self.IMAPConfigSwarm.Rings = 1
+        elseif maxmapdimension == 2048 then
+            self.IMAPConfigSwarm.OgridRadius = 89.5
+            self.IMAPConfigSwarm.IMAPSize = 128
+            self.IMAPConfigSwarm.Rings = 0
+        else
+            self.IMAPConfigSwarm.OgridRadius = 180.0
+            self.IMAPConfigSwarm.IMAPSize = 256
+            self.IMAPConfigSwarm.Rings = 0
         end
     end,
 

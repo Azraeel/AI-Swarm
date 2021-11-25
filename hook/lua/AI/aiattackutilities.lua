@@ -226,6 +226,8 @@ function EngineerGeneratePathSwarm(aiBrain, startNode, endNode, threatType, thre
     return false
 end
 
+
+--PlatoonGenerateSafePathToSwarm(aiBrain, self.MovementLayer or 'Land' , PlatoonPosition, TargetPosition, 1000, 512)
 function PlatoonGenerateSafePathToSwarm(aiBrain, platoonLayer, start, destination, optThreatWeight, optMaxMarkerDist, testPathDist)
     -- if we don't have markers for the platoonLayer, then we can't build a path.
     if not GetPathGraphs()[platoonLayer] then
@@ -375,7 +377,7 @@ function GeneratePathSwarm(aiBrain, startNode, endNode, threatType, threatWeight
                     dist = 100 * dist / ( mapSizeX + mapSizeZ )
                     -- get threat from current node to adjacent node
                     if platoonLayer == 'Air' and ScenarioInfo.Options.AIMapMarker == 'all' then
-                        threat = GetThreatAtPosition(aiBrain, newNode.position, aiBrain.BrainIntel.IMAPConfig.Rings, true, threatType)
+                        threat = GetThreatAtPosition(aiBrain, newNode.position, aiBrain.IMAPConfigSwarm.Rings, true, threatType)
                     else
                         threat = GetThreatBetweenPositions(aiBrain, newNode.position, lastNode.position, nil, threatType)
                     end

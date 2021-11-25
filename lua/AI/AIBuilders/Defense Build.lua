@@ -759,7 +759,10 @@ BuilderGroup { BuilderGroupName = 'Swarm Defense Anti Ground Builders',
         BuilderName = 'UA2 Perimeter Defense',
         PlatoonTemplate = 'T2EngineerBuilderSwarm',
         Priority = 950,
+        InstanceCount = 1,
         BuilderConditions = {
+            { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 1, categories.ENGINEER * categories.TECH2}},
+
             { EBC, 'GreaterThanMassTrendOverTimeSwarm', { 0.0 } },
 
             { EBC, 'GreaterThanEnergyIncomeOverTimeSwarm', { 150 }},
@@ -795,9 +798,12 @@ BuilderGroup { BuilderGroupName = 'Swarm Defense Anti Ground Builders',
 
     Builder {
         BuilderName = 'UA3 Perimeter Defense',
-        PlatoonTemplate = 'T3EngineerBuildernoSUBSwarm',
+        PlatoonTemplate = 'EngineerBuilderT3&SUBSwarm',
         Priority = 1000,
+        InstanceCount = 1,
         BuilderConditions = {
+            { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 1, categories.ENGINEER * (categories.TECH3 * categories.SUBCOMMANDER}},
+
             { EBC, 'GreaterThanMassTrendOverTimeSwarm', { 0.0 } },
 
             { EBC, 'GreaterThanEnergyIncomeOverTimeSwarm', { 150 }},
