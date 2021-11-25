@@ -130,8 +130,35 @@ AIBrain = Class(SwarmAIBrainClass) {
             self.EcoManager.ExtractorUpgradeLimit.TECH1 = 2
         end
 
-
         self.cmanager = {}
+        self.EnemyThreatCurrentSwarm = {
+            EnemyAir = 0,
+            EnemyAntiAir = 0,
+            EnemyLand = 0,
+            EnemyExperimental = 0,
+            EnemyExtractor = 0,
+            EnemyExtractorCount = 0,
+            EnemyNaval = 0,
+            EnemyNavalSub = 0,
+            EnemyDefenseAir = 0,
+            EnemyDefenseSurface = 0,
+            EnemyDefenseSub = 0,
+            EnemyACUGunUpgrades = 0,
+        }
+        self.SelfThreatSwarm = {
+            SelfExtractor = 0,
+            SelfExtractorCount = 0,
+            SelfMassMarker = 0,
+            SelfMassMarkerBuildable = 0,
+            SelfAllyExtractorCount = 0,
+            SelfAllyExtractor = 0,
+            SelfAllyLandThreat = 0,
+            SelfAntiAirNow = 0,
+            SelfAirNow = 0,
+            SelfLandNow = 0,
+            SelfNavalNow = 0,
+            SelfNavalSubNow = 0,
+        }
         self.EnemyACU = {}
         for _, v in ArmyBrains do
             self.EnemyACU[v:GetArmyIndex()] = {
@@ -658,7 +685,7 @@ AIBrain = Class(SwarmAIBrainClass) {
                 local lastSpotted = 0
                 local enemyIndex = enemy:GetArmyIndex()
                 if not ArmyIsCivilian(enemyIndex) then
-                    local enemyAir = GetListOfUnits( enemy, categories.MOBILE * categories.AIR - categories.TRANSPORTFOCUS - categories.SATELLITE, false, false)
+                    local enemyAir = GetListOfUnits( enemy, categories.MOBILE * categories.AIR - categories.TRANSPORTFOCUS - categories.SATELLITE - categories.SCOUT, false, false)
                     for _,v in enemyAir do
                         -- previous method of getting unit ID before the property was added.
                         --local unitbpId = v:GetUnitId()
@@ -668,6 +695,7 @@ AIBrain = Class(SwarmAIBrainClass) {
                         enemyAirThreat = enemyAirThreat + bp.AirThreatLevel + bp.SubThreatLevel + bp.SurfaceThreatLevel
                         enemyAntiAirThreat = enemyAntiAirThreat + bp.AirThreatLevel
                     end
+                    --LOG('Enemy Air Threat is'..enemyAirThreat)
                     SWARMWAIT(1)
                     local enemyExtractors = GetListOfUnits( enemy, categories.STRUCTURE * categories.MASSEXTRACTION, false, false)
                     for _,v in enemyExtractors do
@@ -745,17 +773,17 @@ AIBrain = Class(SwarmAIBrainClass) {
                 end
             end
         end
-        self.EnemyACUGunUpgrades = enemyACUGun
-        self.EnemyAir = enemyAirThreat
-        self.EnemyAntiAir = enemyAntiAirThreat
-        self.EnemyExtractor = enemyExtractorthreat
-        self.EnemyExtractorCount = enemyExtractorCount
-        self.EnemyNaval = enemyNavalThreat
-        self.EnemyNavalSub = enemyNavalSubThreat
-        self.EnemyLand = enemyLandThreat
-        self.EnemyDefenseAir = enemyDefenseAir
-        self.EnemyDefenseSurface = enemyDefenseSurface
-        self.EnemyDefenseSub = enemyDefenseSub
+        self.EnemyThreatCurrentSwarm.EnemyACUGunUpgrades = enemyACUGun
+        self.EnemyThreatCurrentSwarm.EnemyAir = enemyAirThreat
+        self.EnemyThreatCurrentSwarm.EnemyAntiAir = enemyAntiAirThreat
+        self.EnemyThreatCurrentSwarm.EnemyExtractor = enemyExtractorthreat
+        self.EnemyThreatCurrentSwarm.EnemyExtractorCount = enemyExtractorCount
+        self.EnemyThreatCurrentSwarm.EnemyNaval = enemyNavalThreat
+        self.EnemyThreatCurrentSwarm.EnemyNavalSub = enemyNavalSubThreat
+        self.EnemyThreatCurrentSwarm.EnemyLand = enemyLandThreat
+        self.EnemyThreatCurrentSwarm.EnemyDefenseAir = enemyDefenseAir
+        self.EnemyThreatCurrentSwarm.EnemyDefenseSurface = enemyDefenseSurface
+        self.EnemyThreatCurrentSwarm.EnemyDefenseSub = enemyDefenseSub
         --LOG('Completing Threat Check'..GetGameTick())
     end,
 
@@ -765,7 +793,7 @@ AIBrain = Class(SwarmAIBrainClass) {
         -- Get AI strength
         local selfIndex = self:GetArmyIndex()
 
-        local brainAirUnits = GetListOfUnits( self, categories.AIR * categories.MOBILE - categories.TRANSPORTFOCUS - categories.SATELLITE, false, false)
+        local brainAirUnits = GetListOfUnits( self, categories.AIR * categories.MOBILE - categories.TRANSPORTFOCUS - categories.SATELLITE - categories.SCOUT, false, false)
         local airthreat = 0
         local antiAirThreat = 0
         local bp
@@ -778,8 +806,8 @@ AIBrain = Class(SwarmAIBrainClass) {
             antiAirThreat = antiAirThreat + bp.AirThreatLevel
         end
         --LOG('My Air Threat is'..airthreat)
-        self.SelfAirNow = airthreat
-        self.SelfAntiAirNow = antiAirThreat
+        self.SelfThreatSwarm.SelfAirNow = airthreat
+        self.SelfThreatSwarm.SelfAntiAirNow = antiAirThreat
         
         SWARMWAIT(1)
         local brainExtractors = GetListOfUnits( self, categories.STRUCTURE * categories.MASSEXTRACTION, false, false)
@@ -808,8 +836,8 @@ AIBrain = Class(SwarmAIBrainClass) {
                 end
             end
         end
-        self.SelfExtractor = selfExtractorThreat
-        self.SelfExtractorCount = selfExtractorCount
+        self.SelfThreatSwarm.SelfExtractor = selfExtractorThreat
+        self.SelfThreatSwarm.SelfExtractorCount = selfExtractorCount
         local allyBrains = {}
         for index, brain in ArmyBrains do
             if index ~= self:GetArmyIndex() then
@@ -839,9 +867,9 @@ AIBrain = Class(SwarmAIBrainClass) {
                 end
             end
         end
-        self.SelfAllyExtractorCount = allyExtractorCount + selfExtractorCount
-        self.SelfAllyExtractor = allyExtractorthreat + selfExtractorThreat
-        self.SelfAllyLandThreat = allyLandThreat
+        self.SelfThreatSwarm.SelfAllyExtractorCount = allyExtractorCount + selfExtractorCount
+        self.SelfThreatSwarm.SelfAllyExtractor = allyExtractorthreat + selfExtractorThreat
+        self.SelfThreatSwarm.SelfAllyLandThreat = allyLandThreat
         SWARMWAIT(1)
         local brainNavalUnits = GetListOfUnits( self, (categories.MOBILE * categories.NAVAL) + (categories.NAVAL * categories.FACTORY) + (categories.NAVAL * categories.DEFENSE), false, false)
         local navalThreat = 0
@@ -851,8 +879,8 @@ AIBrain = Class(SwarmAIBrainClass) {
             navalThreat = navalThreat + bp.AirThreatLevel + bp.SubThreatLevel + bp.SurfaceThreatLevel
             navalSubThreat = navalSubThreat + bp.SubThreatLevel
         end
-        self.SelfNavalNow = navalThreat
-        self.SelfNavalSubNow = navalSubThreat
+        self.SelfThreatSwarm.SelfNavalNow = navalThreat
+        self.SelfThreatSwarm.SelfNavalSubNow = navalSubThreat
 
         SWARMWAIT(1)
         local brainLandUnits = GetListOfUnits( self, categories.MOBILE * categories.LAND * (categories.DIRECTFIRE + categories.INDIRECTFIRE) - categories.COMMAND , false, false)
@@ -861,7 +889,7 @@ AIBrain = Class(SwarmAIBrainClass) {
             bp = ALLBPS[v.UnitId].Defense
             landThreat = landThreat + bp.SurfaceThreatLevel
         end
-        self.SelfLandNow = landThreat
+        self.SelfThreatSwarm.SelfLandNow = landThreat
         --LOG('Self LandThreat is '..self.BrainArmy.SelfThreat.LandNow)
     end,
 
@@ -873,14 +901,14 @@ AIBrain = Class(SwarmAIBrainClass) {
     -- Extremely Accurate
     ParseIntelThreadSwarm = function(self)
 
-        --LOG("*AI DEBUG "..self.Nickname.." ParseIntelThreadSwarm begins")
+        LOG("*AI DEBUG "..self.Nickname.." ParseIntelThreadSwarm begins")
 
         while self.Swarm do
 
             SWARMWAIT(30)  
 
-            local enemyLandThreat = self.EnemyLand
-            local landThreat = self.SelfLandNow
+            local enemyLandThreat = self.EnemyThreatCurrentSwarm.EnemyLand
+            local landThreat = self.SelfThreatSwarm.SelfLandNow
 
             if enemyLandThreat ~= 0 then
                 self.MyLandRatio = landThreat/enemyLandThreat
@@ -888,8 +916,8 @@ AIBrain = Class(SwarmAIBrainClass) {
                 self.MyLandRatio = 1
             end
 
-            local enemyAirThreat = self.EnemyAir
-            local airthreat = self.SelfAirNow
+            local enemyAirThreat = self.EnemyThreatCurrentSwarm.EnemyAir
+            local airthreat = self.SelfThreatSwarm.SelfAirNow
 
             if enemyAirThreat ~= 0 then
                 self.MyAirRatio = airthreat/enemyAirThreat
@@ -897,8 +925,8 @@ AIBrain = Class(SwarmAIBrainClass) {
                 self.MyAirRatio = 1
             end
 
-            local enemyNavalThreat = self.EnemyNaval
-            local navalThreat = self.SelfNavalNow
+            local enemyNavalThreat = self.EnemyThreatCurrentSwarm.EnemyNaval
+            local navalThreat = self.SelfThreatSwarm.SelfNavalNow
     
             if enemyNavalThreat ~= 0 then
                 self.MyNavalRatio = navalThreat/enemyNavalThreat
@@ -906,7 +934,7 @@ AIBrain = Class(SwarmAIBrainClass) {
                 self.MyNavalRatio = 1
             end
 
-            --LOG("*AI DEBUG "..self.Nickname.." Air Ratio is "..repr(self.MyAirRatio).." Land Ratio is "..repr(self.MyLandRatio).." Naval Ratio is "..repr(self.MyNavalRatio))
+            LOG("*AI DEBUG "..self.Nickname.." Air Ratio is "..repr(self.MyAirRatio).." Land Ratio is "..repr(self.MyLandRatio).." Naval Ratio is "..repr(self.MyNavalRatio))
         end
     end,
 }
