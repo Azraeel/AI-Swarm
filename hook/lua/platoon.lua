@@ -65,6 +65,7 @@ Platoon = Class(SwarmPlatoonClass) {
     -- local maxRadius = SWARMMAX(maxRadius, (maxRadius * aiBrain.MyAirRatio) ) 
     -- This adjust the maxRadius Air Platoons are willing to go out onto depending on the LandRatio
     -- This eliminates a lot of threat data assessment by just having them see if we are losing or winning
+    -- Looking to reenable for V265 of Swarm, requires LOTS of testing and logging
     AirAISwarm = function(self)
         AIAttackUtils.GetMostRestrictiveLayer(self) 
 
@@ -309,7 +310,7 @@ Platoon = Class(SwarmPlatoonClass) {
         local basePosition = aiBrain.BuilderManagers['MAIN'].Position
         local losttargetnum = 0
         local TargetSearchCategory = self.PlatoonData.TargetSearchCategory or 'ALLUNITS'
-        local maxRadius = SWARMMAX(maxRadius, (maxRadius * aiBrain.MyLandRatio) )
+        --local maxRadius = SWARMMAX(maxRadius, (maxRadius * aiBrain.MyLandRatio) )
         while aiBrain:PlatoonExists(self) do
 
             PlatoonPos = self:GetPlatoonPosition()
@@ -443,7 +444,7 @@ Platoon = Class(SwarmPlatoonClass) {
         local basePosition = PlatoonPos   -- Platoons will be created near a base, so we can return to this position if we don't have targets.
         local losttargetnum = 0
         local TargetSearchCategory = self.PlatoonData.TargetSearchCategory or 'ALLUNITS'
-        local maxRadius = SWARMMAX(maxRadius, (maxRadius * aiBrain.MyNavalRatio) )
+        --local maxRadius = SWARMMAX(maxRadius, (maxRadius * aiBrain.MyNavalRatio) )
         while aiBrain:PlatoonExists(self) do
             PlatoonPos = self:GetPlatoonPosition()
             -- only get a new target and make a move command if the target is dead or after 10 seconds

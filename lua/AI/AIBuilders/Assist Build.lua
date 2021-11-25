@@ -305,7 +305,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
                 AssistLocation = 'LocationType',
                 BeingBuiltCategories = {categories.TECH1 + categories.TECH2 + categories.TECH3 + categories.EXPERIMENTAL},               -- Unitcategories must be type string
                 AssisteeType = categories.STRUCTURE,
-                --AssistUntilFinished = true,
+                AssistUntilFinished = true,
                 AssistClosestUnit = true,                                       -- Assist the closest unit instead unit with the least number of assisters
                 Time = 40,
             },
@@ -331,7 +331,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
             Assist = {
                 AssistLocation = 'LocationType',
                 AssisteeType = categories.STRUCTURE,
-                --AssistUntilFinished = true,
+                AssistUntilFinished = true,
                 AssistClosestUnit = true,  
                 AssistRange = 200,
                 BeingBuiltCategories = {categories.EXPERIMENTAL * categories.ECONOMIC},               -- Unitcategories must be type string
@@ -359,7 +359,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
                 AssistLocation = 'LocationType',
                 AssisteeType = categories.STRUCTURE,
                 AssistRange = 200,
-                --AssistUntilFinished = true,
+                AssistUntilFinished = true,
                 AssistClosestUnit = true,                                       -- Assist the closest unit instead unit with the least number of assisters
                 BeingBuiltCategories = {categories.EXPERIMENTAL * categories.MOBILE},                        -- Unitcategories must be type string
                 Time = 75,
@@ -416,7 +416,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
                 AssistLocation = 'LocationType',
                 AssisteeType = categories.STRUCTURE,
                 AssistRange = 100,
-                --AssistUntilFinished = true,
+                AssistUntilFinished = true,
                 AssistClosestUnit = true,                                       -- Assist the closest unit instead unit with the least number of assisters
                 BeingBuiltCategories = {categories.STRUCTURE * categories.DEFENSE * categories.ANTIMISSILE * categories.TECH3},-- Unitcategories must be type string
                 Time = 75,
@@ -441,7 +441,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
                 AssistLocation = 'LocationType',
                 AssisteeType = categories.STRUCTURE,
                 AssistRange = 100,
-                --AssistUntilFinished = true,
+                AssistUntilFinished = true,
                 AssistClosestUnit = true,                                       -- Assist the closest unit instead unit with the least number of assisters
                 BeingBuiltCategories = {categories.STRUCTURE * categories.STRATEGIC * categories.NUKE * categories.TECH3},-- Unitcategories must be type string
                 Time = 75,
@@ -466,7 +466,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
                 AssistLocation = 'LocationType',
                 AssisteeType = categories.STRUCTURE,
                 AssistRange = 150,
-                --AssistUntilFinished = true,
+                AssistUntilFinished = true,
                 AssistClosestUnit = true,                                       -- Assist the closest unit instead unit with the least number of assisters
                 BeingBuiltCategories = {categories.STRUCTURE * categories.ARTILLERY * categories.STRATEGIC},-- Unitcategories must be type string
                 Time = 75,
@@ -637,9 +637,11 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Reclaim Main',                
 
     Builder { BuilderName = 'Swarm Reclaim Resource - Big Mass',
         PlatoonTemplate = 'Swarm T1Reclaim',
-        Priority = 600,
+        Priority = 750,
         InstanceCount = 4,
         BuilderConditions = {
+            { UCBC, 'GreaterThanGameTimeSeconds', { 660 } }, -- After 11 Minutes
+
             { UCBC, 'PoolGreaterAtLocation', { 'LocationType',  1, categories.ENGINEER * categories.TECH1 } },
 
             { MIBC, 'CheckIfReclaimEnabledSwarm', {}},
@@ -656,9 +658,11 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Reclaim Main',                
 
     Builder { BuilderName = 'Swarm Reclaim Resource - Huge Mass',
         PlatoonTemplate = 'Swarm T1Reclaim',
-        Priority = 600,
+        Priority = 850,
         InstanceCount = 4,
         BuilderConditions = {
+            { UCBC, 'GreaterThanGameTimeSeconds', { 960 } }, -- After 16 Minutes
+
             { UCBC, 'PoolGreaterAtLocation', { 'LocationType',  2, categories.ENGINEER * categories.TECH1 } },
 
             { MIBC, 'CheckIfReclaimEnabledSwarm', {}},
@@ -679,8 +683,8 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Reclaim Expansion',           
 
     Builder { BuilderName = 'Swarm Reclaim Mass Expansion - Small Mass',
         PlatoonTemplate = 'Swarm T1Reclaim',
-        Priority = 600,
-        InstanceCount = 6,
+        Priority = 700,
+        InstanceCount = 4,
         BuilderConditions = {
             { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 0, categories.ENGINEER * categories.TECH1 }},
 
@@ -717,7 +721,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Reclaim Expansion',           
 
     Builder { BuilderName = 'Swarm T2 Reclaim Mass Expansion - Small Mass',
         PlatoonTemplate = 'Swarm T2Reclaim',
-        Priority = 750,
+        Priority = 800,
         InstanceCount = 2,
         BuilderConditions = {
             { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 1, categories.ENGINEER * categories.TECH2 - categories.STATIONASSISTPOD }},
@@ -736,7 +740,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Reclaim Expansion',           
 
     Builder { BuilderName = 'Swarm T2 Reclaim Mass Expansion - Big Mass',
         PlatoonTemplate = 'Swarm T2Reclaim',
-        Priority = 750,
+        Priority = 850,
         InstanceCount = 2,
         BuilderConditions = {
             { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 2, categories.ENGINEER * categories.TECH2 - categories.STATIONASSISTPOD }},
@@ -755,7 +759,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Reclaim Expansion',           
 
     Builder { BuilderName = 'Swarm T3 Reclaim Mass Expansion - Small Mass',
         PlatoonTemplate = 'Swarm T3Reclaim',
-        Priority = 850,
+        Priority = 900,
         InstanceCount = 2,
         BuilderConditions = {
             { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 2, categories.ENGINEER * categories.TECH3 - categories.STATIONASSISTPOD }},
