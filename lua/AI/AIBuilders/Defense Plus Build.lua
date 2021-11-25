@@ -306,7 +306,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Defense Plus Builders Expansion',
 
     Builder {
         BuilderName = 'AI-Swarm T3 Base D Engineer AA - Response To Ratio',
-        PlatoonTemplate = 'T3EngineerBuildernoSUBSwarm',
+        PlatoonTemplate = 'EngineerBuilderT3&SUBSwarm',
         Priority = 1025,
         InstanceCount = 1,                                      
         BuilderConditions = {
