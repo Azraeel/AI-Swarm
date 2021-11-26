@@ -2256,6 +2256,21 @@ Platoon = Class(SwarmPlatoonClass) {
             relative = false
             buildFunction = AIBuildStructures.AIExecuteBuildStructureSwarm
             SWARMINSERT(baseTmplList, AIBuildStructures.AIBuildBaseTemplateFromLocation(baseTmpl, reference))
+        elseif cons.OrderedTemplate then
+            local relativeTo = table.copy(eng:GetPosition())
+            --LOG('relativeTo is'..repr(relativeTo))
+            relative = true
+            local tmpReference = aiBrain:FindPlaceToBuild('T2EnergyProduction', 'uab1201', baseTmplDefault['BaseTemplates'][factionIndex], relative, eng, nil, relativeTo[1], relativeTo[3])
+            if tmpReference then
+                reference = eng:CalculateWorldPositionFromRelative(tmpReference)
+            else
+                return
+            end
+            --LOG('reference is '..repr(reference))
+            --LOG('World Pos '..repr(tmpReference))
+            buildFunction = AIBuildStructures.AIBuildBaseTemplateOrderedSwarm
+            SWARMINSERT(baseTmplList, AIBuildStructures.AIBuildBaseTemplateFromLocation(baseTmpl, reference))
+            --LOG('baseTmpList is :'..repr(baseTmplList))
         elseif cons.Wall then
             local pos = aiBrain:PBMGetLocationCoords(cons.LocationType) or cons.Position or self:GetPlatoonPosition()
             local radius = cons.LocationRadius or aiBrain:PBMGetLocationRadius(cons.LocationType) or 100

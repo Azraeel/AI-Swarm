@@ -756,6 +756,52 @@ BuilderGroup { BuilderGroupName = 'Swarm Defense Anti Ground Builders',
     BuildersType = 'EngineerBuilder',
 
     Builder {
+        BuilderName = 'UA1 - Panic T1 PD',
+        PlatoonTemplate = 'T1EngineerBuilderSwarm',
+        Priority = 900,
+        InstanceCount = 1,
+        BuilderConditions = {
+            { MIBC, 'GreaterThanGameTime', { 300 } },
+
+            { UCBC, 'UnitsLessAtLocation', { 'LocationType', 2, categories.DEFENSE * categories.DIRECTFIRE}},
+
+            { UCBC, 'EnemyUnitsGreaterAtLocationRadiusSwarm', {  BasePanicZone, 'LocationType', 0, categories.MOBILE * categories.LAND - categories.SCOUT - categories.ENGINEER }}, -- radius, LocationType, unitCount, categoryEnemy
+
+            { EBC, 'GreaterThanMassTrendOverTimeSwarm', { 0.0 } },
+
+            { EBC, 'GreaterThanEnergyIncomeOverTimeSwarm', { 50 }},
+
+            { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 1.01, 1.02 }},
+
+            { EBC, 'GreaterThanEconStorageCurrentSwarm', { 200, 2000}},
+        },
+        BuilderType = 'Any',
+        BuilderData = {
+            DesiresAssist = true,
+            NumAssistees = 5,
+            Construction = {
+                BaseTemplateFile = '/mods/AI-Swarm/lua/AI/AIBuilders/BaseTemplates Build.lua',
+                BaseTemplate = 'T1PDTemplate',
+                BuildClose = true,
+                OrderedTemplate = true,
+                NearBasePatrolPoints = false,
+                BuildStructures = {
+                    'T1GroundDefense',
+                    'Wall',
+                    'Wall',
+                    'Wall',
+                    'Wall',
+                    'Wall',
+                    'Wall',
+                    'Wall',
+                    'Wall',
+                },
+                Location = 'LocationType',
+            }
+        }
+    },
+
+    Builder {
         BuilderName = 'UA2 Perimeter Defense',
         PlatoonTemplate = 'T2EngineerBuilderSwarm',
         Priority = 950,
@@ -765,9 +811,9 @@ BuilderGroup { BuilderGroupName = 'Swarm Defense Anti Ground Builders',
 
             { EBC, 'GreaterThanMassTrendOverTimeSwarm', { 0.0 } },
 
-            { EBC, 'GreaterThanEnergyIncomeOverTimeSwarm', { 150 }},
+            { EBC, 'GreaterThanEnergyIncomeOverTimeSwarm', { 500 }},
 
-            { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 1.05, 1.1 }},
+            { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 1.04, 1.05 }},
 
             { EBC, 'GreaterThanEconStorageCurrentSwarm', { 200, 2000}},
         },
@@ -806,9 +852,9 @@ BuilderGroup { BuilderGroupName = 'Swarm Defense Anti Ground Builders',
 
             { EBC, 'GreaterThanMassTrendOverTimeSwarm', { 0.0 } },
 
-            { EBC, 'GreaterThanEnergyIncomeOverTimeSwarm', { 150 }},
+            { EBC, 'GreaterThanEnergyIncomeOverTimeSwarm', { 500 }},
 
-            { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 1.05, 1.1 }},
+            { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 1.04, 1.05 }},
 
             { EBC, 'GreaterThanEconStorageCurrentSwarm', { 200, 2000}},
         },
@@ -869,9 +915,9 @@ BuilderGroup { BuilderGroupName = 'Swarm Defense Anti Air Builders',
         BuilderConditions = {
             { EBC, 'GreaterThanMassTrendOverTimeSwarm', { 0.0 } },
 
-            { EBC, 'GreaterThanEnergyIncomeOverTimeSwarm', { 100 }},
+            { EBC, 'GreaterThanEnergyIncomeOverTimeSwarm', { 200 }},
 
-            { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 1.05, 1.1 }},
+            { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 1.03, 1.04 }},
 
             { EBC, 'GreaterThanEconStorageCurrentSwarm', { 200, 2000}},
 
@@ -896,17 +942,56 @@ BuilderGroup { BuilderGroupName = 'Swarm Defense Anti Air Builders',
             }
         }
     },
+
+    Builder {
+        BuilderName = 'S2 AA - Response to Ratio',
+        PlatoonTemplate = 'T2EngineerBuilderSwarm',
+        Priority = 910,
+        InstanceCount = 1,                                      
+        BuilderConditions = {
+            { UCBC, 'AirStrengthRatioLessThan', { 0.8 } },
+
+            { EBC, 'GreaterThanMassTrendOverTimeSwarm', { 0.0 } },
+
+            { EBC, 'GreaterThanEnergyIncomeOverTimeSwarm', { 200 }},
+
+            { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 1.03, 1.04 }},
+
+            { EBC, 'GreaterThanEconStorageCurrentSwarm', { 200, 2000}},
+
+            { UCBC, 'UnitsLessAtLocation', { 'LocationType', 6, categories.STRUCTURE * categories.DEFENSE * categories.ANTIAIR * categories.TECH2 }},
+        },
+        BuilderType = 'Any',
+        BuilderData = {
+        	NumAssistees = 1,
+            Construction = {
+            	AdjacencyBias = 'Forward',
+                AdjacencyPriority = {
+                    categories.STRUCTURE * categories.SHIELD,
+                    categories.STRUCTURE * categories.FACTORY,
+                },
+                maxUnits = 1,
+                maxRadius = 8,
+                BuildClose = false,
+                BuildStructures = {
+                    'T2AADefense',
+                },
+                Location = 'LocationType',
+            }
+        }
+    },
+
     Builder {
         BuilderName = 'S3 AA',
-        PlatoonTemplate = 'T3EngineerBuildernoSUBSwarm',
+        PlatoonTemplate = 'EngineerBuilderT3&SUBSwarm',
         Priority = 1025,
         InstanceCount = 1,                                      
         BuilderConditions = {
             { EBC, 'GreaterThanMassTrendOverTimeSwarm', { 0.0 } },
 
-            { EBC, 'GreaterThanEnergyIncomeOverTimeSwarm', { 100 }},
+            { EBC, 'GreaterThanEnergyIncomeOverTimeSwarm', { 200 }},
 
-            { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 1.05, 1.1 }},
+            { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 1.03, 1.04 }},
 
             { EBC, 'GreaterThanEconStorageCurrentSwarm', { 200, 2000}},
 
@@ -931,6 +1016,44 @@ BuilderGroup { BuilderGroupName = 'Swarm Defense Anti Air Builders',
             }
         }
     },   
+
+    Builder {
+        BuilderName = 'S3 AA - Response to Ratio',
+        PlatoonTemplate = 'EngineerBuilderT3&SUBSwarm',
+        Priority = 1030,
+        InstanceCount = 1,                                      
+        BuilderConditions = {
+            { UCBC, 'AirStrengthRatioLessThan', { 0.8 } },
+
+            { EBC, 'GreaterThanMassTrendOverTimeSwarm', { 0.0 } },
+
+            { EBC, 'GreaterThanEnergyIncomeOverTimeSwarm', { 200 }},
+
+            { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 1.02, 1.03 }},
+
+            { EBC, 'GreaterThanEconStorageCurrentSwarm', { 200, 2000}},
+
+            { UCBC, 'UnitsLessAtLocation', { 'LocationType', 8, categories.STRUCTURE * categories.DEFENSE * categories.ANTIAIR * categories.TECH3 }},
+        },
+        BuilderType = 'Any',
+        BuilderData = {
+        	NumAssistees = 1,
+            Construction = {
+            	AdjacencyBias = 'Forward',
+                AdjacencyPriority = {
+                    categories.STRUCTURE * categories.SHIELD,
+                    categories.STRUCTURE * categories.FACTORY,
+                },
+                maxUnits = 1,
+                maxRadius = 8,
+                BuildClose = false,
+                BuildStructures = {
+                    'T3AADefense',
+                },
+                Location = 'LocationType',
+            }
+        }
+    },
 
     Builder {
         BuilderName = 'Swarm Reclaim T1 AA',
