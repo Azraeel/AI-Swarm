@@ -178,7 +178,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',
 
             { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 0.75, 0.9 }},
 
-            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.01, 0.1}},
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.01, 0.10}},
 
             { MIBC, 'CanPathToCurrentEnemySwarm', { true, 'LocationType' } },
 
@@ -202,7 +202,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',
 
             { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 0.75, 0.9 }},
 
-            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.01, 0.1}},
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.01, 0.10}},
 
             { MIBC, 'CanPathToCurrentEnemySwarm', { true, 'LocationType' } },
 
@@ -226,7 +226,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',
 
             { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 0.75, 0.9 }},
 
-            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.01, 0.1}},
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.01, 0.10}},
 
             { MIBC, 'CanPathToCurrentEnemySwarm', { true, 'LocationType' } },
 
@@ -253,7 +253,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',
 
             { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 0.75, 0.9 }},
 
-            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.01, 0.1}},
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.01, 0.10}},
 
             { MIBC, 'CanPathToCurrentEnemySwarm', { true, 'LocationType' } },
 
@@ -283,7 +283,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',
 
             { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 0.75, 0.9 }},
 
-            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.01, 0.1}},
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.01, 0.10}},
 
             { MIBC, 'CanPathToCurrentEnemySwarm', { true, 'LocationType' } },
 
@@ -309,7 +309,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',
 
             { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 0.9, 0.95 }},
 
-            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.01, 0.1}},
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.01, 0.10}},
 
             { MIBC, 'CanPathToCurrentEnemySwarm', { true, 'LocationType' } },
 
@@ -334,7 +334,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',
 
             { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 0.9, 0.95 }},
 
-            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.01, 0.1}},
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.01, 0.10}},
 
             { MIBC, 'CanPathToCurrentEnemySwarm', { true, 'LocationType' } },
 
@@ -357,7 +357,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',
 
             { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 0.85, 0.9 }},
 
-            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.01, 0.1}},
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.01, 0.10}},
 
             { MIBC, 'CanPathToCurrentEnemySwarm', { true, 'LocationType' } },
 
@@ -382,7 +382,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',
 
             { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 0.9, 0.95 }},
 
-            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.01, 0.1}},
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.01, 0.10}},
 
             { UCBC, 'HaveGreaterThanUnitsWithCategory', { 1, categories.FACTORY * categories.LAND * categories.TECH3 }},
 
@@ -403,7 +403,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',
 
             { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 0.9, 0.95 }},
 
-            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.01, 0.1}},
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.01, 0.10}},
 
             { MIBC, 'CanPathToCurrentEnemySwarm', { true, 'LocationType' } },
 
@@ -424,7 +424,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',
 
             { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 0.9, 0.95 }},
 
-            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.01, 0.1}},
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.01, 0.10}},
 
             { MIBC, 'CanPathToCurrentEnemySwarm', { true, 'LocationType' } },
 
@@ -447,7 +447,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',
 
             { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 0.9, 0.95 }},
 
-            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.01, 0.1}},
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.01, 0.10}},
 
             { UCBC, 'HaveGreaterThanUnitsWithCategory', { 0, categories.FACTORY * categories.LAND * categories.TECH3 }},
 

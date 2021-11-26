@@ -56,8 +56,6 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Builders',
             { UCBC, 'PoolLessAtLocation', { 'LocationType',  2, categories.MOBILE * categories.ENGINEER * categories.TECH1 } },
 
             { UCBC, 'LocationFactoriesBuildingLess', { 'LocationType', 2, categories.MOBILE * categories.ENGINEER * categories.TECH1} },
-
-            { UCBC, 'GreaterThanGameTimeSeconds', { 240 } }, -- Stops Excess Building Early Game on High Mass Maps
          },
         BuilderType = 'All',
     },

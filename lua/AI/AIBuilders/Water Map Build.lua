@@ -87,7 +87,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders - Water Map',            
         BuilderConditions = {
             { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 0.6, 0.8 }},
 
-            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.02, 0.1}},
+            { EBC, 'GreaterThanEconStorageCurrentSwarm', { 200, 2000}},
 
             { MIBC, 'CanPathToCurrentEnemySwarm', { false, 'LocationType' } },
 
@@ -107,7 +107,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders - Water Map',            
         BuilderConditions = {
             { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 0.85, 0.9 }},
 
-            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.05, 0.1}},
+            { EBC, 'GreaterThanEconStorageCurrentSwarm', { 200, 2000}},
 
             { MIBC, 'CanPathToCurrentEnemySwarm', { false, 'LocationType' } },
 
@@ -127,7 +127,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders - Water Map',            
         BuilderConditions = {
             { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 1.0, 1.1 }},
 
-            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.07, 0.1}},
+            { EBC, 'GreaterThanEconStorageCurrentSwarm', { 200, 2000}},
 
             { MIBC, 'CanPathToCurrentEnemySwarm', { false, 'LocationType' } },
 

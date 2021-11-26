@@ -337,7 +337,7 @@ function ReclaimSwarmAIThread(platoon, self, aiBrain)
         end
 
         local reclaim = {}
-        local needEnergy = aiBrain:GetEconomyStoredRatio('ENERGY') < 0.5
+        local needEnergy = aiBrain:GetEconomyStored('ENERGY') < 2000
         --LOG('* AI-Swarm: Going through reclaim table')
         --self:SetCustomName('Loop through reclaim table')
         if reclaimRect and SWARMGETN( reclaimRect ) > 0 then
@@ -382,7 +382,7 @@ function ReclaimSwarmAIThread(platoon, self, aiBrain)
                 --LOG('* AI-Swarm: Reclaim range > 300, Disabling Reclaim.')
                 PropBlacklist = {}
                 aiBrain.ReclaimEnabledSwarm = false
-                aiBrain.ReclaimLastCheckSwarm = SWARMTIME()
+                aiBrain.ReclaimLastCheckSwarm = GetGameTimeSeconds()
                 return
             end
             SWARMWAIT(2)
@@ -396,7 +396,7 @@ function ReclaimSwarmAIThread(platoon, self, aiBrain)
                 --LOG('* AI-Swarm: Reclaim range > 200, Disabling Reclaim.')
                 PropBlacklist = {}
                 aiBrain.ReclaimEnabledSwarm = false
-                aiBrain.ReclaimLastCheckSwarm = SWARMTIME()
+                aiBrain.ReclaimLastCheckSwarm = GetGameTimeSeconds()
                 return
             end
             SWARMWAIT(2)

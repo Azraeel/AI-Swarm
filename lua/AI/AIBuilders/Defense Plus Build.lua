@@ -3,6 +3,7 @@ local EBC = '/lua/editor/EconomyBuildConditions.lua'
 local MIBC = '/lua/editor/MiscBuildConditions.lua'
 local MABC = '/lua/editor/MarkerBuildConditions.lua'
 local TBC = '/lua/editor/ThreatBuildConditions.lua'
+local BasePanicZone, BaseMilitaryZone, BaseEnemyZone = import('/mods/AI-Swarm/lua/AI/swarmutilities.lua').GetDangerZoneRadii()
 
 local MaxAttackForce = 0.45                                       
 local MaxDefense = 0.12
@@ -114,6 +115,52 @@ BuilderGroup { BuilderGroupName = 'Swarm Defense Plus Builders Expansion',
     BuildersType = 'EngineerBuilder',
 
     Builder {
+        BuilderName = 'AI-Swarm T1 Base D Panic T1 PD',
+        PlatoonTemplate = 'T1EngineerBuilderSwarm',
+        Priority = 900,
+        InstanceCount = 1,
+        BuilderConditions = {
+            { MIBC, 'GreaterThanGameTime', { 300 } },
+
+            { UCBC, 'UnitsLessAtLocation', { 'LocationType', 2, categories.DEFENSE * categories.DIRECTFIRE}},
+
+            { UCBC, 'EnemyUnitsGreaterAtLocationRadiusSwarm', {  BasePanicZone, 'LocationType', 0, categories.MOBILE * categories.LAND - categories.SCOUT - categories.ENGINEER }}, -- radius, LocationType, unitCount, categoryEnemy
+
+            { EBC, 'GreaterThanMassTrendOverTimeSwarm', { 0.0 } },
+
+            { EBC, 'GreaterThanEnergyIncomeOverTimeSwarm', { 50 }},
+
+            { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 1.01, 1.02 }},
+
+            { EBC, 'GreaterThanEconStorageCurrentSwarm', { 200, 2000}},
+        },
+        BuilderType = 'Any',
+        BuilderData = {
+            DesiresAssist = true,
+            NumAssistees = 5,
+            Construction = {
+                BaseTemplateFile = '/mods/AI-Swarm/lua/AI/AIBuilders/BaseTemplates Build.lua',
+                BaseTemplate = 'T1PDTemplate',
+                BuildClose = true,
+                OrderedTemplate = true,
+                NearBasePatrolPoints = false,
+                BuildStructures = {
+                    'T1GroundDefense',
+                    'Wall',
+                    'Wall',
+                    'Wall',
+                    'Wall',
+                    'Wall',
+                    'Wall',
+                    'Wall',
+                    'Wall',
+                },
+                Location = 'LocationType',
+            }
+        }
+    },
+
+    Builder {
         BuilderName = 'AI-Swarm T1 Base D AA Engineer - Response',
         PlatoonTemplate = 'EngineerBuilderALLTECHSwarm',
         Priority = 900,
@@ -121,9 +168,15 @@ BuilderGroup { BuilderGroupName = 'Swarm Defense Plus Builders Expansion',
         BuilderConditions = {
             { UCBC, 'UnitsLessAtLocation', { 'LocationType', 1, categories.DEFENSE * categories.TECH1 * categories.ANTIAIR}},
 
-            { TBC, 'EnemyThreatGreaterThanValueAtBase', { 'LocationType', 1, 'Air' } },
+            { UCBC, 'AirStrengthRatioLessThan', { 1.0 } },
 
-            { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 1.3, 1.2 }},
+            { EBC, 'GreaterThanMassTrendOverTimeSwarm', { 0.0 } },
+
+            { EBC, 'GreaterThanEnergyIncomeOverTimeSwarm', { 50 }},
+
+            { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 1.01, 1.02 }},
+
+            { EBC, 'GreaterThanEconStorageCurrentSwarm', { 200, 2000}},
 
             { UCBC, 'LocationEngineersBuildingLess', { 'LocationType', 1, categories.DEFENSE * categories.TECH1 * categories.STRUCTURE - categories.SHIELD - categories.ANTIMISSILE } },
         },
@@ -146,38 +199,6 @@ BuilderGroup { BuilderGroupName = 'Swarm Defense Plus Builders Expansion',
     },
 
     Builder {
-        BuilderName = 'AI-Swarm T1 Base D PD Engineer - Response',
-        PlatoonTemplate = 'EngineerBuilderALLTECHSwarm',
-        Priority = 900,
-        InstanceCount = 1,
-        BuilderConditions = {
-            { UCBC, 'UnitsLessAtLocation', { 'LocationType', 1, categories.DEFENSE * categories.TECH1 * categories.DIRECTFIRE}},
-
-            { TBC, 'EnemyThreatGreaterThanValueAtBase', { 'LocationType', 1, 'Land' } },
-
-            { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 1.3, 1.2 }},
-
-            { UCBC, 'LocationEngineersBuildingLess', { 'LocationType', 1, categories.DEFENSE * categories.TECH1 * categories.STRUCTURE - categories.SHIELD - categories.ANTIMISSILE } },
-        },
-        BuilderType = 'Any',
-        BuilderData = {
-            NumAssistees = 1,
-            Construction = {
-                AdjacencyBias = 'Forward',
-                AdjacencyPriority = {
-                    categories.STRUCTURE * categories.SHIELD,
-                    categories.STRUCTURE * categories.FACTORY,
-                },
-                BuildClose = false,
-                BuildStructures = {
-                    'T1GroundDefense',
-                },
-                Location = 'LocationType',
-            }
-        }
-    },
-
-    Builder {
         BuilderName = 'AI-Swarm T2 Base D AA Engineer - Response',
         PlatoonTemplate = 'EngineerBuilderT2T3Swarm',
         Priority = 900,
@@ -185,9 +206,15 @@ BuilderGroup { BuilderGroupName = 'Swarm Defense Plus Builders Expansion',
         BuilderConditions = {
             { UCBC, 'UnitsLessAtLocation', { 'LocationType', 1, categories.DEFENSE * categories.ANTIAIR * categories.STRUCTURE * categories.TECH2}},
 
-            { TBC, 'EnemyThreatGreaterThanValueAtBase', { 'LocationType', 1, 'Air' } },
+            { UCBC, 'AirStrengthRatioLessThan', { 1.0 } },
 
-            { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 1.25, 1.2 }},
+            { EBC, 'GreaterThanMassTrendOverTimeSwarm', { 0.0 } },
+
+            { EBC, 'GreaterThanEnergyIncomeOverTimeSwarm', { 100 }},
+
+            { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 1.0, 1.01 }},
+
+            { EBC, 'GreaterThanEconStorageCurrentSwarm', { 200, 2000}},
 
             { UCBC, 'LocationEngineersBuildingLess', { 'LocationType', 1, categories.DEFENSE * categories.TECH2 * categories.STRUCTURE - categories.SHIELD - categories.ANTIMISSILE } },
         },
@@ -217,9 +244,15 @@ BuilderGroup { BuilderGroupName = 'Swarm Defense Plus Builders Expansion',
         BuilderConditions = {
             { UCBC, 'UnitsLessAtLocation', { 'LocationType', 1, categories.DEFENSE * categories.DIRECTFIRE * categories.STRUCTURE * categories.TECH2}},
 
-            { TBC, 'EnemyThreatGreaterThanValueAtBase', { 'LocationType', 1, 'Land' } },
+            { UCBC, 'LandStrengthRatioLessThan', { 1.0 } },
 
-            { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 1.25, 1.2 }},
+            { EBC, 'GreaterThanMassTrendOverTimeSwarm', { 0.0 } },
+
+            { EBC, 'GreaterThanEnergyIncomeOverTimeSwarm', { 100 }},
+
+            { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 1.0, 1.01 }},
+
+            { EBC, 'GreaterThanEconStorageCurrentSwarm', { 200, 2000}},
 
             { UCBC, 'LocationEngineersBuildingLess', { 'LocationType', 1, categories.DEFENSE * categories.TECH2 * categories.STRUCTURE - categories.SHIELD - categories.ANTIMISSILE } },
         },
@@ -249,9 +282,15 @@ BuilderGroup { BuilderGroupName = 'Swarm Defense Plus Builders Expansion',
         BuilderConditions = {
             { UCBC, 'UnitsLessAtLocation', { 'LocationType', 2, categories.DEFENSE * categories.ARTILLERY * categories.STRUCTURE * categories.TECH2}},
 
-            { TBC, 'EnemyThreatGreaterThanValueAtBase', { 'LocationType', 20, 'Land' } },
+            { UCBC, 'LandStrengthRatioLessThan', { 0.8 } },
 
-            { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 1.5, 1.0 }},
+            { EBC, 'GreaterThanMassTrendOverTimeSwarm', { 0.0 } },
+
+            { EBC, 'GreaterThanEnergyIncomeOverTimeSwarm', { 300 }},
+
+            { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 1.05, 1.06 }},
+
+            { EBC, 'GreaterThanEconStorageCurrentSwarm', { 200, 2000}},
         },
         BuilderType = 'Any',
         BuilderData = {
@@ -280,9 +319,15 @@ BuilderGroup { BuilderGroupName = 'Swarm Defense Plus Builders Expansion',
         BuilderConditions = {
             { UCBC, 'UnitsLessAtLocation', { 'LocationType', 2, categories.DEFENSE * categories.ANTIAIR * categories.STRUCTURE}},
 
-            { TBC, 'EnemyThreatGreaterThanValueAtBase', { 'LocationType', 3, 'Air' } },
+            { UCBC, 'AirStrengthRatioLessThan', { 1.0 } },
 
-            { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 1.2, 1.2 }},
+            { EBC, 'GreaterThanMassTrendOverTimeSwarm', { 0.0 } },
+
+            { EBC, 'GreaterThanEnergyIncomeOverTimeSwarm', { 200 }},
+
+            { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 1.01, 1.02 }},
+
+            { EBC, 'GreaterThanEconStorageCurrentSwarm', { 200, 2000}},
 
             { UCBC, 'LocationEngineersBuildingLess', { 'LocationType', 1, categories.DEFENSE * categories.TECH3 * categories.STRUCTURE * (categories.ANTIAIR + categories.DIRECTFIRE) } },
         },
@@ -310,13 +355,13 @@ BuilderGroup { BuilderGroupName = 'Swarm Defense Plus Builders Expansion',
         Priority = 1025,
         InstanceCount = 1,                                      
         BuilderConditions = {
-            { UCBC, 'AirStrengthRatioLessThan', { 1.5 } },
+            { UCBC, 'AirStrengthRatioLessThan', { 0.8 } },
 
             { EBC, 'GreaterThanMassTrendOverTimeSwarm', { 0.0 } },
 
-            { EBC, 'GreaterThanEnergyIncomeOverTimeSwarm', { 100 }},
+            { EBC, 'GreaterThanEnergyIncomeOverTimeSwarm', { 200 }},
 
-            { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 1.01, 1.02 }},
+            { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 1.02, 1.03 }},
 
             { EBC, 'GreaterThanEconStorageCurrentSwarm', { 200, 2000}},
 
