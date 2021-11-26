@@ -1,5 +1,7 @@
 -- Fuck This Replacing and Ripping basically the economical guts of the AI
 -- This shit is more then painful holy fuck
+-- I noticed that I had some strange conditions for EconStorageRatio, Trends, and Incomes not the New Overtime Ones
+-- But the Older Ones, I never noticed this... but they were indeed strange numbers?
 
 local GetEconomyTrend = moho.aibrain_methods.GetEconomyTrend
 local GetEconomyStoredRatio = moho.aibrain_methods.GetEconomyStoredRatio
@@ -24,49 +26,49 @@ function GreaterThanEconStorageCurrentSwarm(aiBrain, mStorage, eStorage)
 end
 
 function GreaterThanEconStorageRatioSwarm(aiBrain, mStorageRatio, eStorageRatio)
-	if (GetEconomyStoredRatio(aiBrain,'MASS') *100) >= mStorageRatio and (GetEconomyStoredRatio(aiBrain,'ENERGY') *100) >= eStorageRatio then
+	if GetEconomyStoredRatio(aiBrain, 'MASS') >= mStorageRatio and GetEconomyStoredRatio(aiBrain, 'ENERGY') >= eStorageRatio then
         return true
     end
     return false
 end
 
 function LessThanEconStorageRatioSwarm(aiBrain, mStorageRatio, eStorageRatio)
-	if (GetEconomyStoredRatio(aiBrain,'MASS') *100) < mStorageRatio and (GetEconomyStoredRatio(aiBrain,'ENERGY') *100) < eStorageRatio then
+	if GetEconomyStoredRatio(aiBrain, 'MASS') < mStorageRatio and GetEconomyStoredRatio(aiBrain, 'ENERGY') < eStorageRatio then
         return true
     end
     return false
 end
 
 function GreaterThanEconTrendSwarm(aiBrain, mTrend, eTrend)
-    if (GetEconomyTrend( aiBrain, 'MASS' ) *10) >= mTrend and (GetEconomyTrend( aiBrain, 'ENERGY' ) *10) >= eTrend then
+    if GetEconomyTrend(aiBrain, 'MASS') >= MassTrend and GetEconomyTrend(aiBrain, 'ENERGY') >= EnergyTrend then
         return true
     end
     return false
 end
 
 function LessThanEconTrendSwarm(aiBrain, mTrend, eTrend)
-    if (GetEconomyTrend( aiBrain, 'MASS' ) *10) < mTrend and (GetEconomyTrend( aiBrain, 'ENERGY' ) *10) < eTrend then
+    if GetEconomyTrend( aiBrain, 'MASS' ) < mTrend and GetEconomyTrend( aiBrain, 'ENERGY' ) < eTrend then
         return true
     end
     return false
 end
 
 function GreaterThanEconIncomeSwarm(aiBrain, mIncome, eIncome)
-	if (GetEconomyIncome( aiBrain, 'MASS') *10) >= mIncome and (GetEconomyIncome( aiBrain, 'ENERGY') *10) >= eIncome then
+	if GetEconomyIncome( aiBrain, 'MASS') >= mIncome and GetEconomyIncome( aiBrain, 'ENERGY') >= eIncome then
         return true
     end
     return false
 end 
 
 function GreaterThanMassTrendSwarm(aiBrain, mTrend)
-    if (GetEconomyTrend( aiBrain, 'MASS' ) *10) >= mTrend then
+    if GetEconomyTrend( aiBrain, 'MASS' ) >= mTrend then
         return true
     end
     return false
 end
 
 function GreaterThanEnergyTrendSwarm(aiBrain, eTrend)
-    if (GetEconomyTrend( aiBrain, 'ENERGY' ) *10) >= eTrend then
+    if GetEconomyTrend( aiBrain, 'ENERGY' ) >= eTrend then
         return true
     end
     return false
@@ -87,7 +89,7 @@ function LessThanEnergyTrendSwarm(aiBrain, eTrend)
 end
 
 function GreaterThanEnergyIncomeSwarm(aiBrain, eIncome)
-	if (GetEconomyIncome( aiBrain, 'ENERGY') *10) >= eIncome then
+	if GetEconomyIncome( aiBrain, 'ENERGY') >= eIncome then
         return true
     end
     return false

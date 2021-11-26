@@ -3,6 +3,7 @@ local EBC = '/lua/editor/EconomyBuildConditions.lua'
 local MIBC = '/lua/editor/MiscBuildConditions.lua'
 local MABC = '/lua/editor/MarkerBuildConditions.lua'
 local TBC = '/lua/editor/ThreatBuildConditions.lua'
+local BasePanicZone, BaseMilitaryZone, BaseEnemyZone = import('/mods/AI-Swarm/lua/AI/swarmutilities.lua').GetDangerZoneRadii()
 
 local MaxAttackForce = 0.45                                       
 local MaxDefense = 0.12
@@ -191,44 +192,6 @@ BuilderGroup { BuilderGroupName = 'Swarm Defense Plus Builders Expansion',
                 BuildClose = false,
                 BuildStructures = {
                     'T1AADefense',
-                },
-                Location = 'LocationType',
-            }
-        }
-    },
-
-    Builder {
-        BuilderName = 'AI-Swarm T1 Base D PD Engineer - Response',
-        PlatoonTemplate = 'EngineerBuilderALLTECHSwarm',
-        Priority = 900,
-        InstanceCount = 1,
-        BuilderConditions = {
-            { UCBC, 'UnitsLessAtLocation', { 'LocationType', 1, categories.DEFENSE * categories.TECH1 * categories.DIRECTFIRE}},
-
-            { UCBC, 'LandStrengthRatioLessThan', { 1.0 } },
-
-            { EBC, 'GreaterThanMassTrendOverTimeSwarm', { 0.0 } },
-
-            { EBC, 'GreaterThanEnergyIncomeOverTimeSwarm', { 50 }},
-
-            { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 1.01, 1.02 }},
-
-            { EBC, 'GreaterThanEconStorageCurrentSwarm', { 200, 2000}},
-
-            { UCBC, 'LocationEngineersBuildingLess', { 'LocationType', 1, categories.DEFENSE * categories.TECH1 * categories.STRUCTURE - categories.SHIELD - categories.ANTIMISSILE } },
-        },
-        BuilderType = 'Any',
-        BuilderData = {
-            NumAssistees = 1,
-            Construction = {
-                AdjacencyBias = 'Forward',
-                AdjacencyPriority = {
-                    categories.STRUCTURE * categories.SHIELD,
-                    categories.STRUCTURE * categories.FACTORY,
-                },
-                BuildClose = false,
-                BuildStructures = {
-                    'T1GroundDefense',
                 },
                 Location = 'LocationType',
             }

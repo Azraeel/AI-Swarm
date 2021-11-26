@@ -150,7 +150,7 @@ BuilderGroup {
 
             { EBC, 'GreaterThanEconStorageCurrentSwarm', { 200, 2000}},
 
-            { EBC, 'LessThanEconStorageRatioSwarm', { 0.35, 2 } },
+            { EBC, 'LessThanEconStorageRatioSwarm', { 0.35, 2.0 } },
         },
         BuilderType = 'Any',
         BuilderData = {

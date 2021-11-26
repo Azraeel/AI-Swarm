@@ -594,19 +594,45 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
 -- ============== --
 --    Reclaim     --
 -- ============== --
-BuilderGroup { BuilderGroupName = 'Swarm Engineer Reclaim Main',                                -- BuilderGroupName, initalized from AIBaseTemplates in "\lua\AI\AIBaseTemplates\"
-    BuildersType = 'PlatoonFormBuilder',
+BuilderGroup { 
+    BuilderGroupName = 'Swarm Engineer Reclaim Main',                                -- BuilderGroupName, initalized from AIBaseTemplates in "\lua\AI\AIBaseTemplates\"
+    BuildersType = 'EngineerBuilder',
 
-    Builder { BuilderName = 'Swarm Reclaim Mass - Small Mass',
+    Builder { 
+        BuilderName = 'Swarm Reclaim Mass - Early',
         PlatoonTemplate = 'Swarm T1Reclaim',
-        Priority = 600,
+        PlatoonAIPlan = 'ReclaimAISwarm',
+        Priority = 630,
+        InstanceCount = 2,
+        BuilderConditions = {
+            { UCBC, 'LessThanGameTimeSeconds', { 420 } },
+
+            { UCBC, 'HaveGreaterThanUnitsWithCategory', { 3, categories.MOBILE * categories.ENGINEER - categories.COMMAND } },
+
+            { MIBC, 'CheckIfReclaimEnabledSwarm', {}},
+
+            { EBC, 'LessThanEconStorageRatioSwarm', { 0.90, 2.0}}, 
+        },
+        BuilderData = {
+            LocationType = 'LocationType',
+            ReclaimTime = 80,
+            MinimumReclaim = 8
+        },
+        BuilderType = 'Any',
+    },
+
+    Builder { 
+        BuilderName = 'Swarm Reclaim Mass - Small Mass',
+        PlatoonTemplate = 'Swarm T1Reclaim',
+        PlatoonAIPlan = 'ReclaimAISwarm',
+        Priority = 630,
         InstanceCount = 2,
         BuilderConditions = {
             { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 0, categories.ENGINEER * categories.TECH1 }},
 
             { MIBC, 'CheckIfReclaimEnabledSwarm', {}},
 
-            { EBC, 'LessThanEconStorageRatioSwarm', { 0.9, 1.0}}, 
+            { EBC, 'LessThanEconStorageRatioSwarm', { 0.90, 2.0}}, 
         },
         BuilderData = {
             LocationType = 'LocationType',
@@ -616,16 +642,18 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Reclaim Main',                
         BuilderType = 'Any',
     },
 
-    Builder { BuilderName = 'Swarm Reclaim Resource - Medium Mass',
+    Builder { 
+        BuilderName = 'Swarm Reclaim Resource - Medium Mass',
         PlatoonTemplate = 'Swarm T1Reclaim',
-        Priority = 600,
+        PlatoonAIPlan = 'ReclaimAISwarm',
+        Priority = 630,
         InstanceCount = 2,
         BuilderConditions = {
             { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 0, categories.ENGINEER * categories.TECH1 }},
 
             { MIBC, 'CheckIfReclaimEnabledSwarm', {}},
 
-            { EBC, 'LessThanEconStorageRatioSwarm', { 0.8, 1.0}}, 
+            { EBC, 'LessThanEconStorageRatioSwarm', { 0.80, 2.0}}, 
         },
         BuilderData = {
             LocationType = 'LocationType',
@@ -635,10 +663,12 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Reclaim Main',                
         BuilderType = 'Any',
     },
 
-    Builder { BuilderName = 'Swarm Reclaim Resource - Big Mass',
+    Builder { 
+        BuilderName = 'Swarm Reclaim Resource - Big Mass',
         PlatoonTemplate = 'Swarm T1Reclaim',
+        PlatoonAIPlan = 'ReclaimAISwarm',
         Priority = 750,
-        InstanceCount = 4,
+        InstanceCount = 8,
         BuilderConditions = {
             { UCBC, 'GreaterThanGameTimeSeconds', { 660 } }, -- After 11 Minutes
 
@@ -646,7 +676,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Reclaim Main',                
 
             { MIBC, 'CheckIfReclaimEnabledSwarm', {}},
 
-            { EBC, 'LessThanEconStorageRatioSwarm', { 0.7, 1.0}}, 
+            { EBC, 'LessThanEconStorageRatioSwarm', { 0.70, 2.0}}, 
         },
         BuilderData = {
             LocationType = 'LocationType',
@@ -655,34 +685,16 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Reclaim Main',                
         },
         BuilderType = 'Any',
     },
-
-    Builder { BuilderName = 'Swarm Reclaim Resource - Huge Mass',
-        PlatoonTemplate = 'Swarm T1Reclaim',
-        Priority = 850,
-        InstanceCount = 4,
-        BuilderConditions = {
-            { UCBC, 'GreaterThanGameTimeSeconds', { 960 } }, -- After 16 Minutes
-
-            { UCBC, 'PoolGreaterAtLocation', { 'LocationType',  2, categories.ENGINEER * categories.TECH1 } },
-
-            { MIBC, 'CheckIfReclaimEnabledSwarm', {}},
-
-            { EBC, 'LessThanEconStorageRatioSwarm', { 0.6, 1.0}},
-        },
-        BuilderData = {
-            LocationType = 'LocationType',
-            ReclaimTime = 80,
-            MinimumReclaim = 80
-        },
-        BuilderType = 'Any', 
-    }, 
 }
 
-BuilderGroup { BuilderGroupName = 'Swarm Engineer Reclaim Expansion',                                -- BuilderGroupName, initalized from AIBaseTemplates in "\lua\AI\AIBaseTemplates\"
-    BuildersType = 'PlatoonFormBuilder',
+BuilderGroup { 
+    BuilderGroupName = 'Swarm Engineer Reclaim Expansion',                                -- BuilderGroupName, initalized from AIBaseTemplates in "\lua\AI\AIBaseTemplates\"
+    BuildersType = 'EngineerBuilder',
 
-    Builder { BuilderName = 'Swarm Reclaim Mass Expansion - Small Mass',
+    Builder { 
+        BuilderName = 'Swarm Reclaim Mass Expansion - Small Mass',
         PlatoonTemplate = 'Swarm T1Reclaim',
+        PlatoonAIPlan = 'ReclaimAISwarm',
         Priority = 700,
         InstanceCount = 4,
         BuilderConditions = {
@@ -690,7 +702,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Reclaim Expansion',           
 
             { MIBC, 'CheckIfReclaimEnabledSwarm', {}},
 
-            { EBC, 'LessThanEconStorageRatioSwarm', { 0.9, 1.0}}, 
+            { EBC, 'LessThanEconStorageRatioSwarm', { 0.90, 2.0}}, 
         },
         BuilderData = {
             LocationType = 'LocationType',
@@ -700,16 +712,18 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Reclaim Expansion',           
         BuilderType = 'Any',
     },
 
-    Builder { BuilderName = 'Swarm Reclaim Mass Expansion - Medium Mass',
+    Builder { 
+        BuilderName = 'Swarm Reclaim Mass Expansion - Medium Mass',
         PlatoonTemplate = 'Swarm T1Reclaim',
-        Priority = 600,
+        PlatoonAIPlan = 'ReclaimAISwarm',
+        Priority = 700,
         InstanceCount = 3,
         BuilderConditions = {
             { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 1, categories.ENGINEER * categories.TECH1 }},
 
             { MIBC, 'CheckIfReclaimEnabledSwarm', {}},
 
-            { EBC, 'LessThanEconStorageRatioSwarm', { 0.9, 1.0}}, 
+            { EBC, 'LessThanEconStorageRatioSwarm', { 0.90, 2.0}}, 
         },
         BuilderData = {
             LocationType = 'LocationType',
@@ -719,8 +733,10 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Reclaim Expansion',           
         BuilderType = 'Any',
     },
 
-    Builder { BuilderName = 'Swarm T2 Reclaim Mass Expansion - Small Mass',
+    Builder { 
+        BuilderName = 'Swarm T2 Reclaim Mass Expansion - Small Mass',
         PlatoonTemplate = 'Swarm T2Reclaim',
+        PlatoonAIPlan = 'ReclaimAISwarm',
         Priority = 800,
         InstanceCount = 2,
         BuilderConditions = {
@@ -728,7 +744,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Reclaim Expansion',           
 
             { MIBC, 'CheckIfReclaimEnabledSwarm', {}},
 
-            { EBC, 'LessThanEconStorageRatioSwarm', { 0.8, 1.0}}, 
+            { EBC, 'LessThanEconStorageRatioSwarm', { 0.80, 2.0}}, 
         },
         BuilderData = {
             LocationType = 'LocationType',
@@ -738,8 +754,10 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Reclaim Expansion',           
         BuilderType = 'Any',
     },
 
-    Builder { BuilderName = 'Swarm T2 Reclaim Mass Expansion - Big Mass',
+    Builder { 
+        BuilderName = 'Swarm T2 Reclaim Mass Expansion - Big Mass',
         PlatoonTemplate = 'Swarm T2Reclaim',
+        PlatoonAIPlan = 'ReclaimAISwarm',
         Priority = 850,
         InstanceCount = 2,
         BuilderConditions = {
@@ -747,7 +765,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Reclaim Expansion',           
 
             { MIBC, 'CheckIfReclaimEnabledSwarm', {}},
 
-            { EBC, 'LessThanEconStorageRatioSwarm', { 0.8, 1.0}}, 
+            { EBC, 'LessThanEconStorageRatioSwarm', { 0.80, 2.0}}, 
         },
         BuilderData = {
             LocationType = 'LocationType',
@@ -757,8 +775,10 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Reclaim Expansion',           
         BuilderType = 'Any',
     },
 
-    Builder { BuilderName = 'Swarm T3 Reclaim Mass Expansion - Small Mass',
+    Builder { 
+        BuilderName = 'Swarm T3 Reclaim Mass Expansion - Small Mass',
         PlatoonTemplate = 'Swarm T3Reclaim',
+        PlatoonAIPlan = 'ReclaimAISwarm',
         Priority = 900,
         InstanceCount = 2,
         BuilderConditions = {
@@ -766,7 +786,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Reclaim Expansion',           
 
             { MIBC, 'CheckIfReclaimEnabledSwarm', {}},
 
-            { EBC, 'LessThanEconStorageRatioSwarm', { 0.6, 1.0}}, 
+            { EBC, 'LessThanEconStorageRatioSwarm', { 0.60, 2.0}}, 
         },
         BuilderData = {
             LocationType = 'LocationType',

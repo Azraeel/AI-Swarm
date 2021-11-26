@@ -1,6 +1,7 @@
 local UCBC = '/lua/editor/UnitCountBuildConditions.lua'
 local EBC = '/lua/editor/EconomyBuildConditions.lua'
 local MIBC = '/lua/editor/MiscBuildConditions.lua'
+local BasePanicZone, BaseMilitaryZone, BaseEnemyZone = import('/mods/AI-Swarm/lua/AI/swarmutilities.lua').GetDangerZoneRadii()
 
 local MaxAttackForce = 0.45                                                    
 local MaxDefense = 0.12 
@@ -848,7 +849,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Defense Anti Ground Builders',
         Priority = 1000,
         InstanceCount = 1,
         BuilderConditions = {
-            { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 1, categories.ENGINEER * (categories.TECH3 * categories.SUBCOMMANDER}},
+            { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 1, categories.ENGINEER * (categories.TECH3 + categories.SUBCOMMANDER)}},
 
             { EBC, 'GreaterThanMassTrendOverTimeSwarm', { 0.0 } },
 
@@ -881,26 +882,6 @@ BuilderGroup { BuilderGroupName = 'Swarm Defense Anti Ground Builders',
                 Location = 'LocationType',
             }
         }
-    },
-
-    Builder {
-        BuilderName = 'Swarm Reclaim T1 PD',
-        PlatoonTemplate = 'EngineerBuilderALLTECHSwarm',
-        PlatoonAIPlan = 'ReclaimStructuresAI',
-        Priority = 550,
-        InstanceCount = 1,
-        BuilderConditions = {
-            { UCBC, 'HaveGreaterThanUnitsWithCategory', { 0, categories.STRUCTURE * categories.DEFENSE * categories.TECH1 * categories.DIRECTFIRE }},
-
-            { UCBC, 'HaveGreaterThanUnitsWithCategory', { 0, categories.STRUCTURE * categories.DEFENSE * categories.TECH2 * categories.DIRECTFIRE }},
-        },
-        BuilderData = {
-            Location = 'LocationType',
-            Reclaim = {
-                categories.STRUCTURE * categories.DEFENSE * categories.TECH1 * categories.DIRECTFIRE
-            },
-        },
-        BuilderType = 'Any',
     },
 }
 
@@ -1053,26 +1034,6 @@ BuilderGroup { BuilderGroupName = 'Swarm Defense Anti Air Builders',
                 Location = 'LocationType',
             }
         }
-    },
-
-    Builder {
-        BuilderName = 'Swarm Reclaim T1 AA',
-        PlatoonTemplate = 'EngineerBuilderALLTECHSwarm',
-        PlatoonAIPlan = 'ReclaimStructuresAI',   
-        Priority = 250,
-        InstanceCount = 1,
-        BuilderConditions = {
-            { UCBC, 'HaveGreaterThanUnitsWithCategory', { 0, categories.STRUCTURE * categories.DEFENSE * categories.TECH1 * categories.ANTIAIR }},
-
-            { UCBC, 'HaveGreaterThanUnitsWithCategory', { 2, categories.STRUCTURE * categories.DEFENSE * categories.TECH2 * categories.ANTIAIR }},
-        },
-        BuilderData = {
-            Location = 'LocationType',
-            Reclaim = {
-                categories.STRUCTURE * categories.DEFENSE * categories.TECH1 * categories.ANTIAIR
-            },
-        },
-        BuilderType = 'Any',
     },
 }
 

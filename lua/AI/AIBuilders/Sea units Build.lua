@@ -404,8 +404,12 @@ BuilderGroup { BuilderGroupName = 'Swarm Sonar Builders',
             { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 0, categories.ENGINEER * categories.TECH1 }},
 
             { UCBC, 'HaveGreaterThanUnitsWithCategory', { 1, categories.STRUCTURE * categories.FACTORY * categories.NAVAL } },
+
+            { EBC, 'GreaterThanEconTrendOverTimeSwarm', { 0.0, 0.0 } }, 
+
+            { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 1.0, 1.01 }},
             
-            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.40, 0.90 } },
+            { EBC, 'GreaterThanEconStorageCurrentSwarm', { 200, 2000}},
         },
 
         BuilderType = 'Any',
@@ -441,7 +445,9 @@ BuilderGroup { BuilderGroupName = 'Swarm Sonar Upgraders',
 
             { EBC, 'GreaterThanEconTrendOverTimeSwarm', { 0.0, 0.0 } }, 
 
-            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.90, 0.90 } },  
+            { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 1.0, 1.01 }},
+
+            { EBC, 'GreaterThanEconStorageCurrentSwarm', { 200, 2000}},
         },
 
         BuilderType = 'Any',
@@ -461,7 +467,9 @@ BuilderGroup { BuilderGroupName = 'Swarm Sonar Upgraders',
 
             { EBC, 'GreaterThanEconTrendOverTimeSwarm', { 0.0, 0.0 } }, 
 
-            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.90, 0.90 } },
+            { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 1.0, 1.01 }},
+
+            { EBC, 'GreaterThanEconStorageCurrentSwarm', { 200, 2000}},
         },
 
         BuilderType = 'Any',

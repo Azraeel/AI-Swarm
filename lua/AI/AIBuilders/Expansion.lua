@@ -27,7 +27,7 @@ BuilderGroup {
 
             { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 0.6, 0.8 }},
 
-            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.05, 0.40 } },             -- Ratio from 0 to 1. (1=100%)
+            { EBC, 'GreaterThanEconStorageCurrentSwarm', { 200, 2000}},
         },
         BuilderType = 'Any',
         BuilderData = {

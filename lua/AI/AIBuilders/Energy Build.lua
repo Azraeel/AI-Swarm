@@ -201,7 +201,9 @@ BuilderGroup {
         Priority = 800,
         BuilderConditions = {
             { MIBC, 'GreaterThanGameTime', { 300 } },
+
             { UCBC, 'UnitCapCheckLess', { .7 } },
+
             { UCBC, 'HaveLessThanUnitsWithCategory', { 1, 'ENERGYSTORAGE' }},
         },
         BuilderType = 'Any',
@@ -220,9 +222,13 @@ BuilderGroup {
         Priority = 500,
         BuilderConditions = {
             { MIBC, 'GreaterThanGameTime', { 600 } },
+
             { UCBC, 'UnitCapCheckLess', { .7 } },
+
             { EBC, 'GreaterThanEconStorageCurrentSwarm', { 200, 2000}},
+
             { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.01, 0.95 } },             -- Ratio from 0 to 1. (1=100%)
+            
             { UCBC, 'HaveLessThanUnitsWithCategory', { 9, 'ENERGYSTORAGE' }},
         },
         BuilderType = 'Any',

@@ -65,7 +65,7 @@ Platoon = Class(SwarmPlatoonClass) {
     -- local maxRadius = SWARMMAX(maxRadius, (maxRadius * aiBrain.MyAirRatio) ) 
     -- This adjust the maxRadius Air Platoons are willing to go out onto depending on the LandRatio
     -- This eliminates a lot of threat data assessment by just having them see if we are losing or winning
-    -- Looking to reenable for V266 of Swarm, requires LOTS of testing and logging
+    -- Looking to reenable for V269 of Swarm, requires LOTS of testing and logging
     AirAISwarm = function(self)
         AIAttackUtils.GetMostRestrictiveLayer(self) 
 
@@ -2187,7 +2187,7 @@ Platoon = Class(SwarmPlatoonClass) {
         local armyIndex = aiBrain:GetArmyIndex()
         local x,z = aiBrain:GetArmyStartPos()
         local cons = self.PlatoonData.Construction
-        local buildingTmpl, buildingTmplFile, baseTmpl, baseTmplFile
+        local buildingTmpl, buildingTmplFile, baseTmpl, baseTmplFile, baseTmplDefault
         local eng
         for k, v in platoonUnits do
             if not v.Dead and EntityCategoryContains(categories.ENGINEER - categories.STATIONASSISTPOD, v) then --DUNCAN - was construction
@@ -2216,6 +2216,7 @@ Platoon = Class(SwarmPlatoonClass) {
 
         buildingTmplFile = import(cons.BuildingTemplateFile or '/lua/BuildingTemplates.lua')
         baseTmplFile = import(cons.BaseTemplateFile or '/lua/BaseTemplates.lua')
+        baseTmplDefault = import('/lua/BaseTemplates.lua')
         buildingTmpl = buildingTmplFile[(cons.BuildingTemplate or 'BuildingTemplates')][factionIndex]
         baseTmpl = baseTmplFile[(cons.BaseTemplate or 'BaseTemplates')][factionIndex]
 
