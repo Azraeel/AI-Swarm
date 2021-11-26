@@ -160,4 +160,13 @@ PlatoonTemplate {
     }
 }
 
+PlatoonTemplate {
+    Name = 'T3MobileShieldSwarm',
+    FactionSquads = {
+        Seraphim = {
+            { 'xsl0307', 1, 1, 'support', 'none' }
+        },
+    }
+}
+
 
