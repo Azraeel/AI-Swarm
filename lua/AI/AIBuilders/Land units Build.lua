@@ -551,11 +551,14 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Scout Formers',
 -- Date noted - September 4th, 2021. 
 -- P.S (I know this is a wall of text but for anyone reading in the future, this concept is crucial to Swarm's Ability to not only eco but hold an aggressive Opponent like SWARM or DalliDilli)
 
+-- Well Well We are here once again replacing shit functions which destory the responsiveness of platoons and the simspeed! We have switched to an older RNGAI Function
+-- It retains abilities of HeroFightPlatoon but looses the retard complexity of it. 
+
 BuilderGroup {
     BuilderGroupName = 'AISwarm Platoon Builder',
     BuildersType = 'PlatoonFormBuilder', 
 
-    Builder {
+    --[[Builder {
         BuilderName = 'AISwarm T1 Spam',     
 
         PlatoonTemplate = 'AISwarm T1 Spam',   
@@ -579,312 +582,50 @@ BuilderGroup {
             LocationType = 'LocationType',
         },
 
-    },
-
-    --[[ Builder {
-        BuilderName = 'AI-Swarm Standard Land (200) P',
-
-        PlatoonTemplate = 'AISwarm LandAttack Micro - Standard', 
-
-        Priority = 650,
-
-        InstanceCount = 4,
-
-        BuilderType = 'Any',
-
-        BuilderConditions = { 
-            { UCBC, 'BuildNotOnLocationSwarm', { 'LocationType', 'MAIN' } },
-
-            { MIBC, 'CanPathToCurrentEnemySwarm', { true, 'LocationType' } },
-
-            { UCBC, 'EnemyUnitsGreaterAtLocationRadiusSwarm', {  BasePanicZone, 'LocationType', 0, categories.MOBILE * categories.LAND - categories.NAVAL}}, -- radius, LocationType, unitCount, categoryEnemy
-        },
-        BuilderData = {
-            AttackEnemyStrength = 1000,
-            SearchRadius = BasePanicZone,
-            GetTargetsFromBase = true,
-            RequireTransport = false, 
-            AggressiveMove = true, 
-            IgnorePathing = false,
-            TargetSearchCategory = categories.MOBILE * categories.LAND - categories.SCOUT - categories.WALL,                        
-            MoveToCategories = {
-                categories.EXPERIMENTAL,
-                categories.MOBILE * categories.LAND * categories.INDIRECTFIRE - categories.SCOUT,
-                categories.MOBILE * categories.LAND * categories.DIRECTFIRE - categories.SCOUT,
-                categories.MOBILE * categories.LAND * categories.ANTIAIR,
-                categories.STRUCTURE * categories.ANTIAIR,
-                categories.STRUCTURE * categories.DEFENSE,
-                categories.ALLUNITS,
-            },
-            WeaponTargetCategories = {                                          
-                categories.EXPERIMENTAL * categories.LAND,
-                categories.COMMAND,
-                categories.INDIRECTFIRE * categories.LAND,
-                categories.DIRECTFIRE * categories.LAND,
-                categories.ANTIAIR * categories.LAND,
-                categories.MOBILE * categories.LAND,
-            },
-        },        
-    }, ]]--
+    },]]--
 
     Builder {
-        BuilderName = 'AI-Swarm Standard Land (60) M',
+        BuilderName = 'AI-Swarm Standard Land - Offensive',
 
         PlatoonTemplate = 'AISwarm LandAttack Micro - Standard', 
 
         Priority = 650,
 
-        InstanceCount = 4,
+        InstanceCount = 25,
 
         BuilderType = 'Any',
 
         BuilderConditions = { 
-            { UCBC, 'ScalePlatoonSizeSwarm', { 'LocationType', 'LAND', categories.MOBILE * categories.LAND + (categories.MOBILE * categories.EXPERIMENTAL) - categories.ANTIAIR - categories.ENGINEER - categories.SCOUT } },
-
-            { MIBC, 'CanPathToCurrentEnemySwarm', { true, 'LocationType' } },
-
-            { UCBC, 'EnemyUnitsGreaterAtLocationRadiusSwarm', {  BaseMilitaryZone, 'LocationType', 0, categories.MOBILE * categories.LAND - categories.NAVAL}}, -- radius, LocationType, unitCount, categoryEnemy
+            { UCBC, 'EnemyUnitsGreaterAtLocationRadiusSwarm', {  BaseEnemyZone, 'LocationType', 0, categories.MOBILE * categories.LAND - categories.NAVAL}}, -- radius, LocationType, unitCount, categoryEnemy
         },
         BuilderData = {
-            AttackEnemyStrength = 60,
-            SearchRadius = BaseMilitaryZone,
-            GetTargetsFromBase = true,
-            RequireTransport = false, 
-            AggressiveMove = true, 
-            IgnorePathing = false,
-            TargetSearchCategory = categories.MOBILE * categories.LAND - categories.SCOUT - categories.WALL,                        
-            MoveToCategories = {
-                categories.EXPERIMENTAL,
-                categories.MOBILE * categories.LAND * categories.INDIRECTFIRE - categories.SCOUT,
-                categories.MOBILE * categories.LAND * categories.DIRECTFIRE - categories.SCOUT,
-                categories.MOBILE * categories.LAND * categories.ANTIAIR,
-                categories.STRUCTURE * categories.ANTIAIR,
-                categories.STRUCTURE * categories.DEFENSE,
+            SearchRadius = BaseEnemyZone,
+            LocationType = 'LocationType',
+            UseFormation = 'None',
+            PlatoonLimit = 18,
+            AggressiveMove = true,
+            ThreatSupport = 5,
+            TargetSearchPriorities = {
+                categories.EXPERIMENTAL * categories.LAND,
+                categories.ENERGYPRODUCTION,
+                categories.ENERGYSTORAGE,
+                categories.MASSEXTRACTION,
+                categories.MASSFABRICATION,
                 categories.ALLUNITS,
             },
-            WeaponTargetCategories = {                                          
-                categories.EXPERIMENTAL * categories.LAND,
+            PrioritizedCategories = {
                 categories.COMMAND,
-                categories.INDIRECTFIRE * categories.LAND,
-                categories.DIRECTFIRE * categories.LAND,
-                categories.ANTIAIR * categories.LAND,
-                categories.MOBILE * categories.LAND,
-            },
-        },        
-    },
-
-    Builder {
-        BuilderName = 'AI-Swarm Standard Land (80) M',
-
-        PlatoonTemplate = 'AISwarm LandAttack Micro - Standard', 
-
-        Priority = 650,
-
-        InstanceCount = 4,
-
-        BuilderType = 'Any',
-
-        BuilderConditions = { 
-            { UCBC, 'ScalePlatoonSizeSwarm', { 'LocationType', 'LAND', categories.MOBILE * categories.LAND + (categories.MOBILE * categories.EXPERIMENTAL) - categories.ANTIAIR - categories.ENGINEER - categories.SCOUT } },
-
-            { MIBC, 'CanPathToCurrentEnemySwarm', { true, 'LocationType' } },
-
-            { UCBC, 'EnemyUnitsGreaterAtLocationRadiusSwarm', {  BaseMilitaryZone, 'LocationType', 0, categories.MOBILE * categories.LAND - categories.NAVAL}}, -- radius, LocationType, unitCount, categoryEnemy
-        },
-        BuilderData = {
-            AttackEnemyStrength = 80,
-            SearchRadius = BaseMilitaryZone,
-            GetTargetsFromBase = true,
-            RequireTransport = false, 
-            AggressiveMove = true, 
-            IgnorePathing = false,
-            TargetSearchCategory = categories.MOBILE * categories.LAND - categories.SCOUT - categories.WALL,                        
-            MoveToCategories = {
                 categories.EXPERIMENTAL,
-                categories.MOBILE * categories.LAND * categories.INDIRECTFIRE - categories.SCOUT,
-                categories.MOBILE * categories.LAND * categories.DIRECTFIRE - categories.SCOUT,
-                categories.MOBILE * categories.LAND * categories.ANTIAIR,
-                categories.STRUCTURE * categories.ANTIAIR,
                 categories.STRUCTURE * categories.DEFENSE,
+                categories.MOBILE * categories.LAND * categories.ANTIAIR,
+                categories.MOBILE * categories.LAND,
+                categories.ENGINEER,
+                categories.MOBILE * categories.LAND * categories.ANTIAIR,
+                categories.MASSEXTRACTION,
                 categories.ALLUNITS,
             },
-            WeaponTargetCategories = {                                          
-                categories.EXPERIMENTAL * categories.LAND,
-                categories.COMMAND,
-                categories.INDIRECTFIRE * categories.LAND,
-                categories.DIRECTFIRE * categories.LAND,
-                categories.ANTIAIR * categories.LAND,
-                categories.MOBILE * categories.LAND,
-            },
-        },        
-    },
-
-    Builder {
-        BuilderName = 'AI-Swarm Standard Land (100) M',
-
-        PlatoonTemplate = 'AISwarm LandAttack Micro - Standard', 
-
-        Priority = 650,
-
-        InstanceCount = 4,
-
-        BuilderType = 'Any',
-
-        BuilderConditions = { 
-            { UCBC, 'ScalePlatoonSizeSwarm', { 'LocationType', 'LAND', categories.MOBILE * categories.LAND + (categories.MOBILE * categories.EXPERIMENTAL) - categories.ANTIAIR - categories.ENGINEER - categories.SCOUT } },
-
-            { MIBC, 'CanPathToCurrentEnemySwarm', { true, 'LocationType' } },
-
-            { UCBC, 'EnemyUnitsGreaterAtLocationRadiusSwarm', {  BaseMilitaryZone, 'LocationType', 0, categories.MOBILE * categories.LAND - categories.NAVAL}}, -- radius, LocationType, unitCount, categoryEnemy
-        },
-        BuilderData = {
-            AttackEnemyStrength = 100,
-            SearchRadius = BaseMilitaryZone,
-            GetTargetsFromBase = true,
-            RequireTransport = false, 
-            AggressiveMove = true, 
-            IgnorePathing = false,
-            TargetSearchCategory = categories.MOBILE * categories.LAND - categories.SCOUT - categories.WALL,                        
-            MoveToCategories = {
-                categories.EXPERIMENTAL,
-                categories.MOBILE * categories.LAND * categories.INDIRECTFIRE - categories.SCOUT,
-                categories.MOBILE * categories.LAND * categories.DIRECTFIRE - categories.SCOUT,
-                categories.MOBILE * categories.LAND * categories.ANTIAIR,
-                categories.STRUCTURE * categories.ANTIAIR,
-                categories.STRUCTURE * categories.DEFENSE,
-                categories.ALLUNITS,
-            },
-            WeaponTargetCategories = {                                          
-                categories.EXPERIMENTAL * categories.LAND,
-                categories.COMMAND,
-                categories.INDIRECTFIRE * categories.LAND,
-                categories.DIRECTFIRE * categories.LAND,
-                categories.ANTIAIR * categories.LAND,
-                categories.MOBILE * categories.LAND,
-            },
-        },        
+        },     
     }, 
-
-
-    Builder {
-        BuilderName = 'AI-Swarm Standard Land (20) E',
-
-        PlatoonTemplate = 'AISwarm LandAttack Micro - Standard', 
-
-        Priority = 649,
-
-        InstanceCount = 3,
-
-        BuilderType = 'Any',
-
-        BuilderConditions = { 
-            { UCBC, 'ScalePlatoonSizeSwarm', { 'LocationType', 'LAND', categories.MOBILE * categories.LAND + (categories.MOBILE * categories.EXPERIMENTAL) - categories.ANTIAIR - categories.ENGINEER - categories.SCOUT } },
-
-            { MIBC, 'CanPathToCurrentEnemySwarm', { true, 'LocationType' } },
-
-            { UCBC, 'LandStrengthRatioGreaterThan', { 1 } },
-
-            { UCBC, 'EnemyUnitsGreaterAtLocationRadiusSwarm', {  BaseEnemyZone, 'LocationType', 0, categories.MOBILE * categories.LAND - categories.NAVAL}}, -- radius, LocationType, unitCount, categoryEnemy
-        },
-        BuilderData = {
-            AttackEnemyStrength = 20,
-            SearchRadius = BaseEnemyZone,
-            GetTargetsFromBase = false,
-            RequireTransport = false, 
-            AggressiveMove = true, 
-            IgnorePathing = false,
-            TargetSearchCategory = categories.STRUCTURE + categories.ECONOMIC - categories.SCOUT - categories.WALL,                        
-            MoveToCategories = {
-                categories.MASSEXTRACTION,
-                categories.MASSFABRICATION, 
-                categories.ENERGYPRODUCTION,
-                categories.ENERGYSTORAGE,
-                categories.STRUCTURE * categories.ANTIAIR,
-                categories.STRUCTURE * categories.DEFENSE,
-                categories.ALLUNITS,
-            },
-        },        
-    },
-
-    Builder {
-        BuilderName = 'AI-Swarm Standard Land (40) E',
-
-        PlatoonTemplate = 'AISwarm LandAttack Micro - Standard', 
-
-        Priority = 649,
-
-        InstanceCount = 2,
-
-        BuilderType = 'Any',
-
-        BuilderConditions = { 
-            { UCBC, 'ScalePlatoonSizeSwarm', { 'LocationType', 'LAND', categories.MOBILE * categories.LAND + (categories.MOBILE * categories.EXPERIMENTAL) - categories.ANTIAIR - categories.ENGINEER - categories.SCOUT } },
-
-            { MIBC, 'CanPathToCurrentEnemySwarm', { true, 'LocationType' } },
-
-            { UCBC, 'LandStrengthRatioGreaterThan', { 1 } },
-
-            { UCBC, 'EnemyUnitsGreaterAtLocationRadiusSwarm', {  BaseEnemyZone, 'LocationType', 0, categories.MOBILE * categories.LAND - categories.NAVAL}}, -- radius, LocationType, unitCount, categoryEnemy
-        },
-        BuilderData = {
-            AttackEnemyStrength = 40,
-            SearchRadius = BaseEnemyZone,
-            GetTargetsFromBase = false,
-            RequireTransport = false, 
-            AggressiveMove = true, 
-            IgnorePathing = false,
-            TargetSearchCategory = categories.STRUCTURE + categories.ECONOMIC - categories.SCOUT - categories.WALL,                        
-            MoveToCategories = {
-                categories.MASSEXTRACTION,
-                categories.MASSFABRICATION, 
-                categories.ENERGYPRODUCTION,
-                categories.ENERGYSTORAGE,
-                categories.STRUCTURE * categories.ANTIAIR,
-                categories.STRUCTURE * categories.DEFENSE,
-                categories.ALLUNITS,
-            },
-        },        
-    },
-
-    Builder {
-        BuilderName = 'AI-Swarm Standard Land (80) E',
-
-        PlatoonTemplate = 'AISwarm LandAttack Micro - Standard', 
-
-        Priority = 649,
-        
-        InstanceCount = 2,
-
-        BuilderType = 'Any',
-
-        BuilderConditions = { 
-            { UCBC, 'ScalePlatoonSizeSwarm', { 'LocationType', 'LAND', categories.MOBILE * categories.LAND + (categories.MOBILE * categories.EXPERIMENTAL) - categories.ANTIAIR - categories.ENGINEER - categories.SCOUT } },
-
-            { MIBC, 'CanPathToCurrentEnemySwarm', { true, 'LocationType' } },
-
-            { UCBC, 'LandStrengthRatioGreaterThan', { 1 } },
-
-            { UCBC, 'EnemyUnitsGreaterAtLocationRadiusSwarm', {  BaseEnemyZone, 'LocationType', 0, categories.MOBILE * categories.LAND - categories.NAVAL}}, -- radius, LocationType, unitCount, categoryEnemy
-        },
-        BuilderData = {
-            AttackEnemyStrength = 80,
-            SearchRadius = BaseEnemyZone,
-            GetTargetsFromBase = false,
-            RequireTransport = false, 
-            AggressiveMove = true, 
-            IgnorePathing = false,
-            TargetSearchCategory = categories.STRUCTURE + categories.ECONOMIC - categories.SCOUT - categories.WALL,                        
-            MoveToCategories = {
-                categories.MASSEXTRACTION,
-                categories.MASSFABRICATION, 
-                categories.ENERGYPRODUCTION,
-                categories.ENERGYSTORAGE,
-                categories.STRUCTURE * categories.ANTIAIR,
-                categories.STRUCTURE * categories.DEFENSE,
-                categories.ALLUNITS,
-            },
-        },        
-    },
 }
 
 BuilderGroup {

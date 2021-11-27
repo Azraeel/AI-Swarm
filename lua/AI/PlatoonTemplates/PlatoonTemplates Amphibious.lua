@@ -5,7 +5,7 @@ if not categories.FLOATING then categories.FLOATING = categories.HOVER end
 
 PlatoonTemplate {
     Name = 'S123 Hover 1 10',
-    Plan = 'HeroFightPlatoonSwarm',
+    Plan = 'LandAttackAISwarm',
     GlobalSquads = {
         { categories.MOBILE * categories.HOVER * categories.FLOATING - categories.EXPERIMENTAL - categories.ENGINEER - categories.SCOUT - categories.COMMAND - categories.SUBCOMMANDER, 1, 100, 'Attack', 'none' }
     }
@@ -13,7 +13,7 @@ PlatoonTemplate {
 
 PlatoonTemplate {
     Name = 'S123 Amphibious 1 10',
-    Plan = 'HeroFightPlatoonSwarm',
+    Plan = 'LandAttackAISwarm',
     GlobalSquads = {
         { categories.MOBILE * categories.AMPHIBIOUS - categories.EXPERIMENTAL - categories.ENGINEER - categories.SCOUT - categories.COMMAND - categories.SUBCOMMANDER, 1, 100, 'Attack', 'none' }
     }

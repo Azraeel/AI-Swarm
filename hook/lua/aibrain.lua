@@ -219,12 +219,12 @@ AIBrain = Class(SwarmAIBrainClass) {
                     local StructurePool = self.StructurePool
                     self:AssignUnitsToPlatoon(StructurePool, {unit}, 'Support', 'none' )
                     local upgradeID = unitBp.General.UpgradesTo or false
-                    --LOG('* AI-RNG: BlueprintID to upgrade to is : '..unitBp.General.UpgradesTo)
+                    --LOG('* AI-Swarm: BlueprintID to upgrade to is : '..unitBp.General.UpgradesTo)
                     if upgradeID and __blueprints[upgradeID] then
                         SwarmUtils.StructureUpgradeInitializeSwarm(unit, self)
                     end
                     local unitTable = StructurePool:GetPlatoonUnits()
-                    --LOG('* AI-RNG: StructurePool now has :'..RNGGETN(unitTable))
+                    --LOG('* AI-Swarm: StructurePool now has :'..SWARMGETN(unitTable))
                 end
             end
         end
@@ -862,11 +862,11 @@ AIBrain = Class(SwarmAIBrainClass) {
                 end
                 local unitBp = v:GetBlueprint()
                 local StructurePool = self.StructurePool
-                --LOG('* AI-RNG: Assigning built extractor to StructurePool')
+                --LOG('* AI-Swarm: Assigning built extractor to StructurePool')
                 self:AssignUnitsToPlatoon(StructurePool, {v}, 'Support', 'none' )
                 local upgradeID = unitBp.General.UpgradesTo or false
                 if upgradeID and unitBp then
-                    --LOG('* AI-RNG: UpgradeID')
+                    --LOG('* AI-Swarm: UpgradeID')
                     SwarmUtils.StructureUpgradeInitializeSwarm(v, self)
                 end
             end

@@ -96,7 +96,7 @@ function GreaterThanEnergyIncomeSwarm(aiBrain, eIncome)
 end
 
 function GreaterThanEconEfficiencyOverTimeSwarm(aiBrain, MassEfficiency, EnergyEfficiency)
-    -- Using eco over time values from the EconomyOverTimeRNG thread.
+    -- Using eco over time values from the EconomyOverTimeSwarm thread.
     --LOG('Mass Wanted :'..MassEfficiency..'Actual :'..MassEfficiencyOverTime..'Energy Wanted :'..EnergyEfficiency..'Actual :'..EnergyEfficiencyOverTime)
     if (aiBrain.EconomyOverTimeCurrent.MassEfficiencyOverTime >= MassEfficiency and aiBrain.EconomyOverTimeCurrent.EnergyEfficiencyOverTime >= EnergyEfficiency) then
         --LOG('GreaterThanEconEfficiencyOverTimeSwarm Returned True')
