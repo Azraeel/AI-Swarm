@@ -2,12 +2,15 @@ WARN('['..string.gsub(debug.getinfo(1).source, ".*\\(.*.lua)", "%1")..', line:'.
 
 local SwarmUtils = import('/mods/AI-Swarm/lua/AI/Swarmutilities.lua')
 local MABC = import('/lua/editor/MarkerBuildConditions.lua')
+local ALLBPS = __blueprints
 local HERODEBUGSwarm = false
 local CHAMPIONDEBUGswarm = false 
 local MarkerSwitchDist = 20
 local MarkerSwitchDistEXP = 40
 
 local PlatoonExists = moho.aibrain_methods.PlatoonExists
+local GetThreatAtPosition = moho.aibrain_methods.GetThreatAtPosition
+local GetThreatsAroundPosition = moho.aibrain_methods.GetThreatsAroundPosition
 local GetUnitsAroundPoint = moho.aibrain_methods.GetUnitsAroundPoint
 local GetPlatoonUnits = moho.platoon_methods.GetPlatoonUnits
 local AssignUnitsToPlatoon = moho.aibrain_methods.AssignUnitsToPlatoon
@@ -47,19 +50,6 @@ local KillThread = KillThread
 
 SwarmPlatoonClass = Platoon
 Platoon = Class(SwarmPlatoonClass) {
-
-    BaseManagersDistressAI  = function(self)
-        -- Only use this with AI-Swarm
-        local aiBrain = self:GetBrain()
-        if not aiBrain.Swarm then
-            return SwarmPlatoonClass.BaseManagersDistressAI(self)
-        end
-        SWARMWAIT(10)
-        -- We are leaving this forked thread here because we don't need it.
-        -- This shit is annoying!
-        -- Want to get this properly working with Swarm One Day.
-        KillThread(CurrentThread())
-    end,
 
     -- The Magical Tether System or well... 1 line of code.
     -- local maxRadius = SWARMMAX(maxRadius, (maxRadius * aiBrain.MyAirRatio) ) 
@@ -101,7 +91,7 @@ Platoon = Class(SwarmPlatoonClass) {
                 SWARMINSERT(MoveToCategories, v )
             end
         else
-            LOG('* AI-Swarm: * InterceptorAISwarm: MoveToCategories missing in platoon '..self.BuilderName)
+            LOG('* AI-Swarm: * AirAISwarm: MoveToCategories missing in platoon '..self.BuilderName)
         end
         local WeaponTargetCategories = {}
         if self.PlatoonData.WeaponTargetCategories then
@@ -132,23 +122,23 @@ Platoon = Class(SwarmPlatoonClass) {
         local LastTargetCheck
         local DistanceToBase = 0
         local TargetSearchCategory = self.PlatoonData.TargetSearchCategory or 'ALLUNITS'
-        local maxRadius = SWARMMAX(maxRadius, (maxRadius * aiBrain.MyAirRatio) )
-        --LOG("The Max Radius is " .. repr(maxRadius))
+        local maxradius = SWARMMAX(maxRadius, (maxRadius * aiBrain.MyAirRatio) )
+        --LOG("The Max Radius is " .. repr(maxradius))
         while aiBrain:PlatoonExists(self) do
             PlatoonPos = self:GetPlatoonPosition()
             if not GetTargetsFromBase then
                 GetTargetsFrom = PlatoonPos
             else
                 DistanceToBase = VDist2(PlatoonPos[1] or 0, PlatoonPos[3] or 0, basePosition[1] or 0, basePosition[3] or 0)
-                if DistanceToBase > maxRadius then
+                if DistanceToBase > maxradius then
                     target = nil
                 end
             end
             -- only get a new target and make a move command if the target is dead
             if not target or target.Dead or target:BeenDestroyed() then
-                UnitWithPath, UnitNoPath, path, reason = AIUtils.AIFindNearestCategoryTargetInRangeSwarm(aiBrain, self, 'Attack', GetTargetsFrom, maxRadius, MoveToCategories, TargetSearchCategory, false )
+                UnitWithPath, UnitNoPath, path, reason = AIUtils.AIFindNearestCategoryTargetInRangeSwarm(aiBrain, self, 'Attack', GetTargetsFrom, maxradius, MoveToCategories, TargetSearchCategory, false )
                 if UnitWithPath then
-                    --LOG('* AI-Swarm: *InterceptorAISwarm: found UnitWithPath')
+                    --LOG('* AI-Swarm: *AirAISwarm: found UnitWithPath')
                     self:Stop()
                     target = UnitWithPath
                     if self.PlatoonData.IgnorePathing then
@@ -164,7 +154,7 @@ Platoon = Class(SwarmPlatoonClass) {
                         self:AttackTarget(UnitWithPath)
                     end
                 elseif UnitNoPath then
-                    --LOG('* AI-Swarm: *InterceptorAISwarm: found UnitNoPath')
+                    --LOG('* AI-Swarm: *AirAISwarm: found UnitNoPath')
                     self:Stop()
                     target = UnitNoPath
                     self:Stop()
@@ -174,7 +164,7 @@ Platoon = Class(SwarmPlatoonClass) {
                         self:SimpleReturnToBaseSwarm(basePosition)
                     end
                 else
-                    --LOG('* AI-Swarm: *InterceptorAISwarm: no target found '..repr(reason))
+                    --LOG('* AI-Swarm: *AirAISwarm: no target found '..repr(reason))
                     -- we have no target return to main base
                     self:Stop()
                     if self.MovementLayer == 'Air' then
@@ -194,7 +184,7 @@ Platoon = Class(SwarmPlatoonClass) {
                             self.PlatoonData.GetTargetsFromBase = false
                             self.PlatoonData.MoveToCategories = { categories.EXPERIMENTAL, categories.TECH3, categories.TECH2, categories.ALLUNITS }
                             self.PlatoonData.WeaponTargetCategories = { categories.EXPERIMENTAL, categories.TECH3, categories.TECH2, categories.ALLUNITS }
-                            self:InterceptorAISwarm()
+                            self:AirAISwarm()
                         else
                             self:SimpleReturnToBaseSwarm(basePosition)
                         end
@@ -206,7 +196,7 @@ Platoon = Class(SwarmPlatoonClass) {
             if aiBrain:PlatoonExists(self) and target and not target.Dead then
                 LastTargetPos = target:GetPosition()
                 -- check if we are still inside the attack radius and be sure the area is not a nuke blast area
-                if VDist2(basePosition[1] or 0, basePosition[3] or 0, LastTargetPos[1] or 0, LastTargetPos[3] or 0) < maxRadius then
+                if VDist2(basePosition[1] or 0, basePosition[3] or 0, LastTargetPos[1] or 0, LastTargetPos[3] or 0) < maxradius then
                     self:Stop()
                     if self.PlatoonData.IgnorePathing or VDist2(PlatoonPos[1] or 0, PlatoonPos[3] or 0, LastTargetPos[1] or 0, LastTargetPos[3] or 0) < 60 then
                         self:AttackTarget(target)
@@ -250,8 +240,6 @@ Platoon = Class(SwarmPlatoonClass) {
         end
     end,
 
-    -- Outdated Land Platoon Function
-    -- Refer to HeroFightPlatoonSwarm
     LandAttackAISwarm = function(self)
         AIAttackUtils.GetMostRestrictiveLayer(self) -- this will set self.MovementLayer to the platoon
         -- Search all platoon units and activate Stealth and Cloak (mostly Modded units)
@@ -1716,10 +1704,10 @@ Platoon = Class(SwarmPlatoonClass) {
         self:SetPlatoonFormationOverride('NoFormation')
         --LOG('* AI-Swarm: * MoveWithTransportSwarm: CanPathTo() failed for '..repr(TargetPosition)..' forcing SendPlatoonWithTransportsNoCheck.')
         if not ExperimentalInPlatoon and aiBrain:PlatoonExists(self) then
-            usedTransports = AIAttackUtils.SendPlatoonWithTransportsNoCheck(aiBrain, self, TargetPosition, true, false)
+            usedTransports = AIAttackUtils.SendPlatoonWithTransportsNoCheckSwarm(aiBrain, self, TargetPosition, true, false)
         end
         if not usedTransports then
-            --LOG('* AI-Swarm: * MoveWithTransportSwarm: SendPlatoonWithTransportsNoCheck failed.')
+            --LOG('* AI-Swarm: * MoveWithTransportSwarm: SendPlatoonWithTransportsNoCheckSwarm failed.')
             local PlatoonPos = self:GetPlatoonPosition() or TargetPosition
             local DistanceToTarget = VDist2(PlatoonPos[1] or 0, PlatoonPos[3] or 0, TargetPosition[1] or 0, TargetPosition[3] or 0)
             local DistanceToBase = VDist2(PlatoonPos[1] or 0, PlatoonPos[3] or 0, basePosition[1] or 0, basePosition[3] or 0)
@@ -1946,7 +1934,7 @@ Platoon = Class(SwarmPlatoonClass) {
                 self:RenamePlatoonSwarm('SendPlatoonWithTransportsNoCheck')
                 SWARMWAIT(1)
             end
-            usedTransports = AIAttackUtils.SendPlatoonWithTransportsNoCheck(aiBrain, self, TargetPosition, true, false)
+            usedTransports = AIAttackUtils.SendPlatoonWithTransportsNoCheckSwarm(aiBrain, self, TargetPosition, true, false)
         end
         -- if we don't got a transport, try to reach the destination by path or directly
         if not usedTransports then
@@ -2092,12 +2080,12 @@ Platoon = Class(SwarmPlatoonClass) {
                             SWARMWAIT(10)
                         end
                     else
-                        --LOG('* AI-Swarm: * MoveToLocationInclTransportSwarm: CanPathTo() failed for '..repr(TargetPosition)..' forcing SendPlatoonWithTransportsNoCheck.')
+                        --LOG('* AI-Swarm: * MoveToLocationInclTransportSwarm: CanPathTo() failed for '..repr(TargetPosition)..' forcing SendPlatoonWithTransportsNoCheckSwarm.')
                         if not ExperimentalInPlatoon then
-                            usedTransports = AIAttackUtils.SendPlatoonWithTransportsNoCheck(aiBrain, self, TargetPosition, true, false)
+                            usedTransports = AIAttackUtils.SendPlatoonWithTransportsNoCheckSwarm(aiBrain, self, TargetPosition, true, false)
                         end
                         if not usedTransports then
-                            --LOG('* AI-Swarm: * MoveToLocationInclTransportSwarm: CanPathTo() and SendPlatoonWithTransportsNoCheck failed. SimpleReturnToBase!')
+                            --LOG('* AI-Swarm: * MoveToLocationInclTransportSwarm: CanPathTo() and SendPlatoonWithTransportsNoCheckSwarm failed. SimpleReturnToBase!')
                             local PlatoonPos = self:GetPlatoonPosition()
                             local DistanceToTarget = VDist2(PlatoonPos[1] or 0, PlatoonPos[3] or 0, TargetPosition[1] or 0, TargetPosition[3] or 0)
                             local DistanceToBase = VDist2(PlatoonPos[1] or 0, PlatoonPos[3] or 0, basePosition[1] or 0, basePosition[3] or 0)
@@ -2773,7 +2761,7 @@ Platoon = Class(SwarmPlatoonClass) {
             end
             SWARMWAIT(2)
         end
-        --LOG('EnginerBuildQueue : '..RNGGETN(eng.EngineerBuildQueue)..' Contents '..repr(eng.EngineerBuildQueue))
+        --LOG('EnginerBuildQueue : '..SWARMGETN(eng.EngineerBuildQueue)..' Contents '..repr(eng.EngineerBuildQueue))
         -- Credit to Chp2001/Relent0r for this block of code
         if not eng.Dead and SWARMGETN(eng.EngineerBuildQueue) <= 0 and eng.PlatoonHandle.PlatoonData.Construction.RepeatBuild then
             --LOG('Starting RepeatBuild')
@@ -3292,6 +3280,80 @@ Platoon = Class(SwarmPlatoonClass) {
         if aiBrain:PlatoonExists(self) then
             self:PlatoonDisband()
         end
+    end,
+
+    ReturnToBaseAISwarm = function(self, mainBase)
+
+        local aiBrain = self:GetBrain()
+
+        if not PlatoonExists(aiBrain, self) or not GetPlatoonPosition(self) then
+            return
+        end
+
+        local bestBase = false
+        local bestBaseName = ""
+        local bestDistSq = 999999999
+        local platPos = GetPlatoonPosition(self)
+        AIAttackUtils.GetMostRestrictiveLayer(self)
+
+        if not mainBase then
+            for baseName, base in aiBrain.BuilderManagers do
+                local distSq = VDist2Sq(platPos[1], platPos[3], base.Position[1], base.Position[3])
+
+                if distSq < bestDistSq then
+                    bestBase = base
+                    bestBaseName = baseName
+                    bestDistSq = distSq
+                end
+            end
+        else
+            bestBase = aiBrain.BuilderManagers['MAIN']
+        end
+        
+        if bestBase then
+            if self.MovementLayer == 'Air' then
+                self:Stop()
+                self:MoveToLocation(bestBase.Position, false)
+                --LOG('Air Unit Return to base provided position :'..repr(bestBase.Position))
+                while PlatoonExists(aiBrain, self) do
+                    local currentPlatPos = self:GetPlatoonPosition()
+                    --LOG('Air Unit Distance from platoon to bestBase position for Air units is'..VDist2Sq(currentPlatPos[1], currentPlatPos[3], bestBase.Position[1], bestBase.Position[3]))
+                    --LOG('Air Unit Platoon Position is :'..repr(currentPlatPos))
+                    local distSq = VDist2Sq(currentPlatPos[1], currentPlatPos[3], bestBase.Position[1], bestBase.Position[3])
+                    if distSq < 6400 then
+                        break
+                    end
+                    WaitTicks(15)
+                end
+            else
+                local path, reason = AIAttackUtils.PlatoonGenerateSafePathToSwarm(aiBrain, self.MovementLayer, GetPlatoonPosition(self), bestBase.Position, 10)
+                IssueClearCommands(self)
+                if path then
+                    local pathLength = SWARMGETN(path)
+                    for i=1, pathLength-1 do
+                        self:MoveToLocation(path[i], false)
+                        local oldDistSq = 0
+                        while PlatoonExists(aiBrain, self) do
+                            platPos = GetPlatoonPosition(self)
+                            local distSq = VDist2Sq(platPos[1], platPos[3], bestBase.Position[1], bestBase.Position[3])
+                            if distSq < 400 then
+                                self:PlatoonDisband()
+                                return
+                            end
+                            -- if we haven't moved in 10 seconds... go back to attacking
+                            if (distSq - oldDistSq) < 25 then
+                                break
+                            end
+                            oldDistSq = distSq
+                            WaitTicks(20)
+                        end
+                    end
+                end
+                self:MoveToLocation(bestBase.Position, false)
+            end
+        end
+        -- return 
+        self:PlatoonDisband()
     end,
 
     ForceReturnToNearestBaseAISwarm = function(self)
@@ -4163,7 +4225,7 @@ Platoon = Class(SwarmPlatoonClass) {
             end
         end
         SWARMWAIT(50)
-        self:HeroFightPlatoonSwarm()
+        self:HuntAIPATHSwarm()
         if aiBrain:PlatoonExists(self) then
             self:PlatoonDisband()
         end
@@ -4513,9 +4575,9 @@ Platoon = Class(SwarmPlatoonClass) {
     GuardMarkerSwarm = function(self)
         local aiBrain = self:GetBrain()
 
-        local platLoc = self:GetPlatoonPosition()
+        local platLoc = GetPlatoonPosition(self)
 
-        if not aiBrain:PlatoonExists(self) or not platLoc then
+        if not PlatoonExists(aiBrain, self) or not platLoc then
             return
         end
 
@@ -4565,13 +4627,89 @@ Platoon = Class(SwarmPlatoonClass) {
         local bAggroMove = self.PlatoonData.AggressiveMove or false
 
         local PlatoonFormation = self.PlatoonData.UseFormation or 'NoFormation'
-        -----------------------------------------------------------------------
+        
+        -- Ignore markers with friendly structure threatlevels
+        local IgnoreFriendlyBase = self.PlatoonData.IgnoreFriendlyBase or false
 
+        local maxPathDistance = self.PlatoonData.MaxPathDistance or 200
+
+        local safeZone = self.PlatoonData.SafeZone or false
+
+        -----------------------------------------------------------------------
+        local markerLocations
 
         AIAttackUtils.GetMostRestrictiveLayer(self)
         self:SetPlatoonFormationOverride(PlatoonFormation)
-        local markerLocations = AIUtils.AIGetMarkerLocations(aiBrain, markerType)
+        local enemyRadius = 40
+        local MaxPlatoonWeaponRange
+        local unitPos
+        local alpha
+        local x
+        local y
+        local smartPos
+        local platoonUnits = GetPlatoonUnits(self)
+        local rangeModifier = 0
+        local atkPri = {}
+        local platoonThreat = self:CalculatePlatoonThreat('Surface', categories.ALLUNITS)
 
+        if platoonUnits > 0 then
+            for k, v in platoonUnits do
+                if not v.Dead then
+                    if EntityCategoryContains(categories.SCOUT, v) then
+                        self.ScoutPresent = true
+                    end
+                    for _, weapon in ALLBPS[v.UnitId].Weapon or {} do
+                        -- unit can have MaxWeaponRange entry from the last platoon
+                        if not v.MaxWeaponRange or weapon.MaxRadius > v.MaxWeaponRange then
+                            -- save the weaponrange 
+                            v.MaxWeaponRange = weapon.MaxRadius * 0.9 -- maxrange minus 10%
+                            -- save the weapon balistic arc, we need this later to check if terrain is blocking the weapon line of sight
+                            if weapon.BallisticArc == 'RULEUBA_LowArc' then
+                                v.WeaponArc = 'low'
+                            elseif weapon.BallisticArc == 'RULEUBA_HighArc' then
+                                v.WeaponArc = 'high'
+                            else
+                                v.WeaponArc = 'none'
+                            end
+                        end
+                        if not MaxPlatoonWeaponRange or MaxPlatoonWeaponRange < v.MaxWeaponRange then
+                            MaxPlatoonWeaponRange = v.MaxWeaponRange
+                        end
+                    end
+                    if v:TestToggleCaps('RULEUTC_StealthToggle') then
+                        v:SetScriptBit('RULEUTC_StealthToggle', false)
+                    end
+                    if v:TestToggleCaps('RULEUTC_CloakToggle') then
+                        v:SetScriptBit('RULEUTC_CloakToggle', false)
+                    end
+                    -- prevent units from reclaiming while attack moving
+                    v:RemoveCommandCap('RULEUCC_Reclaim')
+                    v:RemoveCommandCap('RULEUCC_Repair')
+                    v.smartPos = {0,0,0}
+                    if not v.MaxWeaponRange then
+                        --WARN('Scanning: unit ['..repr(v.UnitId)..'] has no MaxWeaponRange - '..repr(self.BuilderName))
+                    end
+                end
+            end
+        end
+
+        if self.PlatoonData.PrioritizedCategories then
+            for k,v in self.PlatoonData.PrioritizedCategories do
+                SWARMGETN(atkPri, v)
+            end
+            SWARMGETN(atkPri, 'ALLUNITS')
+        end
+        
+        if IgnoreFriendlyBase then
+            --LOG('* AI-Swarm: ignore friendlybase true')
+            local markerPos = AIUtils.AIGetMarkerLocationsNotFriendlySwarm(aiBrain, markerType)
+            markerLocations = markerPos
+        else
+            --LOG('* AI-Swarm: ignore friendlybase false')
+            local markerPos = AIUtils.AIGetMarkerLocations(aiBrain, markerType)
+            markerLocations = markerPos
+        end
+        
         local bestMarker = false
 
         if not self.LastMarker then
@@ -4579,6 +4717,10 @@ Platoon = Class(SwarmPlatoonClass) {
         end
 
         -- look for a random marker
+        --[[Marker table examples for better understanding what is happening below 
+        info: Marker Current{ Name="Mass7", Position={ 189.5, 24.240200042725, 319.5, type="VECTOR3" } }
+        info: Marker Last{ { 374.5, 20.650400161743, 154.5, type="VECTOR3" } }
+        ]] 
         if moveFirst == 'Random' then
             if SWARMGETN(markerLocations) <= 2 then
                 self.LastMarker[1] = nil
@@ -4589,7 +4731,7 @@ Platoon = Class(SwarmPlatoonClass) {
                     self.LastMarker[1] = nil
                     self.LastMarker[2] = nil
                 end
-                if self:AvoidsBasesSorian(marker.Position, bAvoidBases, avoidBasesRadius) then
+                if self:AvoidsBases(marker.Position, bAvoidBases, avoidBasesRadius) then
                     if self.LastMarker[1] and marker.Position[1] == self.LastMarker[1][1] and marker.Position[3] == self.LastMarker[1][3] then
                         continue
                     end
@@ -4613,28 +4755,26 @@ Platoon = Class(SwarmPlatoonClass) {
             -- find best threat at the closest distance
             for _,marker in markerLocations do
                 local markerThreat
-                local enemyThreat
-                markerThreat = aiBrain:GetThreatAtPosition(marker.Position, 0, true, 'Economy', enemyIndex)
-                enemyThreat = aiBrain:GetThreatAtPosition(marker.Position, 1, true, 'AntiSurface', enemyIndex)
-                --LOG('Best pre calculation marker threat is '..markerThreat..' at position'..repr(marker.Position))
-                --LOG('Surface Threat at marker is '..enemyThreat..' at position'..repr(marker.Position))
-                if enemyThreat > 1 and markerThreat then
-                    markerThreat = markerThreat / enemyThreat
+                if bSelfThreat then
+                    markerThreat = GetThreatAtPosition(aiBrain, marker.Position, 0, true, threatType, aiBrain:GetArmyIndex())
+                else
+                    markerThreat = GetThreatAtPosition(aiBrain, marker.Position, 0, true, threatType)
                 end
-                --LOG('Best marker threat is '..markerThreat..' at position'..repr(marker.Position))
                 local distSq = VDist2Sq(marker.Position[1], marker.Position[3], platLoc[1], platLoc[3])
-    
-                if markerThreat >= minThreatThreshold and markerThreat <= maxThreatThreshold then
-                    if self:AvoidsBases(marker.Position, bAvoidBases, avoidBasesRadius) then
-                        if self.IsBetterThreat(bFindHighestThreat, markerThreat, bestMarkerThreat) then
-                            bestDistSq = distSq
-                            bestMarker = marker
-                            bestMarkerThreat = markerThreat
-                        elseif markerThreat == bestMarkerThreat then
-                            if distSq < bestDistSq then
+
+                if distSq > 100 then
+                    if markerThreat >= minThreatThreshold and markerThreat <= maxThreatThreshold then
+                        if self:AvoidsBases(marker.Position, bAvoidBases, avoidBasesRadius) then
+                            if self.IsBetterThreat(bFindHighestThreat, markerThreat, bestMarkerThreat) then
                                 bestDistSq = distSq
                                 bestMarker = marker
                                 bestMarkerThreat = markerThreat
+                            elseif markerThreat == bestMarkerThreat then
+                                if distSq < bestDistSq then
+                                    bestDistSq = distSq
+                                    bestMarker = marker
+                                    bestMarkerThreat = markerThreat
+                                end
                             end
                         end
                     end
@@ -4650,7 +4790,7 @@ Platoon = Class(SwarmPlatoonClass) {
             end
             for _,marker in markerLocations do
                 local distSq = VDist2Sq(marker.Position[1], marker.Position[3], platLoc[1], platLoc[3])
-                if self:AvoidsBasesSorian(marker.Position, bAvoidBases, avoidBasesRadius) and distSq > (avoidClosestRadius * avoidClosestRadius) then
+                if self:AvoidsBases(marker.Position, bAvoidBases, avoidBasesRadius) and distSq > (avoidClosestRadius * avoidClosestRadius) then
                     if distSq < bestDistSq then
                         if self.LastMarker[1] and marker.Position[1] == self.LastMarker[1][1] and marker.Position[3] == self.LastMarker[1][3] then
                             continue
@@ -4671,42 +4811,79 @@ Platoon = Class(SwarmPlatoonClass) {
         if bestMarker then
             self.LastMarker[2] = self.LastMarker[1]
             self.LastMarker[1] = bestMarker.Position
-            --LOG("GuardMarker: Attacking " .. bestMarker.Name)
-            local path, reason = AIAttackUtils.PlatoonGenerateSafePathTo(aiBrain, self.MovementLayer, self:GetPlatoonPosition(), bestMarker.Position, 200)
-            --local success, bestGoalPos = AIAttackUtils.CheckPlatoonPathingEx(self, bestMarker.Position)
-            IssueClearCommands(self:GetPlatoonUnits())
+            --LOG('* AI-Swarm: GuardMarker: Attacking '' .. bestMarker.Name)
+            local path, reason = AIAttackUtils.PlatoonGenerateSafePathToSwarm(aiBrain, self.MovementLayer, GetPlatoonPosition(self), bestMarker.Position, 10, maxPathDistance)
+            local success, bestGoalPos = AIAttackUtils.CheckPlatoonPathingEx(self, bestMarker.Position)
+            IssueClearCommands(GetPlatoonUnits(self))
             if path then
-                local position = self:GetPlatoonPosition()
-                if VDist2(position[1], position[3], bestMarker.Position[1], bestMarker.Position[3]) > 512 then
-                    usedTransports = AIAttackUtils.SendPlatoonWithTransportsSorian(aiBrain, self, bestMarker.Position, true, false, false)
+                local position = GetPlatoonPosition(self)
+                if not success or VDist2(position[1], position[3], bestMarker.Position[1], bestMarker.Position[3]) > 512 then
+                    --LOG('* AI-Swarm: GuardMarkerSwarm marker position > 512')
+                    if safeZone then
+                        --LOG('* AI-Swarm: GuardMarkerSwarm Safe Zone is true')
+                    end
+                    usedTransports = AIAttackUtils.SendPlatoonWithTransportsNoCheckSwarm(aiBrain, self, bestMarker.Position, true, false, safeZone)
                 elseif VDist2(position[1], position[3], bestMarker.Position[1], bestMarker.Position[3]) > 256 then
-                    usedTransports = AIAttackUtils.SendPlatoonWithTransportsSorian(aiBrain, self, bestMarker.Position, false, false, false)
+                    --LOG('* AI-Swarm: GuardMarkerSwarm marker position > 256')
+                    usedTransports = AIAttackUtils.SendPlatoonWithTransportsNoCheckSwarm(aiBrain, self, bestMarker.Position, false, false, safeZone)
                 end
                 if not usedTransports then
                     local pathLength = SWARMGETN(path)
+                    local prevpoint = position or false
+                    --LOG('* AI-Swarm: GuardMarkerSwarm movement logic')
                     for i=1, pathLength-1 do
+                        local direction = SwarmUtils.GetDirectionInDegrees( prevpoint, path[i] )
                         if bAggroMove then
-                            self:AggressiveMoveToLocation(path[i])
+                            --self:AggressiveMoveToLocation(path[i])
+                            IssueFormAggressiveMove( self:GetPlatoonUnits(), path[i], PlatoonFormation, direction)
                         else
-                            self:MoveToLocation(path[i], false)
+                            --self:MoveToLocation(path[i], false)
+                            if self:GetSquadUnits('Attack') and SWARMGETN(self:GetSquadUnits('Attack')) > 0 then
+                                IssueFormMove( self:GetSquadUnits('Attack'), path[i], PlatoonFormation, direction)
+                            end
+                            if self:GetSquadUnits('Artillery') and SWARMGETN(self:GetSquadUnits('Artillery')) > 0 then
+                                IssueFormAggressiveMove( self:GetSquadUnits('Artillery'), path[i], PlatoonFormation, direction)
+                            end
                         end
+                        while PlatoonExists(aiBrain, self) do
+                            platoonPosition = GetPlatoonPosition(self)
+                            pathDistance = VDist2Sq(path[i][1], path[i][3], platoonPosition[1], platoonPosition[3])
+                            if pathDistance < 400 then
+                                -- If we don't stop the movement here, then we have heavy traffic on this Map marker with blocking units
+                                self:Stop()
+                                break
+                            end
+                            --LOG('Waiting to reach target loop')
+                            SWARMWAIT(15)
+                        end
+                        prevpoint = SWARMCOPY(path[i])
                     end
                 end
             elseif (not path and reason == 'NoPath') then
-                usedTransports = AIAttackUtils.SendPlatoonWithTransportsSorian(aiBrain, self, bestMarker.Position, true, false, true)
+                --LOG('* AI-Swarm: Guardmarker NoPath requesting transports')
+                usedTransports = AIAttackUtils.SendPlatoonWithTransportsNoCheckSwarm(aiBrain, self, bestMarker.Position, true, false, safeZone)
+                --DUNCAN - if we need a transport and we cant get one the disband
+                if not usedTransports then
+                    --LOG('* AI-Swarm: Guardmarker no transports available disbanding')
+                    self:PlatoonDisband()
+                    return
+                end
+                --LOG('* AI-Swarm: Guardmarker found transports')
             else
+                --LOG('* AI-Swarm: GuardmarkerSwarm bad path response disbanding')
                 self:PlatoonDisband()
                 return
             end
 
-            if not path and not usedTransports then
+            if (not path or not success) and not usedTransports then
+                --LOG('* AI-Swarm: GuardmarkerSwarm not path or not success and not usedTransports. Disbanding')
                 self:PlatoonDisband()
                 return
             end
 
             if moveNext == 'None' then
                 -- guard
-                IssueGuard(self:GetPlatoonUnits(), bestMarker.Position)
+                IssueGuard(GetPlatoonUnits(self), bestMarker.Position)
                 -- guard forever
                 if guardTimer <= 0 then return end
             else
@@ -4715,42 +4892,101 @@ Platoon = Class(SwarmPlatoonClass) {
             end
 
             -- wait till we get there
-            local oldPlatPos = self:GetPlatoonPosition()
+            local oldPlatPos = GetPlatoonPosition(self)
             local StuckCount = 0
             repeat
                 SWARMWAIT(50)
-                platLoc = self:GetPlatoonPosition()
+                platLoc = GetPlatoonPosition(self)
                 if VDist3(oldPlatPos, platLoc) < 1 then
                     StuckCount = StuckCount + 1
                 else
                     StuckCount = 0
                 end
                 if StuckCount > 5 then
-                    return self:GuardMarkerSwarm()
+                    --LOG('* AI-Swarm: GuardMarkerSwarm detected stuck. Restarting.')
+                    return self:SetAIPlan('GuardMarkerSwarm')
                 end
                 oldPlatPos = platLoc
-            until VDist2Sq(platLoc[1], platLoc[3], bestMarker.Position[1], bestMarker.Position[3]) < 64 or not aiBrain:PlatoonExists(self)
+            until VDist2Sq(platLoc[1], platLoc[3], bestMarker.Position[1], bestMarker.Position[3]) < 900 or not PlatoonExists(aiBrain, self)
 
             -- if we're supposed to guard for some time
             if moveNext == 'None' then
                 -- this won't be 0... see above
-                SWARMWAIT(guardTimer)
+                WaitSeconds(guardTimer)
+                --LOG('Move Next set to None, disbanding')
                 self:PlatoonDisband()
                 return
             end
 
-            if moveNext == 'Guard Base' then
-                return self:GuardBaseSwarm()
-            end
-
             -- we're there... wait here until we're done
-            local numGround = aiBrain:GetNumUnitsAroundPoint((categories.LAND + categories.NAVAL + categories.STRUCTURE), bestMarker.Position, 15, 'Enemy')
-            while numGround > 0 and aiBrain:PlatoonExists(self) do
-                SWARMWAIT(60)
-                numGround = aiBrain:GetNumUnitsAroundPoint((categories.LAND + categories.NAVAL + categories.STRUCTURE), bestMarker.Position, 15, 'Enemy')
+            --LOG('Checking if GuardMarker platoon has enemy units around marker position')
+            local numGround = GetNumUnitsAroundPoint(aiBrain, (categories.LAND + categories.NAVAL + categories.STRUCTURE), bestMarker.Position, 30, 'Enemy')
+            while numGround > 0 and PlatoonExists(aiBrain, self) do
+                --LOG('GuardMarker has enemy units around marker position, looking for target')
+                local target, acuInRange, acuUnit = AIUtils.AIFindBrainTargetInCloseRangeSwarm(aiBrain, self, bestMarker.Position, 'Attack', enemyRadius, (categories.LAND + categories.NAVAL + categories.STRUCTURE), atkPri, false)
+                --target = self:FindClosestUnit('Attack', 'Enemy', true, categories.ALLUNITS - categories.NAVAL - categories.AIR - categories.SCOUT - categories.WALL)
+                local attackSquad = self:GetSquadUnits('Attack')
+                IssueClearCommands(attackSquad)
+                while PlatoonExists(aiBrain, self) do
+                    --LOG('Micro target Loop '..debugloop)
+                    --debugloop = debugloop + 1
+                    if target and not target.Dead then
+                        --LOG('Activating GuardMarker Micro')
+                        platoonThreat = self:CalculatePlatoonThreat('Surface', categories.DIRECTFIRE)
+                        if acuUnit and platoonThreat > 30 then
+                            --LOG('ACU is close and we have decent threat')
+                            target = acuUnit
+                            rangeModifier = 5
+                        end
+                        local targetPosition = target:GetPosition()
+                        local microCap = 50
+                        for _, unit in attackSquad do
+                            microCap = microCap - 1
+                            if microCap <= 0 then break end
+                            if unit.Dead then continue end
+                            if not unit.MaxWeaponRange then
+                                continue
+                            end
+                            unitPos = unit:GetPosition()
+                            alpha = SWARMATAN2 (targetPosition[3] - unitPos[3] ,targetPosition[1] - unitPos[1])
+                            x = targetPosition[1] - SWARMCOS(alpha) * (unit.MaxWeaponRange - rangeModifier or MaxPlatoonWeaponRange)
+                            y = targetPosition[3] - SWARMSIN(alpha) * (unit.MaxWeaponRange - rangeModifier or MaxPlatoonWeaponRange)
+                            smartPos = { x, GetTerrainHeight( x, y), y }
+                            -- check if the move position is new or target has moved
+                            if VDist2( smartPos[1], smartPos[3], unit.smartPos[1], unit.smartPos[3] ) > 0.7 or unit.TargetPos ~= targetPosition then
+                                -- clear move commands if we have queued more than 4
+                                if SWARMGETN(unit:GetCommandQueue()) > 2 then
+                                    IssueClearCommands({unit})
+                                    coroutine.yield(3)
+                                end
+                                -- if our target is dead, jump out of the "for _, unit in self:GetPlatoonUnits() do" loop
+                                IssueMove({unit}, smartPos )
+                                if target.Dead then break end
+                                IssueAttack({unit}, target)
+                                --unit:SetCustomName('Fight micro moving')
+                                unit.smartPos = smartPos
+                                unit.TargetPos = targetPosition
+                            -- in case we don't move, check if we can fire at the target
+                            else
+                                local dist = VDist2( unit.smartPos[1], unit.smartPos[3], unit.TargetPos[1], unit.TargetPos[3] )
+                                if aiBrain:CheckBlockingTerrain(unitPos, targetPosition, unit.WeaponArc) then
+                                    --unit:SetCustomName('Fight micro WEAPON BLOCKED!!! ['..repr(target.UnitId)..'] dist: '..dist)
+                                    IssueMove({unit}, targetPosition )
+                                else
+                                    --unit:SetCustomName('Fight micro SHOOTING ['..repr(target.UnitId)..'] dist: '..dist)
+                                end
+                            end
+                        end
+                    else
+                        break
+                    end
+                    SWARMWAIT(10)
+                end
+                SWARMWAIT(Random(30,60))
+                numGround = GetNumUnitsAroundPoint(aiBrain, (categories.LAND + categories.NAVAL + categories.STRUCTURE), bestMarker.Position, 30, 'Enemy')
             end
 
-            if not aiBrain:PlatoonExists(self) then
+            if not PlatoonExists(aiBrain, self) then
                 return
             end
 
@@ -4759,234 +4995,8 @@ Platoon = Class(SwarmPlatoonClass) {
             return self:GuardMarkerSwarm()
         else
             -- no marker found, disband!
+            --LOG('* AI-Swarm: GuardmarkerSwarm No best marker. Disbanding.')
             self:PlatoonDisband()
-        end
-    end,
-
-    
-
-    GuardBaseSwarm = function(self)
-        self:Stop()
-        local aiBrain = self:GetBrain()
-        local armyIndex = aiBrain:GetArmyIndex()
-        local target = false
-        local basePosition = false
-        AIAttackUtils.GetMostRestrictiveLayer(self)
-
-        if self.PlatoonData.LocationType and self.PlatoonData.LocationType != 'NOTMAIN' then
-            basePosition = aiBrain.BuilderManagers[self.PlatoonData.LocationType].Position
-        else
-            local platoonPosition = GetPlatoonPosition(self)
-            if platoonPosition then
-                basePosition = aiBrain:FindClosestBuilderManagerPosition(GetPlatoonPosition(self))
-            end
-        end
-
-        if not basePosition then
-            return
-        end
-
-        --DUNCAN - changed from 75, added home radius
-        local guardRadius = self.PlatoonData.GuardRadius or 200
-        local homeRadius = self.PlatoonData.HomeRadius or 200
-
-        local guardType = self.PlatoonData.GuardType
-
-        while aiBrain:PlatoonExists(self) do
-            if self.MovementLayer == 'Air' then
-                target = self:FindClosestUnit('Attack', 'Enemy', true, categories.MOBILE * categories.AIR - categories.WALL)
-            else
-                target = self:FindClosestUnit('Attack', 'Enemy', true, categories.ALLUNITS - categories.WALL)
-            end
-
-            if target and not target.Dead and VDist3(target:GetPosition(), basePosition) < guardRadius then
-                if guardType == 'AntiAir' then
-                    self:Stop()
-                    self:AggressiveMoveToLocation(target:GetPosition())
-                elseif guardType == 'Bomber' then
-                    self:Stop()
-                    self:AttackTarget(target)
-                else
-                    self:Stop()
-                    self:AggressiveMoveToLocation(target:GetPosition())
-                end
-            else
-                return self:SimpleReturnToBaseSwarm(true)
-                --local PlatoonPosition = GetPlatoonPosition(self)
-                --if PlatoonPosition and VDist3(basePosition, PlatoonPosition) > homeRadius then
-                    --DUNCAN - still try to move closer to the base if outside the radius
-                    --local position = AIUtils.RandomLocation(basePosition[1],basePosition[3])
-                    --self:Stop()
-                    --self:MoveToLocation(position, false)
-                --end
-            end
-            SWARMWAIT(20)
-        end
-    end,
-
-    AttackForceAISwarm = function(self)
-        self:Stop()
-        local aiBrain = self:GetBrain()
-
-        -- get units together
-        if not self:GatherUnits() then
-            return
-        end
-
-        -- Setup the formation based on platoon functionality
-
-        local platoonUnits = GetPlatoonUnits(self)
-        local numberOfUnitsInPlatoon = SWARMGETN(platoonUnits)
-        local oldNumberOfUnitsInPlatoon = numberOfUnitsInPlatoon
-        local stuckCount = 0
-
-        self.PlatoonAttackForce = true
-        -- formations have penalty for taking time to form up... not worth it here
-        -- maybe worth it if we micro
-        --self:SetPlatoonFormationOverride('GrowthFormation')
-        local PlatoonFormation = self.PlatoonData.UseFormation or 'NoFormation'
-        self:SetPlatoonFormationOverride(PlatoonFormation)
-
-        while aiBrain:PlatoonExists(self) do
-            local pos = GetPlatoonPosition(self) -- update positions; prev position done at end of loop so not done first time
-
-            -- if we can't get a position, then we must be dead
-            if not pos then
-                break
-            end
-
-
-            -- if we're using a transport, wait for a while
-            if self.UsingTransport then
-                SWARMWAIT(100)
-                continue
-            end
-
-            self:MergeWithNearbyPlatoonsSwarm('AttackForceAISwarm', 40, 35)
-
-            SWARMWAIT(5)
-
-            -- rebuild formation
-            platoonUnits = GetPlatoonUnits(self)
-            numberOfUnitsInPlatoon = SWARMGETN(platoonUnits)
-            -- if we have a different number of units in our platoon, regather
-            if (oldNumberOfUnitsInPlatoon != numberOfUnitsInPlatoon) then
-                self:StopAttack()
-                self:SetPlatoonFormationOverride(PlatoonFormation)
-            end
-            oldNumberOfUnitsInPlatoon = numberOfUnitsInPlatoon
-
-            -- deal with lost-puppy transports
-            local strayTransports = {}
-            for k,v in platoonUnits do
-                if SWARMENTITY(categories.TRANSPORTATION, v) then
-                    SWARMINSERT(strayTransports, v)
-                end
-            end
-            if SWARMGETN(strayTransports) > 0 then
-                local dropPoint = pos
-                dropPoint[1] = dropPoint[1] + Random(-3, 3)
-                dropPoint[3] = dropPoint[3] + Random(-3, 3)
-                IssueTransportUnload(strayTransports, dropPoint)
-                SWARMWAIT(100)
-                local strayTransports = {}
-                for k,v in platoonUnits do
-                    local parent = v:GetParent()
-                    if parent and SWARMENTITY(categories.TRANSPORTATION, parent) then
-                        SWARMINSERT(strayTransports, parent)
-                        break
-                    end
-                end
-                if SWARMGETN(strayTransports) > 0 then
-                    local MAIN = aiBrain.BuilderManagers.MAIN
-                    if MAIN then
-                        dropPoint = MAIN.Position
-                        IssueTransportUnload(strayTransports, dropPoint)
-                        SWARMWAIT(300)
-                    end
-                end
-                self.UsingTransport = false
-                AIUtils.ReturnTransportsToPool(strayTransports, true)
-                platoonUnits = GetPlatoonUnits(self)
-            end
-
-
-            --Disband platoon if it's all air units, so they can be picked up by another platoon
-            local mySurfaceThreat = AIAttackUtils.GetSurfaceThreatOfUnits(self)
-            if mySurfaceThreat == 0 and AIAttackUtils.GetAirThreatOfUnits(self) > 0 then
-                self:PlatoonDisband()
-                return
-            end
-
-            local cmdQ = {}
-            -- fill cmdQ with current command queue for each unit
-            for k,v in platoonUnits do
-                if not v.Dead then
-                    local unitCmdQ = v:GetCommandQueue()
-                    for cmdIdx,cmdVal in unitCmdQ do
-                        SWARMINSERT(cmdQ, cmdVal)
-                        break
-                    end
-                end
-            end
-
-            -- if we're on our final push through to the destination, and we find a unit close to our destination
-            local closestTarget = self:FindClosestUnit('attack', 'enemy', true, categories.ALLUNITS)
-            local nearDest = false
-            local oldPathSize = SWARMGETN(self.LastAttackDestination)
-            if self.LastAttackDestination then
-                nearDest = oldPathSize == 0 or VDist3(self.LastAttackDestination[oldPathSize], pos) < 20
-            end
-
-            -- if we're near our destination and we have a unit closeby to kill, kill it
-            if SWARMGETN(cmdQ) <= 1 and closestTarget and VDist3(closestTarget:GetPosition(), pos) < 20 and nearDest then
-                self:StopAttack()
-                if PlatoonFormation != 'No Formation' then
-                    IssueFormAttack(platoonUnits, closestTarget, PlatoonFormation, 0)
-                else
-                    IssueAttack(platoonUnits, closestTarget)
-                end
-                cmdQ = {1}
-            -- if we have nothing to do, try finding something to do
-            elseif SWARMGETN(cmdQ) == 0 then
-                self:StopAttack()
-                cmdQ = AIAttackUtils.AIPlatoonSquadAttackVector(aiBrain, self)
-                stuckCount = 0
-            -- if we've been stuck and unable to reach next marker? Ignore nearby stuff and pick another target
-            elseif self.LastPosition and VDist2Sq(self.LastPosition[1], self.LastPosition[3], pos[1], pos[3]) < (self.PlatoonData.StuckDistance or 16) then
-                stuckCount = stuckCount + 1
-                if stuckCount >= 2 then
-                    self:StopAttack()
-                    cmdQ = AIAttackUtils.AIPlatoonSquadAttackVector(aiBrain, self)
-                    stuckCount = 0
-                end
-            else
-                stuckCount = 0
-            end
-
-            self.LastPosition = pos
-
-            if SWARMGETN(cmdQ) == 0 then
-                -- if we have a low threat value, then go and defend an engineer or a base
-                if mySurfaceThreat < 4
-                    and mySurfaceThreat > 0
-                    and not self.PlatoonData.NeverGuard
-                    and not (self.PlatoonData.NeverGuardEngineers and self.PlatoonData.NeverGuardBases)
-                then
-                    --LOG('*DEBUG: Trying to guard')
-                    return self:GuardBase(self.AttackForceAISwarm)
-                end
-
-                -- we have nothing to do, so find the nearest base and disband
-                if not self.PlatoonData.NeverMerge then
-                    return self:SimpleReturnToBaseSwarm()
-                end
-                SWARMWAIT(50)
-            else
-                -- wait a little longer if we're stuck so that we have a better chance to move
-                SWARMWAIT(Random(50,110) + 20 * stuckCount)
-            end
-            SWARMWAIT(1)
         end
     end,
 
@@ -5059,6 +5069,410 @@ Platoon = Class(SwarmPlatoonClass) {
                 end
             end
             SWARMWAIT(70)
+        end
+    end,
+
+    HuntAIPATHSwarm = function(self)
+        --LOG('* AI-Swarm: * HuntAIPATH: Starting')
+        self:Stop()
+        AIAttackUtils.GetMostRestrictiveLayer(self)
+        local DEBUG = false
+        local aiBrain = self:GetBrain()
+        local armyIndex = aiBrain:GetArmyIndex()
+        local target, acuInRange
+        local blip
+        local categoryList = {}
+        local atkPri = {}
+        local platoonUnits = GetPlatoonUnits(self)
+        local maxPathDistance = 250
+        local enemyRadius = 40
+        local data = self.PlatoonData
+        local platoonLimit = self.PlatoonData.PlatoonLimit or 18
+        local bAggroMove = self.PlatoonData.AggressiveMove
+        local LocationType = self.PlatoonData.LocationType or 'MAIN'
+        local maxRadius = data.SearchRadius or 250
+        local mainBasePos
+        local scoutUnit
+        if LocationType then
+            mainBasePos = aiBrain.BuilderManagers[LocationType].Position
+        else
+            mainBasePos = aiBrain.BuilderManagers['MAIN'].Position
+        end
+        local MaxPlatoonWeaponRange
+        local unitPos
+        local alpha
+        local x
+        local y
+        local smartPos
+        local rangeModifier = 0
+        local platoonThreat = false
+        
+        if platoonUnits > 0 then
+            for k, v in platoonUnits do
+                if not v.Dead then
+                    if EntityCategoryContains(categories.SCOUT, v) then
+                        self.ScoutPresent = true
+                        scoutUnit = v
+                    end
+                    for _, weapon in ALLBPS[v.UnitId].Weapon or {} do
+                        -- unit can have MaxWeaponRange entry from the last platoon
+                        if not v.MaxWeaponRange or weapon.MaxRadius > v.MaxWeaponRange then
+                            -- save the weaponrange 
+                            v.MaxWeaponRange = weapon.MaxRadius * 0.9 -- maxrange minus 10%
+                            -- save the weapon balistic arc, we need this later to check if terrain is blocking the weapon line of sight
+                            if weapon.BallisticArc == 'RULEUBA_LowArc' then
+                                v.WeaponArc = 'low'
+                            elseif weapon.BallisticArc == 'RULEUBA_HighArc' then
+                                v.WeaponArc = 'high'
+                            else
+                                v.WeaponArc = 'none'
+                            end
+                        end
+                        if not MaxPlatoonWeaponRange or MaxPlatoonWeaponRange < v.MaxWeaponRange then
+                            MaxPlatoonWeaponRange = v.MaxWeaponRange
+                        end
+                    end
+                    if v:TestToggleCaps('RULEUTC_StealthToggle') then
+                        v:SetScriptBit('RULEUTC_StealthToggle', false)
+                    end
+                    if v:TestToggleCaps('RULEUTC_CloakToggle') then
+                        v:SetScriptBit('RULEUTC_CloakToggle', false)
+                    end
+                    -- prevent units from reclaiming while attack moving
+                    v:RemoveCommandCap('RULEUCC_Reclaim')
+                    v:RemoveCommandCap('RULEUCC_Repair')
+                    v.smartPos = {0,0,0}
+                    if not v.MaxWeaponRange then
+                        --WARN('Scanning: unit ['..repr(v.UnitId)..'] has no MaxWeaponRange - '..repr(self.BuilderName))
+                    end
+                end
+            end
+        end
+        if data.TargetSearchPriorities then
+            --LOG('TargetSearch present for '..self.BuilderName)
+            for k,v in data.TargetSearchPriorities do
+                SWARMINSERT(atkPri, v)
+            end
+        else
+            if data.PrioritizedCategories then
+                for k,v in data.PrioritizedCategories do
+                    SWARMINSERT(atkPri, v)
+                end
+            end
+        end
+        if data.PrioritizedCategories then
+            for k,v in data.PrioritizedCategories do
+                SWARMINSERT(categoryList, v)
+            end
+        end
+
+        SWARMINSERT(atkPri, categories.ALLUNITS)
+        SWARMINSERT(categoryList, categories.ALLUNITS)
+        self:SetPrioritizedTargetList('Attack', categoryList)
+
+        --local debugloop = 0
+
+        while PlatoonExists(aiBrain, self) do
+            --LOG('* AI-Swarm: * HuntAIPATH:: Check for target')
+            --target = self:FindClosestUnit('Attack', 'Enemy', true, categories.ALLUNITS - categories.NAVAL - categories.AIR - categories.SCOUT - categories.WALL)
+            if DEBUG then
+                for _, v in platoonUnits do
+                    if v and not v.Dead then
+                        v:SetCustomName('HuntAIPATH Looking for Target')
+                    end
+                end
+            end
+            target = AIUtils.AIFindBrainTargetInRangeSwarm(aiBrain, self, 'Attack', maxRadius, atkPri)
+            --[[if not target then
+                LOG('No target on huntaipath loop')
+                LOG('Max Radius is '..maxRadius)
+                LOG('Debug loop is '..debugloop)
+                debugloop = debugloop + 1
+            end]]
+            platoonThreat = self:CalculatePlatoonThreat('AntiSurface', categories.ALLUNITS)
+            local platoonCount = SWARMGETN(GetPlatoonUnits(self))
+            if target then
+                local targetPosition = target:GetPosition()
+                local platoonPos = GetPlatoonPosition(self)
+                local targetThreat
+                if platoonThreat and platoonCount < platoonLimit then
+                    self.PlatoonFull = false
+                    --LOG('Merging with patoon count of '..platoonCount)
+                    if VDist2Sq(platoonPos[1], platoonPos[3], mainBasePos[1], mainBasePos[3]) > 6400 then
+                        targetThreat = GetThreatAtPosition(aiBrain, targetPosition, 0, true, 'Land')
+                        --LOG('HuntAIPath targetThreat is '..targetThreat)
+                        if targetThreat > platoonThreat then
+                            --LOG('HuntAIPath attempting merge and formation ')
+                            if DEBUG then
+                                for _, v in platoonUnits do
+                                    if v and not v.Dead then
+                                        v:SetCustomName('HuntAIPATH Trying to Merge')
+                                    end
+                                end
+                            end
+                            self:Stop()
+                            local merged = self:MergeWithNearbyPlatoonsSwarm('HuntAIPATHSwarm', 60, 25)
+                            if merged then
+                                self:SetPlatoonFormationOverride('AttackFormation')
+                                SWARMWAIT(40)
+                                --LOG('HuntAIPath merge and formation completed')
+                                self:SetPlatoonFormationOverride('NoFormation')
+                                continue
+                            else
+                                --LOG('No merge done')
+                            end
+                        end
+                    end
+                else
+                    --LOG('Setting platoon to full as platoonCount is greater than 15')
+                    self.PlatoonFull = true
+                end
+                --LOG('* AI-Swarm: * HuntAIPATH: Performing Path Check')
+                --LOG('Details :'..' Movement Layer :'..self.MovementLayer..' Platoon Position :'..repr(GetPlatoonPosition(self))..' Target Position :'..repr(targetPosition))
+                local path, reason = AIAttackUtils.PlatoonGenerateSafePathToSwarm(aiBrain, self.MovementLayer, GetPlatoonPosition(self), targetPosition, 10 , maxPathDistance)
+                local success, bestGoalPos = AIAttackUtils.CheckPlatoonPathingEx(self, targetPosition)
+                IssueClearCommands(GetPlatoonUnits(self))
+                local usedTransports = false
+                if path then
+                    local threatAroundplatoon = 0
+                    --LOG('* AI-Swarm: * HuntAIPATH:: Target Found')
+                    if EntityCategoryContains(categories.COMMAND, target) then
+                        platoonPos = GetPlatoonPosition(self)
+                        targetPosition = target:GetPosition()
+                        if platoonThreat < 30 then
+                            local retreatPos = SwarmUtils.lerpy(platoonPos, targetPosition, {50, 1})
+                            self:MoveToLocation(retreatPos, false)
+                            --LOG('Target is ACU retreating')
+                            WaitTicks(30)
+                            continue
+                        end
+                    end
+                    local attackUnits =  self:GetSquadUnits('Attack')
+                    local attackUnitCount = SWARMGETN(attackUnits)
+                    local guardUnits = self:GetSquadUnits('Guard')
+                    
+                    --LOG('* AI-Swarm: * HuntAIPATH: Path found')
+                    local position = GetPlatoonPosition(self)
+                    if not success or VDist2(position[1], position[3], targetPosition[1], targetPosition[3]) > 512 then
+                        usedTransports = AIAttackUtils.SendPlatoonWithTransportsNoCheckSwarm(aiBrain, self, targetPosition, true)
+                    elseif VDist2(position[1], position[3], targetPosition[1], targetPosition[3]) > 256 then
+                        usedTransports = AIAttackUtils.SendPlatoonWithTransportsNoCheckSwarm(aiBrain, self, targetPosition, false)
+                    end
+                    
+                    if not usedTransports then
+                        local pathNodesCount = SWARMGETN(path)
+                        for i=1, pathNodesCount do
+                            local PlatoonPosition
+                            local distEnd = false
+                            if DEBUG then
+                                for _, v in platoonUnits do
+                                    if v and not v.Dead then
+                                        v:SetCustomName('HuntAIPATH Performing Path Movement')
+                                    end
+                                end
+                            end
+                            if guardUnits then
+                                local guardedUnit = 1
+                                if attackUnitCount > 0 then
+                                    while attackUnits[guardedUnit].Dead or attackUnits[guardedUnit]:BeenDestroyed() do
+                                        guardedUnit = guardedUnit + 1
+                                        WaitTicks(3)
+                                        if guardedUnit > attackUnitCount then
+                                            guardedUnit = false
+                                            break
+                                        end
+                                    end
+                                else
+                                    return self:SetAIPlan('ReturnToBaseAISwarm')
+                                end
+                                IssueClearCommands(guardUnits)
+                                if not guardedUnit then
+                                    return self:SetAIPlan('ReturnToBaseAISwarm')
+                                else
+                                    IssueGuard(guardUnits, attackUnits[guardedUnit])
+                                end
+                            end
+                            local currentLayerSeaBed = false
+                            for _, v in attackUnits do
+                                if v and not v.Dead then
+                                    if v:GetCurrentLayer() ~= 'Seabed' then
+                                        currentLayerSeaBed = false
+                                        break
+                                    else
+                                        --LOG('Setting currentLayerSeaBed to true')
+                                        currentLayerSeaBed = true
+                                        break
+                                    end
+                                end
+                            end
+                            --LOG('* AI-Swarm: * HuntAIPATH:: moving to destination. i: '..i..' coords '..repr(path[i]))
+                            if bAggroMove and attackUnits and (not currentLayerSeaBed) then
+                                if distEnd and distEnd > 6400 then
+                                    self:SetPlatoonFormationOverride('NoFormation')
+                                    attackFormation = false
+                                end
+                                self:AggressiveMoveToLocation(path[i], 'Attack')
+                            elseif attackUnits then
+                                if distEnd and distEnd > 6400 then
+                                    self:SetPlatoonFormationOverride('NoFormation')
+                                    attackFormation = false
+                                end
+                                self:MoveToLocation(path[i], false, 'Attack')
+                            end
+                            --LOG('* AI-Swarm: * HuntAIPATH:: moving to Waypoint')
+                            local Lastdist
+                            local dist
+                            local Stuck = 0
+                            local retreatCount = 2
+                            local attackFormation = false
+                            while PlatoonExists(aiBrain, self) do
+                                --LOG('Movement Loop '..debugloop)
+                                --debugloop = debugloop + 1
+                                local SquadPosition = self:GetSquadPosition('Attack') or nil
+                                if not SquadPosition then break end
+                                if scoutUnit and (not scoutUnit.Dead) then
+                                    IssueClearCommands({scoutUnit})
+                                    IssueMove({scoutUnit}, SquadPosition)
+                                end
+                                local enemyUnitCount = GetNumUnitsAroundPoint(aiBrain, categories.MOBILE * categories.LAND - categories.SCOUT - categories.ENGINEER, SquadPosition, enemyRadius, 'Enemy')
+                                if enemyUnitCount > 0 and (not currentLayerSeaBed) then
+                                    if DEBUG then
+                                        for _, v in platoonUnits do
+                                            if v and not v.Dead then
+                                                v:SetCustomName('HuntAIPATH Found close target, searching for target')
+                                            end
+                                        end
+                                    end
+                                    target, acuInRange, acuUnit = AIUtils.AIFindBrainTargetInCloseRangeSwarm(aiBrain, self, SquadPosition, 'Attack', enemyRadius, categories.LAND * (categories.STRUCTURE + categories.MOBILE), atkPri, false)
+                                    --target = self:FindClosestUnit('Attack', 'Enemy', true, categories.ALLUNITS - categories.NAVAL - categories.AIR - categories.SCOUT - categories.WALL)
+                                    local attackSquad = self:GetSquadUnits('Attack')
+                                    IssueClearCommands(attackSquad)
+                                    while PlatoonExists(aiBrain, self) do
+                                        --LOG('Micro target Loop '..debugloop)
+                                        --debugloop = debugloop + 1
+                                        platoonThreat = self:CalculatePlatoonThreat('Surface', categories.DIRECTFIRE)
+                                        if target and not target.Dead then
+                                            if DEBUG then
+                                                for _, v in platoonUnits do
+                                                    if v and not v.Dead then
+                                                        v:SetCustomName('HuntAIPATH Target Found, attacking')
+                                                    end
+                                                end
+                                            end
+                                            if acuUnit and platoonThreat > 30 then
+                                                --LOG('ACU is close and we have decent threat')
+                                                target = acuUnit
+                                                rangeModifier = 5
+                                            end
+                                            targetPosition = target:GetPosition()
+                                            local microCap = 50
+                                            for _, unit in attackSquad do
+                                                microCap = microCap - 1
+                                                if microCap <= 0 then break end
+                                                if unit.Dead then continue end
+                                                if not unit.MaxWeaponRange then
+                                                    continue
+                                                end
+                                                unitPos = unit:GetPosition()
+                                                alpha = SWARMATAN2 (targetPosition[3] - unitPos[3] ,targetPosition[1] - unitPos[1])
+                                                x = targetPosition[1] - math.cos(alpha) * (unit.MaxWeaponRange - rangeModifier or MaxPlatoonWeaponRange)
+                                                y = targetPosition[3] - math.sin(alpha) * (unit.MaxWeaponRange - rangeModifier or MaxPlatoonWeaponRange)
+                                                smartPos = { x, GetTerrainHeight( x, y), y }
+                                                -- check if the move position is new or target has moved
+                                                if VDist2( smartPos[1], smartPos[3], unit.smartPos[1], unit.smartPos[3] ) > 0.7 or unit.TargetPos ~= targetPosition then
+                                                    -- clear move commands if we have queued more than 4
+                                                    if SWARMGETN(unit:GetCommandQueue()) > 2 then
+                                                        IssueClearCommands({unit})
+                                                        SWARMWAIT(3)
+                                                    end
+                                                    -- if our target is dead, jump out of the "for _, unit in self:GetPlatoonUnits() do" loop
+                                                    IssueMove({unit}, smartPos )
+                                                    if target.Dead then break end
+                                                    IssueAttack({unit}, target)
+                                                    --unit:SetCustomName('Fight micro moving')
+                                                    unit.smartPos = smartPos
+                                                    unit.TargetPos = targetPosition
+                                                -- in case we don't move, check if we can fire at the target
+                                                else
+                                                    local dist = VDist2( unit.smartPos[1], unit.smartPos[3], unit.TargetPos[1], unit.TargetPos[3] )
+                                                    if aiBrain:CheckBlockingTerrain(unitPos, targetPosition, unit.WeaponArc) then
+                                                        --unit:SetCustomName('Fight micro WEAPON BLOCKED!!! ['..repr(target.UnitId)..'] dist: '..dist)
+                                                        IssueMove({unit}, targetPosition )
+                                                    else
+                                                        --unit:SetCustomName('Fight micro SHOOTING ['..repr(target.UnitId)..'] dist: '..dist)
+                                                    end
+                                                end
+                                            end
+                                        else
+                                            break
+                                        end
+                                        SWARMWAIT(10)
+                                    end
+                                end
+                                distEnd = VDist2Sq(path[pathNodesCount][1], path[pathNodesCount][3], SquadPosition[1], SquadPosition[3] )
+                                --LOG('* AI-Swarm: * MovePath: dist to Path End: '..distEnd)
+                                if not attackFormation and distEnd < 6400 and enemyUnitCount == 0 then
+                                    attackFormation = true
+                                    --LOG('* AI-Swarm: * MovePath: distEnd < 6400 '..distEnd..' Switching to attack formation')
+                                    self:SetPlatoonFormationOverride('AttackFormation')
+                                end
+                                dist = VDist2Sq(path[i][1], path[i][3], SquadPosition[1], SquadPosition[3])
+                                -- are we closer then 15 units from the next marker ? Then break and move to the next marker
+                                --LOG('* AI-Swarm: * HuntAIPATH: Distance to path node'..dist)
+                                if dist < 400 then
+                                    -- If we don't stop the movement here, then we have heavy traffic on this Map marker with blocking units
+                                    self:Stop()
+                                    break
+                                end
+                                if Lastdist ~= dist then
+                                    Stuck = 0
+                                    Lastdist = dist
+                                -- No, we are not moving, wait 100 ticks then break and use the next weaypoint
+                                else
+                                    Stuck = Stuck + 1
+                                    if Stuck > 15 then
+                                        --LOG('* AI-Swarm: * HuntAIPATH: Stuck while moving to Waypoint. Stuck='..Stuck..' - '..repr(path[i]))
+                                        self:Stop()
+                                        break
+                                    end
+                                end
+                                --LOG('* AI-Swarm: * HuntAIPATH: End of movement loop, wait 10 ticks at :'..GetGameTimeSeconds())
+                                SWARMWAIT(15)
+                            end
+                            --LOG('* AI-Swarm: * HuntAIPATH: Ending Loop at :'..GetGameTimeSeconds())
+                        end
+                    end
+                elseif (not path and reason == 'NoPath') then
+                    --LOG('* AI-Swarm: * HuntAIPATH: NoPath reason from path')
+                    --LOG('Guardmarker requesting transports')
+                    if DEBUG then
+                        for _, v in platoonUnits do
+                            if v and not v.Dead then
+                                v:SetCustomName('HuntAIPATH Requesting Transport')
+                            end
+                        end
+                    end
+                    usedTransports = AIAttackUtils.SendPlatoonWithTransportsNoCheckSwarm(aiBrain, self, targetPosition, true)
+                    --DUNCAN - if we need a transport and we cant get one the disband
+                    if not usedTransports then
+                        --LOG('* AI-Swarm: * HuntAIPATH: not used transports')
+                        return self:SetAIPlan('ReturnToBaseAISwarm')
+                    end
+                    --LOG('Guardmarker found transports')
+                else
+                    --LOG('* AI-Swarm: * HuntAIPATH: No Path found, no reason')
+                    return self:SetAIPlan('ReturnToBaseAISwarm')
+                end
+
+                if (not path or not success) and not usedTransports then
+                    --LOG('* AI-Swarm: * HuntAIPATH: No Path found, no transports used')
+                    return self:SetAIPlan('ReturnToBaseAISwarm')
+                end
+            elseif self.PlatoonData.GetTargetsFromBase then
+                return self:SetAIPlan('ReturnToBaseAISwarm')
+            end
+            --LOG('* AI-Swarm: * HuntAIPATH: No target, waiting 5 seconds')
+            SWARMWAIT(50)
         end
     end,
 
@@ -5169,8 +5583,8 @@ Platoon = Class(SwarmPlatoonClass) {
         --LOG('* AI-SWARM: Best Marker Selected is at position'..repr(bestMarker.Position))
         
         if bestMarker.Position == nil and SWARMTIME() > 900 then
-            --LOG('Best Marker position was nil and game time greater than 15 mins, switch to HeroFightPlatoonSwarm AI')
-            return self:HeroFightPlatoonSwarm()
+            --LOG('Best Marker position was nil and game time greater than 15 mins, switch to HuntAIPATHSwarm AI')
+            return self:HuntAIPATHSwarm()
         elseif bestMarker.Position == nil then
             --LOG('Best Marker position was nil, select random')
             if SWARMGETN(markerLocations) <= 2 then
@@ -5213,9 +5627,9 @@ Platoon = Class(SwarmPlatoonClass) {
 
                 local position = GetPlatoonPosition(self)
                 if not success or VDist2(position[1], position[3], bestMarker.Position[1], bestMarker.Position[3]) > 512 then
-                    usedTransports = AIAttackUtils.SendPlatoonWithTransportsNoCheck(aiBrain, self, bestMarker.Position, true)
+                    usedTransports = AIAttackUtils.SendPlatoonWithTransportsNoCheckSwarm(aiBrain, self, bestMarker.Position, true)
                 elseif VDist2(position[1], position[3], bestMarker.Position[1], bestMarker.Position[3]) > 256 then
-                    usedTransports = AIAttackUtils.SendPlatoonWithTransportsNoCheck(aiBrain, self, bestMarker.Position, false)
+                    usedTransports = AIAttackUtils.SendPlatoonWithTransportsNoCheckSwarm(aiBrain, self, bestMarker.Position, false)
                 end
                 if not usedTransports then
                     local pathLength = SWARMGETN(path)
@@ -5260,7 +5674,7 @@ Platoon = Class(SwarmPlatoonClass) {
                 end
             elseif (not path and reason == 'NoPath') then
                 --LOG('Guardmarker requesting transports')
-                local foundTransport = AIAttackUtils.SendPlatoonWithTransportsNoCheck(aiBrain, self, bestMarker.Position, true)
+                local foundTransport = AIAttackUtils.SendPlatoonWithTransportsNoCheckSwarm(aiBrain, self, bestMarker.Position, true)
                 --DUNCAN - if we need a transport and we cant get one the disband
                 if not foundTransport then
                     --LOG('Guardmarker no transports')
@@ -5317,75 +5731,124 @@ Platoon = Class(SwarmPlatoonClass) {
         end
     end,
 
-    PlatoonCallForHelpAISwarm = function(self)
-        local aiBrain = self:GetBrain()
-        local checkTime = self.PlatoonData.DistressCheckTime or 7
-        local pos = self:GetPlatoonPosition()
-        while aiBrain:PlatoonExists(self) and pos do
-            if not self.DistressCall then
-                local threat = aiBrain:GetThreatAtPosition(pos, 0, true, 'AntiSurface')
-                if threat and threat > 1 then
-                    --LOG('*AI DEBUG: Platoon Calling for help')
-                    aiBrain:BaseMonitorPlatoonDistress(self, threat)
-                    self.DistressCall = true
-                end
-            end
-            SWARMWAIT(checkTime)
-        end
-    end,
-
     DistressResponseAISwarm = function(self)
         local aiBrain = self:GetBrain()
-        while aiBrain:PlatoonExists(self) do
-            -- In the loop so they may be changed by other platoon things
-            local distressRange = self.PlatoonData.DistressRange or aiBrain.BaseMonitor.DefaultDistressRange
-            local reactionTime = self.PlatoonData.DistressReactionTime or aiBrain.BaseMonitor.PlatoonDefaultReactionTime
-            local threatThreshold = self.PlatoonData.ThreatSupport or 1
-            local platoonPos = self:GetPlatoonPosition()
-            if platoonPos and not self.DistressCall then
-                -- Find a distress location within the platoons range
-                local distressLocation = aiBrain:BaseMonitorDistressLocation(platoonPos, distressRange, threatThreshold)
-                local moveLocation
+        while PlatoonExists(aiBrain, self) do
+            if not self.UsingTransport then
+                if aiBrain.BaseMonitor.AlertSounded or aiBrain.BaseMonitor.PlatoonAlertSounded then
+                    -- In the loop so they may be changed by other platoon things
+                    local distressRange = self.PlatoonData.DistressRange or aiBrain.BaseMonitor.DefaultDistressRange
+                    local reactionTime = self.PlatoonData.DistressReactionTime or aiBrain.BaseMonitor.PlatoonDefaultReactionTime
+                    local threatThreshold = self.PlatoonData.ThreatSupport or 1
+                    local platoonPos = GetPlatoonPosition(self)
+                    if platoonPos and not self.DistressCall then
+                        -- Find a distress location within the platoons range
+                        local distressLocation = aiBrain:BaseMonitorDistressLocationSwarm(platoonPos, distressRange, threatThreshold)
+                        local moveLocation
 
-                -- We found a location within our range! Activate!
-                if distressLocation then
-                    --LOG('*AI DEBUG: ARMY '.. aiBrain:GetArmyIndex() ..': --- DISTRESS RESPONSE AI ACTIVATION ---')
-
-                    -- Backups old ai plan
-                    local oldPlan = self:GetPlan()
-                    if self.AiThread then
-                        self.AIThread:Destroy()
-                    end
-
-                    -- Continue to position until the distress call wanes
-                    repeat
-                        moveLocation = distressLocation
-                        self:Stop()
-                        local cmd = self:AggressiveMoveToLocation(distressLocation)
-                        repeat
-                            SWARMWAIT(reactionTime)
-                            if not aiBrain:PlatoonExists(self) then
-                                return
+                        -- We found a location within our range! Activate!
+                        if distressLocation then
+                            --LOG('*AI DEBUG: ARMY '.. aiBrain:GetArmyIndex() ..': --- DISTRESS RESPONSE AI ACTIVATION ---')
+                            --LOG('Distress response activated')
+                            --LOG('PlatoonDistressTable'..repr(aiBrain.BaseMonitor.PlatoonDistressTable))
+                            --LOG('BaseAlertTable'..repr(aiBrain.BaseMonitor.AlertsTable))
+                            -- Backups old ai plan
+                            local oldPlan = self:GetPlan()
+                            if self.AiThread then
+                                self.AIThread:Destroy()
                             end
-                        until not self:IsCommandsActive(cmd) or aiBrain:GetThreatAtPosition(moveLocation, 0, true, 'Overall') <= threatThreshold
 
+                            -- Continue to position until the distress call wanes
+                            repeat
+                                moveLocation = distressLocation
+                                self:Stop()
+                                --LOG('Platoon responding to distress at location '..repr(distressLocation))
+                                self:SetPlatoonFormationOverride('NoFormation')
+                                local cmd = self:AggressiveMoveToLocation(distressLocation)
+                                repeat
+                                    WaitSeconds(reactionTime)
+                                    if not PlatoonExists(aiBrain, self) then
+                                        return
+                                    end
+                                until not self:IsCommandsActive(cmd) or GetThreatAtPosition(aiBrain, moveLocation, 0, true, 'Overall') <= threatThreshold
+                                --LOG('Initial Distress Response Loop finished')
 
-                        platoonPos = self:GetPlatoonPosition()
-                        if platoonPos then
-                            -- Now that we have helped the first location, see if any other location needs the help
-                            distressLocation = aiBrain:BaseMonitorDistressLocation(platoonPos, distressRange)
-                            if distressLocation then
-                                self:AggressiveMoveToLocation(distressLocation)
-                            end
+                                platoonPos = GetPlatoonPosition(self)
+                                if platoonPos then
+                                    -- Now that we have helped the first location, see if any other location needs the help
+                                    distressLocation = aiBrain:BaseMonitorDistressLocationSwarm(platoonPos, distressRange)
+                                    if distressLocation then
+                                        self:SetPlatoonFormationOverride('NoFormation')
+                                        self:AggressiveMoveToLocation(distressLocation)
+                                    end
+                                end
+                                SWARMWAIT(10)
+                            -- If no more calls or we are at the location; break out of the function
+                            until not distressLocation or (distressLocation[1] == moveLocation[1] and distressLocation[3] == moveLocation[3])
+
+                            --LOG('*AI DEBUG: '..aiBrain.Name..' DISTRESS RESPONSE AI DEACTIVATION - oldPlan: '..oldPlan)
+                            self:Stop()
+                            self:SetAIPlan(oldPlan)
                         end
-                    -- If no more calls or we are at the location; break out of the function
-                    until not distressLocation or (distressLocation[1] == moveLocation[1] and distressLocation[3] == moveLocation[3])
-
-                    --LOG('*AI DEBUG: '..aiBrain.Name..' DISTRESS RESPONSE AI DEACTIVATION - oldPlan: '..oldPlan)
-                    self:SetAIPlan(oldPlan)
+                    end
                 end
             end
             SWARMWAIT(110)
+        end
+    end,
+
+    ExtractorCallForHelpAISwarm = function(self, aiBrain)
+        local checkTime = self.PlatoonData.DistressCheckTime or 4
+        local pos = GetPlatoonPosition(self)
+        while PlatoonExists(aiBrain, self) and pos do
+            if not self.DistressCall then
+                local threat = GetThreatAtPosition(aiBrain, pos, aiBrain.IMAPConfigSwarm.Rings, true, 'Land')
+                --LOG('Threat at Extractor :'..threat)
+                if threat and threat > 1 then
+                    --LOG('*RNGAI Mass Extractor Platoon Calling for help with '..threat.. ' threat')
+                    aiBrain:BaseMonitorPlatoonDistressSwarm(self, threat)
+                    self.DistressCall = true
+                    aiBrain:AddScoutArea(pos)
+                end
+            end
+            WaitSeconds(checkTime)
+        end
+    end,
+
+    BaseManagersDistressAISwarm = function(self)
+        local aiBrain = self:GetBrain()
+        while PlatoonExists(aiBrain, self) do
+            local distressRange = aiBrain.BaseMonitor.PoolDistressRange
+            local reactionTime = aiBrain.BaseMonitor.PoolReactionTime
+
+            local platoonUnits = GetPlatoonUnits(self)
+
+            for locName, locData in aiBrain.BuilderManagers do
+                if not locData.DistressCall then
+                    local position = locData.EngineerManager.Location
+                    local radius = locData.EngineerManager.Radius
+                    local distressRange = locData.BaseSettings.DistressRange or aiBrain.BaseMonitor.PoolDistressRange
+                    local distressLocation = aiBrain:BaseMonitorDistressLocationSwarm(position, distressRange, aiBrain.BaseMonitor.PoolDistressThreshold)
+
+                    -- Distress !
+                    if distressLocation then
+                        --LOG('*AI DEBUG: ARMY '.. aiBrain:GetArmyIndex() ..': --- POOL DISTRESS RESPONSE ---')
+
+                        -- Grab the units at the location
+                        local group = self:GetPlatoonUnitsAroundPoint(categories.MOBILE - categories.ENGINEER - categories.TRANSPORTFOCUS - categories.SONAR - categories.EXPERIMENTAL, position, radius)
+
+                        -- Move the group to the distress location and then back to the location of the base
+                        IssueClearCommands(group)
+                        IssueAggressiveMove(group, distressLocation)
+                        IssueMove(group, position)
+
+                        -- Set distress active for duration
+                        locData.DistressCall = true
+                        self:ForkThread(self.UnlockBaseManagerDistressLocation, locData)
+                    end
+                end
+            end
+            WaitSeconds(aiBrain.BaseMonitor.PoolReactionTime)
         end
     end,
 
@@ -5394,758 +5857,6 @@ Platoon = Class(SwarmPlatoonClass) {
             if v and not v.Dead then
                 v:SetCustomName(text..' '..math.floor(GetGameTimeSeconds()))
             end
-        end
-    end,
-
-    HeroFightPlatoonSwarm = function(self)
-        local aiBrain = self:GetBrain()
-        local personality = ScenarioInfo.ArmySetup[aiBrain.Name].AIPersonality
-        local pool = aiBrain:GetPlatoonUniquelyNamed('ArmyPool')
-
-        -- this will set self.MovementLayer to the platoon
-        AIAttackUtils.GetMostRestrictiveLayer(self)
-
-        -- get categories where we want to move this platoon - (primary platoon targets)
-        local MoveToCategories = {}
-        if self.PlatoonData.MoveToCategories then
-            for k,v in self.PlatoonData.MoveToCategories do
-                SWARMINSERT(MoveToCategories, v )
-            end
-        else
-            LOG('* AI-Swarm: * HeroFightPlatoon: MoveToCategories missing in platoon '..self.BuilderName)
-        end
-
-        -- get categories at what we want a unit to shoot at - (primary unit targets)
-        local WeaponTargetCategories = {}
-        if self.PlatoonData.WeaponTargetCategories then
-            for k,v in self.PlatoonData.WeaponTargetCategories do
-                SWARMINSERT(WeaponTargetCategories, v )
-            end
-        elseif self.PlatoonData.MoveToCategories then
-            WeaponTargetCategories = MoveToCategories
-        end
-        self:SetPrioritizedTargetList('Attack', WeaponTargetCategories)
-
-        -- calcuate maximum weapon range for every unit inside this platoon
-        -- also switch on things like stealth and cloak
-        local MaxPlatoonWeaponRange
-        local ExperimentalInPlatoon = false
-        local UnitBlueprint
-        local YawMin = 0
-        local YawMax = 0
-        local TargetHug = self.PlatoonData.TargetHug
-        for _, unit in self:GetPlatoonUnits() do
-            -- continue with the next unit if this unit is dead
-            if unit.Dead then continue end
-            UnitBlueprint = unit:GetBlueprint()
-            -- remove INSIGNIFICANTUNIT units from the platoon (drones, buildbots etc)
-            if UnitBlueprint.CategoriesHash.INSIGNIFICANTUNIT then
-                --SPEW('* AI-Swarm: HeroFightPlatoon: -- unit ['..repr(unit.UnitId)..'] is a INSIGNIFICANTUNIT.  Removing from platoon...  - '..repr( unit:GetBlueprint().General.UnitName or "Unknown" )..' ('..repr( unit:GetBlueprint().Description or "Unknown" )..'')
-                aiBrain:AssignUnitsToPlatoon(pool, {unit}, 'Unassigned', 'None')
-                continue
-            end
-            -- remove POD units from the platoon
-            if UnitBlueprint.CategoriesHash.POD then
-                --SPEW('* AI-Swarm: HeroFightPlatoon: -- unit ['..repr(unit.UnitId)..'] is a POD UNIT.  Removing from platoon...  - '..repr( unit:GetBlueprint().General.UnitName or "Unknown" )..' ('..repr( unit:GetBlueprint().Description or "Unknown" )..'')
-                aiBrain:AssignUnitsToPlatoon(pool, {unit}, 'Unassigned', 'None')
-                continue
-            end
-            -- remove DRONE units from the platoon
-            if UnitBlueprint.CategoriesHash.DRONE then
-                --SPEW('* AI-Swarm: HeroFightPlatoon: -- unit ['..repr(unit.UnitId)..'] is a DRONE UNIT.  Removing from platoon...  - '..repr( unit:GetBlueprint().General.UnitName or "Unknown" )..' ('..repr( unit:GetBlueprint().Description or "Unknown" )..'')
-                aiBrain:AssignUnitsToPlatoon(pool, {unit}, 'Unassigned', 'None')
-                continue
-            end
-            -- Seraphim Experimentals should always move close to the target
-            if UnitBlueprint.CategoriesHash.EXPERIMENTAL and UnitBlueprint.CategoriesHash.SERAPHIM then
-                TargetHug = true
-            end
-            -- get the maximum weapopn range of this unit
-            for _, weapon in UnitBlueprint.Weapon or {} do
-                -- filter dummy weapons
-                if weapon.Damage == 0 then
-                    continue
-                end
-                if UnitBlueprint.CategoriesHash.EXPERIMENTAL and UnitBlueprint.Physics.StandUpright then
-                    -- for Experiemtnals with 2 legs
-                    unit.HasRearWeapon = false
-                    --LOG('* AI-Swarm: Unit ['..unit.UnitId..'] can StandUpright! -> removing rear weapopn flag')
-                else
-                    -- check weapon angle    pitch ^    yaw >
-                    YawMin = false
-                    YawMax = false
-                    if weapon.HeadingArcCenter and weapon.HeadingArcRange then
-                        YawMin = weapon.HeadingArcCenter - weapon.HeadingArcRange
-                        YawMax = weapon.HeadingArcCenter + weapon.HeadingArcRange
-                    elseif weapon.TurretYaw and weapon.TurretYawRange then
-                        YawMin = weapon.TurretYaw - weapon.TurretYawRange
-                        YawMax = weapon.TurretYaw + weapon.TurretYawRange
-                    end
-                    if YawMin and YawMax then
-                        -- front unit side
-                        if YawMin <= -180 and YawMax >= 180 then
-                            --LOG('* AI-Swarm: Unit ['..unit.UnitId..'] can fire 360° front')
-                            unit.HasRearWeapon = true
-                        end
-                        -- left unit side
-                        if YawMin <= -225 and YawMax >= -135 then
-                            --LOG('* AI-Swarm: Unit ['..unit.UnitId..'] can fire 90° rear (left)')
-                            unit.HasRearWeapon = true
-                        end
-                        -- right unit side
-                        if YawMin <= 135 and YawMax >= 225 then
-                            --LOG('* AI-Swarm: Unit ['..unit.UnitId..'] can fire 90° rear (right)')
-                            unit.HasRearWeapon = true
-                        end
-                        -- back unit side
-                        if YawMin <= -202.5 and YawMax >= 202.5 then
-                            --LOG('* AI-Swarm: Unit ['..unit.UnitId..'] can fire 45° rear')
-                            unit.HasRearWeapon = true
-                        end
-                    end
-                end
-                -- unit can have MaxWeaponRange entry from the last platoon
-                if not unit.MaxWeaponRange or weapon.MaxRadius < unit.MaxWeaponRange then
-                    -- exclude missiles with range 100 and above
-                    if weapon.WeaponCategory ~= 'Missile' or weapon.MaxRadius < 100 then
-                        -- save the weaponrange 
-                        unit.MaxWeaponRange = weapon.MaxRadius * 0.9 -- maxrange minus 10%
-                        -- save the weapon balistic arc, we need this later to check if terrain is blocking the weapon line of sight
-                        if weapon.BallisticArc == 'RULEUBA_LowArc' then
-                            unit.WeaponArc = 'low'
-                        elseif weapon.BallisticArc == 'RULEUBA_HighArc' then
-                            unit.WeaponArc = 'high'
-                        else
-                            unit.WeaponArc = 'none'
-                        end
-                    else
-                        -- save a backup weapon in case we have only missiles or longrange weapons
-                        unit.MaxWeaponRangeBackup = weapon.MaxRadius * 0.9 -- maxrange minus 10%
-                        if weapon.BallisticArc == 'RULEUBA_LowArc' then
-                            unit.WeaponArcBackup = 'low'
-                        elseif weapon.BallisticArc == 'RULEUBA_HighArc' then
-                            unit.WeaponArcBackup = 'high'
-                        else
-                            unit.WeaponArcBackup = 'none'
-                        end
-                    end
-                end
-                -- check for the overall range of the platoon
-                if not MaxPlatoonWeaponRange or MaxPlatoonWeaponRange > unit.MaxWeaponRange then
-                    MaxPlatoonWeaponRange = unit.MaxWeaponRange
-                end
-            end
-            -- in case we have not a normal weapons, use the backupweapon if available
-            if not unit.MaxWeaponRange and unit.MaxWeaponRangeBackup then
-                unit.MaxWeaponRange = unit.MaxWeaponRangeBackup
-                unit.WeaponArc = unit.WeaponArcBackup
-            end
-            -- Search all platoon units and activate Stealth and Cloak (mostly Modded units)
-            if unit:TestToggleCaps('RULEUTC_StealthToggle') then
-                unit:SetScriptBit('RULEUTC_StealthToggle', false)
-            end
-            if unit:TestToggleCaps('RULEUTC_CloakToggle') then
-                unit:SetScriptBit('RULEUTC_CloakToggle', false)
-            end
-            -- search if we have an experimental inside the platoon so we can't use transports
-            if not ExperimentalInPlatoon and SWARMENTITY(categories.EXPERIMENTAL, unit) then
-                ExperimentalInPlatoon = true
-            end
-            -- prevent units from reclaiming while attack moving (maybe not working !?!)
-            unit:RemoveCommandCap('RULEUCC_Reclaim')
-            unit:RemoveCommandCap('RULEUCC_Repair')
-            -- create a table for individual unit position
-            unit.smartPos = {0,0,0}
-            unit.UnitMassCost = UnitBlueprint.Economy.BuildCostMass
-            -- we have no weapon; check if we have a shield, stealth field or cloak field
-            if not unit.MaxWeaponRange then
-                -- does the unit has no weapon but a shield ?
-                if UnitBlueprint.CategoriesHash.SHIELD then
-                    --LOG('* AI-Swarm: Scanning: unit ['..repr(unit.UnitId)..'] Is a IsShieldOnlyUnit')
-                    unit.IsShieldOnlyUnit = true
-                end
-                if UnitBlueprint.Intel.RadarStealthField then
-                    --LOG('* AI-Swarm: Scanning: unit ['..repr(unit.UnitId)..'] Is a RadarStealthField Unit')
-                    unit.IsShieldOnlyUnit = true
-                end
-                if UnitBlueprint.Intel.CloakField then
-                    --LOG('* AI-Swarm: Scanning: unit ['..repr(unit.UnitId)..'] Is a CloakField Unit')
-                    unit.IsShieldOnlyUnit = true
-                end
-            end
-            -- debug for modded units that have no weapon and no shield or stealth/cloak
-            -- things like seraphim restauration field
-            if not unit.MaxWeaponRange and not unit.IsShieldOnlyUnit then
-                WARN('* AI-Swarm: Scanning: unit ['..repr(unit.UnitId)..'] has no MaxWeaponRange and no stealth/cloak - '..repr(self.BuilderName))
-            end
-            unit.IamLost = 0
-        end
-        if not MaxPlatoonWeaponRange then
-            if aiBrain:PlatoonExists(self) then
-                self:PlatoonDisband()
-            end
-            return
-        end
-        -- we only see targets from this targetcategories.
-        local TargetSearchCategory = self.PlatoonData.TargetSearchCategory
-        if not TargetSearchCategory then
-            WARN('* AI-Swarm: Missing TargetSearchCategory in builder: '..repr(self.BuilderName))
-            TargetSearchCategory = categories.ALLUNITS
-        end
-        -- additional variables we need inside the platoon loop
-        local TargetInPlatoonRange
-        local target
-        local TargetPos
-        local LastTargetPos
-        local UnitWithPath
-        local UnitNoPath
-        local path
-        local reason
-        local unitPos
-        local alpha
-        local x
-        local y
-        local smartPos = {}
-        local UnitToCover = nil
-        local CoverIndex = 0
-        local UnitMassCost = {}
-        local maxRadius = self.PlatoonData.SearchRadius or 100
-        local WantsTransport = self.PlatoonData.RequireTransport
-        local GetTargetsFromBase = self.PlatoonData.GetTargetsFromBase
-        local DirectMoveEnemyBase = self.PlatoonData.DirectMoveEnemyBase
-        local basePosition
-        local PlatoonCenterPosition = self:GetPlatoonPosition()
-        local bAggroMove = self.PlatoonData.AggressiveMove
-        if TargetHug then
-            bAggroMove = false
-        end
-        if self.MovementLayer == 'Water' then
-            -- we could search for the nearest naval base here, but buildposition is almost at the same location
-            basePosition = PlatoonCenterPosition
-        else
-            -- land and air units are assigned to mainbase
-            basePosition = aiBrain.BuilderManagers['MAIN'].Position
-        end
-        local GetTargetsFrom = basePosition
-        if DirectMoveEnemyBase then
-            local ClosestEnemyBaseDistance
-            local ClosestEnemyBaseLocation
-            for index, brain in ArmyBrains do
-                if brain.BuilderManagers['MAIN'] then
-                    if brain.BuilderManagers['MAIN'].FactoryManager.Location then
-                        local Baselocation = aiBrain.BuilderManagers['MAIN'].Position
-                        local EnemyBaseLocation = brain.BuilderManagers['MAIN'].Position
-                        local dist = VDist2( Baselocation[1], Baselocation[3], EnemyBaseLocation[1], EnemyBaseLocation[3] )
-                        if dist < 10 then continue end
-                        if not ClosestEnemyBaseDistance or ClosestEnemyBaseDistance > dist then
-                            ClosestEnemyBaseLocation = EnemyBaseLocation
-                            ClosestEnemyBaseDistance = dist
-                        end
-                    end
-                end
-            end
-            if ClosestEnemyBaseLocation then
-                GetTargetsFrom = ClosestEnemyBaseLocation
-            end
-        end
-        -- platoon loop
-        --self:RenamePlatoonSwarm('MAIN loop')
-        while aiBrain:PlatoonExists(self) do
-            -- remove the Blocked flag from all unts. (at this point we don't have a target or the target is dead or we clean a leftover from the last platoon call)
-            for _, unit in self:GetPlatoonUnits() or {} do
-                unit.Blocked = false
-            end
-            -- wait a bit here, so continue commands can't deadloop/freeze the game
-            SWARMWAIT(3)
-            if self.UsingTransport then
-                continue
-            end
-            PlatoonCenterPosition = self:GetPlatoonPosition()
-            if not PlatoonCenterPosition[1] then
-                if aiBrain:PlatoonExists(self) then
-                    self:PlatoonDisband()
-                end
-                return
-            end
-            -- set target search center position
-            if not GetTargetsFromBase then
-                GetTargetsFrom = PlatoonCenterPosition
-            end
-            -- Search for a target (don't remove the :BeenDestroyed() call!)
-            if not target or target.Dead or target:BeenDestroyed() then
-                UnitWithPath, UnitNoPath, path, reason = AIUtils.AIFindNearestCategoryTargetInRangeSwarm(aiBrain, self, 'Attack', GetTargetsFrom, maxRadius, MoveToCategories, TargetSearchCategory, false )
-                target = UnitWithPath or UnitNoPath
-            end
-            -- remove target, if we are out of base range
-            DistanceToBase = VDist2(PlatoonCenterPosition[1] or 0, PlatoonCenterPosition[3] or 0, basePosition[1] or 0, basePosition[3] or 0)
-            if GetTargetsFromBase and DistanceToBase > maxRadius then
-                target = nil
-                path = nil
-                if HERODEBUGSwarm then
-                    self:RenamePlatoonSwarm('target to far from base')
-                    SWARMWAIT(1)
-                end
-            end
-            -- check if the platoon died while the targetting function was searching for targets
-            if not aiBrain:PlatoonExists(self) then
-                return
-            end
-            -- move to the target
-            if target and not target.Dead and not target:BeenDestroyed() then
-                LastTargetPos = SWARMCOPY(target:GetPosition())
-                -- are we outside weaponrange ? then move to the target
-                if VDist2( PlatoonCenterPosition[1], PlatoonCenterPosition[3], LastTargetPos[1], LastTargetPos[3] ) > MaxPlatoonWeaponRange + 30 then
-                    --self:RenamePlatoonSwarm('move to target -> out of weapon range')
-                    -- if we have a path then use the waypoints 
-                    if UnitWithPath and path and not self.PlatoonData.IgnorePathing then
-                        --self:RenamePlatoonSwarm('move to target -> with waypoints')
-                        -- move to the target with waypoints
-                        if self.MovementLayer == 'Air' then
-                            if HERODEBUGSwarm then
-                                self:RenamePlatoonSwarm('MovePath (Air)')
-                                SWARMWAIT(1)
-                            end
-                            self:MovePathSwarm(aiBrain, path, bAggroMove, target, MaxPlatoonWeaponRange, TargetSearchCategory)
-                        elseif self.MovementLayer == 'Water' then
-                            if HERODEBUGSwarm then
-                                self:RenamePlatoonSwarm('MovePath (Water)')
-                                SWARMWAIT(1)
-                            end
-                            self:MovePathSwarm(aiBrain, path, bAggroMove, target, MaxPlatoonWeaponRange, TargetSearchCategory)
-                        else
-                            if HERODEBUGSwarm then
-                                self:RenamePlatoonSwarm('MovePath with transporter layer('..self.MovementLayer..')')
-                                SWARMWAIT(1)
-                            end
-                            self:MoveToLocationInclTransportSwarm(target, LastTargetPos, bAggroMove, WantsTransport, basePosition, ExperimentalInPlatoon, MaxPlatoonWeaponRange, TargetSearchCategory)
-                        end
-                    -- if we don't have a path, but UnitWithPath is true, then we have no map markers but PathCanTo() found a direct path
-                    elseif UnitWithPath then
-                        --self:RenamePlatoonSwarm('move to target -> without waypoints')
-                        -- move to the target without waypoints
-                        if self.MovementLayer == 'Air' then
-                            if HERODEBUGSwarm then
-                                self:RenamePlatoonSwarm('UWP MoveDirectSwarm (Air)')
-                                SWARMWAIT(1)
-                            end
-                            self:MoveDirectSwarm(aiBrain, bAggroMove, target, MaxPlatoonWeaponRange, TargetSearchCategory)
-                        elseif self.MovementLayer == 'Water' then
-                            if HERODEBUGSwarm then
-                                self:RenamePlatoonSwarm('UWP MoveDirectSwarm (Water)')
-                                SWARMWAIT(1)
-                            end
-                            self:MoveDirectSwarm(aiBrain, bAggroMove, target, MaxPlatoonWeaponRange, TargetSearchCategory)
-                        else
-                            if HERODEBUGSwarm then
-                                self:RenamePlatoonSwarm('UWP MoveDirectSwarm with transporter layer('..self.MovementLayer..')')
-                                SWARMWAIT(1)
-                            end
-                            self:MoveToLocationInclTransportSwarm(target, LastTargetPos, bAggroMove, WantsTransport, basePosition, ExperimentalInPlatoon, MaxPlatoonWeaponRange, TargetSearchCategory)
-                        end
-                    -- move to the target without waypoints using a transporter
-                    elseif UnitNoPath then
-                        -- we have a target but no path, Air can flight to it
-                        if self.MovementLayer == 'Air' then
-                            if HERODEBUGSwarm then
-                                self:RenamePlatoonSwarm('UNP MoveDirectSwarm (Air)')
-                                SWARMWAIT(1)
-                            end
-                            self:MoveDirectSwarm(aiBrain, bAggroMove, target, MaxPlatoonWeaponRange, TargetSearchCategory)
-                        -- we have a target but no path, Naval can never reach it
-                        elseif self.MovementLayer == 'Water' then
-                            if HERODEBUGSwarm then
-                                self:RenamePlatoonSwarm('UNP No Naval path (Water)')
-                                SWARMWAIT(1)
-                            end
-                            target = nil
-                            path = nil
-                        else
-                            self:Stop()
-                            if HERODEBUGSwarm then
-                                self:RenamePlatoonSwarm('UWP MoveOnlyWithTransport layer('..self.MovementLayer..')')
-                                SWARMWAIT(1)
-                            end
-                            --self:RenamePlatoonSwarm('MoveOnlyWithTransport')
-                            self:MoveWithTransportSwarm(aiBrain, bAggroMove, target, basePosition, ExperimentalInPlatoon, MaxPlatoonWeaponRange, TargetSearchCategory)
-                        end
-                    end
-                end
-            else
-                target = nil
-                path = nil
-                LastTargetPos = nil
-                -- no target, land units just wait for new targets, air and naval units return to their base
-                if HERODEBUGSwarm then
-                    self:RenamePlatoonSwarm('No target returning home')
-                    SWARMWAIT(1)
-                end
-                if self.MovementLayer == 'Air' then
-                    --self:RenamePlatoonSwarm('move to base')
-                    if VDist2(PlatoonCenterPosition[1] or 0, PlatoonCenterPosition[3] or 0, basePosition[1] or 0, basePosition[3] or 0) > 40 then
-                        self:SetPlatoonFormationOverride('NoFormation')
-                        self:SimpleReturnToBaseSwarm(basePosition)
-                        if HERODEBUGSwarm then
-                            self:RenamePlatoonSwarm('returning (Air)')
-                            SWARMWAIT(10)
-                        end
-                        if aiBrain:PlatoonExists(self) then
-                            self:PlatoonDisband()
-                        end
-                        return
-                    else
-                        -- we are at home and we don't have a target. Disband!
-                        if aiBrain:PlatoonExists(self) then
-                            if HERODEBUGSwarm then
-                                self:RenamePlatoonSwarm('PlatoonDisband 1')
-                            end
-                            self:PlatoonDisband()
-                            return
-                        end
-                    end
-                elseif self.MovementLayer == 'Water' then
-                    --self:RenamePlatoonSwarm('move to base')
-                    if VDist2(PlatoonCenterPosition[1] or 0, PlatoonCenterPosition[3] or 0, basePosition[1] or 0, basePosition[3] or 0) > 40 then
-                        if HERODEBUGSwarm then
-                            self:RenamePlatoonSwarm('returning (Water)')
-                            SWARMWAIT(10)
-                        end
-                        self:SetPlatoonFormationOverride('NoFormation')
-                        self:ForceReturnToNearestBaseAISwarm()
-                        if aiBrain:PlatoonExists(self) then
-                            self:PlatoonDisband()
-                        end
-                        return
-                    else
-                    -- we are at home and we don't have a target. Disband!
-                        if aiBrain:PlatoonExists(self) then
-                            if HERODEBUGSwarm then
-                                self:RenamePlatoonSwarm('PlatoonDisband 2')
-                            end
-                            self:PlatoonDisband()
-                            return
-                        end
-                    end
-                else
-                    -- if we get targets from base then we are here to protect the base. Return to cover the base.
-                    if GetTargetsFromBase then
-                        if HERODEBUGSwarm then
-                            self:RenamePlatoonSwarm('No BaseTarget, returning Home')
-                            SWARMWAIT(1)
-                        end
-                        self:ForceReturnToNearestBaseAISwarm()
-                        if aiBrain:PlatoonExists(self) then
-                            self:PlatoonDisband()
-                        end
-                        return
-                    else
-                        if HERODEBUGSwarm then
-                            self:RenamePlatoonSwarm('move to New targets')
-                            SWARMWAIT(1)
-                        end
-                        -- no more targets found with platoonbuilder template settings. Set new targets to the platoon and continue
-                        --self.PlatoonData.SearchRadius = 10000
-                        maxRadius = 10000
-                        self.PlatoonData.AttackEnemyStrength = 1000000
-                        --self.PlatoonData.GetTargetsFromBase = false
-                        GetTargetsFromBase = false
-                        self.PlatoonData.MoveToCategories = { categories.EXPERIMENTAL, categories.COMMAND, categories.TECH3, categories.TECH2, categories.ALLUNITS }
-                        MoveToCategories = {}
-                        for k,v in self.PlatoonData.MoveToCategories do
-                            SWARMINSERT(MoveToCategories, v )
-                        end
-                        self.PlatoonData.WeaponTargetCategories = { categories.EXPERIMENTAL, categories.COMMAND, categories.TECH3, categories.TECH2, categories.ALLUNITS }
-                        self.PlatoonData.TargetSearchCategory = categories.ALLUNITS - categories.AIR
-                        TargetSearchCategory = categories.ALLUNITS - categories.AIR
-                        self:SetPrioritizedTargetList('Attack', categories.ALLUNITS - categories.AIR)
-                        continue
-                    end
-                end
-            end
-            -- in case we are using a transporter, do nothing. Wait for the transport!
-            if self.UsingTransport then
-                if HERODEBUGSwarm then
-                    self:RenamePlatoonSwarm('Waiting for Transport')
-                    SWARMWAIT(1)
-                end
-                continue
-            end
-            -- stop the platoon, now we are moving units instead of the platoon
-            if aiBrain:PlatoonExists(self) then
-                self:Stop()
-                SWARMWAIT(1)
-                if LastTargetPos then
-                    self:Patrol(LastTargetPos)
-                else
-                    self:Patrol(basePosition)
-                end
-            else
-                return
-            end
-            -- fight
-            if HERODEBUGSwarm then
-                self:RenamePlatoonSwarm('moved, now fighting')
-            end
-            SWARMWAIT(1)
-            LastTargetPos = nil
-            --self:RenamePlatoonSwarm('MICRO loop')
-            while aiBrain:PlatoonExists(self) do
-                if HERODEBUGSwarm then
-                    self:RenamePlatoonSwarm('microing in 5 ticks')
-                end
-                -- wait a bit here, so continue commands can't deadloop/freeze the game
-                SWARMWAIT(10)
-                --LOG('* AI-Swarm: * HeroFightPlatoon: Starting micro loop')
-                PlatoonCenterPosition = self:GetPlatoonPosition()
-                if not PlatoonCenterPosition then
-                    --WARN('* AI-Swarm: PlatoonCenterPosition not existent')
-                    if aiBrain:PlatoonExists(self) then
-                        if HERODEBUGSwarm then
-                            self:RenamePlatoonSwarm('PlatoonDisband 3')
-                        end
-                        self:PlatoonDisband()
-                    end
-                    return
-                end
-                if HERODEBUGSwarm then
-                    self:RenamePlatoonSwarm('AIFindNearestCategoryTargetInCloseRangeSwarm')
-                end
-
-                -- get a target on every loop, so we can see targets that are moving closer
-                if TargetHug then
-                    TargetInPlatoonRange = self:FindClosestUnit('Attack', 'Enemy', true, TargetSearchCategory)
-                else
-                    TargetInPlatoonRange = self:FindClosestUnit('Attack', 'Enemy', true, categories.ALLUNITS)
-                end
-
-                -- check if the target is in range
-                if TargetInPlatoonRange then
-                    LastTargetPos = TargetInPlatoonRange:GetPosition()
-                    if self.MovementLayer == 'Air' then
-                        if VDist2( PlatoonCenterPosition[1], PlatoonCenterPosition[3], LastTargetPos[1], LastTargetPos[3] ) > MaxPlatoonWeaponRange + 60 then
-                            -- Air target is to far away, remove it and lets get a new main target 
-                            TargetInPlatoonRange = false
-                        end
-                    else
-                        if VDist2( PlatoonCenterPosition[1], PlatoonCenterPosition[3], LastTargetPos[1], LastTargetPos[3] ) > MaxPlatoonWeaponRange + 35 then
-                            -- land/naval target is to far away, remove it and lets get a new main target 
-                            TargetInPlatoonRange = false
-                        end
-                    end
-                end
-
-                if HERODEBUGSwarm then
-                    if TargetInPlatoonRange then
-                        if TargetInPlatoonRange.Dead then
-                            self:RenamePlatoonSwarm('TargetInPlatoonRange = Dead')
-                        else
-                            self:RenamePlatoonSwarm('TargetInPlatoonRange true')
-                        end
-                    else
-                        self:RenamePlatoonSwarm('TargetInPlatoonRange = NIL')
-                    end
-                end
-
-                if TargetInPlatoonRange and not TargetInPlatoonRange.Dead then
-                    --LOG('* AI-Swarm: * HeroFightPlatoon: TargetInPlatoonRange: ['..repr(TargetInPlatoonRange.UnitId)..']')
-                    if AIUtils.IsNukeBlastAreaSwarm(aiBrain, LastTargetPos) then
-                        -- continue the "while aiBrain:PlatoonExists(self) do" loop
-                        continue
-                    end
-                    if self.MovementLayer == 'Air' then
-                        -- remove target, if we are out of base range
-                        DistanceToBase = VDist2(PlatoonCenterPosition[1] or 0, PlatoonCenterPosition[3] or 0, basePosition[1] or 0, basePosition[3] or 0)
-                        if GetTargetsFromBase and DistanceToBase > maxRadius then
-                            TargetInPlatoonRange = nil
-                            if HERODEBUGSwarm then
-                                self:RenamePlatoonSwarm('micro attack AIR DistanceToBase > maxRadius')
-                                SWARMWAIT(1)
-                            end
-                            break
-                        end
-                        -- else attack
-                        if HERODEBUGSwarm then
-                            self:RenamePlatoonSwarm('micro attack AIR')
-                            SWARMWAIT(1)
-                        end
-                        self:AttackTarget(TargetInPlatoonRange)
-                    else
-                        if HERODEBUGSwarm then
-                            self:RenamePlatoonSwarm('micro attack Land')
-                            SWARMWAIT(1)
-                        end
-                        --LOG('* AI-Swarm: * HeroFightPlatoon: Fight micro LAND start')
-                        --self:RenamePlatoonSwarm('Fight micro LAND start')
-                        -- bring all platoon units in optimal range to the target
-                        UnitMassCost = {}
-                        ------------------------------------------------------------------------------
-                        -- First micro turn for attack untis, second turn is for cover/shield units --
-                        ------------------------------------------------------------------------------
-                        for _, unit in self:GetPlatoonUnits() or {} do
-                            if unit.Dead then
-                                continue
-                            end
-                            -- don't move shield units in the first turn
-                            if unit.IsShieldOnlyUnit then
-                                continue
-                            end
-                            -- clear move commands if we have queued more than 2
-                            if SWARMGETN(unit:GetCommandQueue()) > 1 then
-                                IssueClearCommands({unit})
-                            end
-                            unitPos = unit:GetPosition()
-                            if unit.Blocked then
-                                -- Weapoon fire is blocked, move to the target as close as possible.
-                                smartPos = { LastTargetPos[1] + (Random(-5, 5)/10), LastTargetPos[2], LastTargetPos[3] + (Random(-5, 5)/10) }
-                            else
-                                alpha = SWARMATAN2 (LastTargetPos[3] - unitPos[3] ,LastTargetPos[1] - unitPos[1])
-                                x = LastTargetPos[1] - SWARMCOS(alpha) * (unit.MaxWeaponRange or MaxPlatoonWeaponRange)
-                                y = LastTargetPos[3] - SWARMSIN(alpha) * (unit.MaxWeaponRange or MaxPlatoonWeaponRange)
-                                smartPos = { x, GetTerrainHeight( x, y), y }
-                            end
-                            -- if we need to get as close to the target as possible, then just run to the target position
-                            if TargetHug then
-                                IssueMove({unit}, { LastTargetPos[1] + Random(-1, 1), LastTargetPos[2], LastTargetPos[3] + Random(-1, 1) } )
-                            -- check if the move position is new or target has moved
-                            -- if we don't have a rear weapon then attack (will move in circles otherwise)
-                            elseif not unit.HasRearWeapon and VDist2( unitPos[1], unitPos[3], LastTargetPos[1], LastTargetPos[3] ) > (unit.MaxWeaponRange or MaxPlatoonWeaponRange) then
-                                if HERODEBUGSwarm then
-                                    self:RenamePlatoonSwarm('micro attack Land No RearWeapon')
-                                    SWARMWAIT(1)
-                                end
-                                if not TargetInPlatoonRange.Dead then
-                                    IssueAttack({unit}, TargetInPlatoonRange)
-                                end
-                            elseif unit.HasRearWeapon and ( VDist2( smartPos[1], smartPos[3], unit.smartPos[1], unit.smartPos[3] ) > 0.7 or unit.TargetPos ~= LastTargetPos ) then
-                                if HERODEBUGSwarm then
-                                    self:RenamePlatoonSwarm('micro attack Land has RearWeapon')
-                                end
-                                -- in case we have a new target, delete the Blocked flag
-                                if unit.TargetPos ~= LastTargetPos then
-                                    unit.Blocked = false
-                                end
-                                -- check if we are far away fromthe platoon. maybe we have a stucked unit here
-                                -- can also be a unit that needs to deploy for weapon fire
-                                if VDist2( unitPos[1], unitPos[3], PlatoonCenterPosition[1], PlatoonCenterPosition[3] ) > 100.0 then
-                                    if not unit:IsMoving() then
-                                        unit.IamLost = unit.IamLost + 1
-                                    end
-                                else
-                                    unit.IamLost = 0
-                                end
-                                if unit.IamLost > 5 then
-                                    SPEW('* AI-Swarm: We have a LOST (stucked) unit. Killing it!!! Distance to platoon: '..SWARMFLOOR(VDist2( unitPos[1], unitPos[3], PlatoonCenterPosition[1], PlatoonCenterPosition[3]))..' pos: ( '..SWARMFLOOR(unitPos[1])..' , '..SWARMFLOOR(unitPos[3])..' )' )
-                                    -- stucked units can't be unstucked, even with a forked thread and hammering movement commands. Let's kill it !!!
-                                    unit:Kill()
-                                end
-                                IssueMove({unit}, smartPos )
-                                if HERODEBUGSwarm then
-                                    unit:SetCustomName('Fight micro moving')
-                                    SWARMWAIT(1)
-                                end
-                                unit.smartPos = smartPos
-                                unit.TargetPos = LastTargetPos
-                            -- in case we don't move, check if we can fire at the target
-                            else
-                                if aiBrain:CheckBlockingTerrain(unitPos, LastTargetPos, unit.WeaponArc) then
-                                    if HERODEBUGSwarm then
-                                        unit:SetCustomName('WEAPON BLOCKED!!! ['..repr(TargetInPlatoonRange.UnitId)..']')
-                                        SWARMWAIT(1)
-                                    end
-                                    unit.Blocked = true
-                                else
-                                    if HERODEBUGSwarm then
-                                        unit:SetCustomName('SHOOTING ['..repr(TargetInPlatoonRange.UnitId)..']')
-                                    end
-                                    unit.Blocked = false
-                                    if not TargetInPlatoonRange.Dead then
-                                        -- set the target as focus, we are in range, the unit will shoot without attack command
-                                        unit:SetFocusEntity(TargetInPlatoonRange)
-                                    end
-                                end
-                            end
-                            -- use this table later to decide what unit we want to cover with shields
-                            SWARMINSERT(UnitMassCost, {UnitMassCost = unit.UnitMassCost, smartPos = unit.smartPos, TargetPos = unit.TargetPos})
-                        end -- end micro first turn 
-                        if not UnitMassCost[1] then
-                            -- we can just disband the platoon everywhere on the map.
-                            -- the location manager will return these units to the nearest base for reassignment.
-                            --self:RenamePlatoonSwarm('no Fighters -> Disbanded')
-                            if aiBrain:PlatoonExists(self) then
-                                if HERODEBUGSwarm then
-                                    self:RenamePlatoonSwarm('PlatoonDisband 4')
-                                    SWARMWAIT(1)
-                                end
-                                self:PlatoonDisband()
-                            end
-                            return
-                        end
-                        SWARMSORT(UnitMassCost, function(a, b) return a.UnitMassCost > b.UnitMassCost end)
-                        ----------------------------------------------
-                        -- Second micro turn for cover/shield units --
-                        ----------------------------------------------
-                        UnitToCover = nil
-                        CoverIndex = 0
-                        for _, unit in self:GetPlatoonUnits() do
-                            if unit.Dead then continue end
-                            -- don't use attack units here
-                            if not unit.IsShieldOnlyUnit then
-                                continue
-                            end
-                            unitPos = unit:GetPosition()
-                            -- select a unit we want to cover. units with high mass cost first
-                            CoverIndex = CoverIndex + 1
-                            if not UnitMassCost[CoverIndex] then
-                                if CoverIndex ~= 1 then
-                                    CoverIndex = 1
-                                end
-                            end
-                            UnitToCover = UnitMassCost[CoverIndex]
-                            -- calculate a position behind the unit we want to cover (behind unit from enemy view)
-                            if UnitToCover.smartPos and UnitToCover.TargetPos then
-                                alpha = SWARMATAN2 (UnitToCover.smartPos[3] - UnitToCover.TargetPos[3] ,UnitToCover.smartPos[1] - UnitToCover.TargetPos[1])
-                                x = UnitToCover.smartPos[1] + SWARMCOS(alpha) * 4
-                                y = UnitToCover.smartPos[3] + SWARMSIN(alpha) * 4
-                                smartPos = { x, GetTerrainHeight( x, y), y }
-                            else
-                                smartPos = PlatoonCenterPosition
-                            end
-                            -- check if the move position is new or target has moved
-                            if VDist2( smartPos[1], smartPos[3], unit.smartPos[1], unit.smartPos[3] ) > 0.7 then
-                                -- clear move commands if we have queued more than 1
-                                if SWARMGETN(unit:GetCommandQueue()) > 1 then
-                                    IssueClearCommands({unit})
-                                end
-                                -- if our target is dead, jump out of the "for _, unit in self:GetPlatoonUnits() do" loop
-                                IssueMove({unit}, smartPos )
-                                --unit:SetCustomName('Shield micro moving')
-                                unit.smartPos = smartPos
-                            else
-                                --unit:SetCustomName('Shield micro CoveringPosition')
-                            end
-
-                        end
-                    end
-                else
-                    if HERODEBUGSwarm then
-                        self:RenamePlatoonSwarm('no micro target')
-                        SWARMWAIT(1)
-                    end
-                    --LOG('* AI-Swarm: * HeroFightPlatoon: Fight micro No Target')
-                    self:Stop()
-                    -- break the fight loop and get new targets
-                    break
-                end
-           end  -- fight end
-        end
-        if HERODEBUGSwarm then
-            self:RenamePlatoonSwarm('PlatoonExists = false')
-        end
-
-        if aiBrain:PlatoonExists(self) then
-            if HERODEBUGSwarm then
-                self:RenamePlatoonSwarm('PlatoonDisband 5')
-            end
-            self:PlatoonDisband()
         end
     end,
 }

@@ -1,4 +1,5 @@
 local SwarmUtils = import('/mods/AI-Swarm/lua/AI/Swarmutilities.lua')
+local AIBehaviors = import('/lua/ai/AIBehaviors.lua')
 local MABC = import('/lua/editor/MarkerBuildConditions.lua')
 local AIAttackUtils = import('/lua/AI/aiattackutilities.lua')
 local import = import
@@ -16,6 +17,7 @@ local SWARMENTITY = EntityCategoryContains
 
 local VDist2 = VDist2
 
+local GetThreatAtPosition = moho.aibrain_methods.GetThreatAtPosition
 local GetNumUnitsAroundPoint = moho.aibrain_methods.GetNumUnitsAroundPoint
 local GetUnitsAroundPoint = moho.aibrain_methods.GetUnitsAroundPoint
 local GetAIBrain = moho.unit_methods.GetAIBrain
@@ -64,6 +66,89 @@ function ValidateAttackLayerSwarm(position, TargetPosition)
         return true
     end
     return false
+end
+
+function AIGetMarkerLocationsNotFriendlySwarm(aiBrain, markerType)
+    local markerList = {}
+    --LOG('* AI-Swarm: Marker Type for AIGetMarkerLocationsNotFriendlySwarm is '..markerType)
+    if markerType == 'Start Location' then
+        local tempMarkers = AIGetMarkerLocationsSwarm(aiBrain, 'Blank Marker')
+        for k, v in tempMarkers do
+            if string.sub(v.Name, 1, 5) == 'ARMY_' then
+                local ecoStructures = aiBrain:GetUnitsAroundPoint(categories.STRUCTURE * (categories.MASSEXTRACTION + categories.MASSPRODUCTION), v.Position, 30, 'Ally')
+                local GetBlueprint = moho.entity_methods.GetBlueprint
+                local ecoThreat = 0
+                for _, v in ecoStructures do
+                    local bp = v:GetBlueprint()
+                    local ecoStructThreat = bp.Defense.EconomyThreatLevel
+                    --LOG('* AI-Swarm: Eco Structure'..ecoStructThreat)
+                    ecoThreat = ecoThreat + ecoStructThreat
+                end
+                if ecoThreat < 10 then
+                    SWARMINSERT(markerList, {Position = v.Position, Name = v.Name})
+                end
+            end
+        end
+    else
+        local markers = Scenario.MasterChain._MASTERCHAIN_.Markers
+        if markers then
+            for k, v in markers do
+                if v.type == markerType then
+                    SWARMINSERT(markerList, {Position = v.Position, Name = k})
+                end
+            end
+        end
+    end
+    return markerList
+end
+
+function AIGetMarkerLocationsSwarm(aiBrain, markerType)
+    local markerList = {}
+    if markerType == 'Start Location' then
+        local tempMarkers = AIGetMarkerLocationsSwarm(aiBrain, 'Blank Marker')
+        for k, v in tempMarkers do
+            if string.sub(v.Name, 1, 5) == 'ARMY_' then
+                SWARMINSERT(markerList, {Position = v.Position, Name = v.Name, MassSpotsInRange = v.MassSpotsInRange})
+            end
+        end
+    else
+        local markers = Scenario.MasterChain._MASTERCHAIN_.Markers
+        if markers then
+            for k, v in markers do
+                if v.type == markerType then
+                    SWARMINSERT(markerList, {Position = v.position, Name = k, MassSpotsInRange = v.MassSpotsInRange})
+                end
+            end
+        end
+    end
+
+    return markerList
+end
+
+function AIGetMarkersAroundLocationSwarm(aiBrain, markerType, pos, radius, threatMin, threatMax, threatRings, threatType)
+    local markers = AIGetMarkerLocationsSwarm(aiBrain, markerType)
+    local returnMarkers = {}
+    for _, v in markers do
+        if markerType == 'Blank Marker' then
+            if VDist2Sq(aiBrain.BuilderManagers['MAIN'].Position[1], aiBrain.BuilderManagers['MAIN'].Position[3], v.Position[1], v.Position[3]) < 10000 then
+                --LOG('Start Location too close to main base skip, location is '..VDist2Sq(aiBrain.BuilderManagers['MAIN'].Position[1], aiBrain.BuilderManagers['MAIN'].Position[3], v.Position[1], v.Position[3])..' from main base pos')
+                continue
+            end
+        end
+        local dist = VDist2(pos[1], pos[3], v.Position[1], v.Position[3])
+        if dist < radius then
+            if not threatMin then
+                SWARMINSERT(returnMarkers, v)
+            else
+                local threat = GetThreatAtPosition(aiBrain, v.Position, threatRings, true, threatType or 'Overall')
+                if threat >= threatMin and threat <= threatMax then
+                    SWARMINSERT(returnMarkers, v)
+                end
+            end
+        end
+    end
+
+    return returnMarkers
 end
 
 -- AI-Swarm: Helper function for targeting
@@ -324,6 +409,223 @@ function AIFindNearestCategoryTargetInRangeCDRSwarm(aiBrain, position, maxRange,
     return TargetUnit
 end
 
+function AIFindBrainTargetInRangeSwarm(aiBrain, platoon, squad, maxRange, atkPri, avoidbases, platoonThreat, index)
+    local position = platoon:GetPlatoonPosition()
+    local VDist2 = VDist2
+    if platoon.PlatoonData.GetTargetsFromBase then
+        --LOG('Looking for targets from position '..platoon.PlatoonData.LocationType)
+        position = aiBrain.BuilderManagers[platoon.PlatoonData.LocationType].Position
+    end
+    local enemyThreat, targetUnits, category
+    local RangeList = { [1] = maxRange }
+    if not aiBrain or not position or not maxRange then
+        return false
+    end
+    if not avoidbases then
+        avoidbases = false
+    end
+    if not platoon.MovementLayer then
+        AIAttackUtils.GetMostRestrictiveLayer(platoon)
+    end
+    
+    if maxRange > 512 then
+        RangeList = {
+            [1] = 30,
+            [1] = 64,
+            [2] = 128,
+            [2] = 192,
+            [3] = 256,
+            [3] = 384,
+            [4] = 512,
+            [5] = maxRange,
+        }
+    elseif maxRange > 256 then
+        RangeList = {
+            [1] = 30,
+            [1] = 64,
+            [2] = 128,
+            [2] = 192,
+            [3] = 256,
+            [4] = maxRange,
+        }
+    elseif maxRange > 64 then
+        RangeList = {
+            [1] = 30,
+            [2] = maxRange,
+        }
+    end
+
+    for _, range in RangeList do
+        targetUnits = GetUnitsAroundPoint(aiBrain, categories.ALLUNITS, position, range, 'Enemy')
+        for _, v in atkPri do
+            category = v
+            if type(category) == 'string' then
+                category = ParseEntityCategory(category)
+            end
+            local retUnit = false
+            local distance = false
+            local targetShields = 9999
+            for num, unit in targetUnits do
+                if index then
+                    for k, v in index do
+                        if unit:GetAIBrain():GetArmyIndex() == v then
+                            if not unit.Dead and not unit.CaptureInProgress and EntityCategoryContains(category, unit) and platoon:CanAttackTarget(squad, unit) then
+                                local unitPos = unit:GetPosition()
+                                if not retUnit or VDist2(position[1], position[3], unitPos[1], unitPos[3]) < distance then
+                                    retUnit = unit
+                                    distance = VDist2(position[1], position[3], unitPos[1], unitPos[3])
+                                end
+                                if platoon.MovementLayer == 'Air' and platoonThreat then
+                                    enemyThreat = GetThreatAtPosition( aiBrain, unitPos, aiBrain.IMAPConfigSwarm.Rings, true, 'AntiAir')
+                                    --LOG('Enemy Threat is '..enemyThreat..' and my threat is '..platoonThreat)
+                                    if enemyThreat > platoonThreat then
+                                        continue
+                                    end
+                                end
+                                local numShields = aiBrain:GetNumUnitsAroundPoint(categories.DEFENSE * categories.SHIELD * categories.STRUCTURE, unitPos, 46, 'Enemy')
+                                if not retUnit or numShields < targetShields or (numShields == targetShields and VDist2(position[1], position[3], unitPos[1], unitPos[3]) < distance) then
+                                    retUnit = unit
+                                    distance = VDist2(position[1], position[3], unitPos[1], unitPos[3])
+                                    targetShields = numShields
+                                end
+                            end
+                        end
+                    end
+                else
+                    if not unit.Dead and EntityCategoryContains(category, unit) and platoon:CanAttackTarget(squad, unit) then
+                        local unitPos = unit:GetPosition()
+                        if avoidbases then
+                            for _, w in ArmyBrains do
+                                if IsEnemy(w:GetArmyIndex(), aiBrain:GetArmyIndex()) or (aiBrain:GetArmyIndex() == w:GetArmyIndex()) then
+                                    local estartX, estartZ = w:GetArmyStartPos()
+                                    if VDist2Sq(estartX, estartZ, unitPos[1], unitPos[3]) < 22500 then
+                                        continue
+                                    end
+                                end
+                            end
+                        end
+                        if platoon.MovementLayer == 'Air' and platoonThreat then
+                            enemyThreat = GetThreatAtPosition( aiBrain, unitPos, aiBrain.BrainIntel.IMAPConfig.Rings, true, 'AntiAir')
+                            --LOG('Enemy Threat is '..enemyThreat..' and my threat is '..platoonThreat)
+                            if enemyThreat > platoonThreat then
+                                continue
+                            end
+                        end
+                        local numShields = aiBrain:GetNumUnitsAroundPoint(categories.DEFENSE * categories.SHIELD * categories.STRUCTURE, unitPos, 46, 'Enemy')
+                        if not retUnit or numShields < targetShields or (numShields == targetShields and VDist2(position[1], position[3], unitPos[1], unitPos[3]) < distance) then
+                            retUnit = unit
+                            distance = VDist2(position[1], position[3], unitPos[1], unitPos[3])
+                            targetShields = numShields
+                        end
+                    end
+                end
+            end
+            if retUnit and targetShields > 0 then
+                local platoonUnits = platoon:GetPlatoonUnits()
+                for _, w in platoonUnits do
+                    if not w.Dead then
+                        unit = w
+                        break
+                    end
+                end
+                local closestBlockingShield = AIBehaviors.GetClosestShieldProtectingTargetSorian(unit, retUnit)
+                if closestBlockingShield then
+                    return closestBlockingShield
+                end
+            end
+            if retUnit then
+                return retUnit
+            end
+        end
+        coroutine.yield(1)
+    end
+    return false
+end
+
+function AIFindBrainTargetInCloseRangeSwarm(aiBrain, platoon, position, squad, maxRange, targetQueryCategory, TargetSearchCategory, enemyBrain)
+    if type(TargetSearchCategory) == 'string' then
+        TargetSearchCategory = ParseEntityCategory(TargetSearchCategory)
+    end
+    local enemyIndex = false
+    local VDist2 = VDist2
+    local MyArmyIndex = aiBrain:GetArmyIndex()
+    if enemyBrain then
+        enemyIndex = enemyBrain:GetArmyIndex()
+    end
+    local acuPresent = false
+    local acuUnit = false
+    local RangeList = {
+        [1] = 10,
+        [2] = maxRange,
+        [3] = maxRange + 30,
+    }
+    local TargetUnit = false
+    local TargetsInRange, EnemyStrength, TargetPosition, category, distance, targetRange, baseTargetRange, canAttack
+    for _, range in RangeList do
+        if not position then
+            WARN('* AI-Swarm: AIFindNearestCategoryTargetInCloseRange: position is empty')
+            return false
+        end
+        if not range then
+            WARN('* AI-Swarm: AIFindNearestCategoryTargetInCloseRange: range is empty')
+            return false
+        end
+        if not TargetSearchCategory then
+            WARN('* AI-Swarm: AIFindNearestCategoryTargetInCloseRange: TargetSearchCategory is empty')
+            return false
+        end
+        TargetsInRange = GetUnitsAroundPoint(aiBrain, targetQueryCategory, position, range, 'Enemy')
+        --DrawCircle(position, range, '0000FF')
+        for _, v in TargetSearchCategory do
+            category = v
+            if type(category) == 'string' then
+                category = ParseEntityCategory(category)
+            end
+            distance = maxRange
+            --LOG('* AIFindNearestCategoryTargetInRange: numTargets '..SWARMGETN(TargetsInRange)..'  ')
+            for num, Target in TargetsInRange do
+                if Target.Dead or Target:BeenDestroyed() then
+                    continue
+                end
+                TargetPosition = Target:GetPosition()
+                EnemyStrength = 0
+                -- check if we have a special player as enemy
+                if enemyBrain and enemyIndex and enemyBrain ~= enemyIndex then continue end
+                if EntityCategoryContains(categories.COMMAND, Target) then
+                    acuPresent = true
+                    acuUnit = Target
+                end
+                -- check if the Target is still alive, matches our target priority and can be attacked from our platoon
+                if not Target.Dead and not Target.CaptureInProgress and EntityCategoryContains(category, Target) and platoon:CanAttackTarget(squad, Target) then
+                    -- yes... we need to check if we got friendly units with GetUnitsAroundPoint(_, _, _, 'Enemy')
+                    if not IsEnemy( MyArmyIndex, Target:GetAIBrain():GetArmyIndex() ) then continue end
+                    if Target.ReclaimInProgress then
+                        --WARN('* AIFindNearestCategoryTargetInRange: ReclaimInProgress !!! Ignoring the target.')
+                        continue
+                    end
+                    if Target.CaptureInProgress then
+                        --WARN('* AIFindNearestCategoryTargetInRange: CaptureInProgress !!! Ignoring the target.')
+                        continue
+                    end
+                    targetRange = VDist2(position[1],position[3],TargetPosition[1],TargetPosition[3])
+                    -- check if the target is in range of the unit and in range of the base
+                    if targetRange < distance then
+                        TargetUnit = Target
+                        distance = targetRange
+                    end
+                end
+            end
+            if TargetUnit then
+                --LOG('Target Found in target aquisition function')
+                return TargetUnit, acuPresent, acuUnit
+            end
+            SWARMWAIT(5)
+        end
+        SWARMWAIT(1)
+    end
+    --LOG('NO Target Found in target aquisition function')
+    return TargetUnit, acuPresent, acuUnit
+end
 
 function AIFindNearestCategoryTargetInCloseRangeSwarm(platoon, aiBrain, squad, position, maxRange, MoveToCategories, TargetSearchCategory, enemyBrain)
     local IgnoreTargetLayerCheck = platoon.PlatoonData.IgnoreTargetLayerCheck
@@ -580,6 +882,210 @@ function EngineerMoveWithSafePathSwarmAdvanced(aiBrain, eng, destination, whatTo
         return true
     end
     return false
+end
+
+function UseTransportsSwarm(units, transports, location, transportPlatoon)
+    local aiBrain
+    for k, v in units do
+        if not v.Dead then
+            aiBrain = v:GetAIBrain()
+            break
+        end
+    end
+
+    if not aiBrain then
+        return false
+    end
+
+    -- Load transports
+    local transportTable = {}
+    local transSlotTable = {}
+    if not transports then
+        return false
+    end
+
+    IssueClearCommands(transports)
+
+    for num, unit in transports do
+        local id = unit.UnitId
+        if not transSlotTable[id] then
+            transSlotTable[id] = GetNumTransportSlots(unit)
+        end
+        SWARMINSERT(transportTable,
+            {
+                Transport = unit,
+                LargeSlots = transSlotTable[id].Large,
+                MediumSlots = transSlotTable[id].Medium,
+                SmallSlots = transSlotTable[id].Small,
+                Units = {}
+            }
+        )
+    end
+
+    local shields = {}
+    local remainingSize3 = {}
+    local remainingSize2 = {}
+    local remainingSize1 = {}
+    local pool = aiBrain:GetPlatoonUniquelyNamed('ArmyPool')
+    for num, unit in units do
+        if not unit.Dead then
+            if unit:IsUnitState('Attached') then
+                aiBrain:AssignUnitsToPlatoon(pool, {unit}, 'Unassigned', 'None')
+            elseif EntityCategoryContains(categories.url0306 + categories.DEFENSE, unit) then
+                SWARMINSERT(shields, unit)
+            elseif unit:GetBlueprint().Transport.TransportClass == 3 then
+                SWARMINSERT(remainingSize3, unit)
+            elseif unit:GetBlueprint().Transport.TransportClass == 2 then
+                SWARMINSERT(remainingSize2, unit)
+            elseif unit:GetBlueprint().Transport.TransportClass == 1 then
+                SWARMINSERT(remainingSize1, unit)
+            else
+                SWARMINSERT(remainingSize1, unit)
+            end
+        end
+    end
+
+    local needed = GetNumTransports(units)
+    local largeHave = 0
+    for num, data in transportTable do
+        largeHave = largeHave + data.LargeSlots
+    end
+
+    local leftoverUnits = {}
+    local currLeftovers = {}
+    local leftoverShields = {}
+    transportTable, leftoverShields = SortUnitsOnTransports(transportTable, shields, largeHave - needed.Large)
+
+    transportTable, leftoverUnits = SortUnitsOnTransports(transportTable, remainingSize3, -1)
+
+    transportTable, currLeftovers = SortUnitsOnTransports(transportTable, leftoverShields, -1)
+
+    for _, v in currLeftovers do SWARMINSERT(leftoverUnits, v) end
+    transportTable, currLeftovers = SortUnitsOnTransports(transportTable, remainingSize2, -1)
+
+    for _, v in currLeftovers do SWARMINSERT(leftoverUnits, v) end
+    transportTable, currLeftovers = SortUnitsOnTransports(transportTable, remainingSize1, -1)
+
+    for _, v in currLeftovers do SWARMINSERT(leftoverUnits, v) end
+    transportTable, currLeftovers = SortUnitsOnTransports(transportTable, currLeftovers, -1)
+
+    aiBrain:AssignUnitsToPlatoon(pool, currLeftovers, 'Unassigned', 'None')
+    if transportPlatoon then
+        transportPlatoon.UsingTransport = true
+    end
+
+    local monitorUnits = {}
+    for num, data in transportTable do
+        if SWARMGETN(data.Units) > 0 then
+            IssueClearCommands(data.Units)
+            IssueTransportLoad(data.Units, data.Transport)
+            for k, v in data.Units do SWARMINSERT(monitorUnits, v) end
+        end
+    end
+
+    local attached = true
+    repeat
+        SWARMWAIT(20)
+        local allDead = true
+        local transDead = true
+        for k, v in units do
+            if not v.Dead then
+                allDead = false
+                break
+            end
+        end
+        for k, v in transports do
+            if not v.Dead then
+                transDead = false
+                break
+            end
+        end
+        if allDead or transDead then return false end
+        attached = true
+        for k, v in monitorUnits do
+            if not v.Dead and not v:IsIdleState() then
+                attached = false
+                break
+            end
+        end
+    until attached
+
+    -- Any units that aren't transports and aren't attached send back to pool
+    for k, unit in units do
+        if not unit.Dead and not EntityCategoryContains(categories.TRANSPORTATION, unit) then
+            if not unit:IsUnitState('Attached') then
+                aiBrain:AssignUnitsToPlatoon(pool, {unit}, 'Unassigned', 'None')
+            end
+        elseif not unit.Dead and EntityCategoryContains(categories.TRANSPORTATION, unit) and SWARMGETN(unit:GetCargo()) < 1 then
+            ReturnTransportsToPool({unit}, true)
+            SWARMREMOVE(transports, k)
+        end
+    end
+
+    -- If some transports have no units return to pool
+    for k, t in transports do
+        if not t.Dead and SWARMGETN(t:GetCargo()) < 1 then
+            aiBrain:AssignUnitsToPlatoon('ArmyPool', {t}, 'Scout', 'None')
+            SWARMREMOVE(transports, k)
+        end
+    end
+
+    if SWARMGETN(transports) ~= 0 then
+        -- If no location then we have loaded transports then return true
+        if location then
+            local safePath = AIAttackUtils.PlatoonGenerateSafePathToSwarm(aiBrain, 'Air', transports[1]:GetPosition(), location, 200)
+            if safePath then
+                for _, p in safePath do
+                    IssueMove(transports, p)
+                end
+            end
+        else
+            if transportPlatoon then
+                transportPlatoon.UsingTransport = false
+            end
+            return true
+        end
+    else
+        -- If no transports return false
+        if transportPlatoon then
+            transportPlatoon.UsingTransport = false
+        end
+        return false
+    end
+
+    -- Adding Surface Height, so thetransporter get not confused, because the target is under the map (reduces unload time)
+    location = {location[1], GetSurfaceHeight(location[1],location[3]), location[3]}
+    IssueTransportUnload(transports, location)
+    local attached = true
+    while attached do
+        WaitSeconds(2)
+        local allDead = true
+        for _, v in transports do
+            if not v.Dead then
+                allDead = false
+                break
+            end
+        end
+
+        if allDead then
+            return false
+        end
+
+        attached = false
+        for num, unit in units do
+            if not unit.Dead and unit:IsUnitState('Attached') then
+                attached = true
+                break
+            end
+        end
+    end
+
+    if transportPlatoon then
+        transportPlatoon.UsingTransport = false
+    end
+    ReturnTransportsToPool(transports, true)
+
+    return true
 end
 
 function points(original,radius,num)

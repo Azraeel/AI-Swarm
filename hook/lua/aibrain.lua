@@ -7,6 +7,7 @@ local AIBehaviors = import('/lua/ai/AIBehaviors.lua')
 local lastCall = 0
 local SWARMGETN = table.getn
 local SWARMINSERT = table.insert
+local SWARMREMOVE = table.remove
 local SWARMMIN = math.min
 local SWARMMAX = math.max
 local SWARMWAIT = coroutine.yield
@@ -71,6 +72,10 @@ AIBrain = Class(SwarmAIBrainClass) {
         local mapSizeX, mapSizeZ = GetMapSize()
         -- Stores handles to all builders for quick iteration and updates to all
         self.BuilderHandles = {}
+        self.GraphZonesSwarm = { 
+            FirstRun = true,
+            HasRun = false
+        }
         self.IMAPConfigSwarm = {
             OgridRadius = 0,
             IMAPSize = 0,
@@ -90,9 +95,9 @@ AIBrain = Class(SwarmAIBrainClass) {
         SUtils.AddCustomUnitSupport(self)
         self:AddBuilderManagers(self:GetStartVector3f(), 100, 'MAIN', false)
 
-        self:BaseMonitorInitialization()
+        self:BaseMonitorInitializationSwarm()
         local plat = self:GetPlatoonUniquelyNamed('ArmyPool')
-        plat:ForkThread(plat.BaseManagersDistressAI)
+        plat:ForkThread(plat.BaseManagersDistressAISwarm)
 
         self.DeadBaseThread = self:ForkThread(self.DeadBaseMonitor)
 
@@ -107,6 +112,7 @@ AIBrain = Class(SwarmAIBrainClass) {
         --LOG("EconomyMonitorSwarm Started")
         self.EconomyOverTimeCurrent = {}
 
+        self:ForkThread(SwarmUtils.DisplayMarkerAdjacencySwarm)
         self:ForkThread(self.EcoExtractorUpgradeCheckSwarm)
         self.EcoManager = {
             EcoManagerTime = 30,
@@ -219,12 +225,12 @@ AIBrain = Class(SwarmAIBrainClass) {
                     local StructurePool = self.StructurePool
                     self:AssignUnitsToPlatoon(StructurePool, {unit}, 'Support', 'none' )
                     local upgradeID = unitBp.General.UpgradesTo or false
-                    --LOG('* AI-RNG: BlueprintID to upgrade to is : '..unitBp.General.UpgradesTo)
+                    --LOG('* AI-Swarm: BlueprintID to upgrade to is : '..unitBp.General.UpgradesTo)
                     if upgradeID and __blueprints[upgradeID] then
                         SwarmUtils.StructureUpgradeInitializeSwarm(unit, self)
                     end
                     local unitTable = StructurePool:GetPlatoonUnits()
-                    --LOG('* AI-RNG: StructurePool now has :'..RNGGETN(unitTable))
+                    --LOG('* AI-Swarm: StructurePool now has :'..SWARMGETN(unitTable))
                 end
             end
         end
@@ -511,17 +517,28 @@ AIBrain = Class(SwarmAIBrainClass) {
         end
         SWARMWAIT(2)
     end,
-        
+
     CalculateMassMarkersSwarm = function(self)
         local MassMarker = {}
         local massMarkerBuildable = 0
         local markerCount = 0
+        local graphCheck = false
         for _, v in Scenario.MasterChain._MASTERCHAIN_.Markers do
             if v.type == 'Mass' then
                 if v.position[1] <= 8 or v.position[1] >= ScenarioInfo.size[1] - 8 or v.position[3] <= 8 or v.position[3] >= ScenarioInfo.size[2] - 8 then
                     -- mass marker is too close to border, skip it.
                     continue
                 end 
+                if v.SwarmArea and not self.GraphZonesSwarm.FirstRun and not self.GraphZonesSwarm.HasRun then
+                    graphCheck = true
+                    if not self.GraphZonesSwarm[v.SwarmArea] then
+                        self.GraphZonesSwarm[v.SwarmArea] = {}
+                        if self.GraphZonesSwarm[v.SwarmArea].MassMarkersInZone == nil then
+                            self.GraphZonesSwarm[v.SwarmArea].MassMarkersInZone = 0
+                        end
+                    end
+                    self.GraphZonesSwarm[v.SwarmArea].MassMarkersInZone = self.GraphZonesSwarm[v.SwarmArea].MassMarkersInZone + 1
+                end
                 if CanBuildStructureAt(self, 'ueb1103', v.position) then
                     massMarkerBuildable = massMarkerBuildable + 1
                 end
@@ -529,8 +546,291 @@ AIBrain = Class(SwarmAIBrainClass) {
                 SWARMINSERT(MassMarker, v)
             end
         end
+        if graphCheck then
+            self.GraphZonesSwarm.HasRun = true
+        end
         self.MassMarker = markerCount
         self.MassMarkerBuildable = massMarkerBuildable
+    end,
+
+    BaseMonitorThreadSwarm = function(self)
+        while true do
+            if self.BaseMonitor.BaseMonitorStatus == 'ACTIVE' then
+                self:BaseMonitorCheckSwarm()
+            end
+            WaitSeconds(self.BaseMonitor.BaseMonitorTime)
+        end
+    end,
+
+    BaseMonitorInitializationSwarm = function(self, spec)
+        self.BaseMonitor = {
+            BaseMonitorStatus = 'ACTIVE',
+            BaseMonitorPoints = {},
+            AlertSounded = false,
+            AlertsTable = {},
+            AlertLocation = false,
+            AlertSoundedThreat = 0,
+            ActiveAlerts = 0,
+
+            PoolDistressRange = 75,
+            PoolReactionTime = 7,
+
+            -- Variables for checking a radius for enemy units
+            UnitRadiusThreshold = spec.UnitRadiusThreshold or 3,
+            UnitCategoryCheck = spec.UnitCategoryCheck or (categories.MOBILE - (categories.SCOUT + categories.ENGINEER)),
+            UnitCheckRadius = spec.UnitCheckRadius or 40,
+
+            -- Threat level must be greater than this number to sound a base alert
+            AlertLevel = spec.AlertLevel or 0,
+            -- Delay time for checking base
+            BaseMonitorTime = spec.BaseMonitorTime or 11,
+            -- Default distance a platoon will travel to help around the base
+            DefaultDistressRange = spec.DefaultDistressRange or 75,
+            -- Default how often platoons will check if the base is under duress
+            PlatoonDefaultReactionTime = spec.PlatoonDefaultReactionTime or 5,
+            -- Default duration for an alert to time out
+            DefaultAlertTimeout = spec.DefaultAlertTimeout or 10,
+
+            PoolDistressThreshold = 1,
+
+            -- Monitor platoons for help
+            PlatoonDistressTable = {},
+            PlatoonDistressThread = false,
+            PlatoonAlertSounded = false,
+        }
+        self:ForkThread(self.BaseMonitorThreadSwarm)
+    end,
+
+    GetStructureVectorsSwarm = function(self)
+        local structures = GetListOfUnits(self, categories.STRUCTURE - categories.WALL - categories.MASSEXTRACTION, false)
+        -- Add all points around location
+        local tempGridPoints = {}
+        local indexChecker = {}
+
+        for k, v in structures do
+            if not v.Dead then
+                local pos = AIUtils.GetUnitBaseStructureVector(v)
+                if pos then
+                    if not indexChecker[pos[1]] then
+                        indexChecker[pos[1]] = {}
+                    end
+                    if not indexChecker[pos[1]][pos[3]] then
+                        indexChecker[pos[1]][pos[3]] = true
+                        SWARMINSERT(tempGridPoints, pos)
+                    end
+                end
+            end
+        end
+
+        return tempGridPoints
+    end,
+
+    BaseMonitorCheckSwarm = function(self)
+        
+        local gameTime = GetGameTimeSeconds()
+        if gameTime < 300 then
+            -- default monitor spec
+        elseif gameTime > 300 then
+            self.BaseMonitor.PoolDistressRange = 130
+            self.AlertLevel = 5
+        end
+
+        local vecs = self:GetStructureVectorsSwarm()
+        if SWARMGETN(vecs) > 0 then
+            -- Find new points to monitor
+            for k, v in vecs do
+                local found = false
+                for subk, subv in self.BaseMonitor.BaseMonitorPoints do
+                    if v[1] == subv.Position[1] and v[3] == subv.Position[3] then
+                        found = true
+                        -- if we found this point already stored, we don't need to continue searching the rest
+                        break
+                    end
+                end
+                if not found then
+                    SWARMINSERT(self.BaseMonitor.BaseMonitorPoints,
+                        {
+                            Position = v,
+                            Threat = GetThreatAtPosition(self, v, 0, true, 'Land'),
+                            Alert = false
+                        }
+                    )
+                end
+            end
+            --LOG('BaseMonitorPoints Threat Data '..repr(self.BaseMonitor.BaseMonitorPoints))
+            -- Remove any points that we dont monitor anymore
+            for k, v in self.BaseMonitor.BaseMonitorPoints do
+                local found = false
+                for subk, subv in vecs do
+                    if v.Position[1] == subv[1] and v.Position[3] == subv[3] then
+                        found = true
+                        break
+                    end
+                end
+                -- If point not in list and the num units around the point is small
+                if not found and self:GetNumUnitsAroundPoint(categories.STRUCTURE, v.Position, 16, 'Ally') <= 1 then
+                    SWARMREMOVE(self.BaseMonitor.BaseMonitorPoints, k)
+                end
+            end
+            -- Check monitor points for change
+            local alertThreat = self.BaseMonitor.AlertLevel
+            for k, v in self.BaseMonitor.BaseMonitorPoints do
+                if not v.Alert then
+                    v.Threat = GetThreatAtPosition(self, v.Position, 0, true, 'Land')
+                    if v.Threat > alertThreat then
+                        v.Alert = true
+                        SWARMINSERT(self.BaseMonitor.AlertsTable,
+                            {
+                                Position = v.Position,
+                                Threat = v.Threat,
+                            }
+                        )
+                        self.BaseMonitor.AlertSounded = true
+                        self:ForkThread(self.BaseMonitorAlertTimeout, v.Position)
+                        self.BaseMonitor.ActiveAlerts = self.BaseMonitor.ActiveAlerts + 1
+                    end
+                end
+            end
+        end
+    end,
+
+    BaseMonitorPlatoonDistressSwarm = function(self, platoon, threat)
+        if not self.BaseMonitor then
+            return
+        end
+
+        local found = false
+        if self.BaseMonitor.PlatoonAlertSounded == false then
+            SWARMINSERT(self.BaseMonitor.PlatoonDistressTable, {Platoon = platoon, Threat = threat})
+        else
+            for k, v in self.BaseMonitor.PlatoonDistressTable do
+                -- If already calling for help, don't add another distress call
+                if table.equal(v.Platoon, platoon) then
+                    --LOG('platoon.BuilderName '..platoon.BuilderName..'already exist as '..v.Platoon.BuilderName..' skipping')
+                    found = true
+                    break
+                end
+            end
+            if not found then
+                --LOG('Platoon doesnt already exist, adding')
+                SWARMINSERT(self.BaseMonitor.PlatoonDistressTable, {Platoon = platoon, Threat = threat})
+            end
+        end
+        -- Create the distress call if it doesn't exist
+        if not self.BaseMonitor.PlatoonDistressThread then
+            self.BaseMonitor.PlatoonDistressThread = self:ForkThread(self.BaseMonitorPlatoonDistressThreadSwarm)
+        end
+        --LOG('Platoon Distress Table'..repr(self.BaseMonitor.PlatoonDistressTable))
+    end,
+
+    BaseMonitorPlatoonDistressThreadSwarm = function(self)
+        self.BaseMonitor.PlatoonAlertSounded = true
+        while true do
+            local numPlatoons = 0
+            for k, v in self.BaseMonitor.PlatoonDistressTable do
+                if self:PlatoonExists(v.Platoon) then
+                    local threat = GetThreatAtPosition(self, v.Platoon:GetPlatoonPosition(), 0, true, 'Land')
+                    local myThreat = GetThreatAtPosition(self, v.Platoon:GetPlatoonPosition(), 0, true, 'Overall', self:GetArmyIndex())
+                    --LOG('* AI-Swarm: Threat of attacker'..threat)
+                    --LOG('* AI-Swarm: Threat of platoon'..myThreat)
+                    -- Platoons still threatened
+                    if threat and threat > (myThreat * 1.5) then
+                        --LOG('* AI-Swarm: Created Threat Alert')
+                        v.Threat = threat
+                        numPlatoons = numPlatoons + 1
+                    -- Platoon not threatened
+                    else
+                        self.BaseMonitor.PlatoonDistressTable[k] = nil
+                        v.Platoon.DistressCall = false
+                    end
+                else
+                    self.BaseMonitor.PlatoonDistressTable[k] = nil
+                end
+            end
+
+            -- If any platoons still want help; continue sounding
+            --LOG('Alerted Platoons '..numPlatoons)
+            if numPlatoons > 0 then
+                self.BaseMonitor.PlatoonAlertSounded = true
+            else
+                self.BaseMonitor.PlatoonAlertSounded = false
+            end
+            self.BaseMonitor.PlatoonDistressTable = self:RebuildTable(self.BaseMonitor.PlatoonDistressTable)
+            --LOG('Platoon Distress Table'..repr(self.BaseMonitor.PlatoonDistressTable))
+            WaitSeconds(self.BaseMonitor.BaseMonitorTime)
+        end
+    end,
+
+    BaseMonitorDistressLocationSwarm = function(self, position, radius, threshold)
+        local returnPos = false
+        local highThreat = false
+        local distance
+        
+        if self.BaseMonitor.AlertSounded then
+            --LOG('Base Alert Sounded')
+            for k, v in self.BaseMonitor.AlertsTable do
+                local tempDist = VDist2(position[1], position[3], v.Position[1], v.Position[3])
+
+                -- Too far away
+                if tempDist > radius then
+                    continue
+                end
+
+                -- Not enough threat in location
+                if v.Threat < threshold then
+                    continue
+                end
+
+                -- Threat lower than or equal to a threat we already have
+                if v.Threat <= highThreat then
+                    continue
+                end
+
+                -- Get real height
+                local height = GetTerrainHeight(v.Position[1], v.Position[3])
+                local surfHeight = GetSurfaceHeight(v.Position[1], v.Position[3])
+                if surfHeight > height then
+                    height = surfHeight
+                end
+
+                -- currently our winner in high threat
+                returnPos = {v.Position[1], height, v.Position[3]}
+                distance = tempDist
+            end
+        end
+        if self.BaseMonitor.PlatoonAlertSounded then
+            --LOG('Platoon Alert Sounded')
+            for k, v in self.BaseMonitor.PlatoonDistressTable do
+                if self:PlatoonExists(v.Platoon) then
+                    local platPos = v.Platoon:GetPlatoonPosition()
+                    if not platPos then
+                        self.BaseMonitor.PlatoonDistressTable[k] = nil
+                        continue
+                    end
+                    local tempDist = VDist2(position[1], position[3], platPos[1], platPos[3])
+
+                    -- Platoon too far away to help
+                    if tempDist > radius then
+                        continue
+                    end
+
+                    -- Area not scary enough
+                    if v.Threat < threshold then
+                        continue
+                    end
+
+                    -- Further away than another call for help
+                    if tempDist > distance then
+                        continue
+                    end
+
+                    -- Our current winners
+                    returnPos = platPos
+                    distance = tempDist
+                end
+            end
+        end
+        return returnPos
     end,
 
     BuildScoutLocationsSwarm = function(self)
@@ -862,11 +1162,11 @@ AIBrain = Class(SwarmAIBrainClass) {
                 end
                 local unitBp = v:GetBlueprint()
                 local StructurePool = self.StructurePool
-                --LOG('* AI-RNG: Assigning built extractor to StructurePool')
+                --LOG('* AI-Swarm: Assigning built extractor to StructurePool')
                 self:AssignUnitsToPlatoon(StructurePool, {v}, 'Support', 'none' )
                 local upgradeID = unitBp.General.UpgradesTo or false
                 if upgradeID and unitBp then
-                    --LOG('* AI-RNG: UpgradeID')
+                    --LOG('* AI-Swarm: UpgradeID')
                     SwarmUtils.StructureUpgradeInitializeSwarm(v, self)
                 end
             end
