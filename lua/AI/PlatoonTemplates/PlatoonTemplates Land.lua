@@ -12,7 +12,7 @@ PlatoonTemplate {
     Name = 'AISwarm LandAttack Micro - Standard',
     Plan = 'HeroFightPlatoonSwarm',
     GlobalSquads = {
-        { categories.MOBILE * categories.LAND + (categories.MOBILE * categories.EXPERIMENTAL) - categories.ANTIAIR - categories.ENGINEER - categories.SCOUT, 4, 25, 'attack', 'none' },
+        { categories.MOBILE * categories.LAND + (categories.MOBILE * categories.EXPERIMENTAL) - categories.ENGINEER - categories.SCOUT, 4, 25, 'attack', 'none' },
     },
 }
 
@@ -20,7 +20,7 @@ PlatoonTemplate {
     Name = 'AISwarm T1 Spam',
     Plan = 'HuntAISwarm',
     GlobalSquads = {
-        { categories.MOBILE * categories.LAND * categories.MOBILE * categories.TECH1 - categories.ANTIAIR - categories.ENGINEER - categories.SCOUT, 2, 10, 'attack', 'none' },
+        { categories.MOBILE * categories.LAND * categories.TECH1 - categories.ENGINEER - categories.SCOUT, 2, 10, 'attack', 'none' },
     },
 }
 
@@ -156,6 +156,15 @@ PlatoonTemplate {
         },
         Cybran = {
             { 'url0303', 1, 1, 'attack', 'none' },
+        },
+    }
+}
+
+PlatoonTemplate {
+    Name = 'T3MobileShieldSwarm',
+    FactionSquads = {
+        Seraphim = {
+            { 'xsl0307', 1, 1, 'support', 'none' }
         },
     }
 }

@@ -249,6 +249,8 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',
         Priority = 550,
 
         BuilderConditions = {
+            { MIBC, 'FactionIndex', { 1, 2, 3 }}, -- 1: UEF, 2: Aeon, 3: Cybran, 4: Seraphim, 5: Nomads 
+
             { UCBC, 'UnitCapCheckLess', { 0.90 } },
 
             { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 0.75, 0.9 }},
@@ -261,7 +263,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',
 
             { UCBC, 'HaveGreaterThanUnitsWithCategory', { 6, categories.LAND * categories.MOBILE * categories.DIRECTFIRE * (categories.TECH2 * categories.TECH3) - categories.ENGINEER }},
 
-            { UCBC, 'LocationFactoriesBuildingLess', { 'LocationType', 1, categories.LAND * categories.MOBILE * categories.SHIELD }},
+            { UCBC, 'LocationFactoriesBuildingLess', { 'LocationType', 2, categories.LAND * categories.MOBILE * categories.SHIELD }},
 
             { UCBC, 'PoolLessAtLocation', { 'LocationType', 3, categories.MOBILE * categories.LAND * categories.SHIELD }},
         },
@@ -291,7 +293,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',
 
             { UCBC, 'HaveGreaterThanUnitsWithCategory', { 5, categories.LAND * categories.MOBILE * categories.DIRECTFIRE * (categories.TECH2 + categories.TECH3) - categories.ENGINEER }},
 
-            { UCBC, 'LocationFactoriesBuildingLess', { 'LocationType', 1, categories.LAND * categories.MOBILE * categories.ANTIAIR * categories.TECH2 } },
+            { UCBC, 'LocationFactoriesBuildingLess', { 'LocationType', 2, categories.LAND * categories.MOBILE * categories.ANTIAIR * categories.TECH2 } },
 
             { UCBC, 'PoolLessAtLocation', { 'LocationType', 3, categories.LAND * categories.MOBILE * categories.ANTIAIR * categories.TECH2 }},
         },
@@ -305,6 +307,8 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',
         PlatoonTemplate = 'T3ArmoredAssault',
         Priority = 550,
         BuilderConditions = {
+            { MIBC, 'FactionIndex', { 1, 3 }}, -- 1: UEF, 2: Aeon, 3: Cybran, 4: Seraphim, 5: Nomads 
+            
             { UCBC, 'UnitCapCheckLess', { 0.90 } },
 
             { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 0.9, 0.95 }},
@@ -312,8 +316,6 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',
             { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.01, 0.10}},
 
             { MIBC, 'CanPathToCurrentEnemySwarm', { true, 'LocationType' } },
-
-            { MIBC, 'FactionIndex', { 1, 3 }}, -- 1: UEF, 2: Aeon, 3: Cybran, 4: Seraphim, 5: Nomads 
 
             { UCBC, 'HaveGreaterThanUnitsWithCategory', { 1, categories.FACTORY * categories.LAND * categories.TECH3 }},
 
@@ -328,6 +330,8 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',
         PlatoonTemplate = 'T3LandBotSwarm',
         Priority = 550,
         BuilderConditions = {
+            { MIBC, 'FactionIndex', { 2, 4 }}, -- 1: UEF, 2: Aeon, 3: Cybran, 4: Seraphim, 5: Nomads 
+
             { UCBC, 'UnitCapCheckLess', { 0.90 } },
 
             { EBC, 'GreaterThanEconIncomeOverTimeSwarm', { 3.5, 100 } },
@@ -337,8 +341,6 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',
             { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.01, 0.10}},
 
             { MIBC, 'CanPathToCurrentEnemySwarm', { true, 'LocationType' } },
-
-            { MIBC, 'FactionIndex', { 2, 4 }}, -- 1: UEF, 2: Aeon, 3: Cybran, 4: Seraphim, 5: Nomads 
 
             { UCBC, 'HaveGreaterThanUnitsWithCategory', { 1, categories.FACTORY * categories.LAND * categories.TECH3 }},
 
@@ -353,6 +355,8 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',
         PlatoonTemplate = 'T3LightBotSwarm',
         Priority = 550,
         BuilderConditions = {
+            { MIBC, 'FactionIndex', { 1, 3 }}, -- 1: UEF, 2: Aeon, 3: Cybran, 4: Seraphim, 5: Nomads 
+
             { UCBC, 'UnitCapCheckLess', { 0.90 } },
 
             { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 0.85, 0.9 }},
@@ -362,8 +366,6 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',
             { MIBC, 'CanPathToCurrentEnemySwarm', { true, 'LocationType' } },
 
             { UCBC, 'HaveGreaterThanUnitsWithCategory', { 0, categories.FACTORY * categories.LAND * categories.TECH3 }},
-
-            { MIBC, 'FactionIndex', { 1, 3 }}, -- 1: UEF, 2: Aeon, 3: Cybran, 4: Seraphim, 5: Nomads 
 
             { UCBC, 'LocationFactoriesBuildingLess', { 'LocationType', 1, categories.uel0303 + categories.url0303 } },
 
@@ -378,6 +380,8 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',
         PlatoonTemplate = 'T3SniperBots',
         Priority = 550,
         BuilderConditions = {
+            { MIBC, 'FactionIndex', { 2, 4 }}, -- 1: UEF, 2: Aeon, 3: Cybran, 4: Seraphim, 5: Nomads 
+
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
 
             { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 0.9, 0.95 }},
@@ -420,6 +424,8 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',
         PlatoonTemplate = 'T3MobileMissile',
         Priority = 550,
         BuilderConditions = {
+            { MIBC, 'FactionIndex', { 1 }}, -- 1: UEF, 2: Aeon, 3: Cybran, 4: Seraphim, 5: Nomads 
+
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
 
             { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 0.9, 0.95 }},
@@ -433,6 +439,34 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',
             { UCBC, 'PoolLessAtLocation', { 'LocationType', 3, categories.INDIRECTFIRE * categories.LAND * categories.TECH3 }},
 
             { UCBC, 'HaveGreaterThanUnitsWithCategory', { 6, categories.LAND * categories.MOBILE * categories.DIRECTFIRE * categories.TECH3 - categories.ENGINEER }},
+        },
+        BuilderType = 'Land',
+    },
+
+    Builder { BuilderName = 'T3MobileShieldSwarm - Swarm',
+
+        PlatoonTemplate = 'T3MobileShieldSwarm',
+
+        Priority = 550,
+
+        BuilderConditions = {
+            { MIBC, 'FactionIndex', { 4 }}, -- 1: UEF, 2: Aeon, 3: Cybran, 4: Seraphim, 5: Nomads 
+
+            { UCBC, 'UnitCapCheckLess', { 0.90 } },
+
+            { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 0.9, 0.95 }},
+
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.01, 0.10}},
+
+            { MIBC, 'CanPathToCurrentEnemySwarm', { true, 'LocationType' } },
+
+            { UCBC, 'HaveGreaterThanUnitsWithCategory', { 1, categories.FACTORY * categories.LAND * categories.TECH3 }},
+
+            { UCBC, 'HaveGreaterThanUnitsWithCategory', { 6, categories.LAND * categories.MOBILE * categories.DIRECTFIRE * categories.TECH3 - categories.ENGINEER }},
+
+            { UCBC, 'LocationFactoriesBuildingLess', { 'LocationType', 2, categories.LAND * categories.MOBILE * categories.SHIELD }},
+
+            { UCBC, 'PoolLessAtLocation', { 'LocationType', 3, categories.MOBILE * categories.LAND * categories.SHIELD }},
         },
         BuilderType = 'Land',
     },
@@ -453,7 +487,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',
 
             { MIBC, 'CanPathToCurrentEnemySwarm', { true, 'LocationType' } },
 
-            { UCBC, 'LocationFactoriesBuildingLess', { 'LocationType', 1, categories.LAND * categories.MOBILE * categories.ANTIAIR * categories.TECH3 } },
+            { UCBC, 'LocationFactoriesBuildingLess', { 'LocationType', 2, categories.LAND * categories.MOBILE * categories.ANTIAIR * categories.TECH3 } },
 
             { UCBC, 'PoolLessAtLocation', { 'LocationType', 3, categories.LAND * categories.MOBILE * categories.ANTIAIR * categories.TECH3 }},
         },

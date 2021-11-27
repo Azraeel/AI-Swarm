@@ -43,50 +43,50 @@ PlatoonTemplate {
 }
 
 PlatoonTemplate {
-    Name = 'Swarm Bomber Intercept 1 3', 
+    Name = 'Swarm Bomber Small', 
     Plan = 'AirAISwarm',
     GlobalSquads = {
-        { categories.MOBILE * categories.AIR * categories.BOMBER  - (categories.BOMBER * categories.TECH3) - categories.EXPERIMENTAL - categories.ANTINAVY, 1, 3, 'Attack', 'none' },
+        { categories.MOBILE * categories.AIR * categories.BOMBER  - (categories.BOMBER * categories.TECH3) - categories.EXPERIMENTAL - categories.ANTINAVY, 2, 5, 'Attack', 'none' },
     }
 }
 
 PlatoonTemplate {
-    Name = 'Swarm Bomber Intercept 3 5', 
+    Name = 'Swarm Bomber Big', 
     Plan = 'AirAISwarm',
     GlobalSquads = {
-        { categories.MOBILE * categories.AIR * categories.BOMBER  - (categories.BOMBER * categories.TECH3) - categories.EXPERIMENTAL - categories.ANTINAVY, 3, 5, 'Attack', 'none' },
+        { categories.MOBILE * categories.AIR * categories.BOMBER  - (categories.BOMBER * categories.TECH3) - categories.EXPERIMENTAL - categories.ANTINAVY, 5, 15, 'Attack', 'none' },
     }
 }
 
 PlatoonTemplate {
-    Name = 'Swarm Gunship/Bomber Intercept 1 2',
+    Name = 'Swarm Gunship Small', 
     Plan = 'AirAISwarm',
     GlobalSquads = {
-        { categories.MOBILE * categories.AIR * ( categories.GROUNDATTACK + categories.BOMBER ) - (categories.BOMBER * categories.TECH3) - categories.TRANSPORTFOCUS - categories.EXPERIMENTAL - categories.ANTINAVY , 1, 2, 'Attack', 'GrowthFormation' }
+        { categories.MOBILE * categories.AIR * categories.GROUNDATTACK - categories.EXPERIMENTAL - categories.ANTINAVY, 2, 10, 'Attack', 'none' },
     }
 }
 
 PlatoonTemplate {
-    Name = 'Swarm Gunship/Bomber Intercept 3 5',
+    Name = 'Swarm Gunship Big', 
     Plan = 'AirAISwarm',
     GlobalSquads = {
-        { categories.MOBILE * categories.AIR * ( categories.GROUNDATTACK + categories.BOMBER ) - (categories.BOMBER * categories.TECH3) - categories.TRANSPORTFOCUS - categories.EXPERIMENTAL - categories.ANTINAVY , 3, 5, 'Attack', 'GrowthFormation' }
+        { categories.MOBILE * categories.AIR * categories.GROUNDATTACK - categories.EXPERIMENTAL - categories.ANTINAVY, 5, 20, 'Attack', 'none' },
     }
 }
 
 PlatoonTemplate {
-    Name = 'AntiGround Bomber/Gunship Mix', 
+    Name = 'AntiGround Bomber/Gunship Small', 
     Plan = 'AirAISwarm',
     GlobalSquads = {
-        { categories.MOBILE * categories.AIR * ( categories.GROUNDATTACK + categories.BOMBER ) - (categories.BOMBER * categories.TECH3) - categories.EXPERIMENTAL - categories.ANTINAVY, 1, 500, 'Attack', 'none' },
+        { categories.MOBILE * categories.AIR * ( categories.GROUNDATTACK + categories.BOMBER ) - (categories.BOMBER * categories.TECH3) - categories.EXPERIMENTAL - categories.ANTINAVY, 2, 10, 'Attack', 'none' },
     }
 }
 
 PlatoonTemplate {
-    Name = 'Swarm Bomber Intercept 15 20', 
+    Name = 'AntiGround Bomber/Gunship Big', 
     Plan = 'AirAISwarm',
     GlobalSquads = {
-        { categories.MOBILE * categories.AIR * categories.BOMBER - (categories.BOMBER * categories.TECH3) - categories.EXPERIMENTAL - categories.ANTINAVY, 15, 20, 'Attack', 'none' },
+        { categories.MOBILE * categories.AIR * ( categories.GROUNDATTACK + categories.BOMBER ) - (categories.BOMBER * categories.TECH3) - categories.EXPERIMENTAL - categories.ANTINAVY, 5, 20, 'Attack', 'none' },
     }
 }
 
@@ -99,14 +99,6 @@ PlatoonTemplate {
 }
 
 PlatoonTemplate {
-    Name = 'Swarm T3 Bomber Intercept 2 5', 
-    Plan = 'AirAISwarm',
-    GlobalSquads = {
-        { categories.MOBILE * categories.AIR * categories.BOMBER * categories.TECH3 - categories.EXPERIMENTAL - categories.ANTINAVY, 2, 5, 'Attack', 'none' },
-    }
-}
-
-PlatoonTemplate {
     Name = 'Swarm T3 Bomber Intercept 5 10', 
     Plan = 'AirAISwarm',
     GlobalSquads = {
@@ -115,34 +107,10 @@ PlatoonTemplate {
 }
 
 PlatoonTemplate {
-    Name = 'Swarm T3 Bomber Intercept 20 30', 
+    Name = 'Swarm T3 Bomber Intercept 15 30', 
     Plan = 'AirAISwarm',
     GlobalSquads = {
-        { categories.MOBILE * categories.AIR * categories.BOMBER * categories.TECH3 - categories.EXPERIMENTAL - categories.ANTINAVY, 20, 30, 'Attack', 'none' },
-    }
-}
-
-PlatoonTemplate {
-    Name = 'Swarm Gunship Intercept 3 5',
-    Plan = 'AirAISwarm',
-    GlobalSquads = {
-        { categories.MOBILE * categories.AIR * categories.GROUNDATTACK * (categories.TECH1 + categories.TECH2) - categories.HIGHALTAIR - categories.TRANSPORTFOCUS - categories.ANTINAVY , 3, 5, 'Attack', 'none' }
-    }
-}
-
-PlatoonTemplate {
-    Name = 'Swarm Gunship Intercept 15 20', 
-    Plan = 'AirAISwarm',
-    GlobalSquads = {
-        { categories.MOBILE * categories.AIR * categories.GROUNDATTACK - categories.EXPERIMENTAL - categories.ANTINAVY, 15, 20, 'Attack', 'none' },
-    }
-}
-
-PlatoonTemplate {
-    Name = 'AntiGround Gunship 5 100',
-    Plan = 'AirAISwarm',
-    GlobalSquads = {
-        { categories.MOBILE * categories.AIR * categories.GROUNDATTACK - categories.BOMBER - categories.EXPERIMENTAL - categories.TRANSPORTFOCUS - categories.SCOUT, 5, 100, 'Attack', 'GrowthFormation' },
+        { categories.MOBILE * categories.AIR * categories.BOMBER * categories.TECH3 - categories.EXPERIMENTAL - categories.ANTINAVY, 15, 30, 'Attack', 'none' },
     }
 }
 
