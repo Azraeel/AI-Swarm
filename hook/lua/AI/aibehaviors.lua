@@ -322,6 +322,8 @@ function StructureUpgradeThreadSwarm(unit, aiBrain, upgradeSpec, bypasseco)
             --LOG('* AI-Swarm: Extractor Platoon name is '..extractorPlatoon.BuilderName)
 			AssignUnitsToPlatoon( aiBrain, extractorPlatoon, {unitbeingbuilt}, 'Support', 'none' )
 
+            extractorPlatoon:ForkThread( extractorPlatoon.ExtractorCallForHelpAISwarm, aiBrain )
+
 		elseif (not unitbeingbuilt.Dead) then
 
             AssignUnitsToPlatoon( aiBrain, aiBrain.StructurePool, {unitbeingbuilt}, 'Support', 'none' )

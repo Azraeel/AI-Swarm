@@ -578,6 +578,8 @@ BuilderGroup {
 
         PlatoonTemplate = 'AISwarm LandAttack Micro - Standard', 
 
+        PlatoonAddPlans = { 'DistressResponseAISwarm' },
+
         Priority = 650,
 
         InstanceCount = 25,
@@ -620,6 +622,8 @@ BuilderGroup {
         BuilderName = 'AI-Swarm Protection Land - Offensive',     
 
         PlatoonTemplate = 'AISwarm Protection Large',   
+
+        PlatoonAddPlans = { 'DistressResponseAISwarm' },
 
         Priority = 650,                
 

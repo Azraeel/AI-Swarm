@@ -51,19 +51,6 @@ local KillThread = KillThread
 SwarmPlatoonClass = Platoon
 Platoon = Class(SwarmPlatoonClass) {
 
-    BaseManagersDistressAI  = function(self)
-        -- Only use this with AI-Swarm
-        local aiBrain = self:GetBrain()
-        if not aiBrain.Swarm then
-            return SwarmPlatoonClass.BaseManagersDistressAI(self)
-        end
-        SWARMWAIT(10)
-        -- We are leaving this forked thread here because we don't need it.
-        -- This shit is annoying!
-        -- Want to get this properly working with Swarm One Day.
-        KillThread(CurrentThread())
-    end,
-
     -- The Magical Tether System or well... 1 line of code.
     -- local maxRadius = SWARMMAX(maxRadius, (maxRadius * aiBrain.MyAirRatio) ) 
     -- This adjust the maxRadius Air Platoons are willing to go out onto depending on the LandRatio
@@ -4714,11 +4701,11 @@ Platoon = Class(SwarmPlatoonClass) {
         end
         
         if IgnoreFriendlyBase then
-            --LOG('* AI-RNG: ignore friendlybase true')
+            --LOG('* AI-Swarm: ignore friendlybase true')
             local markerPos = AIUtils.AIGetMarkerLocationsNotFriendlySwarm(aiBrain, markerType)
             markerLocations = markerPos
         else
-            --LOG('* AI-RNG: ignore friendlybase false')
+            --LOG('* AI-Swarm: ignore friendlybase false')
             local markerPos = AIUtils.AIGetMarkerLocations(aiBrain, markerType)
             markerLocations = markerPos
         end
@@ -5008,7 +4995,7 @@ Platoon = Class(SwarmPlatoonClass) {
             return self:GuardMarkerSwarm()
         else
             -- no marker found, disband!
-            --LOG('* AI-RNG: GuardmarkerRNG No best marker. Disbanding.')
+            --LOG('* AI-Swarm: GuardmarkerSwarm No best marker. Disbanding.')
             self:PlatoonDisband()
         end
     end,
@@ -5744,75 +5731,124 @@ Platoon = Class(SwarmPlatoonClass) {
         end
     end,
 
-    PlatoonCallForHelpAISwarm = function(self)
-        local aiBrain = self:GetBrain()
-        local checkTime = self.PlatoonData.DistressCheckTime or 7
-        local pos = self:GetPlatoonPosition()
-        while aiBrain:PlatoonExists(self) and pos do
-            if not self.DistressCall then
-                local threat = aiBrain:GetThreatAtPosition(pos, 0, true, 'AntiSurface')
-                if threat and threat > 1 then
-                    --LOG('*AI DEBUG: Platoon Calling for help')
-                    aiBrain:BaseMonitorPlatoonDistress(self, threat)
-                    self.DistressCall = true
-                end
-            end
-            SWARMWAIT(checkTime)
-        end
-    end,
-
     DistressResponseAISwarm = function(self)
         local aiBrain = self:GetBrain()
-        while aiBrain:PlatoonExists(self) do
-            -- In the loop so they may be changed by other platoon things
-            local distressRange = self.PlatoonData.DistressRange or aiBrain.BaseMonitor.DefaultDistressRange
-            local reactionTime = self.PlatoonData.DistressReactionTime or aiBrain.BaseMonitor.PlatoonDefaultReactionTime
-            local threatThreshold = self.PlatoonData.ThreatSupport or 1
-            local platoonPos = self:GetPlatoonPosition()
-            if platoonPos and not self.DistressCall then
-                -- Find a distress location within the platoons range
-                local distressLocation = aiBrain:BaseMonitorDistressLocation(platoonPos, distressRange, threatThreshold)
-                local moveLocation
+        while PlatoonExists(aiBrain, self) do
+            if not self.UsingTransport then
+                if aiBrain.BaseMonitor.AlertSounded or aiBrain.BaseMonitor.PlatoonAlertSounded then
+                    -- In the loop so they may be changed by other platoon things
+                    local distressRange = self.PlatoonData.DistressRange or aiBrain.BaseMonitor.DefaultDistressRange
+                    local reactionTime = self.PlatoonData.DistressReactionTime or aiBrain.BaseMonitor.PlatoonDefaultReactionTime
+                    local threatThreshold = self.PlatoonData.ThreatSupport or 1
+                    local platoonPos = GetPlatoonPosition(self)
+                    if platoonPos and not self.DistressCall then
+                        -- Find a distress location within the platoons range
+                        local distressLocation = aiBrain:BaseMonitorDistressLocationSwarm(platoonPos, distressRange, threatThreshold)
+                        local moveLocation
 
-                -- We found a location within our range! Activate!
-                if distressLocation then
-                    --LOG('*AI DEBUG: ARMY '.. aiBrain:GetArmyIndex() ..': --- DISTRESS RESPONSE AI ACTIVATION ---')
-
-                    -- Backups old ai plan
-                    local oldPlan = self:GetPlan()
-                    if self.AiThread then
-                        self.AIThread:Destroy()
-                    end
-
-                    -- Continue to position until the distress call wanes
-                    repeat
-                        moveLocation = distressLocation
-                        self:Stop()
-                        local cmd = self:AggressiveMoveToLocation(distressLocation)
-                        repeat
-                            SWARMWAIT(reactionTime)
-                            if not aiBrain:PlatoonExists(self) then
-                                return
+                        -- We found a location within our range! Activate!
+                        if distressLocation then
+                            --LOG('*AI DEBUG: ARMY '.. aiBrain:GetArmyIndex() ..': --- DISTRESS RESPONSE AI ACTIVATION ---')
+                            --LOG('Distress response activated')
+                            --LOG('PlatoonDistressTable'..repr(aiBrain.BaseMonitor.PlatoonDistressTable))
+                            --LOG('BaseAlertTable'..repr(aiBrain.BaseMonitor.AlertsTable))
+                            -- Backups old ai plan
+                            local oldPlan = self:GetPlan()
+                            if self.AiThread then
+                                self.AIThread:Destroy()
                             end
-                        until not self:IsCommandsActive(cmd) or aiBrain:GetThreatAtPosition(moveLocation, 0, true, 'Overall') <= threatThreshold
 
+                            -- Continue to position until the distress call wanes
+                            repeat
+                                moveLocation = distressLocation
+                                self:Stop()
+                                --LOG('Platoon responding to distress at location '..repr(distressLocation))
+                                self:SetPlatoonFormationOverride('NoFormation')
+                                local cmd = self:AggressiveMoveToLocation(distressLocation)
+                                repeat
+                                    WaitSeconds(reactionTime)
+                                    if not PlatoonExists(aiBrain, self) then
+                                        return
+                                    end
+                                until not self:IsCommandsActive(cmd) or GetThreatAtPosition(aiBrain, moveLocation, 0, true, 'Overall') <= threatThreshold
+                                --LOG('Initial Distress Response Loop finished')
 
-                        platoonPos = self:GetPlatoonPosition()
-                        if platoonPos then
-                            -- Now that we have helped the first location, see if any other location needs the help
-                            distressLocation = aiBrain:BaseMonitorDistressLocation(platoonPos, distressRange)
-                            if distressLocation then
-                                self:AggressiveMoveToLocation(distressLocation)
-                            end
+                                platoonPos = GetPlatoonPosition(self)
+                                if platoonPos then
+                                    -- Now that we have helped the first location, see if any other location needs the help
+                                    distressLocation = aiBrain:BaseMonitorDistressLocationSwarm(platoonPos, distressRange)
+                                    if distressLocation then
+                                        self:SetPlatoonFormationOverride('NoFormation')
+                                        self:AggressiveMoveToLocation(distressLocation)
+                                    end
+                                end
+                                SWARMWAIT(10)
+                            -- If no more calls or we are at the location; break out of the function
+                            until not distressLocation or (distressLocation[1] == moveLocation[1] and distressLocation[3] == moveLocation[3])
+
+                            --LOG('*AI DEBUG: '..aiBrain.Name..' DISTRESS RESPONSE AI DEACTIVATION - oldPlan: '..oldPlan)
+                            self:Stop()
+                            self:SetAIPlan(oldPlan)
                         end
-                    -- If no more calls or we are at the location; break out of the function
-                    until not distressLocation or (distressLocation[1] == moveLocation[1] and distressLocation[3] == moveLocation[3])
-
-                    --LOG('*AI DEBUG: '..aiBrain.Name..' DISTRESS RESPONSE AI DEACTIVATION - oldPlan: '..oldPlan)
-                    self:SetAIPlan(oldPlan)
+                    end
                 end
             end
             SWARMWAIT(110)
+        end
+    end,
+
+    ExtractorCallForHelpAISwarm = function(self, aiBrain)
+        local checkTime = self.PlatoonData.DistressCheckTime or 4
+        local pos = GetPlatoonPosition(self)
+        while PlatoonExists(aiBrain, self) and pos do
+            if not self.DistressCall then
+                local threat = GetThreatAtPosition(aiBrain, pos, aiBrain.IMAPConfigSwarm.Rings, true, 'Land')
+                --LOG('Threat at Extractor :'..threat)
+                if threat and threat > 1 then
+                    --LOG('*RNGAI Mass Extractor Platoon Calling for help with '..threat.. ' threat')
+                    aiBrain:BaseMonitorPlatoonDistressSwarm(self, threat)
+                    self.DistressCall = true
+                    aiBrain:AddScoutArea(pos)
+                end
+            end
+            WaitSeconds(checkTime)
+        end
+    end,
+
+    BaseManagersDistressAISwarm = function(self)
+        local aiBrain = self:GetBrain()
+        while PlatoonExists(aiBrain, self) do
+            local distressRange = aiBrain.BaseMonitor.PoolDistressRange
+            local reactionTime = aiBrain.BaseMonitor.PoolReactionTime
+
+            local platoonUnits = GetPlatoonUnits(self)
+
+            for locName, locData in aiBrain.BuilderManagers do
+                if not locData.DistressCall then
+                    local position = locData.EngineerManager.Location
+                    local radius = locData.EngineerManager.Radius
+                    local distressRange = locData.BaseSettings.DistressRange or aiBrain.BaseMonitor.PoolDistressRange
+                    local distressLocation = aiBrain:BaseMonitorDistressLocationSwarm(position, distressRange, aiBrain.BaseMonitor.PoolDistressThreshold)
+
+                    -- Distress !
+                    if distressLocation then
+                        --LOG('*AI DEBUG: ARMY '.. aiBrain:GetArmyIndex() ..': --- POOL DISTRESS RESPONSE ---')
+
+                        -- Grab the units at the location
+                        local group = self:GetPlatoonUnitsAroundPoint(categories.MOBILE - categories.ENGINEER - categories.TRANSPORTFOCUS - categories.SONAR - categories.EXPERIMENTAL, position, radius)
+
+                        -- Move the group to the distress location and then back to the location of the base
+                        IssueClearCommands(group)
+                        IssueAggressiveMove(group, distressLocation)
+                        IssueMove(group, position)
+
+                        -- Set distress active for duration
+                        locData.DistressCall = true
+                        self:ForkThread(self.UnlockBaseManagerDistressLocation, locData)
+                    end
+                end
+            end
+            WaitSeconds(aiBrain.BaseMonitor.PoolReactionTime)
         end
     end,
 

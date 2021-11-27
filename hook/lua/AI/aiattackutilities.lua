@@ -60,6 +60,102 @@ function CanGraphAreaTo(startPos, destPos, layer)
     return false
 end
 
+function GetPathGraphsSwarm()
+    if ScenarioInfo.PathGraphsSwarm then
+        return ScenarioInfo.PathGraphsSwarm
+    else
+        ScenarioInfo.PathGraphsSwarm = {}
+    end
+
+    local markerGroups = {
+        Land = AIUtils.AIGetMarkerLocationsEx(nil, 'Land Path Node') or {},
+        Water = AIUtils.AIGetMarkerLocationsEx(nil, 'Water Path Node') or {},
+        Air = AIUtils.AIGetMarkerLocationsEx(nil, 'Air Path Node') or {},
+        Amphibious = AIUtils.AIGetMarkerLocationsEx(nil, 'Amphibious Path Node') or {},
+    }
+
+    for gk, markerGroup in markerGroups do
+        for mk, marker in markerGroup do
+            --Create stuff if it doesn't exist
+            ScenarioInfo.PathGraphsSwarm[gk] = ScenarioInfo.PathGraphsSwarm[gk] or {}
+            ScenarioInfo.PathGraphsSwarm[gk][marker.graph] = ScenarioInfo.PathGraphsSwarm[gk][marker.graph] or {}
+            -- If the marker has no adjacentTo then don't use it. We can't build a path with this node.
+            if not (marker.adjacentTo) then
+                WARN('*AI DEBUG: GetPathGraphs(): Path Node '..marker.name..' has no adjacentTo entry!')
+                continue
+            end
+            --Add the marker to the graph.
+            ScenarioInfo.PathGraphsSwarm[gk][marker.graph][marker.name] = {name = marker.name, layer = gk, graphName = marker.graph, position = marker.position, SwarmArea = marker.SwarmArea, adjacent = STR_GetTokens(marker.adjacentTo, ' '), color = marker.color}
+        end
+    end
+
+    return ScenarioInfo.PathGraphsSwarm or {}
+end
+
+function GetClosestPathNodeInRadiusByLayerSwarm(location, radius, layer)
+
+    local bestDist = radius*radius
+    local bestMarker = false
+
+    local graphTable =  GetPathGraphsSwarm()[layer]
+
+    if graphTable then
+        for name, graph in graphTable do
+            for mn, markerInfo in graph do
+                local dist2 = VDist2Sq(location[1], location[3], markerInfo.position[1], markerInfo.position[3])
+
+                if dist2 < bestDist then
+                    bestDist = dist2
+                    bestMarker = markerInfo
+                end
+            end
+        end
+    end
+
+    return bestMarker
+end
+
+function GetClosestPathNodeInRadiusByGraphSwarm(location, radius, graphName)
+    local bestDist = radius*radius
+    local bestMarker = false
+
+    for graphLayer, graphTable in GetPathGraphsSwarm() do
+        for name, graph in graphTable do
+            if graphName == name then
+                for mn, markerInfo in graph do
+                    local dist2 = VDist2Sq(location[1], location[3], markerInfo.position[1], markerInfo.position[3])
+
+                    if dist2 < bestDist then
+                        bestDist = dist2
+                        bestMarker = markerInfo
+                    end
+                end
+            end
+        end
+    end
+
+    return bestMarker
+end
+
+function CanGraphToSwarm(startPos, destPos, layer)
+    local startNode = GetClosestPathNodeInRadiusByLayerSwarm(startPos, 100, layer)
+    local endNode = false
+
+    if startNode then
+        endNode = GetClosestPathNodeInRadiusByGraphSwarm(destPos, 100, startNode.graphName)
+    end
+
+    if endNode then
+        if startNode.SwarmArea == endNode.SwarmArea then
+            --LOG('CanGraphToIsTrue for area '..startNode.SwarmArea)
+            return true, endNode.Position
+        else
+            --LOG('CanGraphToIsFalse for start area '..startNode.SwarmArea..' and end area of '..endNode.SwarmArea)
+        end
+    end
+    return false
+end
+
 -- Huge Credit to Relent0r for EngineerGenerateSafePathToSwarm & EngineerGeneratePathSwarm!
 function EngineerGenerateSafePathToSwarm(aiBrain, platoonLayer, startPos, endPos, optThreatWeight, optMaxMarkerDist)
     local VDist2Sq = VDist2Sq
@@ -569,7 +665,7 @@ function SendPlatoonWithTransportsNoCheckSwarm(aiBrain, platoon, destination, bR
 
             -- couldn't use transports...
             if bUsedTransports == false then
-                --LOG('SendPlatoonWithTransportsNoCheckRNG returning false bUsedTransports')
+                --LOG('SendPlatoonWithTransportsNoCheckSwarm returning false bUsedTransports')
                 return false
             end
         end
@@ -634,7 +730,7 @@ function SendPlatoonWithTransportsNoCheckSwarm(aiBrain, platoon, destination, bR
 
         -- check to see we're still around
         if not platoon or not aiBrain:PlatoonExists(platoon) then
-            --LOG('SendPlatoonWithTransportsNoCheckRNG returning false platoon doesnt exist')
+            --LOG('SendPlatoonWithTransportsNoCheckSwarm returning false platoon doesnt exist')
             return false
         end
 
@@ -663,10 +759,10 @@ function SendPlatoonWithTransportsNoCheckSwarm(aiBrain, platoon, destination, bR
             end
         end
     else
-        --LOG('SendPlatoonWithTransportsNoCheckRNG returning false due to movement layer')
+        --LOG('SendPlatoonWithTransportsNoCheckSwarm returning false due to movement layer')
         return false
     end
-    --LOG('SendPlatoonWithTransportsNoCheckRNG returning true')
+    --LOG('SendPlatoonWithTransportsNoCheckSwarm returning true')
     return true
 end
 
@@ -706,7 +802,7 @@ function FindSafeDropZoneWithPathSwarm(aiBrain, platoon, markerTypes, markerrang
             --LOG("*AI DEBUG "..aiBrain.Nickname.." "..platoon.BuilderName.." drop distance is "..repr( VDist3(destination, v.Position) ) )
 
             -- can the platoon path safely from this marker to the final destination 
-            if CanGraphToRNG(v.Position, destination, layer) then
+            if CanGraphToSwarm(v.Position, destination, layer) then
                 return v.Position, v.Name
             end
             --[[local landpath, reason = PlatoonGenerateSafePathToSwarm(aiBrain, layer, v.Position, destination, threatMax, 160 )

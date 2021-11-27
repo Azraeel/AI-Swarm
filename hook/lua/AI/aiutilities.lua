@@ -81,7 +81,7 @@ function AIGetMarkerLocationsNotFriendlySwarm(aiBrain, markerType)
                 for _, v in ecoStructures do
                     local bp = v:GetBlueprint()
                     local ecoStructThreat = bp.Defense.EconomyThreatLevel
-                    --LOG('* AI-RNG: Eco Structure'..ecoStructThreat)
+                    --LOG('* AI-Swarm: Eco Structure'..ecoStructThreat)
                     ecoThreat = ecoThreat + ecoStructThreat
                 end
                 if ecoThreat < 10 then

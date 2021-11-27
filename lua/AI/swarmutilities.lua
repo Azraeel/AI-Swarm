@@ -1,17 +1,21 @@
 local import = import
 
 local ScenarioUtils = import('/lua/sim/ScenarioUtilities.lua')
+local AIAttackUtils = import('/lua/AI/aiattackutilities.lua')
 local AIUtils = import('/lua/ai/aiutilities.lua')
 local ToString = import('/lua/sim/CategoryUtils.lua').ToString
 
 local SWARMGETN = table.getn
 local SWARMINSERT = table.insert
 local SWARMREMOVE = table.remove
+local SWARMSORT = table.sort
 local SWARMWAIT = coroutine.yield
 local SWARMFLOOR = math.floor
+local SWARMRANDOM = math.random
 local SWARMMAX = math.max
 local SWARMMIN = math.min
 local SWARMABS = math.abs
+local SWARMCEIL = math.ceil
 local SWARMPI = math.pi
 local SWARMTIME = GetGameTimeSeconds
 local SWARMENTITY = EntityCategoryContains
@@ -51,6 +55,7 @@ function StructureUpgradeInitializeSwarm(finishedUnit, aiBrain)
         --LOG('* AI-Swarm: Assigning Extractor to new platoon')
         AssignUnitsToPlatoon(aiBrain, extractorPlatoon, {finishedUnit}, 'Support', 'none')
         finishedUnit.PlatoonHandle = extractorPlatoon
+        extractorPlatoon:ForkThread( extractorPlatoon.ExtractorCallForHelpAISwarm, aiBrain )
 
         if not finishedUnit.UpgradeThread then
             --LOG('* AI-Swarm: Forking Upgrade Thread')
@@ -244,6 +249,369 @@ function AIGetSortedMassLocationsThreatSwarm(aiBrain, minDist, maxDist, tMin, tM
     --LOG('Return marker list has '..SWARMGETN(newList)..' entries')
     return newList
 end
+
+-- Start of Zone Area Support Functions
+
+GenerateDistinctColorTableSwarm = function(num)
+    local function factorial(n,min)
+        if n>min and n>1 then
+            return n*factorial(n-1)
+        else
+            return n
+        end
+    end
+    local function combintoid(a,b,c)
+        local o=tostring(0)
+        local tab={a,b,c}
+        local tabid={}
+        for k,v in tab do
+            local n=v
+            tabid[k]=tostring(v)
+            while n<1000 do
+                n=n*10
+                tabid[k]=o..tabid[k]
+            end
+        end
+        return tabid[1]..tabid[2]..tabid[3]
+    end
+    local i=0
+    local n=1
+    while i<num do
+        n=n+1
+        i=n*n*n-n
+    end
+    local ViableValues={}
+    for x=0,256,256/(n-1) do
+        SWARMINSERT(ViableValues,ToColorSwarm(0,256,x/256))
+    end
+    local colortable={}
+    local combinations={}
+    --[[for k,v in ViableValues do
+        table.insert(colortable,v..v..v)
+        combinations[combintoid(k,k,k)]=1
+    end]]
+    local max=ViableValues[SWARMGETN(ViableValues)]
+    local min=ViableValues[1]
+    local primaries={min..min..min,max..max..min,max..min..max,min..max..max,max..min..min,min..max..min,min..min..max,max..max..max}
+    combinations[combintoid(max,max,min)]=1
+    combinations[combintoid(max,min,max)]=1
+    combinations[combintoid(min,max,max)]=1
+    combinations[combintoid(max,min,min)]=1
+    combinations[combintoid(min,max,min)]=1
+    combinations[combintoid(min,min,max)]=1
+    combinations[combintoid(max,max,max)]=1
+    combinations[combintoid(min,min,min)]=1
+    for a,d in ViableValues do
+        for b,e in ViableValues do
+            for c,f in ViableValues do
+                if not combinations[combintoid(a,b,c)] and not (a==b and b==c) then
+                    SWARMINSERT(colortable,d..e..f)
+                    combinations[combintoid(a,b,c)]=1
+                end
+            end
+        end
+    end
+    for _,v in primaries do
+        SWARMINSERT(colortable,v)
+    end
+    return colortable
+end
+function DisplayMarkerAdjacencySwarm(aiBrain)
+    --aiBrain:ForkThread(LastKnownThread)
+    local expansionMarkers = Scenario.MasterChain._MASTERCHAIN_.Markers
+    local VDist3Sq = VDist3Sq
+    aiBrain.SwarmAreas={}
+    aiBrain.armyspots={}
+    aiBrain.expandspots={}
+    aiBrain.masspoints = {}
+    for k,marker in expansionMarkers do
+        local node=false
+        local expand=false
+        local mass=false
+        --LOG(repr(k)..' marker type is '..repr(marker.type))
+        for i, v in STR_GetTokens(marker.type,' ') do
+            if v=='Node' then
+                node=true
+                break
+            end
+            if v=='Expansion' then
+                expand=true
+                break
+            end
+            if v=='Mass' then
+                mass=true
+                break
+            end
+        end
+        if node and not marker.SwarmArea then
+            aiBrain.SwarmAreas[k]={}
+            InfectMarkersSwarm(aiBrain,marker,k)
+        end
+        if expand then
+            SWARMINSERT(aiBrain.expandspots,{marker,k})
+        end
+        if mass then
+            SWARMINSERT(aiBrain.masspoints,{marker,k})
+        end
+        if not node and not expand and not mass then
+            for _,v in STR_GetTokens(k,'_') do
+                if v=='ARMY' then
+                    SWARMINSERT(aiBrain.armyspots,{marker,k})
+                    SWARMINSERT(aiBrain.expandspots,{marker,k})
+                end
+            end
+        end
+    end
+    aiBrain.analysistablecolors={}
+    local tablecolors=GenerateDistinctColorTableSwarm(SWARMGETN(aiBrain.expandspots))
+    local colors=aiBrain.analysistablecolors
+    --WaitSeconds(10)
+    --LOG('colortable is'..repr(tablecolors))
+    local bases=false
+    if bases then
+        for _,army in aiBrain.armyspots do
+            local closestpath=Scenario.MasterChain._MASTERCHAIN_.Markers[AIAttackUtils.GetClosestPathNodeInRadiusByLayer(army[1].position,25,'Land').name]
+            --LOG('closestpath is '..repr(closestpath))
+            aiBrain.renderthreadtracker=ForkThread(DoArmySpotDistanceInfectSwarm,aiBrain,closestpath,army[2])
+            local randy=SWARMRANDOM(SWARMGETN(tablecolors))
+            colors[army[2]]='FF'..tablecolors[randy]
+            SWARMREMOVE(tablecolors,randy)
+        end
+    else
+        for i,v in ArmyBrains do
+            if ArmyIsCivilian(v:GetArmyIndex()) or v.Result=="defeat" then continue end
+            local astartX, astartZ = v:GetArmyStartPos()
+            local army = {position={astartX, GetTerrainHeight(astartX, astartZ), astartZ},army=i,brain=v}
+            SWARMSORT(aiBrain.expandspots,function(a,b) return VDist3Sq(a[1].position,army.position)<VDist3Sq(b[1].position,army.position) end)
+            local closestpath=Scenario.MasterChain._MASTERCHAIN_.Markers[AIAttackUtils.GetClosestPathNodeInRadiusByLayer(aiBrain.expandspots[1][1].position,25,'Land').name]
+            --LOG('closestpath is '..repr(closestpath))
+            aiBrain.renderthreadtracker=ForkThread(DoArmySpotDistanceInfectSwarm,aiBrain,closestpath,aiBrain.expandspots[1][2])
+            local randy=nil
+            if i<9 then
+                randy=SWARMRANDOM(SWARMGETN(tablecolors)-7+i,SWARMGETN(tablecolors))
+            else
+                randy=SWARMRANDOM(SWARMGETN(tablecolors))
+            end
+            colors[aiBrain.expandspots[1][2]]=tablecolors[randy]
+            SWARMREMOVE(tablecolors,randy)
+        end
+    end
+    local expands=true
+    local expandcolors={}
+    while aiBrain.renderthreadtracker do
+        SWARMWAIT(2)
+    end
+    if expands then
+        --tablecolors=GenerateDistinctColorTable(SWARMGETN(aiBrain.expandspots))
+        for _,expand in aiBrain.expandspots do
+            local closestpath=Scenario.MasterChain._MASTERCHAIN_.Markers[AIAttackUtils.GetClosestPathNodeInRadiusByLayer(expand[1].position,25,'Land').name]
+            --LOG('closestpath is '..repr(closestpath))
+            aiBrain.renderthreadtracker=ForkThread(DoExpandSpotDistanceInfectSwarm,aiBrain,closestpath,expand[2])
+            local randy=SWARMRANDOM(SWARMGETN(tablecolors))
+            if colors[expand[2]] then continue end
+            colors[expand[2]]=tablecolors[randy]
+            SWARMREMOVE(tablecolors,randy)
+        end
+    end
+    local massPointCount = 0
+    for _, mass in aiBrain.masspoints do
+        massPointCount = massPointCount + 1
+        local closestpath=Scenario.MasterChain._MASTERCHAIN_.Markers[AIAttackUtils.GetClosestPathNodeInRadiusByLayer(mass[1].position,25,'Land').name]
+        aiBrain.renderthreadtracker=ForkThread(DoMassPointInfectSwarm,aiBrain,closestpath,mass[2])
+    end
+    aiBrain.MassMarker = massPointCount
+    while aiBrain.renderthreadtracker do
+        SWARMWAIT(2)
+    end
+    --LOG('SwarmAreas:')
+    --for k,v in aiBrain.SwarmAreas do
+    --    LOG(repr(k)..' has '..repr(SWARMGETN(v))..' nodes')
+    --end
+    if aiBrain.GraphZonesSwarm.FirstRun then
+        aiBrain.GraphZonesSwarm.FirstRun = false
+    end
+end
+
+function InfectMarkersSwarm(aiBrain,marker,graphname)
+    marker.SwarmArea=graphname
+    SWARMINSERT(aiBrain.SwarmAreas[graphname],marker)
+    for i, node in STR_GetTokens(marker.adjacentTo or '', ' ') do
+        if not Scenario.MasterChain._MASTERCHAIN_.Markers[node].SwarmArea then
+            InfectMarkersSwarm(aiBrain,Scenario.MasterChain._MASTERCHAIN_.Markers[node],graphname)
+        end
+    end
+end
+
+function DoArmySpotDistanceInfectSwarm(aiBrain,marker,army)
+    aiBrain.renderthreadtracker=CurrentThread()
+    SWARMWAIT(1)
+    --DrawCircle(marker.position,5,'FF'..aiBrain.analysistablecolors[army])
+    if not marker then LOG('No Marker sent to army distance check') return end
+    if not marker.armydists then
+        marker.armydists={}
+    end
+    if not marker.armydists[army] then
+        marker.armydists[army]=0
+    end
+    local potentialdists={}
+    for i, node in STR_GetTokens(marker.adjacentTo or '', ' ') do
+        if node=='' then continue end
+        local adjnode=Scenario.MasterChain._MASTERCHAIN_.Markers[node]
+        local skip=false
+        local bestdist=nil
+        local adjdist=VDist3(marker.position,adjnode.position)
+        if adjnode.armydists then
+            for k,v in adjnode.armydists do
+                --[[if not bestdist or v<bestdist then
+                    bestdist=v
+                end
+                if k~=army and v<marker.armydists[army] then
+                    skip=true
+                end]]
+                if not potentialdists[k] or potentialdists[k]>v then
+                    potentialdists[k]=v+adjdist
+                end
+            end
+        end
+        if not adjnode.armydists then adjnode.armydists={} end
+        if not adjnode.armydists[army] then
+            adjnode.armydists[army]=adjdist+marker.armydists[army]
+            
+            --table.insert(aiBrain.renderlines,{marker.position,Scenario.MasterChain._MASTERCHAIN_.Markers[node].position,marker.type,army})
+            ForkThread(DoArmySpotDistanceInfectSwarm,aiBrain,adjnode,army)
+        elseif adjnode.armydists[army]>adjdist+marker.armydists[army] then
+            adjnode.armydists[army]=adjdist+marker.armydists[army]
+            adjnode.bestarmy=army
+            ForkThread(DoArmySpotDistanceInfectSwarm,aiBrain,adjnode,army)
+        end
+    end
+    for k,v in marker.armydists do
+        if potentialdists[k]<v then
+            v=potentialdists[k]
+        end
+    end
+    for k,v in marker.armydists do
+        if not marker.bestarmy or marker.armydists[marker.bestarmy]>v then
+            marker.bestarmy=k
+        end
+    end
+    SWARMWAIT(1)
+    if aiBrain.renderthreadtracker==CurrentThread() then
+        aiBrain.renderthreadtracker=nil
+    end
+end
+
+function DoExpandSpotDistanceInfectSwarm(aiBrain,marker,expand)
+    aiBrain.renderthreadtracker=CurrentThread()
+    SWARMWAIT(1)
+    --DrawCircle(marker.position,4,'FF'..aiBrain.analysistablecolors[expand])
+    if not marker then return end
+    if not marker.expanddists then
+        marker.expanddists={}
+    end
+    if not marker.expanddists[expand] then
+        marker.expanddists[expand]=0
+    end
+    local potentialdists={}
+    for i, node in STR_GetTokens(marker.adjacentTo or '', ' ') do
+        if node=='' then continue end
+        local adjnode=Scenario.MasterChain._MASTERCHAIN_.Markers[node]
+        local skip=false
+        local bestdist=nil
+        local adjdist=VDist3(marker.position,adjnode.position)
+        if adjnode.expanddists then
+            for k,v in adjnode.expanddists do
+                --[[if not bestdist or v<bestdist then
+                    bestdist=v
+                end
+                if k~=expand and v<marker.expanddists[expand] then
+                    skip=true
+                end]]
+                if not potentialdists[k] or potentialdists[k]>v then
+                    potentialdists[k]=v+adjdist
+                end
+            end
+        end
+        if not adjnode.expanddists then adjnode.expanddists={} end
+        if not adjnode.expanddists[expand] then
+            adjnode.expanddists[expand]=adjdist+marker.expanddists[expand]
+            --table.insert(aiBrain.renderlines,{marker.position,Scenario.MasterChain._MASTERCHAIN_.Markers[node].position,marker.type,expand})
+            ForkThread(DoExpandSpotDistanceInfectSwarm,aiBrain,adjnode,expand)
+        elseif adjnode.expanddists[expand]>adjdist+marker.expanddists[expand] then
+            adjnode.expanddists[expand]=adjdist+marker.expanddists[expand]
+            adjnode.bestexpand=expand
+            ForkThread(DoExpandSpotDistanceInfectSwarm,aiBrain,adjnode,expand)
+        end
+    end
+    for k,v in marker.expanddists do
+        if potentialdists[k]<v then
+            v=potentialdists[k]
+        end
+    end
+    for k,v in marker.expanddists do
+        if not marker.bestexpand or marker.expanddists[marker.bestexpand]>v then
+            marker.bestexpand=k
+            -- Important. Extension to chps logic to add SwarmArea to expansion markers so we can tell if we own expansions on islands etc
+            if not Scenario.MasterChain._MASTERCHAIN_.Markers[k].SwarmArea then
+                Scenario.MasterChain._MASTERCHAIN_.Markers[k].SwarmArea = marker.SwarmArea
+                --LOG('ExpansionMarker '..repr(Scenario.MasterChain._MASTERCHAIN_.Markers[k]))
+            end
+        end
+    end
+    SWARMWAIT(1)
+    if aiBrain.renderthreadtracker==CurrentThread() then
+        aiBrain.renderthreadtracker=nil
+    end
+end
+
+function DoMassPointInfectSwarm(aiBrain,marker,masspoint)
+    aiBrain.renderthreadtracker=CurrentThread()
+    SWARMWAIT(1)
+    --DrawCircle(marker.position,4,'FF'..aiBrain.analysistablecolors[expand])
+    if not marker then return end
+    if not Scenario.MasterChain._MASTERCHAIN_.Markers[masspoint].SwarmArea then
+        Scenario.MasterChain._MASTERCHAIN_.Markers[masspoint].SwarmArea = marker.SwarmArea
+        --LOG('MassMarker '..repr(Scenario.MasterChain._MASTERCHAIN_.Markers[masspoint]))
+    end
+    SWARMWAIT(1)
+    if aiBrain.renderthreadtracker==CurrentThread() then
+        aiBrain.renderthreadtracker=nil
+    end
+end
+
+
+GrabRandomDistinctColorSwarm = function(num)
+    local output=GenerateDistinctColorTableSwarm(num)
+    return output[SWARMRANDOM(SWARMGETN(output))]
+end
+
+ToColorSwarm = function(min,max,ratio)
+    local ToBase16 = function(num)
+        if num<10 then
+            return tostring(num)
+        elseif num==10 then
+            return 'a'
+        elseif num==11 then
+            return 'b'
+        elseif num==12 then
+            return 'c'
+        elseif num==13 then
+            return 'd'
+        elseif num==14 then
+            return 'e'
+        else
+            return 'f'
+        end
+    end
+    local baseones=0
+    local basetwos=0
+    local numinit=SWARMABS(SWARMCEIL((max-min)*ratio+min))
+    basetwos=SWARMFLOOR(numinit/16)
+    baseones=numinit-basetwos*16
+    return ToBase16(basetwos)..ToBase16(baseones)
+end
+
+-- End of Area Zone Support Functions
 
 local PropBlacklist = {}
 -- This uses a mix of Uveso's reclaim logic and Relent0r's Logic 
