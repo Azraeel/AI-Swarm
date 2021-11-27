@@ -51,13 +51,28 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Scout Builders',
         PlatoonTemplate = 'T1LandScout',
         Priority = 510,
         BuilderConditions = {
-            { UCBC, 'LessThanGameTimeSeconds', { 260 } }, 
+            { UCBC, 'LessThanGameTimeSeconds', { 240 } }, 
 
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
 
             { EBC, 'GreaterThanEconIncomeOverTimeSwarm', { 0.2, 2 } },
 
             { UCBC, 'HaveLessThanUnitsWithCategory', { 2, categories.LAND * categories.MOBILE * categories.SCOUT - categories.ENGINEER }},
+        },
+        BuilderType = 'Land',
+    },
+    
+    Builder { BuilderName = 'U1R Land Scout - Battle',
+        PlatoonTemplate = 'T1LandScout',
+        Priority = 500,
+        BuilderConditions = {
+            { UCBC, 'GreaterThanGameTimeSeconds', { 240 } }, 
+
+            { UCBC, 'UnitCapCheckLess', { 0.95 } },
+
+            { EBC, 'GreaterThanEconIncomeOverTimeSwarm', { 0.2, 2 } },
+
+            { UCBC, 'PoolLessAtLocation', { 'LocationType', 1, categories.LAND * categories.MOBILE * categories.SCOUT - categories.ENGINEER }},
         },
         BuilderType = 'Land',
     },
@@ -558,32 +573,6 @@ BuilderGroup {
     BuilderGroupName = 'AISwarm Platoon Builder',
     BuildersType = 'PlatoonFormBuilder', 
 
-    --[[Builder {
-        BuilderName = 'AISwarm T1 Spam',     
-
-        PlatoonTemplate = 'AISwarm T1 Spam',   
-
-        Priority = 651,                
-
-        InstanceCount = 35,           
-
-        BuilderType = 'Any',
-
-        BuilderConditions = {
-            { UCBC, 'ScalePlatoonSizeSwarm', { 'LocationType', 'LAND', categories.MOBILE * categories.LAND * categories.MOBILE * categories.TECH1 - categories.ANTIAIR - categories.ENGINEER - categories.SCOUT } },
-
-            { UCBC, 'LandStrengthRatioGreaterThan', { 2 } },
-
-            { MIBC, 'CanPathToCurrentEnemySwarm', { true, 'LocationType' } },
-        },
-
-        BuilderData = {
-            UseFormation = 'Growthformation',
-            LocationType = 'LocationType',
-        },
-
-    },]]--
-
     Builder {
         BuilderName = 'AI-Swarm Standard Land - Offensive',
 
@@ -626,6 +615,52 @@ BuilderGroup {
             },
         },     
     }, 
+
+    Builder {
+        BuilderName = 'AI-Swarm Protection Land - Offensive',     
+
+        PlatoonTemplate = 'AISwarm Protection Large',   
+
+        Priority = 650,                
+
+        InstanceCount = 3,           
+
+        BuilderType = 'Any',
+
+        BuilderConditions = {
+            { UCBC, 'EnemyUnitsGreaterAtLocationRadiusSwarm', {  BaseEnemyZone, 'LocationType', 0, categories.MOBILE * categories.LAND - categories.NAVAL}}, -- radius, LocationType, unitCount, categoryEnemy
+        },
+
+        BuilderData = {
+            MarkerType = 'Start Location',            
+            DistressRange = 100,
+            SafeZone = true,
+            MoveFirst = 'Threat',
+            LocationType = 'LocationType',
+            MoveNext = 'Threat',
+            IgnoreFriendlyBase = true,
+            --ThreatType = '',
+            --SelfThreat = '',
+            --FindHighestThreat ='',
+            --ThreatThreshold = '',
+            AvoidBases = true,
+            AvoidBasesRadius = 45,
+            AggressiveMove = false,      
+            AvoidClosestRadius = 50,
+            GuardTimer = 15,              
+            UseFormation = 'AttackFormation',
+            ThreatType = 'Structures',
+            ThreatSupport = 5,
+            PrioritizedCategories = {
+                categories.COMMAND,
+                categories.MASSEXTRACTION,
+                categories.EXPERIMENTAL,
+                categories.STRUCTURE * categories.DEFENSE,
+                categories.MOBILE * categories.LAND,
+                categories.ENGINEER,
+            },
+        },    
+    },
 }
 
 BuilderGroup {

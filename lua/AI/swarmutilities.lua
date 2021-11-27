@@ -12,6 +12,7 @@ local SWARMFLOOR = math.floor
 local SWARMMAX = math.max
 local SWARMMIN = math.min
 local SWARMABS = math.abs
+local SWARMPI = math.pi
 local SWARMTIME = GetGameTimeSeconds
 local SWARMENTITY = EntityCategoryContains
 
@@ -518,6 +519,17 @@ function lerpy(vec1, vec2, distance)
     local y = vec1[2] * (1 - distanceFrac) + vec2[2] * distanceFrac
     local z = vec1[3] * (1 - distanceFrac) + vec2[3] * distanceFrac
     return {x,y,z}
+end
+
+function GetDirectionInDegrees( v1, v2 )
+    local SWARMACOS = math.acos
+	local vec = GetDirectionVector( v1, v2)
+	
+	if vec[1] >= 0 then
+		return SWARMACOS(vec[3]) * (360/(SWARMPI*2))
+	end
+	
+	return 360 - (SWARMACOS(vec[3]) * (360/(SWARMPI*2)))
 end
 
 function RandomizePosition(position)

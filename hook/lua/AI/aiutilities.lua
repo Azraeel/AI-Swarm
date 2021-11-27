@@ -17,6 +17,7 @@ local SWARMENTITY = EntityCategoryContains
 
 local VDist2 = VDist2
 
+local GetThreatAtPosition = moho.aibrain_methods.GetThreatAtPosition
 local GetNumUnitsAroundPoint = moho.aibrain_methods.GetNumUnitsAroundPoint
 local GetUnitsAroundPoint = moho.aibrain_methods.GetUnitsAroundPoint
 local GetAIBrain = moho.unit_methods.GetAIBrain
@@ -65,6 +66,89 @@ function ValidateAttackLayerSwarm(position, TargetPosition)
         return true
     end
     return false
+end
+
+function AIGetMarkerLocationsNotFriendlySwarm(aiBrain, markerType)
+    local markerList = {}
+    --LOG('* AI-Swarm: Marker Type for AIGetMarkerLocationsNotFriendlySwarm is '..markerType)
+    if markerType == 'Start Location' then
+        local tempMarkers = AIGetMarkerLocationsSwarm(aiBrain, 'Blank Marker')
+        for k, v in tempMarkers do
+            if string.sub(v.Name, 1, 5) == 'ARMY_' then
+                local ecoStructures = aiBrain:GetUnitsAroundPoint(categories.STRUCTURE * (categories.MASSEXTRACTION + categories.MASSPRODUCTION), v.Position, 30, 'Ally')
+                local GetBlueprint = moho.entity_methods.GetBlueprint
+                local ecoThreat = 0
+                for _, v in ecoStructures do
+                    local bp = v:GetBlueprint()
+                    local ecoStructThreat = bp.Defense.EconomyThreatLevel
+                    --LOG('* AI-RNG: Eco Structure'..ecoStructThreat)
+                    ecoThreat = ecoThreat + ecoStructThreat
+                end
+                if ecoThreat < 10 then
+                    SWARMINSERT(markerList, {Position = v.Position, Name = v.Name})
+                end
+            end
+        end
+    else
+        local markers = Scenario.MasterChain._MASTERCHAIN_.Markers
+        if markers then
+            for k, v in markers do
+                if v.type == markerType then
+                    SWARMINSERT(markerList, {Position = v.Position, Name = k})
+                end
+            end
+        end
+    end
+    return markerList
+end
+
+function AIGetMarkerLocationsSwarm(aiBrain, markerType)
+    local markerList = {}
+    if markerType == 'Start Location' then
+        local tempMarkers = AIGetMarkerLocationsSwarm(aiBrain, 'Blank Marker')
+        for k, v in tempMarkers do
+            if string.sub(v.Name, 1, 5) == 'ARMY_' then
+                SWARMINSERT(markerList, {Position = v.Position, Name = v.Name, MassSpotsInRange = v.MassSpotsInRange})
+            end
+        end
+    else
+        local markers = Scenario.MasterChain._MASTERCHAIN_.Markers
+        if markers then
+            for k, v in markers do
+                if v.type == markerType then
+                    SWARMINSERT(markerList, {Position = v.position, Name = k, MassSpotsInRange = v.MassSpotsInRange})
+                end
+            end
+        end
+    end
+
+    return markerList
+end
+
+function AIGetMarkersAroundLocationSwarm(aiBrain, markerType, pos, radius, threatMin, threatMax, threatRings, threatType)
+    local markers = AIGetMarkerLocationsSwarm(aiBrain, markerType)
+    local returnMarkers = {}
+    for _, v in markers do
+        if markerType == 'Blank Marker' then
+            if VDist2Sq(aiBrain.BuilderManagers['MAIN'].Position[1], aiBrain.BuilderManagers['MAIN'].Position[3], v.Position[1], v.Position[3]) < 10000 then
+                --LOG('Start Location too close to main base skip, location is '..VDist2Sq(aiBrain.BuilderManagers['MAIN'].Position[1], aiBrain.BuilderManagers['MAIN'].Position[3], v.Position[1], v.Position[3])..' from main base pos')
+                continue
+            end
+        end
+        local dist = VDist2(pos[1], pos[3], v.Position[1], v.Position[3])
+        if dist < radius then
+            if not threatMin then
+                SWARMINSERT(returnMarkers, v)
+            else
+                local threat = GetThreatAtPosition(aiBrain, v.Position, threatRings, true, threatType or 'Overall')
+                if threat >= threatMin and threat <= threatMax then
+                    SWARMINSERT(returnMarkers, v)
+                end
+            end
+        end
+    end
+
+    return returnMarkers
 end
 
 -- AI-Swarm: Helper function for targeting
@@ -798,6 +882,210 @@ function EngineerMoveWithSafePathSwarmAdvanced(aiBrain, eng, destination, whatTo
         return true
     end
     return false
+end
+
+function UseTransportsSwarm(units, transports, location, transportPlatoon)
+    local aiBrain
+    for k, v in units do
+        if not v.Dead then
+            aiBrain = v:GetAIBrain()
+            break
+        end
+    end
+
+    if not aiBrain then
+        return false
+    end
+
+    -- Load transports
+    local transportTable = {}
+    local transSlotTable = {}
+    if not transports then
+        return false
+    end
+
+    IssueClearCommands(transports)
+
+    for num, unit in transports do
+        local id = unit.UnitId
+        if not transSlotTable[id] then
+            transSlotTable[id] = GetNumTransportSlots(unit)
+        end
+        SWARMINSERT(transportTable,
+            {
+                Transport = unit,
+                LargeSlots = transSlotTable[id].Large,
+                MediumSlots = transSlotTable[id].Medium,
+                SmallSlots = transSlotTable[id].Small,
+                Units = {}
+            }
+        )
+    end
+
+    local shields = {}
+    local remainingSize3 = {}
+    local remainingSize2 = {}
+    local remainingSize1 = {}
+    local pool = aiBrain:GetPlatoonUniquelyNamed('ArmyPool')
+    for num, unit in units do
+        if not unit.Dead then
+            if unit:IsUnitState('Attached') then
+                aiBrain:AssignUnitsToPlatoon(pool, {unit}, 'Unassigned', 'None')
+            elseif EntityCategoryContains(categories.url0306 + categories.DEFENSE, unit) then
+                SWARMINSERT(shields, unit)
+            elseif unit:GetBlueprint().Transport.TransportClass == 3 then
+                SWARMINSERT(remainingSize3, unit)
+            elseif unit:GetBlueprint().Transport.TransportClass == 2 then
+                SWARMINSERT(remainingSize2, unit)
+            elseif unit:GetBlueprint().Transport.TransportClass == 1 then
+                SWARMINSERT(remainingSize1, unit)
+            else
+                SWARMINSERT(remainingSize1, unit)
+            end
+        end
+    end
+
+    local needed = GetNumTransports(units)
+    local largeHave = 0
+    for num, data in transportTable do
+        largeHave = largeHave + data.LargeSlots
+    end
+
+    local leftoverUnits = {}
+    local currLeftovers = {}
+    local leftoverShields = {}
+    transportTable, leftoverShields = SortUnitsOnTransports(transportTable, shields, largeHave - needed.Large)
+
+    transportTable, leftoverUnits = SortUnitsOnTransports(transportTable, remainingSize3, -1)
+
+    transportTable, currLeftovers = SortUnitsOnTransports(transportTable, leftoverShields, -1)
+
+    for _, v in currLeftovers do SWARMINSERT(leftoverUnits, v) end
+    transportTable, currLeftovers = SortUnitsOnTransports(transportTable, remainingSize2, -1)
+
+    for _, v in currLeftovers do SWARMINSERT(leftoverUnits, v) end
+    transportTable, currLeftovers = SortUnitsOnTransports(transportTable, remainingSize1, -1)
+
+    for _, v in currLeftovers do SWARMINSERT(leftoverUnits, v) end
+    transportTable, currLeftovers = SortUnitsOnTransports(transportTable, currLeftovers, -1)
+
+    aiBrain:AssignUnitsToPlatoon(pool, currLeftovers, 'Unassigned', 'None')
+    if transportPlatoon then
+        transportPlatoon.UsingTransport = true
+    end
+
+    local monitorUnits = {}
+    for num, data in transportTable do
+        if SWARMGETN(data.Units) > 0 then
+            IssueClearCommands(data.Units)
+            IssueTransportLoad(data.Units, data.Transport)
+            for k, v in data.Units do SWARMINSERT(monitorUnits, v) end
+        end
+    end
+
+    local attached = true
+    repeat
+        SWARMWAIT(20)
+        local allDead = true
+        local transDead = true
+        for k, v in units do
+            if not v.Dead then
+                allDead = false
+                break
+            end
+        end
+        for k, v in transports do
+            if not v.Dead then
+                transDead = false
+                break
+            end
+        end
+        if allDead or transDead then return false end
+        attached = true
+        for k, v in monitorUnits do
+            if not v.Dead and not v:IsIdleState() then
+                attached = false
+                break
+            end
+        end
+    until attached
+
+    -- Any units that aren't transports and aren't attached send back to pool
+    for k, unit in units do
+        if not unit.Dead and not EntityCategoryContains(categories.TRANSPORTATION, unit) then
+            if not unit:IsUnitState('Attached') then
+                aiBrain:AssignUnitsToPlatoon(pool, {unit}, 'Unassigned', 'None')
+            end
+        elseif not unit.Dead and EntityCategoryContains(categories.TRANSPORTATION, unit) and SWARMGETN(unit:GetCargo()) < 1 then
+            ReturnTransportsToPool({unit}, true)
+            SWARMREMOVE(transports, k)
+        end
+    end
+
+    -- If some transports have no units return to pool
+    for k, t in transports do
+        if not t.Dead and SWARMGETN(t:GetCargo()) < 1 then
+            aiBrain:AssignUnitsToPlatoon('ArmyPool', {t}, 'Scout', 'None')
+            SWARMREMOVE(transports, k)
+        end
+    end
+
+    if SWARMGETN(transports) ~= 0 then
+        -- If no location then we have loaded transports then return true
+        if location then
+            local safePath = AIAttackUtils.PlatoonGenerateSafePathToSwarm(aiBrain, 'Air', transports[1]:GetPosition(), location, 200)
+            if safePath then
+                for _, p in safePath do
+                    IssueMove(transports, p)
+                end
+            end
+        else
+            if transportPlatoon then
+                transportPlatoon.UsingTransport = false
+            end
+            return true
+        end
+    else
+        -- If no transports return false
+        if transportPlatoon then
+            transportPlatoon.UsingTransport = false
+        end
+        return false
+    end
+
+    -- Adding Surface Height, so thetransporter get not confused, because the target is under the map (reduces unload time)
+    location = {location[1], GetSurfaceHeight(location[1],location[3]), location[3]}
+    IssueTransportUnload(transports, location)
+    local attached = true
+    while attached do
+        WaitSeconds(2)
+        local allDead = true
+        for _, v in transports do
+            if not v.Dead then
+                allDead = false
+                break
+            end
+        end
+
+        if allDead then
+            return false
+        end
+
+        attached = false
+        for num, unit in units do
+            if not unit.Dead and unit:IsUnitState('Attached') then
+                attached = true
+                break
+            end
+        end
+    end
+
+    if transportPlatoon then
+        transportPlatoon.UsingTransport = false
+    end
+    ReturnTransportsToPool(transports, true)
+
+    return true
 end
 
 function points(original,radius,num)

@@ -56,7 +56,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Builders',
 
             { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 0.7, 0.8 }},
 
-            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.02, 0.10}},
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.01, 0.10}},
         },
         BuilderType = 'Air',
     }, 
