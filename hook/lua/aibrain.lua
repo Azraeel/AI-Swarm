@@ -188,6 +188,11 @@ AIBrain = Class(SwarmAIBrainClass) {
                 Gun = false,
             }
         end
+
+        self.StructurePool = self:MakePlatoon('StructurePool', 'none')
+        self.StructurePool:UniquelyNamePlatoon('StructurePool')
+        self.FactoryPool = self:MakePlatoon('FactoryPool', 'none')
+        self.FactoryPool:UniquelyNamePlatoon('FactoryPool')
         --return
     end,
 
@@ -415,10 +420,12 @@ AIBrain = Class(SwarmAIBrainClass) {
         end
     end,
 
-    GetUpgradeSpec = function(self, unit)
+    GetUpgradeSpecSwarm = function(self, unit)
         local upgradeSpec = {}
         
         if EntityCategoryContains(categories.MASSEXTRACTION, unit) then
+            --LOG("What is unit " .. repr(unit))
+            --LOG("Are we reaching this point? GetUpgradeSpecSwarmMassExtractor")
             if self.UpgradeMode == 'Aggressive' then
                 upgradeSpec.MassLowTrigger = 0.80
                 upgradeSpec.EnergyLowTrigger = 1.0
@@ -447,8 +454,39 @@ AIBrain = Class(SwarmAIBrainClass) {
                 upgradeSpec.EnemyThreatLimit = 0
                 return upgradeSpec
             end
+        elseif EntityCategoryContains(categories.FACTORY * categories.STRUCTURE, unit) then
+            --LOG("What is unit " .. repr(unit))
+            --LOG("Are we reaching this point? GetUpgradeSpecSwarmFactory")
+            if self.UpgradeMode == 'Aggressive' then
+                upgradeSpec.MassLowTrigger = 1.0
+                upgradeSpec.EnergyLowTrigger = 1.0
+                upgradeSpec.MassHighTrigger = 2.0
+                upgradeSpec.EnergyHighTrigger = 2.0
+                upgradeSpec.UpgradeCheckWait = 24
+                upgradeSpec.InitialDelay = 30
+                upgradeSpec.EnemyThreatLimit = 10
+                return upgradeSpec
+            elseif self.UpgradeMode == 'Normal' then
+                upgradeSpec.MassLowTrigger = 1.05
+                upgradeSpec.EnergyLowTrigger = 1.05
+                upgradeSpec.MassHighTrigger = 2.0
+                upgradeSpec.EnergyHighTrigger = 2.0
+                upgradeSpec.UpgradeCheckWait = 24
+                upgradeSpec.InitialDelay = 60
+                upgradeSpec.EnemyThreatLimit = 5
+                return upgradeSpec
+            elseif self.UpgradeMode == 'Caution' then
+                upgradeSpec.MassLowTrigger = 1.10
+                upgradeSpec.EnergyLowTrigger = 1.15
+                upgradeSpec.MassHighTrigger = 2.0
+                upgradeSpec.EnergyHighTrigger = 2.0
+                upgradeSpec.UpgradeCheckWait = 24
+                upgradeSpec.InitialDelay = 90
+                upgradeSpec.EnemyThreatLimit = 0
+                return upgradeSpec
+            end
         else
-            --LOG('* AI-Swarm: Unit is not Mass Extractor')
+            --LOG('* AI-Swarm: Unit is not Mass Extractor or Factory')
             upgradeSpec = false
             return upgradeSpec
         end
@@ -1279,7 +1317,7 @@ AIBrain = Class(SwarmAIBrainClass) {
 
     ExpansionIntelScanSwarm = function(self)
         --LOG('Pre-Start ExpansionIntelScanSwarm')
-        SWARMWAIT(50)
+        SWARMWAIT(100)
         if SWARMGETN(self.ExpansionWatchTableSwarm) == 0 then
             --LOG('ExpansionIntelScanSwarm not ready or is empty')
             return
@@ -1352,7 +1390,7 @@ AIBrain = Class(SwarmAIBrainClass) {
                     self.ExpansionWatchTableSwarm[k]['Structures'] = rawThreat
                 end
             end
-            SWARMWAIT(50)
+            SWARMWAIT(100)
             -- don't do this, it might have a platoon inside it LOG('Current Expansion Watch Table '..repr(self.ExpansionWatchTableSwarm))
         end
     end,

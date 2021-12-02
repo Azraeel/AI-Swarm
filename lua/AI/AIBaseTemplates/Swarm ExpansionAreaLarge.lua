@@ -30,7 +30,7 @@ BaseBuilderTemplate {
         -- Build Land/Air Factories
         'Swarm Adaptive Factory Build',
         -- Upgrade Factories TECH1->TECH2 and TECH2->TECH3
-        'Swarm Factory Upgrader Rush',
+        --'Swarm Factory Upgrader Rush',
 
         -----------------------------------------------------------------------------
         -- ==== Land Units BUILDER ==== --

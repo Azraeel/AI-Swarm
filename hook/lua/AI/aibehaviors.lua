@@ -1,3 +1,5 @@
+WARN('['..string.gsub(debug.getinfo(1).source, ".*\\(.*.lua)", "%1")..', line:'..debug.getinfo(1).currentline..'] * AI-Swarm: offset aibehaviors.lua' )
+
 local HaveUnitRatio = import('/mods/AI-Swarm/lua/AI/Swarmutilities.lua').HaveUnitRatio
 local GetEconomyStored = moho.aibrain_methods.GetEconomyStored
 local GetEconomyStoredRatio = moho.aibrain_methods.GetEconomyStoredRatio
@@ -28,44 +30,159 @@ function StructureUpgradeThreadSwarm(unit, aiBrain, upgradeSpec, bypasseco)
 
     local unitBp = unit:GetBlueprint()
     local upgradeID = unitBp.General.UpgradesTo or false
-    local upgradebp = false
-    local unitType, unitTech = StructureTypeCheck(aiBrain, unitBp)
 
-    if upgradeID then
-        upgradebp = aiBrain:GetUnitBlueprint(upgradeID) or false
-    end
+    if not upgradeID then return end
 
-    if not (upgradeID and upgradebp) then
-        unit.UpgradeThread = nil
-        unit.UpgradesComplete = true
-        --LOG('* AI-Swarm: upgradeID or upgradebp is false, returning')
-        return
-    end
-
+    local massNeeded, energyNeeded, buildtime, buildrate, massProduction, energyProduction, massTrendNeeded, energyTrendNeeded, energyMaintenance
     local upgradeable = true
     local upgradeIssued = false
-
     if not bypasseco then
-        local bypasseco = false
+        bypasseco = false
     end
-    -- Eco requirements
-    local massNeeded = upgradebp.Economy.BuildCostMass
-	local energyNeeded = upgradebp.Economy.BuildCostEnergy
-    local buildtime = upgradebp.Economy.BuildTime
-    --LOG('Mass Needed '..massNeeded)
-    --LOG('Energy Needed '..energyNeeded)
-    -- build rate
-    local buildrate = unitBp.Economy.BuildRate
+    local alternativebp = false
+    local upgradebp = aiBrain:GetUnitBlueprint(upgradeID)
+    --LOG("What is upgradeID at the Start " ..repr(upgradeID))
 
-    -- production while upgrading
-    local massProduction = unitBp.Economy.ProductionPerSecondMass or 0
-    local energyProduction = unitBp.Economy.ProductionPerSecondEnergy or 0
+    local unitType, unitTech, unitFactionIndex = StructureTypeCheck(aiBrain, unitBp)
+    --LOG("What is unitFactionIndex " ..unitFactionIndex)
+    --LOG("What is unitType " ..unitType)
+    --LOG("What is unitTech " ..unitTech)
+
+
+    local function DecideUpgradeBP()
+        LOG("What is upgradeID at the start of DecideUpgradeBP Function " ..repr(upgradeID))
+        if upgradeID then
+            -- This is the support factory JANKING code
+            if EntityCategoryContains(categories.FACTORY * categories.STRUCTURE * categories.LAND, unit) then -- 1: UEF, 2: Aeon, 3: Cybran, 4: Seraphim, 5: Nomads
+
+                if aiBrain:GetListOfUnits( categories.FACTORY * categories.LAND * categories.TECH2 * categories.RESEARCH, false, true ) > 0 then
+                    if unitFactionIndex == '1' then
+                        alternativebp = 'zeb9501'
+                    elseif unitFactionIndex == '2' then
+                        alternativebp = 'zab9501'
+                    elseif unitFactionIndex == '3' then
+                        alternativebp = 'zrb9501'
+                    elseif unitFactionIndex == '4' then
+                        alternativebp = 'zsb9501'
+                    end
+                    --LOG("What is alternativebp " ..repr(alternativebp))
+                    if alternativebp then
+                        upgradebp = aiBrain:GetUnitBlueprint(alternativebp)
+                    end
+                    if upgradebp then
+                        upgradeID = alternativebp
+                    end
+                elseif aiBrain:GetListOfUnits( categories.FACTORY * categories.LAND * categories.TECH3 * categories.RESEARCH, false, true ) > 0 then
+                    if unitFactionIndex == '1' then
+                        alternativebp = 'zeb9601'
+                    elseif unitFactionIndex == '2' then
+                        alternativebp = 'zab9601'
+                    elseif unitFactionIndex == '3' then
+                        alternativebp = 'zrb9601'
+                    elseif unitFactionIndex == '4' then
+                        alternativebp = 'zsb9601'
+                    end
+                    if alternativebp then
+                        upgradebp = aiBrain:GetUnitBlueprint(alternativebp)
+                    end
+                    if upgradebp then
+                        upgradeID = alternativebp
+                    end
+                end
+            elseif EntityCategoryContains(categories.FACTORY * categories.STRUCTURE * categories.AIR, unit) then -- 1: UEF, 2: Aeon, 3: Cybran, 4: Seraphim, 5: Nomads
+                if aiBrain:GetListOfUnits( categories.FACTORY * categories.AIR * categories.TECH2 * categories.RESEARCH, false, true ) > 0 then
+                    if unitFactionIndex == '1' then
+                        alternativebp = 'zeb9502'
+                    elseif unitFactionIndex == '2' then
+                        alternativebp = 'zab9502'
+                    elseif unitFactionIndex == '3' then
+                        alternativebp = 'zrb9502'
+                    elseif unitFactionIndex == '4' then
+                        alternativebp = 'zsb9502'
+                    end
+                    if alternativebp then
+                        upgradebp = aiBrain:GetUnitBlueprint(alternativebp)
+                    end
+                    if upgradebp then
+                        upgradeID = alternativebp
+                    end
+                elseif aiBrain:GetListOfUnits( categories.FACTORY * categories.AIR * categories.TECH3 * categories.RESEARCH, false, true ) > 0 then
+                    if unitFactionIndex == '1' then
+                        alternativebp = 'zeb9602'
+                    elseif unitFactionIndex == '2' then
+                        alternativebp = 'zab9602'
+                    elseif unitFactionIndex == '3' then
+                        alternativebp = 'zrb9602'
+                    elseif unitFactionIndex == '4' then
+                        alternativebp = 'zsb9602'
+                    end
+                    if alternativebp then
+                        upgradebp = aiBrain:GetUnitBlueprint(alternativebp)
+                    end
+                    if upgradebp then
+                        upgradeID = alternativebp
+                    end
+                end
+            elseif EntityCategoryContains(categories.FACTORY * categories.STRUCTURE * categories.NAVAL, unit) then -- 1: UEF, 2: Aeon, 3: Cybran, 4: Seraphim, 5: Nomads
+                if aiBrain:GetListOfUnits( categories.FACTORY * categories.NAVAL * categories.TECH2 * categories.RESEARCH, false, true ) > 0 then
+                    if unitFactionIndex == '1' then
+                        alternativebp = 'zeb9503'
+                    elseif unitFactionIndex == '2' then
+                        alternativebp = 'zab9503'
+                    elseif unitFactionIndex == '3' then
+                        alternativebp = 'zrb9503'
+                    elseif unitFactionIndex == '4' then
+                        alternativebp = 'zsb9503'
+                    end
+                    if alternativebp then
+                        upgradebp = aiBrain:GetUnitBlueprint(alternativebp)
+                    end
+                    if upgradebp then
+                        upgradeID = alternativebp
+                    end
+                elseif aiBrain:GetListOfUnits( categories.FACTORY * categories.NAVAL * categories.TECH3 * categories.RESEARCH, false, true ) > 0 then
+                    if unitFactionIndex == '1' then
+                        alternativebp = 'zeb9603'
+                    elseif unitFactionIndex == '2' then
+                        alternativebp = 'zab9603'
+                    elseif unitFactionIndex == '3' then
+                        alternativebp = 'zrb9603'
+                    elseif unitFactionIndex == '4' then
+                        alternativebp = 'zsb9603'
+                    end
+                    if alternativebp then
+                        upgradebp = aiBrain:GetUnitBlueprint(alternativebp)
+                    end
+                    if upgradebp then
+                        upgradeID = alternativebp
+                    end
+                end
+            --LOG("What is upgradeID " ..repr(upgradebp))
+            end
+        end
+    end
+
+    -- Eco requirements
+    local function GetUpgradeEconomy()
+        --LOG("What is upgradeID " ..repr(upgradebp))
+        massNeeded = upgradebp.Economy.BuildCostMass
+	    energyNeeded = upgradebp.Economy.BuildCostEnergy
+        buildtime = upgradebp.Economy.BuildTime
+        --LOG('Mass Needed '..massNeeded)
+        --LOG('Energy Needed '..energyNeeded)
+        -- build rate
+        buildrate = unitBp.Economy.BuildRate
+
+        -- production while upgrading
+        massProduction = unitBp.Economy.ProductionPerSecondMass or 0
+        energyProduction = unitBp.Economy.ProductionPerSecondEnergy or 0
     
-    local massTrendNeeded = ( SWARMMIN( 0,(massNeeded / buildtime) * buildrate) - massProduction) * .1
-    --LOG('Mass Trend Needed for '..unitTech..' Extractor :'..massTrendNeeded)
-    local energyTrendNeeded = ( SWARMMIN( 0,(energyNeeded / buildtime) * buildrate) - energyProduction) * .1
-    --LOG('Energy Trend Needed for '..unitTech..' Extractor :'..energyTrendNeeded)
-    local energyMaintenance = (upgradebp.Economy.MaintenanceConsumptionPerSecondEnergy or 10) * .1
+        massTrendNeeded = ( SWARMMIN( 0,(massNeeded / buildtime) * buildrate) - massProduction) * .1
+        --LOG('Mass Trend Needed for '..unitTech..' Extractor :'..massTrendNeeded)
+        energyTrendNeeded = ( SWARMMIN( 0,(energyNeeded / buildtime) * buildrate) - energyProduction) * .1
+        --LOG('Energy Trend Needed for '..unitTech..' Extractor :'..energyTrendNeeded)
+        energyMaintenance = (upgradebp.Economy.MaintenanceConsumptionPerSecondEnergy or 10) * .1
+    end
 
     -- Define Economic Data
     local eco = aiBrain.EcoData.OverTime -- mother of god I'm stupid this is another bit of Sprouto genius.
@@ -95,49 +212,44 @@ function StructureUpgradeThreadSwarm(unit, aiBrain, upgradeSpec, bypasseco)
         multiplier = 1
     end
 
-    if unitTech == 'TECH1' and aiBrain.UpgradeMode == 'Aggressive' then
-        ecoTimeOut = (320 / multiplier)
-    elseif unitTech == 'TECH2' and aiBrain.UpgradeMode == 'Aggressive' then
-        ecoTimeOut = (650 / multiplier)
-    elseif unitTech == 'TECH1' and aiBrain.UpgradeMode == 'Normal' then
-        ecoTimeOut = (420 / multiplier)
-    elseif unitTech == 'TECH2' and aiBrain.UpgradeMode == 'Normal' then
-        ecoTimeOut = (860 / multiplier)
-    elseif unitTech == 'TECH1' and aiBrain.UpgradeMode == 'Caution' then
-        ecoTimeOut = (420 / multiplier)
-    elseif unitTech == 'TECH2' and aiBrain.UpgradeMode == 'Caution' then
-        ecoTimeOut = (880 / multiplier)
-    end
-
     --LOG('Multiplier is '..multiplier)
+    --LOG('The upgradeSpec is '..repr(upgradeSpec))
     --LOG('Initial Delay is before any multiplier is '..upgradeSpec.InitialDelay)
     --LOG('Initial Delay is '..(upgradeSpec.InitialDelay / multiplier))
     --LOG('Eco timeout for Tech '..unitTech..' Extractor is '..ecoTimeOut)
     --LOG('* AI-Swarm: Initial Variables set')
     while initial_delay < (upgradeSpec.InitialDelay / multiplier) do
 		if GetEconomyStored( aiBrain, 'MASS') >= 50 and GetEconomyStored( aiBrain, 'ENERGY') >= 900 and unit:GetFractionComplete() == 1 then
-            initial_delay = initial_delay + 10
-            unit.InitialDelay = true
-            if (GetGameTimeSeconds() - ecoStartTime) > ecoTimeOut then
-                initial_delay = upgradeSpec.InitialDelay
+            if aiBrain.UpgradeMode == 'Aggressive' then
+                initial_delay = initial_delay + 20
+            elseif aiBrain.UpgradeMode == 'Normal' then
+                initial_delay = initial_delay + 10
+            elseif aiBrain.UpgradeMode == 'Caution' then
+                initial_delay = initial_delay + 5
             end
+            unit.InitialDelay = true
         end
         --LOG('* AI-Swarm: Initial Delay loop trigger for '..aiBrain.Nickname..' is : '..initial_delay..' out of 90')
 		SWARMWAIT(100)
     end
-    unit.InitialDelay = false
+    unit.InitialDelay = nil
 
     -- Main Upgrade Loop
+    LOG("What is upgradeID before the start of the main loop " ..repr(upgradeID))
     while ((not unit.Dead) or unit.Sync.id) and upgradeable and not upgradeIssued do
         --LOG('* AI-Swarm: Upgrade main loop starting for'..aiBrain.Nickname)
         SWARMWAIT(upgradeSpec.UpgradeCheckWait * 10)
-        upgradeSpec = aiBrain:GetUpgradeSpec(unit)
+
+        DecideUpgradeBP()
+        GetUpgradeEconomy()
+        --LOG("What is Upgrade BP " ..repr(upgradebp))
+        upgradeSpec = aiBrain:GetUpgradeSpecSwarm(unit)
         --LOG('Upgrade Spec '..repr(upgradeSpec))
         --LOG('Current low mass trigger '..upgradeSpec.MassLowTrigger)
-        if (GetGameTimeSeconds() - ecoStartTime) > ecoTimeOut then
+        --if (GetGameTimeSeconds() - ecoStartTime) > ecoTimeOut then
             --LOG('Eco Bypass is True')
-            bypasseco = true
-        end
+        --    bypasseco = true
+        --end
         if bypasseco and not (GetEconomyStored( aiBrain, 'MASS') > ( massNeeded * 1.6 ) and aiBrain.EconomyOverTimeCurrent.MassEfficiencyOverTime < 1.0 ) then
             upgradeNumLimit = StructureUpgradeNumDelay(aiBrain, unitType, unitTech)
             if unitTech == 'TECH1' then
@@ -157,7 +269,7 @@ function StructureUpgradeThreadSwarm(unit, aiBrain, upgradeSpec, bypasseco)
 
         extractorClosest = ExtractorClosest(aiBrain, unit, unitBp)
         if not extractorClosest then
-            --LOG('ExtractorClosest is false')
+            LOG('ExtractorClosest is false')
             SWARMWAIT(10)
             continue
         end
@@ -170,9 +282,9 @@ function StructureUpgradeThreadSwarm(unit, aiBrain, upgradeSpec, bypasseco)
             end
         end
         if unit.MAINBASE then
-            --LOG('MAINBASE Extractor')
+            LOG('MAINBASE Extractor')
         end
-        --LOG('Current Upgrade Limit is :'..upgradeNumLimit)
+        LOG('Current Upgrade Limit is :'..upgradeNumLimit)
         
         --LOG('Upgrade Issued '..aiBrain.UpgradeIssued..' Upgrade Issued Limit '..aiBrain.UpgradeIssuedLimit)
         if aiBrain.UpgradeIssued < aiBrain.UpgradeIssuedLimit then
@@ -231,6 +343,7 @@ function StructureUpgradeThreadSwarm(unit, aiBrain, upgradeSpec, bypasseco)
 						if not unit.Dead then
 
                             upgradeIssued = true
+                            LOG("What is upgradeID " ..repr(upgradeID) .. " What Unit is upgrading " ..repr(unit:GetBlueprint().Description))
                             IssueUpgrade({unit}, upgradeID)
 
                             -- if upgrade issued and not completely full --
@@ -285,7 +398,7 @@ function StructureUpgradeThreadSwarm(unit, aiBrain, upgradeSpec, bypasseco)
     end
 
     if upgradeIssued then
-	    --LOG('* AI-Swarm: upgradeIssued is true')
+	    LOG('* AI-Swarm: upgradeIssued is true')
 
 		unit.Upgrading = true
 
@@ -366,15 +479,20 @@ function StructureUpgradeNumDelay(aiBrain, type, tech)
 end
 
 function StructureTypeCheck(aiBrain, unitBp)
+    local factionIndex = aiBrain:GetFactionIndex()
     -- Returns the tech and type of a structure unit
     local unitType = false
     local unitTech = false
+    local unitFactionIndex = false
     for k, v in unitBp.Categories do
         if v == 'MASSEXTRACTION' then
             --LOG('Unit is Mass Extractor')
             unitType = 'MASSEXTRACTION'
+        elseif v == 'FACTORY' then
+            --LOG('Unit is Factory')
+            unitType = 'FACTORY'
         else
-            --LOG('Value Not Mass Extraction')
+            --LOG('Value Not Mass Extraction or Factory')
         end
 
         if v == 'TECH1' then
@@ -386,18 +504,23 @@ function StructureTypeCheck(aiBrain, unitBp)
         else
             --LOG('Value not TECH1, TECH2')
         end
+
+        if unitFactionIndex == false then
+            unitFactionIndex = aiBrain:GetFactionIndex()
+        end
     end
-    if unitType and unitTech then
-       return unitType, unitTech
+    if unitType and unitTech and unitFactionIndex then
+       --LOG("What is unitFactionIndex " ..unitFactionIndex)
+       return unitType, unitTech, unitFactionIndex
     else
-        return false, false
+        return false, false, false
     end
-    return false, false
+    return false, false, false
 end
 
 function ExtractorClosest(aiBrain, unit, unitBp)
     -- Checks if the unit is closest to the main base
-    local MassExtractorUnitList = false
+    local MassExtractorFactoryUnitList = false
     local unitType, unitTech = StructureTypeCheck(aiBrain, unitBp)
     local BasePosition = aiBrain.BuilderManagers['MAIN'].Position
     local DistanceToBase = nil
@@ -405,12 +528,16 @@ function ExtractorClosest(aiBrain, unit, unitBp)
     local UnitPos
 
     if unitType == 'MASSEXTRACTION' and unitTech == 'TECH1' then
-        MassExtractorUnitList = GetListOfUnits(aiBrain, categories.MASSEXTRACTION * (categories.TECH1), false, false)
+        MassExtractorFactoryUnitList = GetListOfUnits(aiBrain, categories.MASSEXTRACTION * (categories.TECH1), false, false)
     elseif unitType == 'MASSEXTRACTION' and unitTech == 'TECH2' then
-        MassExtractorUnitList = GetListOfUnits(aiBrain, categories.MASSEXTRACTION * (categories.TECH2), false, false)
+        MassExtractorFactoryUnitList = GetListOfUnits(aiBrain, categories.MASSEXTRACTION * (categories.TECH2), false, false)
+    elseif unitType == 'FACTORY' and unitTech == 'TECH1' then
+        MassExtractorFactoryUnitList = GetListOfUnits(aiBrain, categories.FACTORY * (categories.TECH1), false, false)
+    elseif unitType == 'FACTORY' and unitTech == 'TECH2' then
+        MassExtractorFactoryUnitList = GetListOfUnits(aiBrain, categories.FACTORY * (categories.TECH2), false, false)
     end
 
-    for k, v in MassExtractorUnitList do
+    for k, v in MassExtractorFactoryUnitList do
         local TempID
         -- Check if we don't want to upgrade this unit
         if not v

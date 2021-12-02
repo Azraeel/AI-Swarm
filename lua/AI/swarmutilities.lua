@@ -35,17 +35,28 @@ local GetAIBrain = moho.unit_methods.GetAIBrain
 function CheckCustomPlatoonsSwarm(aiBrain)
     if not aiBrain.StructurePool then
         --LOG('* AI-Swarm: Creating Structure Pool Platoon')
-        local structurepool = aiBrain:MakePlatoon('StructurePool', 'none')
-        structurepool:UniquelyNamePlatoon('StructurePool')
-        structurepool.BuilderName = 'Structure Pool'
-        aiBrain.StructurePool = structurepool
+        local StructurePool = aiBrain:MakePlatoon('StructurePool', 'none')
+        StructurePool:UniquelyNamePlatoon('StructurePool')
+        StructurePool.BuilderName = 'Structure Pool'
+        aiBrain.StructurePool = StructurePool
+    end
+
+    if not aiBrain.FactoryPool then
+        --LOG('* AI-Swarm: Creating FactoryPool Pool Platoon')
+        local factoryPool = aiBrain:MakePlatoon('FactoryPool', 'none')
+        factoryPool:UniquelyNamePlatoon('FactoryPool')
+        factoryPool.BuilderName = 'Factory Pool'
+        aiBrain.FactoryPool = factoryPool
     end
 end
 
 -- 99% of the below was Sprouto's work
 function StructureUpgradeInitializeSwarm(finishedUnit, aiBrain)
+    --LOG("StructureUpgradeIntializeSwarm starting for " ..repr(finishedUnit:GetBlueprint().Description))
+
     local StructureUpgradeThreadSwarm = import('/lua/ai/aibehaviors.lua').StructureUpgradeThreadSwarm
-    local structurePool = aiBrain.StructurePool
+    local StructurePool = aiBrain.StructurePool
+    local FactoryPool = aiBrain.FactoryPool
     local AssignUnitsToPlatoon = moho.aibrain_methods.AssignUnitsToPlatoon
     --LOG('* AI-Swarm: Structure Upgrade Initializing')
     if EntityCategoryContains(categories.MASSEXTRACTION, finishedUnit) then
@@ -59,7 +70,21 @@ function StructureUpgradeInitializeSwarm(finishedUnit, aiBrain)
 
         if not finishedUnit.UpgradeThread then
             --LOG('* AI-Swarm: Forking Upgrade Thread')
-            upgradeSpec = aiBrain:GetUpgradeSpec(finishedUnit)
+            upgradeSpec = aiBrain:GetUpgradeSpecSwarm(finishedUnit)
+            --LOG('* AI-Swarm: UpgradeSpec'..repr(upgradeSpec))
+            finishedUnit.UpgradeThread = finishedUnit:ForkThread(StructureUpgradeThreadSwarm, aiBrain, upgradeSpec, false)
+        end
+    elseif EntityCategoryContains(categories.FACTORY * categories.STRUCTURE, finishedUnit) then
+        local factoryPlatoon = aiBrain:MakePlatoon('FactoryPlatoon'..tostring(finishedUnit.Sync.id), 'none')
+        factoryPlatoon.BuilderName = 'FactoryPlatoon'..tostring(finishedUnit.Sync.id)
+        factoryPlatoon.MovementLayer = 'Land'
+        --LOG('* AI-Swarm: Assigning Factory to new platoon')
+        AssignUnitsToPlatoon(aiBrain, factoryPlatoon, {finishedUnit}, 'Support', 'none')
+        finishedUnit.PlatoonHandle = factoryPlatoon
+
+        if not finishedUnit.UpgradeThread then
+            --LOG('* AI-Swarm: Forking Upgrade Thread')
+            upgradeSpec = aiBrain:GetUpgradeSpecSwarm(finishedUnit)
             --LOG('* AI-Swarm: UpgradeSpec'..repr(upgradeSpec))
             finishedUnit.UpgradeThread = finishedUnit:ForkThread(StructureUpgradeThreadSwarm, aiBrain, upgradeSpec, false)
         end
@@ -641,7 +666,7 @@ function CalculateMassValueSwarm(expansionMarkers)
 end
 
 function AIConfigureExpansionWatchTableSwarm(aiBrain)
-    SWARMWAIT(5)
+    SWARMWAIT(20)
     local VDist2Sq = VDist2Sq
     local markerList = {}
     local armyStarts = {}

@@ -46,7 +46,7 @@ BaseBuilderTemplate {
         'Swarm Gate Builders',
         
         -- Upgrade Factories TECH1->TECH2 and TECH2->TECH3
-        'Swarm Factory Upgrader Rush',
+        --'Swarm Factory Upgrader Rush',
         -- Build Air Staging Platform to refill and repair air units.
         'Swarm Air Staging Platform Builders',
 
