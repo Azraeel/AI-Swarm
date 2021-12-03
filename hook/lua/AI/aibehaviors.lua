@@ -50,7 +50,7 @@ function StructureUpgradeThreadSwarm(unit, aiBrain, upgradeSpec, bypasseco)
 
 
     local function DecideUpgradeBP()
-        LOG("What is upgradeID at the start of DecideUpgradeBP Function " ..repr(upgradeID))
+        LOG("What is upgradeID at the start of DecideUpgradeBP Function " ..repr(upgradeID).. " and unit was " ..repr(unit:GetBlueprint().Description))
         if upgradeID then
             -- This is the support factory JANKING code
             if EntityCategoryContains(categories.FACTORY * categories.STRUCTURE * categories.LAND, unit) then -- 1: UEF, 2: Aeon, 3: Cybran, 4: Seraphim, 5: Nomads
@@ -70,7 +70,7 @@ function StructureUpgradeThreadSwarm(unit, aiBrain, upgradeSpec, bypasseco)
                         upgradebp = aiBrain:GetUnitBlueprint(alternativebp)
                     end
                     if upgradebp then
-                        upgradeID = alternativebp
+                        alternativebp = upgradeID
                     end
                 elseif aiBrain:GetListOfUnits( categories.FACTORY * categories.LAND * categories.TECH3 * categories.RESEARCH, false, true ) > 0 then
                     if unitFactionIndex == '1' then
@@ -86,7 +86,7 @@ function StructureUpgradeThreadSwarm(unit, aiBrain, upgradeSpec, bypasseco)
                         upgradebp = aiBrain:GetUnitBlueprint(alternativebp)
                     end
                     if upgradebp then
-                        upgradeID = alternativebp
+                        alternativebp = upgradeID
                     end
                 end
             elseif EntityCategoryContains(categories.FACTORY * categories.STRUCTURE * categories.AIR, unit) then -- 1: UEF, 2: Aeon, 3: Cybran, 4: Seraphim, 5: Nomads
@@ -104,7 +104,7 @@ function StructureUpgradeThreadSwarm(unit, aiBrain, upgradeSpec, bypasseco)
                         upgradebp = aiBrain:GetUnitBlueprint(alternativebp)
                     end
                     if upgradebp then
-                        upgradeID = alternativebp
+                        alternativebp = upgradeID
                     end
                 elseif aiBrain:GetListOfUnits( categories.FACTORY * categories.AIR * categories.TECH3 * categories.RESEARCH, false, true ) > 0 then
                     if unitFactionIndex == '1' then
@@ -120,7 +120,7 @@ function StructureUpgradeThreadSwarm(unit, aiBrain, upgradeSpec, bypasseco)
                         upgradebp = aiBrain:GetUnitBlueprint(alternativebp)
                     end
                     if upgradebp then
-                        upgradeID = alternativebp
+                        alternativebp = upgradeID
                     end
                 end
             elseif EntityCategoryContains(categories.FACTORY * categories.STRUCTURE * categories.NAVAL, unit) then -- 1: UEF, 2: Aeon, 3: Cybran, 4: Seraphim, 5: Nomads
@@ -138,7 +138,7 @@ function StructureUpgradeThreadSwarm(unit, aiBrain, upgradeSpec, bypasseco)
                         upgradebp = aiBrain:GetUnitBlueprint(alternativebp)
                     end
                     if upgradebp then
-                        upgradeID = alternativebp
+                        alternativebp = upgradeID
                     end
                 elseif aiBrain:GetListOfUnits( categories.FACTORY * categories.NAVAL * categories.TECH3 * categories.RESEARCH, false, true ) > 0 then
                     if unitFactionIndex == '1' then
@@ -154,7 +154,7 @@ function StructureUpgradeThreadSwarm(unit, aiBrain, upgradeSpec, bypasseco)
                         upgradebp = aiBrain:GetUnitBlueprint(alternativebp)
                     end
                     if upgradebp then
-                        upgradeID = alternativebp
+                        alternativebp = upgradeID
                     end
                 end
             --LOG("What is upgradeID " ..repr(upgradebp))
@@ -269,12 +269,12 @@ function StructureUpgradeThreadSwarm(unit, aiBrain, upgradeSpec, bypasseco)
 
         extractorClosest = ExtractorClosest(aiBrain, unit, unitBp)
         if not extractorClosest then
-            LOG('ExtractorClosest is false')
+            --LOG('ExtractorClosest is false')
             SWARMWAIT(10)
             continue
         end
         if (not unit.MAINBASE) or (unit.MAINBASE and not bypasseco and GetEconomyStored( aiBrain, 'MASS') < (massNeeded * 0.5)) then
-            if HaveUnitRatio( aiBrain, 1.7, categories.MASSEXTRACTION * categories.TECH1, '>=', categories.MASSEXTRACTION * categories.TECH2 ) and unitTech == 'TECH2' then
+            if HaveUnitRatio( aiBrain, 1.6, categories.MASSEXTRACTION * categories.TECH1, '>=', categories.MASSEXTRACTION * categories.TECH2 ) and unitTech == 'TECH2' then
                 --LOG('Too few tech2 extractors to go tech3')
                 ecoStartTime = ecoStartTime + upgradeSpec.UpgradeCheckWait
                 SWARMWAIT(10)
@@ -282,9 +282,9 @@ function StructureUpgradeThreadSwarm(unit, aiBrain, upgradeSpec, bypasseco)
             end
         end
         if unit.MAINBASE then
-            LOG('MAINBASE Extractor')
+            --LOG('MAINBASE Extractor')
         end
-        LOG('Current Upgrade Limit is :'..upgradeNumLimit)
+        --LOG('Current Upgrade Limit is :'..upgradeNumLimit)
         
         --LOG('Upgrade Issued '..aiBrain.UpgradeIssued..' Upgrade Issued Limit '..aiBrain.UpgradeIssuedLimit)
         if aiBrain.UpgradeIssued < aiBrain.UpgradeIssuedLimit then
@@ -561,7 +561,7 @@ function ExtractorClosest(aiBrain, unit, unitBp)
             --LOG('Mainbase extractor set true')
             v.MAINBASE = true
         end
-        if (not LowestDistanceToBase and v.InitialDelay == false) or (DistanceToBase < LowestDistanceToBase and v.InitialDelay == false) then
+        if (not LowestDistanceToBase and v.InitialDelay == nil) or (DistanceToBase < LowestDistanceToBase and v.InitialDelay == nil) then
             -- see if we can find a upgrade
             LowestDistanceToBase = DistanceToBase
             lowestUnitPos = UnitPos
