@@ -26,21 +26,21 @@ local SWARMWAIT = coroutine.yield
 -- See local function DecideUpgradeBP()
 
 -- LAND FACTORY
-local FACTORYLAND = categories.FACTORY * categories.STRUCTURE * categories.LAND
+local FACTORYLAND = categories.FACTORY * categories.STRUCTURE * categories.LAND - categories.RESEARCH
 -- AIR FACTORY
-local FACTORYAIR = categories.FACTORY * categories.STRUCTURE * categories.AIR
+local FACTORYAIR = categories.FACTORY * categories.STRUCTURE * categories.AIR - categories.RESEARCH
 -- NAVAL FACTORY
-local FACTORYNAVAL = categories.FACTORY * categories.STRUCTURE * categories.NAVAL
+local FACTORYNAVAL = categories.FACTORY * categories.STRUCTURE * categories.NAVAL - categories.RESEARCH
 
 -- LAND HQs
-local FLHQ2 = categories.FACTORY * categories.LAND * categories.TECH2 * categories.RESEARCH
-local FLHQ3 = categories.FACTORY * categories.LAND * categories.TECH3 * categories.RESEARCH
+local FLHQ2 = categories.FACTORY * categories.STRUCTURE * categories.LAND * categories.TECH2 * categories.RESEARCH
+local FLHQ3 = categories.FACTORY * categories.STRUCTURE * categories.LAND * categories.TECH3 * categories.RESEARCH
 -- AIR HQs
-local FAHQ2 = categories.FACTORY * categories.AIR * categories.TECH2 * categories.RESEARCH
-local FAHQ3 = categories.FACTORY * categories.AIR * categories.TECH3 * categories.RESEARCH
+local FAHQ2 = categories.FACTORY * categories.STRUCTURE * categories.AIR * categories.TECH2 * categories.RESEARCH
+local FAHQ3 = categories.FACTORY * categories.STRUCTURE * categories.AIR * categories.TECH3 * categories.RESEARCH
 -- NAVAL HQs
-local FNHQ2 = categories.FACTORY * categories.NAVAL * categories.TECH2 * categories.RESEARCH
-local FNHQ3 = categories.FACTORY * categories.NAVAL * categories.TECH3 * categories.RESEARCH
+local FNHQ2 = categories.FACTORY * categories.STRUCTURE * categories.NAVAL * categories.TECH2 * categories.RESEARCH
+local FNHQ3 = categories.FACTORY * categories.STRUCTURE * categories.NAVAL * categories.TECH3 * categories.RESEARCH
 
 -- LAND SUPPORT FACTORIES 
 local FLSF1 = categories.FACTORY * categories.STRUCTURE * categories.LAND * categories.TECH1
@@ -66,6 +66,7 @@ function StructureUpgradeThreadSwarm(unit, aiBrain, upgradeSpec, bypasseco)
 
     if not upgradeID then return end
 
+    -- Sometimes Rarely massNeeded returns as a invalid and nil upval warning
     local massNeeded, energyNeeded, buildtime, buildrate, massProduction, energyProduction, massTrendNeeded, energyTrendNeeded, energyMaintenance
     local upgradeable = true
     local upgradeIssued = false
@@ -81,13 +82,11 @@ function StructureUpgradeThreadSwarm(unit, aiBrain, upgradeSpec, bypasseco)
     --LOG("What is unitType " ..unitType)
     --LOG("What is unitTech " ..unitTech)
 
-
-    -- Include ways for an HQ T2 to still upgrade to a HQ T3 + Make sure T1 Factories can upgrade to T2 Support Factories Still
     -- Maybe Replace Unreliable GetListOfUnits with EntityCategoryCount?
     local function DecideUpgradeBP()
         --LOG("What is upgradeID at the start of DecideUpgradeBP Function " ..repr(upgradeID).. " and unit was " ..repr(unit:GetBlueprint().Description))
         if upgradeID then
-            -- This is the support factory JANKING code
+            -- This is the support factory compatibility code
             if EntityCategoryContains( FACTORYLAND, unit) then -- 1: UEF, 2: Aeon, 3: Cybran, 4: Seraphim, 5: Nomads
 
                 if table.getn( aiBrain:GetListOfUnits( FLHQ2, false, true )) > 0 or table.getn( aiBrain:GetListOfUnits( FLHQ3, false, true )) > 0 and EntityCategoryContains( FLSF1, unit) then
@@ -194,7 +193,6 @@ function StructureUpgradeThreadSwarm(unit, aiBrain, upgradeSpec, bypasseco)
                     end
                 end
             --LOG("What is upgradeID " ..repr(upgradebp))
-            -- Note Possibly Additional ALTBP IF THEN Statement
             end
         end
     end
@@ -203,16 +201,19 @@ function StructureUpgradeThreadSwarm(unit, aiBrain, upgradeSpec, bypasseco)
     local function GetUpgradeEconomy()
         --LOG("What is upgradeID " ..repr(upgradebp))
         massNeeded = upgradebp.Economy.BuildCostMass
-	    energyNeeded = upgradebp.Economy.BuildCostEnergy
-        buildtime = upgradebp.Economy.BuildTime
         --LOG('Mass Needed '..massNeeded)
+	    energyNeeded = upgradebp.Economy.BuildCostEnergy
         --LOG('Energy Needed '..energyNeeded)
-        -- build rate
+        buildtime = upgradebp.Economy.BuildTime
+        --LOG('Build Time is  '..buildtime)
         buildrate = unitBp.Economy.BuildRate
+        --LOG('Build Rate is  '..buildrate)
 
         -- production while upgrading
         massProduction = unitBp.Economy.ProductionPerSecondMass or 0
+        --LOG('Mass Production is  '..massProduction)
         energyProduction = unitBp.Economy.ProductionPerSecondEnergy or 0
+        --LOG('Energy Production is  '..energyProduction)
     
         massTrendNeeded = ( SWARMMIN( 0,(massNeeded / buildtime) * buildrate) - massProduction) * .1
         --LOG('Mass Trend Needed for '..unitTech..' Extractor :'..massTrendNeeded)
