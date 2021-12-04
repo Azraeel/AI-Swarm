@@ -24,7 +24,7 @@ BaseBuilderTemplate {
         -- Build Naval Factories
         'Swarm Factory Builders Naval',
         -- Upgrade Naval Factories TECH1->TECH2 and TECH2->TECH3
-        'Swarm Factory Upgrader Naval',
+        --'Swarm Factory Upgrader Naval',
 
         -----------------------------------------------------------------------------
         -- ==== Sea Units BUILDER ==== --

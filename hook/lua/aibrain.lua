@@ -72,10 +72,12 @@ AIBrain = Class(SwarmAIBrainClass) {
         local mapSizeX, mapSizeZ = GetMapSize()
         -- Stores handles to all builders for quick iteration and updates to all
         self.BuilderHandles = {}
+        self.MapCenterPointSwarm = { (ScenarioInfo.size[1] / 2), 0 ,(ScenarioInfo.size[2] / 2) }
         self.GraphZonesSwarm = { 
             FirstRun = true,
             HasRun = false
         }
+        self.ExpansionWatchTableSwarm = {}
         self.IMAPConfigSwarm = {
             OgridRadius = 0,
             IMAPSize = 0,
@@ -112,6 +114,8 @@ AIBrain = Class(SwarmAIBrainClass) {
         --LOG("EconomyMonitorSwarm Started")
         self.EconomyOverTimeCurrent = {}
 
+        self:ForkThread(SwarmUtils.AIConfigureExpansionWatchTableSwarm)
+        self:ForkThread(self.ExpansionIntelScanSwarm)
         self:ForkThread(SwarmUtils.DisplayMarkerAdjacencySwarm)
         self:ForkThread(self.EcoExtractorUpgradeCheckSwarm)
         self.EcoManager = {
@@ -184,6 +188,11 @@ AIBrain = Class(SwarmAIBrainClass) {
                 Gun = false,
             }
         end
+
+        self.StructurePool = self:MakePlatoon('StructurePool', 'none')
+        self.StructurePool:UniquelyNamePlatoon('StructurePool')
+        self.FactoryPool = self:MakePlatoon('FactoryPool', 'none')
+        self.FactoryPool:UniquelyNamePlatoon('FactoryPool')
         --return
     end,
 
@@ -411,10 +420,12 @@ AIBrain = Class(SwarmAIBrainClass) {
         end
     end,
 
-    GetUpgradeSpec = function(self, unit)
+    GetUpgradeSpecSwarm = function(self, unit)
         local upgradeSpec = {}
         
         if EntityCategoryContains(categories.MASSEXTRACTION, unit) then
+            --LOG("What is unit " .. repr(unit))
+            --LOG("Are we reaching this point? GetUpgradeSpecSwarmMassExtractor")
             if self.UpgradeMode == 'Aggressive' then
                 upgradeSpec.MassLowTrigger = 0.80
                 upgradeSpec.EnergyLowTrigger = 1.0
@@ -443,8 +454,39 @@ AIBrain = Class(SwarmAIBrainClass) {
                 upgradeSpec.EnemyThreatLimit = 0
                 return upgradeSpec
             end
+        elseif EntityCategoryContains(categories.FACTORY * categories.STRUCTURE, unit) then
+            --LOG("What is unit " .. repr(unit))
+            --LOG("Are we reaching this point? GetUpgradeSpecSwarmFactory")
+            if self.UpgradeMode == 'Aggressive' then
+                upgradeSpec.MassLowTrigger = 1.0
+                upgradeSpec.EnergyLowTrigger = 1.0
+                upgradeSpec.MassHighTrigger = 2.0
+                upgradeSpec.EnergyHighTrigger = 2.0
+                upgradeSpec.UpgradeCheckWait = 24
+                upgradeSpec.InitialDelay = 30
+                upgradeSpec.EnemyThreatLimit = 10
+                return upgradeSpec
+            elseif self.UpgradeMode == 'Normal' then
+                upgradeSpec.MassLowTrigger = 1.015
+                upgradeSpec.EnergyLowTrigger = 1.015
+                upgradeSpec.MassHighTrigger = 2.0
+                upgradeSpec.EnergyHighTrigger = 2.0
+                upgradeSpec.UpgradeCheckWait = 24
+                upgradeSpec.InitialDelay = 60
+                upgradeSpec.EnemyThreatLimit = 5
+                return upgradeSpec
+            elseif self.UpgradeMode == 'Caution' then
+                upgradeSpec.MassLowTrigger = 1.035
+                upgradeSpec.EnergyLowTrigger = 1.035
+                upgradeSpec.MassHighTrigger = 2.0
+                upgradeSpec.EnergyHighTrigger = 2.0
+                upgradeSpec.UpgradeCheckWait = 24
+                upgradeSpec.InitialDelay = 90
+                upgradeSpec.EnemyThreatLimit = 0
+                return upgradeSpec
+            end
         else
-            --LOG('* AI-Swarm: Unit is not Mass Extractor')
+            --LOG('* AI-Swarm: Unit is not Mass Extractor or Factory')
             upgradeSpec = false
             return upgradeSpec
         end
@@ -1270,6 +1312,86 @@ AIBrain = Class(SwarmAIBrainClass) {
             end
 
             --LOG("*AI DEBUG "..self.Nickname.." Air Ratio is "..repr(self.MyAirRatio).." Land Ratio is "..repr(self.MyLandRatio).." Naval Ratio is "..repr(self.MyNavalRatio))
+        end
+    end,
+
+    ExpansionIntelScanSwarm = function(self)
+        --LOG('Pre-Start ExpansionIntelScanSwarm')
+        SWARMWAIT(100)
+        if SWARMGETN(self.ExpansionWatchTableSwarm) == 0 then
+            --LOG('ExpansionIntelScanSwarm not ready or is empty')
+            return
+        end
+        local threatTypes = {
+            'Land',
+            'Commander',
+            'Structures',
+        }
+        local rawThreat = 0
+        local GetClosestPathNodeInRadiusByLayer = import('/lua/AI/aiattackutilities.lua').GetClosestPathNodeInRadiusByLayer
+        --LOG('Starting ExpansionIntelScanSwarm')
+        while self.Result ~= "defeat" do
+            for k, v in self.ExpansionWatchTableSwarm do
+                if v.PlatoonAssigned.Dead then
+                    v.PlatoonAssigned = false
+                end
+                if v.ScoutAssigned.Dead then
+                    v.ScoutAssigned = false
+                end
+                if not v.Zone then
+                    --[[
+                        This is the information available in the Path Node currently. subject to change 7/13/2021
+                        info: Check for position {
+                        info:   GraphArea="LandArea_133",
+                        info:   SwarmArea="Land15-24",
+                        info:   adjacentTo="Land19-11 Land20-11 Land20-12 Land20-13 Land18-11",
+                        info:   armydists={ ARMY_1=209.15859985352, ARMY_2=218.62866210938 },
+                        info:   bestarmy="ARMY_1",
+                        info:   bestexpand="Expansion Area 6",
+                        info:   color="fff4a460",
+                        info:   expanddists={
+                        info:     ARMY_1=209.15859985352,
+                        info:     ARMY_2=218.62866210938,
+                        info:     ARMY_3=118.64562988281,
+                        info:     ARMY_4=290.41003417969,
+                        info:     ARMY_5=270.42752075195,
+                        info:     ARMY_6=125.28052520752,
+                        info:     Expansion Area 1=354.38958740234,
+                        info:     Expansion Area 2=354.2922668457,
+                        info:     Expansion Area 5=222.54640197754,
+                        info:     Expansion Area 6=0
+                        info:   },
+                        info:   graph="DefaultLand",
+                        info:   hint=true,
+                        info:   orientation={ 0, 0, 0 },
+                        info:   position={ 312, 16.21875, 200, type="VECTOR3" },
+                        info:   prop="/env/common/props/markers/M_Path_prop.bp",
+                        info:   type="Land Path Node"
+                        info: }
+                    ]]
+                    local expansionNode = Scenario.MasterChain._MASTERCHAIN_.Markers[GetClosestPathNodeInRadiusByLayer(v.Position, 60, 'Land').name]
+                    --LOG('Check for position '..repr(expansionNode))
+                    if expansionNode then
+                        self.ExpansionWatchTableSwarm[k].Zone = expansionNode.SwarmArea
+                    else
+                        self.ExpansionWatchTableSwarm[k].Zone = false
+                    end
+                end
+                if v.MassPoints > 2 then
+                    for _, t in threatTypes do
+                        rawThreat = GetThreatAtPosition(self, v.Position, self.IMAPConfigSwarm.Rings, true, t)
+                        if rawThreat > 0 then
+                            --LOG('Threats as ExpansionWatchTable for type '..t..' threat is '..rawThreat)
+                        end
+                        self.ExpansionWatchTableSwarm[k][t] = rawThreat
+                    end
+                elseif v.MassPoints == 2 then
+                    rawThreat = GetThreatAtPosition(self, v.Position, self.IMAPConfigSwarm.Rings, true, 'Structures')
+                    self.ExpansionWatchTableSwarm[k]['Structures'] = rawThreat
+                end
+            end
+            SWARMWAIT(100)
+            -- don't do this, it might have a platoon inside it LOG('Current Expansion Watch Table '..repr(self.ExpansionWatchTableSwarm))
         end
     end,
 }

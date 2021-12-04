@@ -35,17 +35,28 @@ local GetAIBrain = moho.unit_methods.GetAIBrain
 function CheckCustomPlatoonsSwarm(aiBrain)
     if not aiBrain.StructurePool then
         --LOG('* AI-Swarm: Creating Structure Pool Platoon')
-        local structurepool = aiBrain:MakePlatoon('StructurePool', 'none')
-        structurepool:UniquelyNamePlatoon('StructurePool')
-        structurepool.BuilderName = 'Structure Pool'
-        aiBrain.StructurePool = structurepool
+        local StructurePool = aiBrain:MakePlatoon('StructurePool', 'none')
+        StructurePool:UniquelyNamePlatoon('StructurePool')
+        StructurePool.BuilderName = 'Structure Pool'
+        aiBrain.StructurePool = StructurePool
+    end
+
+    if not aiBrain.FactoryPool then
+        --LOG('* AI-Swarm: Creating FactoryPool Pool Platoon')
+        local factoryPool = aiBrain:MakePlatoon('FactoryPool', 'none')
+        factoryPool:UniquelyNamePlatoon('FactoryPool')
+        factoryPool.BuilderName = 'Factory Pool'
+        aiBrain.FactoryPool = factoryPool
     end
 end
 
 -- 99% of the below was Sprouto's work
 function StructureUpgradeInitializeSwarm(finishedUnit, aiBrain)
+    --LOG("StructureUpgradeIntializeSwarm starting for " ..repr(finishedUnit:GetBlueprint().Description))
+
     local StructureUpgradeThreadSwarm = import('/lua/ai/aibehaviors.lua').StructureUpgradeThreadSwarm
-    local structurePool = aiBrain.StructurePool
+    local StructurePool = aiBrain.StructurePool
+    local FactoryPool = aiBrain.FactoryPool
     local AssignUnitsToPlatoon = moho.aibrain_methods.AssignUnitsToPlatoon
     --LOG('* AI-Swarm: Structure Upgrade Initializing')
     if EntityCategoryContains(categories.MASSEXTRACTION, finishedUnit) then
@@ -59,7 +70,21 @@ function StructureUpgradeInitializeSwarm(finishedUnit, aiBrain)
 
         if not finishedUnit.UpgradeThread then
             --LOG('* AI-Swarm: Forking Upgrade Thread')
-            upgradeSpec = aiBrain:GetUpgradeSpec(finishedUnit)
+            upgradeSpec = aiBrain:GetUpgradeSpecSwarm(finishedUnit)
+            --LOG('* AI-Swarm: UpgradeSpec'..repr(upgradeSpec))
+            finishedUnit.UpgradeThread = finishedUnit:ForkThread(StructureUpgradeThreadSwarm, aiBrain, upgradeSpec, false)
+        end
+    elseif EntityCategoryContains(categories.FACTORY * categories.STRUCTURE, finishedUnit) then
+        local factoryPlatoon = aiBrain:MakePlatoon('FactoryPlatoon'..tostring(finishedUnit.Sync.id), 'none')
+        factoryPlatoon.BuilderName = 'FactoryPlatoon'..tostring(finishedUnit.Sync.id)
+        factoryPlatoon.MovementLayer = 'Land'
+        --LOG('* AI-Swarm: Assigning Factory to new platoon')
+        AssignUnitsToPlatoon(aiBrain, factoryPlatoon, {finishedUnit}, 'Support', 'none')
+        finishedUnit.PlatoonHandle = factoryPlatoon
+
+        if not finishedUnit.UpgradeThread then
+            --LOG('* AI-Swarm: Forking Upgrade Thread')
+            upgradeSpec = aiBrain:GetUpgradeSpecSwarm(finishedUnit)
             --LOG('* AI-Swarm: UpgradeSpec'..repr(upgradeSpec))
             finishedUnit.UpgradeThread = finishedUnit:ForkThread(StructureUpgradeThreadSwarm, aiBrain, upgradeSpec, false)
         end
@@ -611,6 +636,154 @@ ToColorSwarm = function(min,max,ratio)
     return ToBase16(basetwos)..ToBase16(baseones)
 end
 
+function CalculateMassValueSwarm(expansionMarkers)
+    local MassMarker = {}
+    local VDist2Sq = VDist2Sq
+    if not expansionMarkers then
+        WARN('No Expansion Markers Passed to calcuatemassvalue')
+    end
+    for _, v in Scenario.MasterChain._MASTERCHAIN_.Markers do
+        if v.type == 'Mass' then
+            if v.position[1] <= 8 or v.position[1] >= ScenarioInfo.size[1] - 8 or v.position[3] <= 8 or v.position[3] >= ScenarioInfo.size[2] - 8 then
+                continue
+            end
+            SWARMINSERT(MassMarker, {Position = v.position})
+        end
+    end
+    for k, v in expansionMarkers do
+        local masscount = 0
+        for k2, v2 in MassMarker do
+            if VDist2Sq(v.Position[1], v.Position[3], v2.Position[1], v2.Position[3]) > 6400 then
+                continue
+            end
+            masscount = masscount + 1
+        end        
+        -- insert mexcount into marker
+        v.MassPoints = masscount
+        --SPEW('* AI-Swarm: CreateMassCount: Node: '..v.Type..' - MassSpotsInRange: '..v.MassPoints)
+    end
+    return expansionMarkers
+end
+
+function AIConfigureExpansionWatchTableSwarm(aiBrain)
+    SWARMWAIT(20)
+    local VDist2Sq = VDist2Sq
+    local markerList = {}
+    local armyStarts = {}
+    local expansionMarkers = Scenario.MasterChain._MASTERCHAIN_.Markers
+    local massPointValidated = false
+    local myArmy = ScenarioInfo.ArmySetup[aiBrain.Name]
+    --LOG('Run ExpansionWatchTable Config')
+
+    for i = 1, 16 do
+        local army = ScenarioInfo.ArmySetup['ARMY_' .. i]
+        local startPos = ScenarioUtils.GetMarker('ARMY_' .. i).position
+        if army and startPos then
+            SWARMINSERT(armyStarts, startPos)
+        end
+    end
+    --LOG(' Army Starts'..repr(armyStarts))
+
+    if expansionMarkers then
+        --LOG('Initial expansionMarker list is '..repr(expansionMarkers))
+        for k, v in expansionMarkers do
+            local startPosUsed = false
+            if v.type == 'Expansion Area' or v.type == 'Large Expansion Area' or v.type == 'Blank Marker' then
+                for _, p in armyStarts do
+                    if p == v.position then
+                        --LOG('Position Taken '..repr(v)..' and '..repr(v.position))
+                        startPosUsed = true
+                        break
+                    end
+                end
+                if not startPosUsed then
+                    if v.MassSpotsInRange then
+                        massPointValidated = true
+                        SWARMINSERT(markerList, {Name = k, Position = v.position, Type = v.type, TimeStamp = 0, MassPoints = v.MassSpotsInRange, Land = 0, Structures = 0, Commander = 0, PlatoonAssigned = false, ScoutAssigned = false, Zone = false})
+                    else
+                        SWARMINSERT(markerList, {Name = k, Position = v.position, Type = v.type, TimeStamp = 0, MassPoints = 0, Land = 0, Structures = 0, Commander = 0, PlatoonAssigned = false, ScoutAsigned = false, Zone = false})
+                    end
+                end
+            end
+        end
+    end
+    if not massPointValidated then
+        markerList = CalculateMassValueSwarm(markerList)
+    end
+    --LOG('Army Setup '..repr(ScenarioInfo.ArmySetup))
+    local startX, startZ = aiBrain:GetArmyStartPos()
+    SWARMSORT(markerList,function(a,b) return VDist2Sq(a.Position[1],a.Position[3],startX, startZ)>VDist2Sq(b.Position[1],b.Position[3],startX, startZ) end)
+    aiBrain.ExpansionWatchTableSwarm = markerList
+    --LOG('ExpansionWatchTableSwarm is '..repr(markerList))
+end
+
+function QueryExpansionTableSwarm(aiBrain, location, radius, movementLayer, threat)
+    -- Should be a multipurpose Expansion query that can provide units, acus a place to go
+    if not aiBrain.ExpansionWatchTableSwarm then
+        WARN('No ExpansionWatchTable. Maybe it hasnt been created yet or something is broken')
+        SWARMWAIT(50)
+        return false
+    end
+    
+
+    local MainPos = aiBrain.BuilderManagers.MAIN.Position
+    if VDist2Sq(location[1], location[3], MainPos[1], MainPos[3]) > 3600 then
+        return false
+    end
+    local positionNode = Scenario.MasterChain._MASTERCHAIN_.Markers[AIAttackUtils.GetClosestPathNodeInRadiusByLayer(location, radius, movementLayer).name]
+    local centerPoint = aiBrain.MapCenterPointSwarm
+    local mainBaseToCenter = VDist2Sq(MainPos[1], MainPos[3], centerPoint[1], centerPoint[3])
+    local bestExpansions = {}
+    local options = {}
+    local currentGameTime = GetGameTimeSeconds()
+
+    if positionNode.SwarmArea then
+        for k, expansion in aiBrain.ExpansionWatchTableSwarm do
+            if expansion.Zone == positionNode.SwarmArea then
+                --LOG('Distance to expansion '..VDist2Sq(location[1], location[3], expansion.Position[1], expansion.Position[3]))
+                -- Check if this expansion has been staged already in the last 30 seconds unless there is land threat present
+                --LOG('Expansion last visited timestamp is '..expansion.TimeStamp)
+                if currentGameTime - expansion.TimeStamp > 45 or expansion.Land > 0 then
+                    if VDist2Sq(location[1], location[3], expansion.Position[1], expansion.Position[3]) < radius * radius then
+                        --LOG('Expansion Zone is within radius')
+                        if VDist2Sq(MainPos[1], MainPos[3], expansion.Position[1], expansion.Position[3]) < (VDist2Sq(MainPos[1], MainPos[3], centerPoint[1], centerPoint[3]) + 900) then
+                            --LOG('Expansion is not behind us, we are at '..repr(location))
+                            --LOG('Expansion has '..expansion.MassPoints..' mass points')
+                            --LOG('Expansion is '..expansion.Name..' at '..repr(expansion.Position))
+                            if expansion.MassPoints > 1 then
+                                SWARMINSERT(options, {Expansion = expansion, Value = expansion.MassPoints, Key = k})
+                            end
+                        else
+                            --LOG('Expansion is beyond the center point')
+                            --LOG('Distance from main base to expansion '..VDist2Sq(MainPos[1], MainPos[3], expansion.Position[1], expansion.Position[3]))
+                            --LOG('Should be less than ')
+                            --LOG('Distance from main base to center point '..VDist2Sq(MainPos[1], MainPos[3], centerPoint[1], centerPoint[3]))
+                        end
+                    end
+                else
+                    --LOG('This expansion has already been checked in the last 45 seconds')
+                end
+            end
+        end
+        local optionCount = 0
+        for k, withinRadius in options do
+            if mainBaseToCenter > VDist2Sq(withinRadius.Expansion.Position[1], withinRadius.Expansion.Position[3], centerPoint[1], centerPoint[3]) then
+                --LOG('Expansion has high mass value at location '..withinRadius.Expansion.Name..' at position '..repr(withinRadius.Expansion.Position))
+                SWARMINSERT(bestExpansions, withinRadius)
+            else
+                --LOG('Expansion is behind the main base , position '..repr(withinRadius.Expansion.Position))
+            end
+        end
+    else
+        WARN('No SwarmArea in path node, either its not created yet or the marker analysis hasnt happened')
+    end
+    --LOG('We have '..SwarmGETN(bestExpansions)..' expansions to pick from')
+    if SWARMGETN(bestExpansions) > 0 then
+        return bestExpansions[Random(1,SWARMGETN(bestExpansions))] 
+    end
+    return false
+end
+
 -- End of Area Zone Support Functions
 
 local PropBlacklist = {}
@@ -889,6 +1062,30 @@ function lerpy(vec1, vec2, distance)
     return {x,y,z}
 end
 
+function EdgeDistance(x,y,mapwidth)
+    local edgeDists = { x, y, SWARMABS(x-mapwidth), SWARMABS(y-mapwidth)}
+    SWARMSORT(edgeDists, function(k1, k2) return k1 < k2 end)
+    return edgeDists[1]
+end
+
+function NormalizeVector( v )
+	if v.x then
+		v = {v.x, v.y, v.z}
+    end
+    local length = math.sqrt( math.pow( v[1], 2 ) + math.pow( v[2], 2 ) + math.pow(v[3], 2 ) )
+
+    if length > 0 then
+        local invlength = 1 / length
+        return Vector( v[1] * invlength, v[2] * invlength, v[3] * invlength )
+    else
+        return Vector( 0,0,0 )
+    end
+end
+
+function GetDirectionVector( v1, v2 )
+    return NormalizeVector( Vector(v1[1] - v2[1], v1[2] - v2[2], v1[3] - v2[3]) )
+end
+
 function GetDirectionInDegrees( v1, v2 )
     local SWARMACOS = math.acos
 	local vec = GetDirectionVector( v1, v2)
@@ -898,6 +1095,22 @@ function GetDirectionInDegrees( v1, v2 )
 	end
 	
 	return 360 - (SWARMACOS(vec[3]) * (360/(SWARMPI*2)))
+end
+
+-- This is softles, I was curious to see what it looked like compared to lerpy. Used in scouts avoiding enemy tanks.
+function AvoidLocation(pos,target,dist)
+    if not target then
+        return pos
+    elseif not pos then
+        return target
+    end
+    local delta = VDiff(target,pos)
+    local norm = SWARMMAX(VDist2(delta[1],delta[3],0,0),1)
+    local x = pos[1]+dist*delta[1]/norm
+    local z = pos[3]+dist*delta[3]/norm
+    x = SWARMMIN(ScenarioInfo.size[1]-5,SWARMMAX(5,x))
+    z = SWARMMIN(ScenarioInfo.size[2]-5,SWARMMAX(5,z))
+    return {x,GetSurfaceHeight(x,z),z}
 end
 
 function RandomizePosition(position)

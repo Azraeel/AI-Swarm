@@ -788,47 +788,41 @@ BuilderGroup {
 
         Priority = 1000,
 
-        InstanceCount = 2,
+        InstanceCount = 4,
 
         BuilderType = 'Any',
 
         BuilderConditions = {  
             { MIBC, 'CanPathToCurrentEnemySwarm', { true, 'LocationType' } },
 
-            { UCBC, 'LessThanGameTimeSeconds', { 240 } },
+            { UCBC, 'LessThanGameTimeSeconds', { 300 } },
 
-            { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 0, categories.MOBILE * categories.LAND * categories.DIRECTFIRE - categories.ENGINEER }},      	
+            { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 1, categories.MOBILE * categories.LAND * categories.DIRECTFIRE - categories.ENGINEER }},      	
         },
         BuilderData = {
-            SearchRadius = BaseEnemyZone,
-            LocationType = 'LocationType',
-            IncludeWater = false,
-            IgnoreFriendlyBase = true,
-            MaxPathDistance = BaseEnemyZone, 
-            FindHighestThreat = false,			
-            MaxThreatThreshold = 3000,		
-            MinThreatThreshold = 1000,		    
+            MarkerType = 'Mass',            
+            MoveFirst = 'Random',
+            MoveNext = 'Threat',
+            ThreatType = 'Economy',			    -- Type of threat to use for gauging attacks
+            FindHighestThreat = true,			-- Don't find high threat targets
+            MaxThreatThreshold = 3900,			-- If threat is higher than this, do not attack
+            MinThreatThreshold = 1000,			-- If threat is lower than this, do not attack
             AvoidBases = true,
             AvoidBasesRadius = 150,
-            AggressiveMove = false,      
-            AvoidClosestRadius = 75,
-            UseFormation = 'None',
-            TargetSearchCategory = categories.MASSPRODUCTION - categories.COMMAND,
-            MoveToCategories = {                                                
-                categories.MASSPRODUCTION,
-                categories.ENGINEER - categories.COMMAND,
-            },
+            AggressiveMove = true,      
+            AvoidClosestRadius = 50,
+            EarlyRaid = true,
             TargetSearchPriorities = { 
-                categories.ENGINEER,
-                categories.MASSEXTRACTION,
-                categories.MASSFABRICATION, 
-                categories.ENERGYPRODUCTION,
+                categories.MOBILE * categories.LAND
             },
             PrioritizedCategories = {   
                 categories.ENGINEER,
                 categories.MASSEXTRACTION,
                 categories.ENERGYPRODUCTION,
-                categories.MASSFABRICATION,
+                categories.ENERGYSTORAGE,
+                categories.MOBILE * categories.LAND,
+                categories.STRUCTURE * categories.DEFENSE,
+                categories.STRUCTURE,
             },
         },    
     },
@@ -854,35 +848,29 @@ BuilderGroup {
             { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 2, categories.MOBILE * categories.LAND * categories.DIRECTFIRE - categories.ENGINEER } },
         },
         BuilderData = {
-            SearchRadius = BaseEnemyZone,
-            LocationType = 'LocationType',
             IncludeWater = false,
             IgnoreFriendlyBase = true,
-            MaxPathDistance = BaseEnemyZone, 
-            FindHighestThreat = false,			
-            MaxThreatThreshold = 6000,		
-            MinThreatThreshold = 1000,		    
+            LocationType = 'LocationType',
+            MaxPathDistance = BaseEnemyZone, -- custom property to set max distance before a transport will be requested only used by GuardMarker plan
+            FindHighestThreat = true,			-- Don't find high threat targets
+            MaxThreatThreshold = 6900,			-- If threat is higher than this, do not attack
+            MinThreatThreshold = 1000,		    -- If threat is lower than this, do not attack
             AvoidBases = true,
-            AvoidBasesRadius = 150,
+            AvoidBasesRadius = 135,
             AggressiveMove = false,      
-            AvoidClosestRadius = 125,
-            UseFormation = 'None',
-            TargetSearchCategory = categories.MASSPRODUCTION - categories.COMMAND,
-            MoveToCategories = {                                                
-                categories.MASSPRODUCTION,
-                categories.ENGINEER - categories.COMMAND,
-            },
+            AvoidClosestRadius = 10,
+            UseFormation = 'NoFormation',
             TargetSearchPriorities = { 
-                categories.ENGINEER,
-                categories.MASSEXTRACTION,
-                categories.MASSFABRICATION, 
-                categories.ENERGYPRODUCTION,
+                categories.MOBILE * categories.LAND
             },
-            PrioritizedCategories = {   
+            PrioritizedCategories = {  
                 categories.ENGINEER,
                 categories.MASSEXTRACTION,
                 categories.ENERGYPRODUCTION,
-                categories.MASSFABRICATION,
+                categories.ENERGYSTORAGE, 
+                categories.MOBILE * categories.LAND,
+                categories.STRUCTURE * categories.DEFENSE,
+                categories.STRUCTURE,
             },
         },
     },
@@ -894,7 +882,7 @@ BuilderGroup {
 
         Priority = 652,                                     
 
-        InstanceCount = 1,                            
+        InstanceCount = 2,                            
 
         BuilderType = 'Any',
 
@@ -912,35 +900,29 @@ BuilderGroup {
             { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 2, categories.MOBILE * categories.LAND * categories.DIRECTFIRE - categories.ENGINEER } },
         },
         BuilderData = {
-            SearchRadius = BaseEnemyZone,
-            LocationType = 'LocationType',
             IncludeWater = false,
             IgnoreFriendlyBase = true,
-            MaxPathDistance = BaseEnemyZone, 
-            FindHighestThreat = false,			
-            MaxThreatThreshold = 6000,		
-            MinThreatThreshold = 1000,		    
+            LocationType = 'LocationType',
+            MaxPathDistance = BaseEnemyZone, -- custom property to set max distance before a transport will be requested only used by GuardMarker plan
+            FindHighestThreat = true,			-- Don't find high threat targets
+            MaxThreatThreshold = 8900,			-- If threat is higher than this, do not attack
+            MinThreatThreshold = 1000,		    -- If threat is lower than this, do not attack
             AvoidBases = true,
-            AvoidBasesRadius = 150,
+            AvoidBasesRadius = 120,
             AggressiveMove = false,      
-            AvoidClosestRadius = 125,
-            UseFormation = 'None',
-            TargetSearchCategory = categories.MASSPRODUCTION - categories.COMMAND,
-            MoveToCategories = {                                                
-                categories.MASSPRODUCTION,
-                categories.ENGINEER - categories.COMMAND,
-            },
+            AvoidClosestRadius = 10,
+            UseFormation = 'NoFormation',
             TargetSearchPriorities = { 
-                categories.ENGINEER,
-                categories.MASSEXTRACTION,
-                categories.MASSFABRICATION, 
-                categories.ENERGYPRODUCTION,
+                categories.MOBILE * categories.LAND
             },
-            PrioritizedCategories = {   
+            PrioritizedCategories = {  
                 categories.ENGINEER,
                 categories.MASSEXTRACTION,
                 categories.ENERGYPRODUCTION,
-                categories.MASSFABRICATION,
+                categories.ENERGYSTORAGE, 
+                categories.MOBILE * categories.LAND,
+                categories.STRUCTURE * categories.DEFENSE,
+                categories.STRUCTURE,
             },
         },
     },

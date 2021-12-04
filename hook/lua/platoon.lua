@@ -1,5 +1,6 @@
 WARN('['..string.gsub(debug.getinfo(1).source, ".*\\(.*.lua)", "%1")..', line:'..debug.getinfo(1).currentline..'] * AI-Swarm: offset platoon.lua' )
 
+local BasePanicZone, BaseMilitaryZone, BaseEnemyZone = import('/mods/AI-Swarm/lua/AI/swarmutilities.lua').GetDangerZoneRadii(true)
 local SwarmUtils = import('/mods/AI-Swarm/lua/AI/Swarmutilities.lua')
 local MABC = import('/lua/editor/MarkerBuildConditions.lua')
 local ALLBPS = __blueprints
@@ -5211,10 +5212,10 @@ Platoon = Class(SwarmPlatoonClass) {
                                 end
                             end
                             self:Stop()
-                            local merged = self:MergeWithNearbyPlatoonsSwarm('HuntAIPATHSwarm', 60, 25)
+                            local merged = self:MergeWithNearbyPlatoonsSwarm('HuntAIPATHSwarm', 40, 30)
                             if merged then
-                                self:SetPlatoonFormationOverride('AttackFormation')
-                                SWARMWAIT(40)
+                                self:SetPlatoonFormationOverride('GrowthFormation') -- GrowthFormation is more organic and less impactful
+                                SWARMWAIT(20)
                                 --LOG('HuntAIPath merge and formation completed')
                                 self:SetPlatoonFormationOverride('NoFormation')
                                 continue
@@ -5243,7 +5244,7 @@ Platoon = Class(SwarmPlatoonClass) {
                             local retreatPos = SwarmUtils.lerpy(platoonPos, targetPosition, {50, 1})
                             self:MoveToLocation(retreatPos, false)
                             --LOG('Target is ACU retreating')
-                            WaitTicks(30)
+                            SWARMWAIT(30)
                             continue
                         end
                     end
@@ -5276,7 +5277,7 @@ Platoon = Class(SwarmPlatoonClass) {
                                 if attackUnitCount > 0 then
                                     while attackUnits[guardedUnit].Dead or attackUnits[guardedUnit]:BeenDestroyed() do
                                         guardedUnit = guardedUnit + 1
-                                        WaitTicks(3)
+                                        SWARMWAIT(3)
                                         if guardedUnit > attackUnitCount then
                                             guardedUnit = false
                                             break
@@ -5375,8 +5376,8 @@ Platoon = Class(SwarmPlatoonClass) {
                                                 end
                                                 unitPos = unit:GetPosition()
                                                 alpha = SWARMATAN2 (targetPosition[3] - unitPos[3] ,targetPosition[1] - unitPos[1])
-                                                x = targetPosition[1] - math.cos(alpha) * (unit.MaxWeaponRange - rangeModifier or MaxPlatoonWeaponRange)
-                                                y = targetPosition[3] - math.sin(alpha) * (unit.MaxWeaponRange - rangeModifier or MaxPlatoonWeaponRange)
+                                                x = targetPosition[1] - SWARMCOS(alpha) * (unit.MaxWeaponRange - rangeModifier or MaxPlatoonWeaponRange)
+                                                y = targetPosition[3] - SWARMSIN(alpha) * (unit.MaxWeaponRange - rangeModifier or MaxPlatoonWeaponRange)
                                                 smartPos = { x, GetTerrainHeight( x, y), y }
                                                 -- check if the move position is new or target has moved
                                                 if VDist2( smartPos[1], smartPos[3], unit.smartPos[1], unit.smartPos[3] ) > 0.7 or unit.TargetPos ~= targetPosition then
@@ -5480,8 +5481,7 @@ Platoon = Class(SwarmPlatoonClass) {
         local aiBrain = self:GetBrain()
         --LOG('Platoon ID is : '..self:GetPlatoonUniqueName())
         local platLoc = GetPlatoonPosition(self)
-
-        if not aiBrain:PlatoonExists(self) or not platLoc then
+        if not PlatoonExists(aiBrain, self) or not platLoc then
             return
         end
 
@@ -5518,14 +5518,150 @@ Platoon = Class(SwarmPlatoonClass) {
 
         local maxPathDistance = self.PlatoonData.MaxPathDistance or 200
 
+        self.MassMarkerTable = self.planData.MassMarkerTable or false
+        self.LoopCount = self.planData.LoopCount or 0
+
         -----------------------------------------------------------------------
         local markerLocations
+        self.enemyRadius = 40
+        local MaxPlatoonWeaponRange
+        local scoutUnit = false
+        local atkPri = {}
+        local categoryList = {}
+        local platoonThreat 
+        local VDist2Sq = VDist2Sq
+        local function VariableKite(platoon,unit,target)
+            local function KiteDist(pos1,pos2,distance)
+                local vec={}
+                local dist=VDist3(pos1,pos2)
+                for i,k in pos2 do
+                    if type(k)~='number' then continue end
+                    vec[i]=k+distance/dist*(pos1[i]-k)
+                end
+                return vec
+            end
+            local function CheckRetreat(pos1,pos2,target)
+                local vel = {}
+                vel[1], vel[2], vel[3]=target:GetVelocity()
+                --LOG('vel is '..repr(vel))
+                --LOG(repr(pos1))
+                --LOG(repr(pos2))
+                local dotp=0
+                for i,k in pos2 do
+                    if type(k)~='number' then continue end
+                    dotp=dotp+(pos1[i]-k)*vel[i]
+                end
+                return dotp<0
+            end
+            if target.Dead then return end
+            if unit.Dead then return end
+                
+            local pos=unit:GetPosition()
+            local tpos=target:GetPosition()
+            local dest
+            local mod=3
+            if CheckRetreat(pos,tpos,target) then
+                mod=8
+            end
+            if unit.MaxWeaponRange then
+                dest=KiteDist(pos,tpos,unit.MaxWeaponRange-SWARMRANDOM(1,3)-mod)
+            else
+                dest=KiteDist(pos,tpos,self.MaxWeaponRange+5-SWARMRANDOM(1,3)-mod)
+            end
+            if VDist3Sq(pos,dest)>6 then
+                IssueMove({unit},dest)
+                SWARMWAIT(20)
+                return
+            else
+                SWARMWAIT(20)
+                return
+            end
+        end
 
         AIAttackUtils.GetMostRestrictiveLayer(self)
         self:SetPlatoonFormationOverride(PlatoonFormation)
-        
+        local stageExpansion = false
+        local platoonUnits = GetPlatoonUnits(self)
+        local platoonThreat = self:CalculatePlatoonThreat('AntiSurface', categories.ALLUNITS)
+        if platoonUnits > 0 then
+            for k, v in platoonUnits do
+                if not v.Dead then
+                    if EntityCategoryContains(categories.SCOUT, v) then
+                        self.ScoutPresent = true
+                        self.scoutUnit = v
+                    end
+                    for _, weapon in ALLBPS[v.UnitId].Weapon or {} do
+                        -- unit can have MaxWeaponRange entry from the last platoon
+                        if not v.MaxWeaponRange or weapon.MaxRadius > v.MaxWeaponRange then
+                            -- save the weaponrange 
+                            v.MaxWeaponRange = weapon.MaxRadius * 0.9 -- maxrange minus 10%
+                            -- save the weapon balistic arc, we need this later to check if terrain is blocking the weapon line of sight
+                            if weapon.BallisticArc == 'RULEUBA_LowArc' then
+                                v.WeaponArc = 'low'
+                            elseif weapon.BallisticArc == 'RULEUBA_HighArc' then
+                                v.WeaponArc = 'high'
+                            else
+                                v.WeaponArc = 'none'
+                            end
+                        end
+                        if not MaxPlatoonWeaponRange or MaxPlatoonWeaponRange < v.MaxWeaponRange then
+                            MaxPlatoonWeaponRange = v.MaxWeaponRange
+                        end
+                    end
+                    if v:TestToggleCaps('RULEUTC_StealthToggle') then
+                        v:SetScriptBit('RULEUTC_StealthToggle', false)
+                    end
+                    if v:TestToggleCaps('RULEUTC_CloakToggle') then
+                        v:SetScriptBit('RULEUTC_CloakToggle', false)
+                    end
+                    -- prevent units from reclaiming while attack moving
+                    v:RemoveCommandCap('RULEUCC_Reclaim')
+                    v:RemoveCommandCap('RULEUCC_Repair')
+                    v.smartPos = {0,0,0}
+                    if not v.MaxWeaponRange then
+                        --WARN('Scanning: unit ['..repr(v.UnitId)..'] has no MaxWeaponRange - '..repr(self.BuilderName))
+                    end
+                end
+            end
+        end
+
+        if self.PlatoonData.TargetSearchPriorities then
+            --LOG('TargetSearch present for '..self.BuilderName)
+            for k,v in self.PlatoonData.TargetSearchPriorities do
+                SWARMINSERT(atkPri, v)
+            end
+        else
+            if self.PlatoonData.PrioritizedCategories then
+                for k,v in self.PlatoonData.PrioritizedCategories do
+                    SWARMINSERT(atkPri, v)
+                end
+            end
+        end
+        if self.PlatoonData.PrioritizedCategories then
+            for k,v in self.PlatoonData.PrioritizedCategories do
+                SWARMINSERT(categoryList, v)
+            end
+        end
+        self:SetPrioritizedTargetList('Attack', categoryList)
+        self.atkPri = atkPri
+
+        if self.MovementLayer == 'Land' and not self.PlatoonData.EarlyRaid then
+            local stageExpansion = SwarmUtils.QueryExpansionTableSwarm(aiBrain, platLoc, SWARMMIN(BaseMilitaryZone, 250), self.MovementLayer, 10)
+            if stageExpansion then
+                --LOG('Stage Position key returned for '..stageExpansion.Key..' Name is '..stageExpansion.Expansion.Name)
+                platLoc = GetPlatoonPosition(self) or nil
+                local path, reason = AIAttackUtils.PlatoonGenerateSafePathToSwarm(aiBrain, self.MovementLayer, platLoc, stageExpansion.Expansion.Position, 10 , maxPathDistance)
+                if path then
+                    --LOG('Found path to expansion, moving to position')
+                    self:PlatoonMoveWithMicroSwarm(aiBrain, path, false)
+                    aiBrain.ExpansionWatchTableSwarm[stageExpansion.Key].TimeStamp = GetGameTimeSeconds()
+                    --LOG('Arrived at expansion, set timestamp to '..aiBrain.ExpansionWatchTableSwarm[stageExpansion.Key].TimeStamp)
+                end
+                platLoc = GetPlatoonPosition(self)
+            end
+        end
+
         markerLocations = SwarmUtils.AIGetMassMarkerLocations(aiBrain, includeWater, waterOnly)
-        
         local bestMarker = false
 
         if not self.LastMarker then
@@ -5544,27 +5680,25 @@ Platoon = Class(SwarmPlatoonClass) {
         end
 
         local bestDistSq = 99999999
-
-        if aiBrain:GetCurrentEnemy() then
-           enemyIndex = aiBrain:GetCurrentEnemy():GetArmyIndex()
-            --LOG('Enemy Index is '..enemyIndex)
-        end
         -- find best threat at the closest distance
         for _,marker in markerLocations do
             local markerThreat
             local enemyThreat
-            markerThreat = aiBrain:GetThreatAtPosition(marker.Position, 0, true, 'Economy', enemyIndex)
-            enemyThreat = aiBrain:GetThreatAtPosition(marker.Position, 1, true, 'AntiSurface', enemyIndex)
+            markerThreat = GetThreatAtPosition(aiBrain, marker.Position, aiBrain.IMAPConfigSwarm.Rings, true, 'Economy')
+            if self.MovementLayer == 'Water' then
+                enemyThreat = GetThreatAtPosition(aiBrain, marker.Position, aiBrain.IMAPConfigSwarm.Rings + 1, true, 'AntiSub')
+            else
+                enemyThreat = GetThreatAtPosition(aiBrain, marker.Position, aiBrain.IMAPConfigSwarm.Rings + 1, true, 'AntiSurface')
+            end
             --LOG('Best pre calculation marker threat is '..markerThreat..' at position'..repr(marker.Position))
             --LOG('Surface Threat at marker is '..enemyThreat..' at position'..repr(marker.Position))
-            if enemyThreat > 1 and markerThreat then
+            if enemyThreat > 0 and markerThreat then
                 markerThreat = markerThreat / enemyThreat
             end
-            --LOG('Best marker threat is '..markerThreat..' at position'..repr(marker.Position))
             local distSq = VDist2Sq(marker.Position[1], marker.Position[3], platLoc[1], platLoc[3])
 
             if markerThreat >= minThreatThreshold and markerThreat <= maxThreatThreshold then
-                if self:AvoidsBases(marker.Position, bAvoidBases, avoidBasesRadius) then
+                if self:AvoidsBases(marker.Position, bAvoidBases, avoidBasesRadius) and distSq > (avoidClosestRadius * avoidClosestRadius) then
                     if self.IsBetterThreat(bFindHighestThreat, markerThreat, bestMarkerThreat) then
                         bestDistSq = distSq
                         bestMarker = marker
@@ -5579,33 +5713,85 @@ Platoon = Class(SwarmPlatoonClass) {
                 end
             end
         end
-
-        --LOG('* AI-SWARM: Best Marker Selected is at position'..repr(bestMarker.Position))
-        
-        if bestMarker.Position == nil and SWARMTIME() > 900 then
-            --LOG('Best Marker position was nil and game time greater than 15 mins, switch to HuntAIPATHSwarm AI')
-            return self:HuntAIPATHSwarm()
-        elseif bestMarker.Position == nil then
-            --LOG('Best Marker position was nil, select random')
-            if SWARMGETN(markerLocations) <= 2 then
-                self.LastMarker[1] = nil
-                self.LastMarker[2] = nil
+        --[[
+        if waterOnly then
+            if bestMarker then
+                LOG('Water based best marker is  '..repr(bestMarker))
+                LOG('Best marker threat is '..bestMarkerThreat)
+            else
+                LOG('Water based no best marker')
             end
-            for _,marker in RandomIter(markerLocations) do
-                if SWARMGETN(markerLocations) <= 2 then
+        end]]
+
+        --LOG('* AI-Swarm: Best Marker Selected is at position'..repr(bestMarker.Position))
+        
+        if bestMarker.Position == nil and GetGameTimeSeconds() > 600 and self.MovementLayer ~= 'Water' then
+            --LOG('Best Marker position was nil and game time greater than 15 mins, switch to hunt ai')
+            return self:SetAIPlan('HuntAIPATHSwarm')
+        elseif bestMarker.Position == nil then
+            
+            
+            if SWARMGETN(aiBrain.ExpansionWatchTableSwarm) > 0  and (not self.EarlyRaidSet) then
+                for k, v in aiBrain.ExpansionWatchTableSwarm do
+                    local distSq = VDist2Sq(v.Position[1], v.Position[3], platLoc[1], platLoc[3])
+                    if distSq > (avoidClosestRadius * avoidClosestRadius) and AIAttackUtils.CanGraphToSwarm(platLoc, v.Position, self.MovementLayer) then
+                        if not v.PlatoonAssigned then
+                            bestMarker = v
+                            aiBrain.ExpansionWatchTableSwarm[k].PlatoonAssigned = self
+                            --LOG('Expansion Best marker selected is index '..k..' at '..repr(bestMarker.Position))
+                            break
+                        end
+                    else
+                        --LOG('Cant Graph to expansion marker location')
+                    end
+                    --LOG('Distance to marker '..k..' is '..VDist2(v.Position[1],v.Position[3],platLoc[1], platLoc[3]))
+                end
+            end
+            if self.PlatoonData.EarlyRaid then
+                self.EarlyRaidSet = true
+            end
+            if not bestMarker then
+                --LOG('Best Marker position was nil, select random')
+                if not self.MassMarkerTable then
+                    self.MassMarkerTable = markerLocations
+                else
+                    --LOG('Found old marker table, using that')
+                end
+                if SWARMGETN(self.MassMarkerTable) <= 2 then
                     self.LastMarker[1] = nil
-                     self.LastMarker[2] = nil
+                    self.LastMarker[2] = nil
                 end
-                if self:AvoidsBases(marker.Position, bAvoidBases, avoidBasesRadius) then
-                    if self.LastMarker[1] and marker.Position[1] == self.LastMarker[1][1] and marker.Position[3] == self.LastMarker[1][3] then
-                        continue
+                local startX, startZ = aiBrain:GetArmyStartPos()
+
+                SWARMSORT(self.MassMarkerTable,function(a,b) return VDist2Sq(a.Position[1], a.Position[3],startX, startZ) / (VDist2Sq(a.Position[1], a.Position[3], platLoc[1], platLoc[3]) + SwarmUtils.EdgeDistance(a.Position[1],a.Position[3],ScenarioInfo.size[1])) > VDist2Sq(b.Position[1], b.Position[3], startX, startZ) / (VDist2Sq(b.Position[1], b.Position[3], platLoc[1], platLoc[3]) + SwarmUtils.EdgeDistance(b.Position[1],b.Position[3],ScenarioInfo.size[1])) end)
+                --LOG('Sorted table '..repr(markerLocations))
+                --LOG('Marker table is before loop is '..SWARMGETN(self.MassMarkerTable))
+
+                for k,marker in self.MassMarkerTable do
+                    if SWARMGETN(self.MassMarkerTable) <= 2 then
+                        self.LastMarker[1] = nil
+                        self.LastMarker[2] = nil
+                        self.MassMarkerTable = false
+                        return self:SetAIPlan('ReturnToBaseAISwarm')
                     end
-                    if self.LastMarker[2] and marker.Position[1] == self.LastMarker[2][1] and marker.Position[3] == self.LastMarker[2][3] then
-                        continue
+                    local distSq = VDist2Sq(marker.Position[1], marker.Position[3], platLoc[1], platLoc[3])
+                    if self:AvoidsBases(marker.Position, bAvoidBases, avoidBasesRadius) and distSq > (avoidClosestRadius * avoidClosestRadius) then
+                        if self.LastMarker[1] and marker.Position[1] == self.LastMarker[1][1] and marker.Position[3] == self.LastMarker[1][3] then
+                            continue
+                        end
+                        if self.LastMarker[2] and marker.Position[1] == self.LastMarker[2][1] and marker.Position[3] == self.LastMarker[2][3] then
+                            continue
+                        end
+
+                        bestMarker = marker
+                        --LOG('Delete Marker '..repr(marker))
+                        SWARMREMOVE(self.MassMarkerTable, k)
+                        break
                     end
-                    bestMarker = marker
-                    break
                 end
+                SWARMWAIT(2)
+                --LOG('Marker table is after loop is '..SWARMGETN(self.MassMarkerTable))
+                --LOG('bestMarker is '..repr(bestMarker))
             end
         end
 
@@ -5614,85 +5800,61 @@ Platoon = Class(SwarmPlatoonClass) {
         if bestMarker then
             self.LastMarker[2] = self.LastMarker[1]
             self.LastMarker[1] = bestMarker.Position
-
-            --LOG("GuardMarker: Attacking " .. bestMarker.Name)
-            local path, reason = AIAttackUtils.PlatoonGenerateSafePathTo(aiBrain, self.MovementLayer, GetPlatoonPosition(self), bestMarker.Position, 100 , maxPathDistance)
+            --LOG("MassRaid: Attacking " .. bestMarker.Name)
+            local path, reason = AIAttackUtils.PlatoonGenerateSafePathToSwarm(aiBrain, self.MovementLayer, GetPlatoonPosition(self), bestMarker.Position, 10 , maxPathDistance)
             local success, bestGoalPos = AIAttackUtils.CheckPlatoonPathingEx(self, bestMarker.Position)
             IssueClearCommands(GetPlatoonUnits(self))
             if path then
-
-                self:MergeWithNearbyPlatoonsSwarm('MassRaidSwarm', 40, 15)
-
-                SWARMWAIT(5)
-
-                local position = GetPlatoonPosition(self)
-                if not success or VDist2(position[1], position[3], bestMarker.Position[1], bestMarker.Position[3]) > 512 then
+                
+                platLoc = GetPlatoonPosition(self)
+                if not success or VDist2Sq(platLoc[1], platLoc[3], bestMarker.Position[1], bestMarker.Position[3]) > 262144 then
                     usedTransports = AIAttackUtils.SendPlatoonWithTransportsNoCheckSwarm(aiBrain, self, bestMarker.Position, true)
-                elseif VDist2(position[1], position[3], bestMarker.Position[1], bestMarker.Position[3]) > 256 then
+                elseif VDist2Sq(platLoc[1], platLoc[3], bestMarker.Position[1], bestMarker.Position[3]) > 65536 and (not self.PlatoonData.EarlyRaid) then
                     usedTransports = AIAttackUtils.SendPlatoonWithTransportsNoCheckSwarm(aiBrain, self, bestMarker.Position, false)
                 end
                 if not usedTransports then
-                    local pathLength = SWARMGETN(path)
-                    for i=1, pathLength - 1 do
-                        --LOG('* AI-SWARM: * MassRaidSWARM: moving to destination. i: '..i..' coords '..repr(path[i]))
-                        if bAggroMove then
-                            self:AggressiveMoveToLocation(path[i])
-                        else
-                            self:MoveToLocation(path[i], false)
-                        end
-                        --LOG('* AI-SWARM: * MassRaidSWARM: moving to Waypoint')
-                        local PlatoonPosition
-                        local Lastdist
-                        local dist
-                        local Stuck = 0
-                        while aiBrain:PlatoonExists(self) do
-                            PlatoonPosition = GetPlatoonPosition(self) or nil
-                            if not PlatoonPosition then break end
-                            dist = VDist2Sq(path[i][1], path[i][3], PlatoonPosition[1], PlatoonPosition[3])
-                            -- are we closer then 15 units from the next marker ? Then break and move to the next marker
-                            if dist < 400 then
-                                -- If we don't stop the movement here, then we have heavy traffic on this Map marker with blocking units
-                                self:Stop()
-                                break
-                            end
-                            -- Do we move ?
-                            if Lastdist ~= dist then
-                                Stuck = 0
-                                Lastdist = dist
-                            -- No, we are not moving, wait 100 ticks then break and use the next weaypoint
-                            else
-                                Stuck = Stuck + 1
-                                if Stuck > 15 then
-                                    --LOG('* AI-SWARM: * MassRaidSWARM: Stucked while moving to Waypoint. Stuck='..Stuck..' - '..repr(path[i]))
-                                    self:Stop()
-                                    break
-                                end
-                            end
-                            SWARMWAIT(15)
-                        end
-                    end
+                    self:PlatoonMoveWithMicroSwarm(aiBrain, path, self.PlatoonData.Avoid)
                 end
             elseif (not path and reason == 'NoPath') then
-                --LOG('Guardmarker requesting transports')
-                local foundTransport = AIAttackUtils.SendPlatoonWithTransportsNoCheckSwarm(aiBrain, self, bestMarker.Position, true)
+                --LOG('MassRaid requesting transports')
+                if not self.PlatoonData.EarlyRaid then
+                    usedTransports = AIAttackUtils.SendPlatoonWithTransportsNoCheckSwarm(aiBrain, self, bestMarker.Position, true)
+                end
                 --DUNCAN - if we need a transport and we cant get one the disband
-                if not foundTransport then
-                    --LOG('Guardmarker no transports')
-                    self:PlatoonDisband()
-                    return
+                if not usedTransports then
+                    --LOG('MASSRAID no transports')
+                    if self.MassMarkerTable then
+                        if self.LoopCount > 15 then
+                            --LOG('Loop count greater than 15, return to base')
+                            return self:SetAIPlan('ReturnToBaseAISwarm')
+                        end
+                        local data = {}
+                        data.MassMarkerTable = self.MassMarkerTable
+                        self.LoopCount = self.LoopCount + 1
+                        data.LoopCount = self.LoopCount
+                        --LOG('No path and no transports to location, setting table data and restarting')
+                        return self:SetAIPlan('MassRaidSwarm', nil, data)
+                    end
+                    --LOG('No path and no transports to location, return to base')
+                    return self:SetAIPlan('ReturnToBaseAISwarm')
                 end
                 --LOG('Guardmarker found transports')
             else
-                self:PlatoonDisband()
-                return
+                --LOG('Path error in MASSRAID')
+                return self:SetAIPlan('ReturnToBaseAISwarm')
             end
 
             if (not path or not success) and not usedTransports then
-                self:PlatoonDisband()
-                return
+                --LOG('not path or not success or not usedTransports MASSRAID')
+                return self:SetAIPlan('ReturnToBaseAISwarm')
             end
-
-            self:AggressiveMoveToLocation(bestMarker.Position)
+            
+            platLoc = GetPlatoonPosition(self)
+            if aiBrain:CheckBlockingTerrain(platLoc, bestMarker.Position, 'none') then
+                self:MoveToLocation(bestMarker.Position, false)
+            else
+                self:AggressiveMoveToLocation(bestMarker.Position)
+            end
 
             -- wait till we get there
             local oldPlatPos = GetPlatoonPosition(self)
@@ -5707,28 +5869,470 @@ Platoon = Class(SwarmPlatoonClass) {
                 end
                 if StuckCount > 5 then
                     --LOG('MassRaidAI stuck count over 5, restarting')
-                    return self:MassRaidSwarm()
+                    return self:SetAIPlan('MassRaidSwarm')
                 end
                 oldPlatPos = platLoc
-            until VDist2Sq(platLoc[1], platLoc[3], bestMarker.Position[1], bestMarker.Position[3]) < 64 or not aiBrain:PlatoonExists(self)
+            until VDist2Sq(platLoc[1], platLoc[3], bestMarker.Position[1], bestMarker.Position[3]) < 64 or not PlatoonExists(aiBrain, self)
 
             -- we're there... wait here until we're done
-            local numGround = aiBrain:GetNumUnitsAroundPoint((categories.ENGINEER + categories.STRUCTURE), bestMarker.Position, 35, 'Enemy')
-            while numGround > 0 and aiBrain:PlatoonExists(self) do
-                SWARMWAIT(30)
+            local numGround = GetNumUnitsAroundPoint(aiBrain, (categories.LAND + categories.NAVAL + categories.STRUCTURE), bestMarker.Position, 15, 'Enemy')
+            while numGround > 0 and PlatoonExists(aiBrain, self) do
+                local target, acuInRange = AIUtils.AIFindBrainTargetInCloseRangeSwarm(aiBrain, self, GetPlatoonPosition(self), 'Attack', 20, (categories.LAND + categories.NAVAL + categories.STRUCTURE), self.atkPri, false)
+                --LOG('At mass marker and checking for enemy units/structures')
+                platLoc = GetPlatoonPosition(self)
+                platoonThreat = self:CalculatePlatoonThreat('AntiSurface', categories.ALLUNITS)
+                local target, acuInRange, acuUnit, totalThreat = AIUtils.AIFindBrainTargetInCloseRangeSwarm(aiBrain, self, platLoc, 'Attack', 20, (categories.LAND + categories.NAVAL + categories.STRUCTURE), self.atkPri, false)
+                local attackSquad = self:GetSquadUnits('Attack')
+                --LOG('Mass raid at position platoonThreat is '..platoonThreat..' Enemy threat is '..totalThreat)
+                if platoonThreat < totalThreat then
+                    local alternatePos = false
+                    local mergePlatoon = false
+                    local targetPos = target:GetPosition()
+                    --LOG('Attempt to run away from high threat')
+                    self:Stop()
+                    self:MoveToLocation(SwarmUtils.AvoidLocation(platLoc,targetPos,50), false)
+                    SWARMWAIT(40)
+                    platLoc = GetPlatoonPosition(self)
+                    local massPoints = GetUnitsAroundPoint(aiBrain, categories.MASSEXTRACTION, platLoc, 120, 'Enemy')
+                    if massPoints then
+                        --LOG('Try to run to masspoint')
+                        local massPointPos
+                        for _, v in massPoints do
+                            if not v.Dead then
+                                massPointPos = v:GetPosition()
+                                if VDist2Sq(massPointPos[1], massPointPos[2],platLoc[1], platLoc[3]) < VDist2Sq(massPointPos[1], massPointPos[2],targetPos[1], targetPos[3]) then
+                                    --LOG('Found a masspoint to run to')
+                                    alternatePos = massPointPos
+                                end
+                            end
+                        end
+                    end
+                    if alternatePos then
+                        --LOG('Moving to masspoint alternative at '..repr(alternatePos))
+                        self:MoveToLocation(alternatePos, false)
+                    else
+                        --LOG('No close masspoint try to find platoon to merge with')
+                        mergePlatoon, alternatePos = self:GetClosestPlatoonSwarm('MassRaidSwarm')
+                        if alternatePos then
+                            self:MoveToLocation(alternatePos, false)
+                        end
+                    end
+                    if alternatePos then
+                        local Lastdist
+                        local dist
+                        local Stuck = 0
+                        while PlatoonExists(aiBrain, self) do
+                            --LOG('Moving to alternate position')
+                            --LOG('We are '..VDist3(PlatoonPosition, alternatePos)..' from alternate position')
+                            SWARMWAIT(10)
+                            if mergePlatoon and PlatoonExists(aiBrain, mergePlatoon) then
+                                --LOG('MergeWith Platoon position updated')
+                                alternatePos = GetPlatoonPosition(mergePlatoon)
+                            end
+                            self:MoveToLocation(alternatePos, false)
+                            platLoc = GetPlatoonPosition(self)
+                            dist = VDist2Sq(alternatePos[1], alternatePos[3], platLoc[1], platLoc[3])
+                            if dist < 225 then
+                                self:Stop()
+                                if mergePlatoon and PlatoonExists(aiBrain, mergePlatoon) then
+                                    self:MergeWithNearbyPlatoonsSwarm('MassRaidSwarm', 50, 30)
+                                end
+                                --LOG('Arrived at either masspoint or friendly massraid')
+                                break
+                            end
+                            if Lastdist ~= dist then
+                                Stuck = 0
+                                Lastdist = dist
+                            else
+                                Stuck = Stuck + 1
+                                if Stuck > 15 then
+                                    self:Stop()
+                                    break
+                                end
+                            end
+                            SWARMWAIT(30)
+                            --LOG('End of movement loop we are '..VDist3(PlatoonPosition, alternatePos)..' from alternate position')
+                        end
+                    end
+                end
+                IssueClearCommands(attackSquad)
+                while PlatoonExists(aiBrain, self) do
+                    if target and not target.Dead then
+                        local targetPosition = target:GetPosition()
+                        local microCap = 50
+                        for _, unit in attackSquad do
+                            microCap = microCap - 1
+                            if microCap <= 0 then break end
+                            if unit.Dead then continue end
+                            if not unit.MaxWeaponRange then
+                                continue
+                            end
+                            IssueClearCommands({unit})
+                            VariableKite(self,unit,target)
+                        end
+                    else
+                        break
+                    end
+                    SWARMWAIT(10)
+                end
+                SWARMWAIT(Random(40,80))
                 --LOG('Still enemy stuff around marker position')
-                numGround = aiBrain:GetNumUnitsAroundPoint((categories.ENGINEER + categories.STRUCTURE), bestMarker.Position, 35, 'Enemy')
+                numGround = GetNumUnitsAroundPoint(aiBrain, (categories.LAND + categories.NAVAL + categories.STRUCTURE), bestMarker.Position, 15, 'Enemy')
             end
 
-            if not aiBrain:PlatoonExists(self) then
+            if not PlatoonExists(aiBrain, self) then
                 return
             end
             --LOG('MassRaidAI restarting')
+            self:Stop()
+            self:MergeWithNearbyPlatoonsSwarm('MassRaidSwarm', 60, 20)
+            self:SetPlatoonFormationOverride('NoFormation')
+            --LOG('MassRaid Merge attempted, restarting raid')
+            if not self.RestartCount then
+                self.RestartCount = 1
+            else
+                self.RestartCount = self.RestartCount + 1
+            end
+            if self.RestartCount > 50 then
+                return self:SetAIPlan('HuntAIPATHSwarm')
+            end
             return self:MassRaidSwarm()
         else
             -- no marker found, disband!
-            self:PlatoonDisband()
+            --LOG('no marker found, disband MASSRAID')
+            self:SetPlatoonFormationOverride('NoFormation')
+            return self:SetAIPlan('HuntAIPATHSwarm')
         end
+    end,
+
+    PlatoonMoveWithMicroSwarm = function(self, aiBrain, path, avoid)
+        -- I've tried to split out the platoon movement function as its getting too messy and hard to maintain
+        -- I agree with Mr. Relly
+
+        local function VariableKite(platoon,unit,target)
+            local function KiteDist(pos1,pos2,distance)
+                local vec={}
+                local dist=VDist3(pos1,pos2)
+                for i,k in pos2 do
+                    if type(k)~='number' then continue end
+                    vec[i]=k+distance/dist*(pos1[i]-k)
+                end
+                return vec
+            end
+            local function CheckRetreat(pos1,pos2,target)
+                local vel = {}
+                vel[1], vel[2], vel[3]=target:GetVelocity()
+                --LOG('vel is '..repr(vel))
+                --LOG(repr(pos1))
+                --LOG(repr(pos2))
+                local dotp=0
+                for i,k in pos2 do
+                    if type(k)~='number' then continue end
+                    dotp=dotp+(pos1[i]-k)*vel[i]
+                end
+                return dotp<0
+            end
+            if target.Dead then return end
+            if unit.Dead then return end
+                
+            local pos=unit:GetPosition()
+            local tpos=target:GetPosition()
+            local dest
+            local mod=3
+            if CheckRetreat(pos,tpos,target) then
+                mod=8
+            end
+            if unit.MaxWeaponRange then
+                dest=KiteDist(pos,tpos,unit.MaxWeaponRange-SWARMRANDOM(1,3)-mod)
+            else
+                dest=KiteDist(pos,tpos,self.MaxWeaponRange+5-SWARMRANDOM(1,3)-mod)
+            end
+            if VDist3Sq(pos,dest)>6 then
+                IssueMove({unit},dest)
+                SWARMWAIT(20)
+                return
+            else
+                SWARMWAIT(20)
+                return
+            end
+        end
+
+        local pathLength = SWARMGETN(path)
+        local platoonThreat
+        for i=1, pathLength - 1 do
+            --LOG('* AI-Swarm: * MassRaidSwarm: moving to destination. i: '..i..' coords '..repr(path[i]))
+            if self.PlatoonData.AggressiveMove then
+                self:AggressiveMoveToLocation(path[i])
+            else
+                self:MoveToLocation(path[i], false)
+            end
+            --LOG('* AI-Swarm: * MassRaidSwarm: moving to Waypoint')
+            local PlatoonPosition
+            local Lastdist
+            local dist
+            local Stuck = 0
+            while PlatoonExists(aiBrain, self) do
+                PlatoonPosition = GetPlatoonPosition(self) or nil
+                if not PlatoonPosition then break end
+                if self.scoutUnit and (not self.scoutUnit.Dead) then
+                    IssueClearCommands({self.scoutUnit})
+                    IssueMove({self.scoutUnit}, PlatoonPosition)
+                end
+                dist = VDist2Sq(path[i][1], path[i][3], PlatoonPosition[1], PlatoonPosition[3])
+                -- are we closer then 15 units from the next marker ? Then break and move to the next marker
+                if dist < 400 then
+                    -- If we don't stop the movement here, then we have heavy traffic on this Map marker with blocking units
+                    self:Stop()
+                    break
+                end
+                -- Do we move ?
+                if Lastdist ~= dist then
+                    Stuck = 0
+                    Lastdist = dist
+                -- No, we are not moving, wait 100 ticks then break and use the next weaypoint
+                else
+                    Stuck = Stuck + 1
+                    if Stuck > 15 then
+                        --LOG('* AI-Swarm: * MassRaidSwarm: Stucked while moving to Waypoint. Stuck='..Stuck..' - '..repr(path[i]))
+                        self:Stop()
+                        break
+                    end
+                end
+                local enemyUnitCount = GetNumUnitsAroundPoint(aiBrain, categories.MOBILE * categories.LAND - categories.SCOUT - categories.ENGINEER, PlatoonPosition, self.enemyRadius, 'Enemy')
+                if enemyUnitCount > 0 then
+                    local attackSquad = self:GetSquadUnits('Attack')
+                    -- local target = self:FindClosestUnit('Attack', 'Enemy', true, categories.ALLUNITS - categories.NAVAL - categories.AIR - categories.SCOUT - categories.WALL)
+                    platoonThreat = self:CalculatePlatoonThreat('AntiSurface', categories.ALLUNITS)
+                    local target, acuInRange, acuUnit, totalThreat = AIUtils.AIFindBrainTargetInCloseRangeSwarm(aiBrain, self, PlatoonPosition, 'Attack', self.enemyRadius, categories.ALLUNITS - categories.NAVAL - categories.AIR - categories.SCOUT - categories.WALL, self.atkPri, false)
+                    if acuInRange then
+                        target = false
+                        --LOG('ACU is in close range, we could avoid or do some other stuff')
+                        if platoonThreat < 25 then
+                            local alternatePos = false
+                            local mergePlatoon = false
+                            local acuPos = acuUnit:GetPosition()
+                            --LOG('Attempt to run away from acu')
+                            --LOG('we are now '..VDist3(PlatoonPosition, acuUnit:GetPosition())..' from acu')
+                            self:Stop()
+                            self:MoveToLocation(SwarmUtils.AvoidLocation(PlatoonPosition,acuPos,40), false)
+                            SWARMWAIT(40)
+                            PlatoonPosition = GetPlatoonPosition(self)
+                            --LOG('after move wait we are now '..VDist3(PlatoonPosition, acuUnit:GetPosition())..' from acu')
+                            local massPoints = GetUnitsAroundPoint(aiBrain, categories.MASSEXTRACTION, PlatoonPosition, 120, 'Enemy')
+                            if massPoints then
+                                --LOG('Try to run to masspoint')
+                                local massPointPos
+                                for _, v in massPoints do
+                                    if not v.Dead then
+                                        massPointPos = v:GetPosition()
+                                        if VDist2Sq(massPointPos[1], massPointPos[2],PlatoonPosition[1], PlatoonPosition[3]) < VDist2Sq(massPointPos[1], massPointPos[2],acuPos[1], acuPos[3]) then
+                                            --LOG('Found a masspoint to run to')
+                                            alternatePos = massPointPos
+                                        end
+                                    end
+                                end
+                            end
+                            if not alternatePos then
+                                mergePlatoon, alternatePos = self:GetClosestPlatoonSwarm('MassRaidSwarm')
+                            end
+                            if alternatePos then
+                                while PlatoonExists(aiBrain, self) do
+                                    --LOG('Moving to alternate position')
+                                    --LOG('We are '..VDist3(PlatoonPosition, alternatePos)..' from alternate position')
+                                    SWARMWAIT(10)
+                                    if mergePlatoon and PlatoonExists(aiBrain, mergePlatoon) then
+                                        --LOG('MergeWith Platoon position updated')
+                                        alternatePos = GetPlatoonPosition(mergePlatoon)
+                                    end
+                                    self:MoveToLocation(alternatePos, false)
+                                    PlatoonPosition = GetPlatoonPosition(self)
+                                    dist = VDist2Sq(alternatePos[1], alternatePos[3], PlatoonPosition[1], PlatoonPosition[3])
+                                    if dist < 225 then
+                                        self:Stop()
+                                        if mergePlatoon and PlatoonExists(aiBrain, mergePlatoon) then
+                                            self:MergeWithNearbyPlatoonsSwarm('MassRaidSwarm', 50, 20)
+                                        end
+                                        --LOG('Arrived at either masspoint or friendly massraid')
+                                        break
+                                    end
+                                    if Lastdist ~= dist then
+                                        Stuck = 0
+                                        Lastdist = dist
+                                    else
+                                        Stuck = Stuck + 1
+                                        if Stuck > 15 then
+                                            self:Stop()
+                                            break
+                                        end
+                                    end
+                                    SWARMWAIT(30)
+                                    --LOG('End of movement loop we are '..VDist3(PlatoonPosition, alternatePos)..' from alternate position')
+                                end
+                            end
+                        end
+                    end
+                    if avoid then
+                        --LOG('We should be avoiding this unit if its threat is higher than ours')
+                    end
+                    --LOG('MoveWithMicro - platoon threat '..platoonThreat.. ' Enemy Threat '..totalThreat)
+                    if avoid and totalThreat > platoonThreat then
+                        --LOG('MoveWithMicro - Threat too high are we are in avoid mode')
+                        local alternatePos = false
+                        local mergePlatoon = false
+                        if target and not target.Dead then
+                            local unitPos = target:GetPosition() 
+                            --LOG('Attempt to run away from unit')
+                            --LOG('before run away we are  '..VDist3(PlatoonPosition, target:GetPosition())..' from enemy')
+                            self:Stop()
+                            self:MoveToLocation(AIUtils.AvoidLocation(PlatoonPosition,unitPos,40), false)
+                            SWARMWAIT(40)
+                            PlatoonPosition = GetPlatoonPosition(self)
+                            --LOG('we are now '..VDist3(PlatoonPosition, target:GetPosition())..' from enemy')
+                            local massPoints = GetUnitsAroundPoint(aiBrain, categories.MASSEXTRACTION, PlatoonPosition, 120, 'Enemy')
+                            if massPoints then
+                                --LOG('Try to run to masspoint')
+                                local massPointPos
+                                for _, v in massPoints do
+                                    if not v.Dead then
+                                        massPointPos = v:GetPosition()
+                                        if VDist2Sq(massPointPos[1], massPointPos[2],PlatoonPosition[1], PlatoonPosition[3]) < VDist2Sq(massPointPos[1], massPointPos[2],unitPos[1], unitPos[3]) then
+                                            --LOG('Found a masspoint to run to')
+                                            alternatePos = massPointPos
+                                        end
+                                    end
+                                end
+                            end
+                            if not alternatePos then
+                                --LOG('MoveWithMicro - No masspoint, look for closest platoon of massraidrng to run to')
+                                mergePlatoon, alternatePos = self:GetClosestPlatoonSwarm('MassRaidSwarm')
+                            end
+                            if alternatePos then
+                                --LOG('MoveWithMicro - We found either an extractor or platoon')
+                                self:MoveToLocation(alternatePos, false)
+                                while PlatoonExists(aiBrain, self) do
+                                    --LOG('Moving to alternate position')
+                                    --LOG('We are '..VDist3(PlatoonPosition, alternatePos)..' from alternate position')
+                                    SWARMWAIT(10)
+                                    if mergePlatoon and PlatoonExists(aiBrain, mergePlatoon) then
+                                        --LOG('MergeWith Platoon position updated')
+                                        alternatePos = GetPlatoonPosition(mergePlatoon)
+                                    end
+                                    self:MoveToLocation(alternatePos, false)
+                                    PlatoonPosition = GetPlatoonPosition(self)
+                                    dist = VDist2Sq(alternatePos[1], alternatePos[3], PlatoonPosition[1], PlatoonPosition[3])
+                                    if dist < 400 then
+                                        self:Stop()
+                                        if mergePlatoon and PlatoonExists(aiBrain, mergePlatoon) then
+                                            self:MergeWithNearbyPlatoonsSwarm('MassRaidSwarm', 50, 20)
+                                        end
+                                        --LOG('Arrived at either masspoint or friendly massraid')
+                                        break
+                                    end
+                                    if Lastdist ~= dist then
+                                        Stuck = 0
+                                        Lastdist = dist
+                                    else
+                                        Stuck = Stuck + 1
+                                        if Stuck > 15 then
+                                            self:Stop()
+                                            break
+                                        end
+                                    end
+                                    SWARMWAIT(20)
+                                    --LOG('End of movement loop we are '..VDist3(PlatoonPosition, alternatePos)..' from alternate position')
+                                end
+                            end
+                        end
+                    end
+                    self:Stop()
+                    while PlatoonExists(aiBrain, self) do
+                        if target and not target.Dead then
+                            local targetPosition = target:GetPosition()
+                            attackSquad = self:GetSquadUnits('Attack')
+                            local microCap = 50
+                            for _, unit in attackSquad do
+                                microCap = microCap - 1
+                                if microCap <= 0 then break end
+                                if unit.Dead then continue end
+                                if not unit.MaxWeaponRange then
+                                    continue
+                                end
+                                IssueClearCommands({unit})
+                                VariableKite(self,unit,target)
+                            end
+                        else
+                            self:MoveToLocation(path[i], false)
+                            break
+                        end
+                        SWARMWAIT(10)
+                    end
+                end
+                SWARMWAIT(15)
+            end
+        end
+    end,
+
+    GetClosestPlatoonSwarm = function(self, planName)
+        local aiBrain = self:GetBrain()
+        if not aiBrain then
+            return
+        end
+        if self.UsingTransport then
+            return
+        end
+        local platPos = GetPlatoonPosition(self)
+        if not platPos then
+            return
+        end
+        local closestPlatoon = false
+        local closestDistance = 62,500
+        local closestAPlatPos = false
+        --LOG('Getting list of allied platoons close by')
+        AlliedPlatoons = aiBrain:GetPlatoonsList()
+        for _,aPlat in AlliedPlatoons do
+            if aPlat.PlanName != planName then
+                continue
+            end
+            if aPlat == self then
+                continue
+            end
+
+            if aPlat.UsingTransport then
+                continue
+            end
+
+            if aPlat.PlatoonFull then
+                --LOG('Remote platoon is full, skip')
+                continue
+            end
+            if not self.MovementLayer then
+                AIAttackUtils.GetMostRestrictiveLayer(self)
+            end
+            if not aPlat.MovementLayer then
+                AIAttackUtils.GetMostRestrictiveLayer(aPlat)
+            end
+
+            -- make sure we're the same movement layer type to avoid hamstringing air of amphibious
+            if self.MovementLayer != aPlat.MovementLayer then
+                continue
+            end
+            local aPlatPos = GetPlatoonPosition(aPlat)
+            local aPlatDistance = VDist2Sq(platPos[1],platPos[3],aPlatPos[1],aPlatPos[3])
+            if aPlatDistance < closestDistance then
+                closestPlatoon = aPlat
+                closestDistance = aPlatDistance
+                closestAPlatPos = aPlatPos
+            end
+        end
+        if closestPlatoon then
+            --LOG('Found platoon checking if can graph')
+            if AIAttackUtils.CanGraphToSwarm(platPos,closestAPlatPos,self.MovementLayer) then
+                --LOG('Can graph to platoon, returning platoon and platoon location')
+                return closestPlatoon, closestAPlatPos
+            end
+        end
+        --LOG('No platoon found within 250 units')
+        return false, false
     end,
 
     DistressResponseAISwarm = function(self)
@@ -5805,7 +6409,7 @@ Platoon = Class(SwarmPlatoonClass) {
                 local threat = GetThreatAtPosition(aiBrain, pos, aiBrain.IMAPConfigSwarm.Rings, true, 'Land')
                 --LOG('Threat at Extractor :'..threat)
                 if threat and threat > 1 then
-                    --LOG('*RNGAI Mass Extractor Platoon Calling for help with '..threat.. ' threat')
+                    --LOG('*SwarmAI Mass Extractor Platoon Calling for help with '..threat.. ' threat')
                     aiBrain:BaseMonitorPlatoonDistressSwarm(self, threat)
                     self.DistressCall = true
                     aiBrain:AddScoutArea(pos)

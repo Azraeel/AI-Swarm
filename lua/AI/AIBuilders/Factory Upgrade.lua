@@ -24,7 +24,7 @@ local MaxCapStructure = 0.12
 -- ==                             Upgrade Factories Land/Air/Sea                                             == --
 -- ===================================================-======================================================== --
 
-BuilderGroup { BuilderGroupName = 'Swarm Factory Upgrader Rush',                     
+--[[ BuilderGroup { BuilderGroupName = 'Swarm Factory Upgrader Rush',                     
     BuildersType = 'PlatoonFormBuilder',
 
     Builder { BuilderName = 'S1 L UP HQ 1->2 1st Eco',
@@ -618,5 +618,5 @@ BuilderGroup {
             { UCBC, 'HaveLessThanUnitsInCategoryBeingUpgradeSwarm', { 2, categories.STRUCTURE * categories.FACTORY * categories.NAVAL * categories.TECH2 }},
         },
         BuilderType = 'Any',
-    }, 
-} 
+    },
+} ]]--

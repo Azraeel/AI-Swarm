@@ -9,24 +9,21 @@ EngineerManager = Class(SwarmEngineerManager) {
         end
         if EntityCategoryContains(categories.FACTORY * categories.STRUCTURE, finishedUnit) and finishedUnit:GetAIBrain():GetArmyIndex() == self.Brain:GetArmyIndex() then
             self.Brain.BuilderManagers[self.LocationType].FactoryManager:AddFactory(finishedUnit)
+            local unitBp = finishedUnit:GetBlueprint()
+			local upgradeID = unitBp.General.UpgradesTo or false
+			if upgradeID and unitBp then
+				-- if upgradeID available then launch upgrade thread
+				SwarmUtils.StructureUpgradeInitializeSwarm(finishedUnit, self.Brain)
+			end
         end
         if EntityCategoryContains(categories.MASSEXTRACTION * categories.STRUCTURE, finishedUnit) and finishedUnit:GetAIBrain():GetArmyIndex() == self.Brain:GetArmyIndex() then
-            if not self.Brain.StructurePool then
-                SwarmUtils.CheckCustomPlatoonsCustom(self.Brain)
-            end
             local unitBp = finishedUnit:GetBlueprint()
-            local StructurePool = self.Brain.StructurePool
-            --LOG('* AI-Swarm: Assigning built extractor to StructurePool')
-            self.Brain:AssignUnitsToPlatoon(StructurePool, {finishedUnit}, 'Support', 'none' )
-            --Debug log
-            local platoonUnits = StructurePool:GetPlatoonUnits()
-            --LOG('* AI-Swarm: StructurePool now has :'..table.getn(platoonUnits))
             local upgradeID = unitBp.General.UpgradesTo or false
 			if upgradeID and unitBp then
 				--LOG('* AI-Swarm: UpgradeID')
 				SwarmUtils.StructureUpgradeInitializeSwarm(finishedUnit, self.Brain)
             end
-        end
+		end
         if finishedUnit:GetAIBrain():GetArmyIndex() == self.Brain:GetArmyIndex() then
             self:AddUnit(finishedUnit)
         end

@@ -21,8 +21,8 @@ PlatoonTemplate {
     Name = 'AISwarm Mass Raid',
     Plan = 'MassRaidSwarm',    
     GlobalSquads = {
-        { categories.TECH1 * categories.LAND * categories.MOBILE * categories.DIRECTFIRE - categories.SCOUT - categories.ENGINEER, 1, 3, 'attack', 'none' },
-        --{ categories.LAND * categories.SCOUT, 0, 1, 'Guard', 'none' },
+        { categories.TECH1 * categories.LAND * categories.MOBILE * categories.DIRECTFIRE - categories.ANTIAIR - categories.SCOUT - categories.ENGINEER, 1, 3, 'attack', 'none' },
+        { categories.LAND * categories.SCOUT, 0, 1, 'Guard', 'none' },
     },
 }
 
@@ -32,7 +32,7 @@ PlatoonTemplate {
     GlobalSquads = {
         { categories.TECH1 * categories.LAND * categories.MOBILE * categories.DIRECTFIRE - categories.SCOUT - categories.ENGINEER, 3, 6, 'attack', 'none' },
         { categories.TECH1 * categories.LAND * categories.MOBILE - categories.DIRECTFIRE - categories.SCOUT - categories.ENGINEER, 0, 3, 'attack', 'none' },
-        --{ categories.LAND * categories.SCOUT, 0, 1, 'Guard', 'none' },
+        { categories.LAND * categories.SCOUT, 0, 1, 'Guard', 'none' },
     },
 }
 
@@ -42,7 +42,7 @@ PlatoonTemplate {
     GlobalSquads = {
         { categories.TECH1 * categories.LAND * categories.MOBILE * categories.DIRECTFIRE - categories.SCOUT - categories.ENGINEER, 4, 16, 'attack', 'none' },
         { categories.TECH1 * categories.LAND * categories.MOBILE - categories.DIRECTFIRE - categories.SCOUT - categories.ENGINEER, 0, 4, 'attack', 'none' },
-        --{ categories.LAND * categories.SCOUT, 0, 1, 'Guard', 'none' },
+        { categories.LAND * categories.SCOUT, 0, 1, 'Guard', 'none' },
     },
 }
 
