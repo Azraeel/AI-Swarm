@@ -22,7 +22,38 @@ local SWARMMIN = math.min
 local SWARMMAX = math.max
 local SWARMWAIT = coroutine.yield
 
--- 80% of the below was Sprouto's work
+-- Below LOCALs are for Performance and Readability in new Support Factory Compability Code
+-- See local function DecideUpgradeBP()
+
+-- LAND FACTORY
+local FACTORYLAND = categories.FACTORY * categories.STRUCTURE * categories.LAND
+-- AIR FACTORY
+local FACTORYAIR = categories.FACTORY * categories.STRUCTURE * categories.AIR
+-- NAVAL FACTORY
+local FACTORYNAVAL = categories.FACTORY * categories.STRUCTURE * categories.NAVAL
+
+-- LAND HQs
+local FLHQ2 = categories.FACTORY * categories.LAND * categories.TECH2 * categories.RESEARCH
+local FLHQ3 = categories.FACTORY * categories.LAND * categories.TECH3 * categories.RESEARCH
+-- AIR HQs
+local FAHQ2 = categories.FACTORY * categories.AIR * categories.TECH2 * categories.RESEARCH
+local FAHQ3 = categories.FACTORY * categories.AIR * categories.TECH3 * categories.RESEARCH
+-- NAVAL HQs
+local FNHQ2 = categories.FACTORY * categories.NAVAL * categories.TECH2 * categories.RESEARCH
+local FNHQ3 = categories.FACTORY * categories.NAVAL * categories.TECH3 * categories.RESEARCH
+
+-- LAND SUPPORT FACTORIES 
+local FLSF1 = categories.FACTORY * categories.STRUCTURE * categories.LAND * categories.TECH1
+local FLSF2 = categories.FACTORY * categories.STRUCTURE * categories.LAND * categories.TECH2 * categories.SUPPORTFACTORY
+-- AIR SUPPORT FACTORIES 
+local FASF1 = categories.FACTORY * categories.STRUCTURE * categories.AIR * categories.TECH1
+local FASF2 = categories.FACTORY * categories.STRUCTURE * categories.AIR * categories.TECH2 * categories.SUPPORTFACTORY
+-- NAVAL SUPPORT FACTORIES 
+local FNSF1 = categories.FACTORY * categories.STRUCTURE * categories.NAVAL * categories.TECH1
+local FNSF2 = categories.FACTORY * categories.STRUCTURE * categories.NAVAL * categories.TECH2 * categories.SUPPORTFACTORY
+
+-- 50% of the below was Sprouto's work 
+-- Also Thanks Balthazar and Sprouto for Assistance with getting Support Factories to Work
 -- With Factories included in this thread his tech pacing is so rapid that with no cheats on open palms he can have full t2 production by 12m 
 -- Still Tuning this has theres still excess eco nowadays
 function StructureUpgradeThreadSwarm(unit, aiBrain, upgradeSpec, bypasseco) 
@@ -52,13 +83,14 @@ function StructureUpgradeThreadSwarm(unit, aiBrain, upgradeSpec, bypasseco)
 
 
     -- Include ways for an HQ T2 to still upgrade to a HQ T3 + Make sure T1 Factories can upgrade to T2 Support Factories Still
+    -- Maybe Replace Unreliable GetListOfUnits with EntityCategoryCount?
     local function DecideUpgradeBP()
         --LOG("What is upgradeID at the start of DecideUpgradeBP Function " ..repr(upgradeID).. " and unit was " ..repr(unit:GetBlueprint().Description))
         if upgradeID then
             -- This is the support factory JANKING code
-            if EntityCategoryContains(categories.FACTORY * categories.STRUCTURE * categories.LAND, unit) then -- 1: UEF, 2: Aeon, 3: Cybran, 4: Seraphim, 5: Nomads
+            if EntityCategoryContains( FACTORYLAND, unit) then -- 1: UEF, 2: Aeon, 3: Cybran, 4: Seraphim, 5: Nomads
 
-                if table.getn( aiBrain:GetListOfUnits( categories.FACTORY * categories.LAND * categories.TECH2 * categories.RESEARCH, false, true )) > 0 or table.getn( aiBrain:GetListOfUnits( categories.FACTORY * categories.LAND * categories.TECH3 * categories.RESEARCH, false, true )) > 0 and EntityCategoryContains(categories.FACTORY * categories.STRUCTURE * categories.LAND * categories.TECH1, unit) then
+                if table.getn( aiBrain:GetListOfUnits( FLHQ2, false, true )) > 0 or table.getn( aiBrain:GetListOfUnits( FLHQ3, false, true )) > 0 and EntityCategoryContains( FLSF1, unit) then
                     if unitFactionIndex == 1 then
                         alternativebp = 'zeb9501'
                     elseif unitFactionIndex == 2 then
@@ -76,7 +108,7 @@ function StructureUpgradeThreadSwarm(unit, aiBrain, upgradeSpec, bypasseco)
                     if upgradebp then
                         upgradeID = alternativebp
                     end
-                elseif table.getn( aiBrain:GetListOfUnits( categories.FACTORY * categories.LAND * categories.TECH3 * categories.RESEARCH, false, true )) > 0 and EntityCategoryContains(categories.FACTORY * categories.STRUCTURE * categories.LAND * categories.TECH2 - categories.RESEARCH, unit) then
+                elseif table.getn( aiBrain:GetListOfUnits( FLHQ3, false, true )) > 0 and EntityCategoryContains( FLSF2, unit) then
                     if unitFactionIndex == 1 then
                         alternativebp = 'zeb9601'
                     elseif unitFactionIndex == 2 then
@@ -93,8 +125,8 @@ function StructureUpgradeThreadSwarm(unit, aiBrain, upgradeSpec, bypasseco)
                         upgradeID = alternativebp
                     end
                 end
-            elseif EntityCategoryContains(categories.FACTORY * categories.STRUCTURE * categories.AIR, unit) then -- 1: UEF, 2: Aeon, 3: Cybran, 4: Seraphim, 5: Nomads
-                if table.getn( aiBrain:GetListOfUnits( categories.FACTORY * categories.AIR * categories.TECH2 * categories.RESEARCH, false, true )) > 0 or table.getn( aiBrain:GetListOfUnits( categories.FACTORY * categories.AIR * categories.TECH3 * categories.RESEARCH, false, true )) > 0 and EntityCategoryContains(categories.FACTORY * categories.STRUCTURE * categories.AIR * categories.TECH1, unit) then
+            elseif EntityCategoryContains( FACTORYAIR, unit) then -- 1: UEF, 2: Aeon, 3: Cybran, 4: Seraphim, 5: Nomads
+                if table.getn( aiBrain:GetListOfUnits( FAHQ2, false, true )) > 0 or table.getn( aiBrain:GetListOfUnits( FAHQ3, false, true )) > 0 and EntityCategoryContains( FASF1, unit) then
                     if unitFactionIndex == 1 then
                         alternativebp = 'zeb9502'
                     elseif unitFactionIndex == 2 then
@@ -110,7 +142,7 @@ function StructureUpgradeThreadSwarm(unit, aiBrain, upgradeSpec, bypasseco)
                     if upgradebp then
                         upgradeID = alternativebp
                     end
-                elseif table.getn( aiBrain:GetListOfUnits( categories.FACTORY * categories.AIR * categories.TECH3 * categories.RESEARCH, false, true )) > 0 and EntityCategoryContains(categories.FACTORY * categories.STRUCTURE * categories.AIR * categories.TECH2 - categories.RESEARCH, unit) then
+                elseif table.getn( aiBrain:GetListOfUnits( FAHQ3, false, true )) > 0 and EntityCategoryContains( FASF2, unit) then
                     if unitFactionIndex == 1 then
                         alternativebp = 'zeb9602'
                     elseif unitFactionIndex == 2 then
@@ -127,8 +159,8 @@ function StructureUpgradeThreadSwarm(unit, aiBrain, upgradeSpec, bypasseco)
                         upgradeID = alternativebp
                     end
                 end
-            elseif EntityCategoryContains(categories.FACTORY * categories.STRUCTURE * categories.NAVAL, unit) then -- 1: UEF, 2: Aeon, 3: Cybran, 4: Seraphim, 5: Nomads
-                if table.getn( aiBrain:GetListOfUnits( categories.FACTORY * categories.NAVAL * categories.TECH2 * categories.RESEARCH, false, true )) > 0 or table.getn( aiBrain:GetListOfUnits( categories.FACTORY * categories.NAVAL * categories.TECH3 * categories.RESEARCH, false, true )) > 0 and EntityCategoryContains(categories.FACTORY * categories.STRUCTURE * categories.NAVAL * categories.TECH1, unit) then
+            elseif EntityCategoryContains( FACTORYNAVAL, unit) then -- 1: UEF, 2: Aeon, 3: Cybran, 4: Seraphim, 5: Nomads
+                if table.getn( aiBrain:GetListOfUnits( FNHQ2, false, true )) > 0 or table.getn( aiBrain:GetListOfUnits( FNHQ3, false, true )) > 0 and EntityCategoryContains( FNSF1, unit) then
                     if unitFactionIndex == 1 then
                         alternativebp = 'zeb9503'
                     elseif unitFactionIndex == 2 then
@@ -144,7 +176,7 @@ function StructureUpgradeThreadSwarm(unit, aiBrain, upgradeSpec, bypasseco)
                     if upgradebp then
                         upgradeID = alternativebp
                     end
-                elseif table.getn( aiBrain:GetListOfUnits( categories.FACTORY * categories.NAVAL * categories.TECH3 * categories.RESEARCH, false, true )) > 0 and EntityCategoryContains(categories.FACTORY * categories.STRUCTURE * categories.NAVAL * categories.TECH2 - categories.RESEARCH, unit) then
+                elseif table.getn( aiBrain:GetListOfUnits( FNHQ3, false, true )) > 0 and EntityCategoryContains( FNSF2, unit) then
                     if unitFactionIndex == 1 then
                         alternativebp = 'zeb9603'
                     elseif unitFactionIndex == 2 then
@@ -348,7 +380,7 @@ function StructureUpgradeThreadSwarm(unit, aiBrain, upgradeSpec, bypasseco)
 						if not unit.Dead then
 
                             upgradeIssued = true
-                            LOG("What is upgradeID " ..repr(upgradeID) .. " What Unit is upgrading " ..repr(unit:GetBlueprint().Description))
+                            --LOG("What is upgradeID " ..repr(upgradeID) .. " What Unit is upgrading " ..repr(unit:GetBlueprint().Description))
                             IssueUpgrade({unit}, upgradeID)
 
                             -- if upgrade issued and not completely full --
@@ -403,7 +435,7 @@ function StructureUpgradeThreadSwarm(unit, aiBrain, upgradeSpec, bypasseco)
     end
 
     if upgradeIssued then
-	    LOG('* AI-Swarm: upgradeIssued is true')
+	    --LOG('* AI-Swarm: upgradeIssued is true')
 
 		unit.Upgrading = true
 
