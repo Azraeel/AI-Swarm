@@ -1068,6 +1068,24 @@ function EdgeDistance(x,y,mapwidth)
     return edgeDists[1]
 end
 
+function NormalizeVector( v )
+	if v.x then
+		v = {v.x, v.y, v.z}
+    end
+    local length = math.sqrt( math.pow( v[1], 2 ) + math.pow( v[2], 2 ) + math.pow(v[3], 2 ) )
+
+    if length > 0 then
+        local invlength = 1 / length
+        return Vector( v[1] * invlength, v[2] * invlength, v[3] * invlength )
+    else
+        return Vector( 0,0,0 )
+    end
+end
+
+function GetDirectionVector( v1, v2 )
+    return NormalizeVector( Vector(v1[1] - v2[1], v1[2] - v2[2], v1[3] - v2[3]) )
+end
+
 function GetDirectionInDegrees( v1, v2 )
     local SWARMACOS = math.acos
 	local vec = GetDirectionVector( v1, v2)
