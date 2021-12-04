@@ -39,8 +39,8 @@ function StructureUpgradeThreadSwarm(unit, aiBrain, upgradeSpec, bypasseco)
     if not bypasseco then
         bypasseco = false
     end
-    local alternativebp = false
     local upgradebp = aiBrain:GetUnitBlueprint(upgradeID)
+    local alternativebp = false
     --LOG("What is upgradeID at the Start " ..repr(upgradeID))
 
     local unitType, unitTech, unitFactionIndex = StructureTypeCheck(aiBrain, unitBp)
@@ -50,12 +50,12 @@ function StructureUpgradeThreadSwarm(unit, aiBrain, upgradeSpec, bypasseco)
 
 
     local function DecideUpgradeBP()
-        LOG("What is upgradeID at the start of DecideUpgradeBP Function " ..repr(upgradeID).. " and unit was " ..repr(unit:GetBlueprint().Description))
+        --LOG("What is upgradeID at the start of DecideUpgradeBP Function " ..repr(upgradeID).. " and unit was " ..repr(unit:GetBlueprint().Description))
         if upgradeID then
             -- This is the support factory JANKING code
             if EntityCategoryContains(categories.FACTORY * categories.STRUCTURE * categories.LAND, unit) then -- 1: UEF, 2: Aeon, 3: Cybran, 4: Seraphim, 5: Nomads
 
-                if aiBrain:GetListOfUnits( categories.FACTORY * categories.LAND * categories.TECH2 * categories.RESEARCH, false, true ) > 0 then
+                if table.getn( aiBrain:GetListOfUnits( categories.FACTORY * categories.LAND * categories.TECH2 * categories.RESEARCH, false, true )) > 0 then
                     if unitFactionIndex == '1' then
                         alternativebp = 'zeb9501'
                     elseif unitFactionIndex == '2' then
@@ -65,14 +65,15 @@ function StructureUpgradeThreadSwarm(unit, aiBrain, upgradeSpec, bypasseco)
                     elseif unitFactionIndex == '4' then
                         alternativebp = 'zsb9501'
                     end
-                    --LOG("What is alternativebp " ..repr(alternativebp))
+                    LOG("What is unitFactionIndex " ..repr(unitFactionIndex))
+                    LOG("What is alternativebp " ..repr(alternativebp))
                     if alternativebp then
                         upgradebp = aiBrain:GetUnitBlueprint(alternativebp)
                     end
                     if upgradebp then
-                        alternativebp = upgradeID
+                        upgradeID = alternativebp
                     end
-                elseif aiBrain:GetListOfUnits( categories.FACTORY * categories.LAND * categories.TECH3 * categories.RESEARCH, false, true ) > 0 then
+                elseif table.getn( aiBrain:GetListOfUnits( categories.FACTORY * categories.LAND * categories.TECH3 * categories.RESEARCH, false, true )) > 0 then
                     if unitFactionIndex == '1' then
                         alternativebp = 'zeb9601'
                     elseif unitFactionIndex == '2' then
@@ -86,11 +87,11 @@ function StructureUpgradeThreadSwarm(unit, aiBrain, upgradeSpec, bypasseco)
                         upgradebp = aiBrain:GetUnitBlueprint(alternativebp)
                     end
                     if upgradebp then
-                        alternativebp = upgradeID
+                        upgradeID = alternativebp
                     end
                 end
             elseif EntityCategoryContains(categories.FACTORY * categories.STRUCTURE * categories.AIR, unit) then -- 1: UEF, 2: Aeon, 3: Cybran, 4: Seraphim, 5: Nomads
-                if aiBrain:GetListOfUnits( categories.FACTORY * categories.AIR * categories.TECH2 * categories.RESEARCH, false, true ) > 0 then
+                if table.getn( aiBrain:GetListOfUnits( categories.FACTORY * categories.AIR * categories.TECH2 * categories.RESEARCH, false, true )) > 0 then
                     if unitFactionIndex == '1' then
                         alternativebp = 'zeb9502'
                     elseif unitFactionIndex == '2' then
@@ -104,9 +105,9 @@ function StructureUpgradeThreadSwarm(unit, aiBrain, upgradeSpec, bypasseco)
                         upgradebp = aiBrain:GetUnitBlueprint(alternativebp)
                     end
                     if upgradebp then
-                        alternativebp = upgradeID
+                        upgradeID = alternativebp
                     end
-                elseif aiBrain:GetListOfUnits( categories.FACTORY * categories.AIR * categories.TECH3 * categories.RESEARCH, false, true ) > 0 then
+                elseif table.getn( aiBrain:GetListOfUnits( categories.FACTORY * categories.AIR * categories.TECH3 * categories.RESEARCH, false, true )) > 0 then
                     if unitFactionIndex == '1' then
                         alternativebp = 'zeb9602'
                     elseif unitFactionIndex == '2' then
@@ -120,11 +121,11 @@ function StructureUpgradeThreadSwarm(unit, aiBrain, upgradeSpec, bypasseco)
                         upgradebp = aiBrain:GetUnitBlueprint(alternativebp)
                     end
                     if upgradebp then
-                        alternativebp = upgradeID
+                        upgradeID = alternativebp
                     end
                 end
             elseif EntityCategoryContains(categories.FACTORY * categories.STRUCTURE * categories.NAVAL, unit) then -- 1: UEF, 2: Aeon, 3: Cybran, 4: Seraphim, 5: Nomads
-                if aiBrain:GetListOfUnits( categories.FACTORY * categories.NAVAL * categories.TECH2 * categories.RESEARCH, false, true ) > 0 then
+                if table.getn( aiBrain:GetListOfUnits( categories.FACTORY * categories.NAVAL * categories.TECH2 * categories.RESEARCH, false, true )) > 0 then
                     if unitFactionIndex == '1' then
                         alternativebp = 'zeb9503'
                     elseif unitFactionIndex == '2' then
@@ -138,9 +139,9 @@ function StructureUpgradeThreadSwarm(unit, aiBrain, upgradeSpec, bypasseco)
                         upgradebp = aiBrain:GetUnitBlueprint(alternativebp)
                     end
                     if upgradebp then
-                        alternativebp = upgradeID
+                        upgradeID = alternativebp
                     end
-                elseif aiBrain:GetListOfUnits( categories.FACTORY * categories.NAVAL * categories.TECH3 * categories.RESEARCH, false, true ) > 0 then
+                elseif table.getn( aiBrain:GetListOfUnits( categories.FACTORY * categories.NAVAL * categories.TECH3 * categories.RESEARCH, false, true )) > 0 then
                     if unitFactionIndex == '1' then
                         alternativebp = 'zeb9603'
                     elseif unitFactionIndex == '2' then
@@ -154,7 +155,7 @@ function StructureUpgradeThreadSwarm(unit, aiBrain, upgradeSpec, bypasseco)
                         upgradebp = aiBrain:GetUnitBlueprint(alternativebp)
                     end
                     if upgradebp then
-                        alternativebp = upgradeID
+                        upgradeID = alternativebp
                     end
                 end
             --LOG("What is upgradeID " ..repr(upgradebp))
@@ -235,7 +236,7 @@ function StructureUpgradeThreadSwarm(unit, aiBrain, upgradeSpec, bypasseco)
     unit.InitialDelay = nil
 
     -- Main Upgrade Loop
-    LOG("What is upgradeID before the start of the main loop " ..repr(upgradeID))
+    --LOG("What is upgradeID before the start of the main loop " ..repr(upgradeID))
     while ((not unit.Dead) or unit.Sync.id) and upgradeable and not upgradeIssued do
         --LOG('* AI-Swarm: Upgrade main loop starting for'..aiBrain.Nickname)
         SWARMWAIT(upgradeSpec.UpgradeCheckWait * 10)
