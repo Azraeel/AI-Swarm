@@ -1,6 +1,8 @@
 WARN('['..string.gsub(debug.getinfo(1).source, ".*\\(.*.lua)", "%1")..', line:'..debug.getinfo(1).currentline..'] * AI-Swarm: offset platoon.lua' )
 
 local BasePanicZone, BaseMilitaryZone, BaseEnemyZone = import('/mods/AI-Swarm/lua/AI/swarmutilities.lua').GetDangerZoneRadii(true)
+local AIAttackUtils = import('/lua/AI/aiattackutilities.lua')
+local AIUtils = import('/lua/ai/aiutilities.lua')
 local SwarmUtils = import('/mods/AI-Swarm/lua/AI/Swarmutilities.lua')
 local MABC = import('/lua/editor/MarkerBuildConditions.lua')
 local ALLBPS = __blueprints
@@ -1047,7 +1049,7 @@ Platoon = Class(SwarmPlatoonClass) {
                         BraveDEBUG['Reason'] = 'Evade to lessEnemyAreaPos'
                     else
                         ReachedBase = false
-                        smartPos = SwarmUtils.RandomizePosition(cdr.CDRHome)
+                        smartPos = SwarmUtils.RandomizePositionSwarm(cdr.CDRHome)
                         BraveDEBUG['Reason'] = 'Evade to cdr.CDRHom'
                     end
                 else
@@ -1058,7 +1060,7 @@ Platoon = Class(SwarmPlatoonClass) {
                         BraveDEBUG['Reason'] = 'dance go home'
                     elseif VDist2( cdr.position[1], cdr.position[3], NavigatorGoal[1], NavigatorGoal[3] ) <= 0.7 then
                         -- we are at home and not under attack, dance
-                        smartPos = SwarmUtils.RandomizePosition(cdr.CDRHome)
+                        smartPos = SwarmUtils.RandomizePositionSwarm(cdr.CDRHome)
                         BraveDEBUG['Reason'] = 'dance at home'
                     else
                         BraveDEBUG['Reason'] = 'dance at home Navigator'
@@ -1114,12 +1116,12 @@ Platoon = Class(SwarmPlatoonClass) {
 
             -- in case we are in range of an enemy TMl, always move to different positions
             if aiBrain.ACUChampionSwarm.EnemyTMLPos or UnderAttackSwarm then
-                smartPos = SwarmUtils.RandomizePositionTML(smartPos)
+                smartPos = SwarmUtils.RandomizePositionTMLSwarm(smartPos)
             end
             -- in case we are not moving for 4 seconds, force moving (maybe blocked line of sight)
             if not cdr:IsUnitState("Moving") then
                 if cdr.LastMoved + 4 < SWARMTIME() then
-                    smartPos = SwarmUtils.RandomizePositionTML(smartPos)
+                    smartPos = SwarmUtils.RandomizePositionTMLSwarm(smartPos)
                     cdr.LastMoved = SWARMTIME()
                 end
             else
@@ -4188,7 +4190,7 @@ Platoon = Class(SwarmPlatoonClass) {
                     end
                     --IssueStop({unit})
                     SWARMWAIT(2)
-                    IssueTeleport({unit}, SwarmUtils.RandomizePosition(TargetPosition))
+                    IssueTeleport({unit}, SwarmUtils.RandomizePositionSwarm(TargetPosition))
                 end
             end
         else
@@ -5890,7 +5892,7 @@ Platoon = Class(SwarmPlatoonClass) {
                     local targetPos = target:GetPosition()
                     --LOG('Attempt to run away from high threat')
                     self:Stop()
-                    self:MoveToLocation(SwarmUtils.AvoidLocation(platLoc,targetPos,50), false)
+                    self:MoveToLocation(SwarmUtils.AvoidLocationSwarm(platLoc,targetPos,50), false)
                     SWARMWAIT(40)
                     platLoc = GetPlatoonPosition(self)
                     local massPoints = GetUnitsAroundPoint(aiBrain, categories.MASSEXTRACTION, platLoc, 120, 'Enemy')
@@ -6114,7 +6116,7 @@ Platoon = Class(SwarmPlatoonClass) {
                             --LOG('Attempt to run away from acu')
                             --LOG('we are now '..VDist3(PlatoonPosition, acuUnit:GetPosition())..' from acu')
                             self:Stop()
-                            self:MoveToLocation(SwarmUtils.AvoidLocation(PlatoonPosition,acuPos,40), false)
+                            self:MoveToLocation(SwarmUtils.AvoidLocationSwarm(PlatoonPosition,acuPos,40), false)
                             SWARMWAIT(40)
                             PlatoonPosition = GetPlatoonPosition(self)
                             --LOG('after move wait we are now '..VDist3(PlatoonPosition, acuUnit:GetPosition())..' from acu')
@@ -6184,7 +6186,7 @@ Platoon = Class(SwarmPlatoonClass) {
                             --LOG('Attempt to run away from unit')
                             --LOG('before run away we are  '..VDist3(PlatoonPosition, target:GetPosition())..' from enemy')
                             self:Stop()
-                            self:MoveToLocation(AIUtils.AvoidLocation(PlatoonPosition,unitPos,40), false)
+                            self:MoveToLocation(SwarmUtils.AvoidLocationSwarm(PlatoonPosition,unitPos,40), false)
                             SWARMWAIT(40)
                             PlatoonPosition = GetPlatoonPosition(self)
                             --LOG('we are now '..VDist3(PlatoonPosition, target:GetPosition())..' from enemy')
