@@ -77,7 +77,7 @@ function StructureUpgradeThreadSwarm(unit, aiBrain, upgradeSpec, bypasseco)
     local alternativebp = false
     --LOG("What is upgradeID at the Start " ..repr(upgradeID))
 
-    local unitType, unitTech, unitFactionIndex = StructureTypeCheck(aiBrain, unitBp)
+    local unitType, unitTech, unitFactionIndex = StructureTypeCheckSwarm(aiBrain, unitBp)
     --LOG("What is unitFactionIndex " ..unitFactionIndex)
     --LOG("What is unitType " ..unitType)
     --LOG("What is unitTech " ..unitTech)
@@ -89,7 +89,7 @@ function StructureUpgradeThreadSwarm(unit, aiBrain, upgradeSpec, bypasseco)
             -- This is the support factory compatibility code
             if EntityCategoryContains( FACTORYLAND, unit) then -- 1: UEF, 2: Aeon, 3: Cybran, 4: Seraphim, 5: Nomads
 
-                if table.getn( aiBrain:GetListOfUnits( FLHQ2, false, true )) > 0 or table.getn( aiBrain:GetListOfUnits( FLHQ3, false, true )) > 0 and EntityCategoryContains( FLSF1, unit) then
+                if table.getn( GetListOfUnits(aiBrain, FLHQ2, false, true )) > 0 or table.getn( GetListOfUnits(aiBrain, FLHQ3, false, true )) > 0 and EntityCategoryContains( FLSF1, unit) then
                     if unitFactionIndex == 1 then
                         alternativebp = 'zeb9501'
                     elseif unitFactionIndex == 2 then
@@ -107,7 +107,7 @@ function StructureUpgradeThreadSwarm(unit, aiBrain, upgradeSpec, bypasseco)
                     if upgradebp then
                         upgradeID = alternativebp
                     end
-                elseif table.getn( aiBrain:GetListOfUnits( FLHQ3, false, true )) > 0 and EntityCategoryContains( FLSF2, unit) then
+                elseif table.getn( GetListOfUnits(aiBrain, FLHQ3, false, true )) > 0 and EntityCategoryContains( FLSF2, unit) then
                     if unitFactionIndex == 1 then
                         alternativebp = 'zeb9601'
                     elseif unitFactionIndex == 2 then
@@ -125,7 +125,7 @@ function StructureUpgradeThreadSwarm(unit, aiBrain, upgradeSpec, bypasseco)
                     end
                 end
             elseif EntityCategoryContains( FACTORYAIR, unit) then -- 1: UEF, 2: Aeon, 3: Cybran, 4: Seraphim, 5: Nomads
-                if table.getn( aiBrain:GetListOfUnits( FAHQ2, false, true )) > 0 or table.getn( aiBrain:GetListOfUnits( FAHQ3, false, true )) > 0 and EntityCategoryContains( FASF1, unit) then
+                if table.getn( GetListOfUnits(aiBrain, FAHQ2, false, true )) > 0 or table.getn( GetListOfUnits(aiBrain, FAHQ3, false, true )) > 0 and EntityCategoryContains( FASF1, unit) then
                     if unitFactionIndex == 1 then
                         alternativebp = 'zeb9502'
                     elseif unitFactionIndex == 2 then
@@ -141,7 +141,7 @@ function StructureUpgradeThreadSwarm(unit, aiBrain, upgradeSpec, bypasseco)
                     if upgradebp then
                         upgradeID = alternativebp
                     end
-                elseif table.getn( aiBrain:GetListOfUnits( FAHQ3, false, true )) > 0 and EntityCategoryContains( FASF2, unit) then
+                elseif table.getn( GetListOfUnits(aiBrain, FAHQ3, false, true )) > 0 and EntityCategoryContains( FASF2, unit) then
                     if unitFactionIndex == 1 then
                         alternativebp = 'zeb9602'
                     elseif unitFactionIndex == 2 then
@@ -159,7 +159,7 @@ function StructureUpgradeThreadSwarm(unit, aiBrain, upgradeSpec, bypasseco)
                     end
                 end
             elseif EntityCategoryContains( FACTORYNAVAL, unit) then -- 1: UEF, 2: Aeon, 3: Cybran, 4: Seraphim, 5: Nomads
-                if table.getn( aiBrain:GetListOfUnits( FNHQ2, false, true )) > 0 or table.getn( aiBrain:GetListOfUnits( FNHQ3, false, true )) > 0 and EntityCategoryContains( FNSF1, unit) then
+                if table.getn( GetListOfUnits(aiBrain, FNHQ2, false, true )) > 0 or table.getn( GetListOfUnits(aiBrain, FNHQ3, false, true )) > 0 and EntityCategoryContains( FNSF1, unit) then
                     if unitFactionIndex == 1 then
                         alternativebp = 'zeb9503'
                     elseif unitFactionIndex == 2 then
@@ -175,7 +175,7 @@ function StructureUpgradeThreadSwarm(unit, aiBrain, upgradeSpec, bypasseco)
                     if upgradebp then
                         upgradeID = alternativebp
                     end
-                elseif table.getn( aiBrain:GetListOfUnits( FNHQ3, false, true )) > 0 and EntityCategoryContains( FNSF2, unit) then
+                elseif table.getn( GetListOfUnits(aiBrain, FNHQ3, false, true )) > 0 and EntityCategoryContains( FNSF2, unit) then
                     if unitFactionIndex == 1 then
                         alternativebp = 'zeb9603'
                     elseif unitFactionIndex == 2 then
@@ -239,7 +239,7 @@ function StructureUpgradeThreadSwarm(unit, aiBrain, upgradeSpec, bypasseco)
     local ecoTimeOut
     local upgradeNumLimit
     local extractorUpgradeLimit = 0
-    local extractorClosest = false
+    local extractorClosestSwarm = false
     local multiplier
     local initial_delay = 0
     local ecoStartTime = GetGameTimeSeconds()
@@ -289,7 +289,7 @@ function StructureUpgradeThreadSwarm(unit, aiBrain, upgradeSpec, bypasseco)
         --    bypasseco = true
         --end
         if bypasseco and not (GetEconomyStored( aiBrain, 'MASS') > ( massNeeded * 1.6 ) and aiBrain.EconomyOverTimeCurrent.MassEfficiencyOverTime < 1.0 ) then
-            upgradeNumLimit = StructureUpgradeNumDelay(aiBrain, unitType, unitTech)
+            upgradeNumLimit = StructureUpgradeNumDelaySwarm(aiBrain, unitType, unitTech)
             if unitTech == 'TECH1' then
                 extractorUpgradeLimit = aiBrain.EcoManager.ExtractorUpgradeLimit.TECH1
             elseif unitTech == 'TECH2' then
@@ -305,9 +305,9 @@ function StructureUpgradeThreadSwarm(unit, aiBrain, upgradeSpec, bypasseco)
 
 
 
-        extractorClosest = ExtractorClosest(aiBrain, unit, unitBp)
-        if not extractorClosest then
-            --LOG('ExtractorClosest is false')
+        extractorClosestSwarm = ExtractorClosestSwarm(aiBrain, unit, unitBp)
+        if not extractorClosestSwarm then
+            --LOG('ExtractorClosestSwarm is false')
             SWARMWAIT(10)
             continue
         end
@@ -386,9 +386,9 @@ function StructureUpgradeThreadSwarm(unit, aiBrain, upgradeSpec, bypasseco)
 
                             -- if upgrade issued and not completely full --
                             if massStorageRatio < 1 or energyStorageRatio < 1 then
-                                ForkThread(StructureUpgradeDelay, aiBrain, aiBrain.UpgradeIssuedPeriod)  -- delay the next upgrade by the full amount
+                                ForkThread(StructureUpgradeDelaySwarm, aiBrain, aiBrain.UpgradeIssuedPeriod)  -- delay the next upgrade by the full amount
                             else
-                                ForkThread(StructureUpgradeDelay, aiBrain, aiBrain.UpgradeIssuedPeriod * .5)     -- otherwise halve the delay period
+                                ForkThread(StructureUpgradeDelaySwarm, aiBrain, aiBrain.UpgradeIssuedPeriod * .5)     -- otherwise halve the delay period
                             end
 
                             if ScenarioInfo.StructureUpgradeDialog then
@@ -483,7 +483,7 @@ function StructureUpgradeThreadSwarm(unit, aiBrain, upgradeSpec, bypasseco)
 	end
 end
 
-function StructureUpgradeDelay( aiBrain, delay )
+function StructureUpgradeDelaySwarm( aiBrain, delay )
 
     aiBrain.UpgradeIssued = aiBrain.UpgradeIssued + 1
     
@@ -500,7 +500,7 @@ function StructureUpgradeDelay( aiBrain, delay )
     end
 end
 
-function StructureUpgradeNumDelay(aiBrain, type, tech)
+function StructureUpgradeNumDelaySwarm(aiBrain, type, tech)
     -- Checked if a slot is available for unit upgrades
     local numLimit = false
     if type == 'MASSEXTRACTION' and tech == 'TECH1' then
@@ -516,7 +516,7 @@ function StructureUpgradeNumDelay(aiBrain, type, tech)
     return false
 end
 
-function StructureTypeCheck(aiBrain, unitBp)
+function StructureTypeCheckSwarm(aiBrain, unitBp)
     local factionIndex = aiBrain:GetFactionIndex()
     -- Returns the tech and type of a structure unit
     local unitType = false
@@ -556,10 +556,10 @@ function StructureTypeCheck(aiBrain, unitBp)
     return false, false, false
 end
 
-function ExtractorClosest(aiBrain, unit, unitBp)
+function ExtractorClosestSwarm(aiBrain, unit, unitBp)
     -- Checks if the unit is closest to the main base
     local MassExtractorFactoryUnitList = false
-    local unitType, unitTech = StructureTypeCheck(aiBrain, unitBp)
+    local unitType, unitTech, unitFactionIndex = StructureTypeCheckSwarm(aiBrain, unitBp)
     local BasePosition = aiBrain.BuilderManagers['MAIN'].Position
     local DistanceToBase = nil
     local LowestDistanceToBase = nil

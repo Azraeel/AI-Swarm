@@ -12,6 +12,8 @@ local SWARMSORT = table.sort
 local SWARMWAIT = coroutine.yield
 local SWARMFLOOR = math.floor
 local SWARMRANDOM = math.random
+local SWARMSQRT = math.sqrt
+local SWARMPOW = math.pow
 local SWARMMAX = math.max
 local SWARMMIN = math.min
 local SWARMABS = math.abs
@@ -1072,7 +1074,7 @@ function NormalizeVector( v )
 	if v.x then
 		v = {v.x, v.y, v.z}
     end
-    local length = math.sqrt( math.pow( v[1], 2 ) + math.pow( v[2], 2 ) + math.pow(v[3], 2 ) )
+    local length = SWARMSQRT( SWARMPOW( v[1], 2 ) + SWARMPOW( v[2], 2 ) + SWARMPOW(v[3], 2 ) )
 
     if length > 0 then
         local invlength = 1 / length
@@ -1098,7 +1100,7 @@ function GetDirectionInDegrees( v1, v2 )
 end
 
 -- This is softles, I was curious to see what it looked like compared to lerpy. Used in scouts avoiding enemy tanks.
-function AvoidLocation(pos,target,dist)
+function AvoidLocationSwarm(pos,target,dist)
     if not target then
         return pos
     elseif not pos then
@@ -1113,7 +1115,7 @@ function AvoidLocation(pos,target,dist)
     return {x,GetSurfaceHeight(x,z),z}
 end
 
-function RandomizePosition(position)
+function RandomizePositionSwarm(position)
     local Posx = position[1]
     local Posz = position[3]
     local X = -1
@@ -1137,7 +1139,7 @@ function RandomizePosition(position)
     return {X, Y, Z}
 end
 
-function RandomizePositionTML(position)
+function RandomizePositionTMLSwarm(position)
     local Posx = position[1]
     local Posz = position[3]
     local X = -1
