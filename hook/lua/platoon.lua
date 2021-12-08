@@ -6414,7 +6414,7 @@ Platoon = Class(SwarmPlatoonClass) {
                     --LOG('*SwarmAI Mass Extractor Platoon Calling for help with '..threat.. ' threat')
                     aiBrain:BaseMonitorPlatoonDistressSwarm(self, threat)
                     self.DistressCall = true
-                    aiBrain:AddScoutArea(pos)
+                    --aiBrain:AddScoutArea(pos) -- Weird Error must be related to how I'm creating extractorplatoon now
                 end
             end
             WaitSeconds(checkTime)

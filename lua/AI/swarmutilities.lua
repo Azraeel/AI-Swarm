@@ -1194,7 +1194,7 @@ function AirScoutPatrolSwarmAIThread(self, aiBrain)
 
    
     if not aiBrain.InterestList then
-        aiBrain:BuildScoutLocations()
+        aiBrain:BuildScoutLocationsSwarm()
     end
 
    

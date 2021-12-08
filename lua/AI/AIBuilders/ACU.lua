@@ -124,7 +124,7 @@ BuilderGroup {
         BuilderConditions = {                                                  
             { UCBC, 'GreaterThanGameTimeSeconds', { 60*3  } },
            
-            { UCBC, 'EnemyUnitsGreaterAtLocationRadiusSwarm', {  BasePanicZone, 'LocationType', 10, categories.ALLUNITS - categories.ENGINEER - categories.AIR - categories.SCOUT }}, -- radius, LocationType, unitCount, categoryEnemy
+            { UCBC, 'EnemyUnitsGreaterAtLocationRadiusSwarm', {  BasePanicZone, 'LocationType', 3, categories.ALLUNITS - categories.ENGINEER - categories.AIR - categories.SCOUT }}, -- radius, LocationType, unitCount, categoryEnemy
        
             { UCBC, 'HaveGreaterThanUnitsWithCategory', { 2, categories.STRUCTURE * categories.FACTORY * categories.LAND } },
         },
@@ -164,7 +164,7 @@ BuilderGroup {
 
             { UCBC, 'LessThanGameTimeSeconds', { 60*20 } },
          
-            { UCBC, 'EnemyUnitsGreaterAtLocationRadiusSwarm', {  BaseMilitaryZone, 'LocationType', 10, categories.ALLUNITS - categories.ENGINEER - categories.AIR - categories.SCOUT }}, -- radius, LocationType, unitCount, categoryEnemy
+            { UCBC, 'EnemyUnitsGreaterAtLocationRadiusSwarm', {  BaseMilitaryZone, 'LocationType', 6, categories.ALLUNITS - categories.ENGINEER - categories.AIR - categories.SCOUT }}, -- radius, LocationType, unitCount, categoryEnemy
 
             { UCBC, 'HaveGreaterThanUnitsWithCategory', { 3, categories.STRUCTURE * categories.FACTORY * categories.LAND } },
         },
@@ -203,7 +203,7 @@ BuilderGroup {
 
             { UCBC, 'LessThanGameTimeSeconds', { 60*20 } },
          
-            { UCBC, 'EnemyUnitsGreaterAtLocationRadiusSwarm', {  BaseEnemyZone, 'LocationType', 20, categories.ALLUNITS - categories.ENGINEER - categories.AIR - categories.SCOUT }}, -- radius, LocationType, unitCount, categoryEnemy
+            { UCBC, 'EnemyUnitsGreaterAtLocationRadiusSwarm', {  BaseEnemyZone, 'LocationType', 12, categories.ALLUNITS - categories.ENGINEER - categories.AIR - categories.SCOUT }}, -- radius, LocationType, unitCount, categoryEnemy
 
             { UCBC, 'HaveGreaterThanUnitsWithCategory', { 4, categories.STRUCTURE * categories.FACTORY * categories.LAND } },
         },
@@ -289,10 +289,8 @@ BuilderGroup {
     Builder {
         BuilderName = 'SC Assist Hydro',
         PlatoonTemplate = 'CommanderAssistSwarm',
-        Priority = 550,
+        Priority = 655,
         BuilderConditions = {
-            { EBC, 'GreaterThanMassStorageCurrentSwarm', { 200 }},
-
             { UCBC, 'HaveGreaterThanUnitsInCategoryBeingBuiltAtLocationSwarm', { 'LocationType', 0, categories.STRUCTURE * categories.HYDROCARBON }},
         },
         BuilderType = 'Any',
@@ -302,7 +300,7 @@ BuilderGroup {
                 AssisteeType = categories.STRUCTURE,
                 AssistClosestUnit = true,   
                 AssistUntilFinished = true,
-                AssistRange = 25,
+                AssistRange = 45,
                 BeingBuiltCategories = {categories.STRUCTURE * categories.HYDROCARBON},
                 Time = 75,
             },
