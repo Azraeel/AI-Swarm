@@ -13,7 +13,6 @@ local AssignUnitsToPlatoon = moho.aibrain_methods.AssignUnitsToPlatoon
 local PlatoonExists = moho.aibrain_methods.PlatoonExists
 local GetListOfUnits = moho.aibrain_methods.GetListOfUnits
 local GetPlatoonPosition = moho.platoon_methods.GetPlatoonPosition
-local PlatoonExists = moho.aibrain_methods.PlatoonExists
 
 local SWARMGETN = table.getn
 local SWARMSORT = table.sort
@@ -52,6 +51,13 @@ local FASF2 = categories.FACTORY * categories.STRUCTURE * categories.AIR * categ
 local FNSF1 = categories.FACTORY * categories.STRUCTURE * categories.NAVAL * categories.TECH1
 local FNSF2 = categories.FACTORY * categories.STRUCTURE * categories.NAVAL * categories.TECH2 * categories.SUPPORTFACTORY
 
+function MapAdvisor(aiBrain)
+    if GetGameTimeSeconds() > 180 then
+        aiBrain:BuildScoutLocationsSwarm()
+        GetStartingReclaimSwarm(aiBrain)
+    end
+end
+
 -- 50% of the below was Sprouto's work 
 -- Also Thanks Balthazar and Sprouto for Assistance with getting Support Factories to Work
 -- With Factories included in this thread his tech pacing is so rapid that with no cheats on open palms he can have full t2 production by 12m 
@@ -59,14 +65,11 @@ local FNSF2 = categories.FACTORY * categories.STRUCTURE * categories.NAVAL * cat
 function StructureUpgradeThreadSwarm(unit, aiBrain, upgradeSpec, bypasseco) 
     --LOG('* AI-Swarm: Starting structure thread upgrade for'..aiBrain.Nickname)
 
-    GetStartingReclaimSwarm(aiBrain)
-
     local unitBp = unit:GetBlueprint()
     local upgradeID = unitBp.General.UpgradesTo or false
 
     if not upgradeID then return end
 
-    -- Sometimes Rarely massNeeded returns as a invalid and nil upval warning
     local massNeeded, energyNeeded, buildtime, buildrate, massProduction, energyProduction, massTrendNeeded, energyTrendNeeded, energyMaintenance
     local upgradeable = true
     local upgradeIssued = false
@@ -199,27 +202,29 @@ function StructureUpgradeThreadSwarm(unit, aiBrain, upgradeSpec, bypasseco)
 
     -- Eco requirements
     local function GetUpgradeEconomy()
-        --LOG("What is upgradeID " ..repr(upgradebp))
-        massNeeded = upgradebp.Economy.BuildCostMass
-        --LOG('Mass Needed '..massNeeded)
-	    energyNeeded = upgradebp.Economy.BuildCostEnergy
-        --LOG('Energy Needed '..energyNeeded)
-        buildtime = upgradebp.Economy.BuildTime
-        --LOG('Build Time is  '..buildtime)
-        buildrate = unitBp.Economy.BuildRate
-        --LOG('Build Rate is  '..buildrate)
+        if upgradebp then -- safety check
+            --LOG("What is upgradeID " ..repr(upgradebp))
+            massNeeded = upgradebp.Economy.BuildCostMass
+            --LOG('Mass Needed '..massNeeded)
+	        energyNeeded = upgradebp.Economy.BuildCostEnergy
+            --LOG('Energy Needed '..energyNeeded)
+            buildtime = upgradebp.Economy.BuildTime
+            --LOG('Build Time is  '..buildtime)
+            buildrate = unitBp.Economy.BuildRate
+            --LOG('Build Rate is  '..buildrate)
 
-        -- production while upgrading
-        massProduction = unitBp.Economy.ProductionPerSecondMass or 0
-        --LOG('Mass Production is  '..massProduction)
-        energyProduction = unitBp.Economy.ProductionPerSecondEnergy or 0
-        --LOG('Energy Production is  '..energyProduction)
+            -- production while upgrading
+            massProduction = unitBp.Economy.ProductionPerSecondMass or 0
+            --LOG('Mass Production is  '..massProduction)
+            energyProduction = unitBp.Economy.ProductionPerSecondEnergy or 0
+            --LOG('Energy Production is  '..energyProduction)
     
-        massTrendNeeded = ( SWARMMIN( 0,(massNeeded / buildtime) * buildrate) - massProduction) * .1
-        --LOG('Mass Trend Needed for '..unitTech..' Extractor :'..massTrendNeeded)
-        energyTrendNeeded = ( SWARMMIN( 0,(energyNeeded / buildtime) * buildrate) - energyProduction) * .1
-        --LOG('Energy Trend Needed for '..unitTech..' Extractor :'..energyTrendNeeded)
-        energyMaintenance = (upgradebp.Economy.MaintenanceConsumptionPerSecondEnergy or 10) * .1
+            massTrendNeeded = ( SWARMMIN( 0, ( massNeeded / buildtime ) * buildrate) - massProduction) * .1
+            --LOG('Mass Trend Needed for '..unitTech..' Unit :'..massTrendNeeded.. ' and Unit was ' ..repr(unit:GetBlueprint().Description))
+            energyTrendNeeded = ( SWARMMIN( 0, ( energyNeeded / buildtime ) * buildrate) - energyProduction) * .1
+            --LOG('Energy Trend Needed for '..unitTech..' Unit :'..energyTrendNeeded.. ' and Unit was ' ..repr(unit:GetBlueprint().Description))
+            energyMaintenance = (upgradebp.Economy.MaintenanceConsumptionPerSecondEnergy or 10) * .1
+        end
     end
 
     -- Define Economic Data
@@ -539,6 +544,9 @@ function StructureTypeCheckSwarm(aiBrain, unitBp)
         elseif v == 'TECH2' then
             --LOG('Extractor is Tech 2')
             unitTech = 'TECH2'
+        elseif v == 'TECH3' then
+            --LOG('Extractor is Tech 2')
+            unitTech = 'TECH3'
         else
             --LOG('Value not TECH1, TECH2')
         end
@@ -573,6 +581,8 @@ function ExtractorClosestSwarm(aiBrain, unit, unitBp)
         MassExtractorFactoryUnitList = GetListOfUnits(aiBrain, categories.FACTORY * (categories.TECH1), false, false)
     elseif unitType == 'FACTORY' and unitTech == 'TECH2' then
         MassExtractorFactoryUnitList = GetListOfUnits(aiBrain, categories.FACTORY * (categories.TECH2), false, false)
+    elseif unitType == 'FACTORY' and unitTech == 'TECH3' then
+        MassExtractorFactoryUnitList = GetListOfUnits(aiBrain, categories.FACTORY * (categories.TECH3), false, false)
     end
 
     for k, v in MassExtractorFactoryUnitList do

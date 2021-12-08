@@ -4386,7 +4386,7 @@ Platoon = Class(SwarmPlatoonClass) {
         local aiBrain = self:GetBrain()
 
         if not aiBrain.InterestList then
-            aiBrain:BuildScoutLocationsSwarm()
+            aiBrain:BuildScoutLocations()
         end
 
         if scout:TestToggleCaps('RULEUTC_CloakToggle') then
@@ -4518,7 +4518,7 @@ Platoon = Class(SwarmPlatoonClass) {
 
 
         if not aiBrain.InterestList then
-            aiBrain:BuildScoutLocationsSwarm()
+            aiBrain:BuildScoutLocations()
         end
 
 
@@ -6414,7 +6414,7 @@ Platoon = Class(SwarmPlatoonClass) {
                     --LOG('*SwarmAI Mass Extractor Platoon Calling for help with '..threat.. ' threat')
                     aiBrain:BaseMonitorPlatoonDistressSwarm(self, threat)
                     self.DistressCall = true
-                    aiBrain:AddScoutArea(pos)
+                    aiBrain:AddScoutArea(pos) 
                 end
             end
             WaitSeconds(checkTime)

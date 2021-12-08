@@ -1,38 +1,41 @@
 local CanBuildStructureAt = moho.aibrain_methods.CanBuildStructureAt
+local SLastGetMassMarker = 0
+local SLastCheckMassMarker = {}
+local SMassMarker = {}
+local SLastMassBOOL = false
+local SLastGetSHydroMarker = 0
+local SHydroMarker = {}
+local SLastHydroBOOL = false
 
-local LastGetMassMarker = 0
-local LastCheckMassMarker = {}
-local MassMarker = {}
-local LastMassBOOL = false
 function CanBuildOnMassDistanceSwarm(aiBrain, locationType, minDistance, maxDistance, threatMin, threatMax, threatRings, threatType, maxNum )
-    if LastGetMassMarker < GetGameTimeSeconds() then
-        LastGetMassMarker = GetGameTimeSeconds()+5
+    if SLastGetMassMarker < GetGameTimeSeconds() then
+        SLastGetMassMarker = GetGameTimeSeconds()+5
         local engineerManager = aiBrain.BuilderManagers[locationType].EngineerManager
         if not engineerManager then
             --WARN('*AI WARNING: CanBuildOnMass: Invalid location - ' .. locationType)
             return false
         end
         local position = engineerManager.Location
-        MassMarker = {}
+        SMassMarker = {}
         for _, v in Scenario.MasterChain._MASTERCHAIN_.Markers do
             if v.type == 'Mass' then
                 if v.position[1] <= 8 or v.position[1] >= ScenarioInfo.size[1] - 8 or v.position[3] <= 8 or v.position[3] >= ScenarioInfo.size[2] - 8 then
                     -- mass marker is too close to border, skip it.
                     continue
                 end 
-                table.insert(MassMarker, {Position = v.position, Distance = VDist3( v.position, position ) })
+                table.insert(SMassMarker, {Position = v.position, Distance = VDist3( v.position, position ) })
             end
         end
-        table.sort(MassMarker, function(a,b) return a.Distance < b.Distance end)
+        table.sort(SMassMarker, function(a,b) return a.Distance < b.Distance end)
     end
-    if not LastCheckMassMarker[maxDistance] or LastCheckMassMarker[maxDistance] < GetGameTimeSeconds() then
-        LastCheckMassMarker[maxDistance] = GetGameTimeSeconds()
+    if not SLastCheckMassMarker[maxDistance] or SLastCheckMassMarker[maxDistance] < GetGameTimeSeconds() then
+        SLastCheckMassMarker[maxDistance] = GetGameTimeSeconds()
         local threatCheck = false
         if threatMin and threatMax and threatRings then
             threatCheck = true
         end
-        LastMassBOOL = false
-        for _, v in MassMarker do
+        SLastMassBOOL = false
+        for _, v in SMassMarker do
             if v.Distance < minDistance then
                 continue
             elseif v.Distance > maxDistance then
@@ -47,18 +50,14 @@ function CanBuildOnMassDistanceSwarm(aiBrain, locationType, minDistance, maxDist
                     end
                 end
                 --LOG('Returning MassMarkerDistance True')
-                LastMassBOOL = true
+                SLastMassBOOL = true
                 break
             end
         end
     end
-    return LastMassBOOL
+    return SLastMassBOOL
 end
 
-local SLastGetSHydroMarker = 0
-local SHydroMarker = {}
-local SLastHydroBOOL = false
---                { MABC, 'CanBuildOnHydroSwarm', { 'LocationType', 1000, -1000, 100, 1, 'AntiSurface', 1 }},
 function CanBuildOnHydroSwarm(aiBrain, locationType, distance, threatMin, threatMax, threatRings, threatType, maxNum)
     if SLastGetSHydroMarker < GetGameTimeSeconds() then
         SLastGetSHydroMarker = GetGameTimeSeconds()+10
@@ -96,29 +95,8 @@ function CanBuildOnHydroSwarm(aiBrain, locationType, distance, threatMin, threat
     return SLastHydroBOOL
 end
 
-function CanBuildOnMassLessThanDistanceSwarm(aiBrain, locationType, distance, threatMin, threatMax, threatRings, threatType, maxNum )
-    local engineerManager = aiBrain.BuilderManagers[locationType].EngineerManager
-    if not engineerManager then
-        --WARN('*AI WARNING: Invalid location - ' .. locationType)
-        return false
-    end
-    local position = engineerManager.Location
-    
-    local markerTable = AIUtils.AIGetSortedMassLocations(aiBrain, maxNum, threatMin, threatMax, threatRings, threatType, position)
-    positionThreat = aiBrain:GetThreatAtPosition( position, threatRings, true, threatType or 'Overall' )
-    if positionThreat > threatMax then
-        --LOG('Mass Build at distance :'..distance)
-        --LOG('Threat at position :'..positionThreat)
-    end
-    if markerTable[1] and VDist3( markerTable[1], position ) < distance then
-        local dist = VDist3( markerTable[1], position )
-        return true
-    end
-    return false
-end
-
 function CanBuildOnMassEngSwarm(aiBrain, engPos, distance)
-    local MassMarker = {}
+    local SMassMarker = {}
     for _, v in Scenario.MasterChain._MASTERCHAIN_.Markers do
         if v.type == 'Mass' then
             if v.position[1] <= 8 or v.position[1] >= ScenarioInfo.size[1] - 8 or v.position[3] <= 8 or v.position[3] >= ScenarioInfo.size[2] - 8 then
@@ -128,13 +106,13 @@ function CanBuildOnMassEngSwarm(aiBrain, engPos, distance)
             local mexDistance = VDist3( v.position, engPos )
             if mexDistance < distance and CanBuildStructureAt(aiBrain, 'ueb1103', v.position) then
                 --LOG('mexDistance '..mexDistance)
-                table.insert(MassMarker, {Position = v.position, Distance = mexDistance , MassSpot = v})
+                table.insert(SMassMarker, {Position = v.position, Distance = mexDistance , MassSpot = v})
             end
         end
     end
-    table.sort(MassMarker, function(a,b) return a.Distance < b.Distance end)
-    if table.getn(MassMarker) > 0 then
-        return true, MassMarker
+    table.sort(SMassMarker, function(a,b) return a.Distance < b.Distance end)
+    if table.getn(SMassMarker) > 0 then
+        return true, SMassMarker
     else
         return false
     end

@@ -893,19 +893,18 @@ AIBrain = Class(SwarmAIBrainClass) {
             aiBrain.InterestList.MustScout = {}
 
             local myArmy = ScenarioInfo.ArmySetup[self.Name]
-            local MarkerList = AIUtils.AIGetMarkerLocations(aiBrain, 'Mass')
-
-            if MarkerList >= 1 then 
-                do
-                SWARMINSERT(aiBrain.InterestList.HighPriority,
-                    {
-                        Position = MarkerList,
-                        LastScouted = 0,
-                    }
-                )
+            if aiBrain.ExpansionWatchTableSwarm then
+                for _, v in aiBrain.ExpansionWatchTableSwarm do
+                    -- Add any expansion table locations to the must scout table
+                    --LOG('Expansion of type '..v.Type..' found, seeting scout location')
+                    SWARMINSERT(aiBrain.InterestList.MustScout, 
+                        {
+                            Position = v.Position,
+                            LastScouted = 0,
+                        }
+                    )
                 end
             end
-                
             if ScenarioInfo.Options.TeamSpawn == 'fixed' then
                 -- Spawn locations were fixed. We know exactly where our opponents are.
                 -- Don't scout areas owned by us or our allies.
