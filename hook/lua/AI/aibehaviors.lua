@@ -51,14 +51,19 @@ local FASF2 = categories.FACTORY * categories.STRUCTURE * categories.AIR * categ
 local FNSF1 = categories.FACTORY * categories.STRUCTURE * categories.NAVAL * categories.TECH1
 local FNSF2 = categories.FACTORY * categories.STRUCTURE * categories.NAVAL * categories.TECH2 * categories.SUPPORTFACTORY
 
+function MapAdvisor(aiBrain)
+    if GetGameTimeSeconds() > 180 then
+        aiBrain:BuildScoutLocationsSwarm()
+        GetStartingReclaimSwarm(aiBrain)
+    end
+end
+
 -- 50% of the below was Sprouto's work 
 -- Also Thanks Balthazar and Sprouto for Assistance with getting Support Factories to Work
 -- With Factories included in this thread his tech pacing is so rapid that with no cheats on open palms he can have full t2 production by 12m 
 -- Still Tuning this has theres still excess eco nowadays
 function StructureUpgradeThreadSwarm(unit, aiBrain, upgradeSpec, bypasseco) 
     --LOG('* AI-Swarm: Starting structure thread upgrade for'..aiBrain.Nickname)
-
-    GetStartingReclaimSwarm(aiBrain)
 
     local unitBp = unit:GetBlueprint()
     local upgradeID = unitBp.General.UpgradesTo or false
@@ -539,6 +544,9 @@ function StructureTypeCheckSwarm(aiBrain, unitBp)
         elseif v == 'TECH2' then
             --LOG('Extractor is Tech 2')
             unitTech = 'TECH2'
+        elseif v == 'TECH3' then
+            --LOG('Extractor is Tech 2')
+            unitTech = 'TECH3'
         else
             --LOG('Value not TECH1, TECH2')
         end
@@ -573,6 +581,8 @@ function ExtractorClosestSwarm(aiBrain, unit, unitBp)
         MassExtractorFactoryUnitList = GetListOfUnits(aiBrain, categories.FACTORY * (categories.TECH1), false, false)
     elseif unitType == 'FACTORY' and unitTech == 'TECH2' then
         MassExtractorFactoryUnitList = GetListOfUnits(aiBrain, categories.FACTORY * (categories.TECH2), false, false)
+    elseif unitType == 'FACTORY' and unitTech == 'TECH3' then
+        MassExtractorFactoryUnitList = GetListOfUnits(aiBrain, categories.FACTORY * (categories.TECH3), false, false)
     end
 
     for k, v in MassExtractorFactoryUnitList do
