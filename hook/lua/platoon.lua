@@ -3058,7 +3058,6 @@ Platoon = Class(SwarmPlatoonClass) {
         end
     end,
 
-
     FinisherAISwarm = function(self)
         local aiBrain = self:GetBrain()
         if not self.PlatoonData or not self.PlatoonData.LocationType then
@@ -3231,7 +3230,7 @@ Platoon = Class(SwarmPlatoonClass) {
                 if not bValidUnits then
                     continue
                 end
-                LOG("*AI DEBUG: Merging platoons " .. self.BuilderName .. ": (" .. platPos[1] .. ", " .. platPos[3] .. ") and " .. aPlat.BuilderName .. ": (" .. allyPlatPos[1] .. ", " .. allyPlatPos[3] .. ")")
+                --LOG("*AI DEBUG: Merging platoons " .. self.BuilderName .. ": (" .. platPos[1] .. ", " .. platPos[3] .. ") and " .. aPlat.BuilderName .. ": (" .. allyPlatPos[1] .. ", " .. allyPlatPos[3] .. ")")
                 aiBrain:AssignUnitsToPlatoon(self, validUnits, 'Attack', 'GrowthFormation')
                 bMergedPlatoons = true
             end
@@ -6418,6 +6417,36 @@ Platoon = Class(SwarmPlatoonClass) {
                 end
             end
             WaitSeconds(checkTime)
+        end
+    end,
+
+    PlatoonDistressAISwarm = function(self)
+        local aiBrain = self:GetBrain()
+        while aiBrain:PlatoonExists(self) do
+            local platoonUnits = self:GetPlatoonUnits()
+            if not aiBrain.BaseMonitor.AlertSounded then return end
+
+            -- Check for Platoon Death, once killed, remove all distress calls from base monitor and clear the distress call variable so platoon can request help again later.  This will allow us to re-use this platoons distress call in case of death without having to wait for it to be able to request help again later.  Also allows other platoons that are still alive and operating normally within range of the dead platoon's distress call to respond instead of waiting on new requests from other dead platoons.   -GBD
+
+            if table.getn(platoonUnits) == 0 then
+                --LOG('*AI DEBUG: Platoon Dead')
+                aiBrain.BaseMonitor.PlatoonDistressTable[self.DistressCall] = nil
+                self.DistressCall = false
+            end
+
+            local pos = self:GetPlatoonPosition()
+
+            if not pos then return end
+
+            local distressRange = aiBrain.BaseMonitor.PoolDistressRange or 200
+            local threatatLocation = aiBrain:GetThreatAtPosition(pos, 1, true, 'AntiSurface')
+
+            if threatatLocation and threatatLocation > 5 then  -- If our current location is being attacked by more than X units at once... we need help! -GBD
+                --LOG('*AI DEBUG: Platoon Calling for Help from Distress Call')
+                aiBrain:BaseMonitorDistressLocationSwarm(pos, distressRange, 'AntiSurface', threatatLocation)
+            end
+
+            WaitSeconds(5)
         end
     end,
 

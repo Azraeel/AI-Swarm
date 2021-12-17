@@ -578,7 +578,7 @@ BuilderGroup {
 
         PlatoonTemplate = 'AISwarm LandAttack Micro - Standard', 
 
-        PlatoonAddPlans = { 'DistressResponseAISwarm' },
+        PlatoonAddPlans = { 'DistressResponseAISwarm', 'PlatoonDistressAISwarm' },
 
         Priority = 650,
 

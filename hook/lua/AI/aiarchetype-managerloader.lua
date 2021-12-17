@@ -260,95 +260,10 @@ function EcoManagerThreadSwarm(aiBrain)
         if bussy then
             continue -- while true do
         end
-
--- ECO for STRUCTURES
-        if aiBrain:GetEconomyStoredRatio('ENERGY') < 0.01 and not aiBrain.HasParagon then
-            -- Emergency Low Energy
-            if aiBrain:GetEconomyStoredRatio('ENERGY') < 0.01 then
-                -- Disable Nuke
-                if DisableUnitsSwarm(aiBrain, categories.STRUCTURE * categories.MASSFABRICATION, 'MassFab') then bussy = true
-                -- Disable AntiNuke
-                elseif DisableUnitsSwarm(aiBrain, categories.STRUCTURE * categories.NUKE * (categories.TECH3 + categories.EXPERIMENTAL), 'Nuke') then bussy = true
-                -- Disable Massfabricators
-                elseif DisableUnitsSwarm(aiBrain, categories.STRUCTURE * categories.ANTIMISSILE * categories.SILO * categories.TECH3, 'AntiNuke') then bussy = true
-                -- Disable Intel
-                elseif DisableUnitsSwarm(aiBrain, categories.RADAR + categories.OMNI + categories.SONAR, 'Intel') then bussy = true
-                -- Disable ExperimentalShields
-                elseif DisableUnitsSwarm(aiBrain, categories.STRUCTURE * categories.SHIELD * categories.EXPERIMENTAL, 'ExperimentalShields') then bussy = true
-                -- Disable NormalShields
-                elseif DisableUnitsSwarm(aiBrain, categories.STRUCTURE * categories.SHIELD - categories.EXPERIMENTAL, 'NormalShields') then bussy = true
-                end
-            elseif aiBrain:GetEconomyStoredRatio('ENERGY') < 0.95 then
-                if DisableUnitsSwarm(aiBrain, categories.STRUCTURE * categories.MASSFABRICATION, 'MassFab') then bussy = true
-                end
-            end
-        end
-
-        if bussy then
-            continue -- while true do
-        end
-
-        if aiBrain:GetEconomyStoredRatio('MASS') < 0.0 and not aiBrain.HasParagon then
-            -- Emergency Low Mass
-            if aiBrain:GetEconomyStoredRatio('MASS') < 0.0 then
-                -- Disable AntiNuke
-                if DisableUnitsSwarm(aiBrain, categories.STRUCTURE * categories.ANTIMISSILE * categories.SILO * categories.TECH3, 'AntiNuke') then bussy = true
-                end
-            elseif aiBrain:GetEconomyStoredRatio('MASS') < 0.01 then
-                -- Disable Nuke
-                if DisableUnitsSwarm(aiBrain, categories.STRUCTURE * categories.NUKE * (categories.TECH3 + categories.EXPERIMENTAL), 'Nuke') then bussy = true
-                end
-            end
-        elseif aiBrain:GetEconomyStoredRatio('ENERGY') > 0.50 then
-            if aiBrain:GetEconomyStoredRatio('MASS') > 0.01 or aiBrain.HasParagon then
-                -- Enable NormalShields
-                if EnableUnitsSwarm(aiBrain, categories.STRUCTURE * categories.SHIELD - categories.EXPERIMENTAL, 'NormalShields') then bussy = true
-                -- Enable ExperimentalShields
-                elseif EnableUnitsSwarm(aiBrain, categories.STRUCTURE * categories.SHIELD * categories.EXPERIMENTAL, 'ExperimentalShields') then bussy = true
-                -- Enable Intel
-                elseif EnableUnitsSwarm(aiBrain, categories.RADAR + categories.OMNI + categories.SONAR, 'Intel') then bussy = true
-                -- Enable AntiNuke
-                elseif EnableUnitsSwarm(aiBrain, categories.STRUCTURE * categories.ANTIMISSILE * categories.SILO * categories.TECH3, 'AntiNuke') then bussy = true
-                -- Enable massfabricators
-                elseif EnableUnitsSwarm(aiBrain, categories.STRUCTURE * categories.MASSFABRICATION, 'MassFab') then bussy = true
-                -- Enable Nuke
-                elseif EnableUnitsSwarm(aiBrain, categories.STRUCTURE * categories.NUKE * (categories.TECH3 + categories.EXPERIMENTAL), 'Nuke') then bussy = true
-                end
-            elseif aiBrain:GetEconomyStoredRatio('MASS') > 0.25 or aiBrain.HasParagon then
-                -- Enable NormalShields
-                if EnableUnitsSwarm(aiBrain, categories.STRUCTURE * categories.SHIELD - categories.EXPERIMENTAL, 'NormalShields') then bussy = true
-                -- Enable ExperimentalShields
-                elseif EnableUnitsSwarm(aiBrain, categories.STRUCTURE * categories.SHIELD * categories.EXPERIMENTAL, 'ExperimentalShields') then bussy = true
-                -- Enable Intel
-                elseif EnableUnitsSwarm(aiBrain, categories.RADAR + categories.OMNI + categories.SONAR, 'Intel') then bussy = true
-                -- Enable AntiNuke
-                elseif EnableUnitsSwarm(aiBrain, categories.STRUCTURE * categories.ANTIMISSILE * categories.SILO * categories.TECH3, 'AntiNuke') then bussy = true
-                -- Enable massfabricators
-                elseif EnableUnitsSwarm(aiBrain, categories.STRUCTURE * categories.MASSFABRICATION, 'MassFab') then bussy = true
-                end
-            else
-                -- Enable NormalShields
-                if EnableUnitsSwarm(aiBrain, categories.STRUCTURE * categories.SHIELD - categories.EXPERIMENTAL, 'NormalShields') then bussy = true
-                -- Enable ExperimentalShields
-                elseif EnableUnitsSwarm(aiBrain, categories.STRUCTURE * categories.SHIELD * categories.EXPERIMENTAL, 'ExperimentalShields') then bussy = true
-                -- Enable Intel
-                elseif EnableUnitsSwarm(aiBrain, categories.RADAR + categories.OMNI + categories.SONAR, 'Intel') then bussy = true
-                -- Enable massfabricators
-                elseif EnableUnitsSwarm(aiBrain, categories.STRUCTURE * categories.MASSFABRICATION, 'MassFab') then bussy = true
-                end
-            end
-        end
-
-        if bussy then
-            continue -- while true do
-        end
-
-
-
    end
 end
 
-function DisableUnitsSwarm(aiBrain, Category, UnitType)
+--[[ function DisableUnitsSwarm(aiBrain, Category, UnitType)
     local Units = aiBrain:GetListOfUnits(Category, false, false) -- also gets unbuilded units (planed to build)
     for _, unit in Units do
         if unit.Dead then continue end
@@ -406,7 +321,7 @@ function EnableUnitsSwarm(aiBrain, Category, UnitType)
         end
     end
     return false
-end
+end ]]--
 
 function BaseTargetManagerThreadSwarm(aiBrain)
     --        LOG('location manager '..repr(aiBrain.NukedArea))

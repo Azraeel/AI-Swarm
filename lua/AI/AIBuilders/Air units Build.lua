@@ -452,7 +452,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Scout Formers',
 
 BuilderGroup { BuilderGroupName = 'Swarm Air Formers',
     BuildersType = 'PlatoonFormBuilder',
-    
+
     Builder {
         BuilderName = 'Swarm Fighter Intercept 3 5',
         PlatoonTemplate = 'Swarm Fighter Intercept 3 5',
