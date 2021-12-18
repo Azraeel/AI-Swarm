@@ -3263,7 +3263,7 @@ Platoon = Class(SwarmPlatoonClass) {
                      
                     if not u.Dead and not u:IsUnitState('Attached') then
                          
-                        SWARMCOPY(validUnits, u)
+                        SWARMINSERT(validUnits, u)
                          
                         bValidUnits = true
                     end    
@@ -3311,7 +3311,7 @@ Platoon = Class(SwarmPlatoonClass) {
                     end       
                      
                     if  VDist2Sq(platPos[1], platPos[3], allyPlatPos[1], allyPlatPos[3]) <= radiusSq then  
-                        SWARMCOPY(validUnits, units)     
+                        SWARMINSERT(validUnits, units)     
                         bValidUnits = true  
                     end    
 
