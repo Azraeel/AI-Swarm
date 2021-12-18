@@ -3185,6 +3185,11 @@ Platoon = Class(SwarmPlatoonClass) {
             return
         end
 
+        local platPos = self:GetPlatoonPosition()
+        if not platPos then
+            return
+        end
+
         local platUnits = GetPlatoonUnits(self)
         local platCount = 0
 
@@ -3195,142 +3200,70 @@ Platoon = Class(SwarmPlatoonClass) {
         end
 
         if (maxMergeNumber and platCount > maxMergeNumber) or platCount < 1 then
-            return false  
+            return
         end 
 
-        local platPos = self:GetPlatoonPosition()
-        if not platPos then
-            return false           
+        local radiusSq = radius*radius
+        -- if we're too close to a base, forget it
+        if aiBrain.BuilderManagers then
+            for baseName, base in aiBrain.BuilderManagers do
+                if VDist2Sq(platPos[1], platPos[3], base.Position[1], base.Position[3]) <= radiusSq then
+                    return
+                end
+            end
         end
 
-        AlliedPlatoons = aiBrain:GetPlatoonsList()   
+        AlliedPlatoons = aiBrain:GetPlatoonsList()
+        local bMergedPlatoons = false
+        for _,aPlat in AlliedPlatoons do
+            if aPlat:GetPlan() != planName then
+                continue
+            end
+            if aPlat == self then
+                continue
+            end
 
-         
-
-        for _,aPlat in AlliedPlatoons do  
-
-            if aPlat:GetPlan() != planName then      
-
-                continue    
-
-            end      
-
-            if aPlat == self then      
-
-                continue     
-
-            end   
-
-            if aPlat.UsingTransport then    
-
-                continue  
-
-            end    
-
-            AIAttackUtils.GetMostRestrictiveLayer(self)
-
-            AIAttackUtils.GetMostRestrictiveLayer(aPlat)
-
-           
-
-            if self.MovementLayer != aPlat.MovementLayer then    
-
-                continue 
-
-            end     
+            if aPlat.UsingTransport then
+                continue
+            end
 
             local allyPlatPos = aPlat:GetPlatoonPosition()
+            if not allyPlatPos or not aiBrain:PlatoonExists(aPlat) then
+                continue
+            end
 
-            if not allyPlatPos or not aiBrain:PlatoonExists(aPlat)   
+            AIAttackUtils.GetMostRestrictiveLayer(self)
+            AIAttackUtils.GetMostRestrictiveLayer(aPlat)
 
-                then    
+            -- make sure we're the same movement layer type to avoid hamstringing air of amphibious
+            if self.MovementLayer != aPlat.MovementLayer then
+                continue
+            end
 
-                continue      
-
-            end       
-             
-            local radiusSq = radius*radius    
-             
-            if  VDist2Sq(platPos[1], platPos[3], allyPlatPos[1], allyPlatPos[3]) <= radiusSq then  
-                 
+            if  VDist2Sq(platPos[1], platPos[3], allyPlatPos[1], allyPlatPos[3]) <= radiusSq then
                 local units = aPlat:GetPlatoonUnits()
-                 
                 local validUnits = {}
-                 
                 local bValidUnits = false
-                 
                 for _,u in units do
-                     
                     if not u.Dead and not u:IsUnitState('Attached') then
-                         
                         SWARMINSERT(validUnits, u)
-                         
                         bValidUnits = true
-                    end    
+                    end
+                end
+                if not bValidUnits then
+                    continue
+                end
+                --LOG("*AI DEBUG: Merging platoons " .. self.BuilderName .. ": (" .. platPos[1] .. ", " .. platPos[3] .. ") and " .. aPlat.BuilderName .. ": (" .. allyPlatPos[1] .. ", " .. allyPlatPos[3] .. ")")
+                aiBrain:AssignUnitsToPlatoon(self, validUnits, 'Attack', 'GrowthFormation')
+                bMergedPlatoons = true
+            end
+        end
+        if bMergedPlatoons then
+            self:StopAttack()
+            return true
+        end
 
-                end    
-
-                self:StopAttack()   
-
-                local platPos = self:GetPlatoonPosition()
-
-                local radiusSq = radius*radius    
-
-                for _,aPlat in AlliedPlatoons do    
-
-                    if aPlat:GetPlan() != planName then      
-
-                        continue    
-
-                    end       
-
-                    if aPlat == self then  
-
-                        continue     
-
-                    end   
-
-                    if aPlat.UsingTransport then    
-
-                        continue  
-
-                    end    
-
-                    AIAttackUtils.GetMostRestrictiveLayer(self)
-
-                    AIAttackUtils.GetMostRestrictiveLayer(aPlat) 
-                     
-                    local allyPlatPos = aPlat:GetPlatoonPosition()
-                     
-                    if not allyPlatPos or not aiBrain:PlatoonExists(aPlat)   
-
-                        then    
-
-                        continue      
-
-                    end       
-                     
-                    if  VDist2Sq(platPos[1], platPos[3], allyPlatPos[1], allyPlatPos[3]) <= radiusSq then  
-                        SWARMINSERT(validUnits, units)     
-                        bValidUnits = true  
-                    end    
-
-                end    
-
-                if bValidUnits then   
-                    aiBrain:AssignUnitsToPlatoon(self, validUnits, 'Attack', 'GrowthFormation')  
-                    return true  
-                else   
-                    return false  
-                end    
-
-            else    --continue     
-
-            end      --if distance < radiusSq then     
-
-        end       --for _,aPlat in AlliedPlatoons do      
-
-        return false         --if we got here, we didn't merge with anyone     
+        return false
     end,
 
     SimpleReturnToBaseSwarm = function(self, basePosition)
@@ -7140,6 +7073,178 @@ Platoon = Class(SwarmPlatoonClass) {
     --         end     
     --     end     
     -- end,     
+
+    -- Series of Functions and Support for WaitForUnits Function
+    -- This function is used to make the platoon move to a location and hold until it sees a specified number of units.  It will then attack those units until either itself or the target is destroyed.  If the platoon is ordered to move somewhere else while still waiting for the target, it will resume waiting for the target.
+    -- The platoon can be ordered to move somewhere else while still waiting for the target, in which case it will resume waiting for the target once it arrives there.
+    -- If a platoon is told to attack a moving unit, it will follow that unit until it is destroyed or out of range.  It will then resume waiting for the target.
+    -- If a platoon is told to attack a building, it will wait until the building is destroyed or out of range.  It will then resume waiting for the target.
+    -- If a platoon is ordered to move somewhere else while still waiting for the target, it will resume waiting for the target once it arrives there.
+    -- Experimental Function to the extreme :P
+    -- GetPlatoonFormation = function(self)
+    --     local PlatoonFormation = self.PlatoonData.UseFormation or 'No Formation'
+    --     return PlatoonFormation
+    -- end,
+
+    -- WaitForUnits = function(self)
+    --     self:Stop()
+    --     local aiBrain = self:GetBrain()
+    --     local armyIndex = aiBrain:GetArmyIndex()
+
+    --     local TargetPosition = false
+
+    --     local GetTargetsFrom = self:GetPlatoonPosition()
+
+    --     local PlatoonFormation = self:GetPlatoonFormation()
+
+    --     local Target
+    --     local blip
+    --     local LastTargetPos = false
+    --     while aiBrain:PlatoonExists(self) do
+
+    --         if not TargetPosition or not aiBrain:PlatoonExists(self) then
+    --             --LOG('* AI-Swarm: * WaitForUnits: Reacquiring Targets')
+    --             --LOG('* AI-Swarm: * WaitForUnits: PlatoonFormation = ', repr(PlatoonFormation))
+    --             --LOG('* AI-Swarm: * WaitForUnits: GetTargetsFrom = ', repr(GetTargetsFrom))
+
+    --             Target, blip = AIUtils.AIFindNearestCategoryTargetInRangeSwarm(aiBrain, self, 'Attack', GetTargetsFrom, self.PlatoonData.SearchRadius or 100, nil, false )
+
+    --             if Target and blip then
+    --                 --LOG('* AI-Swarm: * WaitForUnits: Found Target')
+    --                 TargetPosition = SWARMCOPY(blip.Position)
+    --                 LastTargetPos = SWARMCOPY(blip.Position)
+    --                 self:Stop()
+    --                 break
+    --             elseif not TargetPosition or not aiBrain:PlatoonExists(self) then
+    --                 --LOG('* AI-Swarm: * WaitForUnits: No Target')
+    --                 --LOG('* AI-Swarm: * WaitForUnits: PlatoonFormation = ', repr(PlatoonFormation))
+    --                 --LOG('* AI-Swarm: * WaitForUnits: GetTargetsFrom = ', repr(GetTargetsFrom))
+
+    --                 if PlatoonFormation == 'GrowthFormation' then
+    --                     self:SetPlatoonFormationOverride('NoFormation')
+    --                     GetTargetsFrom = self:GetPlatoonPosition()
+    --                     PlatoonFormation = 'NoFormation'
+    --                     --LOG('* AI-Swarm: * WaitForUnits: Switching to No Formation')
+
+    --                 elseif PlatoonFormation == 'NoFormation' then
+
+    --                     local position = SWARMCOPY(aiBrain.BuilderManagers['MAIN'].Position)
+
+    --                     if VDist2Sq(position[1], position[3], GetTargetsFrom[1][1], GetTargetsFrom[1][3]) > 6400 then
+    --                         --LOG('* AI-Swarm: * WaitForUnits: Too far from main base, moving to rally point')
+    --                         self:Stop()
+    --                         self:SetPlatoonFormationOverride('GrowthFormation')
+    --                         PlatoonFormation = 'GrowthFormation'
+    --                         GetTargetsFrom = aiBrain.BuilderManagers['MAIN'].Position
+
+    --                     elseif VDist2Sq(position[1], position[3], GetTargetsFrom[1][1], GetTargetsFrom[1][3]) < 1600 then
+    --                         --LOG('* AI-Swarm: * WaitForUnits: Too close to main base, moving out a little')
+    --                         self:Stop()
+    --                         self:SetPlatoonFormationOverride('NoFormation')
+    --                         PlatoonFormation = 'NoFormation'
+
+    --                     elseif LastTargetPos and VDist2Sq(LastTargetPos[1], LastTargetPos[3], GetTargetsFrom[1][1], GetTargetsFrom[1][3]) > 6400 then
+    --                         --LOG('* AI-Swarm: * WaitForUnits: Too far from target, moving to rally point')
+    --                         self:Stop()
+    --                         self:SetPlatoonFormationOverride('GrowthFormation')
+    --                         PlatoonFormation = 'GrowthFormation'
+    --                         GetTargetsFrom = aiBrain.BuilderManagers['MAIN'].Position
+
+    --                     elseif LastTargetPos and VDist2Sq(LastTargetPos[1], LastTargetPos[3], GetTargetsFrom[1][1], GetTargetsFrom[1][3]) < 1600 then
+    --                         --LOG('* AI-Swarm: * WaitForUnits: Too close to target, moving out a little')
+    --                         self:Stop()
+    --                         self:SetPlatoonFormationOverride('NoFormation')
+    --                         PlatoonFormation = 'NoFormation'
+
+    --                     end
+
+    --                 elseif PlatoonFormation == 'AttackFormation' then
+    --                     self:SetPlatoonFormationOverride('NoFormation')
+    --                     GetTargetsFrom = self:GetPlatoonPosition()
+    --                     PlatoonFormation = 'NoFormation'
+
+    --                 elseif PlatoonFormation == 'GrowthFormation' then
+    --                     self:SetPlatoonFormationOverride('NoFormation')
+    --                     GetTargetsFrom = self:GetPlatoonPosition()
+    --                     PlatoonFormation = 'NoFormation'
+
+    --                 elseif PlatoonFormation == 'NoFormation' then
+    --                     --LOG('* AI-Swarm: * WaitForUnits: No Formation')
+
+    --                 end
+
+    --             end
+
+    --         end
+
+    --         if Target and blip then
+    --             --LOG('* AI-Swarm: * WaitForUnits: Found Target')
+    --             TargetPosition = SWARMCOPY(blip.Position)
+    --             LastTargetPos = SWARMCOPY(blip.Position)
+    --             self:Stop()
+    --             break
+    --         elseif not TargetPosition or not aiBrain:PlatoonExists(self) then
+    --             --LOG('* AI-Swarm: * WaitForUnits: No Target')
+    --             --LOG('* AI-Swarm: * WaitForUnits: PlatoonFormation = ', repr(PlatoonFormation))
+    --             --LOG('* AI-Swarm: * WaitForUnits: GetTargetsFrom = ', repr(GetTargetsFrom))
+
+    --             if PlatoonFormation == 'GrowthFormation' then
+    --                 self:SetPlatoonFormationOverride('NoFormation')
+    --                 GetTargetsFrom = self:GetPlatoonPosition()
+    --                 PlatoonFormation = 'NoFormation'
+
+    --             elseif PlatoonFormation == 'NoFormation' then
+
+    --                 local position = SWARMCOPY(aiBrain.BuilderManagers['MAIN'].Position)
+
+    --                 if VDist2Sq(position[1], position[3], GetTargetsFrom[1][1], GetTargetsFrom[1][3]) > 6400 then
+    --                     --LOG('* AI-Swarm: * WaitForUnits: Too far from main base, moving to rally point')
+    --                     self:Stop()
+    --                     self:SetPlatoonFormationOverride('GrowthFormation')
+    --                     PlatoonFormation = 'GrowthFormation'
+    --                     GetTargetsFrom = aiBrain.BuilderManagers['MAIN'].Position
+
+    --                 elseif VDist2Sq(position[1], position[3], GetTargetsFrom[1][1], GetTargetsFrom[1][3]) < 1600 then
+    --                     --LOG('* AI-Swarm: * WaitForUnits: Too close to main base, moving out a little')
+    --                     self:Stop()
+    --                     self:SetPlatoonFormationOverride('NoFormation')
+    --                     PlatoonFormation = 'NoFormation'
+
+    --                 elseif LastTargetPos and VDist2Sq(LastTargetPos[1], LastTargetPos[3], GetTargetsFrom[1][1], GetTargetsFrom[1][3]) > 6400 then
+    --                     --LOG('* AI-Swarm: * WaitForUnits: Too far from target, moving to rally point')
+    --                     self:Stop()
+    --                     self:SetPlatoonFormationOverride('GrowthFormation')
+    --                     PlatoonFormation = 'GrowthFormation'
+    --                     GetTargetsFrom = aiBrain.BuilderManagers['MAIN'].Position
+
+    --                 elseif LastTargetPos and VDist2Sq(LastTargetPos[1], LastTargetPos[3], GetTargetsFrom[1][1], GetTargetsFrom[1][3]) < 1600 then
+    --                     --LOG('* AI-Swarm: * WaitForUnits: Too close to target, moving out a little')
+    --                     self:Stop()
+    --                     self:SetPlatoonFormationOverride('NoFormation')
+    --                     PlatoonFormation = 'NoFormation'
+
+    --                 end
+
+    --             elseif PlatoonFormation == 'AttackFormation' then
+    --                 self:SetPlatoonFormationOverride('NoFormation')
+    --                 GetTargetsFrom = self:GetPlatoonPosition()
+    --                 PlatoonFormation = 'NoFormation'
+
+    --             elseif PlatoonFormation == 'GrowthFormation' then
+    --                 self:SetPlatoonFormationOverride('NoFormation')
+    --                 GetTargetsFrom = self:GetPlatoonPosition()
+    --                 PlatoonFormation = 'NoFormation'
+
+    --             elseif PlatoonFormation == 'NoFormation' then
+    --                 --LOG('* AI-Swarm: * WaitForUnits: No Formation')
+
+    --             end
+
+    --         end
+
+    --         SWARMWAIT(30)
+    --     end
+    -- end,
 
     --- --- --- --- --- --- ---
     --- TEST FUNCTIONS END ---
