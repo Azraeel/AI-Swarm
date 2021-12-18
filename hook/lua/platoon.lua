@@ -2824,6 +2824,7 @@ Platoon = Class(SwarmPlatoonClass) {
     end,
 
     -- Credit to Chp2001 for this function 
+    -- Improved Function so it was not full of stuff that wasn't needed
     MexBuildAISwarm = function(self)
         local aiBrain = self:GetBrain()
         local platoonUnits = GetPlatoonUnits(self)
@@ -2837,9 +2838,14 @@ Platoon = Class(SwarmPlatoonClass) {
             self:PlatoonDisband()
             return
         end
-        if not eng.EngineerBuildQueue then
+
+        if not eng.EngineerBuildQueue then  -- this is the first time we're getting to this engineer in this platoon so we need to reset the queue and build history table (if it exists)  -- added by brute51 [140805]  [140808] [140810] [140811] [140815] [140816] [140817] [140818] [140819] [140904]  -- also added by brute51 to fix a bug where the build history table was not being reset when engineers were reassigned to other platoons
             eng.EngineerBuildQueue={}
+            if eng.EngineerBuildHistory then  -- this is the first time we're getting to this engineer in this platoon so we need to reset the queue and build history table (if it exists)  -- added by brute51 [140805]  [140808] [140810] [140811] [140815] [140816] [140817] [140818] [140819] [140904]  -- also added by brute51 to fix a bug where the build history table was not being reset when engineers were reassigned to other platoons
+                eng.EngineerBuildHistory={}
+            end
         end
+
         local factionIndex = aiBrain:GetFactionIndex()
         buildingTmplFile = import(cons.BuildingTemplateFile or '/lua/BuildingTemplates.lua')
         buildingTmpl = buildingTmplFile[(cons.BuildingTemplate or 'BuildingTemplates')][factionIndex]
@@ -2855,61 +2861,74 @@ Platoon = Class(SwarmPlatoonClass) {
                 count = count + 1
             end
         end
-        --eng:SetCustomName('MexBuild Platoon Checking for expansion mex')
+
         --LOG('MexBuild Platoon Checking for expansion mex')
-        while not aiBrain.expansionMex do WaitSeconds(2) end
-        --eng:SetCustomName('MexBuild Platoon has found aiBrain.expansionMex')
-        local markerTable=SWARMCOPY(aiBrain.expansionMex)
-        if eng.Dead then self:PlatoonDisband() end
+
         while PlatoonExists(aiBrain, self) and eng and not eng.Dead do
+
             local platoonPos=self:GetPlatoonPosition()
-            SWARMSORT(markerTable,function(a,b) return VDist2Sq(a.Position[1],a.Position[3],platoonPos[1],platoonPos[3])/VDist3Sq(aiBrain.emanager.enemy.Position,a.Position)/a.priority/a.priority<VDist2Sq(b.Position[1],b.Position[3],platoonPos[1],platoonPos[3])/VDist3Sq(aiBrain.emanager.enemy.Position,b.Position)/b.priority/b.priority end)
+
             local currentmexpos=nil
-            local curindex=nil
-            for i,v in markerTable do
+
+            if not aiBrain.expansionMex then  -- this is the first time we're getting to this platoon so we need to reset the queue and build history table (if it exists)  -- added by brute51 [140805]  [140808] [140810] [140811] [140815] [140816] [140817] [140818] [140819] [140904]  -- also added by brute51 to fix a bug where the build history table was not being reset when engineers were reassigned to other platoons
+                aiBrain.expansionMex={}
+            end
+            local markerTable=SWARMCOPY(aiBrain.expansionMex)
+
+            SWARMSORT(markerTable,function(a,b) return VDist2Sq(a.Position[1],a.Position[3],platoonPos[1],platoonPos[3])/VDist3Sq(aiBrain.emanager.enemy.Position,a.Position)/a.priority/a.priority<VDist2Sq(b.Position[1],b.Position[3],platoonPos[1],platoonPos[3])/VDist3Sq(aiBrain.emanager.enemy.Position,b.Position)/b.priority/b.priority end)
+
+            for _,v in markerTable do
                 if aiBrain:CanBuildStructureAt('ueb1103', v.Position) then
                     currentmexpos=v.Position
-                    curindex=i
-                    --LOG('We can build at mex, breaking loop '..repr(currentmexpos))
                     break
                 end
             end
+
             if not currentmexpos then self:PlatoonDisband() end
+
             --LOG('currentmexpos has data')
+
             if not AIUtils.EngineerMoveWithSafePathSwarmAdvanced(aiBrain, eng, currentmexpos, whatToBuild) then
-                SWARMREMOVE(markerTable,curindex) 
+                SWARMREMOVE(markerTable) 
                 --LOG('No path to currentmexpos')
                 --eng:SetCustomName('MexBuild Platoon has no path to aiBrain.currentmexpos, removing and moving to next')
                 continue 
             end
+
             local firstmex=currentmexpos
-            local initialized=nil
-            --LOG('Firstmex '..repr(firstmex))
+
             for _=0,3,1 do
+
                 if not currentmexpos then break end
+
                 local bool,markers=MABC.CanBuildOnMassEngSwarm(aiBrain, currentmexpos, 30)
+
                 if bool then
+
                     --LOG('We can build on a mass marker within 30')
-                    --local massMarker = SwarmUtils.GetClosestMassMarkerToPos(aiBrain, waypointPath)
-                    --LOG('Mass Marker'..repr(markers))
-                    --LOG('Attempting second mass marker')
+
                     for _,massMarker in markers do
-                    SwarmUtils.EngineerTryReclaimCaptureAreaSwarm(aiBrain, eng, massMarker.Position, 5)
-                    AIUtils.EngineerTryRepair(aiBrain, eng, whatToBuild, massMarker.Position)
-                    --eng:SetCustomName('MexBuild Platoon attempting to build in for loop')
-                    --LOG('MexBuild Platoon Checking for expansion mex')
-                    aiBrain:BuildStructure(eng, whatToBuild, {massMarker.Position[1], massMarker.Position[3], 0}, false)
-                    local newEntry = {whatToBuild, {massMarker.Position[1], massMarker.Position[3], 0}, false,Position=massMarker.Position}
-                    SWARMINSERT(eng.EngineerBuildQueue, newEntry)
-                    currentmexpos=massMarker.Position
+
+                        SwarmUtils.EngineerTryReclaimCaptureAreaSwarm(aiBrain, eng, massMarker.Position, 5)
+
+                        AIUtils.EngineerTryRepair(aiBrain, eng, whatToBuild, massMarker.Position)
+
+                        --eng:SetCustomName('MexBuild Platoon attempting to build in for loop')
+
+                        --LOG('MexBuild Platoon Checking for expansion mex')
+
+                        aiBrain:BuildStructure(eng, whatToBuild, {massMarker.Position[1], massMarker.Position[3], 0}, false)
+
+                        local newEntry = {whatToBuild, {massMarker.Position[1], massMarker.Position[3], 0}, false}
+                        SWARMINSERT(eng.EngineerBuildQueue, newEntry)
                     end
                 else
-                    --LOG('No markers reported')
                     break
                 end
             end
+
             while not eng.Dead and 0<SWARMGETN(eng:GetCommandQueue()) or eng:IsUnitState('Building') or eng:IsUnitState("Moving") do
-                if eng:IsUnitState("Moving") and not initialized and VDist3Sq(self:GetPlatoonPosition(),firstmex)<12*12 then
+                if eng:IsUnitState("Moving") and VDist3Sq(self:GetPlatoonPosition(),firstmex)<12*12 then
                     IssueClearCommands({eng})
                     for _,v in eng.EngineerBuildQueue do
                         SwarmUtils.EngineerTryReclaimCaptureAreaSwarm(aiBrain, eng, v.Position, 5)
@@ -2918,16 +2937,20 @@ Platoon = Class(SwarmPlatoonClass) {
                         --LOG('MexBuild Platoon Checking for expansion mex')
                         aiBrain:BuildStructure(eng, v[1],v[2],v[3])
                     end
-                    initialized=true
                 end
+
                 SWARMWAIT(20)
+
             end
+
             --eng:SetCustomName('Reset EngineerBuildQueue')
+
             --LOG('Reset EngineerBuildQueue')
+
             eng.EngineerBuildQueue={}
-            IssueClearCommands({eng})
-            SWARMWAIT(20)
+
         end
+
     end,
 
 
@@ -3172,75 +3195,142 @@ Platoon = Class(SwarmPlatoonClass) {
         end
 
         if (maxMergeNumber and platCount > maxMergeNumber) or platCount < 1 then
-            return
+            return false  
         end 
 
         local platPos = self:GetPlatoonPosition()
         if not platPos then
-            return
+            return false           
         end
 
-        local radiusSq = radius*radius
-        -- if we're too close to a base, forget it
-        if aiBrain.BuilderManagers then
-            for baseName, base in aiBrain.BuilderManagers do
-                if VDist2Sq(platPos[1], platPos[3], base.Position[1], base.Position[3]) <= radiusSq then
-                    return
-                end
-            end
-        end
+        AlliedPlatoons = aiBrain:GetPlatoonsList()   
 
-        AlliedPlatoons = aiBrain:GetPlatoonsList()
-        local bMergedPlatoons = false
-        for _,aPlat in AlliedPlatoons do
-            if aPlat:GetPlan() != planName then
-                continue
-            end
-            if aPlat == self then
-                continue
-            end
+         
 
-            if aPlat.UsingTransport then
-                continue
-            end
+        for _,aPlat in AlliedPlatoons do  
 
-            local allyPlatPos = aPlat:GetPlatoonPosition()
-            if not allyPlatPos or not aiBrain:PlatoonExists(aPlat) then
-                continue
-            end
+            if aPlat:GetPlan() != planName then      
+
+                continue    
+
+            end      
+
+            if aPlat == self then      
+
+                continue     
+
+            end   
+
+            if aPlat.UsingTransport then    
+
+                continue  
+
+            end    
 
             AIAttackUtils.GetMostRestrictiveLayer(self)
+
             AIAttackUtils.GetMostRestrictiveLayer(aPlat)
 
-            -- make sure we're the same movement layer type to avoid hamstringing air of amphibious
-            if self.MovementLayer != aPlat.MovementLayer then
-                continue
-            end
+           
 
-            if  VDist2Sq(platPos[1], platPos[3], allyPlatPos[1], allyPlatPos[3]) <= radiusSq then
+            if self.MovementLayer != aPlat.MovementLayer then    
+
+                continue 
+
+            end     
+
+            local allyPlatPos = aPlat:GetPlatoonPosition()
+
+            if not allyPlatPos or not aiBrain:PlatoonExists(aPlat)   
+
+                then    
+
+                continue      
+
+            end       
+             
+            local radiusSq = radius*radius    
+             
+            if  VDist2Sq(platPos[1], platPos[3], allyPlatPos[1], allyPlatPos[3]) <= radiusSq then  
+                 
                 local units = aPlat:GetPlatoonUnits()
+                 
                 local validUnits = {}
+                 
                 local bValidUnits = false
+                 
                 for _,u in units do
+                     
                     if not u.Dead and not u:IsUnitState('Attached') then
-                        SWARMINSERT(validUnits, u)
+                         
+                        SWARMCOPY(validUnits, u)
+                         
                         bValidUnits = true
-                    end
-                end
-                if not bValidUnits then
-                    continue
-                end
-                --LOG("*AI DEBUG: Merging platoons " .. self.BuilderName .. ": (" .. platPos[1] .. ", " .. platPos[3] .. ") and " .. aPlat.BuilderName .. ": (" .. allyPlatPos[1] .. ", " .. allyPlatPos[3] .. ")")
-                aiBrain:AssignUnitsToPlatoon(self, validUnits, 'Attack', 'GrowthFormation')
-                bMergedPlatoons = true
-            end
-        end
-        if bMergedPlatoons then
-            self:StopAttack()
-            return true
-        end
+                    end    
 
-        return false
+                end    
+
+                self:StopAttack()   
+
+                local platPos = self:GetPlatoonPosition()
+
+                local radiusSq = radius*radius    
+
+                for _,aPlat in AlliedPlatoons do    
+
+                    if aPlat:GetPlan() != planName then      
+
+                        continue    
+
+                    end       
+
+                    if aPlat == self then  
+
+                        continue     
+
+                    end   
+
+                    if aPlat.UsingTransport then    
+
+                        continue  
+
+                    end    
+
+                    AIAttackUtils.GetMostRestrictiveLayer(self)
+
+                    AIAttackUtils.GetMostRestrictiveLayer(aPlat) 
+                     
+                    local allyPlatPos = aPlat:GetPlatoonPosition()
+                     
+                    if not allyPlatPos or not aiBrain:PlatoonExists(aPlat)   
+
+                        then    
+
+                        continue      
+
+                    end       
+                     
+                    if  VDist2Sq(platPos[1], platPos[3], allyPlatPos[1], allyPlatPos[3]) <= radiusSq then  
+                        SWARMCOPY(validUnits, units)     
+                        bValidUnits = true  
+                    end    
+
+                end    
+
+                if bValidUnits then   
+                    aiBrain:AssignUnitsToPlatoon(self, validUnits, 'Attack', 'GrowthFormation')  
+                    return true  
+                else   
+                    return false  
+                end    
+
+            else    --continue     
+
+            end      --if distance < radiusSq then     
+
+        end       --for _,aPlat in AlliedPlatoons do      
+
+        return false         --if we got here, we didn't merge with anyone     
     end,
 
     SimpleReturnToBaseSwarm = function(self, basePosition)
@@ -6336,6 +6426,304 @@ Platoon = Class(SwarmPlatoonClass) {
         return false, false
     end,
 
+    GuardEngineerSwarm = function(self)
+        local aiBrain = self:GetBrain()
+        local armyIndex = aiBrain:GetArmyIndex()
+        local data = self.PlatoonData
+
+        if not data.NeverGuardBases then
+            --LOG('*DEBUG: GuardEngineer')
+            local unitToGuard = false
+            if data.LocationType and aiBrain.BuilderManagers[data.LocationType] then
+                unitToGuard = aiBrain.BuilderManagers[data.LocationType].EngineerManager:GetNumCategoryUnits('Engineers', categories.ALLUNITS)
+                if unitToGuard <= 0 then
+                    unitToGuard = aiBrain.BuilderManagers[data.LocationType].FactoryManager:GetNumCategoryFactories(categories.ALLUNITS)
+                end
+            elseif data.LocationType and aiBrain.BuilderManagers[data.LocationType] then
+                unitToGuard = aiBrain.BuilderManagers[data.LocationType].FactoryManager:GetNumCategoryFactories(categories.ALLUNITS)
+            end
+
+            if unitToGuard and unitToGuard > 0 then
+                local guardTime = aiBrain:GetCurrentUnits(categories.ENGINEER * categories.TECH1) * 4
+                --LOG('*DEBUG: GuardEngineer - unitToGuard: '..unitToGuard..' - guardTime: '..guardTime)
+                if guardTime > 0 then
+                    self:Stop()
+                    local aiBrain = self:GetBrain()
+                    local data = self.PlatoonData
+
+                    --LOG('*DEBUG: GuardEngineer - '..repr(data.LocationType))
+                    if data.LocationType then
+                        local location = aiBrain.BuilderManagers[data.LocationType].Position or false
+                        if location then
+                            self:MoveToLocation(location, false)
+                            self:GuardEngineerSwarm(self.StrikeForceAIGE)
+                        end
+                    end
+                end
+            else
+                --LOG('*DEBUG: GuardEngineer - no unitToGuard')
+                return self:ReturnToBaseAIGE()
+            end
+        elseif data.NeverGuardEngineers then
+            --LOG('*DEBUG: GuardEngineer - NeverGuardEngineers')
+            return self:ReturnToBaseAIGE()
+        end
+    end,
+
+    ReturnToBaseAIGE = function(self)
+        local aiBrain = self:GetBrain()
+
+        if not aiBrain:PlatoonExists(self) then
+            return
+        end
+
+        self:Stop()
+
+        local bestBase = false
+        local bestBaseName = ""
+        local bestDistSq = 999999999
+        local maxRadius = 0
+        if self.MovementLayer == 'Air' then
+            maxRadius = aiBrain.AirUnitRefitRings or 100
+        elseif self.MovementLayer == 'Water' then
+            maxRadius = aiBrain.NavalUnitRefitRings or 100
+        else
+            maxRadius = aiBrain.UnitRefitRings or 100
+        end
+
+        local platPos = self:GetPlatoonPosition()
+
+        for baseName, base in aiBrain.BuilderManagers do
+            if not bestBase or VDist2Sq(platPos[1], platPos[3], base.Position[1], base.Position[3]) < bestDistSq then
+                if VDist2Sq(platPos[1], platPos[3], base.Position[1], base.Position[3]) < maxRadius * maxRadius then
+                    bestBase = base
+                    bestBaseName = baseName
+                    bestDistSq = VDist2Sq(platPos[1], platPos[3], base.Position[1], base.Position[3])
+                end
+            end
+        end
+
+        if bestBase then
+            local guardTime = aiBrain:GetCurrentUnits(categories.ENGINEER * categories.TECH1) * 4
+            --LOG('*DEBUG: ReturnToBaseAI - '..repr(bestBaseName))
+            if guardTime > 0 then
+                self:Stop()
+
+                local path, reason = AIAttackUtils.PlatoonGenerateSafePathToSwarm(aiBrain, self.MovementLayer, platPos, bestBase.Position, 200)
+                --LOG('*DEBUG: ReturnToBaseAI - '..repr(reason))
+                if not path then
+                    --LOG('*DEBUG: ReturnToBaseAI - '..repr(reason))
+                    self:PlatoonDisband()
+                else
+                    local pathSize = SWARMGETN(path)
+                    --LOG('*DEBUG: ReturnToBaseAI - '..repr(pathSize))
+                    for i=1, pathSize-1 do
+                        self:MoveToLocation(path[i], false)
+                    end
+                end
+
+                local guardTime = aiBrain:GetCurrentUnits(categories.ENGINEER * categories.TECH1) * 4
+                --LOG('*DEBUG: ReturnToBaseAI - '..repr(guardTime))
+                if guardTime > 0 then
+                    local guardTimer = 0
+                    while aiBrain:PlatoonExists(self) and guardTime > guardTimer do
+                        SWARMWAIT(5)
+                        guardTimer = guardTimer + 5
+                    end
+                end
+
+                if aiBrain:PlatoonExists(self) then
+                    --LOG('*DEBUG: ReturnToBaseAI - '..repr(bestBaseName))
+                    self:Stop()
+                    if data.LocationType then
+                        local location = aiBrain.BuilderManagers[data.LocationType].Position
+                        self:MoveToLocation(location, false)
+                    end
+                end
+            end
+
+            --LOG('*DEBUG: ReturnToBaseAI - '..repr(bestBaseName))
+            return self:GuardEngineerSwarm(self.StrikeForceAIGE)
+        else
+            --LOG('*DEBUG: ReturnToBaseAI - no bestBase')
+            return self:PlatoonDisband()
+        end
+    end,
+
+    StrikeForceAIGE = function(self)
+        local aiBrain = self:GetBrain()
+
+        if not aiBrain:PlatoonExists(self) then
+            return
+        end
+
+        --LOG('*DEBUG: StrikeForceAI')
+
+        -- get units together
+        if not self:GatherUnits() then
+            return
+        end
+
+        -- Setup the formation based on platoon functionality
+
+        local enemy = aiBrain:GetCurrentEnemy()
+
+        local platoonUnits = self:GetPlatoonUnits()
+        local numberOfUnitsInPlatoon = SWARMGETN(platoonUnits)
+        local oldNumberOfUnitsInPlatoon = numberOfUnitsInPlatoon
+        local stuckCount = 0
+
+        self.PlatoonAttackForce = true
+        -- formations have penalty for taking time to form up... not worth it here
+        -- maybe worth it if we micro
+        --self:SetPlatoonFormationOverride('GrowthFormation')
+        local PlatoonFormation = self.PlatoonData.UseFormation or 'NoFormation'
+        self:SetPlatoonFormationOverride(PlatoonFormation)
+
+        while aiBrain:PlatoonExists(self) do
+            local pos = self:GetPlatoonPosition() -- update positions; prev position done at end of loop so not done first time
+
+            -- if we can't get a position, then we must be dead
+            if not pos then
+                break
+            end
+
+            -- if we're using a transport, wait for a while
+            if self.UsingTransport then
+                SWARMWAIT(10)
+                continue
+            end
+
+            -- pick out the enemy
+            if aiBrain:GetCurrentEnemy() and aiBrain:GetCurrentEnemy().Result == "defeat" then
+                aiBrain:PickEnemyLogic()
+            end
+
+            -- merge with nearby platoons
+            self:MergeWithNearbyPlatoons('StrikeForceAIGE', 10)
+
+            -- rebuild formation
+            platoonUnits = self:GetPlatoonUnits()
+            numberOfUnitsInPlatoon = SWARMGETN(platoonUnits)
+            -- if we have a different number of units in our platoon, regather
+            if (oldNumberOfUnitsInPlatoon != numberOfUnitsInPlatoon) then
+                self:StopAttack()
+                self:SetPlatoonFormationOverride(PlatoonFormation)
+            end
+            oldNumberOfUnitsInPlatoon = numberOfUnitsInPlatoon
+
+            -- deal with lost-puppy transports
+            local strayTransports = {}
+            for k,v in platoonUnits do
+                if EntityCategoryContains(categories.TRANSPORTATION, v) then
+                    SWARMINSERT(strayTransports, v)
+                end
+            end
+            if not SWARMEMPTY(strayTransports) then
+                local dropPoint = pos
+                dropPoint[1] = dropPoint[1] + Random(-3, 3)
+                dropPoint[3] = dropPoint[3] + Random(-3, 3)
+                IssueTransportUnload(strayTransports, dropPoint)
+                SWARMWAIT(10)
+                local strayTransports = {}
+                for k,v in platoonUnits do
+                    local parent = v:GetParent()
+                    if parent and EntityCategoryContains(categories.TRANSPORTATION, parent) then
+                        SWARMINSERT(strayTransports, parent)
+                        break
+                    end
+                end
+                if not SWARMEMPTY(strayTransports) then
+                    local MAIN = aiBrain.BuilderManagers.MAIN
+                    if MAIN then
+                        dropPoint = MAIN.Position
+                        IssueTransportUnload(strayTransports, dropPoint)
+                        SWARMWAIT(30)
+                    end
+                end
+                self.UsingTransport = false
+                AIUtils.ReturnTransportsToPool(strayTransports, true)
+                platoonUnits = self:GetPlatoonUnits()
+            end
+
+            --Disband platoon if it's all air units, so they can be picked up by another platoon
+            local mySurfaceThreat = AIAttackUtils.GetSurfaceThreatOfUnits(self)
+            if mySurfaceThreat == 0 and AIAttackUtils.GetAirThreatOfUnits(self) > 0 then
+                self:PlatoonDisband()
+                return
+            end
+
+            local cmdQ = {}
+            -- fill cmdQ with current command queue for each unit
+            for k,v in platoonUnits do
+                if not v.Dead then
+                    local unitCmdQ = v:GetCommandQueue()
+                    for cmdIdx,cmdVal in unitCmdQ do
+                        SWARMINSERT(cmdQ, cmdVal)
+                        break
+                    end
+                end
+            end
+
+            -- if we're on our final push through to the destination, and we find a unit close to our destination
+            local closestTarget = self:FindClosestUnit('attack', 'enemy', true, categories.ALLUNITS)
+            local nearDest = false
+            local oldPathSize = SWARMGETN(self.LastAttackDestination)
+            if self.LastAttackDestination then
+                nearDest = oldPathSize == 0 or VDist3(self.LastAttackDestination[oldPathSize], pos) < 20
+            end
+
+            -- if we're near our destination and we have a unit closeby to kill, kill it
+            if SWARMGETN(cmdQ) <= 1 and closestTarget and VDist3(closestTarget:GetPosition(), pos) < 20 and nearDest then
+                self:StopAttack()
+                if PlatoonFormation != 'No Formation' then
+                    IssueFormAttack(platoonUnits, closestTarget, PlatoonFormation, 0)
+                else
+                    IssueAttack(platoonUnits, closestTarget)
+                end
+                cmdQ = {1}
+            -- if we have nothing to do, try finding something to do
+            elseif SWARMEMPTY(cmdQ) then
+                self:StopAttack()
+                cmdQ = AIAttackUtils.AIPlatoonSquadAttackVector(aiBrain, self)
+                stuckCount = 0
+            -- if we've been stuck and unable to reach next marker? Ignore nearby stuff and pick another target
+            elseif self.LastPosition and VDist2Sq(self.LastPosition[1], self.LastPosition[3], pos[1], pos[3]) < (self.PlatoonData.StuckDistance or 16) then
+                stuckCount = stuckCount + 1
+                if stuckCount >= 2 then
+                    self:StopAttack()
+                    cmdQ = AIAttackUtils.AIPlatoonSquadAttackVector(aiBrain, self)
+                    stuckCount = 0
+                end
+            else
+                stuckCount = 0
+            end
+
+            self.LastPosition = pos
+
+            if SWARMEMPTY(cmdQ) then
+                -- if we have a low threat value, then go and defend an engineer or a base
+                if mySurfaceThreat < 4
+                    and mySurfaceThreat > 0
+                    and not self.PlatoonData.NeverGuard
+                    and not (self.PlatoonData.NeverGuardEngineers and self.PlatoonData.NeverGuardBases)
+                then
+                    --LOG('*DEBUG: Trying to guard')
+                    return self:GuardEngineerSwarm(self.StrikeForceAIGE)
+                end
+
+                -- we have nothing to do, so find the nearest base and disband
+                if not self.PlatoonData.NeverMerge then
+                    return self:ReturnToBaseAIGE()
+                end
+                SWARMWAIT(5)
+            else
+                -- wait a little longer if we're stuck so that we have a better chance to move
+                SWARMWAIT(Random(5,11) + 2 * stuckCount)
+            end
+        end
+    end,
+
     DistressResponseAISwarm = function(self)
         local aiBrain = self:GetBrain()
         while PlatoonExists(aiBrain, self) do
@@ -6413,11 +6801,28 @@ Platoon = Class(SwarmPlatoonClass) {
                     --LOG('*SwarmAI Mass Extractor Platoon Calling for help with '..threat.. ' threat')
                     aiBrain:BaseMonitorPlatoonDistressSwarm(self, threat)
                     self.DistressCall = true
-                    aiBrain:AddScoutArea(pos) 
+
+                    -- add more area to scout for better efficiency of the platoon when calling for help 
+
+                    local x1 = pos[1] - (aiBrain.IMAPConfigSwarm.RescueRadius / 2) 
+
+                    local y1 = pos[3] - (aiBrain.IMAPConfigSwarm.RescueRadius / 2) 
+
+                    local x2 = pos[1] + (aiBrain.IMAPConfigSwarm.RescueRadius / 2) 
+
+                    local y2 = pos[3] + (aiBrain.IMAPConfigSwarm.RescueRadius / 2) 
+
+                    aiBrain:AddScoutArea({x1, 0, y1}, false)  -- top left corner of the rescue area  
+
+                    aiBrain:AddScoutArea({x2, 0, y2}, false)  -- bottom right corner of the rescue area  
+
                 end
             end
+
             WaitSeconds(checkTime)
+
         end
+
     end,
 
     PlatoonDistressAISwarm = function(self)
@@ -6498,41 +6903,6 @@ Platoon = Class(SwarmPlatoonClass) {
     --- --- --- --- --- --- ---
     --- TEST FUNCTIONS BEGIN ---
     --- --- --- --- --- --- ---
-
-    -- ExtractorCallForHelpAISwarmImproved = function(self, aiBrain)
-    --     local checkTime = self.PlatoonData.DistressCheckTime or 4
-    --     local pos = GetPlatoonPosition(self)
-    --     while PlatoonExists(aiBrain, self) and pos do
-    --         if not self.DistressCall then
-    --             local threat = GetThreatAtPosition(aiBrain, pos, aiBrain.IMAPConfigSwarm.Rings, true, 'Land')
-    --             --LOG('Threat at Extractor :'..threat)
-    --             if threat and threat > 1 then
-    --                 --LOG('*SwarmAI Mass Extractor Platoon Calling for help with '..threat.. ' threat')
-    --                 aiBrain:BaseMonitorPlatoonDistressSwarm(self, threat)
-    --                 self.DistressCall = true
-
-    --                 -- add more area to scout for better efficiency of the platoon when calling for help 
-
-    --                 local x1 = pos[1] - (aiBrain.IMAPConfigSwarm.RescueRadius / 2) 
-
-    --                 local y1 = pos[3] - (aiBrain.IMAPConfigSwarm.RescueRadius / 2) 
-
-    --                 local x2 = pos[1] + (aiBrain.IMAPConfigSwarm.RescueRadius / 2) 
-
-    --                 local y2 = pos[3] + (aiBrain.IMAPConfigSwarm.RescueRadius / 2) 
-
-    --                 aiBrain:AddScoutArea({x1, 0, y1}, false)  -- top left corner of the rescue area  
-
-    --                 aiBrain:AddScoutArea({x2, 0, y2}, false)  -- bottom right corner of the rescue area  
-
-    --             end
-    --         end
-
-    --         WaitSeconds(checkTime)
-
-    --     end
-
-    -- end,
 
     -- AirScoutingAISwarm2 = function(self)
     --     local patrol = self.PlatoonData.Patrol or false
@@ -6770,166 +7140,6 @@ Platoon = Class(SwarmPlatoonClass) {
     --         end     
     --     end     
     -- end,     
-
-    -- MergeWithNearbyPlatoonsSwarm = function(self, planName, radius, maxMergeNumber)
-    --     -- check to see we're not near an ally base
-    --     local aiBrain = self:GetBrain()
-    --     if not aiBrain then
-    --         return
-    --     end
-
-    --     if self.UsingTransport then
-    --         return
-    --     end
-
-    --     local platUnits = GetPlatoonUnits(self)
-    --     local platCount = 0
-
-    --     for _, u in platUnits do
-    --         if not u.Dead then
-    --             platCount = platCount + 1
-    --         end
-    --     end
-
-    --     if (maxMergeNumber and platCount > maxMergeNumber) or platCount < 1 then
-    --         return false  
-    --     end 
-
-    --     local platPos = self:GetPlatoonPosition()
-    --     if not platPos then
-    --         return false           
-    --     end
-
-    --     AlliedPlatoons = aiBrain:GetPlatoonsList()   
-
-         
-
-    --     for _,aPlat in AlliedPlatoons do  
-
-    --         if aPlat:GetPlan() != planName then      
-
-    --             continue    
-
-    --         end      
-
-    --         if aPlat == self then      
-
-    --             continue     
-
-    --         end   
-
-    --         if aPlat.UsingTransport then    
-
-    --             continue  
-
-    --         end    
-
-    --         AIAttackUtils.GetMostRestrictiveLayer(self)
-
-    --         AIAttackUtils.GetMostRestrictiveLayer(aPlat)
-
-           
-
-    --         if self.MovementLayer != aPlat.MovementLayer then    
-
-    --             continue 
-
-    --         end     
-
-    --         local allyPlatPos = aPlat:GetPlatoonPosition()
-
-    --         if not allyPlatPos or not aiBrain:PlatoonExists(aPlat)   
-
-    --             then    
-
-    --             continue      
-
-    --         end       
-             
-    --         local radiusSq = radius*radius    
-             
-    --         if  VDist2Sq(platPos[1], platPos[3], allyPlatPos[1], allyPlatPos[3]) <= radiusSq then  
-                 
-    --             local units = aPlat:GetPlatoonUnits()
-                 
-    --             local validUnits = {}
-                 
-    --             local bValidUnits = false
-                 
-    --             for _,u in units do
-                     
-    --                 if not u.Dead and not u:IsUnitState('Attached') then
-                         
-    --                     SWARMCOPY(validUnits, u)
-                         
-    --                     bValidUnits = true
-    --                 end    
-
-    --             end    
-
-    --             self:StopAttack()   
-
-    --             local platPos = self:GetPlatoonPosition()
-
-    --             local radiusSq = radius*radius    
-
-    --             for _,aPlat in AlliedPlatoons do    
-
-    --                 if aPlat:GetPlan() != planName then      
-
-    --                     continue    
-
-    --                 end       
-
-    --                 if aPlat == self then  
-
-    --                     continue     
-
-    --                 end   
-
-    --                 if aPlat.UsingTransport then    
-
-    --                     continue  
-
-    --                 end    
-
-    --                 AIAttackUtils.GetMostRestrictiveLayer(self)
-
-    --                 AIAttackUtils.GetMostRestrictiveLayer(aPlat) 
-                     
-    --                 local allyPlatPos = aPlat:GetPlatoonPosition()
-                     
-    --                 if not allyPlatPos or not aiBrain:PlatoonExists(aPlat)   
-
-    --                     then    
-
-    --                     continue      
-
-    --                 end       
-                     
-    --                 if  VDist2Sq(platPos[1], platPos[3], allyPlatPos[1], allyPlatPos[3]) <= radiusSq then  
-    --                     SWARMCOPY(validUnits, units)     
-    --                     bValidUnits = true  
-    --                 end    
-
-    --             end    
-
-    --             if bValidUnits then   
-    --                 aiBrain:AssignUnitsToPlatoon(self, validUnits, 'Attack', 'GrowthFormation')  
-    --                 return true  
-    --             else   
-    --                 return false  
-    --             end    
-
-    --         else    --continue     
-
-    --         end      --if distance < radiusSq then     
-
-    --     end       --for _,aPlat in AlliedPlatoons do      
-
-    --     return false         --if we got here, we didn't merge with anyone     
-    -- end,
-
 
     --- --- --- --- --- --- ---
     --- TEST FUNCTIONS END ---

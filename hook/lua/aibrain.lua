@@ -78,6 +78,9 @@ AIBrain = Class(SwarmAIBrainClass) {
             FirstRun = true,
             HasRun = false
         }
+        self.AirUnitRefitRings = 100
+        self.NavalUnitRefitRings = 100
+        self.UnitRefitRings = 100
         self.ExpansionWatchTableSwarm = {}
         self.IMAPConfigSwarm = {
             OgridRadius = 0,
@@ -1012,22 +1015,27 @@ AIBrain = Class(SwarmAIBrainClass) {
             self.IMAPConfigSwarm.OgridRadius = 11.5
             self.IMAPConfigSwarm.IMAPSize = 16
             self.IMAPConfigSwarm.Rings = 3
+            self.IMAPConfigSwarm.RescueRadius = 20
         elseif maxmapdimension == 512 then
             self.IMAPConfigSwarm.OgridRadius = 22.5
             self.IMAPConfigSwarm.IMAPSize = 32
             self.IMAPConfigSwarm.Rings = 2
+            self.IMAPConfigSwarm.RescueRadius = 40
         elseif maxmapdimension == 1024 then
             self.IMAPConfigSwarm.OgridRadius = 45.0
             self.IMAPConfigSwarm.IMAPSize = 64
             self.IMAPConfigSwarm.Rings = 1
+            self.IMAPConfigSwarm.RescueRadius = 60
         elseif maxmapdimension == 2048 then
             self.IMAPConfigSwarm.OgridRadius = 89.5
             self.IMAPConfigSwarm.IMAPSize = 128
             self.IMAPConfigSwarm.Rings = 0
+            self.IMAPConfigSwarm.RescueRadius = 80
         else
             self.IMAPConfigSwarm.OgridRadius = 180.0
             self.IMAPConfigSwarm.IMAPSize = 256
             self.IMAPConfigSwarm.Rings = 0
+            self.IMAPConfigSwarm.RescueRadius = 40
         end
     end,
 
