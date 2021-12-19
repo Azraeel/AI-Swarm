@@ -27,6 +27,7 @@ local SWARMCOPY = table.copy
 local SWARMGETN = table.getn
 local SWARMSORT = table.sort
 local SWARMEMPTY = table.empty
+local SWARMCOUNT = table.count
 local SWARMINSERT = table.insert
 local SWARMCAT = table.cat
 local SWARMREMOVE = table.remove
@@ -35,6 +36,7 @@ local SWARMFLOOR = math.floor
 local SWARMATAN2 = math.atan2
 local SWARMRANDOM = math.random
 local SWARMMIN = math.min
+local SWARMCEIL = math.ceil
 local SWARMMAX = math.max
 local SWARMSIN = math.sin
 local SWARMCOS = math.cos
@@ -4313,80 +4315,6 @@ Platoon = Class(SwarmPlatoonClass) {
         --LOG('* AI-Swarm: * ACUAttackAISwarm: BuildSACUEnhancementsSwarm returned false')
         return
     end,
-
-
-    TacticalAISwarm = function(self)
-        self:Stop()
-        local aiBrain = self:GetBrain()
-        local armyIndex = aiBrain:GetArmyIndex()
-        local platoonUnits = self:GetPlatoonUnits()
-        local unit
-
-        if not aiBrain:PlatoonExists(self) then return end
-
-        --GET THE Launcher OUT OF THIS PLATOON
-        for k, v in platoonUnits do
-            if SWARMENTITY(categories.STRUCTURE * categories.TACTICALMISSILEPLATFORM, v) then
-                unit = v
-                break
-            end
-        end
-
-        if not unit then return end
-
-        local bp = unit:GetBlueprint()
-        local weapon = bp.Weapon[1]
-        local maxRadius = weapon.MaxRadius
-        local minRadius = weapon.MinRadius
-        unit:SetAutoMode(true)
-
-        --DUNCAN - commented out
-        --local atkPri = { 'COMMAND', 'STRUCTURE STRATEGIC', 'STRUCTURE DEFENSE', 'CONSTRUCTION', 'EXPERIMENTAL MOBILE LAND', 'TECH3 MOBILE LAND',
-        --    'TECH2 MOBILE LAND', 'TECH1 MOBILE LAND', 'ALLUNITS' }
-
-        --DUNCAN - added energy production, removed construction, repriotised.
-        self:SetPrioritizedTargetList('Attack', {
-            categories.COMMAND,
-            categories.EXPERIMENTAL,
-            categories.MASSEXTRACTION * categories.TECH3,
-            categories.ENERGYPRODUCTION * categories.TECH3,
-            categories.MASSEXTRACTION * categories.TECH2,
-            categories.ENERGYPRODUCTION * categories.TECH2,
-            categories.STRUCTURE,
-            categories.TECH3 * categories.MOBILE})
-        while aiBrain:PlatoonExists(self) do
-            local target = false
-            local blip = false
-            while unit:GetTacticalSiloAmmoCount() < 1 or not target do
-                SWARMWAIT(70)
-                target = false
-                while not target do
-
-                    --DUNCAN - Commented out
-                    --if aiBrain:GetCurrentEnemy() and aiBrain:GetCurrentEnemy().Result == "defeat" then
-                    --    aiBrain:PickEnemyLogic()
-                    --end
-                    --target = AIUtils.AIFindBrainTargetInRange(aiBrain, self, 'Attack', maxRadius, atkPri, aiBrain:GetCurrentEnemy())
-
-                    if not target then
-                        target = self:FindPrioritizedUnit('Attack', 'Enemy', true, unit:GetPosition(), maxRadius)
-                    end
-                    if target then
-                        break
-                    end
-                    SWARMWAIT(30)
-                    if not aiBrain:PlatoonExists(self) then
-                        return
-                    end
-                end
-            end
-            if not target.Dead then
-                --LOG('*AI DEBUG: Firing Tactical Missile at enemy swine!')
-                IssueTactical({unit}, target)
-            end
-            SWARMWAIT(30)
-        end
-    end,
     
     -- 90% of this Relent0r's Work  --Scouting--
     ScoutingAISwarm = function(self)
@@ -4533,48 +4461,69 @@ Platoon = Class(SwarmPlatoonClass) {
     end,
 
     LandScoutingAISwarm = function(self)
-        AIAttackUtils.GetMostRestrictiveLayer(self)
 
         local aiBrain = self:GetBrain()
+
         local scout = self:GetPlatoonUnits()[1]
 
-
-        if not aiBrain.InterestList then
+        if not aiBrain.InterestList then 
             aiBrain:BuildScoutLocationsSwarm()
         end
 
-
-        if scout:TestToggleCaps('RULEUTC_CloakToggle') then
+        if scout:TestToggleCaps('RULEUTC_CloakToggle') then 
             scout:SetScriptBit('RULEUTC_CloakToggle', false)
         end
+
+        local numLoiter = SWARMCEIL(SWARMCOUNT(self)/3) 
+        local numMoving = SWARMCOUNT(self) - numLoiter 
 
         while not scout.Dead do
 
             local targetData = false
 
-
-            if aiBrain.IntelData.HiPriScouts < aiBrain.NumOpponents and SWARMGETN(aiBrain.InterestList.HighPriority) > 0 then
+            if SWARMGETN(aiBrain.InterestList.HighPriority) > 0 then 
                 targetData = aiBrain.InterestList.HighPriority[1]
-                aiBrain.IntelData.HiPriScouts = aiBrain.IntelData.HiPriScouts + 1
-                targetData.LastScouted = SWARMTIME()
-
                 aiBrain:SortScoutingAreas(aiBrain.InterestList.HighPriority)
-
-            elseif SWARMGETN(aiBrain.InterestList.LowPriority) > 0 then
+            elseif SWARMGETN(aiBrain.InterestList.LowPriority) > 0 then 
                 targetData = aiBrain.InterestList.LowPriority[1]
-                aiBrain.IntelData.HiPriScouts = 0
-                targetData.LastScouted = SWARMTIME()
-
                 aiBrain:SortScoutingAreas(aiBrain.InterestList.LowPriority)
             else
 
-                aiBrain.IntelData.HiPriScouts = 0
+                return self:SetAIPlan('ReturnToBaseAISwarm',aiBrain)
             end
 
+            local path, reason = AIAttackUtils.PlatoonGenerateSafePathTo(aiBrain, self.MovementLayer, scout:GetPosition(), targetData.Position, 400) 
 
-            if targetData then
+            IssueClearCommands(self)
 
-                local path, reason = AIAttackUtils.PlatoonGenerateSafePathTo(aiBrain, self.MovementLayer, scout:GetPosition(), targetData.Position, 400) --DUNCAN - Increase threatwieght from 100
+            if path then
+                local pathLength = SWARMGETN(path)
+                for i=1, pathLength-1 do
+                    self:MoveToLocation(path[i], false)
+                end
+            end
+
+            self:MoveToLocation(targetData.Position, false)
+
+            while not scout.Dead and not scout:IsIdleState() do
+                SWARMWAIT(25)
+            end
+
+            if numMoving > 0 then 
+                local targetData = false
+
+                if SWARMGETN(aiBrain.InterestList.HighPriority) > 0 then 
+                    targetData = aiBrain.InterestList.HighPriority[1]
+                    aiBrain:SortScoutingAreas(aiBrain.InterestList.HighPriority)
+                elseif SWARMGETN(aiBrain.InterestList.LowPriority) > 0 then 
+                    targetData = aiBrain.InterestList.LowPriority[1]
+                    aiBrain:SortScoutingAreas(aiBrain.InterestList.LowPriority)
+                else
+
+                    return self:SetAIPlan('ReturnToBaseAISwarm',aiBrain)
+                end
+
+                local path, reason = AIAttackUtils.PlatoonGenerateSafePathTo(aiBrain, self.MovementLayer, scout:GetPosition(), targetData.Position, 400) 
 
                 IssueClearCommands(self)
 
@@ -4587,13 +4536,9 @@ Platoon = Class(SwarmPlatoonClass) {
 
                 self:MoveToLocation(targetData.Position, false)
 
+            end 
 
-                while not scout.Dead and not scout:IsIdleState() do
-                    SWARMWAIT(25)
-                end
-            end
-
-            SWARMWAIT(10)
+            numMoving = numMoving - 1 
         end
     end,
 
@@ -6837,242 +6782,182 @@ Platoon = Class(SwarmPlatoonClass) {
     --- TEST FUNCTIONS BEGIN ---
     --- --- --- --- --- --- ---
 
-    -- AirScoutingAISwarm2 = function(self)
+    -- GetPlatoonBrain = function(self)
+    --     return self:GetBrain()
+    -- end,
+
+    -- SetPrioritizedTargetListSwarm = function(self, priTable)
+    --     self.PlatoonData.PrioritizedTargetList = priTable
+    -- end,
+
+    -- AirScoutingAISwarm = function(self)
     --     local patrol = self.PlatoonData.Patrol or false
     --     local scout = self:GetPlatoonUnits()[1]
     --     if not scout then
     --         return
     --     end
-    --     local aiBrain = self:GetBrain()
 
-    --     if not aiBrain.InterestList then
-    --         aiBrain:BuildScoutLocations()
-    --     end
-
-    --     if scout:TestToggleCaps('RULEUTC_CloakToggle') then
+    --     if not scout:TestToggleCaps('RULEUTC_CloakToggle') then
     --         scout:EnableUnitIntel('Toggle', 'Cloak')
     --     end
 
     --     if patrol == true then
+
     --         local patrolTime = self.PlatoonData.PatrolTime or 300
-    --         local estartX = nil
-    --         local estartZ = nil
-    --         local startX = nil
-    --         local startZ = nil
-    --         local patrolPositionX = nil
-    --         local patrolPositionZ = nil
 
-    --          while not scout.Dead do
+    --         while not scout.Dead do
 
-    --             if aiBrain:GetCurrentEnemy() then  -- this is the enemy we are fighting atm, so we can use it to get the enemy's location and avoid scouting for nothing.  This is more efficient than using the whole map for scouting.  It also makes sure that we don't keep scouting the same area over and over again while fighting multiple enemies at once.  The AI should be smart enough to realize that it's already scouted that area when there's an enemy in it, and shouldn't waste time doing it again until the threat level has gone down significantly.  This will save the AI some time in the long run, which will give it more time to spend on other things like upgrading, building units, etc...   -GBD
+    --             local targetArea = false
 
-    --                 estartX, estartZ = aiBrain:GetCurrentEnemy():GetArmyStartPos() -- get enemy army start position (this is where we will send our air scouts first)
+    --             -- If we have any "must scout" (manually added) targets, ignore the intel list and check those instead  
+    --             local mustScoutArea, mustScoutIndex = self:GetPlatoonBrain():GetUntaggedMustScoutArea()
+    --             if not mustScoutArea then
+    --                 -- If we didn't find any "must scout" (manually added) targets, check the intel list for a new target. 
+    --                 local highPri = false
 
-    --             elseif SWARMGETN(aiBrain.InterestList.MustScout) > 0 then -- If there are any "must scout" (manually added by player) locations with unknown threat levels, then go scout them first instead of going through the entire list of locations with unknown threat levels again (we did this in Function 1). -GBD
+    --                 local unknownThreats = self:GetPlatoonBrain():GetThreatsAroundPosition(scout:GetPosition(), 16, true, 'Unknown')
 
-    --                 targetData = aiBrain.InterestList.MustScout[1] -- targetData is our "must scout" target from our InterestList table in our main code below us -GBD
+    --                 if SWARMGETN(unknownThreats) > 0 and unknownThreats[1][3] > 25 then
+    --                     self:SetPrioritizedTargetListSwarm('Attack', {unknownThreats[1][1], unknownThreats[1][2]})
 
-    --                 targetArea = targetData.Position -- get position of target from targetData table above -GBD
+    --                     targetData = unknownThreats[1]
 
-    --             elseif SWARMGETN(aiBrain.InterestList.HighPriority) > 0 and aiBrain.IntelData.AirHiPriScouts < 1 and aiBrain:GetCurrentEnemy() == false then -- If there are any high priority locations with unknown threat levels and we don't have any recon units outside of our base yet, then go scout them first instead of going through the entire list of locations with unknown threat levels again (we did this in Function 1). -GBD
+    --                     targetData.LastScouted = SWARMTIME()
 
-    --                 aiBrain.IntelData.AirHiPriScouts = aiBrain.IntelData.AirHiPriScouts + 1 -- increase number of recon units outside of base already by 1 -GBD
+    --                     targetArea = table.copy(targetData.Position)
 
-    --                 highPri = true -- set highPri to true because we're going to use these high priority targets now instead of going through all interest list targets below us -GBD
+    --                     --self:SetPlatoonFormationOverride('NoFormation')
+    --                     --self:Stop()
+    --                     --self:MoveToLocation(targetArea, false)
+    --                     --self:SetPlatoonFormationOverride('AttackFormation')
 
-    --                 targetData = aiBrain.InterestList[1] -- get position of highest priority target from interestList table above -GBD
+    --                 elseif self:GetPlatoonBrain().IntelData.AirHiPriScouts < self:GetPlatoonBrain().NumOpponents and self:GetPlatoonBrain().IntelData.AirLowPriScouts < 1
+    --                 and SWARMGETN(self:GetPlatoonBrain().InterestList.HighPriority) > 0 then
+    --                     highPri = true
 
-    --                 targetArea = targetData[3] -- get position of highest priority target from interestList table above -GBD
+    --                     targetData = self:GetPlatoonBrain().InterestList.HighPriority[1]
+    --                     targetData.LastScouted = SWARMTIME()
 
-    --             elseif SWARMGETN(aiBrain.InterestList[1]) > 0 and aiBrain:GetCurrentEnemy() == false then -- If there are any low priority locations with unknown threat levels and we don't have any recon units outside of our base yet, then go scout them first instead of going through the entire list of locations with unknown threat levels again (we did this in Function 1). -GBD
+    --                     targetArea = table.copy(targetData.Position)
 
-    --                 aiBrain.IntelData.AirLowPriScouts = aiBrain.IntelData.AirLowPriScouts + 1 -- increase number of recon units outside of base already by 1 -GBD
+    --                 elseif self:GetPlatoonBrain().IntelData.AirLowPriScouts < 1 and SWARMGETN(self:GetPlatoonBrain().InterestList.LowPriority) > 0 then
+    --                     highPri = false
 
-    --                 targetData = aiBrain.InterestList[1] -- get position of lowest priority target from interestList table above -GBD
+    --                     targetData = self:GetPlatoonBrain().InterestList.LowPriority[1]
+    --                     targetData.LastScouted = SWARMTIME()
 
-    --                 targetArea = targetData[3] -- get position of lowest priority target from interestList table above -GBD
+    --                     targetArea = table.copy(targetData.Position)
 
+    --                 end
     --             else
-    --                 break
+    --                 -- If we found a "must scout" (manually added) target, check that target instead of the intel list.  -GKR 7/30/06
+    --                 mustScoutArea.TaggedBy = scout
+
+    --                 targetData = mustScoutArea
+
+    --                 targetArea = table.copy(targetData.Position)
     --             end
 
-    --             if SWARMTIME() > aiBrain.LastScoutHi + 60 then
-    --                 aiBrain.LastScoutHi = SWARMTIME()
-    --                 self:Stop()
-    --                 local vec = self:DoAirScoutVecs(scout, targetArea)
-    --                 while not scout.Dead and not scout:IsIdleState() do
-    --                     if VDist2Sq(vec[1], vec[3], scout:GetPosition()[1], scout:GetPosition()[3]) < 15625 then
-    --                         if mustScoutArea then
-
-    --                             for idx,loc in aiBrain.InterestList.MustScout do
-    --                                 if loc == mustScoutArea then
-    --                                     SWARMREMOVE(aiBrain.InterestList.MustScout, idx)
-    --                                    break
-    --                                 end
-    --                             end
-    --                         end
-
-    --                         break
-    --                     end
-
-    --                     if VDist3(scout:GetPosition(), targetArea) < 25 then
-    --                         break
-    --                     end
-
-    --                     SWARMWAIT(50)
-    --                 end  -- while loop to check when we're close enough to our desired area to start scouting it -GBD
-
-    --             elseif SWARMTIME() > aiBrain.LastScoutLo + 60 then  -- If we've been stuck doing low priority scouting for more than 60 seconds, and there are any high priority locations with unknown threat levels that we can scout instead, then go do those instead (we did this in Function 1). -GBD
-
-    --                 aiBrain.LastScoutLo = SWARMTIME()  -- set last time we did low priority scouting to current time so we don't keep doing it over and over again -GBD
-
-    --                 aiBrain.IntelData.AirHiPriScouts = 0  -- reset number of recon units outside of base already back to 0 since we're going to use these high priority targets now instead of going through all interest list targets below us -GBD
-
-    --                 highPri = true  -- set highPri to true because we're going to use these high priority targets now instead of going through all interest list targets below us -GBD
-
-    --                 targetData = aiBrain.InterestList[1]  -- get position of highest priority target from interestList table above -GBD
-
-    --                 targetArea = targetData[3]  -- get position of highest priority target from interestList table above -GBD
-
-    --             elseif SWARMTIME() > aiBrain.LastScouting + 30 then   -- If we haven't done any scouting in the past 30 seconds, or there are no known enemy positions at all, or there are no known enemy positions on the currently scouted area (this is where the "else" part comes into play), then go scout an unknown location on the map randomly (we did this in Function 1). This will hopefully help prevent the AI from getting stuck trying to find new spots to scout when it has already fully scouted the entire map and there are no more spots left that it doesn't know about yet (it will still continue sending air scouts onto random locations until it finds one that hasn't been scouted yet). Note that this does not apply when there is an enemy base nearby because the AI should be aggressively pushing towards finding and destroying enemy bases whenever possible instead of wasting time trying to find more spots to scout when it has already searched the entire map and found nothing useful yet (we did this in Function 2). Also note that this does not apply when there is an ACU nearby because the AI should be aggressively pushing towards finding and destroying the ACU whenever possible instead of wasting time trying to find more spots to scout when it has already searched the entire map and found nothing useful yet (we did this in Function 3). -GBD
-
-    --                 aiBrain.LastScouting = SWARMTIME()  -- set last time we did any scouting back to current time so we don't keep doing it over and over again -GBD
-
-    --                 targetArea = AIUtils.AIFindBrainTargetInRange(aiBrain, scout, 'Attack', aiBrain:GetCurrentEnemy():GetArmyIndex(), 99999, {'STRUCTURE DEFENSE AIR', 'STRUCTURE DEFENSE LAND', 'ALLUNITS'})  -- get an unknown location on the map that is closest to our current enemy's base (this is where the "else" part comes into play) -GBD
-
-    --             else
-    --                 break
+    --             if not scout:TestToggleCaps('RULEUTC_CloakToggle') then
+    --                 scout:EnableUnitIntel('Toggle', 'Cloak')
     --             end
 
     --             if targetArea then
     --                 self:Stop()
 
     --                 local vec = self:DoAirScoutVecs(scout, targetArea)
+
     --                 while not scout.Dead and not scout:IsIdleState() do
+
     --                     if VDist2Sq(vec[1], vec[3], scout:GetPosition()[1], scout:GetPosition()[3]) < 15625 then
-    --                         if mustScoutArea then
-
-    --                             for idx,loc in aiBrain.InterestList.MustScout do
-    --                                 if loc == mustScoutArea then
-    --                                     SWARMREMOVE(aiBrain.InterestList.MustScout, idx)
-    --                                    break
-    --                                 end
-    --                             end
-    --                         end
-
-    --                         break
-    --                     end
-
-    --                     if VDist3(scout:GetPosition(), targetArea) < 25 then
     --                         break
     --                     end
 
     --                     SWARMWAIT(50)
-    --                 end  -- while loop to check when we're close enough to our desired area to start scouting it -GBD
-
-    --             elseif SWARMTIME() > aiBrain.LastScouting + 30 then   -- If we've been stuck doing low priority scouting for more than 30 seconds, and there are any high priority locations with unknown threat levels that we can scout instead, then go do those instead (we did this in Function 1). -GBD
-
-    --                 aiBrain.LastScouting = SWARMTIME()  -- set last time we did any scouting back to current time so we don't keep doing it over and over again -GBD
-
-    --                 aiBrain.IntelData.AirHiPriScouts = 0  -- reset number of recon units outside of base already back to 0 since we're going to use these high priority targets now instead of going through all interest list targets below us -GBD
-
-    --                 highPri = true  -- set highPri to true because we're going to use these high priority targets now instead of going through all interest list targets below us -GBD
-
-    --                 targetData = aiBrain.InterestList[1]  -- get position of highest priority target from interestList table above -GBD
-
-    --                 targetArea = targetData[3]  -- get position of highest priority target from interestList table above -GBD
-
-    --             elseif SWARMTIME() > aiBrain.LastScouting + 60 then   -- If we've been stuck doing low or high priority scouting for more than 60 seconds, or there are no known enemy positions at all on the currently scouted area (this is where the "else" part comes into play), then go scout an unknown location on the map randomly (we did this in Function 1). This will hopefully help prevent the AI from getting stuck trying to find new spots to scout when it has already fully scouted the entire map and there are no more spots left that it doesn't know about yet (it will still continue sending air scouts onto random locations until it finds one that hasn't been scouted yet). Note that this does not apply when there is an enemy base nearby because the AI should be aggressively pushing towards finding and destroying enemy bases
-
-    --                 aiBrain.LastScouting = SWARMTIME()  
-
-    --                 targetArea = AIUtils.AIFindBrainTargetInRange(aiBrain, scout, 'Attack', aiBrain:GetCurrentEnemy():GetArmyIndex(), 99999, {'STRUCTURE DEFENSE AIR', 'STRUCTURE DEFENSE LAND', 'ALLUNITS'})  
-    --             end
-    --         end
-    --     else
-    --         while not scout.Dead do
-    --             local targetArea = false
-    --             local highPri = false
-
-    --             local mustScoutArea, mustScoutIndex = aiBrain:GetUntaggedMustScoutArea()
-    --             local unknownThreats = aiBrain:GetThreatsAroundPosition(scout:GetPosition(), 16, true, 'Unknown')
-    --             if mustScoutArea then
-    --                 mustScoutArea.TaggedBy = scout
-    --                 targetArea = mustScoutArea.Position
-
-    --             elseif SWARMGETN(unknownThreats) > 0 and unknownThreats[1][3] > 25 then
-    --                 aiBrain:AddScoutArea({unknownThreats[1][1], 0, unknownThreats[1][2]})
-
-    --             elseif aiBrain.IntelData.AirHiPriScouts < aiBrain.NumOpponents and aiBrain.IntelData.AirLowPriScouts < 1 and SWARMGETN(aiBrain.InterestList.HighPriority) > 0 then  -- if we don't have enough recon units outside of base already -GBD
-
-    --                 aiBrain.IntelData.AirHiPriScouts = aiBrain.IntelData.AirHiPriScouts + 1 -- increase number of recon units outside of base already by 1 -GBD
-
-    --                 highPri = true -- set highPri to true because we're going to use these high priority targets now instead of going through all interest list targets below us -GBD
-
-    --                 targetData = aiBrain.InterestList[1] -- get position of highest priority target from interestList table above -GBD
-
-    --                 targetArea = targetData[3] -- get position of highest priority target from interestList table above -GBD
-
-    --             elseif SWARMGETN(aiBrain.InterestList[1]) > 0 and aiBrain:GetCurrentEnemy() == false then  -- if we don't have any targets in our interest list at all -GBD
-
-    --                 aiBrain.IntelData.AirLowPriScouts = aibrain.IntelData.AirLowPriScouts + 1 -- increase number of recon units outside of base already by 1 -GBD
-
-    --                 highPri = true   -- set highPri to true because we're going to use these high priority targets now instead of going through all interest list targets below us -GBD
-
-    --                 targetData = aibrain.InterestList[1] -- get position of lowest priority target from interestList table above -GBD
-
-    --                 targetArea = targetData[3] -- get position of lowest priority target from interestList table above -GBD 
-    --                 -- this is where the AI will send air scouts first (to check for enemy air units) before checking for ground units or structures  --- GBD  (it will also check for enemy anti-air units here as well)  --- GBD  (this is why it's important that the AI doesn't have too many air scouts) --- GBD  (also see the note about the importance of having enough recon units outside the base in Function 1) --- GBD   
-    --             end   
-
-    --             if targetArea then     
-    --                 self:Stop()    
-
-    --                 local vec = self:DoAirScoutVecs(scout, targetArea)    
-
-    --                 while not scout.Dead and not scout:IsIdleState() do        
-    --                     if VDist2Sq(vec[1], vec[3], scout:GetPosition()[1], scout:GetPosition()[3]) < 15625 then          
-    --                         if mustScoutArea then    
-    --                                 for idx,loc in aibrain.InterestList.MustScout do                 
-    --                                     if loc == mustScoutArea then                      
-    --                                         SWARMREMOVE(aibrain.InterestList.MustScout, idx)                     
-    --                                     break                   
-    --                                     end               
-    --                                 end           
-    --                             end          
-
-    --                             break       
-    --                         end        
-
-    --                         if VDist3(scout:GetPosition(), targetArea) < 25 then          
-    --                             break       
-    --                         end         
-
-    --                         SWARMWAIT(50)    
-    --                     end  
+    --                     self:MoveToLocation({vec[1], 0, vec[3]}, false) -- Move to target
     --                 end
+    --             else
+    --                 SWARMWAIT(10)
+    --             end
 
-    --             elseif SWARMTIME() > aiBrain.LastScouting + 30 then  
+    --         end
 
-    --                 aiBrain.LastScouting = SWARMTIME()  
+    --     else
 
-    --                 aiBrain.IntelData.AirHiPriScouts = 0  
+    --         while not scout.Dead do
 
-    --                 highPri = true  
+    --             local targetArea = false
 
-    --                 targetData = aibrain.InterestList[1]  
+    --             -- If we have any "must scout" (manually added) targets, ignore the intel list and check those instead
+    --             local mustScoutArea, mustScoutIndex = self:GetPlatoonBrain():GetUntaggedMustScoutArea()
+    --             if not mustScoutArea then
+    --                 -- If we didn't find any "must scout" (manually added) targets, check the intel list for a new target. 
+    --                 local highPri = false
 
-    --                 targetArea = targetData[3] 
+    --                 local unknownThreats = self:GetPlatoonBrain():GetThreatsAroundPosition(scout:GetPosition(), 16, true, 'Unknown')
 
-    --             elseif SWARMTIME() > aiBrain.LastScouting + 60 then  
+    --                 if SWARMGETN(unknownThreats) > 0 and unknownThreats[1][3] > 25 then
+    --                     self:SetPrioritizedTargetListSwarm('Attack', {unknownThreats[1][1], unknownThreats[1][2]})
 
-    --                 aiBrain.LastScouting = SWARMTIME()  
+    --                     targetData = unknownThreats[1]
 
-    --                 targetArea = AIUtils.AIFindBrainTargetInRange(aiBrain, scout, 'Attack', aiBrain:GetCurrentEnemy():GetArmyIndex(), 99999, {'STRUCTURE DEFENSE AIR', 'STRUCTURE DEFENSE LAND', 'ALLUNITS'})   
-    --             end     
-    --         end     
-    --     end     
-    -- end,     
+    --                     targetData.LastScouted = SWARMTIME()
+
+    --                     targetArea = table.copy(targetData.Position)
+
+    --                 elseif self:GetPlatoonBrain().IntelData.AirHiPriScouts < self:GetPlatoonBrain().NumOpponents and self:GetPlatoonBrain().IntelData.AirLowPriScouts < 1
+    --                 and SWARMGETN(self:GetPlatoonBrain().InterestList.HighPriority) > 0 then
+    --                     highPri = true
+
+    --                     targetData = self:GetPlatoonBrain().InterestList.HighPriority[1]
+    --                     targetData.LastScouted = SWARMTIME()
+
+    --                     targetArea = table.copy(targetData.Position)
+
+    --                 elseif self:GetPlatoonBrain().IntelData.AirLowPriScouts < 1 and SWARMGETN(self:GetPlatoonBrain().InterestList.LowPriority) > 0 then
+    --                     highPri = false
+
+    --                     targetData = self:GetPlatoonBrain().InterestList.LowPriority[1]
+    --                     targetData.LastScouted = SWARMTIME()
+
+    --                     targetArea = table.copy(targetData.Position)
+    --                 end
+    --             else
+    --                 -- If we found a "must scout" (manually added) target, check that target instead of the intel list. 
+    --                 mustScoutArea.TaggedBy = scout
+
+    --                 targetData = mustScoutArea
+
+    --                 targetArea = table.copy(targetData.Position)
+    --             end
+
+    --             if not scout:TestToggleCaps('RULEUTC_CloakToggle') then
+    --                 scout:EnableUnitIntel('Toggle', 'Cloak')
+    --             end
+
+    --             if targetArea then
+    --                 self:Stop()
+
+    --                 local vec = self:DoAirScoutVecs(scout, targetArea)
+
+    --                 while not scout.Dead and not scout:IsIdleState() do
+
+    --                     if VDist2Sq(vec[1], vec[3], scout:GetPosition()[1], scout:GetPosition()[3]) < 15625 then
+    --                         break
+    --                     end
+
+    --                     SWARMWAIT(50)
+    --                     self:MoveToLocation({vec[1], 0, vec[3]}, false) -- Move to target
+    --                 end
+    --             else
+    --                 SWARMWAIT(10)
+    --             end
+
+    --         end
+
+    --     end
+
+    -- end,   
 
     --- --- --- --- --- --- ---
     --- TEST FUNCTIONS END ---

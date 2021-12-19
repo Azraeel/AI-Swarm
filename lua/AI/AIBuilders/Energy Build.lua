@@ -55,7 +55,7 @@ BuilderGroup {
         BuilderName = 'Swarm Power low trend - Scale Power',
         PlatoonTemplate = 'T1EngineerBuilderSwarm',
         Priority = 660,
-        InstanceCount = 1,                                                     
+        InstanceCount = 2,                                                     
         DelayEqualBuildPlattons = {'Energy', 3},
         BuilderConditions = {
             { UCBC, 'HaveLessThanUnitsWithCategory', { 1, categories.ENERGYPRODUCTION - categories.TECH1 - categories.COMMAND } },

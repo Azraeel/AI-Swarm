@@ -1281,7 +1281,6 @@ function AirScoutPatrolSwarmAIThread(self, aiBrain)
     end
 end
 
-
 CountSoonMassSpotsSwarm = function(aiBrain)
     --LOG("Are we starting CountSoonMassSpotsSwarm")
     local enemies={}
