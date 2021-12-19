@@ -300,7 +300,7 @@ BuilderGroup {
                 AssisteeType = categories.STRUCTURE,
                 AssistClosestUnit = true,   
                 AssistUntilFinished = true,
-                AssistRange = 45,
+                AssistRange = 65,
                 BeingBuiltCategories = {categories.STRUCTURE * categories.HYDROCARBON},
                 Time = 75,
             },
