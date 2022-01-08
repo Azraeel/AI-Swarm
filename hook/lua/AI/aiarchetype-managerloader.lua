@@ -487,4 +487,3 @@ function MarkerGridThreatManagerThreadSwarm(aiBrain)
         end
     end
 end 
-

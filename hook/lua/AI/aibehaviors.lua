@@ -624,7 +624,7 @@ function ExtractorClosestSwarm(aiBrain, unit, unitBp)
     end
 end
 
-GetStartingReclaimSwarm = function(aiBrain)
+--[[GetStartingReclaimSwarm = function(aiBrain)
     --LOG('Reclaim Start Check')
     local startReclaim
     local posX, posZ = aiBrain:GetArmyStartPos()
@@ -661,4 +661,103 @@ GetStartingReclaimSwarm = function(aiBrain)
         end
     end
     --LOG('Complete Get Starting Reclaim')
+end]]--
+
+GetStartingReclaimSwarm = function(aiBrain)
+    --LOG('Reclaim Start Check')
+    local startReclaim
+    local posX, posZ = aiBrain:GetArmyStartPos()
+    --LOG('Start Positions X'..posX..' Z '..posZ)
+    local minRec = 10
+    local reclaimTable = {}
+    local reclaimScanArea = SWARMMAX(ScenarioInfo.size[1]-40, ScenarioInfo.size[2]-40) / 4
+    local reclaimTotal = 0
+        if not aiBrain.StartReclaimList then  --if we haven't already made the table... make it!  (this is for when we're running multiple times in one game-session)   -GBD  (also added some efficiency improvements from GetStartingReclaimSwarm())
+            aiBrain.StartReclaimList = {}
+            local startReclaim = GetReclaimablesInRect(posX - reclaimScanArea, posZ - reclaimScanArea, posX + reclaimScanArea, posZ + reclaimScanArea)
+            --LOG('Initial Reclaim Table size is '..SWARMGETN(startReclaim))
+            if startReclaim and SWARMGETN(startReclaim) > 0 then
+                for k,v in startReclaim do
+                    if not IsProp(v) then continue end
+                    if v.MaxMassReclaim and v.MaxMassReclaim >= minRec then
+                        --LOG('High Value Reclaim is worth '..v.MaxMassReclaim)
+                        local rpos = v:GetCachePosition() --get the reclaim position
+                        local distance = VDist2( rpos[1], rpos[3], posX, posZ ) --calculate the distance from the main base to this reclaim
+                        SWARMINSERT(aiBrain.StartReclaimList, { Reclaim = v, Distance = distance }) --add it to the list of reclaimables
+                    end
+                end
+                aiBrain.StartReclaimListSorted = {} --create a new table that will be sorted by distance (so we can grab the closest ones first)
+                for k,v in aiBrain.StartReclaimList do --iterate through all of them and sort them by distance (closest to furthest)
+                    SWARMINSERT(aiBrain.StartReclaimListSorted, { Reclaim = v, Distance = v.Distance })  --insert into our sorted table with key of distance
+                end
+                SWARMSORT(aiBrain.StartReclaimListSorted, function(a,b) return a.Distance < b.Distance end) --sort the table by distance (closest to furthest)
+            end
+        else --if we've already made the table... check if it's empty!  (this is for when we're running multiple times in one game-session)   -GBD  (also added some efficiency improvements from GetStartingReclaimSwarm())
+            if not aiBrain.StartReclaimList[1] then --if our sorted list is empty...
+                local startReclaim = GetReclaimablesInRect(posX - reclaimScanArea, posZ - reclaimScanArea, posX + reclaimScanArea, posZ + reclaimScanArea)
+                --LOG('Initial Reclaim Table size is '..SWARMGETN(startReclaim))
+                if startReclaim and SWARMGETN(startReclaim) > 0 then
+                    for k,v in startReclaim do
+                        if not IsProp(v) then continue end
+                        if v.MaxMassReclaim and v.MaxMassReclaim >= minRec then
+                            --LOG('High Value Reclaim is worth '..v.MaxMassReclaim)
+                        	local rpos = v:GetCachePosition() --get the reclaim position
+                        	local distance = VDist2( rpos[1], rpos[3], posX, posZ ) --calculate the distance from the main base to this reclaim
+                        	SWARMINSERT(aiBrain.StartReclaimList, { Reclaim = v, Distance = distance }) --add it to the list of reclaimables
+                        end
+                    end
+                    aiBrain.StartReclaimListSorted = {} --create a new table that will be sorted by distance (so we can grab the closest ones first)
+                    for k,v in aiBrain.StartReclaimList do --iterate through all of them and sort them by distance (closest to furthest)
+                        SWARMINSERT(aiBrain.StartReclaimListSorted, { Reclaim = v, Distance = v.Distance })  --insert into our sorted table with key of distance
+                    end
+                    SWARMSORT(aiBrain.StartReclaimListSorted, function(a,b) return a.Distance < b.Distance end) --sort the table by distance (closest to furthest)
+                end
+            else --if our sorted list is not empty...
+                local startReclaim = GetReclaimablesInRect(posX - reclaimScanArea, posZ - reclaimScanArea, posX + reclaimScanArea, posZ + reclaimScanArea)
+                if startReclaim and SWARMGETN(startReclaim) > 0 then --if there are still more reclaims in the area...
+                    for k,v in startReclaim do --iterate through all of them and check if they're already in our list!  If they aren't... add them!   -GBD
+                        if not IsProp(v) then continue end
+                        if v.MaxMassReclaim and v.MaxMassReclaim >= minRec then --if it's a reclaim unit and it's worth more than 10 mass...
+                            --LOG('High Value Reclaim is worth '..v.MaxMassReclaim)
+                        	local rpos = v:GetCachePosition() --get the reclaim position
+                        	local distance = VDist2( rpos[1], rpos[3], posX, posZ ) --calculate the distance from the main base to this reclaim
+                        	if not SWARMCONTINENTALISM then  --if we're not running continentalism... (this is for when we're running multiple times in one game-session)   -GBD  (also added some efficiency improvements from GetStartingReclaimSwarm())
+                        	    if not aiBrain.StartReclaimListSorted[1] or aiBrain.StartReclaimListSorted[1].Distance > distance then --if the closest reclaim in our sorted list is farther away than this one...
+                        	        SWARMINSERT(aiBrain.StartReclaimList, { Reclaim = v, Distance = distance }) --add it to the list of reclaimables
+                        	    end
+                        	else  --if we're running continentalism... (this is for when we're running multiple times in one game-session)   -GBD  (also added some efficiency improvements from GetStartingReclaimSwarm())
+                        	    if not aiBrain.StartReclaimListSorted[1] or aiBrain.StartReclaimListSorted[1].Distance > distance then --if the closest reclaim in our sorted list is farther away than this one...
+                        	        SWARMINSERT(aiBrain.StartReclaimList, { Reclaim = v, Distance = distance }) --add it to the list of reclaimables
+                                    else  --otherwise...
+                                        local found = false
+                                        for k,v in aiBrain.StartReclaimList do --iterate through all of them and check if they're already in our list!  If they aren't... add them!   -GBD
+                                            if v.Reclaim == v then --if it's the same unit...
+                                                found = true --we've found it!  Break out of the loop!
+                                                break
+                                            end
+                        	        end
+
+                        	        if not found then --if we didn't find it... (this is for when we're running multiple times in one game-session)   -GBD  (also added some efficiency improvements from GetStartingReclaimSwarm())
+                        	            SWARMINSERT(aiBrain.StartReclaimList, { Reclaim = v, Distance = distance }) --add it to the list of reclaimables
+                        	        end
+                                end
+                        	end
+
+                        end
+                    end
+                else --if there are no more reclaims in the area... (this is for when we're running multiple times in one game-session)   -GBD  (also added some efficiency improvements from GetStartingReclaimSwarm())
+                    aiBrain.StartReclaimListSorted = {} --create a new table that will be sorted by distance (so we can grab the closest ones first)
+                    for k,v in aiBrain.StartReclaimList do --iterate through all of them and sort them by distance (closest to furthest)
+                        SWARMINSERT(aiBrain.StartReclaimListSorted, { Reclaim = v, Distance = v.Distance })  --insert into our sorted table with key of distance
+                    end
+                    SWARMSORT(aiBrain.StartReclaimListSorted, function(a,b) return a.Distance < b.Distance end) --sort the table by distance (closest to furthest)
+                end
+            end
+        end  --if not aiBrain.StartReclaimList[1] then   -GBD  (also added some efficiency improvements from GetStartingReclaimSwarm())
+
+    
+    if aiBrain.StartReclaimListSorted and SWARMGETN(aiBrain.StartReclaimListSorted) > 0 then --if we have something in our sorted list...
+        local closest = aiBrain.StartReclaimListSorted[1]  --grab the closest one!   -GBD
+        return closest.Distance, closest.Reclaim  --return it's distance and reclaim unit!   -GBD
+    end
 end

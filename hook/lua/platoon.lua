@@ -2955,7 +2955,6 @@ Platoon = Class(SwarmPlatoonClass) {
 
     end,
 
-
     -- 100% Relent0r's Work 
     ManagerEngineerAssistAISwarm = function(self)
         local aiBrain = self:GetBrain()
