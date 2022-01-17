@@ -6956,8 +6956,8 @@ Platoon = Class(SwarmPlatoonClass) {
 
     --     end
 
-    -- end,   
-
+    -- end,  
+    
     --- --- --- --- --- --- ---
     --- TEST FUNCTIONS END ---
     --- --- --- --- --- --- ---

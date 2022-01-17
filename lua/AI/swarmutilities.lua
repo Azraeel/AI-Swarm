@@ -1184,7 +1184,6 @@ function GetDangerZoneRadii(bool)
     return BasePanicZone, BaseMilitaryZone, BaseEnemyZone
 end
 
--- Requires Rework
 function AirScoutPatrolSwarmAIThread(self, aiBrain)
     
     local scout = self:GetPlatoonUnits()[1]
@@ -1192,93 +1191,198 @@ function AirScoutPatrolSwarmAIThread(self, aiBrain)
         return
     end
 
-   
+    -- If we're given a location to scout, go ahead and do so. Otherwise, look for something to scout.
     if not aiBrain.InterestList then
         aiBrain:BuildScoutLocationsSwarm()
     end
+    
+    local mustScoutArea, mustScoutIndex = aiBrain:GetUntaggedMustScoutArea()
+    if mustScoutArea then
+        --LOG('* AI-Swarm: * AirScoutPatrolSwarmAIThread: Must Scout Area')
+        local targetData = aiBrain.InterestList.MustScout[mustScoutIndex]
 
-   
-    if scout:TestToggleCaps('RULEUTC_CloakToggle') then
-        scout:EnableUnitIntel('Toggle', 'Cloak')
-    end
+        -- If we're at the location then mark it as being scouted and remove it from the list of locations to scout.
+        if VDist2Sq(scout:GetPosition()[1], scout:GetPosition()[3], targetData.Position[1], targetData.Position[3]) < 15625 then
+            SWARMREMOVE(aiBrain.InterestList.MustScout, mustScoutIndex)
 
-    while not scout.Dead do
-        local targetArea = false
-        local highPri = false
 
-        local mustScoutArea, mustScoutIndex = aiBrain:GetUntaggedMustScoutArea()
-        local unknownThreats = aiBrain:GetThreatsAroundPosition(scout:GetPosition(), 16, true, 'Unknown')
+            if SWARMGETN(aiBrain.InterestList.MustScout) < 1 then
+                aiBrain:SortScoutingAreas(aiBrain.InterestList.HighPriority)
+            end
 
-        --1) If we have any "must scout" (manually added) locations that have not been scouted yet, then scout them
-        if mustScoutArea then
-            mustScoutArea.TaggedBy = scout
-            targetArea = mustScoutArea.Position
-
-        --2) Scout "unknown threat" areas with a threat higher than 5
-        elseif SWARMGETN(unknownThreats) > 0 and unknownThreats[1][3] > 5 then
-            aiBrain:AddScoutArea({unknownThreats[1][1], 0, unknownThreats[1][2]})
-
-        --3) Scout high priority locations
-        elseif aiBrain.IntelData.AirHiPriScouts < aiBrain.NumOpponents and aiBrain.IntelData.AirLowPriScouts < 1
-        and SWARMGETN(aiBrain.InterestList.HighPriority) > 0 then
-            aiBrain.IntelData.AirHiPriScouts = aiBrain.IntelData.AirHiPriScouts + 1
-
-            highPri = true
-
-            targetData = aiBrain.InterestList.HighPriority[1]
-            targetData.LastScouted = SWARMTIME()
-            targetArea = targetData.Position
-
-            aiBrain:SortScoutingAreas(aiBrain.InterestList.HighPriority)
-
-        --4) Every time we scout NumOpponents number of high priority locations, scout a low priority location
-        elseif aiBrain.IntelData.AirLowPriScouts < 1 and SWARMGETN(aiBrain.InterestList.LowPriority) > 0 then
-            aiBrain.IntelData.AirHiPriScouts = 0
-            aiBrain.IntelData.AirLowPriScouts = aiBrain.IntelData.AirLowPriScouts + 1
-
-            targetData = aiBrain.InterestList.LowPriority[1]
-            targetData.LastScouted = SWARMTIME()
-            targetArea = targetData.Position
-
-            aiBrain:SortScoutingAreas(aiBrain.InterestList.LowPriority)
-        else
-            aiBrain.IntelData.AirLowPriScouts = 0
-            aiBrain.IntelData.AirHiPriScouts = 0
-        end
-
-        --Air scout do scoutings.
-        if targetArea then
+            --LOG('* AI-Swarm: * AirScoutPatrolSwarmAIThread: Must Scout Area')
+        elseif not scout:IsIdleState() then
             self:Stop()
 
-            local vec = self:DoAirScoutVecs(scout, targetArea)
+            local vec = self:DoAirScoutVecs(scout, targetData.Position)
 
             while not scout.Dead and not scout:IsIdleState() do
-
-              
                 if VDist2Sq(vec[1], vec[3], scout:GetPosition()[1], scout:GetPosition()[3]) < 15625 then
-                    if mustScoutArea then
-                        for idx,loc in aiBrain.InterestList.MustScout do
-                            if loc == mustScoutArea then
-                               SWARMREMOVE(aiBrain.InterestList.MustScout, idx)
-                               break
-                            end
-                        end
-                    end
-                   
-                    break
-                end
-
-                if VDist3(scout:GetPosition(), targetArea) < 25 then
                     break
                 end
 
                 SWARMWAIT(50)
             end
-        else
-            SWARMWAIT(10)
+        elseif aiBrain.IntelData.AirHiPriScouts < aiBrain.NumOpponents and aiBrain.IntelData.AirLowPriScouts < 1 then
+            --LOG('* AI-Swarm: * AirScoutPatrolSwarmAIThread: Must Scout Area')
+
+            -- If we're at the location then mark it as being scouted and remove it from the list of locations to scout.
+            if VDist2Sq(scout:GetPosition()[1], scout:GetPosition()[3], targetData.Position[1], targetData.Position[3]) < 15625 then
+                SWARMREMOVE(aiBrain.InterestList.MustScout, mustScoutIndex)
+
+                if SWARMGETN(aiBrain.InterestList.MustScout) < 1 then
+                    aiBrain:SortScoutingAreas(aiBrain.InterestList.HighPriority)
+                end
+
+                --LOG('* AI-Swarm: * AirScoutPatrolSwarmAIThread: Must Scout Area')
+
+            elseif not scout:IsIdleState() then  -- Go to the location
+                self:Stop()
+
+                local vec = self:DoAirScoutVecs(scout, targetData.Position)
+
+                while not scout.Dead and not scout:IsIdleState() do
+                    if VDist2Sq(vec[1], vec[3], scout:GetPosition()[1], scout:GetPosition()[3]) < 15625 then
+                        break
+                    end
+
+                    SWARMWAIT(50)
+                end
+            elseif aiBrain.IntelData.AirHiPriScouts >= aiBrain.NumOpponents and aiBrain.IntelData.AirLowPriScouts < 1 then  -- Go to low pri list if we're done with high pri list
+                --LOG('* AI-Swarm: * AirScoutPatrolSwarmAIThread: Must Scout Area')
+
+                SWARMREMOVE(aiBrain.InterestList.MustScout, mustScoutIndex)
+
+                if SWARMGETN(aiBrain.InterestList.MustScout) < 1 then
+                    aiBrain:SortScoutingAreas(aiBrain.InterestList.HighPriority)
+                end
+
+            elseif aiBrain.IntelData.AirHiPriScouts < aiBrain.NumOpponents and aiBrain.IntelData.AirLowPriScouts >= 1 then  -- Go to high pri list if we're done with low pri list (and still have num opponents)
+                 --LOG('* AI-Swarm: * AirScoutPatrolSwarmAIThread: Must Scout Area')
+
+                SWARMREMOVE(aiBrain.InterestList.MustScout, mustScoutIndex)
+
+                if SWARMGETN(aiBrain.InterestList.MustScout) < 1 then
+                    aiBrain:SortScoutingAreas(aiBrain.InterestList.HighPriority)
+                end
+
+            elseif aiBrain.IntelData.AirHiPriScouts >= aiBrain.NumOpponents and aiBrain.IntelData.AirLowPriScouts >= 1 then  -- Go to low pri list if we're done with high pri list (and still have num opponents)
+                 --LOG('* AI-Swarm: * AirScoutPatrolSwarmAIThread: Must Scout Area')
+
+                SWARMREMOVE(aiBrain.InterestList.MustScout, mustScoutIndex)
+
+                if SWARMGETN(aiBrain.InterestList.MustScout) < 1 then
+                    aiBrain:SortScoutingAreas(aiBrain.InterestList.HighPriority)
+                end
+
+            elseif not scout:IsIdleState() then  -- Go to the location
+                self:Stop()
+
+                local vec = self:DoAirScoutVecs(scout, targetData[1], targetData[2])
+
+                while not scout_Dead and not scout:IsIdleState() do
+                    if VDist2Sq(vec[1], vec[3], scout_Position[1], scout_Position[3]) < 15625 then
+                        break
+                    end
+
+                    SWARMWAIT(50)
+                end
+            end
+        elseif not scout:IsIdleState() then  -- Go to the location
+            self:Stop()
+
+            local vec = self:DoAirScoutVecs(scout, targetData[1], targetData[2])
+
+            while not scout.Dead and not scout:IsIdleState() do
+                if VDist2Sq(vec[1], vec[3], scout_Position[1], scout_Position[3]) < 15625 then
+                    break
+                end
+
+                SWARMWAIT(50)
+            end
+        else  -- We're at the location, so look for a threat. If we don't find one go back to the PatrolManager.
+             --LOG('* AI-Swarm: * AirScoutPatrolSwarmAIThread: Must Scout Area')
+
+            local threat = false
+
+            if aiBrain.IntelData.AirHiPriScouts >= aiBrain.NumOpponents and aiBrain.IntelData.AirLowPriScouts >= 1 then  -- Go to low pri list if we're done with high pri list (and still have num opponents)
+
+                SWARMREMOVE(aiBrain.InterestList.MustScout, mustScoutIndex)
+
+                if SWARMGETN(aiBrain.InterestList.MustScout) < 1 then
+                    aiBrain:SortScoutingAreas(aiBrain.InterestList.HighPriority)
+                end
+
+            elseif aiBrain.IntelData.AirHiPriScouts >= aiBrain.NumOpponents and aiBrain.IntelData.AirLowPriScouts < 1 then  -- Go to high pri list if we're done with low pri list (and still have num opponents)
+
+                SWARMREMOVE(aiBrain.InterestList.MustScout, mustScoutIndex)
+
+                if SWARMGETN(aiBrain.InterestList.MustScout) < 1 then
+                    aiBrain:SortScoutingAreas(aiBrain.InterestList.HighPriority)
+                end
+
+            elseif not scout:IsIdleState() then  -- Go to the location
+                self:Stop()
+
+                local vec = self:DoAirScoutVecs(scout, targetData[1], targetData[2])
+
+                while not scout_Dead and not scout:IsIdleState() do
+                    if VDist2Sq(vec[1], vec[3], scout_Position[1], scout_Position[3]) < 15625 then
+                        break
+                    end
+
+                    SWARMWAIT(50)
+                end
+            end
+
         end
-        SWARMWAIT(5)
+
+        -- If we've reached this point, we haven't found any targets of interest and are out of places to explore, so go back to the PatrolManager and let it re-evaluate our priorities.
+        if not scout:IsIdleState() then
+            self:Stop()
+
+            local vec = self:DoAirScoutVecs(scout, aiBrain.BuilderManagers['MAIN'].Position)
+
+            while not scout.Dead and not scout:IsIdleState() do
+                if VDist2Sq(vec[1], vec[3], scout_Position[1], scout_Position[3]) < 15625 then
+                    break
+                end
+
+                SWARMWAIT(50)
+            end
+        end
+
+    elseif aiBrain.IntelData.AirHiPriScouts >= aiBrain.NumOpponents and aiBrain.IntelData.AirLowPriScouts >= 1 then  -- Go to low pri list if we're done with high pri list (and still have num opponents)
+
+        SWARMREMOVE(aiBrain.InterestList.MustScout, mustScoutIndex)
+
+        if SWARMGETN(aiBrain.InterestList.MustScout) < 1 then
+            aiBrain:SortScoutingAreas(aiBrain.InterestList.HighPriority)
+        end
+
+    elseif aiBrain.IntelData.AirHiPriScouts < aiBrain.NumOpponents and aiBrain.IntelData.AirLowPriScouts < 1 then  -- Go to high pri list if we're done with low pri list (and still have num opponents)
+
+        SWARMREMOVE(aiBrain.InterestList.MustScout, mustScoutIndex)
+
+        if SWARMGETN(aiBrain.InterestList.MustScout) < 1 then
+            aiBrain:SortScoutingAreas(aiBrain.InterestList.HighPriority)
+        end
+
+    elseif not scout:IsIdleState() then  -- Go to the location
+        self:Stop()
+
+        local vec = self:DoAirScoutVecs(scout, aibrain_BuilderManagers['MAIN'].Position)
+
+        while not scout_Dead and not scout:IsIdleState() do
+            if VDist2Sq(vec[1], vec[3], scout_Position[1], scout_Position[3]) < 15625 then
+                break
+            end
+
+            SWARMWAIT(50)
+        end
     end
+
+    WaitSeconds(5)
 end
 
 CountSoonMassSpotsSwarm = function(aiBrain)
