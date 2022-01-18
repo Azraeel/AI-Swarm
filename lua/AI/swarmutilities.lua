@@ -1280,8 +1280,8 @@ function AirScoutPatrolSwarmAIThread(self, aiBrain)
 
                 local vec = self:DoAirScoutVecs(scout, targetData[1], targetData[2])
 
-                while not scout_Dead and not scout:IsIdleState() do
-                    if VDist2Sq(vec[1], vec[3], scout_Position[1], scout_Position[3]) < 15625 then
+                while not scout.Dead and not scout:IsIdleState() do
+                    if VDist2Sq(vec[1], vec[3], scout.Position[1], scout.Position[3]) < 15625 then
                         break
                     end
 
@@ -1294,7 +1294,7 @@ function AirScoutPatrolSwarmAIThread(self, aiBrain)
             local vec = self:DoAirScoutVecs(scout, targetData[1], targetData[2])
 
             while not scout.Dead and not scout:IsIdleState() do
-                if VDist2Sq(vec[1], vec[3], scout_Position[1], scout_Position[3]) < 15625 then
+                if VDist2Sq(vec[1], vec[3], scout.Position[1], scout.Position[3]) < 15625 then
                     break
                 end
 
@@ -1326,8 +1326,8 @@ function AirScoutPatrolSwarmAIThread(self, aiBrain)
 
                 local vec = self:DoAirScoutVecs(scout, targetData[1], targetData[2])
 
-                while not scout_Dead and not scout:IsIdleState() do
-                    if VDist2Sq(vec[1], vec[3], scout_Position[1], scout_Position[3]) < 15625 then
+                while not scout.Dead and not scout:IsIdleState() do
+                    if VDist2Sq(vec[1], vec[3], scout.Position[1], scout.Position[3]) < 15625 then
                         break
                     end
 
@@ -1344,7 +1344,7 @@ function AirScoutPatrolSwarmAIThread(self, aiBrain)
             local vec = self:DoAirScoutVecs(scout, aiBrain.BuilderManagers['MAIN'].Position)
 
             while not scout.Dead and not scout:IsIdleState() do
-                if VDist2Sq(vec[1], vec[3], scout_Position[1], scout_Position[3]) < 15625 then
+                if VDist2Sq(vec[1], vec[3], scout.Position[1], scout.Position[3]) < 15625 then
                     break
                 end
 
@@ -1371,10 +1371,10 @@ function AirScoutPatrolSwarmAIThread(self, aiBrain)
     elseif not scout:IsIdleState() then  -- Go to the location
         self:Stop()
 
-        local vec = self:DoAirScoutVecs(scout, aibrain_BuilderManagers['MAIN'].Position)
+        local vec = self:DoAirScoutVecs(scout, aibrain.BuilderManagers['MAIN'].Position)
 
-        while not scout_Dead and not scout:IsIdleState() do
-            if VDist2Sq(vec[1], vec[3], scout_Position[1], scout_Position[3]) < 15625 then
+        while not scout.Dead and not scout:IsIdleState() do
+            if VDist2Sq(vec[1], vec[3], scout.Position[1], scout.Position[3]) < 15625 then
                 break
             end
 
