@@ -78,7 +78,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Scout Builders',
     },
 }
 
-
+-- Average Condition Count is 5-6
 BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',                       
     BuildersType = 'FactoryBuilder',
     
@@ -172,7 +172,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',
 
             { UCBC, 'LocationFactoriesBuildingLess', { 'LocationType', 1, categories.LAND * categories.MOBILE * categories.ANTIAIR * categories.TECH1 } },
 
-            { UCBC, 'PoolLessAtLocation', { 'LocationType', 3, categories.LAND * categories.MOBILE * categories.ANTIAIR }},
+            { UCBC, 'PoolLessAtLocation', { 'LocationType', 2, categories.LAND * categories.MOBILE * categories.ANTIAIR }},
         },
         BuilderType = 'Land',
     },
@@ -238,6 +238,8 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',
 
         BuilderConditions = {
             { UCBC, 'UnitCapCheckLess', { 0.90 } },
+
+            { UCBC, 'LandStrengthRatioLessThan', { 1.2 } },
 
             { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 0.75, 0.9 }},
 
@@ -420,6 +422,8 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',
         BuilderConditions = {
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
 
+            { UCBC, 'LandStrengthRatioLessThan', { 1.2 } },
+
             { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 0.9, 0.95 }},
 
             { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.01, 0.10}},
@@ -442,6 +446,8 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',
             { MIBC, 'FactionIndex', { 1 }}, -- 1: UEF, 2: Aeon, 3: Cybran, 4: Seraphim, 5: Nomads 
 
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
+
+            { UCBC, 'LandStrengthRatioLessThan', { 1.2 } },
 
             { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 0.9, 0.95 }},
 

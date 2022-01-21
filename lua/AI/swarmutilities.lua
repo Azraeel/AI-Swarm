@@ -1382,7 +1382,7 @@ function AirScoutPatrolSwarmAIThread(self, aiBrain)
         end
     end
 
-    WaitSeconds(5)
+    SWARMWAIT(5)
 end
 
 CountSoonMassSpotsSwarm = function(aiBrain)
