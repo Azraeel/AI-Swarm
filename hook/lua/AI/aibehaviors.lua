@@ -24,6 +24,11 @@ local SWARMWAIT = coroutine.yield
 -- Below LOCALs are for Performance and Readability in new Support Factory Compability Code
 -- See local function DecideUpgradeBP()
 
+-- FACTORY
+local FACTORYALL = categories.FACTORY * categories.STRUCTURE
+-- MASS EXTRACTOR 
+local EXTRACTORALL = categories.MASSEXTRACTION * categories.STRUCTURE * (categories.TECH1 + categories.TECH2 + categories.TECH3)
+
 -- LAND FACTORY
 local FACTORYLAND = categories.FACTORY * categories.STRUCTURE * categories.LAND - categories.RESEARCH
 -- AIR FACTORY
@@ -195,7 +200,7 @@ function StructureUpgradeThreadSwarm(unit, aiBrain, upgradeSpec, bypasseco)
                         upgradeID = alternativebp
                     end
                 end
-            --LOG("What is upgradeID " ..repr(upgradebp))
+            LOG("What is upgradeID " ..repr(upgradebp))
             end
         end
     end
@@ -289,10 +294,6 @@ function StructureUpgradeThreadSwarm(unit, aiBrain, upgradeSpec, bypasseco)
         upgradeSpec = aiBrain:GetUpgradeSpecSwarm(unit)
         --LOG('Upgrade Spec '..repr(upgradeSpec))
         --LOG('Current low mass trigger '..upgradeSpec.MassLowTrigger)
-        --if (GetGameTimeSeconds() - ecoStartTime) > ecoTimeOut then
-            --LOG('Eco Bypass is True')
-        --    bypasseco = true
-        --end
         if bypasseco and not (GetEconomyStored( aiBrain, 'MASS') > ( massNeeded * 1.6 ) and aiBrain.EconomyOverTimeCurrent.MassEfficiencyOverTime < 1.0 ) then
             upgradeNumLimit = StructureUpgradeNumDelaySwarm(aiBrain, unitType, unitTech)
             if unitTech == 'TECH1' then
@@ -311,7 +312,7 @@ function StructureUpgradeThreadSwarm(unit, aiBrain, upgradeSpec, bypasseco)
 
 
         extractorClosestSwarm = ExtractorClosestSwarm(aiBrain, unit, unitBp)
-        if not extractorClosestSwarm then
+        if EntityCategoryContains( EXTRACTORALL, unit) and not extractorClosestSwarm then
             --LOG('ExtractorClosestSwarm is false')
             SWARMWAIT(10)
             continue
@@ -386,7 +387,7 @@ function StructureUpgradeThreadSwarm(unit, aiBrain, upgradeSpec, bypasseco)
 						if not unit.Dead then
 
                             upgradeIssued = true
-                            --LOG("What is upgradeID " ..repr(upgradeID) .. " What Unit is upgrading " ..repr(unit:GetBlueprint().Description))
+                            LOG("What is upgradeID " ..repr(upgradeID) .. " What Unit is upgrading " ..repr(unit:GetBlueprint().Description))
                             IssueUpgrade({unit}, upgradeID)
 
                             -- if upgrade issued and not completely full --
@@ -544,9 +545,6 @@ function StructureTypeCheckSwarm(aiBrain, unitBp)
         elseif v == 'TECH2' then
             --LOG('Extractor is Tech 2')
             unitTech = 'TECH2'
-        --elseif v == 'TECH3' and not v == 'MASSEXTRACTION' then
-            --LOG('Extractor is Tech 3')
-            --unitTech = 'TECH3'
         else
             --LOG('Value not TECH1, TECH2')
         end
@@ -583,10 +581,6 @@ function ExtractorClosestSwarm(aiBrain, unit, unitBp)
         MassExtractorFactoryUnitList = GetListOfUnits(aiBrain, categories.FACTORY * (categories.TECH1), false, false)
     elseif unitType == 'FACTORY' and unitTech == 'TECH2' then
         MassExtractorFactoryUnitList = GetListOfUnits(aiBrain, categories.FACTORY * (categories.TECH2), false, false)
-    --elseif unitType == 'FACTORY' and unitTech == 'TECH3' then
-    --    MassExtractorFactoryUnitList = GetListOfUnits(aiBrain, categories.FACTORY * (categories.TECH3), false, false)
-    -- I literally cant remember why i include this, but this doesnt make sense in my mind (review - Jan 2022)
-    -- Why am I checking for T3 Factories when they dont have upgrades???
     end
 
     -- Sometimes unitTech returns a Boolean Value [Unknown Reason]
