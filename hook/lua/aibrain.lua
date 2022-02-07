@@ -45,7 +45,7 @@ AIBrain = Class(SwarmAIBrainClass) {
             local ALLBPS = __blueprints
 
             self.Swarm = true
-            self:ForkThread(self.ParseIntelThreadSwarm)
+            self:ForkThread(self.ParseIntelThreadThreat)
             self:ForkThread(self.StrategicMonitorThreadSwarm, ALLBPS)
             self:ForkThread(SwarmUtils.CountSoonMassSpotsSwarm)
 
@@ -78,6 +78,9 @@ AIBrain = Class(SwarmAIBrainClass) {
             FirstRun = true,
             HasRun = false
         }
+        self.AirUnitRefitRings = 100
+        self.NavalUnitRefitRings = 100
+        self.UnitRefitRings = 100
         self.ExpansionWatchTableSwarm = {}
         self.IMAPConfigSwarm = {
             OgridRadius = 0,
@@ -1000,7 +1003,108 @@ AIBrain = Class(SwarmAIBrainClass) {
                     end
                 end
             end
-            aiBrain:ForkThread(self.ParseIntelThread)
+            aiBrain:ForkThread(self.ParseIntelThreadSwarm)
+        end
+    end,
+
+    ParseIntelThreadSwarm = function(self)
+        if not self.InterestList or not self.InterestList.MustScout then
+            error('Scouting areas must be initialized before calling AIBrain:ParseIntelThread.', 2)
+        end
+
+        while true do
+
+            local structures = self:GetThreatsAroundPosition(self.BuilderManagers.MAIN.Position, 16, true, 'StructuresNotMex')
+
+            for _, struct in structures do  -- Check through list of structures that could have been scouted and update their status appropriately...this is a big performance boost!!! :) Thanks Gowerly!!! :)  :D :D :D :D :D :D :D :D  :) :) :) :) :) :) :) :) :) :)
+                local dupe = false
+
+                for i=1, table.getn(self.InterestList) do
+                    local loc = self.InterestList[i]
+
+                    if VDist2Sq(struct[1], struct[3], loc['Position'][1], loc['Position'][3]) < 10000 then -- If it's already in the list...ignore it!
+                        dupe = true
+
+                        -- Check to see if it's already in the low priority list and ignore it if so because we want to keep the original order intact! (so things that have been high pri a long time are low pri once in a while so things that are low pri for a short time are high pri once in a while)
+                        for j=1, table.getn(self.InterestList.LowPriority) do
+                            local loc = self.InterestList.LowPriority[j]
+
+                            if VDist2Sq(struct[1], struct[3], loc['Position'][1], loc['Position'][3]) < 10000 then
+                                dupe = false
+                                break
+                            end
+                        end
+
+                        if dupe then -- Found it in the low pri list, don't add it to the high priority list! (This means that things that have been high pri a long time will stay high pri and things that are medium pri more often will slowly become low pri over time)
+                            break  -- Found it in the low pri list, don't add it to the high priority list! (This means that things that have been low pri a long time will slowly become medium and then finally high pri over time)
+                        elseif i == table.getn(self.InterestList) then -- Found it in the high pri list, move it to the low priority list! (This means that things that have been low pri a long time will slowly become medium and then finally high pri over time)
+                            table.insert(self.InterestList.LowPriority, { Position = struct[1], LastScouted = GetGameTimeSeconds(), LastAlert = -1 })
+                            break
+                        end
+                    end
+                end
+
+                if not dupe then -- It's not already in the list, so add it to the high priority list! (This means that things that have been low pri a long time will slowly become medium and then finally high pri over time)
+                    table.insert(self.InterestList, { Position = struct[1], LastScouted = GetGameTimeSeconds(), LastAlert = -1 })
+                end
+
+                -- Sort the list based on low long it has been since it was scouted
+                table.sort(self.InterestList, function(a, b)
+                    if a.LastScouted == b.LastScouted then
+                        local MainPos = self.BuilderManagers.MAIN.Position
+                        local distA = VDist2(MainPos[1], MainPos[3], a['Position'][1], a['Position'][3])
+                        local distB = VDist2(MainPos[1], MainPos[3], b['Position'][1], b['Position'][3])
+
+                        return distA < distB
+                    else
+                        return a.LastScouted < b.LastScouted
+                    end
+                end)
+
+                -- Draw intel data on map:
+                -- if a structure is visible and has been scouted at least once, then draw it as a point (with varying alpha based on last time it was scouted) with text that contains its threat value/type and the time since it was last scouted (with millisecond precision)
+                for _, loc in self.InterestList do
+
+                    local threatType = 'StructuresNotMex'
+
+                    if GetThreatAtPosition(self, loc['Position'], 0, true, threatType) > 0 then
+
+                        local alpha = 0.8 - math.max(0, minDist)/20*0.2
+
+                        if not self:IsIntelEnabled('Vision') then
+                            alpha = 0.1 + math.min(1, maxDist/30*0.25) -- If we're blind we're more likely to be found so make the intel less visible! (This means that things that have been high pri a long time are low pri once in a while so things that are low pri for a short time are high pri once in a while)
+                        end
+
+                        if loc['LastScouted'] >= 0 then
+                            alpha = math.max(0, alpha - (GetGameTimeSeconds()-loc['LastScouted'])/100) -- If it hasn't been scouted in a while then make the intel more visible so we'll go scout it! (This means that things that have been low pri a long time will stay low pri and things that are medium pri more often will slowly become low pri over time)
+                        end
+
+                        self:DrawCircle(loc['Position'], 1, 'ff0000', alpha)
+                        self:DrawCircle(loc['Position'], maxDist/3, 'ffff00', alpha)
+
+                        local text = string.format('%s - %d', threatType, GetThreatAtPosition(self, loc['Position'], 0, true, threatType))
+                        local lineLength = VDist2(self.BuilderManagers['MAIN'].Position[1], self.BuilderManagers['MAIN'].Position[3], loc['Position'][1], loc['Position'][3])*0.5 + 20
+                        local textWidth = self:GetTextSize(text, 12)
+
+                        if textWidth < lineLength then
+                            self:DrawLine(self.BuilderManagers['MAIN'].Position, loc['Position'], 1, 'ff0000', alpha)
+                            self:DrawLine(loc['Position'], {loc['Position'][1] - (lineLength-textWidth)/2, loc['Position'][2], loc['Position'][3] - 8}, 1, 'ff0000', alpha)
+                            self:DrawText(text, {loc['Position'][1] - (lineLength-textWidth)/2, loc['Position'][2], loc['Position'][3] - 5}, 12)
+                        elseif VDist2Sq(self.BuilderManagers['MAIN'].Position[1], self.BuilderManagers['MAIN'].Position[3], loc['Position'][1], loc['Position'][3]) > VDist2Sq(self.BuilderManagers['MAIN']. Position[1], self.BuilderManagers['MAIN']. Position[3], prevMainPosX or 0 ,prevMainPosZ or 0) then
+                            self:DrawLine(self.BuilderManagers['MAIN'].Position, loc['Position'] , 1, 'ff0000', alpha)
+                            self:DrawText('* MAIN', {loc['Position'][1], loc['Position'][2], loc['Position'][3] - 5}, 12)
+                        end
+
+                        prevMainPosX = self.BuilderManagers['MAIN']. Position[1]
+                        prevMainPosZ = self.BuilderManagers['MAIN']. Position[3]
+
+                    end
+                end
+
+                WaitSeconds(5) -- Don't flood the user with intel! We're not barbarians! (We might want to change this later on though...)
+            end
+
+            WaitSeconds(30) -- Don't flood the user with intel! We're not barbarians! (We might want to change this later on though...)
         end
     end,
 
@@ -1012,22 +1116,27 @@ AIBrain = Class(SwarmAIBrainClass) {
             self.IMAPConfigSwarm.OgridRadius = 11.5
             self.IMAPConfigSwarm.IMAPSize = 16
             self.IMAPConfigSwarm.Rings = 3
+            self.IMAPConfigSwarm.RescueRadius = 20
         elseif maxmapdimension == 512 then
             self.IMAPConfigSwarm.OgridRadius = 22.5
             self.IMAPConfigSwarm.IMAPSize = 32
             self.IMAPConfigSwarm.Rings = 2
+            self.IMAPConfigSwarm.RescueRadius = 40
         elseif maxmapdimension == 1024 then
             self.IMAPConfigSwarm.OgridRadius = 45.0
             self.IMAPConfigSwarm.IMAPSize = 64
             self.IMAPConfigSwarm.Rings = 1
+            self.IMAPConfigSwarm.RescueRadius = 60
         elseif maxmapdimension == 2048 then
             self.IMAPConfigSwarm.OgridRadius = 89.5
             self.IMAPConfigSwarm.IMAPSize = 128
             self.IMAPConfigSwarm.Rings = 0
+            self.IMAPConfigSwarm.RescueRadius = 80
         else
             self.IMAPConfigSwarm.OgridRadius = 180.0
             self.IMAPConfigSwarm.IMAPSize = 256
             self.IMAPConfigSwarm.Rings = 0
+            self.IMAPConfigSwarm.RescueRadius = 40
         end
     end,
 
@@ -1276,9 +1385,9 @@ AIBrain = Class(SwarmAIBrainClass) {
 
     -- Now we use actual Threat from Units instead of Unit Cap.
     -- Extremely Accurate
-    ParseIntelThreadSwarm = function(self)
+    ParseIntelThreadThreat = function(self)
 
-        --LOG("*AI DEBUG "..self.Nickname.." ParseIntelThreadSwarm begins")
+        --LOG("*AI DEBUG "..self.Nickname.." ParseIntelThreadThreat begins")
 
         while self.Swarm do
 
