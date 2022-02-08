@@ -47,13 +47,13 @@ local FNHQ2 = categories.FACTORY * categories.STRUCTURE * categories.NAVAL * cat
 local FNHQ3 = categories.FACTORY * categories.STRUCTURE * categories.NAVAL * categories.TECH3 * categories.RESEARCH
 
 -- LAND SUPPORT FACTORIES 
-local FLSF1 = categories.FACTORY * categories.STRUCTURE * categories.LAND * categories.TECH1
+local FLSF1 = categories.FACTORY * categories.STRUCTURE * categories.LAND * categories.TECH1 - categories.SUPPORTFACTORY
 local FLSF2 = categories.FACTORY * categories.STRUCTURE * categories.LAND * categories.TECH2 * categories.SUPPORTFACTORY
 -- AIR SUPPORT FACTORIES 
-local FASF1 = categories.FACTORY * categories.STRUCTURE * categories.AIR * categories.TECH1
+local FASF1 = categories.FACTORY * categories.STRUCTURE * categories.AIR * categories.TECH1 - categories.SUPPORTFACTORY
 local FASF2 = categories.FACTORY * categories.STRUCTURE * categories.AIR * categories.TECH2 * categories.SUPPORTFACTORY
 -- NAVAL SUPPORT FACTORIES 
-local FNSF1 = categories.FACTORY * categories.STRUCTURE * categories.NAVAL * categories.TECH1
+local FNSF1 = categories.FACTORY * categories.STRUCTURE * categories.NAVAL * categories.TECH1 - categories.SUPPORTFACTORY
 local FNSF2 = categories.FACTORY * categories.STRUCTURE * categories.NAVAL * categories.TECH2 * categories.SUPPORTFACTORY
 
 function MapAdvisor(aiBrain)
@@ -308,8 +308,6 @@ function StructureUpgradeThreadSwarm(unit, aiBrain, upgradeSpec, bypasseco)
                 continue
             end
         end
-
-
 
         extractorClosestSwarm = ExtractorClosestSwarm(aiBrain, unit, unitBp)
         if EntityCategoryContains( EXTRACTORALL, unit) and not extractorClosestSwarm then
@@ -583,8 +581,9 @@ function ExtractorClosestSwarm(aiBrain, unit, unitBp)
         MassExtractorFactoryUnitList = GetListOfUnits(aiBrain, categories.FACTORY * (categories.TECH2), false, false)
     end
 
-    -- Sometimes unitTech returns a Boolean Value [Unknown Reason]
-    -- However a unitTech will exist???
+    -- Sometimes unitTech returns a Boolean Value [Unknown Reason]?
+    -- This Boolean Value Errors seem to not affect anything?
+    -- Extractors still upgrade normally [Error is Related to Tech2 -> Tech3 Extractor Upgrades]
     --LOG("What is the UnitType " ..unitType .. " " .. " What is the UnitTech " ..unitTech )
 
     for k, v in MassExtractorFactoryUnitList do
