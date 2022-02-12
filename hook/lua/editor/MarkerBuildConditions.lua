@@ -9,7 +9,7 @@ local SLastHydroBOOL = false
 
 function CanBuildOnMassDistanceSwarm(aiBrain, locationType, minDistance, maxDistance, threatMin, threatMax, threatRings, threatType, maxNum )
     if SLastGetMassMarker < GetGameTimeSeconds() then
-        SLastGetMassMarker = GetGameTimeSeconds()+5
+        --SLastGetMassMarker = GetGameTimeSeconds()+5
         local engineerManager = aiBrain.BuilderManagers[locationType].EngineerManager
         if not engineerManager then
             --WARN('*AI WARNING: CanBuildOnMass: Invalid location - ' .. locationType)
@@ -28,7 +28,7 @@ function CanBuildOnMassDistanceSwarm(aiBrain, locationType, minDistance, maxDist
         end
         table.sort(SMassMarker, function(a,b) return a.Distance < b.Distance end)
     end
-    if not SLastCheckMassMarker[maxDistance] or SLastCheckMassMarker[maxDistance] < GetGameTimeSeconds() then
+    if true then -- not SLastCheckMassMarker[maxDistance] or SLastCheckMassMarker[maxDistance] < GetGameTimeSeconds() then
         SLastCheckMassMarker[maxDistance] = GetGameTimeSeconds()
         local threatCheck = false
         if threatMin and threatMax and threatRings then
