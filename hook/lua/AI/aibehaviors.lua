@@ -96,7 +96,6 @@ function StructureUpgradeThreadSwarm(unit, aiBrain, upgradeSpec, bypasseco)
         if upgradeID then
             -- This is the support factory compatibility code
             if EntityCategoryContains( FACTORYLAND, unit) then -- 1: UEF, 2: Aeon, 3: Cybran, 4: Seraphim, 5: Nomads
-
                 if table.getn( GetListOfUnits(aiBrain, FLHQ2, false, true )) > 0 or table.getn( GetListOfUnits(aiBrain, FLHQ3, false, true )) > 0 and EntityCategoryContains( FLSF1, unit) then
                     if unitFactionIndex == 1 then
                         alternativebp = 'zeb9501'
@@ -200,7 +199,7 @@ function StructureUpgradeThreadSwarm(unit, aiBrain, upgradeSpec, bypasseco)
                         upgradeID = alternativebp
                     end
                 end
-            LOG("What is upgradeID " ..repr(upgradebp))
+            --LOG("What is upgradeID " ..repr(upgradebp))
             end
         end
     end
@@ -249,7 +248,6 @@ function StructureUpgradeThreadSwarm(unit, aiBrain, upgradeSpec, bypasseco)
     local ecoTimeOut
     local upgradeNumLimit
     local extractorUpgradeLimit = 0
-    local extractorClosestSwarm = false
     local multiplier
     local initial_delay = 0
     local ecoStartTime = GetGameTimeSeconds()
@@ -294,28 +292,15 @@ function StructureUpgradeThreadSwarm(unit, aiBrain, upgradeSpec, bypasseco)
         upgradeSpec = aiBrain:GetUpgradeSpecSwarm(unit)
         --LOG('Upgrade Spec '..repr(upgradeSpec))
         --LOG('Current low mass trigger '..upgradeSpec.MassLowTrigger)
-        if bypasseco and not (GetEconomyStored( aiBrain, 'MASS') > ( massNeeded * 1.6 ) and aiBrain.EconomyOverTimeCurrent.MassEfficiencyOverTime < 1.0 ) then
-            upgradeNumLimit = StructureUpgradeNumDelaySwarm(aiBrain, unitType, unitTech)
-            if unitTech == 'TECH1' then
-                extractorUpgradeLimit = aiBrain.EcoManager.ExtractorUpgradeLimit.TECH1
-            elseif unitTech == 'TECH2' then
-                extractorUpgradeLimit = aiBrain.EcoManager.ExtractorUpgradeLimit.TECH2
-            end
-            --LOG('UpgradeNumLimit is '..upgradeNumLimit)
-            --LOG('extractorUpgradeLimit is '..extractorUpgradeLimit)
-            if upgradeNumLimit >= extractorUpgradeLimit then
-                SWARMWAIT(10)
-                continue
-            end
-        end
 
-        extractorClosestSwarm = ExtractorClosestSwarm(aiBrain, unit, unitBp)
-        if EntityCategoryContains( EXTRACTORALL, unit) and not extractorClosestSwarm then
-            --LOG('ExtractorClosestSwarm is false')
+        if EntityCategoryContains( EXTRACTORALL, unit) and not ExtractorClosestSwarm(aiBrain, unit, unitBp) then
+            --LOG('This is not the Closest Extractor ' .. ' ' ..repr(unit:GetBlueprint().Description))
             SWARMWAIT(10)
             continue
         end
+
         if (not unit.MAINBASE) or (unit.MAINBASE and not bypasseco and GetEconomyStored( aiBrain, 'MASS') < (massNeeded * 0.5)) then
+            --LOG('Mainbase Unit is ' .. ' ' ..repr(unit:GetBlueprint().Description))
             if HaveUnitRatio( aiBrain, 1.6, categories.MASSEXTRACTION * categories.TECH1, '>=', categories.MASSEXTRACTION * categories.TECH2 ) and unitTech == 'TECH2' then
                 --LOG('Too few tech2 extractors to go tech3')
                 ecoStartTime = ecoStartTime + upgradeSpec.UpgradeCheckWait
@@ -323,11 +308,8 @@ function StructureUpgradeThreadSwarm(unit, aiBrain, upgradeSpec, bypasseco)
                 continue
             end
         end
-        if unit.MAINBASE then
-            --LOG('MAINBASE Extractor')
-        end
+
         --LOG('Current Upgrade Limit is :'..upgradeNumLimit)
-        
         --LOG('Upgrade Issued '..aiBrain.UpgradeIssued..' Upgrade Issued Limit '..aiBrain.UpgradeIssuedLimit)
         if aiBrain.UpgradeIssued < aiBrain.UpgradeIssuedLimit then
             --LOG('* AI-Swarm:'..aiBrain.Nickname)
@@ -385,7 +367,7 @@ function StructureUpgradeThreadSwarm(unit, aiBrain, upgradeSpec, bypasseco)
 						if not unit.Dead then
 
                             upgradeIssued = true
-                            LOG("What is upgradeID " ..repr(upgradeID) .. " What Unit is upgrading " ..repr(unit:GetBlueprint().Description))
+                            --LOG("What is upgradeID " ..repr(upgradeID) .. " What Unit is upgrading " ..repr(unit:GetBlueprint().Description))
                             IssueUpgrade({unit}, upgradeID)
 
                             -- if upgrade issued and not completely full --
@@ -538,10 +520,10 @@ function StructureTypeCheckSwarm(aiBrain, unitBp)
         end
 
         if v == 'TECH1' then
-            --LOG('Extractor is Tech 1')
+            --LOG('Unit is Tech 1')
             unitTech = 'TECH1'
         elseif v == 'TECH2' then
-            --LOG('Extractor is Tech 2')
+            --LOG('Unit is Tech 2')
             unitTech = 'TECH2'
         else
             --LOG('Value not TECH1, TECH2')
@@ -561,10 +543,9 @@ function StructureTypeCheckSwarm(aiBrain, unitBp)
 end
 
 -- In the future make this function just not review factories and etc 
--- Pretty Simple tho tbf
 function ExtractorClosestSwarm(aiBrain, unit, unitBp)
     -- Checks if the unit is closest to the main base
-    local MassExtractorFactoryUnitList = false
+    local MassExtractorFactoryUnitList = {}
     local unitType, unitTech, unitFactionIndex = StructureTypeCheckSwarm(aiBrain, unitBp)
     local BasePosition = aiBrain.BuilderManagers['MAIN'].Position
     local DistanceToBase = nil
@@ -581,10 +562,8 @@ function ExtractorClosestSwarm(aiBrain, unit, unitBp)
         MassExtractorFactoryUnitList = GetListOfUnits(aiBrain, categories.FACTORY * (categories.TECH2), false, false)
     end
 
-    -- Sometimes unitTech returns a Boolean Value [Unknown Reason]?
-    -- This Boolean Value Errors seem to not affect anything?
-    -- Extractors still upgrade normally [Error is Related to Tech2 -> Tech3 Extractor Upgrades]
     --LOG("What is the UnitType " ..unitType .. " " .. " What is the UnitTech " ..unitTech )
+    --LOG("What is MassExtractorFactoryUnitList " ..repr(MassExtractorFactoryUnitList))
 
     for k, v in MassExtractorFactoryUnitList do
         local TempID

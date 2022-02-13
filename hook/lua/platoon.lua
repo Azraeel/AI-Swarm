@@ -57,8 +57,8 @@ SwarmPlatoonClass = Platoon
 Platoon = Class(SwarmPlatoonClass) {
 
     -- The Magical Tether System or well... 1 line of code.
-    -- local maxRadius = SWARMMAX(maxRadius, (maxRadius * aiBrain.MyAirRatio) ) 
-    -- This adjust the maxRadius Air Platoons are willing to go out onto depending on the LandRatio
+    -- local maxradius = SWARMMAX(maxRadiusMax, (maxRadiusMax * aiBrain.MyAirRatio) ) 
+    -- This adjust the maxradius Air Platoons are willing to go out onto depending on the LandRatio
     -- This eliminates a lot of threat data assessment by just having them see if we are losing or winning
     -- Looking to reenable for V269 of Swarm, requires LOTS of testing and logging
     AirAISwarm = function(self)
@@ -111,7 +111,6 @@ Platoon = Class(SwarmPlatoonClass) {
         local bAggroMove = self.PlatoonData.AggressiveMove
         local path
         local reason
-        local maxRadius = self.PlatoonData.SearchRadius or 100
         local PlatoonPos = self:GetPlatoonPosition()
         local LastTargetPos = PlatoonPos
         local basePosition
@@ -127,7 +126,8 @@ Platoon = Class(SwarmPlatoonClass) {
         local LastTargetCheck
         local DistanceToBase = 0
         local TargetSearchCategory = self.PlatoonData.TargetSearchCategory or 'ALLUNITS'
-        local maxradius = SWARMMAX(maxRadius, (maxRadius * aiBrain.MyAirRatio) )
+        local maxRadiusMax = self.PlatoonData.SearchRadius or 100
+        local maxradius = SWARMMAX(maxRadiusMax, (maxRadiusMax * aiBrain.MyAirRatio) )
         --LOG("The Max Radius is " .. repr(maxradius))
         while aiBrain:PlatoonExists(self) do
             PlatoonPos = self:GetPlatoonPosition()
@@ -197,7 +197,7 @@ Platoon = Class(SwarmPlatoonClass) {
                 end
             -- targed exists and is not dead
             end
-            SWARMWAIT(1)
+            SWARMWAIT(10)
             if aiBrain:PlatoonExists(self) and target and not target.Dead then
                 LastTargetPos = target:GetPosition()
                 -- check if we are still inside the attack radius and be sure the area is not a nuke blast area
@@ -208,12 +208,12 @@ Platoon = Class(SwarmPlatoonClass) {
                     else
                         self:MoveToLocation(LastTargetPos, false)
                     end
-                    SWARMWAIT(10)
+                    SWARMWAIT(50)
                 else
                     target = nil
                 end
             end
-            SWARMWAIT(10)
+            SWARMWAIT(30)
         end
     end,
 
@@ -679,7 +679,7 @@ Platoon = Class(SwarmPlatoonClass) {
             Braveness = Braveness + SWARMFLOOR( (CDRHealth - 30) / 7 )
             BraveDEBUG['Health'] = SWARMFLOOR( (CDRHealth - 30)  / 7 )
 
-            -- We gain 1 Braveness (max +3) for every 10 friendly T1 units nearby --------------------------------------------------------------------------------------------------
+            -- We gain 1 Braveness (max +3) for every 5 friendly T1 units nearby --------------------------------------------------------------------------------------------------
             UnitT1 = aiBrain:GetNumUnitsAroundPoint( (categories.STRUCTURE + categories.MOBILE) * (categories.DIRECTFIRE + categories.INDIRECTFIRE) * categories.TECH1, cdr.position, 25, 'Ally' )
             UnitT2 = aiBrain:GetNumUnitsAroundPoint( (categories.STRUCTURE + categories.MOBILE) * (categories.DIRECTFIRE + categories.INDIRECTFIRE) * categories.TECH2, cdr.position, 25, 'Ally' )
             UnitT3 = aiBrain:GetNumUnitsAroundPoint( (categories.STRUCTURE + categories.MOBILE) * (categories.DIRECTFIRE + categories.INDIRECTFIRE) * categories.TECH3, cdr.position, 25, 'Ally' )
@@ -687,8 +687,8 @@ Platoon = Class(SwarmPlatoonClass) {
             -- Tech1 ~25 dps -- Tech2 ~90 dps = 3 x T1 -- Tech3 ~333 dps = 13 x T1 -- Tech4 ~2000 dps = 80 x T1
             Threat = UnitT1 + UnitT2 * 3 + UnitT3 * 13 + UnitT4 * 80
             if Threat > 0 then
-                Braveness = Braveness + SWARMMIN( 3, SWARMFLOOR(Threat / 10) )
-                BraveDEBUG['Ally'] = SWARMMIN( 3, SWARMFLOOR(Threat / 10) )
+                Braveness = Braveness + SWARMMIN( 3, SWARMFLOOR(Threat / 5) )
+                BraveDEBUG['Ally'] = SWARMMIN( 3, SWARMFLOOR(Threat / 5) )
             end
 
             -- We gain 0.5 Braveness if we have at least 5 Anti Air units in close range --------------------------------------------------------------------------------------------
@@ -793,15 +793,15 @@ Platoon = Class(SwarmPlatoonClass) {
                 BraveDEBUG['Bomber'] = 10
             end
 
-            -- We lose all Braveness if we have under 20% health -------------------------------------------------------------------------------------------------------------------------
+            -- We lose all Braveness if we have under 30% health -------------------------------------------------------------------------------------------------------------------------
             CDRHealth = SwarmUtils.ComHealth(cdr)
-            if CDRHealth < 20 then
+            if CDRHealth < 30 then
                 Braveness = -20
             end
 
-             -- We lose all Braveness if we have passed 20 Minutes -----------------------------------------------------------------------------------------------------------------------
+             -- We lose half Braveness if we have passed 20 Minutes -----------------------------------------------------------------------------------------------------------------------
             if SWARMTIME() > 1200 then
-                Braveness = -20
+                Braveness = -10
             end
 
             ---------------
@@ -861,14 +861,14 @@ Platoon = Class(SwarmPlatoonClass) {
             ------------------
 
             -- check if we are close to Main base, then decide if we can enhance
-            if VDist2(cdr.position[1], cdr.position[3], cdr.CDRHome[1], cdr.CDRHome[3]) < 60 then
+            if VDist2(cdr.position[1], cdr.position[3], cdr.CDRHome[1], cdr.CDRHome[3]) < 75 then
                 -- only upgrade if we are good at health
                 local check = true
                 if self.created + 10 > SWARMTIME() then
                     check = false
                 else
                 end
-                if CDRHealth < 20 then
+                if CDRHealth < 40 then
                     check = false
                 end
                 if UnderAttackSwarm then
@@ -883,8 +883,8 @@ Platoon = Class(SwarmPlatoonClass) {
                 if aiBrain.ACUChampionSwarm.EnemyTMLPos and not Shielded then
                     check = false
                 end
-                -- Only upgrade with full Energy storage
-                if aiBrain:GetEconomyStoredRatio('ENERGY') < 1.00 then
+                -- Only upgrade with almost full Energy storage
+                if aiBrain:GetEconomyStoredRatio('ENERGY') < 0.90 then
                     check = false
                 end
                 -- First enhancement needs at least +200 energy
@@ -1107,8 +1107,8 @@ Platoon = Class(SwarmPlatoonClass) {
             if OverchargeWeapon then
                 -- Do we have the energy in general to overcharge ?
                 if aiBrain:GetEconomyStored('ENERGY') >= OverchargeWeapon.EnergyRequired then
-                    -- only shoot when we have low mass (then we don't need energy) or at full energy (max damage) or when in danger
-                    if aiBrain:GetEconomyStoredRatio('MASS') < 0.05 or aiBrain:GetEconomyStored('ENERGY') > 6000 or CDRHealth < 60 then
+                    -- full energy (max damage) or when in danger
+                    if aiBrain:GetEconomyStored('ENERGY') > 6000 or CDRHealth < 95 then
                         if OverchargeTarget and not OverchargeTarget.Dead and not OverchargeTarget:BeenDestroyed() then
                             IssueOverCharge({cdr}, OverchargeTarget)
                         end
@@ -1556,7 +1556,7 @@ Platoon = Class(SwarmPlatoonClass) {
             -- UEF
             ['uel0001'] = {'HeavyAntiMatterCannon', 'DamageStabilization', 'Shield', 'ShieldGeneratorField'},
             -- Aeon
-            ['ual0001'] = {'CrysalisBeam', 'HeatSink', 'Shield', 'ShieldHeavy'},
+            ['ual0001'] = {'HeatSink', 'CrysalisBeam', 'Shield', 'ShieldHeavy'},
             -- Cybran
             ['url0001'] = {'CoolingUpgrade', 'StealthGenerator', 'MicrowaveLaserGenerator', 'CloakingGenerator'},
             -- Seraphim
