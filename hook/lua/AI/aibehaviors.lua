@@ -204,17 +204,19 @@ function StructureUpgradeThreadSwarm(unit, aiBrain, upgradeSpec, bypasseco)
         end
     end
 
+    --LOG("What is upgradeID " ..repr(upgradebp))
+
     -- Eco requirements
     local function GetUpgradeEconomy()
         if upgradebp then -- safety check
             --LOG("What is upgradeID " ..repr(upgradebp))
-            massNeeded = upgradebp.Economy.BuildCostMass
+            massNeeded = upgradebp.Economy.BuildCostMass or 0
             --LOG('Mass Needed '..massNeeded)
-	        energyNeeded = upgradebp.Economy.BuildCostEnergy
+	        energyNeeded = upgradebp.Economy.BuildCostEnergy or 0
             --LOG('Energy Needed '..energyNeeded)
-            buildtime = upgradebp.Economy.BuildTime
+            buildtime = upgradebp.Economy.BuildTime or 0
             --LOG('Build Time is  '..buildtime)
-            buildrate = unitBp.Economy.BuildRate
+            buildrate = unitBp.Economy.BuildRate or 0
             --LOG('Build Rate is  '..buildrate)
 
             -- production while upgrading

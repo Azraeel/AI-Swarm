@@ -92,7 +92,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',
         Priority = 505, 
 
         BuilderConditions = {
-            { UCBC, 'LessThanGameTimeSeconds', { 60 * 4 } },
+            { UCBC, 'LessThanGameTimeSeconds', { 60 * 3 } },
 
             { UCBC, 'UnitCapCheckLess', { 0.90 } },
 

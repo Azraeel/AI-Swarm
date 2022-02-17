@@ -132,6 +132,23 @@ function LessThanEconEfficiencySwarm(aiBrain, MassEfficiency, EnergyEfficiency)
     return false
 end
 
+function GreaterThanMassEfficiencyOverTimeSwarm(aiBrain, MassEfficiency)
+
+    if aiBrain.EconomyOverTimeCurrent.MassEfficiencyOverTime >= MassEfficiency then
+        return true
+    end
+    return false
+end
+
+function LessThanEnergyEfficiencyOverTimeSwarm(aiBrain, EnergyEfficiency)
+
+    if aiBrain.EconomyOverTimeCurrent.EnergyEfficiencyOverTime <= EnergyEfficiency then
+        return true
+    end
+    return false
+end
+
+
 function GreaterThanEconTrendOverTimeSwarm(aiBrain, MassTrend, EnergyTrend)
 
     if aiBrain.EconomyOverTimeCurrent.MassTrendOverTime > MassTrend and aiBrain.EconomyOverTimeCurrent.EnergyTrendOverTime > EnergyTrend then
