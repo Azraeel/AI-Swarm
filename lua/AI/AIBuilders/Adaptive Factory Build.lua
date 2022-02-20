@@ -151,6 +151,8 @@ BuilderGroup {
 -- Perhaps adjusting the Factory Priority and Such depending on aiBrain.SelfExtractorCount is Viable?
 -- Perhaps turning back on factory incase Mass Income Late Game allows additional factory building specifically.
 -- Straight up building on T2-T3 Factories. 
+-- Were going to start allowing T2-T3 Factories to be built straight up. 
+-- This is because of how the Tech Progression is so fast and eco is so good nowadays especially on mass maps that its viable for Swarm.
 
 BuilderGroup { BuilderGroupName = 'Swarm Adaptive Factory Build',
     BuildersType = 'EngineerBuilder',
@@ -177,7 +179,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Adaptive Factory Build',
 
             { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 0.85, 1.0 }},         
             
-            { UCBC, 'HaveLessThanUnitsInCategoryBeingBuilt', { 2, categories.STRUCTURE * categories.FACTORY * categories.TECH1 }},
+            { UCBC, 'HaveLessThanUnitsInCategoryBeingBuilt', { 2, categories.STRUCTURE * categories.FACTORY * categories.LAND * categories.TECH1 }},
            
             { UCBC, 'HaveLessThanUnitsWithCategory', { 10, categories.STRUCTURE * categories.FACTORY * categories.LAND * (categories.TECH1 + categories.TECH2 + categories.TECH3) }},
         },
@@ -330,6 +332,182 @@ BuilderGroup { BuilderGroupName = 'Swarm Adaptive Factory Build',
                 Location = 'LocationType',
                 BuildStructures = {
                     'T1AirFactory',  
+                },
+            }
+        }
+    },
+
+    -- Here Begins T2 Factories
+
+    Builder {
+        BuilderName = 'Swarm Land Factory Mass > MassStorage - T2',
+
+        PlatoonTemplate = 'EngineerBuilderT2T3Swarm',
+
+        Priority = 700,
+
+        DelayEqualBuildPlattons = {'Factories', 3},
+
+        BuilderConditions = {
+            { UCBC, 'CheckBuildPlattonDelay', { 'Factories' }},
+
+            { MIBC, 'CanPathToCurrentEnemySwarm', { true, 'LocationType' } },
+            
+            { EBC, 'MassToFactoryRatioBaseCheckSwarm', { 'LocationType' } },
+
+            { EBC, 'GreaterThanEconStorageCurrentSwarm', { 200, 2000}},
+
+            { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 1.0, 1.0 }},         
+            
+            { UCBC, 'HaveLessThanUnitsInCategoryBeingBuilt', { 2, categories.STRUCTURE * categories.FACTORY * categories.LAND * (categories.TECH2 + categories.TECH3) }},
+           
+            { UCBC, 'HaveLessThanUnitsWithCategory', { 10, categories.STRUCTURE * categories.FACTORY * categories.LAND * (categories.TECH2 + categories.TECH3) }},
+        },
+        BuilderType = 'Any',
+        BuilderData = {
+            Construction = {
+                AdjacencyBias = 'Forward',
+                AdjacencyPriority = {
+                    categories.MASSEXTRACTION,
+                    categories.MASSPRODUCTION,
+                    categories.ENERGYPRODUCTION * categories.TECH2,
+                    categories.ENERGYPRODUCTION * categories.TECH1,
+                },
+                Location = 'LocationType',
+                BuildClose = false,
+                BuildStructures = {
+                    'T2SupportLandFactory',
+                },
+            }
+        }
+    },
+
+    Builder {
+        BuilderName = 'Swarm Air Factory Mass > MassStorage - T2',
+
+        PlatoonTemplate = 'EngineerBuilderT2T3Swarm',
+
+        Priority = 695,
+
+        DelayEqualBuildPlattons = {'Factories', 3},
+
+        BuilderConditions = {
+            { UCBC, 'CheckBuildPlattonDelay', { 'Factories' }},
+
+            { EBC, 'MassToFactoryRatioBaseCheckSwarm', { 'LocationType' } },
+
+            { EBC, 'GreaterThanEconStorageCurrentSwarm', { 200, 2000}},
+
+            { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 1.0, 1.0 }}, 
+
+            { UCBC, 'HaveLessThanUnitsInCategoryBeingBuilt', { 1, categories.STRUCTURE * categories.FACTORY * categories.AIR * (categories.TECH2 + categories.TECH3) }},
+
+            { UCBC, 'HaveLessThanUnitsWithCategory', { 6, categories.STRUCTURE * categories.FACTORY * categories.AIR * (categories.TECH2 + categories.TECH3) }},
+        },
+        BuilderType = 'Any',
+        BuilderData = {
+            BuildClose = false,
+            Construction = {
+                AdjacencyBias = 'Back',
+                AdjacencyPriority = {
+                    categories.ENERGYPRODUCTION * categories.TECH3,
+                    categories.ENERGYPRODUCTION * categories.TECH2,
+                    categories.HYDROCARBON,
+                    categories.ENERGYPRODUCTION * categories.TECH1,
+                    categories.MASSEXTRACTION,
+                    categories.MASSPRODUCTION,
+                },
+                Location = 'LocationType',
+                BuildStructures = {
+                    'T2SupportAirFactory',  
+                },
+            }
+        }
+    },
+
+    -- Here Begins T3 Factories
+
+    Builder {
+        BuilderName = 'Swarm Land Factory Mass > MassStorage - T3',
+
+        PlatoonTemplate = 'EngineerBuilderT3&SUBSwarm',
+
+        Priority = 935,
+
+        DelayEqualBuildPlattons = {'Factories', 3},
+
+        BuilderConditions = {
+            { UCBC, 'CheckBuildPlattonDelay', { 'Factories' }},
+
+            { MIBC, 'CanPathToCurrentEnemySwarm', { true, 'LocationType' } },
+            
+            { EBC, 'MassToFactoryRatioBaseCheckSwarm', { 'LocationType' } },
+
+            { EBC, 'GreaterThanEconStorageCurrentSwarm', { 200, 2000}},
+
+            { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 1.02, 1.02 }},         
+            
+            { UCBC, 'HaveLessThanUnitsInCategoryBeingBuilt', { 2, categories.STRUCTURE * categories.FACTORY * categories.LAND * (categories.TECH2 + categories.TECH3) }},
+           
+            { UCBC, 'HaveLessThanUnitsWithCategory', { 10, categories.STRUCTURE * categories.FACTORY * categories.LAND * (categories.TECH2 + categories.TECH3) }},
+        },
+        BuilderType = 'Any',
+        BuilderData = {
+            Construction = {
+                AdjacencyBias = 'Forward',
+                AdjacencyPriority = {
+                    categories.MASSEXTRACTION,
+                    categories.MASSPRODUCTION,
+                    categories.ENERGYPRODUCTION * categories.TECH2,
+                    categories.ENERGYPRODUCTION * categories.TECH1,
+                },
+                Location = 'LocationType',
+                BuildClose = false,
+                BuildStructures = {
+                    'T3SupportLandFactory',
+                },
+            }
+        }
+    },
+
+    Builder {
+        BuilderName = 'Swarm Air Factory Mass > MassStorage - T3',
+
+        PlatoonTemplate = 'EngineerBuilderT3&SUBSwarm',
+
+        Priority = 935,
+
+        DelayEqualBuildPlattons = {'Factories', 3},
+
+        BuilderConditions = {
+            { UCBC, 'CheckBuildPlattonDelay', { 'Factories' }},
+
+            { EBC, 'MassToFactoryRatioBaseCheckSwarm', { 'LocationType' } },
+
+            { EBC, 'GreaterThanEconStorageCurrentSwarm', { 200, 2000}},
+
+            { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 1.02, 1.02 }}, 
+
+            { UCBC, 'HaveLessThanUnitsInCategoryBeingBuilt', { 1, categories.STRUCTURE * categories.FACTORY * categories.AIR * (categories.TECH2 + categories.TECH3) }},
+
+            { UCBC, 'HaveLessThanUnitsWithCategory', { 6, categories.STRUCTURE * categories.FACTORY * categories.AIR * (categories.TECH2 + categories.TECH3) }},
+        },
+        BuilderType = 'Any',
+        BuilderData = {
+            BuildClose = false,
+            Construction = {
+                AdjacencyBias = 'Back',
+                AdjacencyPriority = {
+                    categories.ENERGYPRODUCTION * categories.TECH3,
+                    categories.ENERGYPRODUCTION * categories.TECH2,
+                    categories.HYDROCARBON,
+                    categories.ENERGYPRODUCTION * categories.TECH1,
+                    categories.MASSEXTRACTION,
+                    categories.MASSPRODUCTION,
+                },
+                Location = 'LocationType',
+                BuildStructures = {
+                    'T3SupportAirFactory',  
                 },
             }
         }

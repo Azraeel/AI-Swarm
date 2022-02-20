@@ -623,54 +623,6 @@ BuilderGroup {
             },
         },     
     }, 
-
-    Builder {
-        BuilderName = 'AI-Swarm Protection Land - Offensive',     
-
-        PlatoonTemplate = 'AISwarm Protection Large',   
-
-        PlatoonAddPlans = { 'DistressResponseAISwarm' },
-
-        Priority = 650,                
-
-        InstanceCount = 3,           
-
-        BuilderType = 'Any',
-
-        BuilderConditions = {
-            { UCBC, 'EnemyUnitsGreaterAtLocationRadiusSwarm', {  BaseEnemyZone, 'LocationType', 0, categories.MOBILE * categories.LAND - categories.NAVAL}}, -- radius, LocationType, unitCount, categoryEnemy
-        },
-
-        BuilderData = {
-            MarkerType = 'Start Location',            
-            DistressRange = 100,
-            SafeZone = true,
-            MoveFirst = 'Threat',
-            LocationType = 'LocationType',
-            MoveNext = 'Threat',
-            IgnoreFriendlyBase = true,
-            --ThreatType = '',
-            --SelfThreat = '',
-            --FindHighestThreat ='',
-            --ThreatThreshold = '',
-            AvoidBases = true,
-            AvoidBasesRadius = 45,
-            AggressiveMove = false,      
-            AvoidClosestRadius = 50,
-            GuardTimer = 15,              
-            UseFormation = 'AttackFormation',
-            ThreatType = 'Structures',
-            ThreatSupport = 5,
-            PrioritizedCategories = {
-                categories.COMMAND,
-                categories.MASSEXTRACTION,
-                categories.EXPERIMENTAL,
-                categories.STRUCTURE * categories.DEFENSE,
-                categories.MOBILE * categories.LAND,
-                categories.ENGINEER,
-            },
-        },    
-    },
 }
 
 BuilderGroup {
@@ -811,8 +763,8 @@ BuilderGroup {
             MoveNext = 'Threat',
             ThreatType = 'Economy',			    -- Type of threat to use for gauging attacks
             FindHighestThreat = true,			-- Don't find high threat targets
-            MaxThreatThreshold = 3900,			-- If threat is higher than this, do not attack
-            MinThreatThreshold = 1000,			-- If threat is lower than this, do not attack
+            MaxThreatThreshold = 185,			-- If threat is higher than this, do not attack
+            MinThreatThreshold = 58,			-- If threat is lower than this, do not attack
             AvoidBases = true,
             AvoidBasesRadius = 150,
             AggressiveMove = true,      
@@ -859,8 +811,8 @@ BuilderGroup {
             LocationType = 'LocationType',
             MaxPathDistance = BaseEnemyZone, -- custom property to set max distance before a transport will be requested only used by GuardMarker plan
             FindHighestThreat = true,			-- Don't find high threat targets
-            MaxThreatThreshold = 6900,			-- If threat is higher than this, do not attack
-            MinThreatThreshold = 1000,		    -- If threat is lower than this, do not attack
+            MaxThreatThreshold = 158,			-- If threat is higher than this, do not attack
+            MinThreatThreshold = 58,		    -- If threat is lower than this, do not attack
             AvoidBases = true,
             AvoidBasesRadius = 135,
             AggressiveMove = false,      
@@ -911,8 +863,8 @@ BuilderGroup {
             LocationType = 'LocationType',
             MaxPathDistance = BaseEnemyZone, -- custom property to set max distance before a transport will be requested only used by GuardMarker plan
             FindHighestThreat = true,			-- Don't find high threat targets
-            MaxThreatThreshold = 8900,			-- If threat is higher than this, do not attack
-            MinThreatThreshold = 1000,		    -- If threat is lower than this, do not attack
+            MaxThreatThreshold = 158,			-- If threat is higher than this, do not attack
+            MinThreatThreshold = 58,		    -- If threat is lower than this, do not attack
             AvoidBases = true,
             AvoidBasesRadius = 120,
             AggressiveMove = false,      

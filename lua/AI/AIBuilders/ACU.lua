@@ -365,7 +365,7 @@ BuilderGroup {
     Builder {
         BuilderName = 'Swarm Commander Power low trend',
         PlatoonTemplate = 'CommanderBuilderSwarm',
-        Priority = 650,
+        Priority = 645,
         BuilderConditions = {
             { UCBC, 'HaveLessThanUnitsWithCategory', { 1, categories.ENERGYPRODUCTION - categories.TECH1 - categories.COMMAND } },
 
@@ -383,6 +383,7 @@ BuilderGroup {
                     categories.MASSEXTRACTION * categories.TECH1,
                     categories.ENERGYSTORAGE,   
                 },
+                { UCBC, 'UnitsGreaterAtEnemySwarm', { 0 , categories.STRUCTURE * categories.TECH3 * categories.ARTILLERY } },
                 BuildClose = true,
                 LocationType = 'LocationType',
                 BuildStructures = {
@@ -395,7 +396,7 @@ BuilderGroup {
     Builder {
         BuilderName = 'Swarm Commander Power MassRatio 10',
         PlatoonTemplate = 'CommanderBuilderSwarm',
-        Priority = 645,
+        Priority = 640,
         BuilderConditions = {
             { UCBC, 'HaveLessThanUnitsWithCategory', { 1, categories.ENERGYPRODUCTION - categories.TECH1 - categories.COMMAND } },
 
@@ -446,7 +447,7 @@ BuilderGroup {
 
             { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 0.85, 1.0 }}, 
 
-            { UCBC, 'HaveLessThanUnitsInCategoryBeingBuilt', { 2, categories.STRUCTURE * categories.FACTORY * categories.TECH1 }},
+            { UCBC, 'HaveLessThanUnitsInCategoryBeingBuilt', { 2, categories.STRUCTURE * categories.FACTORY * categories.LAND * categories.TECH1 }},
            
             { UCBC, 'HaveLessThanUnitsWithCategory', { 10, categories.STRUCTURE * categories.FACTORY * categories.LAND * (categories.TECH1 + categories.TECH2 + categories.TECH3) }},
         },

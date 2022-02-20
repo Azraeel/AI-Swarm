@@ -636,7 +636,7 @@ BuilderGroup {
         },
         BuilderData = {
             LocationType = 'LocationType',
-            ReclaimTime = 80,
+            ReclaimTime = 60,
             MinimumReclaim = 10
         },
         BuilderType = 'Any',
@@ -657,7 +657,7 @@ BuilderGroup {
         },
         BuilderData = {
             LocationType = 'LocationType',
-            ReclaimTime = 80,
+            ReclaimTime = 60,
             MinimumReclaim = 20
         },
         BuilderType = 'Any',
@@ -668,7 +668,7 @@ BuilderGroup {
         PlatoonTemplate = 'Swarm T1Reclaim',
         PlatoonAIPlan = 'ReclaimAISwarm',
         Priority = 750,
-        InstanceCount = 8,
+        InstanceCount = 4,
         BuilderConditions = {
             { UCBC, 'GreaterThanGameTimeSeconds', { 660 } }, -- After 11 Minutes
 
@@ -680,7 +680,7 @@ BuilderGroup {
         },
         BuilderData = {
             LocationType = 'LocationType',
-            ReclaimTime = 80,
+            ReclaimTime = 60,
             MinimumReclaim = 40
         },
         BuilderType = 'Any',
@@ -706,7 +706,7 @@ BuilderGroup {
         },
         BuilderData = {
             LocationType = 'LocationType',
-            ReclaimTime = 80,
+            ReclaimTime = 60,
             MinimumReclaim = 10
         },
         BuilderType = 'Any',
@@ -717,7 +717,7 @@ BuilderGroup {
         PlatoonTemplate = 'Swarm T1Reclaim',
         PlatoonAIPlan = 'ReclaimAISwarm',
         Priority = 700,
-        InstanceCount = 3,
+        InstanceCount = 2,
         BuilderConditions = {
             { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 1, categories.ENGINEER * categories.TECH1 }},
 
@@ -727,7 +727,7 @@ BuilderGroup {
         },
         BuilderData = {
             LocationType = 'LocationType',
-            ReclaimTime = 80,
+            ReclaimTime = 60,
             MinimumReclaim = 20
         },
         BuilderType = 'Any',
@@ -748,7 +748,7 @@ BuilderGroup {
         },
         BuilderData = {
             LocationType = 'LocationType',
-            ReclaimTime = 80,
+            ReclaimTime = 60,
             MinimumReclaim = 40
         },
         BuilderType = 'Any',
@@ -769,7 +769,7 @@ BuilderGroup {
         },
         BuilderData = {
             LocationType = 'LocationType',
-            ReclaimTime = 80,
+            ReclaimTime = 60,
             MinimumReclaim = 80
         },
         BuilderType = 'Any',
@@ -790,7 +790,7 @@ BuilderGroup {
         },
         BuilderData = {
             LocationType = 'LocationType',
-            ReclaimTime = 80,
+            ReclaimTime = 60,
             MinimumReclaim = 120
         },
         BuilderType = 'Any',

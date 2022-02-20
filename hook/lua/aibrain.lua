@@ -431,7 +431,7 @@ AIBrain = Class(SwarmAIBrainClass) {
             --LOG("What is unit " .. repr(unit))
             --LOG("Are we reaching this point? GetUpgradeSpecSwarmMassExtractor")
             if self.UpgradeMode == 'Aggressive' then
-                upgradeSpec.MassLowTrigger = 0.80
+                upgradeSpec.MassLowTrigger = 0.85
                 upgradeSpec.EnergyLowTrigger = 1.0
                 upgradeSpec.MassHighTrigger = 2.0
                 upgradeSpec.EnergyHighTrigger = 2.0
@@ -440,7 +440,7 @@ AIBrain = Class(SwarmAIBrainClass) {
                 upgradeSpec.EnemyThreatLimit = 10
                 return upgradeSpec
             elseif self.UpgradeMode == 'Normal' then
-                upgradeSpec.MassLowTrigger = 0.90
+                upgradeSpec.MassLowTrigger = 0.95
                 upgradeSpec.EnergyLowTrigger = 1.05
                 upgradeSpec.MassHighTrigger = 2.0
                 upgradeSpec.EnergyHighTrigger = 2.0
@@ -462,8 +462,8 @@ AIBrain = Class(SwarmAIBrainClass) {
             --LOG("What is unit " .. repr(unit))
             --LOG("Are we reaching this point? GetUpgradeSpecSwarmFactory")
             if self.UpgradeMode == 'Aggressive' then
-                upgradeSpec.MassLowTrigger = 1.0
-                upgradeSpec.EnergyLowTrigger = 1.0
+                upgradeSpec.MassLowTrigger = 1.02
+                upgradeSpec.EnergyLowTrigger = 1.02
                 upgradeSpec.MassHighTrigger = 2.0
                 upgradeSpec.EnergyHighTrigger = 2.0
                 upgradeSpec.UpgradeCheckWait = 24
@@ -471,8 +471,8 @@ AIBrain = Class(SwarmAIBrainClass) {
                 upgradeSpec.EnemyThreatLimit = 10
                 return upgradeSpec
             elseif self.UpgradeMode == 'Normal' then
-                upgradeSpec.MassLowTrigger = 1.015
-                upgradeSpec.EnergyLowTrigger = 1.015
+                upgradeSpec.MassLowTrigger = 1.035
+                upgradeSpec.EnergyLowTrigger = 1.035
                 upgradeSpec.MassHighTrigger = 2.0
                 upgradeSpec.EnergyHighTrigger = 2.0
                 upgradeSpec.UpgradeCheckWait = 24
@@ -480,8 +480,8 @@ AIBrain = Class(SwarmAIBrainClass) {
                 upgradeSpec.EnemyThreatLimit = 5
                 return upgradeSpec
             elseif self.UpgradeMode == 'Caution' then
-                upgradeSpec.MassLowTrigger = 1.035
-                upgradeSpec.EnergyLowTrigger = 1.035
+                upgradeSpec.MassLowTrigger = 1.05
+                upgradeSpec.EnergyLowTrigger = 1.05
                 upgradeSpec.MassHighTrigger = 2.0
                 upgradeSpec.EnergyHighTrigger = 2.0
                 upgradeSpec.UpgradeCheckWait = 24

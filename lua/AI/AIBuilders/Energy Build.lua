@@ -15,7 +15,7 @@ BuilderGroup {
     Builder {
         BuilderName = 'Swarm Power low trend',
         PlatoonTemplate = 'T1EngineerBuilderSwarm',
-        Priority = 650,
+        Priority = 655,
         InstanceCount = 2,                                                     
         DelayEqualBuildPlattons = {'Energy', 3},
         BuilderConditions = {
@@ -54,8 +54,8 @@ BuilderGroup {
     Builder {
         BuilderName = 'Swarm Power low trend - Scale Power',
         PlatoonTemplate = 'T1EngineerBuilderSwarm',
-        Priority = 660,
-        InstanceCount = 3,                                                     
+        Priority = 645,
+        InstanceCount = 2,                                                     
         DelayEqualBuildPlattons = {'Energy', 3},
         BuilderConditions = {
             { UCBC, 'HaveLessThanUnitsWithCategory', { 1, categories.ENERGYPRODUCTION - categories.TECH1 - categories.COMMAND } },
@@ -64,9 +64,9 @@ BuilderGroup {
             
             { UCBC, 'CheckBuildPlattonDelay', { 'Energy' }},
 
-            { EBC, 'GreaterThanMassEfficiencyOverTimeSwarm', { 0.90 }},
+            { EBC, 'GreaterThanMassEfficiencyOverTimeSwarm', { 0.95 }},
 
-            { EBC, 'LessThanEnergyTrendOverTimeSwarm', { 6.0 } },
+            { EBC, 'LessThanEnergyTrendOverTimeSwarm', { 8.0 } },
         },
         BuilderType = 'Any',
         BuilderData = {
@@ -82,6 +82,7 @@ BuilderGroup {
                 BuildClose = true,
                 LocationType = 'LocationType',
                 BuildStructures = {
+                    'T1EnergyProduction',
                     'T1EnergyProduction',
                 },
             }

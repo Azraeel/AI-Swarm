@@ -140,7 +140,7 @@ BuilderGroup {
     Builder {
         BuilderName = 'S3 Mass Fab',
         PlatoonTemplate = 'EngineerBuilderT3&SUBSwarm',
-        Priority = 1175,
+        Priority = 900,
         BuilderConditions = {
             { UCBC, 'HaveGreaterThanUnitsWithCategory', { 2, categories.STRUCTURE * categories.ENERGYPRODUCTION * categories.TECH3 }},
 
