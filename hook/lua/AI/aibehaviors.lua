@@ -85,18 +85,17 @@ function StructureUpgradeThreadSwarm(unit, aiBrain, upgradeSpec, bypasseco)
     local alternativebp = false
     --LOG("What is upgradeID at the Start " ..repr(upgradeID))
 
-    local unitType, unitTech, unitFactionIndex = StructureTypeCheckSwarm(aiBrain, unitBp)
+    local unitType, unitTech, unitFactionIndex = StructureTypeCheckSwarm(aiBrain, unitBp) -- 1: UEF, 2: Aeon, 3: Cybran, 4: Seraphim, 5: Nomads 
     --LOG("What is unitFactionIndex " ..unitFactionIndex)
     --LOG("What is unitType " ..unitType)
     --LOG("What is unitTech " ..unitTech)
 
-    -- Maybe Replace Unreliable GetListOfUnits with EntityCategoryCount?
     local function DecideUpgradeBP()
         --LOG("What is upgradeID at the start of DecideUpgradeBP Function " ..repr(upgradeID).. " and unit was " ..repr(unit:GetBlueprint().Description))
         if upgradeID then
             -- This is the support factory compatibility code
             if EntityCategoryContains( FACTORYLAND, unit) then -- 1: UEF, 2: Aeon, 3: Cybran, 4: Seraphim, 5: Nomads
-                if table.getn( GetListOfUnits(aiBrain, FLHQ2, false, true )) > 0 or table.getn( GetListOfUnits(aiBrain, FLHQ3, false, true )) > 0 and EntityCategoryContains( FLSF1, unit) then
+                if table.getn( GetListOfUnits(aiBrain, FLHQ2, false, false )) > 0 or table.getn( GetListOfUnits(aiBrain, FLHQ3, false, false )) > 0 and EntityCategoryContains( FLSF1, unit) then
                     if unitFactionIndex == 1 then
                         alternativebp = 'zeb9501'
                     elseif unitFactionIndex == 2 then
@@ -114,7 +113,7 @@ function StructureUpgradeThreadSwarm(unit, aiBrain, upgradeSpec, bypasseco)
                     if upgradebp then
                         upgradeID = alternativebp
                     end
-                elseif table.getn( GetListOfUnits(aiBrain, FLHQ3, false, true )) > 0 and EntityCategoryContains( FLSF2, unit) then
+                elseif table.getn( GetListOfUnits(aiBrain, FLHQ3, false, false )) > 0 and EntityCategoryContains( FLSF2, unit) then
                     if unitFactionIndex == 1 then
                         alternativebp = 'zeb9601'
                     elseif unitFactionIndex == 2 then
@@ -132,7 +131,7 @@ function StructureUpgradeThreadSwarm(unit, aiBrain, upgradeSpec, bypasseco)
                     end
                 end
             elseif EntityCategoryContains( FACTORYAIR, unit) then -- 1: UEF, 2: Aeon, 3: Cybran, 4: Seraphim, 5: Nomads
-                if table.getn( GetListOfUnits(aiBrain, FAHQ2, false, true )) > 0 or table.getn( GetListOfUnits(aiBrain, FAHQ3, false, true )) > 0 and EntityCategoryContains( FASF1, unit) then
+                if table.getn( GetListOfUnits(aiBrain, FAHQ2, false, false )) > 0 or table.getn( GetListOfUnits(aiBrain, FAHQ3, false, false )) > 0 and EntityCategoryContains( FASF1, unit) then
                     if unitFactionIndex == 1 then
                         alternativebp = 'zeb9502'
                     elseif unitFactionIndex == 2 then
@@ -148,7 +147,7 @@ function StructureUpgradeThreadSwarm(unit, aiBrain, upgradeSpec, bypasseco)
                     if upgradebp then
                         upgradeID = alternativebp
                     end
-                elseif table.getn( GetListOfUnits(aiBrain, FAHQ3, false, true )) > 0 and EntityCategoryContains( FASF2, unit) then
+                elseif table.getn( GetListOfUnits(aiBrain, FAHQ3, false, false )) > 0 and EntityCategoryContains( FASF2, unit) then
                     if unitFactionIndex == 1 then
                         alternativebp = 'zeb9602'
                     elseif unitFactionIndex == 2 then
@@ -166,7 +165,7 @@ function StructureUpgradeThreadSwarm(unit, aiBrain, upgradeSpec, bypasseco)
                     end
                 end
             elseif EntityCategoryContains( FACTORYNAVAL, unit) then -- 1: UEF, 2: Aeon, 3: Cybran, 4: Seraphim, 5: Nomads
-                if table.getn( GetListOfUnits(aiBrain, FNHQ2, false, true )) > 0 or table.getn( GetListOfUnits(aiBrain, FNHQ3, false, true )) > 0 and EntityCategoryContains( FNSF1, unit) then
+                if table.getn( GetListOfUnits(aiBrain, FNHQ2, false, false )) > 0 or table.getn( GetListOfUnits(aiBrain, FNHQ3, false, false )) > 0 and EntityCategoryContains( FNSF1, unit) then
                     if unitFactionIndex == 1 then
                         alternativebp = 'zeb9503'
                     elseif unitFactionIndex == 2 then
@@ -182,7 +181,7 @@ function StructureUpgradeThreadSwarm(unit, aiBrain, upgradeSpec, bypasseco)
                     if upgradebp then
                         upgradeID = alternativebp
                     end
-                elseif table.getn( GetListOfUnits(aiBrain, FNHQ3, false, true )) > 0 and EntityCategoryContains( FNSF2, unit) then
+                elseif table.getn( GetListOfUnits(aiBrain, FNHQ3, false, false )) > 0 and EntityCategoryContains( FNSF2, unit) then
                     if unitFactionIndex == 1 then
                         alternativebp = 'zeb9603'
                     elseif unitFactionIndex == 2 then

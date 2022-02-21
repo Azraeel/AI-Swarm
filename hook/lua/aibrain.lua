@@ -314,7 +314,7 @@ AIBrain = Class(SwarmAIBrainClass) {
         end
         SWARMWAIT(30)
     end,
-
+    
     -- Spicy Sprouto Code Magic
     EconomyMonitorSwarm = function(self)
         --LOG("EconomyMonitor is Started Fully & Running")
@@ -1426,7 +1426,7 @@ AIBrain = Class(SwarmAIBrainClass) {
 
     ExpansionIntelScanSwarm = function(self)
         --LOG('Pre-Start ExpansionIntelScanSwarm')
-        SWARMWAIT(100)
+        SWARMWAIT(50)
         if SWARMGETN(self.ExpansionWatchTableSwarm) == 0 then
             --LOG('ExpansionIntelScanSwarm not ready or is empty')
             return
@@ -1499,7 +1499,7 @@ AIBrain = Class(SwarmAIBrainClass) {
                     self.ExpansionWatchTableSwarm[k]['Structures'] = rawThreat
                 end
             end
-            SWARMWAIT(100)
+            SWARMWAIT(50)
             -- don't do this, it might have a platoon inside it LOG('Current Expansion Watch Table '..repr(self.ExpansionWatchTableSwarm))
         end
     end,

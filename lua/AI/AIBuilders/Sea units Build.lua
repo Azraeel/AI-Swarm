@@ -75,7 +75,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Naval Builders',
 
             { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 0.8, 0.9 }},
 
-            { EBC, 'GreaterThanEconStorageCurrentSwarm', { 200, 2000}},
+            { EBC, 'GreaterThanEconStorageCurrentSwarm', { 100, 1000}},
 
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
 
@@ -99,7 +99,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Naval Builders',
 
             { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 0.8, 0.9 }},
 
-            { EBC, 'GreaterThanEconStorageCurrentSwarm', { 200, 2000}},
+            { EBC, 'GreaterThanEconStorageCurrentSwarm', { 100, 1000}},
 
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
 
@@ -126,7 +126,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Naval Builders',
 
         	{ EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 0.8, 0.9 }},
 
-            { EBC, 'GreaterThanEconStorageCurrentSwarm', { 200, 2000}},
+            { EBC, 'GreaterThanEconStorageCurrentSwarm', { 100, 1000}},
 
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
 
@@ -150,7 +150,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Naval Builders',
 
             { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 0.8, 0.9 }},
 
-            { EBC, 'GreaterThanEconStorageCurrentSwarm', { 200, 2000}},
+            { EBC, 'GreaterThanEconStorageCurrentSwarm', { 100, 1000}},
 
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
 
@@ -174,7 +174,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Naval Builders',
 
             { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 0.8, 0.9 }},
 
-            { EBC, 'GreaterThanEconStorageCurrentSwarm', { 200, 2000}},
+            { EBC, 'GreaterThanEconStorageCurrentSwarm', { 100, 1000}},
 
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
 
@@ -198,7 +198,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Naval Builders',
 
             { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 0.8, 0.9 }},
 
-            { EBC, 'GreaterThanEconStorageCurrentSwarm', { 200, 2000}},
+            { EBC, 'GreaterThanEconStorageCurrentSwarm', { 100, 1000}},
 
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
 
@@ -222,7 +222,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Naval Builders',
 
             { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 0.8, 0.9 }},
 
-            { EBC, 'GreaterThanEconStorageCurrentSwarm', { 200, 2000}},
+            { EBC, 'GreaterThanEconStorageCurrentSwarm', { 100, 1000}},
 
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
 
@@ -246,7 +246,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Naval Builders',
 
             { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 0.8, 0.9 }},
 
-            { EBC, 'GreaterThanEconStorageCurrentSwarm', { 200, 2000}},
+            { EBC, 'GreaterThanEconStorageCurrentSwarm', { 100, 1000}},
 
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
 
@@ -269,7 +269,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Naval Builders',
         BuilderConditions = {
         	{ EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 0.8, 0.9 }},
 
-            { EBC, 'GreaterThanEconStorageCurrentSwarm', { 200, 2000}},
+            { EBC, 'GreaterThanEconStorageCurrentSwarm', { 100, 1000}},
 
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
 
@@ -291,7 +291,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Naval Builders',
         BuilderConditions = {
             { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 0.8, 0.9 }},
 
-            { EBC, 'GreaterThanEconStorageCurrentSwarm', { 200, 2000}},
+            { EBC, 'GreaterThanEconStorageCurrentSwarm', { 100, 1000}},
 
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
 
@@ -315,7 +315,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Naval Builders',
 
             { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 0.8, 0.9 }},
 
-            { EBC, 'GreaterThanEconStorageCurrentSwarm', { 200, 2000}},
+            { EBC, 'GreaterThanEconStorageCurrentSwarm', { 100, 1000}},
 
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
 
@@ -335,7 +335,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Naval Builders',
         BuilderConditions = {
             { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 0.8, 0.9 }},
 
-            { EBC, 'GreaterThanEconStorageCurrentSwarm', { 200, 2000}},
+            { EBC, 'GreaterThanEconStorageCurrentSwarm', { 100, 1000}},
 
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
 
@@ -353,7 +353,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Naval Builders',
         BuilderConditions = {
             { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 0.8, 0.9 }},
 
-            { EBC, 'GreaterThanEconStorageCurrentSwarm', { 200, 2000}},
+            { EBC, 'GreaterThanEconStorageCurrentSwarm', { 100, 1000}},
 
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
 
@@ -372,7 +372,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Naval Builders',
         BuilderConditions = {
             { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 1.15, 1.15 }},
 
-            { EBC, 'GreaterThanEconStorageCurrentSwarm', { 200, 2000}},
+            { EBC, 'GreaterThanEconStorageCurrentSwarm', { 100, 1000}},
 
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
 
@@ -409,7 +409,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Sonar Builders',
 
             { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 1.0, 1.01 }},
             
-            { EBC, 'GreaterThanEconStorageCurrentSwarm', { 200, 2000}},
+            { EBC, 'GreaterThanEconStorageCurrentSwarm', { 100, 1000}},
         },
 
         BuilderType = 'Any',
@@ -447,7 +447,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Sonar Upgraders',
 
             { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 1.0, 1.01 }},
 
-            { EBC, 'GreaterThanEconStorageCurrentSwarm', { 200, 2000}},
+            { EBC, 'GreaterThanEconStorageCurrentSwarm', { 100, 1000}},
         },
 
         BuilderType = 'Any',
@@ -469,7 +469,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Sonar Upgraders',
 
             { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 1.0, 1.01 }},
 
-            { EBC, 'GreaterThanEconStorageCurrentSwarm', { 200, 2000}},
+            { EBC, 'GreaterThanEconStorageCurrentSwarm', { 100, 1000}},
         },
 
         BuilderType = 'Any',
