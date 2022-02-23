@@ -441,7 +441,7 @@ AIBrain = Class(SwarmAIBrainClass) {
                 return upgradeSpec
             elseif self.UpgradeMode == 'Normal' then
                 upgradeSpec.MassLowTrigger = 0.95
-                upgradeSpec.EnergyLowTrigger = 1.05
+                upgradeSpec.EnergyLowTrigger = 1.025
                 upgradeSpec.MassHighTrigger = 2.0
                 upgradeSpec.EnergyHighTrigger = 2.0
                 upgradeSpec.UpgradeCheckWait = 18
@@ -450,7 +450,7 @@ AIBrain = Class(SwarmAIBrainClass) {
                 return upgradeSpec
             elseif self.UpgradeMode == 'Caution' then
                 upgradeSpec.MassLowTrigger = 1.0
-                upgradeSpec.EnergyLowTrigger = 1.10
+                upgradeSpec.EnergyLowTrigger = 1.05
                 upgradeSpec.MassHighTrigger = 2.0
                 upgradeSpec.EnergyHighTrigger = 2.0
                 upgradeSpec.UpgradeCheckWait = 18
@@ -463,7 +463,7 @@ AIBrain = Class(SwarmAIBrainClass) {
             --LOG("Are we reaching this point? GetUpgradeSpecSwarmFactory")
             if self.UpgradeMode == 'Aggressive' then
                 upgradeSpec.MassLowTrigger = 1.02
-                upgradeSpec.EnergyLowTrigger = 1.02
+                upgradeSpec.EnergyLowTrigger = 1.05
                 upgradeSpec.MassHighTrigger = 2.0
                 upgradeSpec.EnergyHighTrigger = 2.0
                 upgradeSpec.UpgradeCheckWait = 24
@@ -472,7 +472,7 @@ AIBrain = Class(SwarmAIBrainClass) {
                 return upgradeSpec
             elseif self.UpgradeMode == 'Normal' then
                 upgradeSpec.MassLowTrigger = 1.035
-                upgradeSpec.EnergyLowTrigger = 1.035
+                upgradeSpec.EnergyLowTrigger = 1.075
                 upgradeSpec.MassHighTrigger = 2.0
                 upgradeSpec.EnergyHighTrigger = 2.0
                 upgradeSpec.UpgradeCheckWait = 24
@@ -481,7 +481,7 @@ AIBrain = Class(SwarmAIBrainClass) {
                 return upgradeSpec
             elseif self.UpgradeMode == 'Caution' then
                 upgradeSpec.MassLowTrigger = 1.05
-                upgradeSpec.EnergyLowTrigger = 1.05
+                upgradeSpec.EnergyLowTrigger = 1.1
                 upgradeSpec.MassHighTrigger = 2.0
                 upgradeSpec.EnergyHighTrigger = 2.0
                 upgradeSpec.UpgradeCheckWait = 24

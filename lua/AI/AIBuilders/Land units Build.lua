@@ -584,7 +584,7 @@ BuilderGroup {
     BuildersType = 'PlatoonFormBuilder', 
 
     Builder {
-        BuilderName = 'AI-Swarm Standard Land - Early Game',    
+        BuilderName = 'AI-Swarm Standard Land - Basic',    
 
         PlatoonTemplate = 'AISwarm LandAttack Micro - Basic',        
 
@@ -597,23 +597,23 @@ BuilderGroup {
         BuilderType = 'Any',
 
         BuilderConditions = {
-            { UCBC, 'LessThanGameTimeSeconds', { 600 } },
-
             { UCBC, 'EnemyUnitsGreaterAtLocationRadiusSwarm', {  BaseEnemyZone, 'LocationType', 0, categories.MOBILE * categories.LAND - categories.NAVAL}}, -- radius, LocationType, unitCount, categoryEnemy
         },
         BuilderData = {
             UseFormation = 'None',
             DistressRange = 100,
             ThreatSupport = 35,
+            PlatoonLimit = 12,
             LocationType = 'LocationType',
             PrioritizedCategories = {
                 categories.COMMAND,
                 categories.EXPERIMENTAL,
                 categories.STRUCTURE * categories.DEFENSE,
                 categories.MOBILE * categories.LAND * categories.ANTIAIR,
+                categories.MOBILE * categories.LAND * categories.INDIRECTFIRE,
+                categories.MOBILE * categories.LAND * categories.DIRECTFIRE,
                 categories.MOBILE * categories.LAND,
                 categories.ENGINEER,
-                categories.MOBILE * categories.LAND * categories.ANTIAIR,
                 categories.MASSEXTRACTION,
                 categories.ALLUNITS,
             }, 
@@ -621,7 +621,7 @@ BuilderGroup {
     },
 
     Builder {
-        BuilderName = 'AI-Swarm Standard Land - Offensive',
+        BuilderName = 'AI-Swarm Standard Land - Advanced',
 
         PlatoonTemplate = 'AISwarm LandAttack Micro - Standard', 
 
@@ -629,7 +629,7 @@ BuilderGroup {
 
         Priority = 650,
 
-        InstanceCount = 25,
+        InstanceCount = 10,
 
         BuilderType = 'Any',
 
@@ -640,7 +640,7 @@ BuilderGroup {
             SearchRadius = BaseEnemyZone,
             LocationType = 'LocationType',
             UseFormation = 'None',
-            PlatoonLimit = 18,
+            PlatoonLimit = 25,
             AggressiveMove = true,
             DistressRange = 100,
             ThreatSupport = 75,
@@ -786,7 +786,7 @@ BuilderGroup {
 
         PlatoonTemplate = 'AISwarm Mass Raid',
 
-        Priority = 1000,
+        Priority = 652,
 
         InstanceCount = 2,
 

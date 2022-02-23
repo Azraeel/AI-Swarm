@@ -5023,7 +5023,16 @@ Platoon = Class(SwarmPlatoonClass) {
         local armyIndex = aiBrain:GetArmyIndex()
         local target
         local blip
+        local DEBUG = false
         local platoonUnits = GetPlatoonUnits(self)
+        local platoonLimit = self.PlatoonData.PlatoonLimit or 12
+        local LocationType = self.PlatoonData.LocationType or 'MAIN'
+        local mainBasePos
+        if LocationType then
+            mainBasePos = aiBrain.BuilderManagers[LocationType].Position
+        else
+            mainBasePos = aiBrain.BuilderManagers['MAIN'].Position
+        end
         local enemyRadius = 40
         local movingToScout = false
         local MaxPlatoonWeaponRange
@@ -5124,34 +5133,79 @@ Platoon = Class(SwarmPlatoonClass) {
             end
         end
         while PlatoonExists(aiBrain, self) do
-            if true then
-                target = self:FindClosestUnit('Attack', 'Enemy', true, categories.ALLUNITS - categories.AIR - categories.SCOUT - categories.WALL - categories.NAVAL)
-            end
+            target = self:FindClosestUnit('Attack', 'Enemy', true, categories.ALLUNITS - categories.AIR - categories.SCOUT - categories.WALL - categories.NAVAL)
             if target then
                 local threatAroundplatoon = 0
+
                 local platoonThreat = self:GetPlatoonThreat('Land', categories.MOBILE * categories.LAND)
+
                 local targetPosition = target:GetPosition()
+
                 local platoonPos = GetPlatoonPosition(self)
+
                 if not AIAttackUtils.CanGraphToSwarm(platoonPos, targetPosition, self.MovementLayer) then return self:SetAIPlan('HuntAIPATHSwarm') end
-                local platoonThreat = self:CalculatePlatoonThreat('AntiSurface', categories.ALLUNITS)
+
+                local platoonThreat = self:CalculatePlatoonThreat('Surface', categories.ALLUNITS)
+
 
                 self:Stop()
                 self:AggressiveMoveToLocation(SWARMCOPY(target:GetPosition()))
+
                 local position = AIUtils.RandomLocation(target:GetPosition()[1],target:GetPosition()[3])
                 self:MoveToLocation(position, false)
+
                 SWARMWAIT(30)
                 platoonPos = GetPlatoonPosition(self)
+
                 if scoutUnit and (not scoutUnit.Dead) then
                     IssueClearCommands({scoutUnit})
                     IssueMove({scoutUnit}, platoonPos)
                 end
+
                 if not platoonPos then break end
                 local enemyUnitCount = GetNumUnitsAroundPoint(aiBrain, categories.MOBILE * categories.LAND - categories.SCOUT - categories.ENGINEER, platoonPos, enemyRadius, 'Enemy')
                 if enemyUnitCount > 0 then
+
                     target = self:FindClosestUnit('Attack', 'Enemy', true, categories.ALLUNITS - categories.NAVAL - categories.AIR - categories.SCOUT - categories.WALL)
                     attackSquad = self:GetSquadUnits('Attack')
                     IssueClearCommands(attackSquad)
+
+                    local platoonCount = SWARMGETN(GetPlatoonUnits(self))
+
                     if target then
+                        local targetPosition = target:GetPosition()
+                        local platoonPos = GetPlatoonPosition(self)
+                        local targetThreat
+                        if platoonThreat and platoonCount < platoonLimit then
+                            self.PlatoonFull = false
+                            --LOG('Merging with patoon count of '..platoonCount)
+                            if VDist2Sq(platoonPos[1], platoonPos[3], mainBasePos[1], mainBasePos[3]) > 6400 then
+                                targetThreat = GetThreatAtPosition(aiBrain, targetPosition, 0, true, 'Land')
+                                --LOG('HuntAIPath targetThreat is '..targetThreat)
+                                if targetThreat > platoonThreat then
+                                    --LOG('HuntAIPath attempting merge and formation ')
+                                    if DEBUG then
+                                        for _, v in platoonUnits do
+                                            if v and not v.Dead then
+                                                v:SetCustomName('HuntAIPATH Trying to Merge')
+                                            end
+                                        end
+                                    end
+                                    self:Stop()
+                                    local merged = self:MergeWithNearbyPlatoonsSwarm('HuntAISwarm', 15, 12)
+                                    if merged then
+                                        self:SetPlatoonFormationOverride('NoFormation')
+                                        continue
+                                    else
+                                        --LOG('No merge done')
+                                    end
+                                end
+                            end
+                        else
+                            --LOG('Setting platoon to full as platoonCount is greater than 15')
+                            self.PlatoonFull = true
+                        end
+
                         if EntityCategoryContains(categories.COMMAND, target) then
                             if platoonThreat < 30 then
                                 self:Stop()
@@ -5163,6 +5217,7 @@ Platoon = Class(SwarmPlatoonClass) {
                                 continue
                             end
                         end
+
                         while PlatoonExists(aiBrain, self) do
                             if not target.Dead then
                                 --targetPosition = target:GetPosition()
@@ -5184,6 +5239,7 @@ Platoon = Class(SwarmPlatoonClass) {
                         end
                     end
                 end
+
             elseif not movingToScout then
                 movingToScout = true
                 self:Stop()
@@ -5194,6 +5250,7 @@ Platoon = Class(SwarmPlatoonClass) {
                     self:MoveToLocation((v), false)
                 end
             end
+            
         SWARMWAIT(40)
         end
     end,
@@ -5213,7 +5270,7 @@ Platoon = Class(SwarmPlatoonClass) {
         local maxPathDistance = 250
         local enemyRadius = 40
         local data = self.PlatoonData
-        local platoonLimit = self.PlatoonData.PlatoonLimit or 18
+        local platoonLimit = self.PlatoonData.PlatoonLimit or 25
         local bAggroMove = self.PlatoonData.AggressiveMove
         local LocationType = self.PlatoonData.LocationType or 'MAIN'
         local maxRadius = data.SearchRadius or 250
@@ -5315,7 +5372,7 @@ Platoon = Class(SwarmPlatoonClass) {
                 LOG('Debug loop is '..debugloop)
                 debugloop = debugloop + 1
             end]]
-            platoonThreat = self:CalculatePlatoonThreat('AntiSurface', categories.ALLUNITS)
+            platoonThreat = self:CalculatePlatoonThreat('Surface', categories.ALLUNITS)
             local platoonCount = SWARMGETN(GetPlatoonUnits(self))
             if target then
                 local targetPosition = target:GetPosition()
@@ -5337,7 +5394,7 @@ Platoon = Class(SwarmPlatoonClass) {
                                 end
                             end
                             self:Stop()
-                            local merged = self:MergeWithNearbyPlatoonsSwarm('HuntAIPATHSwarm', 40, 30)
+                            local merged = self:MergeWithNearbyPlatoonsSwarm('HuntAIPATHSwarm', 25, 25)
                             if merged then
                                 self:SetPlatoonFormationOverride('GrowthFormation') -- GrowthFormation is more organic and less impactful
                                 SWARMWAIT(20)
@@ -5707,7 +5764,7 @@ Platoon = Class(SwarmPlatoonClass) {
         self:SetPlatoonFormationOverride(PlatoonFormation)
         local stageExpansion = false
         local platoonUnits = GetPlatoonUnits(self)
-        local platoonThreat = self:CalculatePlatoonThreat('AntiSurface', categories.ALLUNITS)
+        local platoonThreat = self:CalculatePlatoonThreat('Surface', categories.ALLUNITS)
         if platoonUnits > 0 then
             for k, v in platoonUnits do
                 if not v.Dead then
@@ -6005,7 +6062,7 @@ Platoon = Class(SwarmPlatoonClass) {
                 local target, acuInRange = AIUtils.AIFindBrainTargetInCloseRangeSwarm(aiBrain, self, GetPlatoonPosition(self), 'Attack', 20, (categories.LAND + categories.NAVAL + categories.STRUCTURE), self.atkPri, false)
                 --LOG('At mass marker and checking for enemy units/structures')
                 platLoc = GetPlatoonPosition(self)
-                platoonThreat = self:CalculatePlatoonThreat('AntiSurface', categories.ALLUNITS)
+                platoonThreat = self:CalculatePlatoonThreat('Surface', categories.ALLUNITS)
                 local target, acuInRange, acuUnit, totalThreat = AIUtils.AIFindBrainTargetInCloseRangeSwarm(aiBrain, self, platLoc, 'Attack', 20, (categories.LAND + categories.NAVAL + categories.STRUCTURE), self.atkPri, false)
                 local attackSquad = self:GetSquadUnits('Attack')
                 --LOG('Mass raid at position platoonThreat is '..platoonThreat..' Enemy threat is '..totalThreat)
@@ -6227,7 +6284,7 @@ Platoon = Class(SwarmPlatoonClass) {
                 if enemyUnitCount > 0 then
                     local attackSquad = self:GetSquadUnits('Attack')
                     -- local target = self:FindClosestUnit('Attack', 'Enemy', true, categories.ALLUNITS - categories.NAVAL - categories.AIR - categories.SCOUT - categories.WALL)
-                    platoonThreat = self:CalculatePlatoonThreat('AntiSurface', categories.ALLUNITS)
+                    platoonThreat = self:CalculatePlatoonThreat('Surface', categories.ALLUNITS)
                     local target, acuInRange, acuUnit, totalThreat = AIUtils.AIFindBrainTargetInCloseRangeSwarm(aiBrain, self, PlatoonPosition, 'Attack', self.enemyRadius, categories.ALLUNITS - categories.NAVAL - categories.AIR - categories.SCOUT - categories.WALL, self.atkPri, false)
                     if acuInRange then
                         target = false

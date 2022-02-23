@@ -144,7 +144,7 @@ BuilderGroup {
         }
     },
 
-    Builder {
+    --[[ Builder {
         BuilderName = 'S2 Vacant Start Location - Defense Point',                             
         PlatoonTemplate = 'T2EngineerBuilderSwarm',                                   
         Priority = 510,                                                  
@@ -242,7 +242,7 @@ BuilderGroup {
                 }
             },
         }
-    },
+    }, ]]--
 
     Builder {
         BuilderName = 'S1 Naval Builder',                                       -- Random Builder Name.
