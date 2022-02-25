@@ -115,6 +115,7 @@ BaseBuilderTemplate {
 
         'Swarm Adaptive Factory Build',
         'Swarm Adaptive Air Build',
+        'Swarm Adaptive Land Build',
         -----------------------------------------------------------------------------
         -- ==== Scout BUILDER ==== --
         -----------------------------------------------------------------------------

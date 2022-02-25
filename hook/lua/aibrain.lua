@@ -122,6 +122,8 @@ AIBrain = Class(SwarmAIBrainClass) {
         self:ForkThread(self.ExpansionIntelScanSwarm)
         self:ForkThread(SwarmUtils.DisplayMarkerAdjacencySwarm)
         self:ForkThread(self.EcoExtractorUpgradeCheckSwarm)
+
+        --self.
         self.EcoManager = {
             EcoManagerTime = 30,
             EcoManagerStatus = 'ACTIVE',
@@ -542,24 +544,41 @@ AIBrain = Class(SwarmAIBrainClass) {
         end
 
         local gameTime = GetGameTimeSeconds()
+
         --LOG('gameTime is '..gameTime..' Upgrade Mode is '..self.UpgradeMode)
         if gameTime < (240 / multiplier) then
+
             self.UpgradeMode = 'Caution'
+
         elseif gameTime > (240 / multiplier) and self.UpgradeMode == 'Caution' then
+
             self.UpgradeMode = 'Normal'
             self.UpgradeIssuedLimit = 1
+
         elseif gameTime > (240 / multiplier) and self.UpgradeIssuedLimit == 1 and self.UpgradeMode == 'Aggressive' then
+
             self.UpgradeIssuedLimit = self.UpgradeIssuedLimit + 1
+
         end
 
-        if (gameTime > 1200 and self.SelfAllyExtractor > self.MassMarker / 1.5) then
+        if (gameTime > 900 and self.MyLandRatio >= 2) then 
+
             --LOG('Switch to agressive upgrade mode')
             self.UpgradeMode = 'Aggressive'
             self.EcoManager.ExtractorUpgradeLimit.TECH1 = 2
-        elseif gameTime > 1200 then
+
+        elseif (gameTime > 900 and self.SelfAllyExtractor > self.MassMarker / 1.5) then
+
+            --LOG('Switch to agressive upgrade mode')
+            self.UpgradeMode = 'Aggressive'
+            self.EcoManager.ExtractorUpgradeLimit.TECH1 = 2
+
+        elseif gameTime > 900 then
+
             --LOG('Switch to normal upgrade mode')
             self.UpgradeMode = 'Normal'
             self.EcoManager.ExtractorUpgradeLimit.TECH1 = 1
+
         end
         SWARMWAIT(2)
     end,

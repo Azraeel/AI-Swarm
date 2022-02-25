@@ -33,6 +33,35 @@ local HaveLessThanTwoT3AirFactory = function( self, aiBrain )
 end
 
 BuilderGroup {
+    BuilderGroupName = 'Swarm Adaptive Land Build',
+    BuildersType = 'FactoryBuilder',
+
+    -- Yes, I did indeed finally add a T1 AA Emergancy Build
+
+    Builder { BuilderName = 'T1LandAA - Emergancy - Swarm',
+
+        PlatoonTemplate = 'T1LandAA',
+
+        Priority = 550,
+
+        BuilderConditions = {
+            { UCBC, 'UnitCapCheckLess', { 0.90 } },
+
+            { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 0.7, 0.8 }},
+
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.01, 0.01}},
+
+            { UCBC, 'EnemyUnitsGreaterAtLocationRadiusSwarm', {  BasePanicZone, 'LocationType', 0, categories.MOBILE * categories.AIR * (categories.BOMBER + categories.GROUNDATTACK) - categories.SCOUT}}, -- radius, LocationType, unitCount, categoryEnemy
+
+            { UCBC, 'LocationFactoriesBuildingLess', { 'LocationType', 1, categories.LAND * categories.MOBILE * categories.ANTIAIR * categories.TECH1 } },
+
+            { UCBC, 'PoolLessAtLocation', { 'LocationType', 1, categories.LAND * categories.MOBILE * categories.ANTIAIR }},
+        },
+        BuilderType = 'Land',
+    },
+}
+
+BuilderGroup {
     BuilderGroupName = 'Swarm Adaptive Air Build',
     BuildersType = 'FactoryBuilder',
 

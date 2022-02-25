@@ -564,7 +564,7 @@ BuilderGroup {
         
         PlatoonTemplate = 'CommanderBuilderSwarm',
 
-        Priority = 650,
+        Priority = 645,
 
         PriorityFunction = HaveLessThanThreeT2AirFactoryACU,
 
