@@ -126,8 +126,8 @@ Platoon = Class(SwarmPlatoonClass) {
         local LastTargetCheck
         local DistanceToBase = 0
         local TargetSearchCategory = self.PlatoonData.TargetSearchCategory or 'ALLUNITS'
-        local maxRadiusMax = self.PlatoonData.SearchRadius or 100
-        local maxradius = SWARMMAX(maxRadiusMax, (maxRadiusMax * aiBrain.MyAirRatio) )
+        local maxradius = self.PlatoonData.SearchRadius or 100
+        --local maxradius = SWARMMAX(maxRadiusMax, (maxRadiusMax * aiBrain.MyAirRatio) )
         --LOG("The Max Radius is " .. repr(maxradius))
         while aiBrain:PlatoonExists(self) do
             PlatoonPos = self:GetPlatoonPosition()
@@ -836,7 +836,7 @@ Platoon = Class(SwarmPlatoonClass) {
             if VDist2(cdr.position[1], cdr.position[3], cdr.CDRHome[1], cdr.CDRHome[3]) < 75 then
                 -- only upgrade if we are good at health
                 local check = true
-                if SWARMTIME() <= 600 then
+                if SWARMTIME() <= 600 and aiBrain.AggressiveCommander == false then
                     check = false
                 else
                 end
@@ -5192,7 +5192,7 @@ Platoon = Class(SwarmPlatoonClass) {
                                         end
                                     end
                                     self:Stop()
-                                    local merged = self:MergeWithNearbyPlatoonsSwarm('HuntAISwarm', 15, 12)
+                                    local merged = self:MergeWithNearbyPlatoonsSwarm('HuntAISwarm', 25, 12)
                                     if merged then
                                         self:SetPlatoonFormationOverride('NoFormation')
                                         continue

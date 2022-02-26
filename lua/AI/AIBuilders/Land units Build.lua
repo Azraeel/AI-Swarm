@@ -592,7 +592,7 @@ BuilderGroup {
 
         Priority = 652,                                          
 
-        InstanceCount = 5,          
+        InstanceCount = 3,          
 
         BuilderType = 'Any',
 
@@ -608,10 +608,10 @@ BuilderGroup {
             PrioritizedCategories = {
                 categories.COMMAND,
                 categories.EXPERIMENTAL,
-                categories.STRUCTURE * categories.DEFENSE,
-                categories.MOBILE * categories.LAND * categories.ANTIAIR,
-                categories.MOBILE * categories.LAND * categories.INDIRECTFIRE,
                 categories.MOBILE * categories.LAND * categories.DIRECTFIRE,
+                categories.MOBILE * categories.LAND * categories.INDIRECTFIRE,
+                categories.MOBILE * categories.LAND * categories.ANTIAIR,
+                categories.STRUCTURE * categories.DEFENSE,
                 categories.MOBILE * categories.LAND,
                 categories.ENGINEER,
                 categories.MASSEXTRACTION,

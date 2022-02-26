@@ -4,6 +4,7 @@ local SwarmUtils = import('/mods/AI-Swarm/lua/AI/Swarmutilities.lua')
 local AIUtils = import('/lua/ai/AIUtilities.lua')
 local SUtils = import('/lua/AI/sorianutilities.lua')
 local AIBehaviors = import('/lua/ai/AIBehaviors.lua')
+local UCBC = '/lua/editor/UnitCountBuildConditions.lua'
 
 local lastCall = 0
 local SWARMGETN = table.getn
@@ -123,7 +124,11 @@ AIBrain = Class(SwarmAIBrainClass) {
         self:ForkThread(SwarmUtils.DisplayMarkerAdjacencySwarm)
         self:ForkThread(self.EcoExtractorUpgradeCheckSwarm)
 
-        --self.
+        -- Strategic Adaptiveness
+        self.TechRushStandard = false
+        self.TechRushEarly = false
+        self.AggressiveCommander = false
+
         self.EcoManager = {
             EcoManagerTime = 30,
             EcoManagerStatus = 'ACTIVE',
@@ -311,6 +316,7 @@ AIBrain = Class(SwarmAIBrainClass) {
             self:SelfThreatCheckSwarm(ALLBPS)
             self:EnemyThreatCheckSwarm(ALLBPS)
             self:EconomyTacticalMonitorSwarm(ALLBPS)
+            self.StrategicOverseerSwarm(ALLBPS)
             self:CalculateMassMarkersSwarm()
 
         end
@@ -463,7 +469,16 @@ AIBrain = Class(SwarmAIBrainClass) {
         elseif EntityCategoryContains(categories.FACTORY * categories.STRUCTURE, unit) then
             --LOG("What is unit " .. repr(unit))
             --LOG("Are we reaching this point? GetUpgradeSpecSwarmFactory")
-            if self.UpgradeMode == 'Aggressive' then
+            if self.UpgradeMode == 'TechRush' then
+                upgradeSpec.MassLowTrigger = 0.90
+                upgradeSpec.EnergyLowTrigger = 0.95
+                upgradeSpec.MassHighTrigger = 2.0
+                upgradeSpec.EnergyHighTrigger = 2.0
+                upgradeSpec.UpgradeCheckWait = 24
+                upgradeSpec.InitialDelay = 10
+                upgradeSpec.EnemyThreatLimit = 15
+                return upgradeSpec
+            elseif self.UpgradeMode == 'Aggressive' then
                 upgradeSpec.MassLowTrigger = 1.02
                 upgradeSpec.EnergyLowTrigger = 1.05
                 upgradeSpec.MassHighTrigger = 2.0
@@ -561,7 +576,12 @@ AIBrain = Class(SwarmAIBrainClass) {
 
         end
 
-        if (gameTime > 900 and self.MyLandRatio >= 2) then 
+        if self.TechRushStandard == true then 
+
+            --LOG('Switch to techrush upgrade mode')
+            self.UpgradeMode = 'TechRush'
+
+        elseif (gameTime > 900 and self.MyLandRatio >= 2) then 
 
             --LOG('Switch to agressive upgrade mode')
             self.UpgradeMode = 'Aggressive'
@@ -1441,6 +1461,27 @@ AIBrain = Class(SwarmAIBrainClass) {
 
             --LOG("*AI DEBUG "..self.Nickname.." Air Ratio is "..repr(self.MyAirRatio).." Land Ratio is "..repr(self.MyLandRatio).." Naval Ratio is "..repr(self.MyNavalRatio))
         end
+    end,
+
+    StrategicOverseerSwarm = function(self, ALLBPS)
+        local mapSizeX, mapSizeZ = GetMapSize()
+        LOG('StrategicOverseerSwarm: Running')
+
+        SWARMWAIT(5)
+
+        if (self.SelfAllyExtractor > self.MassMarker / 1.5) and self.TechRushStandard == false and self.MyLandRatio == 1.1 and self.UpgradeMode == 'Normal' then 
+
+            --LOG('StrategicOverseerSwarm: Setting TechRushStandard to True')
+            self.TechRushStandard = true
+        
+        end
+
+        if mapSizeX <= 256 and mapSizeZ <= 256 then
+            
+            self.AggressiveCommander = true
+
+        end
+        SWARMWAIT(2)
     end,
 
     ExpansionIntelScanSwarm = function(self)

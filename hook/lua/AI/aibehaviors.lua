@@ -266,8 +266,10 @@ function StructureUpgradeThreadSwarm(unit, aiBrain, upgradeSpec, bypasseco)
     --LOG('Eco timeout for Tech '..unitTech..' Extractor is '..ecoTimeOut)
     --LOG('* AI-Swarm: Initial Variables set')
     while initial_delay < (upgradeSpec.InitialDelay / multiplier) do
-		if GetEconomyStored( aiBrain, 'MASS') >= 50 and GetEconomyStored( aiBrain, 'ENERGY') >= 900 and unit:GetFractionComplete() == 1 then
-            if aiBrain.UpgradeMode == 'Aggressive' then
+		if GetEconomyStored( aiBrain, 'MASS') >= 100 and GetEconomyStored( aiBrain, 'ENERGY') >= 1000 and unit:GetFractionComplete() == 1 then
+            if aiBrain.UpgradeMode == 'TechRush' then
+                initial_delay = initial_delay + 30
+            elseif aiBrain.UpgradeMode == 'Aggressive' then
                 initial_delay = initial_delay + 20
             elseif aiBrain.UpgradeMode == 'Normal' then
                 initial_delay = initial_delay + 10
