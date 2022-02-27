@@ -12,7 +12,7 @@ PlatoonTemplate {
     Name = 'AISwarm LandAttack Micro - Basic',
     Plan = 'HuntAISwarm',
     GlobalSquads = {
-        { categories.MOBILE * categories.LAND + (categories.MOBILE * categories.EXPERIMENTAL) - categories.ENGINEER - categories.SCOUT, 3, 12, 'attack', 'none' },
+        { categories.MOBILE * categories.LAND + (categories.MOBILE * categories.EXPERIMENTAL) - categories.ANTIAIR - categories.ENGINEER - categories.SCOUT, 3, 12, 'attack', 'none' },
         { categories.LAND * categories.SCOUT, 0, 1, 'Guard', 'none' },
     },
 }
