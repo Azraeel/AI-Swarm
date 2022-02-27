@@ -23,7 +23,7 @@ BuilderGroup {
 
             { UCBC, 'HaveGreaterThanUnitsWithCategory', { 0, categories.EXPERIMENTAL}},
 
-            { EBC, 'GreaterThanEconStorageCurrentSwarm', { 200, 2000}},
+            { EBC, 'GreaterThanEconStorageCurrentSwarm', { 100, 1000}},
 
             { UCBC, 'CheckBuildPlattonDelay', { 'Paragon' }},
 

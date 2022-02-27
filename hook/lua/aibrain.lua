@@ -4,6 +4,7 @@ local SwarmUtils = import('/mods/AI-Swarm/lua/AI/Swarmutilities.lua')
 local AIUtils = import('/lua/ai/AIUtilities.lua')
 local SUtils = import('/lua/AI/sorianutilities.lua')
 local AIBehaviors = import('/lua/ai/AIBehaviors.lua')
+local UCBC = '/lua/editor/UnitCountBuildConditions.lua'
 
 local lastCall = 0
 local SWARMGETN = table.getn
@@ -122,6 +123,12 @@ AIBrain = Class(SwarmAIBrainClass) {
         self:ForkThread(self.ExpansionIntelScanSwarm)
         self:ForkThread(SwarmUtils.DisplayMarkerAdjacencySwarm)
         self:ForkThread(self.EcoExtractorUpgradeCheckSwarm)
+
+        -- Strategic Adaptiveness
+        self.TechRushStandard = false
+        self.TechRushEarly = false
+        self.AggressiveCommander = false
+
         self.EcoManager = {
             EcoManagerTime = 30,
             EcoManagerStatus = 'ACTIVE',
@@ -309,12 +316,13 @@ AIBrain = Class(SwarmAIBrainClass) {
             self:SelfThreatCheckSwarm(ALLBPS)
             self:EnemyThreatCheckSwarm(ALLBPS)
             self:EconomyTacticalMonitorSwarm(ALLBPS)
+            self.StrategicOverseerSwarm(ALLBPS)
             self:CalculateMassMarkersSwarm()
 
         end
         SWARMWAIT(30)
     end,
-
+    
     -- Spicy Sprouto Code Magic
     EconomyMonitorSwarm = function(self)
         --LOG("EconomyMonitor is Started Fully & Running")
@@ -431,7 +439,7 @@ AIBrain = Class(SwarmAIBrainClass) {
             --LOG("What is unit " .. repr(unit))
             --LOG("Are we reaching this point? GetUpgradeSpecSwarmMassExtractor")
             if self.UpgradeMode == 'Aggressive' then
-                upgradeSpec.MassLowTrigger = 0.80
+                upgradeSpec.MassLowTrigger = 0.85
                 upgradeSpec.EnergyLowTrigger = 1.0
                 upgradeSpec.MassHighTrigger = 2.0
                 upgradeSpec.EnergyHighTrigger = 2.0
@@ -440,8 +448,8 @@ AIBrain = Class(SwarmAIBrainClass) {
                 upgradeSpec.EnemyThreatLimit = 10
                 return upgradeSpec
             elseif self.UpgradeMode == 'Normal' then
-                upgradeSpec.MassLowTrigger = 0.90
-                upgradeSpec.EnergyLowTrigger = 1.05
+                upgradeSpec.MassLowTrigger = 0.95
+                upgradeSpec.EnergyLowTrigger = 1.025
                 upgradeSpec.MassHighTrigger = 2.0
                 upgradeSpec.EnergyHighTrigger = 2.0
                 upgradeSpec.UpgradeCheckWait = 18
@@ -450,7 +458,7 @@ AIBrain = Class(SwarmAIBrainClass) {
                 return upgradeSpec
             elseif self.UpgradeMode == 'Caution' then
                 upgradeSpec.MassLowTrigger = 1.0
-                upgradeSpec.EnergyLowTrigger = 1.10
+                upgradeSpec.EnergyLowTrigger = 1.05
                 upgradeSpec.MassHighTrigger = 2.0
                 upgradeSpec.EnergyHighTrigger = 2.0
                 upgradeSpec.UpgradeCheckWait = 18
@@ -461,9 +469,18 @@ AIBrain = Class(SwarmAIBrainClass) {
         elseif EntityCategoryContains(categories.FACTORY * categories.STRUCTURE, unit) then
             --LOG("What is unit " .. repr(unit))
             --LOG("Are we reaching this point? GetUpgradeSpecSwarmFactory")
-            if self.UpgradeMode == 'Aggressive' then
-                upgradeSpec.MassLowTrigger = 1.0
-                upgradeSpec.EnergyLowTrigger = 1.0
+            if self.UpgradeMode == 'TechRush' then
+                upgradeSpec.MassLowTrigger = 0.90
+                upgradeSpec.EnergyLowTrigger = 0.95
+                upgradeSpec.MassHighTrigger = 2.0
+                upgradeSpec.EnergyHighTrigger = 2.0
+                upgradeSpec.UpgradeCheckWait = 24
+                upgradeSpec.InitialDelay = 10
+                upgradeSpec.EnemyThreatLimit = 15
+                return upgradeSpec
+            elseif self.UpgradeMode == 'Aggressive' then
+                upgradeSpec.MassLowTrigger = 1.02
+                upgradeSpec.EnergyLowTrigger = 1.05
                 upgradeSpec.MassHighTrigger = 2.0
                 upgradeSpec.EnergyHighTrigger = 2.0
                 upgradeSpec.UpgradeCheckWait = 24
@@ -471,8 +488,8 @@ AIBrain = Class(SwarmAIBrainClass) {
                 upgradeSpec.EnemyThreatLimit = 10
                 return upgradeSpec
             elseif self.UpgradeMode == 'Normal' then
-                upgradeSpec.MassLowTrigger = 1.015
-                upgradeSpec.EnergyLowTrigger = 1.015
+                upgradeSpec.MassLowTrigger = 1.035
+                upgradeSpec.EnergyLowTrigger = 1.075
                 upgradeSpec.MassHighTrigger = 2.0
                 upgradeSpec.EnergyHighTrigger = 2.0
                 upgradeSpec.UpgradeCheckWait = 24
@@ -480,8 +497,8 @@ AIBrain = Class(SwarmAIBrainClass) {
                 upgradeSpec.EnemyThreatLimit = 5
                 return upgradeSpec
             elseif self.UpgradeMode == 'Caution' then
-                upgradeSpec.MassLowTrigger = 1.035
-                upgradeSpec.EnergyLowTrigger = 1.035
+                upgradeSpec.MassLowTrigger = 1.05
+                upgradeSpec.EnergyLowTrigger = 1.1
                 upgradeSpec.MassHighTrigger = 2.0
                 upgradeSpec.EnergyHighTrigger = 2.0
                 upgradeSpec.UpgradeCheckWait = 24
@@ -542,24 +559,46 @@ AIBrain = Class(SwarmAIBrainClass) {
         end
 
         local gameTime = GetGameTimeSeconds()
+
         --LOG('gameTime is '..gameTime..' Upgrade Mode is '..self.UpgradeMode)
         if gameTime < (240 / multiplier) then
+
             self.UpgradeMode = 'Caution'
+
         elseif gameTime > (240 / multiplier) and self.UpgradeMode == 'Caution' then
+
             self.UpgradeMode = 'Normal'
             self.UpgradeIssuedLimit = 1
+
         elseif gameTime > (240 / multiplier) and self.UpgradeIssuedLimit == 1 and self.UpgradeMode == 'Aggressive' then
+
             self.UpgradeIssuedLimit = self.UpgradeIssuedLimit + 1
+
         end
 
-        if (gameTime > 1200 and self.SelfAllyExtractor > self.MassMarker / 1.5) then
+        if self.TechRushStandard == true then 
+
+            --LOG('Switch to techrush upgrade mode')
+            self.UpgradeMode = 'TechRush'
+
+        elseif (gameTime > 900 and self.MyLandRatio >= 2) then 
+
             --LOG('Switch to agressive upgrade mode')
             self.UpgradeMode = 'Aggressive'
             self.EcoManager.ExtractorUpgradeLimit.TECH1 = 2
-        elseif gameTime > 1200 then
+
+        elseif (gameTime > 900 and self.SelfAllyExtractor > self.MassMarker / 1.5) then
+
+            --LOG('Switch to agressive upgrade mode')
+            self.UpgradeMode = 'Aggressive'
+            self.EcoManager.ExtractorUpgradeLimit.TECH1 = 2
+
+        elseif gameTime > 900 then
+
             --LOG('Switch to normal upgrade mode')
             self.UpgradeMode = 'Normal'
             self.EcoManager.ExtractorUpgradeLimit.TECH1 = 1
+
         end
         SWARMWAIT(2)
     end,
@@ -1424,9 +1463,30 @@ AIBrain = Class(SwarmAIBrainClass) {
         end
     end,
 
+    StrategicOverseerSwarm = function(self, ALLBPS)
+        local mapSizeX, mapSizeZ = GetMapSize()
+        LOG('StrategicOverseerSwarm: Running')
+
+        SWARMWAIT(5)
+
+        if (self.SelfAllyExtractor > self.MassMarker / 1.5) and self.TechRushStandard == false and self.MyLandRatio == 1.1 and self.UpgradeMode == 'Normal' then 
+
+            --LOG('StrategicOverseerSwarm: Setting TechRushStandard to True')
+            self.TechRushStandard = true
+        
+        end
+
+        if mapSizeX <= 256 and mapSizeZ <= 256 then
+            
+            self.AggressiveCommander = true
+
+        end
+        SWARMWAIT(2)
+    end,
+
     ExpansionIntelScanSwarm = function(self)
         --LOG('Pre-Start ExpansionIntelScanSwarm')
-        SWARMWAIT(100)
+        SWARMWAIT(50)
         if SWARMGETN(self.ExpansionWatchTableSwarm) == 0 then
             --LOG('ExpansionIntelScanSwarm not ready or is empty')
             return
@@ -1499,7 +1559,7 @@ AIBrain = Class(SwarmAIBrainClass) {
                     self.ExpansionWatchTableSwarm[k]['Structures'] = rawThreat
                 end
             end
-            SWARMWAIT(100)
+            SWARMWAIT(50)
             -- don't do this, it might have a platoon inside it LOG('Current Expansion Watch Table '..repr(self.ExpansionWatchTableSwarm))
         end
     end,

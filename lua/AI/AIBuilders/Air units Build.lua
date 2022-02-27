@@ -73,7 +73,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Builders',
         BuilderConditions = {
             { UCBC, 'AirStrengthRatioLessThan', { 3 } },
 
-            { EBC, 'GreaterThanEconStorageCurrentSwarm', { 200, 2000}},
+            { EBC, 'GreaterThanEconStorageCurrentSwarm', { 100, 1000}},
 
             { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 0.7, 0.8 }},
         },
@@ -92,7 +92,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Builders',
         BuilderConditions = {
             { UCBC, 'AirStrengthRatioGreaterThan', { 1 } },
 
-            { EBC, 'GreaterThanEconStorageCurrentSwarm', { 200, 2000}},
+            { EBC, 'GreaterThanEconStorageCurrentSwarm', { 100, 1000}},
 
             { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 0.7, 0.8 }},
         },
@@ -113,7 +113,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Builders',
 
             { UCBC, 'AirStrengthRatioGreaterThan', { 1 } },
 
-            { EBC, 'GreaterThanEconStorageCurrentSwarm', { 200, 2000}},
+            { EBC, 'GreaterThanEconStorageCurrentSwarm', { 100, 1000}},
 
             { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 0.7, 0.8 }},
         },
@@ -135,7 +135,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Builders',
         BuilderConditions = {
             { UCBC, 'AirStrengthRatioGreaterThan', { 1 } },
 
-            { EBC, 'GreaterThanEconStorageCurrentSwarm', { 200, 2000}},
+            { EBC, 'GreaterThanEconStorageCurrentSwarm', { 100, 1000}},
 
             { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 0.75, 1.0 }},
         },
@@ -154,7 +154,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Builders',
         BuilderConditions = {
             { UCBC, 'AirStrengthRatioGreaterThan', { 1 } },
 
-            { EBC, 'GreaterThanEconStorageCurrentSwarm', { 200, 2000}},
+            { EBC, 'GreaterThanEconStorageCurrentSwarm', { 100, 1000}},
 
             { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 0.75, 1.0 }},
         },
@@ -173,7 +173,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Builders',
 
             { UCBC, 'AirStrengthRatioGreaterThan', { 1 } },
 
-            { EBC, 'GreaterThanEconStorageCurrentSwarm', { 200, 2000}},
+            { EBC, 'GreaterThanEconStorageCurrentSwarm', { 100, 1000}},
 
             { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 0.75, 1.0 }},
         },
@@ -196,7 +196,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Builders',
 
             { UCBC, 'AirStrengthRatioLessThan', { 3 } },
 
-            { EBC, 'GreaterThanEconStorageCurrentSwarm', { 200, 2000}},
+            { EBC, 'GreaterThanEconStorageCurrentSwarm', { 100, 1000}},
 
             { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 0.9, 1.1 }},
         },
@@ -215,7 +215,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Builders',
 
             { UCBC, 'AirStrengthRatioGreaterThan', { 1 } },
 
-            { EBC, 'GreaterThanEconStorageCurrentSwarm', { 200, 2000}},
+            { EBC, 'GreaterThanEconStorageCurrentSwarm', { 100, 1000}},
 
             { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 0.9, 1.1 }},
         },
@@ -234,7 +234,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Builders',
 
             { UCBC, 'AirStrengthRatioGreaterThan', { 1 } },
 
-            { EBC, 'GreaterThanEconStorageCurrentSwarm', { 200, 2000}},
+            { EBC, 'GreaterThanEconStorageCurrentSwarm', { 100, 1000}},
 
             { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 0.9, 1.1 }},
         },
@@ -253,7 +253,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Builders',
 
             { UCBC, 'AirStrengthRatioGreaterThan', { 1.5 } },
 
-            { EBC, 'GreaterThanEconStorageCurrentSwarm', { 200, 2000}},
+            { EBC, 'GreaterThanEconStorageCurrentSwarm', { 100, 1000}},
 
             { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 0.9, 1.1 }},
         },
@@ -272,7 +272,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Builders',
 
             { EBC, 'GreaterThanEconTrendOverTimeSwarm', { 0.3, 12.0 } },
 
-            { EBC, 'GreaterThanEconStorageCurrentSwarm', { 200, 2000}},
+            { EBC, 'GreaterThanEconStorageCurrentSwarm', { 100, 1000}},
 
             { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 1.02, 1.1 }},
 
@@ -298,7 +298,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Builders',
 
             { EBC, 'GreaterThanEconTrendOverTimeSwarm', { 0.3, 12.0 } },
 
-            { EBC, 'GreaterThanEconStorageCurrentSwarm', { 200, 2000}},
+            { EBC, 'GreaterThanEconStorageCurrentSwarm', { 100, 1000}},
 
             { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 1.02, 1.1 }},
 
@@ -326,7 +326,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Builders',
             
             { EBC, 'GreaterThanEconTrendOverTimeSwarm', { 0.3, 12.0 } },
 
-            { EBC, 'GreaterThanEconStorageCurrentSwarm', { 200, 2000}},
+            { EBC, 'GreaterThanEconStorageCurrentSwarm', { 100, 1000}},
 
             { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 1.02, 1.1 }},
 
@@ -355,7 +355,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Builders',
         BuilderConditions = {
             { UCBC, 'LocationFactoriesBuildingLess', { 'LocationType', 2, categories.AIR * categories.SCOUT } },
 
-            { EBC, 'GreaterThanEconStorageCurrentSwarm', { 200, 2000}},
+            { EBC, 'GreaterThanEconStorageCurrentSwarm', { 100, 1000}},
 
             { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 0.7, 0.8 }},
 
@@ -374,7 +374,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Builders',
         BuilderConditions = {
             { UCBC, 'LocationFactoriesBuildingLess', { 'LocationType', 2, categories.AIR * categories.SCOUT } },
 
-            { EBC, 'GreaterThanEconStorageCurrentSwarm', { 200, 2000}},
+            { EBC, 'GreaterThanEconStorageCurrentSwarm', { 100, 1000}},
 
             { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 0.9, 1.1 }},
 
@@ -460,7 +460,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Formers',
         Priority = 160,                                                        
         InstanceCount = 3,                                                  
         BuilderData = {
-            SearchRadius = 64,                                   
+            SearchRadius = BaseMilitaryZone,                                   
             GetTargetsFromBase = true,                                          
             AttackEnemyStrength = 150,                                                                            
             AggressiveMove = true,       
@@ -488,7 +488,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Formers',
         Priority = 159,                                                        
         InstanceCount = 2,                                                
         BuilderData = {
-            SearchRadius = 64,                                   
+            SearchRadius = BaseMilitaryZone,                                   
             GetTargetsFromBase = true,                                          
             AttackEnemyStrength = 120,                                                                              
             AggressiveMove = true,    
@@ -515,7 +515,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Formers',
         Priority = 158,                                                        
         InstanceCount = 1,                                                     
         BuilderData = {
-            SearchRadius = 128,                                  
+            SearchRadius = BaseMilitaryZone,                                  
             GetTargetsFromBase = true,                                         
             AttackEnemyStrength = 120,                                                                                  
             AggressiveMove = true,  
@@ -544,7 +544,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Formers',
         Priority = 157,                                                         
         InstanceCount = 1,                                                      
         BuilderData = {
-            SearchRadius = 256,                                    
+            SearchRadius = BaseEnemyZone,                                    
             GetTargetsFromBase = true,                                          
             AttackEnemyStrength = 120,                                                                                   
             AggressiveMove = true,      
@@ -574,7 +574,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Formers',
         Priority = 102,                                                          
         InstanceCount = 2,                                                    
         BuilderData = {
-            SearchRadius = 64,                                    
+            SearchRadius = BasePanicZone,                                    
             GetTargetsFromBase = true,                                      
             AggressiveMove = true,                                             
             AttackEnemyStrength = 500,                                      
@@ -600,11 +600,11 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Formers',
         Priority = 75,                                                          
         InstanceCount = 4,                                                    
         BuilderData = {
-            SearchRadius = 128,                                       
+            SearchRadius = BasePanicZone,                                       
             GetTargetsFromBase = true,                                         
             AggressiveMove = true,                                             
             AttackEnemyStrength = 300,                                    
-            IgnorePathing = false,                                               
+            IgnorePathing = true,                                               
             TargetSearchCategory = categories.MOBILE + categories.STRUCTURE - categories.SCOUT,                         
             MoveToCategories = {               
                 categories.COMMAND,  
@@ -644,7 +644,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Formers',
         Priority = 75,                                                          
         InstanceCount = 4,                                                    
         BuilderData = {
-            SearchRadius = 256,                                       
+            SearchRadius = BaseMilitaryZone,                                       
             GetTargetsFromBase = true,                                         
             AggressiveMove = true,                                             
             AttackEnemyStrength = 150,                                    
@@ -689,11 +689,11 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Formers',
         Priority = 100,                                                        
         InstanceCount = 4,                                                
         BuilderData = {
-            SearchRadius = 128,                                    
+            SearchRadius = BasePanicZone,                                    
             GetTargetsFromBase = true,                                          
             AggressiveMove = true,                                              
             AttackEnemyStrength = 300,                                    
-            IgnorePathing = false,                                               
+            IgnorePathing = true,                                               
             TargetSearchCategory = categories.MOBILE,       
             MoveToCategories = {                            
                 categories.COMMAND,           
@@ -727,7 +727,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Formers',
         Priority = 100,                                                        
         InstanceCount = 4,                                                
         BuilderData = {
-            SearchRadius = 256,                                    
+            SearchRadius = BaseMilitaryZone,                                    
             GetTargetsFromBase = true,                                          
             AggressiveMove = true,                                              
             AttackEnemyStrength = 150,                                    
@@ -764,7 +764,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Formers',
         Priority = 75,                                                          
         InstanceCount = 4,                                                    
         BuilderData = {
-            SearchRadius = 256,                                       
+            SearchRadius = BaseEnemyZone,                                       
             GetTargetsFromBase = true,                                         
             AggressiveMove = true,                                             
             AttackEnemyStrength = 80,                                    
@@ -797,7 +797,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Formers',
         Priority = 101,                                                       
         InstanceCount = 4,                                                 
         BuilderData = {
-            SearchRadius = 256,                                    
+            SearchRadius = BaseEnemyZone,                                    
             GetTargetsFromBase = true,                                         
             AggressiveMove = true,                                             
             AttackEnemyStrength = 60,                                    
@@ -833,7 +833,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Formers',
         Priority = 70,                                                   
         InstanceCount = 3,                                                  
         BuilderData = {
-            SearchRadius = 256,                                    
+            SearchRadius = BaseEnemyZone,                                    
             GetTargetsFromBase = true,                                      
             AggressiveMove = true,                                        
             AttackEnemyStrength = 0,                                         
@@ -868,7 +868,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Formers',
         Priority = 70,                                                   
         InstanceCount = 2,                                                  
         BuilderData = {
-            SearchRadius = 256,                                    
+            SearchRadius = BaseEnemyZone,                                    
             GetTargetsFromBase = true,                                      
             AggressiveMove = true,                                        
             AttackEnemyStrength = 100,                                         
@@ -898,7 +898,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Formers',
         Priority = 70,                                                   
         InstanceCount = 1,                                                  
         BuilderData = {
-            SearchRadius = 256,                                    
+            SearchRadius = BaseEnemyZone,                                    
             GetTargetsFromBase = true,                                      
             AggressiveMove = true,                                        
             AttackEnemyStrength = 100,                                         
@@ -930,7 +930,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Formers',
         Priority = 70,                                                   
         InstanceCount = 1,                                                  
         BuilderData = {
-            SearchRadius = 256,                                    
+            SearchRadius = BaseEnemyZone,                                    
             GetTargetsFromBase = true,                                      
             AggressiveMove = true,                                        
             AttackEnemyStrength = 100,                                         
@@ -962,7 +962,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Formers',
         Priority = 90,                                                       
         InstanceCount = 2,                                           
         BuilderData = {
-            SearchRadius = 128,                                     
+            SearchRadius = BasePanicZone,                                     
             GetTargetsFromBase = true,                                     
             AggressiveMove = true,                                              
             AttackEnemyStrength = 300,                          
@@ -985,7 +985,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Formers',
         Priority = 80,                                                 
         InstanceCount = 3,                                            
         BuilderData = {
-            SearchRadius = 256,                                 
+            SearchRadius = BaseMilitaryZone,                                 
             GetTargetsFromBase = false,                         
             AggressiveMove = true,                                      
             AttackEnemyStrength = 150,                                          
@@ -1013,7 +1013,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Formers',
         Priority = 70,
         InstanceCount = 2,
         BuilderData = {
-            SearchRadius = 256,                                    
+            SearchRadius = BaseEnemyZone,                                    
             GetTargetsFromBase = false,                                   
             AggressiveMove = true,                                
             AttackEnemyStrength = 150,                                        

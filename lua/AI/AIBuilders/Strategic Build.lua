@@ -18,7 +18,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Strategic Builder',
 
             { EBC, 'GreaterThanEnergyIncomeOverTimeSwarm', { 500 }},
 
-            { EBC, 'GreaterThanEconStorageCurrentSwarm', { 200, 2000}},
+            { EBC, 'GreaterThanEconStorageCurrentSwarm', { 100, 1000}},
 
             { EBC, 'GreaterThanEconTrendOverTimeSwarm', { 0.0, 0.0 } }, 
 
@@ -52,7 +52,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Strategic Builder',
 
             { EBC, 'GreaterThanEnergyIncomeOverTimeSwarm', { 500 }},
 
-            { EBC, 'GreaterThanEconStorageCurrentSwarm', { 200, 2000}},
+            { EBC, 'GreaterThanEconStorageCurrentSwarm', { 100, 1000}},
 
             { EBC, 'GreaterThanEconTrendOverTimeSwarm', { 0.0, 0.0 } },       
 
@@ -96,7 +96,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Strategic Builder',
 
             { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 1.1, 1.2 }},
 
-            { EBC, 'GreaterThanEconStorageCurrentSwarm', { 200, 2000}},
+            { EBC, 'GreaterThanEconStorageCurrentSwarm', { 100, 1000}},
 
             { UCBC, 'CheckBuildPlattonDelay', { 'NukeBuilder' }},
 
@@ -142,7 +142,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Strategic Builder',
 
             { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 1.15, 1.1 }},
 
-            { EBC, 'GreaterThanEconStorageCurrentSwarm', { 200, 2000}},
+            { EBC, 'GreaterThanEconStorageCurrentSwarm', { 100, 1000}},
 
             { UCBC, 'CheckBuildPlattonDelay', { 'NukeBuilder' }},
 
@@ -184,7 +184,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Strategic Builder',
 
             { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 1.25, 1.1 }},
 
-            { EBC, 'GreaterThanEconStorageCurrentSwarm', { 200, 2000}},     
+            { EBC, 'GreaterThanEconStorageCurrentSwarm', { 100, 1000}},     
 
             { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 0, categories.ENGINEER * categories.TECH3 }},
 
@@ -236,7 +236,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Strategic Builder',
 
             { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 1.05, 1.06 }},
 
-            { EBC, 'GreaterThanEconStorageCurrentSwarm', { 200, 2000}},
+            { EBC, 'GreaterThanEconStorageCurrentSwarm', { 100, 1000}},
 
             { UCBC, 'HaveLessThanUnitsInCategoryBeingBuilt', { 1, categories.STRUCTURE * categories.ARTILLERY * (categories.TECH3 + categories.EXPERIMENTAL) } },
         },
@@ -278,7 +278,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Strategic Builder',
 
             { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 1.05, 1.06 }},
 
-            { EBC, 'GreaterThanEconStorageCurrentSwarm', { 200, 2000}},
+            { EBC, 'GreaterThanEconStorageCurrentSwarm', { 100, 1000}},
 
             { UCBC, 'HaveLessThanUnitsInCategoryBeingBuilt', { 1, categories.STRUCTURE * categories.ARTILLERY * (categories.TECH3 + categories.EXPERIMENTAL) } },
         },
@@ -320,7 +320,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Strategic Builder',
 
             { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 1.03, 1.04 }},
 
-            { EBC, 'GreaterThanEconStorageCurrentSwarm', { 200, 2000}},
+            { EBC, 'GreaterThanEconStorageCurrentSwarm', { 100, 1000}},
 
             { UCBC, 'HaveLessThanUnitsInCategoryBeingBuilt', { 1, categories.STRUCTURE * categories.ARTILLERY * (categories.TECH3 + categories.EXPERIMENTAL) } },
         },

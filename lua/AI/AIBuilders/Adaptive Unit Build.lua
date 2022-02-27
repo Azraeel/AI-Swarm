@@ -33,6 +33,35 @@ local HaveLessThanTwoT3AirFactory = function( self, aiBrain )
 end
 
 BuilderGroup {
+    BuilderGroupName = 'Swarm Adaptive Land Build',
+    BuildersType = 'FactoryBuilder',
+
+    -- Yes, I did indeed finally add a T1 AA Emergancy Build
+
+    Builder { BuilderName = 'T1LandAA - Emergancy - Swarm',
+
+        PlatoonTemplate = 'T1LandAA',
+
+        Priority = 550,
+
+        BuilderConditions = {
+            { UCBC, 'UnitCapCheckLess', { 0.90 } },
+
+            { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 0.7, 0.8 }},
+
+            { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.01, 0.01}},
+
+            { UCBC, 'EnemyUnitsGreaterAtLocationRadiusSwarm', {  BasePanicZone, 'LocationType', 0, categories.MOBILE * categories.AIR * (categories.BOMBER + categories.GROUNDATTACK) - categories.SCOUT}}, -- radius, LocationType, unitCount, categoryEnemy
+
+            { UCBC, 'LocationFactoriesBuildingLess', { 'LocationType', 1, categories.LAND * categories.MOBILE * categories.ANTIAIR * categories.TECH1 } },
+
+            { UCBC, 'PoolLessAtLocation', { 'LocationType', 1, categories.LAND * categories.MOBILE * categories.ANTIAIR }},
+        },
+        BuilderType = 'Land',
+    },
+}
+
+BuilderGroup {
     BuilderGroupName = 'Swarm Adaptive Air Build',
     BuildersType = 'FactoryBuilder',
 
@@ -48,13 +77,13 @@ BuilderGroup {
         BuilderType = 'Air',
 
         BuilderConditions = {
-            { UCBC, 'AirStrengthRatioGreaterThan', { 5 } },
+            { UCBC, 'AirStrengthRatioGreaterThan', { 4 } },
 
             { UCBC, 'LocationFactoriesBuildingLess', { 'LocationType', 3, categories.MOBILE * categories.AIR * categories.BOMBER } },
 
             { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 0.7, 0.8 }},
 
-            { EBC, 'GreaterThanEconStorageCurrentSwarm', { 200, 2000}},
+            { EBC, 'GreaterThanEconStorageCurrentSwarm', { 100, 1000}},
         },
     },
 
@@ -70,13 +99,13 @@ BuilderGroup {
         BuilderType = 'Air',
 
         BuilderConditions = {
-            { UCBC, 'AirStrengthRatioGreaterThan', { 5 } },
+            { UCBC, 'AirStrengthRatioGreaterThan', { 4 } },
 
             { UCBC, 'LocationFactoriesBuildingLess', { 'LocationType', 2, categories.MOBILE * categories.AIR * categories.GROUNDATTACK } },
 
             { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 0.7, 0.8 }},
 
-            { EBC, 'GreaterThanEconStorageCurrentSwarm', { 200, 2000}},
+            { EBC, 'GreaterThanEconStorageCurrentSwarm', { 100, 1000}},
         },
     },
     
@@ -96,13 +125,13 @@ BuilderGroup {
         BuilderType = 'Air',
 
         BuilderConditions = {
-            { UCBC, 'AirStrengthRatioGreaterThan', { 5 } },
+            { UCBC, 'AirStrengthRatioGreaterThan', { 4 } },
 
             { UCBC, 'LocationFactoriesBuildingLess', { 'LocationType', 2, categories.MOBILE * categories.AIR * categories.GROUNDATTACK * categories.TECH2 } },
 
             { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 0.75, 1.0 }},
 
-            { EBC, 'GreaterThanEconStorageCurrentSwarm', { 200, 2000}},
+            { EBC, 'GreaterThanEconStorageCurrentSwarm', { 100, 1000}},
         },
     },
 
@@ -118,13 +147,13 @@ BuilderGroup {
         BuilderType = 'Air',
 
         BuilderConditions = {
-            { UCBC, 'AirStrengthRatioGreaterThan', { 5 } },
+            { UCBC, 'AirStrengthRatioGreaterThan', { 4 } },
 
             { UCBC, 'LocationFactoriesBuildingLess', { 'LocationType', 2, categories.MOBILE * categories.AIR * categories.BOMBER * categories.TECH2 } },
 
             { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 0.75, 1.0 }},
 
-            { EBC, 'GreaterThanEconStorageCurrentSwarm', { 200, 2000}},
+            { EBC, 'GreaterThanEconStorageCurrentSwarm', { 100, 1000}},
         },
     },
 
@@ -136,7 +165,7 @@ BuilderGroup {
         Priority = 775,
 
         BuilderConditions = {
-            { UCBC, 'AirStrengthRatioGreaterThan', { 5 } },
+            { UCBC, 'AirStrengthRatioGreaterThan', { 4 } },
 
             { MIBC, 'CanPathToCurrentEnemySwarm', { false, 'LocationType' } },
 
@@ -146,7 +175,7 @@ BuilderGroup {
 
             { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 0.75, 1.0 }},
 
-            { EBC, 'GreaterThanEconStorageCurrentSwarm', { 200, 2000}},
+            { EBC, 'GreaterThanEconStorageCurrentSwarm', { 100, 1000}},
         },
         BuilderType = 'Air',
     },
@@ -163,13 +192,13 @@ BuilderGroup {
         Priority = 1000,
 
         BuilderConditions = {
-            { UCBC, 'AirStrengthRatioGreaterThan', { 5 } },
+            { UCBC, 'AirStrengthRatioGreaterThan', { 4 } },
 
             { UCBC, 'LocationFactoriesBuildingLess', { 'LocationType', 2, categories.MOBILE * categories.AIR * categories.BOMBER * categories.TECH3 } },
 
             { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 0.9, 1.1 }},
 
-            { EBC, 'GreaterThanEconStorageCurrentSwarm', { 200, 2000}},
+            { EBC, 'GreaterThanEconStorageCurrentSwarm', { 100, 1000}},
         },
         BuilderType = 'Air',
     },
@@ -182,13 +211,13 @@ BuilderGroup {
         Priority = 1000,
 
         BuilderConditions = {
-            { UCBC, 'AirStrengthRatioGreaterThan', { 5 } },
+            { UCBC, 'AirStrengthRatioGreaterThan', { 4 } },
 
             { UCBC, 'LocationFactoriesBuildingLess', { 'LocationType', 2, categories.MOBILE * categories.AIR * categories.GROUNDATTACK * categories.TECH3 } },
 
             { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 0.9, 1.1 }},
 
-            { EBC, 'GreaterThanEconStorageCurrentSwarm', { 200, 2000}},
+            { EBC, 'GreaterThanEconStorageCurrentSwarm', { 100, 1000}},
         },
         BuilderType = 'Air',
     }, 

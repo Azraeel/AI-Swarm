@@ -47,13 +47,13 @@ local FNHQ2 = categories.FACTORY * categories.STRUCTURE * categories.NAVAL * cat
 local FNHQ3 = categories.FACTORY * categories.STRUCTURE * categories.NAVAL * categories.TECH3 * categories.RESEARCH
 
 -- LAND SUPPORT FACTORIES 
-local FLSF1 = categories.FACTORY * categories.STRUCTURE * categories.LAND * categories.TECH1 - categories.SUPPORTFACTORY
+local FLSF1 = categories.FACTORY * categories.STRUCTURE * categories.LAND * categories.TECH1
 local FLSF2 = categories.FACTORY * categories.STRUCTURE * categories.LAND * categories.TECH2 * categories.SUPPORTFACTORY
 -- AIR SUPPORT FACTORIES 
-local FASF1 = categories.FACTORY * categories.STRUCTURE * categories.AIR * categories.TECH1 - categories.SUPPORTFACTORY
+local FASF1 = categories.FACTORY * categories.STRUCTURE * categories.AIR * categories.TECH1
 local FASF2 = categories.FACTORY * categories.STRUCTURE * categories.AIR * categories.TECH2 * categories.SUPPORTFACTORY
 -- NAVAL SUPPORT FACTORIES 
-local FNSF1 = categories.FACTORY * categories.STRUCTURE * categories.NAVAL * categories.TECH1 - categories.SUPPORTFACTORY
+local FNSF1 = categories.FACTORY * categories.STRUCTURE * categories.NAVAL * categories.TECH1
 local FNSF2 = categories.FACTORY * categories.STRUCTURE * categories.NAVAL * categories.TECH2 * categories.SUPPORTFACTORY
 
 function MapAdvisor(aiBrain)
@@ -67,6 +67,9 @@ end
 -- Also Thanks Balthazar and Sprouto for Assistance with getting Support Factories to Work
 -- With Factories included in this thread his tech pacing is so rapid that with no cheats on open palms he can have full t2 production by 12m 
 -- Still Tuning this has theres still excess eco nowadays
+-- I know this logging is getting oppressive in this code but I'm always finished and it can be cleaned up soonTM
+-- --[[or table.getn( GetListOfUnits(aiBrain, FLHQ3, false, false )) > 0]] doesnt work for some reason this causes errors in the code, the upgradebp doesnt get passed correctly
+-- Im assuming this is because FLHQ3 & FLHQ2 putting the same value in Alternativebp maybe it has to be a table?
 function StructureUpgradeThreadSwarm(unit, aiBrain, upgradeSpec, bypasseco) 
     --LOG('* AI-Swarm: Starting structure thread upgrade for'..aiBrain.Nickname)
 
@@ -85,18 +88,17 @@ function StructureUpgradeThreadSwarm(unit, aiBrain, upgradeSpec, bypasseco)
     local alternativebp = false
     --LOG("What is upgradeID at the Start " ..repr(upgradeID))
 
-    local unitType, unitTech, unitFactionIndex = StructureTypeCheckSwarm(aiBrain, unitBp)
+    local unitType, unitTech, unitFactionIndex = StructureTypeCheckSwarm(aiBrain, unitBp) -- 1: UEF, 2: Aeon, 3: Cybran, 4: Seraphim, 5: Nomads 
     --LOG("What is unitFactionIndex " ..unitFactionIndex)
     --LOG("What is unitType " ..unitType)
     --LOG("What is unitTech " ..unitTech)
 
-    -- Maybe Replace Unreliable GetListOfUnits with EntityCategoryCount?
     local function DecideUpgradeBP()
         --LOG("What is upgradeID at the start of DecideUpgradeBP Function " ..repr(upgradeID).. " and unit was " ..repr(unit:GetBlueprint().Description))
         if upgradeID then
             -- This is the support factory compatibility code
             if EntityCategoryContains( FACTORYLAND, unit) then -- 1: UEF, 2: Aeon, 3: Cybran, 4: Seraphim, 5: Nomads
-                if table.getn( GetListOfUnits(aiBrain, FLHQ2, false, true )) > 0 or table.getn( GetListOfUnits(aiBrain, FLHQ3, false, true )) > 0 and EntityCategoryContains( FLSF1, unit) then
+                if table.getn( GetListOfUnits(aiBrain, FLHQ2, false, false )) > 0 --[[or table.getn( GetListOfUnits(aiBrain, FLHQ3, false, false )) > 0]] and EntityCategoryContains( FLSF1, unit) then
                     if unitFactionIndex == 1 then
                         alternativebp = 'zeb9501'
                     elseif unitFactionIndex == 2 then
@@ -114,7 +116,7 @@ function StructureUpgradeThreadSwarm(unit, aiBrain, upgradeSpec, bypasseco)
                     if upgradebp then
                         upgradeID = alternativebp
                     end
-                elseif table.getn( GetListOfUnits(aiBrain, FLHQ3, false, true )) > 0 and EntityCategoryContains( FLSF2, unit) then
+                elseif table.getn( GetListOfUnits(aiBrain, FLHQ3, false, false )) > 0 and EntityCategoryContains( FLSF2, unit) then
                     if unitFactionIndex == 1 then
                         alternativebp = 'zeb9601'
                     elseif unitFactionIndex == 2 then
@@ -132,7 +134,7 @@ function StructureUpgradeThreadSwarm(unit, aiBrain, upgradeSpec, bypasseco)
                     end
                 end
             elseif EntityCategoryContains( FACTORYAIR, unit) then -- 1: UEF, 2: Aeon, 3: Cybran, 4: Seraphim, 5: Nomads
-                if table.getn( GetListOfUnits(aiBrain, FAHQ2, false, true )) > 0 or table.getn( GetListOfUnits(aiBrain, FAHQ3, false, true )) > 0 and EntityCategoryContains( FASF1, unit) then
+                if table.getn( GetListOfUnits(aiBrain, FAHQ2, false, false )) > 0 --[[or table.getn( GetListOfUnits(aiBrain, FAHQ3, false, false )) > 0]] and EntityCategoryContains( FASF1, unit) then
                     if unitFactionIndex == 1 then
                         alternativebp = 'zeb9502'
                     elseif unitFactionIndex == 2 then
@@ -148,7 +150,7 @@ function StructureUpgradeThreadSwarm(unit, aiBrain, upgradeSpec, bypasseco)
                     if upgradebp then
                         upgradeID = alternativebp
                     end
-                elseif table.getn( GetListOfUnits(aiBrain, FAHQ3, false, true )) > 0 and EntityCategoryContains( FASF2, unit) then
+                elseif table.getn( GetListOfUnits(aiBrain, FAHQ3, false, false )) > 0 and EntityCategoryContains( FASF2, unit) then
                     if unitFactionIndex == 1 then
                         alternativebp = 'zeb9602'
                     elseif unitFactionIndex == 2 then
@@ -166,7 +168,7 @@ function StructureUpgradeThreadSwarm(unit, aiBrain, upgradeSpec, bypasseco)
                     end
                 end
             elseif EntityCategoryContains( FACTORYNAVAL, unit) then -- 1: UEF, 2: Aeon, 3: Cybran, 4: Seraphim, 5: Nomads
-                if table.getn( GetListOfUnits(aiBrain, FNHQ2, false, true )) > 0 or table.getn( GetListOfUnits(aiBrain, FNHQ3, false, true )) > 0 and EntityCategoryContains( FNSF1, unit) then
+                if table.getn( GetListOfUnits(aiBrain, FNHQ2, false, false )) > 0 --[[or table.getn( GetListOfUnits(aiBrain, FNHQ3, false, false )) > 0]] and EntityCategoryContains( FNSF1, unit) then
                     if unitFactionIndex == 1 then
                         alternativebp = 'zeb9503'
                     elseif unitFactionIndex == 2 then
@@ -182,7 +184,7 @@ function StructureUpgradeThreadSwarm(unit, aiBrain, upgradeSpec, bypasseco)
                     if upgradebp then
                         upgradeID = alternativebp
                     end
-                elseif table.getn( GetListOfUnits(aiBrain, FNHQ3, false, true )) > 0 and EntityCategoryContains( FNSF2, unit) then
+                elseif table.getn( GetListOfUnits(aiBrain, FNHQ3, false, false )) > 0 and EntityCategoryContains( FNSF2, unit) then
                     if unitFactionIndex == 1 then
                         alternativebp = 'zeb9603'
                     elseif unitFactionIndex == 2 then
@@ -208,13 +210,13 @@ function StructureUpgradeThreadSwarm(unit, aiBrain, upgradeSpec, bypasseco)
     local function GetUpgradeEconomy()
         if upgradebp then -- safety check
             --LOG("What is upgradeID " ..repr(upgradebp))
-            massNeeded = upgradebp.Economy.BuildCostMass
+            massNeeded = upgradebp.Economy.BuildCostMass or 0
             --LOG('Mass Needed '..massNeeded)
-	        energyNeeded = upgradebp.Economy.BuildCostEnergy
+	        energyNeeded = upgradebp.Economy.BuildCostEnergy or 0
             --LOG('Energy Needed '..energyNeeded)
-            buildtime = upgradebp.Economy.BuildTime
+            buildtime = upgradebp.Economy.BuildTime or 0
             --LOG('Build Time is  '..buildtime)
-            buildrate = unitBp.Economy.BuildRate
+            buildrate = unitBp.Economy.BuildRate or 0
             --LOG('Build Rate is  '..buildrate)
 
             -- production while upgrading
@@ -265,8 +267,10 @@ function StructureUpgradeThreadSwarm(unit, aiBrain, upgradeSpec, bypasseco)
     --LOG('Eco timeout for Tech '..unitTech..' Extractor is '..ecoTimeOut)
     --LOG('* AI-Swarm: Initial Variables set')
     while initial_delay < (upgradeSpec.InitialDelay / multiplier) do
-		if GetEconomyStored( aiBrain, 'MASS') >= 50 and GetEconomyStored( aiBrain, 'ENERGY') >= 900 and unit:GetFractionComplete() == 1 then
-            if aiBrain.UpgradeMode == 'Aggressive' then
+		if GetEconomyStored( aiBrain, 'MASS') >= 100 and GetEconomyStored( aiBrain, 'ENERGY') >= 1000 and unit:GetFractionComplete() == 1 then
+            if aiBrain.UpgradeMode == 'TechRush' then
+                initial_delay = initial_delay + 30
+            elseif aiBrain.UpgradeMode == 'Aggressive' then
                 initial_delay = initial_delay + 20
             elseif aiBrain.UpgradeMode == 'Normal' then
                 initial_delay = initial_delay + 10
@@ -367,7 +371,7 @@ function StructureUpgradeThreadSwarm(unit, aiBrain, upgradeSpec, bypasseco)
 						if not unit.Dead then
 
                             upgradeIssued = true
-                            --LOG("What is upgradeID " ..repr(upgradeID) .. " What Unit is upgrading " ..repr(unit:GetBlueprint().Description))
+                            LOG("What is upgradeID " ..repr(upgradeID) .. " What Unit is upgrading " ..repr(unit:GetBlueprint().Description))
                             IssueUpgrade({unit}, upgradeID)
 
                             -- if upgrade issued and not completely full --

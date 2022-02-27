@@ -140,7 +140,7 @@ BuilderGroup {
     Builder {
         BuilderName = 'S3 Mass Fab',
         PlatoonTemplate = 'EngineerBuilderT3&SUBSwarm',
-        Priority = 1175,
+        Priority = 900,
         BuilderConditions = {
             { UCBC, 'HaveGreaterThanUnitsWithCategory', { 2, categories.STRUCTURE * categories.ENERGYPRODUCTION * categories.TECH3 }},
 
@@ -148,7 +148,7 @@ BuilderGroup {
 
             { EBC, 'GreaterThanEnergyTrendOverTimeSwarm', { 0.0 } },   
 
-            { EBC, 'GreaterThanEconStorageCurrentSwarm', { 200, 2000}},
+            { EBC, 'GreaterThanEconStorageCurrentSwarm', { 100, 1000}},
 
             { EBC, 'LessThanEconStorageRatioSwarm', { 0.35, 2.0 } },
         },
@@ -197,7 +197,7 @@ BuilderGroup {
 
             { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 1.02, 1.03 }}, 
 
-            { EBC, 'GreaterThanEconStorageCurrentSwarm', { 200, 2000}},
+            { EBC, 'GreaterThanEconStorageCurrentSwarm', { 100, 1000}},
         },
         BuilderData = {
             Construction = {
@@ -237,7 +237,7 @@ BuilderGroup {
 
             { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 1.02, 1.03 }}, 
 
-            { EBC, 'GreaterThanEconStorageCurrentSwarm', { 200, 2000}},
+            { EBC, 'GreaterThanEconStorageCurrentSwarm', { 100, 1000}},
         },
         BuilderData = {
             Construction = {

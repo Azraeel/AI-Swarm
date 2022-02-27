@@ -15,8 +15,8 @@ BuilderGroup {
     Builder {
         BuilderName = 'Swarm Power low trend',
         PlatoonTemplate = 'T1EngineerBuilderSwarm',
-        Priority = 650,
-        InstanceCount = 1,                                                     
+        Priority = 655,
+        InstanceCount = 2,                                                     
         DelayEqualBuildPlattons = {'Energy', 3},
         BuilderConditions = {
             { UCBC, 'HaveLessThanUnitsWithCategory', { 1, categories.ENERGYPRODUCTION - categories.TECH1 - categories.COMMAND } },
@@ -54,7 +54,7 @@ BuilderGroup {
     Builder {
         BuilderName = 'Swarm Power low trend - Scale Power',
         PlatoonTemplate = 'T1EngineerBuilderSwarm',
-        Priority = 660,
+        Priority = 645,
         InstanceCount = 2,                                                     
         DelayEqualBuildPlattons = {'Energy', 3},
         BuilderConditions = {
@@ -64,9 +64,9 @@ BuilderGroup {
             
             { UCBC, 'CheckBuildPlattonDelay', { 'Energy' }},
 
-            { EBC, 'GreaterThanMassStorageCurrentSwarm', { 200 }}, 
+            { EBC, 'GreaterThanMassEfficiencyOverTimeSwarm', { 0.95 }},
 
-            { EBC, 'LessThanEnergyTrendOverTimeSwarm', { 4.0 } },
+            { EBC, 'LessThanEnergyTrendOverTimeSwarm', { 8.0 } },
         },
         BuilderType = 'Any',
         BuilderData = {
@@ -82,6 +82,7 @@ BuilderGroup {
                 BuildClose = true,
                 LocationType = 'LocationType',
                 BuildStructures = {
+                    'T1EnergyProduction',
                     'T1EnergyProduction',
                 },
             }
@@ -227,7 +228,7 @@ BuilderGroup {
 
             { UCBC, 'UnitCapCheckLess', { .7 } },
 
-            { EBC, 'GreaterThanEconStorageCurrentSwarm', { 200, 2000}},
+            { EBC, 'GreaterThanEconStorageCurrentSwarm', { 100, 1000}},
 
             { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.01, 0.95 } },             -- Ratio from 0 to 1. (1=100%)
             

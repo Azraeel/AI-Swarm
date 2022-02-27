@@ -27,7 +27,7 @@ BuilderGroup {
 
             { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 0.6, 0.8 }},
 
-            { EBC, 'GreaterThanEconStorageCurrentSwarm', { 200, 2000}},
+            { EBC, 'GreaterThanEconStorageCurrentSwarm', { 100, 1000}},
         },
         BuilderType = 'Any',
         BuilderData = {
@@ -71,7 +71,7 @@ BuilderGroup {
 
             { EBC, 'GreaterThanEconTrendOverTimeSwarm', { 0.0, 0.0 } }, 
 
-            { EBC, 'GreaterThanEconStorageCurrentSwarm', { 200, 2000}},
+            { EBC, 'GreaterThanEconStorageCurrentSwarm', { 100, 1000}},
 
             { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 0.9, 1.0 }}, 
 
@@ -114,7 +114,7 @@ BuilderGroup {
 
             { EBC, 'GreaterThanEconTrendOverTimeSwarm', { 0.0, 0.0 } }, 
 
-            { EBC, 'GreaterThanEconStorageCurrentSwarm', { 200, 2000}},
+            { EBC, 'GreaterThanEconStorageCurrentSwarm', { 100, 1000}},
 
             { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 0.9, 1.0 }}, 
 
@@ -144,7 +144,7 @@ BuilderGroup {
         }
     },
 
-    Builder {
+    --[[ Builder {
         BuilderName = 'S2 Vacant Start Location - Defense Point',                             
         PlatoonTemplate = 'T2EngineerBuilderSwarm',                                   
         Priority = 510,                                                  
@@ -158,9 +158,9 @@ BuilderGroup {
 
             { EBC, 'GreaterThanEconTrendOverTimeSwarm', { 0.0, 0.0 } }, 
 
-            { EBC, 'GreaterThanEconStorageCurrentSwarm', { 200, 2000}},
+            { EBC, 'GreaterThanEconStorageCurrentSwarm', { 100, 1000}},
 
-            { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 1.0, 1.0 }}, 
+            { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 1.05, 1.05 }}, 
         },
         BuilderType = 'Any',
         BuilderData = {
@@ -208,9 +208,9 @@ BuilderGroup {
 
             { EBC, 'GreaterThanEconTrendOverTimeSwarm', { 0.0, 0.0 } }, 
 
-            { EBC, 'GreaterThanEconStorageCurrentSwarm', { 200, 2000}},
+            { EBC, 'GreaterThanEconStorageCurrentSwarm', { 100, 1000}},
 
-            { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 1.0, 1.0 }}, 
+            { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 1.05, 1.05 }}, 
         },
         BuilderType = 'Any',
         BuilderData = {
@@ -242,7 +242,7 @@ BuilderGroup {
                 }
             },
         }
-    },
+    }, ]]--
 
     Builder {
         BuilderName = 'S1 Naval Builder',                                       -- Random Builder Name.

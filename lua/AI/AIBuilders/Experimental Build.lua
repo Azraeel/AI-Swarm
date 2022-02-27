@@ -33,7 +33,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Experimental Builders',
 
             { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 1.01, 1.02 }},
 
-            { EBC, 'GreaterThanEconStorageCurrentSwarm', { 200, 2000}},
+            { EBC, 'GreaterThanEconStorageCurrentSwarm', { 100, 1000}},
 
             { EBC, 'GreaterThanEnergyIncomeOverTimeSwarm', { 750 }},
 
@@ -77,7 +77,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Experimental Builders',
 
             { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 1.01, 1.02 }},
 
-            { EBC, 'GreaterThanEconStorageCurrentSwarm', { 200, 2000}},
+            { EBC, 'GreaterThanEconStorageCurrentSwarm', { 100, 1000}},
 
             { EBC, 'GreaterThanEnergyIncomeOverTimeSwarm', { 750 }},
 
@@ -135,7 +135,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Experimental Builders',
 
             { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 1.01, 1.02 }},
 
-            { EBC, 'GreaterThanEconStorageCurrentSwarm', { 200, 2000}},
+            { EBC, 'GreaterThanEconStorageCurrentSwarm', { 100, 1000}},
         },
 
         BuilderType = 'Any',
@@ -188,7 +188,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Experimental Builders',
 
             { EBC, 'GreaterThanMassTrendOverTimeSwarm', { 0.0 } },
 
-            { EBC, 'GreaterThanEconStorageCurrentSwarm', { 200, 2000}},
+            { EBC, 'GreaterThanEconStorageCurrentSwarm', { 100, 1000}},
         },
 
         BuilderType = 'Any',
@@ -239,7 +239,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Experimental Builders',
 
             { EBC, 'GreaterThanMassTrendOverTimeSwarm', { 0.0 } },
 
-            { EBC, 'GreaterThanEconStorageCurrentSwarm', { 200, 2000}},
+            { EBC, 'GreaterThanEconStorageCurrentSwarm', { 100, 1000}},
         },
 
         BuilderType = 'Any',
@@ -294,7 +294,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Experimental Builders',
 
             { EBC, 'GreaterThanMassTrendOverTimeSwarm', { 0.0 } },
 
-            { EBC, 'GreaterThanEconStorageCurrentSwarm', { 200, 2000}},
+            { EBC, 'GreaterThanEconStorageCurrentSwarm', { 100, 1000}},
         },
 
         BuilderType = 'Any',
@@ -350,7 +350,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Naval Experimental Builders',
 
             { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 1.02, 1.03 }},      
             
-            { EBC, 'GreaterThanEconStorageCurrentSwarm', { 200, 2000}},
+            { EBC, 'GreaterThanEconStorageCurrentSwarm', { 100, 1000}},
 
             { UCBC, 'HaveLessThanUnitsInCategoryBeingBuilt', { 1, categories.MOBILE * categories.EXPERIMENTAL }},
         },
