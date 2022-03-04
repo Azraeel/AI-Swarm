@@ -316,8 +316,8 @@ AIBrain = Class(SwarmAIBrainClass) {
             self:SelfThreatCheckSwarm(ALLBPS)
             self:EnemyThreatCheckSwarm(ALLBPS)
             self:EconomyTacticalMonitorSwarm(ALLBPS)
-            self.StrategicOverseerSwarm(ALLBPS)
             self:CalculateMassMarkersSwarm()
+            self.StrategicOverseerSwarm(ALLBPS)
 
         end
         SWARMWAIT(30)

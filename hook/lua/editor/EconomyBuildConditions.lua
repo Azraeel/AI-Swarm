@@ -218,21 +218,21 @@ end
 
 function GreaterThanMassIncomeToFactorySwarm(aiBrain, t1Drain, t2Drain, t3Drain)
 
-    # T1 Test
+    -- T1 Test
     local testCat = categories.TECH1 * categories.FACTORY
     local unitCount = aiBrain:GetCurrentUnits(testCat)
-    # Find units of this type being built or about to be built
+    -- Find units of this type being built or about to be built
     unitCount = unitCount + aiBrain:GetEngineerManagerUnitsBeingBuilt((categories.TECH1 + categories.TECH2 + categories.TECH3) * categories.FACTORY)
 
     local massTotal = unitCount * t1Drain
 
-    # T2 Test
+    -- T2 Test
     testCat = categories.TECH2 * categories.FACTORY
     unitCount = aiBrain:GetCurrentUnits(testCat)
 
     massTotal = massTotal + (unitCount * t2Drain)
 
-    # T3 Test
+    -- T3 Test
     testCat = categories.TECH3 * categories.FACTORY
     unitCount = aiBrain:GetCurrentUnits(testCat)
 

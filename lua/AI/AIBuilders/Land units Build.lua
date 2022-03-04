@@ -176,7 +176,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',
 
             { UCBC, 'LocationFactoriesBuildingLess', { 'LocationType', 1, categories.LAND * categories.MOBILE * categories.ANTIAIR * categories.TECH1 } },
 
-            { UCBC, 'PoolLessAtLocation', { 'LocationType', 2, categories.LAND * categories.MOBILE * categories.ANTIAIR }},
+            { UCBC, 'PoolLessAtLocation', { 'LocationType', 1, categories.LAND * categories.MOBILE * categories.ANTIAIR }}, -- too much AA in the early game
         },
         BuilderType = 'Land',
     },
@@ -316,7 +316,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',
 
             { UCBC, 'LocationFactoriesBuildingLess', { 'LocationType', 2, categories.LAND * categories.MOBILE * categories.ANTIAIR * categories.TECH2 } },
 
-            { UCBC, 'PoolLessAtLocation', { 'LocationType', 3, categories.LAND * categories.MOBILE * categories.ANTIAIR * categories.TECH2 }},
+            { UCBC, 'PoolLessAtLocation', { 'LocationType', 2, categories.LAND * categories.MOBILE * categories.ANTIAIR * categories.TECH2 }},
         },
         BuilderType = 'Land',
     },
@@ -514,7 +514,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',
 
             { UCBC, 'LocationFactoriesBuildingLess', { 'LocationType', 2, categories.LAND * categories.MOBILE * categories.ANTIAIR * categories.TECH3 } },
 
-            { UCBC, 'PoolLessAtLocation', { 'LocationType', 3, categories.LAND * categories.MOBILE * categories.ANTIAIR * categories.TECH3 }},
+            { UCBC, 'PoolLessAtLocation', { 'LocationType', 2, categories.LAND * categories.MOBILE * categories.ANTIAIR * categories.TECH3 }},
         },
         BuilderType = 'Land',
     },
@@ -858,7 +858,7 @@ BuilderGroup {
             AvoidClosestRadius = 50,
             EarlyRaid = true,
             TargetSearchPriorities = { 
-                categories.MOBILE * categories.LAND
+                categories.STRUCTURE * categories.ECONOMIC
             },
             PrioritizedCategories = {   
                 categories.ENGINEER,
@@ -906,7 +906,7 @@ BuilderGroup {
             AvoidClosestRadius = 10,
             UseFormation = 'NoFormation',
             TargetSearchPriorities = { 
-                categories.MOBILE * categories.LAND
+                categories.STRUCTURE * categories.ECONOMIC
             },
             PrioritizedCategories = {  
                 categories.ENGINEER,
@@ -958,7 +958,7 @@ BuilderGroup {
             AvoidClosestRadius = 10,
             UseFormation = 'NoFormation',
             TargetSearchPriorities = { 
-                categories.MOBILE * categories.LAND
+                categories.STRUCTURE * categories.ECONOMIC
             },
             PrioritizedCategories = {  
                 categories.ENGINEER,
