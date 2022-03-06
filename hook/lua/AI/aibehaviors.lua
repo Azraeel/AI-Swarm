@@ -303,13 +303,16 @@ function StructureUpgradeThreadSwarm(unit, aiBrain, upgradeSpec, bypasseco)
             continue
         end
 
-        if (not unit.MAINBASE) or (unit.MAINBASE and not bypasseco and GetEconomyStored( aiBrain, 'MASS') < (massNeeded * 0.5)) then
-            --LOG('Mainbase Unit is ' .. ' ' ..repr(unit:GetBlueprint().Description))
-            if HaveUnitRatio( aiBrain, 1.6, categories.MASSEXTRACTION * categories.TECH1, '>=', categories.MASSEXTRACTION * categories.TECH2 ) and unitTech == 'TECH2' then
-                --LOG('Too few tech2 extractors to go tech3')
-                ecoStartTime = ecoStartTime + upgradeSpec.UpgradeCheckWait
-                SWARMWAIT(10)
-                continue
+        if EntityCategoryContains( EXTRACTORALL, unit) then
+            
+            if (not unit.MAINBASE) or (unit.MAINBASE and not bypasseco and GetEconomyStored( aiBrain, 'MASS') < (massNeeded * 0.5)) then
+               --LOG('Mainbase Unit is ' .. ' ' ..repr(unit:GetBlueprint().Description))
+                if HaveUnitRatio( aiBrain, 1.6, categories.MASSEXTRACTION * categories.TECH1, '>=', categories.MASSEXTRACTION * categories.TECH2 ) and unitTech == 'TECH2' and unitType == 'MASSEXTRACTION' then
+                    --LOG('Too few tech2 extractors to go tech3')
+                    ecoStartTime = ecoStartTime + upgradeSpec.UpgradeCheckWait
+                    SWARMWAIT(10)
+                    continue
+                end
             end
         end
 
