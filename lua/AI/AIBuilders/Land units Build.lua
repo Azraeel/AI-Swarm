@@ -332,7 +332,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',
             
             { UCBC, 'UnitCapCheckLess', { 0.90 } },
 
-            { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 0.9, 0.95 }},
+            { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 0.95, 1.0 }},
 
             { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.01, 0.10}},
 
@@ -357,7 +357,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',
 
             { EBC, 'GreaterThanEconIncomeOverTimeSwarm', { 3.5, 100 } },
 
-            { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 0.9, 0.95 }},
+            { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 0.95, 1.0 }},
 
             { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.01, 0.10}},
 
@@ -380,7 +380,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',
 
             { UCBC, 'UnitCapCheckLess', { 0.90 } },
 
-            { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 0.85, 0.9 }},
+            { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 0.85, 0.95 }},
 
             { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.01, 0.10}},
 
@@ -405,7 +405,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',
 
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
 
-            { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 0.9, 0.95 }},
+            { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 0.95, 1.0 }},
 
             { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.01, 0.10}},
 
@@ -428,7 +428,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',
 
             { UCBC, 'LandStrengthRatioGreaterThan', { 1.1 } },
 
-            { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 0.9, 0.95 }},
+            { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 0.95, 1.0 }},
 
             { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.01, 0.10}},
 
@@ -453,7 +453,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',
 
             { UCBC, 'LandStrengthRatioGreaterThan', { 1.1 } },
 
-            { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 0.9, 0.95 }},
+            { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 0.95, 1.0 }},
 
             { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.01, 0.10}},
 
@@ -479,7 +479,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',
 
             { UCBC, 'UnitCapCheckLess', { 0.90 } },
 
-            { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 0.9, 0.95 }},
+            { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 0.95, 1.0 }},
 
             { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.01, 0.10}},
 
@@ -504,7 +504,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',
 
             { UCBC, 'AirStrengthRatioLessThan', { 1.1 } },
 
-            { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 0.9, 0.95 }},
+            { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 0.95, 1.0 }},
 
             { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.01, 0.10}},
 
@@ -597,6 +597,8 @@ BuilderGroup {
         BuilderType = 'Any',
 
         BuilderConditions = {
+            { MIBC, 'CanPathToCurrentEnemySwarm', { true, 'LocationType' } },
+
             { UCBC, 'EnemyUnitsGreaterAtLocationRadiusSwarm', {  BaseEnemyZone, 'LocationType', 0, categories.MOBILE * categories.LAND - categories.NAVAL}}, -- radius, LocationType, unitCount, categoryEnemy
         },
         BuilderData = {

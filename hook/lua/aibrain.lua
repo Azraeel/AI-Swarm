@@ -177,8 +177,6 @@ AIBrain = Class(SwarmAIBrainClass) {
         self.SelfThreatSwarm = {
             SelfExtractor = 0,
             SelfExtractorCount = 0,
-            SelfMassMarker = 0,
-            SelfMassMarkerBuildable = 0,
             SelfAllyExtractorCount = 0,
             SelfAllyExtractor = 0,
             SelfAllyLandThreat = 0,
@@ -187,6 +185,10 @@ AIBrain = Class(SwarmAIBrainClass) {
             SelfLandNow = 0,
             SelfNavalNow = 0,
             SelfNavalSubNow = 0,
+
+
+            MassMarker = 0,
+            MassMarkerBuildable = 0,
         }
         self.EnemyACU = {}
         for _, v in ArmyBrains do
@@ -470,8 +472,8 @@ AIBrain = Class(SwarmAIBrainClass) {
             --LOG("What is unit " .. repr(unit))
             --LOG("Are we reaching this point? GetUpgradeSpecSwarmFactory")
             if self.UpgradeMode == 'TechRush' then
-                upgradeSpec.MassLowTrigger = 0.90
-                upgradeSpec.EnergyLowTrigger = 0.95
+                upgradeSpec.MassLowTrigger = 1.0
+                upgradeSpec.EnergyLowTrigger = 1.0
                 upgradeSpec.MassHighTrigger = 2.0
                 upgradeSpec.EnergyHighTrigger = 2.0
                 upgradeSpec.UpgradeCheckWait = 24
@@ -587,7 +589,7 @@ AIBrain = Class(SwarmAIBrainClass) {
             self.UpgradeMode = 'Aggressive'
             self.EcoManager.ExtractorUpgradeLimit.TECH1 = 2
 
-        elseif (gameTime > 900 and self.SelfAllyExtractor > self.MassMarker / 1.5) then
+        elseif (gameTime > 900 and self.SelfThreatSwarm.SelfAllyExtractor > self.SelfThreatSwarm.MassMarker / 1.5) then
 
             --LOG('Switch to agressive upgrade mode')
             self.UpgradeMode = 'Aggressive'
@@ -634,8 +636,8 @@ AIBrain = Class(SwarmAIBrainClass) {
         if graphCheck then
             self.GraphZonesSwarm.HasRun = true
         end
-        self.MassMarker = markerCount
-        self.MassMarkerBuildable = massMarkerBuildable
+        self.SelfThreatSwarm.MassMarker = markerCount
+        self.SelfThreatSwarm.MassMarkerBuildable = massMarkerBuildable
     end,
 
     BaseMonitorThreadSwarm = function(self)
@@ -1469,7 +1471,7 @@ AIBrain = Class(SwarmAIBrainClass) {
 
         SWARMWAIT(5)
 
-        if (self.SelfAllyExtractor > self.MassMarker / 1.5) and self.TechRushStandard == false and self.MyLandRatio == 1.1 and self.UpgradeMode == 'Normal' then 
+        if (self.SelfThreatSwarm.SelfAllyExtractor > self.SelfThreatSwarm.MassMarker / 1.5) and self.TechRushStandard == false and self.MyLandRatio == 1.1 and self.UpgradeMode == 'Normal' then 
 
             --LOG('StrategicOverseerSwarm: Setting TechRushStandard to True')
             self.TechRushStandard = true
