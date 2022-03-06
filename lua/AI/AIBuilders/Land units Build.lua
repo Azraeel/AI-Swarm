@@ -195,7 +195,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',
         BuilderConditions = {
             { UCBC, 'UnitCapCheckLess', { 0.90 } },
 
-            { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 0.75, 0.9 }},
+            { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 0.8, 0.9 }},
 
             { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.01, 0.10}},
 
@@ -219,7 +219,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',
         BuilderConditions = {
             { UCBC, 'UnitCapCheckLess', { 0.90 } },
 
-            { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 0.75, 0.9 }},
+            { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 0.8, 0.9 }},
 
             { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.01, 0.10}},
 
@@ -245,7 +245,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',
 
             { UCBC, 'LandStrengthRatioGreaterThan', { 1.1 } },
 
-            { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 0.75, 0.9 }},
+            { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 0.8, 0.9 }},
 
             { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.01, 0.10}},
 
@@ -274,7 +274,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',
 
             { UCBC, 'UnitCapCheckLess', { 0.90 } },
 
-            { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 0.75, 0.9 }},
+            { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 0.8, 0.9 }},
 
             { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.01, 0.10}},
 
@@ -304,7 +304,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',
 
             { UCBC, 'AirStrengthRatioLessThan', { 1.1 } },
 
-            { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 0.75, 0.9 }},
+            { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 0.8, 0.9 }},
 
             { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.01, 0.10}},
 

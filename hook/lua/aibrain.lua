@@ -300,17 +300,6 @@ AIBrain = Class(SwarmAIBrainClass) {
 
     end,
 
-    SetupAttackVectorsThread = function(self)
-
-        if not self.Swarm then
-            return SwarmAIBrainClass.SetupAttackVectorsThread(self)
-        end
-
-        SWARMWAIT(10)
-
-        KillThread(CurrentThread())
-    end,
-
     StrategicMonitorThreadSwarm = function(self, ALLBPS)
 
         while true do 

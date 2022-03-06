@@ -203,7 +203,7 @@ Platoon = Class(SwarmPlatoonClass) {
                 -- check if we are still inside the attack radius and be sure the area is not a nuke blast area
                 if VDist2(basePosition[1] or 0, basePosition[3] or 0, LastTargetPos[1] or 0, LastTargetPos[3] or 0) < maxradius then
                     self:Stop()
-                    if self.PlatoonData.IgnorePathing or VDist2(PlatoonPos[1] or 0, PlatoonPos[3] or 0, LastTargetPos[1] or 0, LastTargetPos[3] or 0) < 60 then
+                    if self.PlatoonData.IgnorePathing or VDist2(PlatoonPos[1] or 0, PlatoonPos[3] or 0, LastTargetPos[1] or 0, LastTargetPos[3] or 0) < 80 then
                         self:AttackTarget(target)
                     else
                         self:MoveToLocation(LastTargetPos, false)
@@ -1788,9 +1788,9 @@ Platoon = Class(SwarmPlatoonClass) {
         self:SetPlatoonFormationOverride('NoFormation')
         local PathNodesCount = SWARMGETN(path)
         if self.MovementLayer == 'Air' then
-            -- Air units should not follow the path for the last 3 hops.
-            if PathNodesCount - 3 > 0 then
-                PathNodesCount = PathNodesCount - 3
+            -- Air units should not follow the path for the last 4 hops.
+            if PathNodesCount - 4 > 0 then
+                PathNodesCount = PathNodesCount - 4
             -- if we have a short path, just use the destination as waypoint
             else
                 path[1] = path[PathNodesCount]
