@@ -429,7 +429,16 @@ AIBrain = Class(SwarmAIBrainClass) {
         if EntityCategoryContains(categories.MASSEXTRACTION, unit) then
             --LOG("What is unit " .. repr(unit))
             --LOG("Are we reaching this point? GetUpgradeSpecSwarmMassExtractor")
-            if self.UpgradeMode == 'Aggressive' then
+            if self.UpgradeMode == 'TechRush' then
+                upgradeSpec.MassLowTrigger = 0.75
+                upgradeSpec.EnergyLowTrigger = 1.0
+                upgradeSpec.MassHighTrigger = 2.0
+                upgradeSpec.EnergyHighTrigger = 2.0
+                upgradeSpec.UpgradeCheckWait = 18
+                upgradeSpec.InitialDelay = 20
+                upgradeSpec.EnemyThreatLimit = 15
+                return upgradeSpec
+            elseif self.UpgradeMode == 'Aggressive' then
                 upgradeSpec.MassLowTrigger = 0.85
                 upgradeSpec.EnergyLowTrigger = 1.0
                 upgradeSpec.MassHighTrigger = 2.0

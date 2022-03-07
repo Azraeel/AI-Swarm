@@ -205,13 +205,14 @@ Platoon = Class(SwarmPlatoonClass) {
                     self:Stop()
                     if self.PlatoonData.IgnorePathing or VDist2(PlatoonPos[1] or 0, PlatoonPos[3] or 0, LastTargetPos[1] or 0, LastTargetPos[3] or 0) < 80 then
                         self:AttackTarget(target)
-                    else
+                    elseif VDist2Sq(LastTargetPos[1],LastTargetPos[3], basePosition[1],basePosition [3]) > 6400 then 
                         self:MoveToLocation(LastTargetPos, false)
                     end
                     SWARMWAIT(50)
                 else
                     target = nil
                 end
+
             end
             SWARMWAIT(30)
         end
@@ -6698,6 +6699,48 @@ Platoon = Class(SwarmPlatoonClass) {
     --- TEST FUNCTIONS BEGIN ---
     --- --- --- --- --- --- ---
 
+    -- Just the beginnings of a more complex function
+
+    -- DefenderAISwarm = function(self)
+    --     -- Platoon should be able to guard mass extractor that call for help
+    --     local aiBrain = self:GetBrain()
+    --     local platoonUnits = self:GetPlatoonUnits()
+    --     local cmd
+        
+    --     local unitPosX, unitPosY, unitPosZ = self:GetPlatoonPosition() -- get position of first unit in platoon
+    --     local enemyThreatsClose = aiBrain:GetThreatsAroundPosition(unitPosX, 1, true) -- get threat around the units location (true means only threats within 20m)
+        
+    --     if not aiBrain.DefendSwarm then return end -- if no defend swarm marker exists then do nothing and exit function
+        
+    --         -- check for nearby enemies to attack and move into range if needed
+    --     for k,v in enemyThreatsClose do  -- loop through all found threats around the units location (k is table key v is value)
+    --         if v[3] > 0 then   -- check that there are enemies close enough to shoot at (v[3] is threat level 3=dangerous)
+    --             cmd = self:AttackTarget(v)  -- attack any target with an enemy threat level greater than zero (0=no danger or safe to ignore). This will also set the target as "self.CurrentTarget" which can be used later on by other functions such as TargetInRange(). If you want to use this function again without having it automatically reset your current target just add 'nil' after calling AttackTarget(). ie. self:AttackTarget(v):nil() would allow you to call AttackTarget() twice in a row without having it reset your current target.
+    --             break  -- exit the loop once an enemy is found that can be attacked
+    --         end
+    --     end
+        
+    --         -- if no enemies are close enough to shoot at then move into range of closest threat (if one exists) and guard it until either another marker is added or all markers have been guarded for 10 seconds. This will also set the target as "self.CurrentTarget" which can be used later on by other functions such as TargetInRange(). If you want to use this function again without having it automatically reset your current target just add 'nil' after calling MoveToLocation() ie. self:MoveToLocation(v):nil() would allow you to call MoveToLocation() twice in a row without having it reset your current target.
+    --     if not cmd then  -- check if there was no command given above (ie. no nearby threats)
+    --         local bestDist = 9999999999   -- create variable with very large number so first value found will always replace it
+    --         local bestThreat = nil   -- create variable with nil value so first non-nil value found will always replace it
+        
+    --         for k,v in enemyThreatsClose do  -- loop through all found threats around the units location (k is table key v is value)
+    --             local dist = VDist2Sq( unitPosX, unitPosZ, v[1], v[2] )   -- get distance between our units position and each threat position
+    --             if dist < bestDist then   -- check if the distance is closer than the previous closest one
+    --                 bestDist = dist   -- set new closest distance value to variable
+    --                 bestThreat = v    -- set new closest threat position to variable (v[1] and v[2] are x,z coordinates)
+    --             end
+    --         end
+        
+    --         if not bestThreat then return end  -- exit function if no threats were found at all
+        
+    --         cmd = self:MoveToLocation(bestThreat, false)  -- move into range of the nearest threat (false means don't stop moving when in range of threat) and guard it until either another marker is added or all markers have been guarded for 10 seconds. This will also set the target as "self.CurrentTarget" which can be used later on by other functions such as TargetInRange(). If you want to use this function again without having it automatically reset your current target just add 'nil' after calling MoveToLocation() ie. self:MoveToLocation(v):nil() would allow you to call MoveToLocation() twice in a row without having it reset your current target.
+        
+    --     end
+        
+    --     WaitSeconds(10)  -- wait 10 seconds before checking again for nearby enemies that need guarding (this allows time for newly spawned units to get close enough to their enemy so they can shoot at them). Note that this doesn't mean there won't be any more threats close enough to warrant guarding because more could spawn while we're waiting but we'll only attack the new threats that spawn.
+    -- end,
     
     --- --- --- --- --- --- ---
     --- TEST FUNCTIONS END ---
