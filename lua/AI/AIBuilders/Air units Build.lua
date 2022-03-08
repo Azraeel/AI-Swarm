@@ -508,37 +508,13 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Formers',
     },
 
     Builder {
-        BuilderName = 'Swarm Gunship Defensive',                                  
-        PlatoonTemplate = 'Swarm Gunship Small',                          
-        Priority = 75,                                                          
-        InstanceCount = 4,                                                    
-        BuilderData = {
-            SearchRadius = BasePanicZone,                                                              
-            PrioritizedCategories = {               
-                categories.COMMAND,  
-                categories.SUBCOMMANDER, 
-                categories.EXPERIMENTAL,                                 
-                categories.MOBILE * categories.LAND * categories.ANTIAIR,
-                categories.MOBILE * categories.LAND * categories.INDIRECTFIRE,
-                categories.MOBILE * categories.LAND * categories.DIRECTFIRE,
-                categories.ENGINEER - categories.STATIONASSISTPOD,
-                categories.ECONOMIC,
-                categories.SHIELD,
-                categories.ANTIAIR,
-            },
-        },
-        BuilderConditions = {                                                   
-            { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 2, categories.MOBILE * categories.AIR * categories.GROUNDATTACK - categories.ENGINEER } }, 
-        },
-        BuilderType = 'Any',                                                    
-    },
-
-    Builder {
         BuilderName = 'Swarm Gunship Local',                                  
-        PlatoonTemplate = 'Swarm Gunship Big',                          
+        PlatoonTemplate = 'Swarm Gunship Medium',    
+        PlatoonAddBehaviors = { 'AirUnitRefit' },                        
         Priority = 75,                                                          
         InstanceCount = 2,                                                    
         BuilderData = {
+            Defensive = true,
             SearchRadius = BaseMilitaryZone,                                                       
             PrioritizedCategories = {               
                 categories.COMMAND,  
@@ -554,45 +530,19 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Formers',
             },
         },
         BuilderConditions = {                                                   
-            { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 5, categories.MOBILE * categories.AIR * categories.GROUNDATTACK - categories.ENGINEER } }, 
+            { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 3, categories.MOBILE * categories.AIR * categories.GROUNDATTACK } }, 
         },
         BuilderType = 'Any',                                                    
     },
 
     Builder {
-        BuilderName = 'Swarm Bomber/Gunship Defensive',                                 
-        PlatoonTemplate = 'AntiGround Bomber/Gunship Small',                           
+        BuilderName = 'Swarm Bomber Local',                                 
+        PlatoonTemplate = 'Swarm Bomber Medium',                           
         PlatoonAddBehaviors = { 'AirUnitRefit' },                             
         Priority = 100,                                                        
-        InstanceCount = 4,                                                
+        InstanceCount = 2,                                                
         BuilderData = {
-            SearchRadius = BasePanicZone,                                    
-            PrioritizedCategories = {                            
-                categories.COMMAND,           
-                categories.SUBCOMMANDER,  
-                categories.EXPERIMENTAL,        
-                categories.MOBILE * categories.LAND * categories.ANTIAIR,
-                categories.MOBILE * categories.LAND * categories.INDIRECTFIRE,
-                categories.MOBILE * categories.LAND * categories.DIRECTFIRE,
-                categories.ENGINEER - categories.STATIONASSISTPOD,
-                categories.ECONOMIC,
-                categories.SHIELD,
-                categories.ANTIAIR,
-            },
-        },
-        BuilderConditions = {   
-            { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 2, categories.MOBILE * categories.AIR * (categories.GROUNDATTACK + categories.BOMBER) } },                                                
-        },
-        BuilderType = 'Any',                                                    
-    },
-
-    Builder {
-        BuilderName = 'Swarm Bomber/Gunship Local',                                 
-        PlatoonTemplate = 'AntiGround Bomber/Gunship Big',                           
-        PlatoonAddBehaviors = { 'AirUnitRefit' },                             
-        Priority = 100,                                                        
-        InstanceCount = 4,                                                
-        BuilderData = {
+            Defensive = true,
             SearchRadius = BaseMilitaryZone,                                    
             PrioritizedCategories = {                            
                 categories.COMMAND,  
@@ -608,16 +558,17 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Formers',
             },
         },
         BuilderConditions = {   
-            { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 5, categories.MOBILE * categories.AIR * (categories.GROUNDATTACK + categories.BOMBER) } },                                                
+            { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 3, categories.MOBILE * categories.AIR * categories.BOMBER } },                                                
         },
         BuilderType = 'Any',                                                    
     },
 
     Builder {
-        BuilderName = 'Swarm Bomber Economic',                                  
-        PlatoonTemplate = 'Swarm Bomber Big',                          
+        BuilderName = 'Swarm Gunship Economic',                                  
+        PlatoonTemplate = 'Swarm Gunship Big',     
+        PlatoonAddBehaviors = { 'AirUnitRefit' },                        
         Priority = 75,                                                          
-        InstanceCount = 4,                                                    
+        InstanceCount = 2,                                                    
         BuilderData = {
             SearchRadius = BaseEnemyZone,                                                           
             PrioritizedCategories = {                                              
@@ -630,61 +581,38 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Formers',
             },
         },
         BuilderConditions = {                                                   
-            { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 5, categories.MOBILE * categories.AIR * categories.BOMBER - categories.ENGINEER } }, 
+            { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 5, categories.MOBILE * categories.AIR * categories.GROUNDATTACK } }, 
         },
         BuilderType = 'Any',                                                    
     },
 
     Builder {
-        BuilderName = 'Swarm Bomber/Gunship Engineer',                                 
-        PlatoonTemplate = 'AntiGround Bomber/Gunship Small',                           
-        PlatoonAddBehaviors = { 'AirUnitRefit' },                             
-        Priority = 101,                                                       
-        InstanceCount = 4,                                                 
+        BuilderName = 'Swarm Bomber Economic',                                  
+        PlatoonTemplate = 'Swarm Bomber Big',    
+        PlatoonAddBehaviors = { 'AirUnitRefit' },                         
+        Priority = 75,                                                          
+        InstanceCount = 2,                                                    
         BuilderData = {
-            SearchRadius = BaseEnemyZone,                                    
-            PrioritizedCategories = {    
-                categories.ENGINEER,
-                categories.COMMAND,        
-                categories.MASSPRODUCTION + categories.MASSEXTRACTION,    
-                categories.ECONOMIC,                                
-                categories.EXPERIMENTAL,
-                categories.SHIELD,
-                categories.ANTIAIR,
-                categories.MOBILE,
-            },
-        },
-        BuilderConditions = {      
-            { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 2, categories.MOBILE * categories.AIR * (categories.GROUNDATTACK + categories.BOMBER) - categories.ENGINEER } },                                          
-        },
-        BuilderType = 'Any',                                                    
-    },
-
-    Builder {
-        BuilderName = 'Swarm Bomber/Gunship Unprotected Economic',                            
-        PlatoonTemplate = 'AntiGround Bomber/Gunship Small',                          
-        Priority = 70,                                                   
-        InstanceCount = 3,                                                  
-        BuilderData = {
-            SearchRadius = BaseEnemyZone,                                                
-            PrioritizedCategories = {  
-                categories.ENGINEER,                                              
-                categories.MASSEXTRACTION,
-                categories.ECONOMIC,  
+            SearchRadius = BaseEnemyZone,                                                           
+            PrioritizedCategories = {                                              
+                categories.MASSPRODUCTION + categories.MASSEXTRACTION, 
+                categories.ENGINEER - categories.STATIONASSISTPOD,
+                categories.ECONOMIC,
                 categories.SHIELD,
                 categories.ANTIAIR,
                 categories.ALLUNITS,
             },
         },
-        BuilderConditions = {                                                 
-            { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 5, categories.MOBILE * categories.AIR * (categories.GROUNDATTACK + categories.BOMBER) - categories.ENGINEER } }, 
+        BuilderConditions = {                                                   
+            { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 5, categories.MOBILE * categories.AIR * categories.BOMBER } }, 
         },
-        BuilderType = 'Any',                                                   
+        BuilderType = 'Any',                                                    
     },
 
     Builder {
-        BuilderName = 'Swarm T3 Bomber Anti-Mass 1 2',                            
-        PlatoonTemplate = 'Swarm T3 Bomber Intercept 1 2',                          
+        BuilderName = 'Swarm T3 Bomber Anti-Mass 1 1',                            
+        PlatoonTemplate = 'Swarm T3 Bomber Intercept 1 1',   
+        PlatoonAddBehaviors = { 'AirUnitRefit' },                          
         Priority = 70,                                                   
         InstanceCount = 2,                                                  
         BuilderData = {
@@ -697,14 +625,15 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Formers',
             },
         },
         BuilderConditions = {                                                 
-            { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 0, categories.MOBILE * categories.AIR * categories.BOMBER * categories.TECH3 - categories.ENGINEER } }, 
+            { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 0, categories.MOBILE * categories.AIR * categories.BOMBER * categories.TECH3 } }, 
         },
         BuilderType = 'Any',                                                   
     },
 
     Builder {
-        BuilderName = 'Swarm T3 Bomber Snipe 5 10',                            
-        PlatoonTemplate = 'Swarm T3 Bomber Intercept 5 10',                          
+        BuilderName = 'Swarm T3 Bomber Snipe 5 20',                            
+        PlatoonTemplate = 'Swarm T3 Bomber Intercept 5 20',   
+        PlatoonAddBehaviors = { 'AirUnitRefit' },                          
         Priority = 70,                                                   
         InstanceCount = 1,                                                  
         BuilderData = {
@@ -719,29 +648,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Formers',
             },
         },
         BuilderConditions = {                                                 
-            { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 10, categories.MOBILE * categories.AIR * categories.BOMBER * categories.TECH3 - categories.ENGINEER } }, 
-        },
-        BuilderType = 'Any',                                                   
-    },
-
-    Builder {
-        BuilderName = 'Swarm T3 Bomber Snipe 15 30',                            
-        PlatoonTemplate = 'Swarm T3 Bomber Intercept 15 30',                          
-        Priority = 70,                                                   
-        InstanceCount = 1,                                                  
-        BuilderData = {
-            SearchRadius = BaseEnemyZone,                                                  
-            PrioritizedCategories = {                                              
-                categories.COMMAND,
-                categories.SUBCOMMANDER,
-                categories.MASSEXTRACTION - categories.TECH1,
-                categories.ENERGYPRODUCTION - categories.TECH1,
-                categories.FACTORY - categories.TECH1,
-                categories.ALLUNITS - categories.TECH1,
-            },
-        },
-        BuilderConditions = {                                                 
-            { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 15, categories.MOBILE * categories.AIR * categories.BOMBER * categories.TECH3 - categories.ENGINEER } }, 
+            { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 5, categories.MOBILE * categories.AIR * categories.BOMBER * categories.TECH3 } }, 
         },
         BuilderType = 'Any',                                                   
     },
@@ -749,6 +656,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Formers',
     Builder {
         BuilderName = 'Swarm PANIC AntiSea TorpedoBomber',                      
         PlatoonTemplate = 'S123-TorpedoBomber 1 100',
+        PlatoonAddBehaviors = { 'AirUnitRefit' },   
         Priority = 90,                                                       
         InstanceCount = 2,                                           
         BuilderData = {
@@ -764,7 +672,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Formers',
             },
         },
         BuilderConditions = {        
-            { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 5, categories.MOBILE * categories.AIR * categories.ANTINAVY - categories.ENGINEER } },                                      
+            { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 5, categories.MOBILE * categories.AIR * categories.ANTINAVY } },                                      
         },
         BuilderType = 'Any',                                                    
     },
@@ -772,6 +680,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Formers',
     Builder {
         BuilderName = 'Swarm Military AntiSea TorpedoBomber',                  
         PlatoonTemplate = 'S123-TorpedoBomber 1 100',
+        PlatoonAddBehaviors = { 'AirUnitRefit' },   
         Priority = 80,                                                 
         InstanceCount = 3,                                            
         BuilderData = {
@@ -792,7 +701,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Formers',
             },
         },
         BuilderConditions = {                                                   
-            { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 10, categories.MOBILE * categories.AIR * categories.ANTINAVY - categories.ENGINEER } }, 
+            { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 10, categories.MOBILE * categories.AIR * categories.ANTINAVY } }, 
         },
         BuilderType = 'Any',                                           
     },
@@ -800,6 +709,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Formers',
     Builder {
         BuilderName = 'Swarm Enemy AntiStructure TorpedoBomber',
         PlatoonTemplate = 'S123-TorpedoBomber 1 100',
+        PlatoonAddBehaviors = { 'AirUnitRefit' },   
         Priority = 70,
         InstanceCount = 2,
         BuilderData = {
@@ -822,7 +732,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Formers',
             },
         },
         BuilderConditions = {                                      
-            { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 3, categories.MOBILE * categories.AIR * categories.ANTINAVY - categories.ENGINEER } }, 
+            { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 3, categories.MOBILE * categories.AIR * categories.ANTINAVY } }, 
         },
         BuilderType = 'Any',
     },
