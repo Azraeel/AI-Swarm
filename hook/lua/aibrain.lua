@@ -82,6 +82,7 @@ AIBrain = Class(SwarmAIBrainClass) {
         self.AirUnitRefitRings = 100
         self.NavalUnitRefitRings = 100
         self.UnitRefitRings = 100
+        self.EnemyStartLocations = {}
         self.ExpansionWatchTableSwarm = {}
         self.IMAPConfigSwarm = {
             OgridRadius = 0,
@@ -1010,7 +1011,7 @@ AIBrain = Class(SwarmAIBrainClass) {
                         end
                     end
                 end
-
+                aiBrain.EnemyStartLocations = enemyStarts
             else -- Spawn locations were random. We don't know where our opponents are. Add all non-ally start locations to the scout list
                 local numOpponents = 0
                 for i = 1, 16 do
@@ -1033,14 +1034,16 @@ AIBrain = Class(SwarmAIBrainClass) {
                 for _, loc in starts do
                     -- If vacant
                     if not allyStarts[loc.Name] then
-                        table.insert(aiBrain.InterestList.LowPriority,
+                        SWARMINSERT(aiBrain.InterestList.LowPriority,
                             {
                                 Position = loc.Position,
                                 LastScouted = 0,
                             }
                         )
+                        SWARMINSERT(startLocations, loc.Position)
                     end
                 end
+                aiBrain.EnemyStartLocations = startLocations
             end
             aiBrain:ForkThread(self.ParseIntelThreadSwarm)
         end
