@@ -1,6 +1,6 @@
 name = "AI-Swarm"
-uid = "a13ac591-b2d9-4d94-0282-3d4b3cce6b97"
-version = 282
+uid = "a13ac591-b2d9-4d94-0283-3d4b3cce6b97"
+version = 283
 copyright = "2021 Azraeel"
 description = "Welcome to Swarm. What is Swarm? Swarm is a AI Improvement Mod, Swarm wants to make the AI; Smart and Tough to be beat with the goal of reaching a level of truly Competitive AI. That Can Teach New Players and Help Everyone Get Better. REQUIRES AI-Uveso for Map Marker Generator!!!! 219 Version - 2021 Rainbow Cup III Tournment Special Update!"
 author = "Azraeel"
