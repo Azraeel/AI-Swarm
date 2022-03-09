@@ -82,6 +82,7 @@ AIBrain = Class(SwarmAIBrainClass) {
         self.AirUnitRefitRings = 100
         self.NavalUnitRefitRings = 100
         self.UnitRefitRings = 100
+        self.EnemyStartLocations = {}
         self.ExpansionWatchTableSwarm = {}
         self.IMAPConfigSwarm = {
             OgridRadius = 0,
@@ -300,17 +301,6 @@ AIBrain = Class(SwarmAIBrainClass) {
 
     end,
 
-    SetupAttackVectorsThread = function(self)
-
-        if not self.Swarm then
-            return SwarmAIBrainClass.SetupAttackVectorsThread(self)
-        end
-
-        SWARMWAIT(10)
-
-        KillThread(CurrentThread())
-    end,
-
     StrategicMonitorThreadSwarm = function(self, ALLBPS)
 
         while true do 
@@ -440,7 +430,16 @@ AIBrain = Class(SwarmAIBrainClass) {
         if EntityCategoryContains(categories.MASSEXTRACTION, unit) then
             --LOG("What is unit " .. repr(unit))
             --LOG("Are we reaching this point? GetUpgradeSpecSwarmMassExtractor")
-            if self.UpgradeMode == 'Aggressive' then
+            if self.UpgradeMode == 'TechRush' then
+                upgradeSpec.MassLowTrigger = 0.75
+                upgradeSpec.EnergyLowTrigger = 1.0
+                upgradeSpec.MassHighTrigger = 2.0
+                upgradeSpec.EnergyHighTrigger = 2.0
+                upgradeSpec.UpgradeCheckWait = 18
+                upgradeSpec.InitialDelay = 20
+                upgradeSpec.EnemyThreatLimit = 15
+                return upgradeSpec
+            elseif self.UpgradeMode == 'Aggressive' then
                 upgradeSpec.MassLowTrigger = 0.85
                 upgradeSpec.EnergyLowTrigger = 1.0
                 upgradeSpec.MassHighTrigger = 2.0
@@ -1012,7 +1011,7 @@ AIBrain = Class(SwarmAIBrainClass) {
                         end
                     end
                 end
-
+                aiBrain.EnemyStartLocations = enemyStarts
             else -- Spawn locations were random. We don't know where our opponents are. Add all non-ally start locations to the scout list
                 local numOpponents = 0
                 for i = 1, 16 do
@@ -1035,14 +1034,16 @@ AIBrain = Class(SwarmAIBrainClass) {
                 for _, loc in starts do
                     -- If vacant
                     if not allyStarts[loc.Name] then
-                        table.insert(aiBrain.InterestList.LowPriority,
+                        SWARMINSERT(aiBrain.InterestList.LowPriority,
                             {
                                 Position = loc.Position,
                                 LastScouted = 0,
                             }
                         )
+                        SWARMINSERT(startLocations, loc.Position)
                     end
                 end
+                aiBrain.EnemyStartLocations = startLocations
             end
             aiBrain:ForkThread(self.ParseIntelThreadSwarm)
         end

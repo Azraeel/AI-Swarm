@@ -195,7 +195,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',
         BuilderConditions = {
             { UCBC, 'UnitCapCheckLess', { 0.90 } },
 
-            { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 0.75, 0.9 }},
+            { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 0.8, 0.9 }},
 
             { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.01, 0.10}},
 
@@ -219,7 +219,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',
         BuilderConditions = {
             { UCBC, 'UnitCapCheckLess', { 0.90 } },
 
-            { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 0.75, 0.9 }},
+            { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 0.8, 0.9 }},
 
             { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.01, 0.10}},
 
@@ -245,7 +245,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',
 
             { UCBC, 'LandStrengthRatioGreaterThan', { 1.1 } },
 
-            { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 0.75, 0.9 }},
+            { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 0.8, 0.9 }},
 
             { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.01, 0.10}},
 
@@ -274,7 +274,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',
 
             { UCBC, 'UnitCapCheckLess', { 0.90 } },
 
-            { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 0.75, 0.9 }},
+            { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 0.8, 0.9 }},
 
             { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.01, 0.10}},
 
@@ -304,7 +304,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Builders Ratio',
 
             { UCBC, 'AirStrengthRatioLessThan', { 1.1 } },
 
-            { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 0.75, 0.9 }},
+            { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 0.8, 0.9 }},
 
             { EBC, 'GreaterThanEconStorageRatioSwarm', { 0.01, 0.10}},
 
@@ -576,8 +576,12 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Scout Formers',
 -- Date noted - September 4th, 2021. 
 -- P.S (I know this is a wall of text but for anyone reading in the future, this concept is crucial to Swarm's Ability to not only eco but hold an aggressive Opponent like SWARM or DalliDilli)
 
--- Well Well We are here once again replacing shit functions which destory the responsiveness of platoons and the simspeed! We have switched to an older RNGAI Function
+-- Well Well We are here once again replacing shit functions which destory the responsiveness of platoons and the simspeed! We have switched to an older RNGAI Function -- thanks relent0r
 -- It retains abilities of HeroFightPlatoon but looses the retard complexity of it. 
+
+-- Ah yes back at the land platoons (fuck my life) 
+-- Damn why we are here again, you guessed it! Swarms dies to raiding easily.
+-- Next step is try to determine how to effectively defend from raiding.
 
 BuilderGroup {
     BuilderGroupName = 'AISwarm Platoon Builder',

@@ -26,9 +26,6 @@ local HaveLessThanThreeT2AirFactoryACU = function( self, aiBrain )
 	return self.Priority,true
 end
 
--- The Commander needs to fully become an Engineer, Combat doesnt suit him or the AI.
--- Not really sure if he should have a military usage tbf.
--- Done
 
 BuilderGroup { BuilderGroupName = 'Swarm ACU Initial Opener',
     BuildersType = 'EngineerBuilder',    
