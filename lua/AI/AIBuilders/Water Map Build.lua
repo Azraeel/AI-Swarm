@@ -3,8 +3,6 @@ local EBC = '/lua/editor/EconomyBuildConditions.lua'
 local MIBC = '/lua/editor/MiscBuildConditions.lua'
 local BasePanicZone, BaseMilitaryZone, BaseEnemyZone = import('/mods/AI-Swarm/lua/AI/swarmutilities.lua').GetDangerZoneRadii(true)
 
-local MaxCapFactory = 0.5 -- 0.5% of all units can be factories (STRUCTURE * FACTORY)
-
 -- WaterMap Builders are just generally outdated, all of this needs a complete rewrite and cleaning.
 -- Add a Watermap Ratio Condition to replace CanPathTo
 

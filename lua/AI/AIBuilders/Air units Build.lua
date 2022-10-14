@@ -2,10 +2,7 @@ local UCBC = '/lua/editor/UnitCountBuildConditions.lua'
 local EBC = '/lua/editor/EconomyBuildConditions.lua'
 local MIBC = '/lua/editor/MiscBuildConditions.lua'
 local SIBC = '/lua/editor/SorianInstantBuildConditions.lua'
-local BasePanicZone, BaseMilitaryZone, BaseEnemyZone = import('/mods/AI-Swarm/lua/AI/swarmutilities.lua').GetDangerZoneRadii()
-
-local MaxAttackForce = 0.45                                               
-
+local BasePanicZone, BaseMilitaryZone, BaseEnemyZone = import('/mods/AI-Swarm/lua/AI/swarmutilities.lua').GetDangerZoneRadii()                                        
 
 local HaveLessThanTwoT2AirFactory = function( self, aiBrain )
 	
@@ -463,6 +460,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Formers',
             Defensive = true,
             SearchRadius = BaseMilitaryZone,
             LocationType = 'LocationType',
+            AvoidBases = true,
             NeverGuardEngineers = true,
             PlatoonLimit = 10,
             PrioritizedCategories = {
@@ -489,6 +487,8 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Formers',
         Priority = 158,                                                        
         InstanceCount = 2,                                                     
         BuilderData = {
+            SearchRadius = BaseMilitaryZone,
+            LocationType = 'LocationType',
             AvoidBases = true,
             NeverGuardEngineers = true,
             PlatoonLimit = 40,
@@ -500,7 +500,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Formers',
             },
         },
         BuilderConditions = {         
-            { UCBC, 'AirStrengthRatioGreaterThan', { 1 } },
+            { UCBC, 'AirStrengthRatioGreaterThan', { 1.4 } },
 
             { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 10, categories.MOBILE * categories.AIR * categories.ANTIAIR - categories.ENGINEER } },    
         },

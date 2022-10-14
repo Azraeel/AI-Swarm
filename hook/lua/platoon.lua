@@ -1405,7 +1405,7 @@ Platoon = Class(SwarmPlatoonClass) {
                 elseif pos[1] >= playablearea[3] -1 then               -- right border
                     UnitT1 = 1
                 end
-                if pos[3] <= playablearea[2] + 1then                   -- top border
+                if pos[3] <= playablearea[2] + 1 then                   -- top border
                     UnitT1 = 1
                 elseif pos[3] >= playablearea[4] -1 then               -- bottom border
                     UnitT1 = 1

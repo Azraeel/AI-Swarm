@@ -2,10 +2,6 @@ local EBC = '/lua/editor/EconomyBuildConditions.lua'
 local UCBC = '/lua/editor/UnitCountBuildConditions.lua'
 local MIBC = '/lua/editor/MiscBuildConditions.lua'
 
-local BasePanicZone, BaseMilitaryZone, BaseEnemyZone = import('/mods/AI-Swarm/lua/AI/swarmutilities.lua').GetDangerZoneRadii()
-
-local MaxCapEngineers = 0.08 -- 8% of all units can be Engineers (categories.MOBILE * categories.ENGINEER)
-
 -- ===================================================-======================================================== --
 -- ==                                 Build Engineers TECH 1,2,3 and SACU                                    == --
 -- ===================================================-======================================================== --

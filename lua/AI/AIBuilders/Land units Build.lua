@@ -3,8 +3,6 @@ local EBC = '/lua/editor/EconomyBuildConditions.lua'
 local MIBC = '/lua/editor/MiscBuildConditions.lua'
 local BasePanicZone, BaseMilitaryZone, BaseEnemyZone = import('/mods/AI-Swarm/lua/AI/swarmutilities.lua').GetDangerZoneRadii(true)
 
-local MaxAttackForce = 0.45                                                     -- 45% of all units can be attacking units (categories.MOBILE - categories.ENGINEER)
-
 if not categories.STEALTHFIELD then categories.STEALTHFIELD = categories.SHIELD end
 
 -- The timing will never be perfect on stopping T1 Production, but 25 minutes is obviously too long for Swarm. 
@@ -553,35 +551,9 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Scout Formers',
 -- HuntAI was only be really effective with T1 spam so lets implement this like a real player theres not much point to much t1
 -- So lets keep everything else on my most complex platoon functions. :D
 
--- Swarm needs to be slightly more complex in the T1 Phase, We need to mix in some form of LandAttackAISwarm whether that be in a situation where Swarm has a high land ratio 
--- or in some other condition when Swarm needs to be more effective with his land units instead of just HuntAI Straight at the Enemy.
--- Problems for another day though.
-
 -- Threat Ratio Tuning has been more effective then I thought it would be.
 -- He's be able to really turn merging into an effective tool and really not overextend via HuntAI and EnemyZone Formers not forming till he absolutely knows he's in a winning position.
 -- This needs to be continually expanded upon especially to his Air which needs to effectively support his land platoons and his naval platoons.
--- Yes I know I have about 3 Paragraphs for Land Formers lol don't judge me I like typing ok :)
--- Tuning is obviously my most favorite part of AI Development.... Oh Gosh now I'm just rumbling. 
-
--- Oh no another Paragraph! Well this one is actually unexcepted, I have introduced a tethering similar to what Sprouto does in LOUD, this keeps track of his SearchRadius
--- Or the Radius he is willing to go out and look for an enemy. We do this by using our newest Threat Ratio Data for example aiBrain.MyLandRatio
--- Now What I did not expect is the amount of impact this would have on not only his behavior and movement with his platoons but HOW FAR AND HOW NOTICABLE they would reach out when in a dominating position.
--- In essence this has eliminated a lot of need for these different zone Platoons that have the same targets and such because we simply just adjust how far we are willing to go out anyhow in context to the Ratio
--- Now another topic I want to get on with Sprouto is truly adjusting his target seeking with the Ratio and what he deems viable to win the game based on the situation.
--- Perhaps even defense functions and behaviors are now viable because we truly understand when we are losing and winning which is a huge step in the right direction for Swarm.
--- This part is hard because I do not believe in the base game distress functions, what I want is platoons talking to platoons about the situation we are in and this requires a better working 
--- Intel System, now intel by default is very very crude and the understanding of it is very crude as well for most AI Developers but if My platoons truly want to work at there fullest might
--- Then we need to allow them to be able to see each others situation and give support not only in merging and retreating behaviors but also actually supporting each other in pushes.
--- This new data has given me a lot of ideas that I didnt have in the pass. Next few months will see Swarm really step up his game hopefully. 
--- Date noted - September 4th, 2021. 
--- P.S (I know this is a wall of text but for anyone reading in the future, this concept is crucial to Swarm's Ability to not only eco but hold an aggressive Opponent like SWARM or DalliDilli)
-
--- Well Well We are here once again replacing shit functions which destory the responsiveness of platoons and the simspeed! We have switched to an older RNGAI Function -- thanks relent0r
--- It retains abilities of HeroFightPlatoon but looses the retard complexity of it. 
-
--- Ah yes back at the land platoons (fuck my life) 
--- Damn why we are here again, you guessed it! Swarms dies to raiding easily.
--- Next step is try to determine how to effectively defend from raiding.
 
 BuilderGroup {
     BuilderGroupName = 'AISwarm Platoon Builder',
@@ -596,7 +568,7 @@ BuilderGroup {
 
         Priority = 652,                                          
 
-        InstanceCount = 3,          
+        InstanceCount = 2,          
 
         BuilderType = 'Any',
 
@@ -635,7 +607,7 @@ BuilderGroup {
 
         Priority = 650,
 
-        InstanceCount = 7,
+        InstanceCount = 5,
 
         BuilderType = 'Any',
 
