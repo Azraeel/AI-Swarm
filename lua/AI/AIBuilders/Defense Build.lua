@@ -1,11 +1,7 @@
 local UCBC = '/lua/editor/UnitCountBuildConditions.lua'
 local EBC = '/lua/editor/EconomyBuildConditions.lua'
 local MIBC = '/lua/editor/MiscBuildConditions.lua'
-local BasePanicZone, BaseMilitaryZone, BaseEnemyZone = import('/mods/AI-Swarm/lua/AI/swarmutilities.lua').GetDangerZoneRadii()
-
-local MaxAttackForce = 0.45                                                    
-local MaxDefense = 0.12 
-local MaxCapStructure = 0.12                                                 
+local BasePanicZone, BaseMilitaryZone, BaseEnemyZone = import('/mods/AI-Swarm/lua/AI/swarmutilities.lua').GetDangerZoneRadii()                                         
 
 -- A Few Notes About Some Changes here
 -- You'll notice a really strange condition called GreaterThanEnergyIncomeOverTimeSwarm on most of these builders

@@ -98,11 +98,18 @@ Platoon = Class(SwarmPlatoonClass) {
 
         self:SetPrioritizedTargetList('Attack', categoryList)
         local maxRadius = data.SearchRadius or 1000
+        --LOG('My Default maxRadius is '..maxRadius)
         local threatCountLimit = 0
 
         while PlatoonExists(aiBrain, self) do
             local currentPlatPos = GetPlatoonPosition(self)
             local platoonThreat = self:CalculatePlatoonThreat('Air', categories.ALLUNITS)
+
+            -- Tethered by Platoon Size & Air Ratio (Increase and Decreases Radius the Platoon is willing to go)
+            maxRadius = SWARMMAX(maxRadius, (maxRadius *  SWARMMAX(1, (aiBrain.MyAirRatio/3) * SWARMMIN(1, SWARMGETN(platoonUnits)/10) ) ) )
+            LOG('My maxRadius is AirHuntAISwarm '..maxRadius)
+            --LOG('My Platoon Unit Count is '..repr(platoonUnits))
+
             if not target or target.Dead then
                 if defensive then
                     target = AIUtils.AIFindBrainTargetInRangeSwarm(aiBrain, self, 'Attack', maxRadius, atkPri, avoidBases)
@@ -260,6 +267,10 @@ Platoon = Class(SwarmPlatoonClass) {
         AIAttackUtils.GetMostRestrictiveLayer(self)
         local myThreat = self:CalculatePlatoonThreat('Surface', categories.ALLUNITS)
         while aiBrain:PlatoonExists(self) do
+
+            -- Tethered by Platoon Size & Air Ratio (Increase and Decreases Radius the Platoon is willing to go)
+            --maxRadius = SWARMMAX(maxRadius, (maxRadius *  SWARMMAX(1, (aiBrain.MyAirRatio/3) * SWARMMIN(1, SWARMGETN(platoonUnits)/10) ) ) )
+            --LOG('My maxRadius is for StrikeForceAI '..maxRadius)
 
             if not target or target.Dead or not target:GetPosition() then
 
@@ -1405,7 +1416,7 @@ Platoon = Class(SwarmPlatoonClass) {
                 elseif pos[1] >= playablearea[3] -1 then               -- right border
                     UnitT1 = 1
                 end
-                if pos[3] <= playablearea[2] + 1then                   -- top border
+                if pos[3] <= playablearea[2] + 1 then                   -- top border
                     UnitT1 = 1
                 elseif pos[3] >= playablearea[4] -1 then               -- bottom border
                     UnitT1 = 1
@@ -4114,7 +4125,7 @@ Platoon = Class(SwarmPlatoonClass) {
         self:SetPrioritizedTargetList('Attack', WeaponTargetCategories)
         local TargetSearchCategory = self.PlatoonData.TargetSearchCategory or 'ALLUNITS'
         local maxRadius = self.PlatoonData.SearchRadius or 100
-        local maxRadius = SWARMMAX(maxRadius, (maxRadius * aiBrain.MyLandRatio) )
+        --local maxRadius = SWARMMAX(maxRadius, (maxRadius * aiBrain.MyLandRatio) )
         -- search for a target
         local Target
         while not Target do

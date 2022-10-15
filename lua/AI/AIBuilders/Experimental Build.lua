@@ -1,7 +1,6 @@
 local EBC = '/lua/editor/EconomyBuildConditions.lua'
 local UCBC = '/lua/editor/UnitCountBuildConditions.lua'
 local MIBC = '/lua/editor/MiscBuildConditions.lua'
-local SBC = '/lua/editor/SorianBuildConditions.lua'
 local BasePanicZone, BaseMilitaryZone, BaseEnemyZone = import('/mods/AI-Swarm/lua/AI/swarmutilities.lua').GetDangerZoneRadii()
 
 -----------------------------
@@ -45,7 +44,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Experimental Builders',
 
         BuilderData = {
 
-            NumAssistees = 3,
+            NumAssistees = 5,
             
             Construction = {
 
@@ -91,7 +90,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Experimental Builders',
 
         BuilderData = {
 
-            NumAssistees = 1,
+            NumAssistees = 5,
             
             Construction = {
 
@@ -142,7 +141,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Experimental Builders',
 
         BuilderData = {
 
-            NumAssistees = 2,
+            NumAssistees = 8,
             
             Construction = {
 
@@ -171,7 +170,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Experimental Builders',
 
         Priority = 950,
 
-        InstanceCount = 1,
+        InstanceCount = 7,
 
         BuilderConditions = {
             { MIBC, 'FactionIndex', { 1, 2, 4, 5 }}, -- 1: UEF, 2: Aeon, 3: Cybran, 4: Seraphim, 5: Nomads 
@@ -246,7 +245,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Experimental Builders',
 
         BuilderData = {
 
-            NumAssistees = 3,
+            NumAssistees = 6,
             
             Construction = {
 
@@ -286,7 +285,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Experimental Builders',
 
             { UCBC, 'UnitCapCheckLess', { 0.95 } },
             
-            { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 1.05, 1.06 }},
+            { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 1.03, 1.04 }},
 
             { EBC, 'GreaterThanEnergyIncomeOverTimeSwarm', { 500 }},
 
@@ -301,7 +300,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Experimental Builders',
 
         BuilderData = {
 
-            NumAssistees = 3,
+            NumAssistees = 5,
             
             Construction = {
 
@@ -407,7 +406,9 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Experimental Formers',
 
             TargetSearchCategory = categories.STRUCTURE + categories.MOBILE + categories.ECONOMIC,   
 
-            MoveToCategories = {                                                
+            MoveToCategories = {     
+                categories.COMMAND,
+
                 categories.STRUCTURE * categories.EXPERIMENTAL * categories.ECONOMIC,
 
                 categories.STRUCTURE * categories.EXPERIMENTAL,
@@ -460,7 +461,9 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Experimental Formers',
 
             TargetSearchCategory = categories.STRUCTURE + categories.MOBILE + categories.ECONOMIC,  
 
-            MoveToCategories = {                                               
+            MoveToCategories = {      
+                categories.COMMAND,
+                
                 categories.STRUCTURE * categories.EXPERIMENTAL * categories.ECONOMIC,
 
                 categories.STRUCTURE * categories.EXPERIMENTAL,
@@ -515,7 +518,8 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Experimental Formers',
 
             TargetSearchCategory = categories.ALLUNITS - categories.WALL - categories.NAVAL - categories.MASSEXTRACTION,        
 
-            MoveToCategories = {                        
+            MoveToCategories = {         
+                categories.COMMAND,
 
                 categories.STRUCTURE * categories.EXPERIMENTAL * categories.ECONOMIC,
 
@@ -568,7 +572,8 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Experimental Formers',
 
             TargetSearchCategory = categories.ALLUNITS - categories.WALL - categories.NAVAL - categories.MASSEXTRACTION,   
 
-            MoveToCategories = {     
+            MoveToCategories = {
+                categories.COMMAND,
 
                 categories.STRUCTURE * categories.EXPERIMENTAL * categories.ECONOMIC,
 

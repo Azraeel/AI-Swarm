@@ -1,9 +1,7 @@
 local EBC = '/lua/editor/EconomyBuildConditions.lua'
 local UCBC = '/lua/editor/UnitCountBuildConditions.lua'
 local MIBC = '/lua/editor/MiscBuildConditions.lua'
-local MABC = '/lua/editor/MarkerBuildConditions.lua'
-
-local MaxCapStructure = 0.12                                                   
+local MABC = '/lua/editor/MarkerBuildConditions.lua'                                           
 
 -- ===================================================-======================================================== --
 -- ==                                       Build Power TECH 1,2,3                                           == --

@@ -3,34 +3,20 @@ WARN('['..string.gsub(debug.getinfo(1).source, ".*\\(.*.lua)", "%1")..', line:'.
 local SwarmUtils = import('/mods/AI-Swarm/lua/AI/Swarmutilities.lua')
 local AIUtils = import('/lua/ai/AIUtilities.lua')
 local SUtils = import('/lua/AI/sorianutilities.lua')
-local AIBehaviors = import('/lua/ai/AIBehaviors.lua')
-local UCBC = '/lua/editor/UnitCountBuildConditions.lua'
 
-local lastCall = 0
 local SWARMGETN = table.getn
 local SWARMINSERT = table.insert
 local SWARMREMOVE = table.remove
-local SWARMMIN = math.min
-local SWARMMAX = math.max
 local SWARMWAIT = coroutine.yield
 
 local VDist2Sq = VDist2Sq
 
 local GetEconomyIncome = moho.aibrain_methods.GetEconomyIncome
 local GetEconomyRequested = moho.aibrain_methods.GetEconomyRequested
-local GetEconomyStored = moho.aibrain_methods.GetEconomyStored
 local GetListOfUnits = moho.aibrain_methods.GetListOfUnits
-local GiveResource = moho.aibrain_methods.GiveResource
 local GetThreatAtPosition = moho.aibrain_methods.GetThreatAtPosition
-local GetThreatsAroundPosition = moho.aibrain_methods.GetThreatsAroundPosition
-local GetUnitsAroundPoint = moho.aibrain_methods.GetUnitsAroundPoint
 local CanBuildStructureAt = moho.aibrain_methods.CanBuildStructureAt
-local GetConsumptionPerSecondMass = moho.unit_methods.GetConsumptionPerSecondMass
-local GetConsumptionPerSecondEnergy = moho.unit_methods.GetConsumptionPerSecondEnergy
-local GetProductionPerSecondMass = moho.unit_methods.GetProductionPerSecondMass
-local GetProductionPerSecondEnergy = moho.unit_methods.GetProductionPerSecondEnergy
 local GetEconomyTrend = moho.aibrain_methods.GetEconomyTrend
-local GetEconomyStoredRatio = moho.aibrain_methods.GetEconomyStoredRatio
 
 SwarmAIBrainClass = AIBrain
 AIBrain = Class(SwarmAIBrainClass) {
@@ -309,7 +295,7 @@ AIBrain = Class(SwarmAIBrainClass) {
             self:EnemyThreatCheckSwarm(ALLBPS)
             self:EconomyTacticalMonitorSwarm(ALLBPS)
             self:CalculateMassMarkersSwarm()
-            self.StrategicOverseerSwarm(ALLBPS)
+            self:StrategicOverseerSwarm(ALLBPS)
 
         end
         SWARMWAIT(30)
@@ -637,6 +623,8 @@ AIBrain = Class(SwarmAIBrainClass) {
         end
         self.SelfThreatSwarm.MassMarker = markerCount
         self.SelfThreatSwarm.MassMarkerBuildable = massMarkerBuildable
+
+        --LOG('Current MassMarker Count is '..repr(self.SelfThreatSwarm.MassMarker))
     end,
 
     BaseMonitorThreadSwarm = function(self)
@@ -1468,10 +1456,10 @@ AIBrain = Class(SwarmAIBrainClass) {
 
     StrategicOverseerSwarm = function(self, ALLBPS)
         local mapSizeX, mapSizeZ = GetMapSize()
-        LOG('StrategicOverseerSwarm: Running')
+        --LOG('StrategicOverseerSwarm: Running')
 
         SWARMWAIT(5)
-
+        --LOG('Current MassMarker Count is '..repr(self.SelfThreatSwarm.MassMarker))
         if (self.SelfThreatSwarm.SelfAllyExtractor > self.SelfThreatSwarm.MassMarker / 1.5) and self.TechRushStandard == false and self.MyLandRatio == 1.1 and self.UpgradeMode == 'Normal' then 
 
             --LOG('StrategicOverseerSwarm: Setting TechRushStandard to True')

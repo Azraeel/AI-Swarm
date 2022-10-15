@@ -1,12 +1,7 @@
 local EBC = '/lua/editor/EconomyBuildConditions.lua'
 local UCBC = '/lua/editor/UnitCountBuildConditions.lua'
-local MIBC = '/lua/editor/MiscBuildConditions.lua'
 local MABC = '/lua/editor/MarkerBuildConditions.lua'
-
-local BasePanicZone, BaseMilitaryZone, BaseEnemyZone = import('/mods/AI-Swarm/lua/AI/swarmutilities.lua').GetDangerZoneRadii()
-
-local MaxCapMass = 0.25 
-local MaxCapStructure = 0.25                   
+            
 
 -- I need a function or something, that does not allow engineers in a certain radius to build something. 
 -- This is a issue mostly with factories, engineers walking all the way back to base to build factory from 300 distances away.

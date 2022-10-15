@@ -2,10 +2,6 @@ local EBC = '/lua/editor/EconomyBuildConditions.lua'
 local UCBC = '/lua/editor/UnitCountBuildConditions.lua'
 local MIBC = '/lua/editor/MiscBuildConditions.lua'
 
-local BasePanicZone, BaseMilitaryZone, BaseEnemyZone = import('/mods/AI-Swarm/lua/AI/swarmutilities.lua').GetDangerZoneRadii()
-
-local MaxCapEngineers = 0.08 -- 8% of all units can be Engineers (categories.MOBILE * categories.ENGINEER)
-
 -- ===================================================-======================================================== --
 -- ==                                 Build Engineers TECH 1,2,3 and SACU                                    == --
 -- ===================================================-======================================================== --
@@ -263,7 +259,7 @@ BuilderGroup {
 
             { EBC, 'GreaterThanEconStorageCurrentSwarm', { 100, 1000}},
 
-            { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 1.2, 1.12 }},
+            { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 1.15, 1.09 }},
 
             { UCBC, 'HaveLessThanUnitsInCategoryBeingUpgradeSwarm', { 3, categories.ENGINEERSTATION }},
         },
@@ -280,7 +276,7 @@ BuilderGroup {
 
             { EBC, 'GreaterThanEconStorageCurrentSwarm', { 100, 1000}},
 
-            { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 1.16, 1.1 }},
+            { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 1.14, 1.08 }},
 
             { UCBC, 'HaveLessThanUnitsInCategoryBeingUpgradeSwarm', { 3, categories.ENGINEERSTATION }},
         },
@@ -297,7 +293,7 @@ BuilderGroup {
 
             { EBC, 'GreaterThanEconStorageCurrentSwarm', { 100, 1000}},
 
-            { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 1.2, 1.12 }},       
+            { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 1.16, 1.1 }},       
 
             { UCBC, 'HaveLessThanUnitsInCategoryBeingUpgradeSwarm', { 3, categories.ENGINEERSTATION }},
         },
@@ -315,7 +311,7 @@ BuilderGroup { BuilderGroupName = 'Swarm SACU Builder',
         PlatoonTemplate = 'S3 SACU RAMBO preset 12345',
         Priority = 1010,
         BuilderConditions = { 
-            { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 1.16, 1.1 }},
+            { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 1.07, 1.05 }},
 
             { EBC, 'GreaterThanEconStorageCurrentSwarm', { 100, 1000}},
 
@@ -330,7 +326,7 @@ BuilderGroup { BuilderGroupName = 'Swarm SACU Builder',
         PlatoonTemplate = 'S3 SACU ENGINEER preset 12345',
         Priority = 1015,
         BuilderConditions = {
-            { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 1.24, 1.2 }},
+            { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 1.14, 1.07 }},
 
             { EBC, 'GreaterThanEconStorageCurrentSwarm', { 100, 1000}},
 
