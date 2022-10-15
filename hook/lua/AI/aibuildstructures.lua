@@ -45,15 +45,15 @@ function AIBuildBaseTemplateOrderedSwarm(aiBrain, builder, buildingType , closeT
                                 AddToBuildQueue(aiBrain, builder, whatToBuild, position, false)
                                 SWARMREMOVE(bType,n)
                                 return DoHackyLogic(buildingType, builder)
-                            end # if n > 1 and can build structure at
-                        end # for loop
+                            end -- if n > 1 and can build structure at
+                        end -- for loop
                         break
-                    end # if bString == builderType
-                end # for loop
-            end # for loop
-        end # end else
-    end # if what to build
-    return # unsuccessful build
+                    end -- if bString == builderType
+                end -- for loop
+            end -- for loop
+        end -- end else
+    end -- if what to build
+    return -- unsuccessful build
 end
 
 

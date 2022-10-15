@@ -44,7 +44,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Experimental Builders',
 
         BuilderData = {
 
-            NumAssistees = 3,
+            NumAssistees = 5,
             
             Construction = {
 
@@ -90,7 +90,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Experimental Builders',
 
         BuilderData = {
 
-            NumAssistees = 1,
+            NumAssistees = 5,
             
             Construction = {
 
@@ -141,7 +141,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Experimental Builders',
 
         BuilderData = {
 
-            NumAssistees = 2,
+            NumAssistees = 8,
             
             Construction = {
 
@@ -170,7 +170,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Experimental Builders',
 
         Priority = 950,
 
-        InstanceCount = 1,
+        InstanceCount = 7,
 
         BuilderConditions = {
             { MIBC, 'FactionIndex', { 1, 2, 4, 5 }}, -- 1: UEF, 2: Aeon, 3: Cybran, 4: Seraphim, 5: Nomads 
@@ -245,7 +245,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Experimental Builders',
 
         BuilderData = {
 
-            NumAssistees = 3,
+            NumAssistees = 6,
             
             Construction = {
 
@@ -300,7 +300,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Experimental Builders',
 
         BuilderData = {
 
-            NumAssistees = 3,
+            NumAssistees = 5,
             
             Construction = {
 
@@ -406,7 +406,9 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Experimental Formers',
 
             TargetSearchCategory = categories.STRUCTURE + categories.MOBILE + categories.ECONOMIC,   
 
-            MoveToCategories = {                                                
+            MoveToCategories = {     
+                categories.COMMAND,
+
                 categories.STRUCTURE * categories.EXPERIMENTAL * categories.ECONOMIC,
 
                 categories.STRUCTURE * categories.EXPERIMENTAL,
@@ -459,7 +461,9 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Experimental Formers',
 
             TargetSearchCategory = categories.STRUCTURE + categories.MOBILE + categories.ECONOMIC,  
 
-            MoveToCategories = {                                               
+            MoveToCategories = {      
+                categories.COMMAND,
+                
                 categories.STRUCTURE * categories.EXPERIMENTAL * categories.ECONOMIC,
 
                 categories.STRUCTURE * categories.EXPERIMENTAL,
@@ -514,7 +518,8 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Experimental Formers',
 
             TargetSearchCategory = categories.ALLUNITS - categories.WALL - categories.NAVAL - categories.MASSEXTRACTION,        
 
-            MoveToCategories = {                        
+            MoveToCategories = {         
+                categories.COMMAND,
 
                 categories.STRUCTURE * categories.EXPERIMENTAL * categories.ECONOMIC,
 
@@ -567,7 +572,8 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Experimental Formers',
 
             TargetSearchCategory = categories.ALLUNITS - categories.WALL - categories.NAVAL - categories.MASSEXTRACTION,   
 
-            MoveToCategories = {     
+            MoveToCategories = {
+                categories.COMMAND,
 
                 categories.STRUCTURE * categories.EXPERIMENTAL * categories.ECONOMIC,
 

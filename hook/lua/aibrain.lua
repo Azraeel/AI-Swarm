@@ -295,7 +295,7 @@ AIBrain = Class(SwarmAIBrainClass) {
             self:EnemyThreatCheckSwarm(ALLBPS)
             self:EconomyTacticalMonitorSwarm(ALLBPS)
             self:CalculateMassMarkersSwarm()
-            self.StrategicOverseerSwarm(ALLBPS)
+            self:StrategicOverseerSwarm(ALLBPS)
 
         end
         SWARMWAIT(30)
@@ -623,6 +623,8 @@ AIBrain = Class(SwarmAIBrainClass) {
         end
         self.SelfThreatSwarm.MassMarker = markerCount
         self.SelfThreatSwarm.MassMarkerBuildable = massMarkerBuildable
+
+        --LOG('Current MassMarker Count is '..repr(self.SelfThreatSwarm.MassMarker))
     end,
 
     BaseMonitorThreadSwarm = function(self)
@@ -1448,16 +1450,16 @@ AIBrain = Class(SwarmAIBrainClass) {
                 self.MyNavalRatio = 1
             end
 
-            --LOG("*AI DEBUG "..self.Nickname.." Air Ratio is "..repr(self.MyAirRatio).." Land Ratio is "..repr(self.MyLandRatio).." Naval Ratio is "..repr(self.MyNavalRatio))
+            LOG("*AI DEBUG "..self.Nickname.." Air Ratio is "..repr(self.MyAirRatio).." Land Ratio is "..repr(self.MyLandRatio).." Naval Ratio is "..repr(self.MyNavalRatio))
         end
     end,
 
     StrategicOverseerSwarm = function(self, ALLBPS)
         local mapSizeX, mapSizeZ = GetMapSize()
-        LOG('StrategicOverseerSwarm: Running')
+        --LOG('StrategicOverseerSwarm: Running')
 
         SWARMWAIT(5)
-
+        --LOG('Current MassMarker Count is '..repr(self.SelfThreatSwarm.MassMarker))
         if (self.SelfThreatSwarm.SelfAllyExtractor > self.SelfThreatSwarm.MassMarker / 1.5) and self.TechRushStandard == false and self.MyLandRatio == 1.1 and self.UpgradeMode == 'Normal' then 
 
             --LOG('StrategicOverseerSwarm: Setting TechRushStandard to True')
