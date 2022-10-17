@@ -40,7 +40,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Air Builders',
     -- This Specific Builder Covers the first 6 Minutes.
     -- In Which Swarm is promised to open with a fourth air factory.
     -- So Due to the construct of our normal air builders.
-    -- We put this in to cover our finish maybe 5 or 10 Inteceptors. 
+    -- We put this in to cover our first maybe 5 or 10 Inteceptors. 
     Builder {
         BuilderName = 'T1 Air Opening Queue',
 

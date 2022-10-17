@@ -37,13 +37,13 @@ local FACTORYAIR = categories.FACTORY * categories.STRUCTURE * categories.AIR - 
 local FACTORYNAVAL = categories.FACTORY * categories.STRUCTURE * categories.NAVAL - categories.RESEARCH
 
 -- LAND HQs
-local FLHQ2 = categories.FACTORY * categories.STRUCTURE * categories.LAND * categories.TECH2 * categories.RESEARCH
+local FLHQ2 = categories.FACTORY * categories.STRUCTURE * categories.LAND * (categories.TECH2 + categories.TECH3) * categories.RESEARCH
 local FLHQ3 = categories.FACTORY * categories.STRUCTURE * categories.LAND * categories.TECH3 * categories.RESEARCH
 -- AIR HQs
-local FAHQ2 = categories.FACTORY * categories.STRUCTURE * categories.AIR * categories.TECH2 * categories.RESEARCH
+local FAHQ2 = categories.FACTORY * categories.STRUCTURE * categories.AIR * (categories.TECH2 + categories.TECH3) * categories.RESEARCH
 local FAHQ3 = categories.FACTORY * categories.STRUCTURE * categories.AIR * categories.TECH3 * categories.RESEARCH
 -- NAVAL HQs
-local FNHQ2 = categories.FACTORY * categories.STRUCTURE * categories.NAVAL * categories.TECH2 * categories.RESEARCH
+local FNHQ2 = categories.FACTORY * categories.STRUCTURE * categories.NAVAL * (categories.TECH2 + categories.TECH3) * categories.RESEARCH
 local FNHQ3 = categories.FACTORY * categories.STRUCTURE * categories.NAVAL * categories.TECH3 * categories.RESEARCH
 
 -- LAND SUPPORT FACTORIES 

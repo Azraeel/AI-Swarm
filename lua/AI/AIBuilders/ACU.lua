@@ -92,7 +92,7 @@ BuilderGroup {
     Builder {
         BuilderName = 'SC CDR Attack Panic',                                    
         PlatoonTemplate = 'CDR Attack Swarm',                                       
-        Priority = 590,                                                    
+        Priority = 700,                                                    
         InstanceCount = 10,                                                 
         BuilderData = {
             SearchRadius = BasePanicZone,
@@ -130,7 +130,7 @@ BuilderGroup {
     Builder {
         BuilderName = 'SC CDR Attack Military - Usage',                                 
         PlatoonTemplate = 'CDR Attack Swarm',                                      
-        Priority = 600,                                                    
+        Priority = 750,                                                    
         InstanceCount = 10,                                                      
         BuilderData = {
             SearchRadius = BaseMilitaryZone,
@@ -156,124 +156,13 @@ BuilderGroup {
         },
         BuilderConditions = {                                                  
    
-            { UCBC, 'GreaterThanGameTimeSeconds', { 60*6 } },
+            { UCBC, 'GreaterThanGameTimeSeconds', { 60*4 } },
 
-            { UCBC, 'LessThanGameTimeSeconds', { 60*20 } },
+            { UCBC, 'LessThanGameTimeSeconds', { 60*25 } },
          
-            { UCBC, 'EnemyUnitsGreaterAtLocationRadiusSwarm', {  BaseMilitaryZone, 'LocationType', 6, categories.ALLUNITS - categories.ENGINEER - categories.AIR - categories.SCOUT }}, -- radius, LocationType, unitCount, categoryEnemy
+            { UCBC, 'EnemyUnitsGreaterAtLocationRadiusSwarm', {  BaseMilitaryZone, 'LocationType', 3, categories.ALLUNITS - categories.ENGINEER - categories.AIR - categories.SCOUT }}, -- radius, LocationType, unitCount, categoryEnemy
 
             { UCBC, 'HaveGreaterThanUnitsWithCategory', { 3, categories.STRUCTURE * categories.FACTORY * categories.LAND } },
-        },
-        BuilderType = 'Any',                                              
-    },
-
-    Builder {
-        BuilderName = 'SC CDR Attack Enemy - Usage',                                 
-        PlatoonTemplate = 'CDR Attack Swarm',                                      
-        Priority = 610,                                                    
-        InstanceCount = 10,                                                      
-        BuilderData = {
-            SearchRadius = BaseEnemyZone,
-            GetTargetsFromBase = true,                                         
-            RequireTransport = false,                                           
-            AttackEnemyStrength = 2000,                                         
-            IgnorePathing = true,                                              
-            NodeWeight = 10000,   
-            TargetSearchCategory = categories.ALLUNITS - categories.ENGINEER - categories.AIR - categories.SCOUT, 
-            MoveToCategories = {                                                
-                categories.COMMAND,
-                categories.INDIRECTFIRE,
-                categories.DIRECTFIRE,
-                categories.ALLUNITS,
-            },
-            WeaponTargetCategories = {                                          
-                categories.COMMAND,
-                categories.LAND + categories.INDIRECTFIRE,
-                categories.LAND + categories.DIRECTFIRE,
-                categories.LAND + categories.ANTIAIR,
-                categories.ALLUNITS,
-            },
-        },
-        BuilderConditions = {                                                  
-            { UCBC, 'GreaterThanGameTimeSeconds', { 60*8 } },
-
-            { UCBC, 'LessThanGameTimeSeconds', { 60*20 } },
-         
-            { UCBC, 'EnemyUnitsGreaterAtLocationRadiusSwarm', {  BaseEnemyZone, 'LocationType', 12, categories.ALLUNITS - categories.ENGINEER - categories.AIR - categories.SCOUT }}, -- radius, LocationType, unitCount, categoryEnemy
-
-            { UCBC, 'HaveGreaterThanUnitsWithCategory', { 4, categories.STRUCTURE * categories.FACTORY * categories.LAND } },
-        },
-        BuilderType = 'Any',                                              
-    },
-
-    Builder {
-        BuilderName = 'SC CDR Attack - Enhancing',                                 
-        PlatoonTemplate = 'CDR Attack Swarm',                                      
-        Priority = 580,                
-        DelayEqualBuildPlattons = {'ACUFORM', 10},                                    
-        InstanceCount = 10,                                                      
-        BuilderData = {
-            SearchRadius = 30,
-            GetTargetsFromBase = false,                                         
-            RequireTransport = false,                                           
-            AttackEnemyStrength = 2000,                                         
-            IgnorePathing = true,                                              
-            NodeWeight = 10000,   
-            TargetSearchCategory = categories.ALLUNITS - categories.ENGINEER - categories.AIR - categories.SCOUT, 
-            MoveToCategories = {                                                
-                categories.COMMAND,
-                categories.INDIRECTFIRE,
-                categories.DIRECTFIRE,
-                categories.ALLUNITS,
-            },
-            WeaponTargetCategories = {                                          
-                categories.COMMAND,
-                categories.LAND + categories.INDIRECTFIRE,
-                categories.LAND + categories.DIRECTFIRE,
-                categories.LAND + categories.ANTIAIR,
-                categories.ALLUNITS,
-            },
-        },
-        BuilderConditions = {                         
-            { UCBC, 'GreaterThanGameTimeSeconds', { 60*8 } },
-            
-            { UCBC, 'CheckBuildPlattonDelay', { 'ACUFORM' }},
-                                     
-            { EBC, 'GreaterThanEconIncomeOverTimeSwarm',  { 2.0, 50.0}},
-        },
-        BuilderType = 'Any',                                              
-    },
-
-    Builder {
-        BuilderName = 'SC CDR Attack - Hide',                                 
-        PlatoonTemplate = 'CDR Attack Swarm',                                      
-        Priority = 585,                
-        DelayEqualBuildPlattons = {'ACUFORM', 10},                                    
-        InstanceCount = 10,                                                      
-        BuilderData = {
-            SearchRadius = BasePanicZone,
-            GetTargetsFromBase = false,                                         
-            RequireTransport = false,                                           
-            AttackEnemyStrength = 2000,                                         
-            IgnorePathing = true,                                              
-            NodeWeight = 10000,   
-            TargetSearchCategory = categories.ALLUNITS - categories.ENGINEER - categories.AIR - categories.SCOUT, 
-            MoveToCategories = {                                                
-                categories.COMMAND,
-                categories.INDIRECTFIRE,
-                categories.DIRECTFIRE,
-                categories.ALLUNITS,
-            },
-            WeaponTargetCategories = {                                          
-                categories.COMMAND,
-                categories.LAND + categories.INDIRECTFIRE,
-                categories.LAND + categories.DIRECTFIRE,
-                categories.LAND + categories.ANTIAIR,
-                categories.ALLUNITS,
-            },
-        },
-        BuilderConditions = {                         
-            { UCBC, 'CDRHealthLessThanSwarm', { 40 }},
         },
         BuilderType = 'Any',                                              
     },

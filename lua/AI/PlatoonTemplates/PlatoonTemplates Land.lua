@@ -46,16 +46,6 @@ PlatoonTemplate {
 }
 
 PlatoonTemplate {
-    Name = 'AISwarm Protection Large',
-    Plan = 'GuardMarkerSwarm',    
-    GlobalSquads = {
-        { categories.TECH1 * categories.LAND * categories.MOBILE * categories.DIRECTFIRE - categories.SCOUT - categories.ENGINEER, 4, 16, 'attack', 'none' },
-        { categories.TECH1 * categories.LAND * categories.MOBILE - categories.DIRECTFIRE - categories.SCOUT - categories.ENGINEER, 0, 4, 'attack', 'none' },
-        { categories.LAND * categories.SCOUT, 0, 1, 'Guard', 'none' },
-    },
-}
-
-PlatoonTemplate {
     Name = 'AISwarm - Experimental Group', 
     Plan = 'LandAttackAISwarm',
     GlobalSquads = {

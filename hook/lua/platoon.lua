@@ -7,7 +7,7 @@ local SwarmUtils = import('/mods/AI-Swarm/lua/AI/Swarmutilities.lua')
 local MABC = import('/lua/editor/MarkerBuildConditions.lua')
 local ALLBPS = __blueprints
 local HERODEBUGSwarm = false
-local CHAMPIONDEBUGswarm = false 
+local CHAMPIONDEBUGswarm = true 
 local MarkerSwitchDist = 20
 local MarkerSwitchDistEXP = 40
 
@@ -584,7 +584,7 @@ Platoon = Class(SwarmPlatoonClass) {
             SWARMWAIT(30) -- not working with 1, 2, 3, works good with 10, 
             cdr.position = cdr:GetPosition()
             if CHAMPIONDEBUGswarm then
-                aiBrain.ACUChampion.CDRposition = {cdr.position, cdr.MaxWeaponRange}
+                aiBrain.ACUChampionSwarm.CDRposition = {cdr.position, cdr.MaxWeaponRange}
             end
             --------------------------------------------------------------------------------------------------------------------------------
             -- Braveness decides if the ACU will attack or withdraw. Positive numbers lead to attack, negative lead to fall back to base. --
@@ -593,11 +593,11 @@ Platoon = Class(SwarmPlatoonClass) {
             Braveness = 0
             Shielded = false
             BraveDEBUG = {}
-            -- We gain 1 Braveness if we have full health -------------------------------------------------------------------------------------------------------------------------
+            -- We gain 5 Braveness if we have full health -------------------------------------------------------------------------------------------------------------------------
             CDRHealth = SwarmUtils.ComHealth(cdr)
             if CDRHealth == 100 then
-                Braveness = Braveness + 1
-                BraveDEBUG['Health100%'] = 1
+                Braveness = Braveness + 5
+                BraveDEBUG['Health100%'] = 5
             end
 
             -- We gain 1 Braveness for every 7% health we have over 30% health (+10 on 100% health) -------------------------------------------------------------------------------
@@ -605,30 +605,30 @@ Platoon = Class(SwarmPlatoonClass) {
             Braveness = Braveness + SWARMFLOOR( (CDRHealth - 30) / 7 )
             BraveDEBUG['Health'] = SWARMFLOOR( (CDRHealth - 30)  / 7 )
 
-            -- We gain 1 Braveness (max +3) for every 5 friendly T1 units nearby --------------------------------------------------------------------------------------------------
+            -- We gain 1 Braveness (max +10) for every 5 friendly T1 units nearby --------------------------------------------------------------------------------------------------
             UnitT1 = aiBrain:GetNumUnitsAroundPoint( (categories.STRUCTURE + categories.MOBILE) * (categories.DIRECTFIRE + categories.INDIRECTFIRE) * categories.TECH1, cdr.position, 25, 'Ally' )
             UnitT2 = aiBrain:GetNumUnitsAroundPoint( (categories.STRUCTURE + categories.MOBILE) * (categories.DIRECTFIRE + categories.INDIRECTFIRE) * categories.TECH2, cdr.position, 25, 'Ally' )
             UnitT3 = aiBrain:GetNumUnitsAroundPoint( (categories.STRUCTURE + categories.MOBILE) * (categories.DIRECTFIRE + categories.INDIRECTFIRE) * categories.TECH3, cdr.position, 25, 'Ally' )
             UnitT4 = aiBrain:GetNumUnitsAroundPoint( (categories.STRUCTURE + categories.MOBILE) * (categories.DIRECTFIRE + categories.INDIRECTFIRE) * categories.EXPERIMENTAL, cdr.position, 25, 'Ally' )
-            -- Tech1 ~25 dps -- Tech2 ~90 dps = 3 x T1 -- Tech3 ~333 dps = 13 x T1 -- Tech4 ~2000 dps = 80 x T1
+
             Threat = UnitT1 + UnitT2 * 3 + UnitT3 * 13 + UnitT4 * 80
             if Threat > 0 then
-                Braveness = Braveness + SWARMMIN( 3, SWARMFLOOR(Threat / 5) )
-                BraveDEBUG['Ally'] = SWARMMIN( 3, SWARMFLOOR(Threat / 5) )
+                Braveness = Braveness + SWARMMIN( 10, SWARMFLOOR(Threat / 5) )
+                BraveDEBUG['Ally'] = SWARMMIN( 10, SWARMFLOOR(Threat / 5) )
             end
 
-            -- We gain 0.5 Braveness if we have at least 5 Anti Air units in close range --------------------------------------------------------------------------------------------
+            -- We gain 1.0 Braveness if we have at least 5 Anti Air units in close range --------------------------------------------------------------------------------------------
             Threat = aiBrain:GetNumUnitsAroundPoint( categories.MOBILE * categories.ANTIAIR, cdr.position, 30, 'Ally' )
             if Threat > 0 then
-                Braveness = Braveness + 0.5
-                BraveDEBUG['AllyAA'] = 0.5
+                Braveness = Braveness + 1.0
+                BraveDEBUG['AllyAA'] = 1.0
             end
 
-            -- We gain 1 Braveness if overcharge is available ---------------------------------------------------------------------------------------------------------------------
+            -- We gain 2 Braveness if overcharge is available ---------------------------------------------------------------------------------------------------------------------
             if OverchargeWeapon then
                 if aiBrain:GetEconomyStored('ENERGY') >= OverchargeWeapon.EnergyRequired then
-                    Braveness = Braveness + 1
-                    BraveDEBUG['OC'] = 1
+                    Braveness = Braveness + 2
+                    BraveDEBUG['OC'] = 2
                 end
             end
 
@@ -644,12 +644,12 @@ Platoon = Class(SwarmPlatoonClass) {
                 BraveDEBUG['TMD'] = UnitT2 * 0.1
             end
 
-            -- We gain 0.5 Braveness for every Tech2 and 1 Braveness for every tech3 shield nearby --------------------------------------------------------------------------------
+            -- We gain 1.0 Braveness for every Tech2 and 1.5 Braveness for every tech3 shield nearby --------------------------------------------------------------------------------
             UnitT1 = aiBrain:GetNumUnitsAroundPoint( categories.MOBILE * categories.SHIELD * (categories.TECH2 + categories.TECH3), cdr.position, 12, 'Ally' )
             UnitT2 = aiBrain:GetNumUnitsAroundPoint( categories.STRUCTURE * categories.SHIELD * categories.TECH2, cdr.position, 12, 'Ally' )
             UnitT3 = aiBrain:GetNumUnitsAroundPoint( categories.STRUCTURE * categories.SHIELD * categories.TECH3, cdr.position, 21, 'Ally' )
             UnitT4 = aiBrain:GetNumUnitsAroundPoint( categories.STRUCTURE * categories.SHIELD * categories.EXPERIMENTAL, cdr.position, 30, 'Ally' )
-            Threat = UnitT1 * 0.5 + UnitT2 * 0.5 + UnitT3 * 1 + UnitT4 * 2
+            Threat = UnitT1 * 1.0 + UnitT2 * 1.0 + UnitT3 * 1.5 + UnitT4 * 2
             if Threat > 0 then
                 Braveness = Braveness + Threat
                 Shielded = true
@@ -657,16 +657,16 @@ Platoon = Class(SwarmPlatoonClass) {
             end
 
 
-            -- We lose 1 Braveness for every 2 t1 enemy units in close range ------------------------------------------------------------------------------------------------------
+            -- We lose 1 Braveness for every 4 t1 enemy units in close range ------------------------------------------------------------------------------------------------------
             UnitT1 = aiBrain:GetNumUnitsAroundPoint( (categories.DIRECTFIRE + categories.INDIRECTFIRE) * categories.TECH1, cdr.position, 40, 'Enemy' )
             UnitT2 = aiBrain:GetNumUnitsAroundPoint( (categories.DIRECTFIRE + categories.INDIRECTFIRE) * categories.TECH2, cdr.position, 40, 'Enemy' )
             UnitT3 = aiBrain:GetNumUnitsAroundPoint( (categories.DIRECTFIRE + categories.INDIRECTFIRE) * categories.TECH3, cdr.position, 40, 'Enemy' )
             UnitT4 = aiBrain:GetNumUnitsAroundPoint( (categories.DIRECTFIRE + categories.INDIRECTFIRE) * categories.EXPERIMENTAL, cdr.position, 40, 'Enemy' )
-            -- Tech1 ~25 dps -- Tech2 ~90 dps = 3 x T1 -- Tech3 ~333 dps = 13 x T1 -- Tech4 ~2000 dps = 80 x T1
+
             Threat = UnitT1 + UnitT2 * 3 + UnitT3 * 13 + UnitT4 * 80
             if Threat > 0 then
-                Braveness = Braveness - SWARMFLOOR(Threat / 2)
-                BraveDEBUG['Enemy'] = - SWARMFLOOR(Threat / 2)
+                Braveness = Braveness - SWARMFLOOR(Threat / 4)
+                BraveDEBUG['Enemy'] = - SWARMFLOOR(Threat / 4)
             end
 
             -- We lose 5 Braveness for every additional enemy ACU nearby (-0 for 1 ACU, -5 for 2 ACUs, -10 for 3 ACUs
@@ -682,18 +682,18 @@ Platoon = Class(SwarmPlatoonClass) {
             UnitT2 = aiBrain:GetNumUnitsAroundPoint( categories.STRUCTURE * categories.DEFENSE * categories.TECH2, cdr.position, 65, 'Enemy' )
             UnitT3 = aiBrain:GetNumUnitsAroundPoint( categories.STRUCTURE * categories.DEFENSE * categories.TECH3, cdr.position, 85, 'Enemy' )
             UnitT4 = aiBrain:GetNumUnitsAroundPoint( categories.STRUCTURE * categories.DEFENSE * categories.EXPERIMENTAL, cdr.position, 120, 'Enemy' )
-            -- Tech1 ~150 dps -- Tech2 ~130 dps = 1 x T1 -- Tech3 ~260 dps = 2 x T1 -- Tech4 ~2000 dps = 80 x T1
+
             Threat = UnitT1 + UnitT2 * 1 + UnitT3 * 2 + UnitT4 * 13
             if Threat > 0 then
                 Braveness = Braveness - SWARMFLOOR(Threat * 6)
                 BraveDEBUG['PD'] = - SWARMFLOOR(Threat * 6)
             end
 
-            -- We lose 1 Braveness if we got damaged in the last 4 seconds --------------------------------------------------------------------------------------------------------
+            -- We lose 0.5 Braveness if we got damaged in the last 4 seconds --------------------------------------------------------------------------------------------------------
             UnderAttackSwarm = SwarmUtils.UnderAttackSwarm(cdr)
             if UnderAttackSwarm then
-                Braveness = Braveness - 1
-                BraveDEBUG['Hitted'] = - 1
+                Braveness = Braveness - 0.5
+                BraveDEBUG['Hitted'] = - 0.5
             end
 
             -- We lose 1 Braveness for every 20 map units that we are away from the main base (a 5x5 map has 256x256 map units) ---------------------------------------------------
@@ -701,20 +701,20 @@ Platoon = Class(SwarmPlatoonClass) {
             Braveness = Braveness - SWARMFLOOR(RangeToBase/20)
             BraveDEBUG['Range'] = - SWARMFLOOR(RangeToBase/20)
 
-            -- We lose 3 bravness in range of an enemy tactical missile launcher, we lose 10 in case we are at low health
+            -- We lose 2 bravness in range of an enemy tactical missile launcher, we lose 10 in case we are at low health
             if aiBrain.ACUChampionSwarm.EnemyTMLPos then
                 CDRHealth = SwarmUtils.ComHealth(cdr)
                 if CDRHealth > 60 then
-                    Braveness = Braveness - 3
-                    BraveDEBUG['TML'] = - 3
+                    Braveness = Braveness - 2
+                    BraveDEBUG['TML'] = - 2
                 else
                     Braveness = Braveness - 10
                     BraveDEBUG['TML'] = - 10
                 end
             end
 
-            -- We lose 10 bravness in case the enemy has more than 5 Tech2/3 bomber or gunships
-            if aiBrain.ACUChampionSwarm.numAirEnemyUnits > 5 then
+            -- We lose 10 bravness in case the enemy has more than 3 Tech 3 Bomber or Gunships
+            if aiBrain.ACUChampionSwarm.numAirEnemyUnits > 3 then
                 Braveness = Braveness - 10
                 BraveDEBUG['Bomber'] = 10
             end
@@ -725,8 +725,8 @@ Platoon = Class(SwarmPlatoonClass) {
                 Braveness = -20
             end
 
-             -- We lose half Braveness if we have passed 20 Minutes -----------------------------------------------------------------------------------------------------------------------
-            if SWARMTIME() > 1200 then
+             -- We lose half Braveness if we have passed 25 Minutes -----------------------------------------------------------------------------------------------------------------------
+            if SWARMTIME() > 1500 then
                 Braveness = -10
             end
 
@@ -1462,7 +1462,7 @@ Platoon = Class(SwarmPlatoonClass) {
             end
 
             -- Enemy Bomber/gunship threat
-            local numAirEnemyUnits = aiBrain:GetNumUnitsAroundPoint(categories.MOBILE * categories.AIR * (categories.BOMBER + categories.GROUNDATTACK) - categories.TECH1, Vector(playablearea[3]/2,0,playablearea[4]/2), playablearea[3]+playablearea[4] , 'Enemy')
+            local numAirEnemyUnits = aiBrain:GetNumUnitsAroundPoint(categories.MOBILE * categories.AIR * categories.TECH3 * (categories.BOMBER + categories.GROUNDATTACK), Vector(playablearea[3]/2,0,playablearea[4]/2), playablearea[3]+playablearea[4] , 'Enemy')
             aiBrain.ACUChampionSwarm.numAirEnemyUnits = numAirEnemyUnits
         end
     end,
