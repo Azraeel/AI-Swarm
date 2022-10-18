@@ -7,7 +7,7 @@ local SwarmUtils = import('/mods/AI-Swarm/lua/AI/Swarmutilities.lua')
 local MABC = import('/lua/editor/MarkerBuildConditions.lua')
 local ALLBPS = __blueprints
 local HERODEBUGSwarm = false
-local CHAMPIONDEBUGswarm = true 
+local CHAMPIONDEBUGswarm = false 
 local MarkerSwitchDist = 20
 local MarkerSwitchDistEXP = 40
 
