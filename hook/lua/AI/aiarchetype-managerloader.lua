@@ -29,7 +29,6 @@ function ExecutePlan(aiBrain)
 
     if aiBrain.Swarm then
         aiBrain:ForkThread(BaseTargetManagerThreadSwarm, aiBrain)
-        --aiBrain:ForkThread(MarkerGridThreatManagerThreadSwarm, aiBrain)
         aiBrain:ForkThread(EcoManagerThreadSwarm, aiBrain)
     end
 
@@ -413,77 +412,3 @@ function BaseTargetManagerThreadSwarm(aiBrain)
         aiBrain.PrimaryTarget = ClosestTarget
     end
 end
-
---OLD: - Highest:0.023910 - Average:0.017244
---NEW: - Highest:0.002929 - Average:0.002018
-function MarkerGridThreatManagerThreadSwarm(aiBrain)
-    while SWARMTIME() < 30 + aiBrain:GetArmyIndex() do
-        SWARMWAIT(10)
-    end
-    --LOG('* AI-Swarm: Function MarkerGridThreatManagerThread() started. ['..aiBrain.Nickname..']')
-    local AIAttackUtils = import('/lua/ai/aiattackutilities.lua')
-    local numTargetTECH123 = 0
-    local numTargetTECH4 = 0
-    local numTargetCOM = 0
-    local armyIndex = aiBrain:GetArmyIndex()
-    local PathGraphs = AIAttackUtils.GetPathGraphs()
-    local vector
-    if not (PathGraphs['Land'] or PathGraphs['Amphibious'] or PathGraphs['Air'] or PathGraphs['Water']) then
-        WARN('* AI-Swarm: Function MarkerGridThreatManagerThread() No AI path markers found on map. Threat handling diabled!  '..ScenarioInfo.ArmySetup[aiBrain.Name].AIPersonality)
-        -- end this forked thead
-        return
-    end
-    while aiBrain.Result ~= "defeat" do
-        HighestThreat[armyIndex] = HighestThreat[armyIndex] or {}
-        HighestThreat[armyIndex].ThreatCount = 0
-        --LOG('* AI-Swarm: Function MarkerGridThreatManagerThread() beat. ['..aiBrain.Nickname..']')
-        for Layer, LayerMarkers in PathGraphs do
-            for graph, GraphMarkers in LayerMarkers do
-                for nodename, markerInfo in GraphMarkers do
--- possible options for GetThreatAtPosition
---  Overall
---  OverallNotAssigned
---  StructuresNotMex
---  Structures
---  Naval
---  Air
---  Land
---  Experimental
---  Commander
---  Artillery
---  AntiAir
---  AntiSurface
---  AntiSub
---  Economy
---  Unknown
-                    local Threat = 0
-                    vector = Vector(markerInfo.position[1],markerInfo.position[2],markerInfo.position[3])
-                    if markerInfo.layer == 'Land' then
-                        Threat = aiBrain:GetThreatAtPosition(vector, 0, true, 'AntiSurface')
-                    elseif markerInfo.layer == 'Amphibious' then
-                        Threat = aiBrain:GetThreatAtPosition(vector, 0, true, 'AntiSurface')
-                        Threat = Threat + aiBrain:GetThreatAtPosition(vector, 0, true, 'AntiSub')
-                    elseif markerInfo.layer == 'Water' then
-                        Threat = aiBrain:GetThreatAtPosition(vector, 0, true, 'AntiSurface')
-                        Threat = Threat + aiBrain:GetThreatAtPosition(vector, 0, true, 'AntiSub')
-                    elseif markerInfo.layer == 'Air' then
-                        Threat = aiBrain:GetThreatAtPosition(vector, 1, true, 'AntiAir')
-                        Threat = Threat + aiBrain:GetThreatAtPosition(vector, 0, true, 'Structures')
-                    end
-                    --LOG('* MarkerGridThreatManagerThread: 1='..numTargetTECH1..'  2='..numTargetTECH2..'  3='..numTargetTECH123..'  4='..numTargetTECH4..' - Threat='..Threat..'.' )
-                    Scenario.MasterChain._MASTERCHAIN_.Markers[nodename][armyIndex] = Threat
-                    if Threat > HighestThreat[armyIndex].ThreatCount then
-                        HighestThreat[armyIndex].ThreatCount = Threat
-                        HighestThreat[armyIndex].Location = vector
-                    end
-                end
-            end
-            -- Wait after checking a layer, so we need 0.4 seconds for all 4 layers.
-            SWARMWAIT(1)
-        end
-        if HighestThreat[armyIndex].ThreatCount > 1 then
-            HighestThreat[armyIndex].TargetThreat = HighestThreat[armyIndex].ThreatCount
-            HighestThreat[armyIndex].TargetLocation = HighestThreat[armyIndex].Location
-        end
-    end
-end 

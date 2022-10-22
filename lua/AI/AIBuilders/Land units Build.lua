@@ -602,7 +602,7 @@ BuilderGroup {
 
         Priority = 650,
 
-        InstanceCount = 5,
+        InstanceCount = 4,
 
         BuilderType = 'Any',
 
@@ -656,7 +656,7 @@ BuilderGroup {
 
         Priority = 650,
 
-        InstanceCount = 3,
+        InstanceCount = 2,
 
         BuilderType = 'Any',
 

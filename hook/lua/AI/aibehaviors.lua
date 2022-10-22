@@ -102,7 +102,7 @@ function StructureUpgradeThreadSwarm(unit, aiBrain, upgradeSpec, bypasseco)
             -- This is the support factory compatibility code
             if EntityCategoryContains( FACTORYLAND, unit) then -- 1: UEF, 2: Aeon, 3: Cybran, 4: Seraphim, 5: Nomads
                 if EntityCategoryContains( FLSF1, unit) then
-                    LOG(aiBrain.Nickname.. " I am a T1 Land Factory")
+                    --LOG(aiBrain.Nickname.. " I am a T1 Land Factory")
                     if SWARMGETN( GetListOfUnits(aiBrain, FLHQ, false, false )) > 0 then
                         if unitFactionIndex == 1 then
                             alternativebp = 'zeb9501'
@@ -113,7 +113,7 @@ function StructureUpgradeThreadSwarm(unit, aiBrain, upgradeSpec, bypasseco)
                         elseif unitFactionIndex == 4 then
                             alternativebp = 'zsb9501'
                         end
-                        LOG(aiBrain.Nickname.. " I am upgrading to a T2 Support Factory")
+                        --LOG(aiBrain.Nickname.. " I am upgrading to a T2 Support Factory")
                         upgradebp = aiBrain:GetUnitBlueprint(alternativebp)
                         upgradeID = alternativebp
                     end
@@ -122,7 +122,7 @@ function StructureUpgradeThreadSwarm(unit, aiBrain, upgradeSpec, bypasseco)
                 end
 
                 if EntityCategoryContains( FLSF2, unit) and SWARMGETN( GetListOfUnits(aiBrain, FLHQ3, false, false )) > 0 then
-                    LOG(aiBrain.Nickname.. " I am a T2 Land Factory")
+                    --LOG(aiBrain.Nickname.. " I am a T2 Land Factory")
                     if unitFactionIndex == 1 then
                         alternativebp = 'zeb9601'
                     elseif unitFactionIndex == 2 then
@@ -132,7 +132,7 @@ function StructureUpgradeThreadSwarm(unit, aiBrain, upgradeSpec, bypasseco)
                     elseif unitFactionIndex == 4 then
                         alternativebp = 'zsb9601'
                     end
-                    LOG(aiBrain.Nickname.. " I am upgrading to a T3 Support Factory")
+                    --LOG(aiBrain.Nickname.. " I am upgrading to a T3 Support Factory")
                     upgradebp = aiBrain:GetUnitBlueprint(alternativebp)
                     upgradeID = alternativebp
                 end

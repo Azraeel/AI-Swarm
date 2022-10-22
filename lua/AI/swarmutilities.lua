@@ -1030,7 +1030,7 @@ function StartMoveDestination(self,destination)
     end
 end
 
-function ComHealth(cdr)
+function ComHealthSwarm(cdr)
     local armorPercent = 100 / cdr:GetMaxHealth() * cdr:GetHealth()
     local shieldPercent = armorPercent
     if cdr.MyShield then
@@ -1040,11 +1040,11 @@ function ComHealth(cdr)
 end
 
 function UnderAttackSwarm(cdr)
-    local CDRHealth = ComHealth(cdr)
-    if CDRHealth - (cdr.HealthOLD or CDRHealth) < -1 then
+    local CDRHealthSwarm = ComHealthSwarm(cdr)
+    if CDRHealthSwarm - (cdr.HealthOLD or CDRHealthSwarm) < -1 then
         cdr.LastDamaged = SWARMTIME()
     end
-    cdr.HealthOLD = CDRHealth
+    cdr.HealthOLD = CDRHealthSwarm
     if SWARMTIME() - cdr.LastDamaged < 4 then
         return true
     else
