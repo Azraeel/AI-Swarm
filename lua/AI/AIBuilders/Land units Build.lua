@@ -545,11 +545,6 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Scout Formers',
 -- Forward towards --> Expansion.lua to see to the rest of this commentation. 
 -- Viewing the LandAttackAISwarm, Having a hard time justifying the usage compared to what other ais do with things like an Upgraded HuntAI 
 -- even compared to a Player.
--- The only time, LandAttackAISwarm can be justified is mid to late game which means 30minutes+. The pathing and strength readings are simply too thoughtful for simple spam game early on.
--- Ok, so after days of testing. HuntAI the most simple platoon function in existence has proven to be the most effective.
--- But an idea popped in my head.
--- HuntAI was only be really effective with T1 spam so lets implement this like a real player theres not much point to much t1
--- So lets keep everything else on my most complex platoon functions. :D
 
 -- Threat Ratio Tuning has been more effective then I thought it would be.
 -- He's be able to really turn merging into an effective tool and really not overextend via HuntAI and EnemyZone Formers not forming till he absolutely knows he's in a winning position.
@@ -568,7 +563,7 @@ BuilderGroup {
 
         Priority = 652,                                          
 
-        InstanceCount = 2,          
+        InstanceCount = 1,          
 
         BuilderType = 'Any',
 
@@ -607,7 +602,7 @@ BuilderGroup {
 
         Priority = 650,
 
-        InstanceCount = 5,
+        InstanceCount = 4,
 
         BuilderType = 'Any',
 
@@ -623,7 +618,12 @@ BuilderGroup {
             DistressRange = 100,
             ThreatSupport = 75,
             TargetSearchPriorities = {
-                categories.EXPERIMENTAL * categories.LAND,
+                categories.COMMAND,
+                categories.EXPERIMENTAL,
+                categories.MOBILE * categories.LAND * categories.INDIRECTFIRE,
+                categories.MOBILE * categories.LAND * categories.DIRECTFIRE,
+                categories.MOBILE * categories.LAND * categories.ANTIAIR,
+                categories.ENGINEER,
                 categories.ENERGYPRODUCTION,
                 categories.ENERGYSTORAGE,
                 categories.MASSEXTRACTION,
@@ -636,9 +636,12 @@ BuilderGroup {
                 categories.MOBILE * categories.LAND * categories.INDIRECTFIRE,
                 categories.MOBILE * categories.LAND * categories.DIRECTFIRE,
                 categories.MOBILE * categories.LAND * categories.ANTIAIR,
-                categories.ENGINEER,
-                categories.MASSEXTRACTION,
                 categories.MOBILE * categories.LAND,
+                categories.ENGINEER,
+                categories.ENERGYPRODUCTION,
+                categories.ENERGYSTORAGE,
+                categories.MASSEXTRACTION,
+                categories.MASSFABRICATION,
                 categories.ALLUNITS,
             },
         },     
@@ -653,7 +656,7 @@ BuilderGroup {
 
         Priority = 650,
 
-        InstanceCount = 3,
+        InstanceCount = 2,
 
         BuilderType = 'Any',
 
@@ -674,6 +677,8 @@ BuilderGroup {
                 categories.ENERGYSTORAGE,
                 categories.MASSEXTRACTION,
                 categories.MASSFABRICATION,
+                categories.STRUCTURE * categories.DEFENSE,
+                categories.MOBILE * categories.LAND,
                 categories.ALLUNITS,
             },
             PrioritizedCategories = {

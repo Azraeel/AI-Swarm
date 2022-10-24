@@ -107,7 +107,7 @@ Platoon = Class(SwarmPlatoonClass) {
 
             -- Tethered by Platoon Size & Air Ratio (Increase and Decreases Radius the Platoon is willing to go)
             maxRadius = SWARMMAX(maxRadius, (maxRadius *  SWARMMAX(1, (aiBrain.MyAirRatio/3) * SWARMMIN(1, SWARMGETN(platoonUnits)/10) ) ) )
-            LOG('My maxRadius is AirHuntAISwarm '..maxRadius)
+            --LOG('My maxRadius is AirHuntAISwarm '..maxRadius)
             --LOG('My Platoon Unit Count is '..repr(platoonUnits))
 
             if not target or target.Dead then
@@ -426,20 +426,20 @@ Platoon = Class(SwarmPlatoonClass) {
     end,
     
     ACUChampionPlatoonSwarm = function(self)
-        --AIAttackUtils.GetMostRestrictiveLayer(self) -- this will set self.MovementLayer to the platoon
         self.MovementLayer = 'Land'
+
         local aiBrain = self:GetBrain()
-        -- table for target and debug information
+       
         aiBrain.ACUChampionSwarm = {}
-        -- save the cration time, we want to wait 10 seconds before we issue any enhancement or platoon disband
+       
         self.created = SWARMTIME()
-        -- removing the debug function thread for line drawing
-        --if not CHAMPIONDEBUGswarm then
-        --    aiBrain.ACUChampionSwarm.RemoveDebugDrawThread = true
-        --end
+      
+        if not CHAMPIONDEBUGswarm then
+            aiBrain.ACUChampionSwarm.RemoveDebugDrawThread = true
+        end
         local PlatoonUnits = self:GetPlatoonUnits()
         local cdr = PlatoonUnits[1]
-        -- There should be only the commander inside this platoon. Check it.
+        
         if not cdr or not SWARMENTITY(categories.COMMAND, cdr) then
             cdr = false
             WARN('* AI-Swarm: ACUChampionSwarmPlatoon: Platoon formed but Commander unit not found!')
@@ -457,7 +457,7 @@ Platoon = Class(SwarmPlatoonClass) {
                 return
             end
         end
-        -- ACU is in Support squad, but we want it in Attack squad
+
         aiBrain:AssignUnitsToPlatoon(self, {cdr}, 'Attack', 'None')
 
         local MoveToCategories = {}
@@ -468,6 +468,7 @@ Platoon = Class(SwarmPlatoonClass) {
         else
             WARN('* AI-Swarm: * ACUChampionSwarmPlatoon: MoveToCategories missing in platoon '..self.BuilderName)
         end
+
         local WeaponTargetCategories = {}
         if self.PlatoonData.WeaponTargetCategories then
             for k,v in self.PlatoonData.WeaponTargetCategories do
@@ -476,19 +477,21 @@ Platoon = Class(SwarmPlatoonClass) {
         elseif self.PlatoonData.MoveToCategories then
             WeaponTargetCategories = MoveToCategories
         end
+
         self:SetPrioritizedTargetList('Attack', WeaponTargetCategories)
-        -- switch the automatic overcharge off
+       
         cdr:SetAutoOvercharge(false)
+
         local TargetSearchCategory = self.PlatoonData.TargetSearchCategory or 'ALLUNITS'
         local maxRadius = self.PlatoonData.SearchRadius or 512
         local DoNotDisband = self.PlatoonData.DoNotDisband
-        -- make sure maxRadius is not over 512
+       
         maxRadius = SWARMMIN( 512, maxRadius )
+
         local OverchargeWeapon
-        cdr.CDRHome = aiBrain.BuilderManagers['MAIN'].Position
-        cdr.smartPos = cdr:GetPosition()
-        cdr.position = cdr.smartPos
---        cdr.HealthOLD = 100
+        cdr.CDRHomeSwarm = aiBrain.BuilderManagers['MAIN'].Position
+        cdr.smartPosSwarm = cdr:GetPosition()
+        cdr.position = cdr.smartPosSwarm
         cdr.LastDamaged = 0
         cdr.LastMoved = SWARMTIME()
 
@@ -556,17 +559,17 @@ Platoon = Class(SwarmPlatoonClass) {
         local ACUCloseRangePos
         local TargetCloseRange
         local TargetCloseRangePos
-        local smartPos = {}
+        local smartPosSwarm = {}
         local PlatoonCenterPosition
         local unitPos
         local alpha
         local NavigatorGoal
         local UnderAttackSwarm
-        local CDRHealth
+        local CDRHealthSwarm
         local InstalledEnhancementsCount = 0
         local UnitT1, UnitT2, UnitT3, UnitT4, Threat, Shielded
         local EnemyBehindMe, ReachedBase
-        local BraveDEBUG = {}
+        local BraveDEBUGSwarm = {}
         
         local DebugText, LastDebugText
         -- count enhancements
@@ -584,7 +587,7 @@ Platoon = Class(SwarmPlatoonClass) {
             SWARMWAIT(30) -- not working with 1, 2, 3, works good with 10, 
             cdr.position = cdr:GetPosition()
             if CHAMPIONDEBUGswarm then
-                aiBrain.ACUChampion.CDRposition = {cdr.position, cdr.MaxWeaponRange}
+                aiBrain.ACUChampionSwarm.CDRposition = {cdr.position, cdr.MaxWeaponRange}
             end
             --------------------------------------------------------------------------------------------------------------------------------
             -- Braveness decides if the ACU will attack or withdraw. Positive numbers lead to attack, negative lead to fall back to base. --
@@ -592,81 +595,81 @@ Platoon = Class(SwarmPlatoonClass) {
 
             Braveness = 0
             Shielded = false
-            BraveDEBUG = {}
-            -- We gain 1 Braveness if we have full health -------------------------------------------------------------------------------------------------------------------------
-            CDRHealth = SwarmUtils.ComHealth(cdr)
-            if CDRHealth == 100 then
-                Braveness = Braveness + 1
-                BraveDEBUG['Health100%'] = 1
+            BraveDEBUGSwarm = {}
+            -- We gain 5 Braveness if we have full health -------------------------------------------------------------------------------------------------------------------------
+            CDRHealthSwarm = SwarmUtils.ComHealthSwarm(cdr)
+            if CDRHealthSwarm == 100 then
+                Braveness = Braveness + 5
+                BraveDEBUGSwarm['Health100%'] = 5
             end
 
             -- We gain 1 Braveness for every 7% health we have over 30% health (+10 on 100% health) -------------------------------------------------------------------------------
-            CDRHealth = SwarmUtils.ComHealth(cdr)
-            Braveness = Braveness + SWARMFLOOR( (CDRHealth - 30) / 7 )
-            BraveDEBUG['Health'] = SWARMFLOOR( (CDRHealth - 30)  / 7 )
+            CDRHealthSwarm = SwarmUtils.ComHealthSwarm(cdr)
+            Braveness = Braveness + SWARMFLOOR( (CDRHealthSwarm - 30) / 7 )
+            BraveDEBUGSwarm['Health'] = SWARMFLOOR( (CDRHealthSwarm - 30)  / 7 )
 
-            -- We gain 1 Braveness (max +3) for every 5 friendly T1 units nearby --------------------------------------------------------------------------------------------------
+            -- We gain 1 Braveness (max +10) for every 5 friendly T1 units nearby --------------------------------------------------------------------------------------------------
             UnitT1 = aiBrain:GetNumUnitsAroundPoint( (categories.STRUCTURE + categories.MOBILE) * (categories.DIRECTFIRE + categories.INDIRECTFIRE) * categories.TECH1, cdr.position, 25, 'Ally' )
             UnitT2 = aiBrain:GetNumUnitsAroundPoint( (categories.STRUCTURE + categories.MOBILE) * (categories.DIRECTFIRE + categories.INDIRECTFIRE) * categories.TECH2, cdr.position, 25, 'Ally' )
             UnitT3 = aiBrain:GetNumUnitsAroundPoint( (categories.STRUCTURE + categories.MOBILE) * (categories.DIRECTFIRE + categories.INDIRECTFIRE) * categories.TECH3, cdr.position, 25, 'Ally' )
             UnitT4 = aiBrain:GetNumUnitsAroundPoint( (categories.STRUCTURE + categories.MOBILE) * (categories.DIRECTFIRE + categories.INDIRECTFIRE) * categories.EXPERIMENTAL, cdr.position, 25, 'Ally' )
-            -- Tech1 ~25 dps -- Tech2 ~90 dps = 3 x T1 -- Tech3 ~333 dps = 13 x T1 -- Tech4 ~2000 dps = 80 x T1
+
             Threat = UnitT1 + UnitT2 * 3 + UnitT3 * 13 + UnitT4 * 80
             if Threat > 0 then
-                Braveness = Braveness + SWARMMIN( 3, SWARMFLOOR(Threat / 5) )
-                BraveDEBUG['Ally'] = SWARMMIN( 3, SWARMFLOOR(Threat / 5) )
+                Braveness = Braveness + SWARMMIN( 10, SWARMFLOOR(Threat / 5) )
+                BraveDEBUGSwarm['Ally'] = SWARMMIN( 10, SWARMFLOOR(Threat / 5) )
             end
 
-            -- We gain 0.5 Braveness if we have at least 5 Anti Air units in close range --------------------------------------------------------------------------------------------
+            -- We gain 1.0 Braveness if we have at least 5 Anti Air units in close range --------------------------------------------------------------------------------------------
             Threat = aiBrain:GetNumUnitsAroundPoint( categories.MOBILE * categories.ANTIAIR, cdr.position, 30, 'Ally' )
             if Threat > 0 then
-                Braveness = Braveness + 0.5
-                BraveDEBUG['AllyAA'] = 0.5
+                Braveness = Braveness + 1.0
+                BraveDEBUGSwarm['AllyAA'] = 1.0
             end
 
-            -- We gain 1 Braveness if overcharge is available ---------------------------------------------------------------------------------------------------------------------
+            -- We gain 2 Braveness if overcharge is available ---------------------------------------------------------------------------------------------------------------------
             if OverchargeWeapon then
                 if aiBrain:GetEconomyStored('ENERGY') >= OverchargeWeapon.EnergyRequired then
-                    Braveness = Braveness + 1
-                    BraveDEBUG['OC'] = 1
+                    Braveness = Braveness + 2
+                    BraveDEBUGSwarm['OC'] = 2
                 end
             end
 
             -- We gain 1 Braveness for every enhancement --------------------------------------------------------------------------------------------------------------------------
             Braveness = Braveness + InstalledEnhancementsCount * 0.5
-            BraveDEBUG['Enhance'] = InstalledEnhancementsCount * 0.5
+            BraveDEBUGSwarm['Enhance'] = InstalledEnhancementsCount * 0.5
 
             -- We gain 0.1 Braveness for every tactical missile defense nearby ----------------------------------------------------------------------------------------------------
             UnitT2 = aiBrain:GetNumUnitsAroundPoint( categories.STRUCTURE * categories.DEFENSE * categories.ANTIMISSILE * categories.TECH2, cdr.position, 28, 'Ally' )
             if UnitT2 > 0 then
                 Braveness = Braveness + UnitT2 * 0.1
                 Shielded = true
-                BraveDEBUG['TMD'] = UnitT2 * 0.1
+                BraveDEBUGSwarm['TMD'] = UnitT2 * 0.1
             end
 
-            -- We gain 0.5 Braveness for every Tech2 and 1 Braveness for every tech3 shield nearby --------------------------------------------------------------------------------
+            -- We gain 1.0 Braveness for every Tech2 and 1.5 Braveness for every tech3 shield nearby --------------------------------------------------------------------------------
             UnitT1 = aiBrain:GetNumUnitsAroundPoint( categories.MOBILE * categories.SHIELD * (categories.TECH2 + categories.TECH3), cdr.position, 12, 'Ally' )
             UnitT2 = aiBrain:GetNumUnitsAroundPoint( categories.STRUCTURE * categories.SHIELD * categories.TECH2, cdr.position, 12, 'Ally' )
             UnitT3 = aiBrain:GetNumUnitsAroundPoint( categories.STRUCTURE * categories.SHIELD * categories.TECH3, cdr.position, 21, 'Ally' )
             UnitT4 = aiBrain:GetNumUnitsAroundPoint( categories.STRUCTURE * categories.SHIELD * categories.EXPERIMENTAL, cdr.position, 30, 'Ally' )
-            Threat = UnitT1 * 0.5 + UnitT2 * 0.5 + UnitT3 * 1 + UnitT4 * 2
+            Threat = UnitT1 * 1.0 + UnitT2 * 1.0 + UnitT3 * 1.5 + UnitT4 * 2
             if Threat > 0 then
                 Braveness = Braveness + Threat
                 Shielded = true
-                BraveDEBUG['Shield'] = Threat
+                BraveDEBUGSwarm['Shield'] = Threat
             end
 
 
-            -- We lose 1 Braveness for every 2 t1 enemy units in close range ------------------------------------------------------------------------------------------------------
+            -- We lose 1 Braveness for every 4 t1 enemy units in close range ------------------------------------------------------------------------------------------------------
             UnitT1 = aiBrain:GetNumUnitsAroundPoint( (categories.DIRECTFIRE + categories.INDIRECTFIRE) * categories.TECH1, cdr.position, 40, 'Enemy' )
             UnitT2 = aiBrain:GetNumUnitsAroundPoint( (categories.DIRECTFIRE + categories.INDIRECTFIRE) * categories.TECH2, cdr.position, 40, 'Enemy' )
             UnitT3 = aiBrain:GetNumUnitsAroundPoint( (categories.DIRECTFIRE + categories.INDIRECTFIRE) * categories.TECH3, cdr.position, 40, 'Enemy' )
             UnitT4 = aiBrain:GetNumUnitsAroundPoint( (categories.DIRECTFIRE + categories.INDIRECTFIRE) * categories.EXPERIMENTAL, cdr.position, 40, 'Enemy' )
-            -- Tech1 ~25 dps -- Tech2 ~90 dps = 3 x T1 -- Tech3 ~333 dps = 13 x T1 -- Tech4 ~2000 dps = 80 x T1
+
             Threat = UnitT1 + UnitT2 * 3 + UnitT3 * 13 + UnitT4 * 80
             if Threat > 0 then
-                Braveness = Braveness - SWARMFLOOR(Threat / 2)
-                BraveDEBUG['Enemy'] = - SWARMFLOOR(Threat / 2)
+                Braveness = Braveness - SWARMFLOOR(Threat / 4)
+                BraveDEBUGSwarm['Enemy'] = - SWARMFLOOR(Threat / 4)
             end
 
             -- We lose 5 Braveness for every additional enemy ACU nearby (-0 for 1 ACU, -5 for 2 ACUs, -10 for 3 ACUs
@@ -674,7 +677,7 @@ Platoon = Class(SwarmPlatoonClass) {
             Threat = UnitT1 - 1
             if Threat > 0 then
                 Braveness = Braveness - SWARMFLOOR(Threat * 5)
-                BraveDEBUG['EnemyACU'] = - SWARMFLOOR(Threat * 5)
+                BraveDEBUGSwarm['EnemyACU'] = - SWARMFLOOR(Threat * 5)
             end
 
             -- We lose 6 Braveness for every T2 Point Defense nearby
@@ -682,51 +685,51 @@ Platoon = Class(SwarmPlatoonClass) {
             UnitT2 = aiBrain:GetNumUnitsAroundPoint( categories.STRUCTURE * categories.DEFENSE * categories.TECH2, cdr.position, 65, 'Enemy' )
             UnitT3 = aiBrain:GetNumUnitsAroundPoint( categories.STRUCTURE * categories.DEFENSE * categories.TECH3, cdr.position, 85, 'Enemy' )
             UnitT4 = aiBrain:GetNumUnitsAroundPoint( categories.STRUCTURE * categories.DEFENSE * categories.EXPERIMENTAL, cdr.position, 120, 'Enemy' )
-            -- Tech1 ~150 dps -- Tech2 ~130 dps = 1 x T1 -- Tech3 ~260 dps = 2 x T1 -- Tech4 ~2000 dps = 80 x T1
+
             Threat = UnitT1 + UnitT2 * 1 + UnitT3 * 2 + UnitT4 * 13
             if Threat > 0 then
                 Braveness = Braveness - SWARMFLOOR(Threat * 6)
-                BraveDEBUG['PD'] = - SWARMFLOOR(Threat * 6)
+                BraveDEBUGSwarm['PD'] = - SWARMFLOOR(Threat * 6)
             end
 
-            -- We lose 1 Braveness if we got damaged in the last 4 seconds --------------------------------------------------------------------------------------------------------
+            -- We lose 0.5 Braveness if we got damaged in the last 4 seconds --------------------------------------------------------------------------------------------------------
             UnderAttackSwarm = SwarmUtils.UnderAttackSwarm(cdr)
             if UnderAttackSwarm then
-                Braveness = Braveness - 1
-                BraveDEBUG['Hitted'] = - 1
+                Braveness = Braveness - 0.5
+                BraveDEBUGSwarm['Hitted'] = - 0.5
             end
 
             -- We lose 1 Braveness for every 20 map units that we are away from the main base (a 5x5 map has 256x256 map units) ---------------------------------------------------
-            RangeToBase = VDist2(cdr.position[1], cdr.position[3], cdr.CDRHome[1], cdr.CDRHome[3])
+            RangeToBase = VDist2(cdr.position[1], cdr.position[3], cdr.CDRHomeSwarm[1], cdr.CDRHomeSwarm[3])
             Braveness = Braveness - SWARMFLOOR(RangeToBase/20)
-            BraveDEBUG['Range'] = - SWARMFLOOR(RangeToBase/20)
+            BraveDEBUGSwarm['Range'] = - SWARMFLOOR(RangeToBase/20)
 
-            -- We lose 3 bravness in range of an enemy tactical missile launcher, we lose 10 in case we are at low health
+            -- We lose 2 bravness in range of an enemy tactical missile launcher, we lose 10 in case we are at low health
             if aiBrain.ACUChampionSwarm.EnemyTMLPos then
-                CDRHealth = SwarmUtils.ComHealth(cdr)
-                if CDRHealth > 60 then
-                    Braveness = Braveness - 3
-                    BraveDEBUG['TML'] = - 3
+                CDRHealthSwarm = SwarmUtils.ComHealthSwarm(cdr)
+                if CDRHealthSwarm > 60 then
+                    Braveness = Braveness - 2
+                    BraveDEBUGSwarm['TML'] = - 2
                 else
                     Braveness = Braveness - 10
-                    BraveDEBUG['TML'] = - 10
+                    BraveDEBUGSwarm['TML'] = - 10
                 end
             end
 
-            -- We lose 10 bravness in case the enemy has more than 5 Tech2/3 bomber or gunships
-            if aiBrain.ACUChampionSwarm.numAirEnemyUnits > 5 then
+            -- We lose 10 bravness in case the enemy has more than 3 Tech 3 Bomber or Gunships
+            if aiBrain.ACUChampionSwarm.numAirEnemyUnits > 3 then
                 Braveness = Braveness - 10
-                BraveDEBUG['Bomber'] = 10
+                BraveDEBUGSwarm['Bomber'] = 10
             end
 
             -- We lose all Braveness if we have under 30% health -------------------------------------------------------------------------------------------------------------------------
-            CDRHealth = SwarmUtils.ComHealth(cdr)
-            if CDRHealth < 30 then
+            CDRHealthSwarm = SwarmUtils.ComHealthSwarm(cdr)
+            if CDRHealthSwarm < 30 then
                 Braveness = -20
             end
 
-             -- We lose half Braveness if we have passed 20 Minutes -----------------------------------------------------------------------------------------------------------------------
-            if SWARMTIME() > 1200 then
+             -- We lose half Braveness if we have passed 25 Minutes -----------------------------------------------------------------------------------------------------------------------
+            if SWARMTIME() > 1500 then
                 Braveness = -10
             end
 
@@ -758,26 +761,26 @@ Platoon = Class(SwarmPlatoonClass) {
             -- do we have a target with path and a target with ignored pathing? What target is closer ?
             elseif MainBaseTargetWithPathPos and TargetCloseRangePos then
                 -- is the TargetWithPath closer than the TargetCloseRange 
-                if VDist2( cdr.CDRHome[1], cdr.CDRHome[3], MainBaseTargetWithPathPos[1], MainBaseTargetWithPathPos[3] ) < VDist2( cdr.CDRHome[1], cdr.CDRHome[3], TargetCloseRangePos[1], TargetCloseRangePos[3] ) then
+                if VDist2( cdr.CDRHomeSwarm[1], cdr.CDRHomeSwarm[3], MainBaseTargetWithPathPos[1], MainBaseTargetWithPathPos[3] ) < VDist2( cdr.CDRHomeSwarm[1], cdr.CDRHomeSwarm[3], TargetCloseRangePos[1], TargetCloseRangePos[3] ) then
                     -- is the TargetWithPath further away than our ACU to our base ?
-                    if VDist2( cdr.CDRHome[1], cdr.CDRHome[3], MainBaseTargetWithPathPos[1], MainBaseTargetWithPathPos[3] ) > VDist2( cdr.CDRHome[1], cdr.CDRHome[3], cdr.position[1], cdr.position[3] ) then
+                    if VDist2( cdr.CDRHomeSwarm[1], cdr.CDRHomeSwarm[3], MainBaseTargetWithPathPos[1], MainBaseTargetWithPathPos[3] ) > VDist2( cdr.CDRHomeSwarm[1], cdr.CDRHomeSwarm[3], cdr.position[1], cdr.position[3] ) then
                         MoveToTarget = MainBaseTargetWithPath
                         MoveToTargetPos = MainBaseTargetWithPathPos
                     end
                 -- TargetCloseRange is closer than the TargetWithPath 
                 else
                     -- is the TargetCloseRange further away than our ACU to our base ?
-                    if VDist2( cdr.CDRHome[1], cdr.CDRHome[3], TargetCloseRangePos[1], TargetCloseRangePos[3] ) > VDist2( cdr.CDRHome[1], cdr.CDRHome[3], cdr.position[1], cdr.position[3] ) then
+                    if VDist2( cdr.CDRHomeSwarm[1], cdr.CDRHomeSwarm[3], TargetCloseRangePos[1], TargetCloseRangePos[3] ) > VDist2( cdr.CDRHomeSwarm[1], cdr.CDRHomeSwarm[3], cdr.position[1], cdr.position[3] ) then
                         MoveToTarget = TargetCloseRange
                         MoveToTargetPos = TargetCloseRangePos
                     end
                 end
             -- Do we have a target with path and is the target not closer to my base then me ?
-            elseif MainBaseTargetWithPathPos and VDist2( cdr.CDRHome[1], cdr.CDRHome[3], MainBaseTargetWithPathPos[1], MainBaseTargetWithPathPos[3] ) > VDist2( cdr.CDRHome[1], cdr.CDRHome[3], cdr.position[1], cdr.position[3] ) then
+            elseif MainBaseTargetWithPathPos and VDist2( cdr.CDRHomeSwarm[1], cdr.CDRHomeSwarm[3], MainBaseTargetWithPathPos[1], MainBaseTargetWithPathPos[3] ) > VDist2( cdr.CDRHomeSwarm[1], cdr.CDRHomeSwarm[3], cdr.position[1], cdr.position[3] ) then
                 MoveToTarget = MainBaseTargetWithPath
                 MoveToTargetPos = MainBaseTargetWithPathPos
             -- Do we have a target without path and is the target not closer to my base then me ?
-            elseif TargetCloseRange and VDist2( cdr.CDRHome[1], cdr.CDRHome[3], TargetCloseRangePos[1], TargetCloseRangePos[3] ) > VDist2( cdr.CDRHome[1], cdr.CDRHome[3], cdr.position[1], cdr.position[3] ) then
+            elseif TargetCloseRange and VDist2( cdr.CDRHomeSwarm[1], cdr.CDRHomeSwarm[3], TargetCloseRangePos[1], TargetCloseRangePos[3] ) > VDist2( cdr.CDRHomeSwarm[1], cdr.CDRHomeSwarm[3], cdr.position[1], cdr.position[3] ) then
                 MoveToTarget = TargetCloseRange
                 MoveToTargetPos = TargetCloseRangePos
             end
@@ -787,10 +790,10 @@ Platoon = Class(SwarmPlatoonClass) {
             ------------------
 
             -- check if we are close to Main base, then decide if we can enhance
-            if VDist2(cdr.position[1], cdr.position[3], cdr.CDRHome[1], cdr.CDRHome[3]) < 75 then
+            if VDist2(cdr.position[1], cdr.position[3], cdr.CDRHomeSwarm[1], cdr.CDRHomeSwarm[3]) < 75 then
                 -- only upgrade if we are good at health
                 local check = true
-                if SWARMTIME() <= 600 and aiBrain.AggressiveCommander == false then
+                if SWARMTIME() <= 420 and aiBrain.AggressiveCommander == false then
                     check = false
                 else
                 end
@@ -798,7 +801,7 @@ Platoon = Class(SwarmPlatoonClass) {
                     check = false
                 else
                 end
-                if CDRHealth < 40 then
+                if CDRHealthSwarm < 40 then
                     check = false
                 end
                 if UnderAttackSwarm then
@@ -830,7 +833,7 @@ Platoon = Class(SwarmPlatoonClass) {
                     for _, unit in self:GetPlatoonUnits() do
                         if unit.Dead then continue end
                         -- exclude the ACU
-                        if unit.CDRHome then
+                        if unit.CDRHomeSwarm then
                             continue
                         end
                         if SWARMENTITY(categories.ENGINEER, unit) then
@@ -841,7 +844,7 @@ Platoon = Class(SwarmPlatoonClass) {
                         
                     end
                     -- will only start enhancing if ECO is good
-                    local InstalledEnhancement = self:BuildACUEnhancements(cdr, InstalledEnhancementsCount < 1)
+                    local InstalledEnhancement = self:BuildACUEnhancementsSwarm(cdr, InstalledEnhancementsCount < 1)
                     --local InstalledEnhancement = self:BuildACUEnhancements(cdr, false)
                     -- do we have succesfull installed the enhancement ?
                     if InstalledEnhancement then
@@ -879,18 +882,18 @@ Platoon = Class(SwarmPlatoonClass) {
             end
             -- is any enemy closer to our base then our ACU ?
             if TargetCloseRangePos then
-                EnemyBehindMe = VDist2( cdr.CDRHome[1], cdr.CDRHome[3], TargetCloseRangePos[1], TargetCloseRangePos[3] ) < VDist2( cdr.CDRHome[1], cdr.CDRHome[3], cdr.position[1], cdr.position[3] )
+                EnemyBehindMe = VDist2( cdr.CDRHomeSwarm[1], cdr.CDRHomeSwarm[3], TargetCloseRangePos[1], TargetCloseRangePos[3] ) < VDist2( cdr.CDRHomeSwarm[1], cdr.CDRHomeSwarm[3], cdr.position[1], cdr.position[3] )
                 if EnemyBehindMe then
-                    BraveDEBUG['Behind'] = 1
+                    BraveDEBUGSwarm['Behind'] = 1
                 end
             elseif MainBaseTargetWithPathPos then
-                EnemyBehindMe = VDist2( cdr.CDRHome[1], cdr.CDRHome[3], MainBaseTargetWithPathPos[1], MainBaseTargetWithPathPos[3] ) < VDist2( cdr.CDRHome[1], cdr.CDRHome[3], cdr.position[1], cdr.position[3] )
+                EnemyBehindMe = VDist2( cdr.CDRHomeSwarm[1], cdr.CDRHomeSwarm[3], MainBaseTargetWithPathPos[1], MainBaseTargetWithPathPos[3] ) < VDist2( cdr.CDRHomeSwarm[1], cdr.CDRHomeSwarm[3], cdr.position[1], cdr.position[3] )
                 if EnemyBehindMe then
-                    BraveDEBUG['Behind'] = 2
+                    BraveDEBUGSwarm['Behind'] = 2
                 end
             else
                 EnemyBehindMe = false
-                BraveDEBUG['Behind'] = 0
+                BraveDEBUGSwarm['Behind'] = 0
             end
             NavigatorGoal = cdr:GetNavigator():GetGoalPos()
             -- Run away from experimentals. (move out of experimental wepon range)
@@ -899,12 +902,12 @@ Platoon = Class(SwarmPlatoonClass) {
                 alpha = SWARMATAN2(aiBrain.ACUChampionSwarm.EnemyExperimentalPos[1][3] - cdr.position[3] ,aiBrain.ACUChampionSwarm.EnemyExperimentalPos[1][1] - cdr.position[1])
                 x = aiBrain.ACUChampionSwarm.EnemyExperimentalPos[1][1] - SWARMCOS(alpha) * (aiBrain.ACUChampionSwarm.EnemyExperimentalWepRange + 100)
                 y = aiBrain.ACUChampionSwarm.EnemyExperimentalPos[1][3] - SWARMSIN(alpha) * (aiBrain.ACUChampionSwarm.EnemyExperimentalWepRange + 100)
-                smartPos = { x, GetTerrainHeight( x, y), y }
-                BraveDEBUG['Reason'] = 'Evade from EXPERIMENTAL'
+                smartPosSwarm = { x, GetTerrainHeight( x, y), y }
+                BraveDEBUGSwarm['Reason'] = 'Evade from EXPERIMENTAL'
             -- Move to the enemy if Braveness is positive or if we are inside our base
             elseif not EnemyBehindMe and Braveness >= 0 and MoveToTargetPos then
                 ReachedBase = false
-                BraveDEBUG['ReachedBase'] = 0
+                BraveDEBUGSwarm['ReachedBase'] = 0
                 -- if the target has moved or we got a new target, delete the Weapon Blocked flag.
                 if cdr.LastMoveToTargetPos ~= MoveToTargetPos then
                     cdr.WeaponBlocked = false
@@ -913,40 +916,40 @@ Platoon = Class(SwarmPlatoonClass) {
                 -- Set different move destination if weapon fire is blocked
                 if cdr.WeaponBlocked then
                     -- Weapoon fire is blocked, move to the target as close as possible.
-                    smartPos = { MoveToTargetPos[1], MoveToTargetPos[2], MoveToTargetPos[3] }
-                    BraveDEBUG['Reason'] = 'Weapon Blocked'
+                    smartPosSwarm = { MoveToTargetPos[1], MoveToTargetPos[2], MoveToTargetPos[3] }
+                    BraveDEBUGSwarm['Reason'] = 'Weapon Blocked'
                 else
                     -- go closeer to the target depending on ACU health
-                    local RangeMod = CDRHealth/10
+                    local RangeMod = CDRHealthSwarm/10
                     if RangeMod < 0 then RangeMod = 0 end
                     if RangeMod > 10 then RangeMod = 10 end
                     -- Weapoon fire is not blocked, move to the target at Max Weapon Range.
                     alpha = SWARMATAN2(MoveToTargetPos[3] - cdr.position[3] ,MoveToTargetPos[1] - cdr.position[1])
                     x = MoveToTargetPos[1] - SWARMCOS(alpha) * (cdr.MaxWeaponRange * 0.9 - RangeMod)
                     y = MoveToTargetPos[3] - SWARMSIN(alpha) * (cdr.MaxWeaponRange * 0.9 - RangeMod)
-                    smartPos = { x, GetTerrainHeight( x, y), y }
-                    BraveDEBUG['Reason'] = 'Attack target'
+                    smartPosSwarm = { x, GetTerrainHeight( x, y), y }
+                    BraveDEBUGSwarm['Reason'] = 'Attack target'
                 end
             -- Back to base if Braveness is negative
             else
                 -- decide if we move to our base or if we need to evade
-                if VDist2( cdr.position[1], cdr.position[3], cdr.CDRHome[1], cdr.CDRHome[3] ) > 30 and not ReachedBase then
+                if VDist2( cdr.position[1], cdr.position[3], cdr.CDRHomeSwarm[1], cdr.CDRHomeSwarm[3] ) > 30 and not ReachedBase then
                     -- move to main base
-                    smartPos = cdr.CDRHome
-                    BraveDEBUG['Reason'] = 'go home >30'
+                    smartPosSwarm = cdr.CDRHomeSwarm
+                    BraveDEBUGSwarm['Reason'] = 'go home >30'
                 -- evade from focus target
-                elseif not EnemyBehindMe and CDRHealth > 30 and FocusTargetPos and MoveToTargetPos then
+                elseif not EnemyBehindMe and CDRHealthSwarm > 30 and FocusTargetPos and MoveToTargetPos then
                     ReachedBase = true
-                    BraveDEBUG['ReachedBase'] = 1
+                    BraveDEBUGSwarm['ReachedBase'] = 1
                     alpha = SWARMATAN2(MoveToTargetPos[3] - cdr.position[3] ,MoveToTargetPos[1] - cdr.position[1])
                     x = MoveToTargetPos[1] - SWARMCOS(alpha) * (50)
                     y = MoveToTargetPos[3] - SWARMSIN(alpha) * (50)
-                    smartPos = { x, GetTerrainHeight( x, y), y }
-                    BraveDEBUG['Reason'] = 'Evade from FocusTarget'
+                    smartPosSwarm = { x, GetTerrainHeight( x, y), y }
+                    BraveDEBUGSwarm['Reason'] = 'Evade from FocusTarget'
                 -- in case we got attacked but don't have a target to shoot at or low health
-                elseif CDRHealth < 30 or aiBrain.ACUChampionSwarm.EnemyInArea then
+                elseif CDRHealthSwarm < 30 or aiBrain.ACUChampionSwarm.EnemyInArea then
                     ReachedBase = true
-                    BraveDEBUG['ReachedBase'] = 1
+                    BraveDEBUGSwarm['ReachedBase'] = 1
                     local lessEnemyAreaPos
                     if (aiBrain.ACUChampionSwarm.EnemyInArea > 0 or FocusTargetPos) and aiBrain.ACUChampionSwarm.AreaTable then
                         local MostEnemyAreaIndex
@@ -977,50 +980,50 @@ Platoon = Class(SwarmPlatoonClass) {
                         end
                     end
                     if lessEnemyAreaPos then
-                        smartPos = lessEnemyAreaPos
-                        BraveDEBUG['Reason'] = 'Evade to lessEnemyAreaPos'
+                        smartPosSwarm = lessEnemyAreaPos
+                        BraveDEBUGSwarm['Reason'] = 'Evade to lessEnemyAreaPos'
                     else
                         ReachedBase = false
-                        smartPos = SwarmUtils.RandomizePositionSwarm(cdr.CDRHome)
-                        BraveDEBUG['Reason'] = 'Evade to cdr.CDRHom'
+                        smartPosSwarm = SwarmUtils.RandomizePositionSwarm(cdr.CDRHomeSwarm)
+                        BraveDEBUGSwarm['Reason'] = 'Evade to cdr.CDRHom'
                     end
                 else
                     ReachedBase = true
-                    BraveDEBUG['ReachedBase'] = 1
-                    if VDist2( cdr.position[1], cdr.position[3], cdr.CDRHome[1], cdr.CDRHome[3] ) > 30 then
-                        smartPos = cdr.CDRHome
-                        BraveDEBUG['Reason'] = 'dance go home'
+                    BraveDEBUGSwarm['ReachedBase'] = 1
+                    if VDist2( cdr.position[1], cdr.position[3], cdr.CDRHomeSwarm[1], cdr.CDRHomeSwarm[3] ) > 30 then
+                        smartPosSwarm = cdr.CDRHomeSwarm
+                        BraveDEBUGSwarm['Reason'] = 'dance go home'
                     elseif VDist2( cdr.position[1], cdr.position[3], NavigatorGoal[1], NavigatorGoal[3] ) <= 0.7 then
                         -- we are at home and not under attack, dance
-                        smartPos = SwarmUtils.RandomizePositionSwarm(cdr.CDRHome)
-                        BraveDEBUG['Reason'] = 'dance at home'
+                        smartPosSwarm = SwarmUtils.RandomizePositionSwarm(cdr.CDRHomeSwarm)
+                        BraveDEBUGSwarm['Reason'] = 'dance at home'
                     else
-                        BraveDEBUG['Reason'] = 'dance at home Navigator'
+                        BraveDEBUGSwarm['Reason'] = 'dance at home Navigator'
                     end
                 end
             end
 
             if CHAMPIONDEBUGswarm then
-                cdr:SetCustomName('Braveness: '..Braveness..' - '..BraveDEBUG['Reason'])
-                DebugText = 'Full:'..(BraveDEBUG['Health100%'] or "--")..' '
-                DebugText = DebugText..'Heal:'..(BraveDEBUG['Health'] or "--")..' '
-                DebugText = DebugText..'Ally:'..(BraveDEBUG['Ally'] or "--")..' '
-                DebugText = DebugText..'AlAA:'..(BraveDEBUG['AllyAA'] or "--")..' '
-                DebugText = DebugText..'Over:'..(BraveDEBUG['OC'] or "--")..' '
-                DebugText = DebugText..'Enh:'..(BraveDEBUG['Enhance'] or "--")..' '
-                DebugText = DebugText..'TMD:'..(BraveDEBUG['TMD'] or "--")..' '
-                DebugText = DebugText..'Shield:'..(BraveDEBUG['Shield'] or "--")..' '
-                DebugText = DebugText..'Enemy:'..(BraveDEBUG['Enemy'] or "--")..' '
-                DebugText = DebugText..'PD:'..(BraveDEBUG['PD'] or "--")..' '
-                DebugText = DebugText..'EnemyACU:'..(BraveDEBUG['EnemyACU'] or "--")..' '   -- -0 -5
-                DebugText = DebugText..'Behind:'..(BraveDEBUG['Behind'] or "--")..' '
-                DebugText = DebugText..'Hitted:'..(BraveDEBUG['Hitted'] or "--")..' '
-                DebugText = DebugText..'Range:'..(BraveDEBUG['Range'] or "--")..' '         -- -0 -12
-                DebugText = DebugText..'TML:'..(BraveDEBUG['TML'] or "--")..' '
-                DebugText = DebugText..'Bomber:'..(BraveDEBUG['Bomber'] or "--")..' '
-                DebugText = DebugText..'RBase:'..(BraveDEBUG['ReachedBase'] or "--")..' '
+                cdr:SetCustomName('Braveness: '..Braveness..' - '..BraveDEBUGSwarm['Reason'])
+                DebugText = 'Full:'..(BraveDEBUGSwarm['Health100%'] or "--")..' '
+                DebugText = DebugText..'Heal:'..(BraveDEBUGSwarm['Health'] or "--")..' '
+                DebugText = DebugText..'Ally:'..(BraveDEBUGSwarm['Ally'] or "--")..' '
+                DebugText = DebugText..'AlAA:'..(BraveDEBUGSwarm['AllyAA'] or "--")..' '
+                DebugText = DebugText..'Over:'..(BraveDEBUGSwarm['OC'] or "--")..' '
+                DebugText = DebugText..'Enh:'..(BraveDEBUGSwarm['Enhance'] or "--")..' '
+                DebugText = DebugText..'TMD:'..(BraveDEBUGSwarm['TMD'] or "--")..' '
+                DebugText = DebugText..'Shield:'..(BraveDEBUGSwarm['Shield'] or "--")..' '
+                DebugText = DebugText..'Enemy:'..(BraveDEBUGSwarm['Enemy'] or "--")..' '
+                DebugText = DebugText..'PD:'..(BraveDEBUGSwarm['PD'] or "--")..' '
+                DebugText = DebugText..'EnemyACU:'..(BraveDEBUGSwarm['EnemyACU'] or "--")..' '   -- -0 -5
+                DebugText = DebugText..'Behind:'..(BraveDEBUGSwarm['Behind'] or "--")..' '
+                DebugText = DebugText..'Hitted:'..(BraveDEBUGSwarm['Hitted'] or "--")..' '
+                DebugText = DebugText..'Range:'..(BraveDEBUGSwarm['Range'] or "--")..' '         -- -0 -12
+                DebugText = DebugText..'TML:'..(BraveDEBUGSwarm['TML'] or "--")..' '
+                DebugText = DebugText..'Bomber:'..(BraveDEBUGSwarm['Bomber'] or "--")..' '
+                DebugText = DebugText..'RBase:'..(BraveDEBUGSwarm['ReachedBase'] or "--")..' '
                 DebugText = DebugText..'Braveness: '..Braveness..' - '
-                DebugText = DebugText..'ACTION: '..(BraveDEBUG['Reason'] or "--")..' '
+                DebugText = DebugText..'ACTION: '..(BraveDEBUGSwarm['Reason'] or "--")..' '
                 if DebugText != LastDebugText then
                     LastDebugText = DebugText
                     LOG(DebugText)
@@ -1038,7 +1041,7 @@ Platoon = Class(SwarmPlatoonClass) {
                 -- Do we have the energy in general to overcharge ?
                 if aiBrain:GetEconomyStored('ENERGY') >= OverchargeWeapon.EnergyRequired then
                     -- full energy (max damage) or when in danger
-                    if aiBrain:GetEconomyStored('ENERGY') > 6000 or CDRHealth < 95 then
+                    if aiBrain:GetEconomyStored('ENERGY') > 6000 or CDRHealthSwarm < 95 then
                         if OverchargeTarget and not OverchargeTarget.Dead and not OverchargeTarget:BeenDestroyed() then
                             IssueOverCharge({cdr}, OverchargeTarget)
                         end
@@ -1048,12 +1051,12 @@ Platoon = Class(SwarmPlatoonClass) {
 
             -- in case we are in range of an enemy TMl, always move to different positions
             if aiBrain.ACUChampionSwarm.EnemyTMLPos or UnderAttackSwarm then
-                smartPos = SwarmUtils.RandomizePositionTMLSwarm(smartPos)
+                smartPosSwarm = SwarmUtils.RandomizePositionTMLSwarm(smartPosSwarm)
             end
             -- in case we are not moving for 4 seconds, force moving (maybe blocked line of sight)
             if not cdr:IsUnitState("Moving") then
                 if cdr.LastMoved + 4 < SWARMTIME() then
-                    smartPos = SwarmUtils.RandomizePositionTMLSwarm(smartPos)
+                    smartPosSwarm = SwarmUtils.RandomizePositionTMLSwarm(smartPosSwarm)
                     cdr.LastMoved = SWARMTIME()
                 end
             else
@@ -1061,27 +1064,27 @@ Platoon = Class(SwarmPlatoonClass) {
             end
 
             -- check if we have already a move position
-            if not smartPos[1] then
-                smartPos = cdr.position
+            if not smartPosSwarm[1] then
+                smartPosSwarm = cdr.position
             end
             -- Validate move position, make sure it's not out of map
-            if smartPos[1] < playablearea[1] then
-                smartPos[1] = playablearea[1]
-            elseif smartPos[1] > playablearea[3] then
-                smartPos[1] = playablearea[3]
+            if smartPosSwarm[1] < playablearea[1] then
+                smartPosSwarm[1] = playablearea[1]
+            elseif smartPosSwarm[1] > playablearea[3] then
+                smartPosSwarm[1] = playablearea[3]
             end
-            if smartPos[3] < playablearea[2] then
-                smartPos[3] = playablearea[2]
-            elseif smartPos[3] > playablearea[4] then
-                smartPos[3] = playablearea[4]
+            if smartPosSwarm[3] < playablearea[2] then
+                smartPosSwarm[3] = playablearea[2]
+            elseif smartPosSwarm[3] > playablearea[4] then
+                smartPosSwarm[3] = playablearea[4]
             end
             -- check if the move position is new, then issue a move command
             -- ToDo in case we are under fire we should move in zig-zag to evade
-            if VDist2( smartPos[1], smartPos[3], NavigatorGoal[1], NavigatorGoal[3] ) > 0.7 then
+            if VDist2( smartPosSwarm[1], smartPosSwarm[3], NavigatorGoal[1], NavigatorGoal[3] ) > 0.7 then
                 IssueClearCommands({cdr})
-                IssueMove({cdr}, smartPos )
+                IssueMove({cdr}, smartPosSwarm )
                 if CHAMPIONDEBUGswarm then
-                    aiBrain.ACUChampionSwarm.moveto = {cdr.position, smartPos}
+                    aiBrain.ACUChampionSwarm.moveto = {cdr.position, smartPosSwarm}
                 end
             elseif VDist2( cdr.position[1], cdr.position[3], NavigatorGoal[1], NavigatorGoal[3] ) <= 0.7 then
                 if CHAMPIONDEBUGswarm then
@@ -1100,7 +1103,7 @@ Platoon = Class(SwarmPlatoonClass) {
             end
 
             -- At home, no target and not under attack ? Then we can maybe disband
-            if VDist2( cdr.position[1], cdr.position[3], cdr.CDRHome[1], cdr.CDRHome[3] ) < 30 and not MoveToTarget and not UnderAttackSwarm then
+            if VDist2( cdr.position[1], cdr.position[3], cdr.CDRHomeSwarm[1], cdr.CDRHomeSwarm[3] ) < 30 and not MoveToTarget and not UnderAttackSwarm then
                 -- in case we have no Factory left, recover!
                 if not aiBrain:GetListOfUnits(categories.STRUCTURE * categories.FACTORY * categories.LAND - categories.SUPPORTFACTORY, false)[1] then
                     --WARN('* AI-Swarm: ACUChampionSwarmPlatoon: PlatoonDisband (no HQ Factory)')
@@ -1129,7 +1132,7 @@ Platoon = Class(SwarmPlatoonClass) {
                 end
 
                 -- no target in platoon max range ? Disband; Maybe another platoon has more max range
-                if self.created + 30 < SWARMTIME() and Braveness > 0 and CDRHealth >= 100 and not aiBrain.ACUChampionSwarm.MainBaseTargetCloseRange and not DoNotDisband then
+                if self.created + 30 < SWARMTIME() and Braveness > 0 and CDRHealthSwarm >= 100 and not aiBrain.ACUChampionSwarm.MainBaseTargetCloseRange and not DoNotDisband then
                     --WARN('* AI-Swarm: ACUChampionSwarmPlatoon: PlatoonDisband (no targets in range)')
                     aiBrain.ACUChampionSwarm.CDRposition = false
                     aiBrain.ACUChampionSwarm.moveto = false
@@ -1165,7 +1168,7 @@ Platoon = Class(SwarmPlatoonClass) {
             for index, unit in self:GetPlatoonUnits() do
                 if unit.Dead then continue end
                 -- exclude the ACU
-                if unit.CDRHome then
+                if unit.CDRHomeSwarm then
                     continue
                 end
                 -- check and save if a unit has shield or stealth or cloak, so we can place the unit behind the ACU
@@ -1203,33 +1206,33 @@ Platoon = Class(SwarmPlatoonClass) {
                 -- for debug lines
                 debugIndex = debugIndex + 1
                 aiBrain.ACUChampionSwarm.Assistees[debugIndex] = {unitPos, cdr.position }
-                if not unit.smartPos then
-                    unit.smartPos = unitPos
+                if not unit.smartPosSwarm then
+                    unit.smartPosSwarm = unitPos
                 end
                 -- calculate a position behind the unit we want to cover (behind unit from enemy view)
                 if NavigatorGoal and FocusTargetPos then
                     -- if we have a target, then move behind the ACU
                     alpha = SWARMATAN2(NavigatorGoal[3] - FocusTargetPos[3] ,NavigatorGoal[1] - FocusTargetPos[1])
-                    x = cdr.smartPos[1] + SWARMCOS(alpha) * DistToACU
-                    y = cdr.smartPos[3] + SWARMSIN(alpha) * DistToACU
-                    smartPos = { x, GetTerrainHeight( x, y), y }
+                    x = cdr.smartPosSwarm[1] + SWARMCOS(alpha) * DistToACU
+                    y = cdr.smartPosSwarm[3] + SWARMSIN(alpha) * DistToACU
+                    smartPosSwarm = { x, GetTerrainHeight( x, y), y }
                 else
                     -- Move so the ACU is between units and Base
-                    --alpha = SWARMATAN2(cdr.position[3] - cdr.CDRHome[3] ,cdr.position[1] - cdr.CDRHome[1])
+                    --alpha = SWARMATAN2(cdr.position[3] - cdr.CDRHomeSwarm[3] ,cdr.position[1] - cdr.CDRHomeSwarm[1])
                     -- Move so our support units are between ACU and base
-                    alpha = SWARMATAN2(cdr.CDRHome[3] - cdr.position[3] ,cdr.CDRHome[1] - cdr.position[1])
-                    x = cdr.smartPos[1] + SWARMCOS(alpha) * DistToACU
-                    y = cdr.smartPos[3] + SWARMSIN(alpha) * DistToACU
-                    smartPos = { x, GetTerrainHeight( x, y), y }
+                    alpha = SWARMATAN2(cdr.CDRHomeSwarm[3] - cdr.position[3] ,cdr.CDRHomeSwarm[1] - cdr.position[1])
+                    x = cdr.smartPosSwarm[1] + SWARMCOS(alpha) * DistToACU
+                    y = cdr.smartPosSwarm[3] + SWARMSIN(alpha) * DistToACU
+                    smartPosSwarm = { x, GetTerrainHeight( x, y), y }
                 end
                 -- check if the move position is new
-                if VDist2( smartPos[1], smartPos[3], unit.smartPos[1], unit.smartPos[3] ) > 0.7 then
+                if VDist2( smartPosSwarm[1], smartPosSwarm[3], unit.smartPosSwarm[1], unit.smartPosSwarm[3] ) > 0.7 then
                     -- clear move commands if we have queued more than 2
                     if SWARMGETN(unit:GetCommandQueue()) > 1 then
                         IssueClearCommands({unit})
                     end
-                    IssueMove({unit}, smartPos )
-                    unit.smartPos = smartPos
+                    IssueMove({unit}, smartPosSwarm )
+                    unit.smartPosSwarm = smartPosSwarm
                 end
             end
 
@@ -1261,7 +1264,7 @@ Platoon = Class(SwarmPlatoonClass) {
 
             -- get the closest target to mainbase with path
             ValidUnit = false
-            UnitWithPath, UnitNoPath, path, reason = AIUtils.AIFindNearestCategoryTargetInRangeSwarm(aiBrain, platoon, 'Attack', cdr.CDRHome, SearchRadius, {TargetSearchCategory}, TargetSearchCategory, false )
+            UnitWithPath, UnitNoPath, path, reason = AIUtils.AIFindNearestCategoryTargetInRangeSwarm(aiBrain, platoon, 'Attack', cdr.CDRHomeSwarm, SearchRadius, {TargetSearchCategory}, TargetSearchCategory, false )
             if UnitWithPath then
                 blip = UnitWithPath:GetBlip(SelfArmyIndex)
                 if blip then
@@ -1278,14 +1281,14 @@ Platoon = Class(SwarmPlatoonClass) {
             end
             -- draw a line from base to the base target
             if aiBrain.ACUChampionSwarm.MainBaseTargetWithPath then
-                aiBrain.ACUChampionSwarm.MainBaseTargetWithPathPos = {cdr.CDRHome, aiBrain.ACUChampionSwarm.MainBaseTargetWithPath:GetPosition()}
+                aiBrain.ACUChampionSwarm.MainBaseTargetWithPathPos = {cdr.CDRHomeSwarm, aiBrain.ACUChampionSwarm.MainBaseTargetWithPath:GetPosition()}
             else
                 aiBrain.ACUChampionSwarm.MainBaseTargetWithPathPos = false
             end
 
             -- get the closest target to mainbase ignoring path
             ValidUnit = false
-            UnitCloseRange = AIUtils.AIFindNearestCategoryTargetInCloseRangeSwarm(platoon, aiBrain, 'Attack', cdr.CDRHome, SearchRadius, {TargetSearchCategory}, TargetSearchCategory, false)
+            UnitCloseRange = AIUtils.AIFindNearestCategoryTargetInCloseRangeSwarm(platoon, aiBrain, 'Attack', cdr.CDRHomeSwarm, SearchRadius, {TargetSearchCategory}, TargetSearchCategory, false)
             if UnitCloseRange then
                 blip = UnitCloseRange:GetBlip(SelfArmyIndex)
                 if blip then
@@ -1302,7 +1305,7 @@ Platoon = Class(SwarmPlatoonClass) {
             end
             -- draw a line from base to the base target
             if aiBrain.ACUChampionSwarm.MainBaseTargetCloseRange then
-                aiBrain.ACUChampionSwarm.MainBaseTargetCloseRangePos = {cdr.CDRHome, aiBrain.ACUChampionSwarm.MainBaseTargetCloseRange:GetPosition()}
+                aiBrain.ACUChampionSwarm.MainBaseTargetCloseRangePos = {cdr.CDRHomeSwarm, aiBrain.ACUChampionSwarm.MainBaseTargetCloseRange:GetPosition()}
             else
                 aiBrain.ACUChampionSwarm.MainBaseTargetCloseRangePos = false
             end
@@ -1327,7 +1330,7 @@ Platoon = Class(SwarmPlatoonClass) {
             end
             -- draw a line from base to the base target
             if aiBrain.ACUChampionSwarm.MainBaseTargetACUCloseRange then
-                aiBrain.ACUChampionSwarm.MainBaseTargetACUCloseRangePos = {cdr.CDRHome, aiBrain.ACUChampionSwarm.MainBaseTargetACUCloseRange:GetPosition()}
+                aiBrain.ACUChampionSwarm.MainBaseTargetACUCloseRangePos = {cdr.CDRHomeSwarm, aiBrain.ACUChampionSwarm.MainBaseTargetACUCloseRange:GetPosition()}
             else
                 aiBrain.ACUChampionSwarm.MainBaseTargetACUCloseRangePos = false
             end
@@ -1462,7 +1465,7 @@ Platoon = Class(SwarmPlatoonClass) {
             end
 
             -- Enemy Bomber/gunship threat
-            local numAirEnemyUnits = aiBrain:GetNumUnitsAroundPoint(categories.MOBILE * categories.AIR * (categories.BOMBER + categories.GROUNDATTACK) - categories.TECH1, Vector(playablearea[3]/2,0,playablearea[4]/2), playablearea[3]+playablearea[4] , 'Enemy')
+            local numAirEnemyUnits = aiBrain:GetNumUnitsAroundPoint(categories.MOBILE * categories.AIR * categories.TECH3 * (categories.BOMBER + categories.GROUNDATTACK), Vector(playablearea[3]/2,0,playablearea[4]/2), playablearea[3]+playablearea[4] , 'Enemy')
             aiBrain.ACUChampionSwarm.numAirEnemyUnits = numAirEnemyUnits
         end
     end,
@@ -1570,7 +1573,7 @@ Platoon = Class(SwarmPlatoonClass) {
         return false
     end,
     
-    BuildEnhancement = function(platoon,cdr,enhancement)
+    BuildEnhancementSwarm = function(platoon,cdr,enhancement)
         --LOG('* AI-Swarm: BuildEnhancement: '..enhancement)
         local aiBrain = platoon:GetBrain()
 
@@ -1594,7 +1597,7 @@ Platoon = Class(SwarmPlatoonClass) {
             IssueScript({cdr}, order)
         end
         while aiBrain:PlatoonExists(platoon) and not cdr.Dead and not cdr:HasEnhancement(enhancement) do
-            if SwarmUtils.ComHealth(cdr) < 50 and SwarmUtils.UnderAttackSwarm(cdr) and cdr.WorkProgress < 0.90 then
+            if SwarmUtils.ComHealthSwarm(cdr) < 50 and SwarmUtils.UnderAttackSwarm(cdr) and cdr.WorkProgress < 0.90 then
                 SPEW('* AI-Swarm: BuildEnhancement: '..platoon:GetBrain().Nickname..' Emergency!!! low health < 50% and under attack, canceling Enhancement '..enhancement)
                 IssueStop({cdr})
                 IssueClearCommands({cdr})
@@ -2172,8 +2175,8 @@ Platoon = Class(SwarmPlatoonClass) {
                 reference = SWARMCOPY(unitNearBy:GetPosition())
                 -- get commander home position
                 --LOG("ENGINEER BUILD: " .. cons.BuildStructures[1] .." Near unit: ", cons.NearUnitCategory)
-                if cons.NearUnitCategory == 'COMMAND' and unitNearBy.CDRHome then
-                    reference = unitNearBy.CDRHome
+                if cons.NearUnitCategory == 'COMMAND' and unitNearBy.CDRHomeSwarm then
+                    reference = unitNearBy.CDRHomeSwarm
                 end
             else
                 reference = SWARMCOPY(eng:GetPosition())
@@ -4545,7 +4548,7 @@ Platoon = Class(SwarmPlatoonClass) {
         local alpha
         local x
         local y
-        local smartPos
+        local smartPosSwarm
         local platoonUnits = GetPlatoonUnits(self)
         local rangeModifier = 0
         local atkPri = {}
@@ -4584,7 +4587,7 @@ Platoon = Class(SwarmPlatoonClass) {
                     -- prevent units from reclaiming while attack moving
                     v:RemoveCommandCap('RULEUCC_Reclaim')
                     v:RemoveCommandCap('RULEUCC_Repair')
-                    v.smartPos = {0,0,0}
+                    v.smartPosSwarm = {0,0,0}
                     if not v.MaxWeaponRange then
                         --WARN('Scanning: unit ['..repr(v.UnitId)..'] has no MaxWeaponRange - '..repr(self.BuilderName))
                     end
@@ -4850,24 +4853,24 @@ Platoon = Class(SwarmPlatoonClass) {
                             alpha = SWARMATAN2 (targetPosition[3] - unitPos[3] ,targetPosition[1] - unitPos[1])
                             x = targetPosition[1] - SWARMCOS(alpha) * (unit.MaxWeaponRange - rangeModifier or MaxPlatoonWeaponRange)
                             y = targetPosition[3] - SWARMSIN(alpha) * (unit.MaxWeaponRange - rangeModifier or MaxPlatoonWeaponRange)
-                            smartPos = { x, GetTerrainHeight( x, y), y }
+                            smartPosSwarm = { x, GetTerrainHeight( x, y), y }
                             -- check if the move position is new or target has moved
-                            if VDist2( smartPos[1], smartPos[3], unit.smartPos[1], unit.smartPos[3] ) > 0.7 or unit.TargetPos ~= targetPosition then
+                            if VDist2( smartPosSwarm[1], smartPosSwarm[3], unit.smartPosSwarm[1], unit.smartPosSwarm[3] ) > 0.7 or unit.TargetPos ~= targetPosition then
                                 -- clear move commands if we have queued more than 4
                                 if SWARMGETN(unit:GetCommandQueue()) > 2 then
                                     IssueClearCommands({unit})
                                     coroutine.yield(3)
                                 end
                                 -- if our target is dead, jump out of the "for _, unit in self:GetPlatoonUnits() do" loop
-                                IssueMove({unit}, smartPos )
+                                IssueMove({unit}, smartPosSwarm )
                                 if target.Dead then break end
                                 IssueAttack({unit}, target)
                                 --unit:SetCustomName('Fight micro moving')
-                                unit.smartPos = smartPos
+                                unit.smartPosSwarm = smartPosSwarm
                                 unit.TargetPos = targetPosition
                             -- in case we don't move, check if we can fire at the target
                             else
-                                local dist = VDist2( unit.smartPos[1], unit.smartPos[3], unit.TargetPos[1], unit.TargetPos[3] )
+                                local dist = VDist2( unit.smartPosSwarm[1], unit.smartPosSwarm[3], unit.TargetPos[1], unit.TargetPos[3] )
                                 if aiBrain:CheckBlockingTerrain(unitPos, targetPosition, unit.WeaponArc) then
                                     --unit:SetCustomName('Fight micro WEAPON BLOCKED!!! ['..repr(target.UnitId)..'] dist: '..dist)
                                     IssueMove({unit}, targetPosition )
@@ -4922,7 +4925,7 @@ Platoon = Class(SwarmPlatoonClass) {
         local alpha
         local x
         local y
-        local smartPos
+        local smartPosSwarm
         local scoutUnit
         AIAttackUtils.GetMostRestrictiveLayer(self)
         local function VariableKite(platoon,unit,target)
@@ -5007,7 +5010,7 @@ Platoon = Class(SwarmPlatoonClass) {
                     -- prevent units from reclaiming while attack moving
                     v:RemoveCommandCap('RULEUCC_Reclaim')
                     v:RemoveCommandCap('RULEUCC_Repair')
-                    v.smartPos = {0,0,0}
+                    v.smartPosSwarm = {0,0,0}
                     if not v.MaxWeaponRange then
                         --WARN('Scanning: unit ['..repr(v.UnitId)..'] has no MaxWeaponRange - '..repr(self.BuilderName))
                     end
@@ -5168,7 +5171,7 @@ Platoon = Class(SwarmPlatoonClass) {
         local alpha
         local x
         local y
-        local smartPos
+        local smartPosSwarm
         local rangeModifier = 0
         local platoonThreat = false
         
@@ -5206,7 +5209,7 @@ Platoon = Class(SwarmPlatoonClass) {
                     -- prevent units from reclaiming while attack moving
                     v:RemoveCommandCap('RULEUCC_Reclaim')
                     v:RemoveCommandCap('RULEUCC_Repair')
-                    v.smartPos = {0,0,0}
+                    v.smartPosSwarm = {0,0,0}
                     if not v.MaxWeaponRange then
                         --WARN('Scanning: unit ['..repr(v.UnitId)..'] has no MaxWeaponRange - '..repr(self.BuilderName))
                     end
@@ -5442,24 +5445,24 @@ Platoon = Class(SwarmPlatoonClass) {
                                                 alpha = SWARMATAN2 (targetPosition[3] - unitPos[3] ,targetPosition[1] - unitPos[1])
                                                 x = targetPosition[1] - SWARMCOS(alpha) * (unit.MaxWeaponRange - rangeModifier or MaxPlatoonWeaponRange)
                                                 y = targetPosition[3] - SWARMSIN(alpha) * (unit.MaxWeaponRange - rangeModifier or MaxPlatoonWeaponRange)
-                                                smartPos = { x, GetTerrainHeight( x, y), y }
+                                                smartPosSwarm = { x, GetTerrainHeight( x, y), y }
                                                 -- check if the move position is new or target has moved
-                                                if VDist2( smartPos[1], smartPos[3], unit.smartPos[1], unit.smartPos[3] ) > 0.7 or unit.TargetPos ~= targetPosition then
+                                                if VDist2( smartPosSwarm[1], smartPosSwarm[3], unit.smartPosSwarm[1], unit.smartPosSwarm[3] ) > 0.7 or unit.TargetPos ~= targetPosition then
                                                     -- clear move commands if we have queued more than 4
                                                     if SWARMGETN(unit:GetCommandQueue()) > 2 then
                                                         IssueClearCommands({unit})
                                                         SWARMWAIT(3)
                                                     end
                                                     -- if our target is dead, jump out of the "for _, unit in self:GetPlatoonUnits() do" loop
-                                                    IssueMove({unit}, smartPos )
+                                                    IssueMove({unit}, smartPosSwarm )
                                                     if target.Dead then break end
                                                     IssueAttack({unit}, target)
                                                     --unit:SetCustomName('Fight micro moving')
-                                                    unit.smartPos = smartPos
+                                                    unit.smartPosSwarm = smartPosSwarm
                                                     unit.TargetPos = targetPosition
                                                 -- in case we don't move, check if we can fire at the target
                                                 else
-                                                    local dist = VDist2( unit.smartPos[1], unit.smartPos[3], unit.TargetPos[1], unit.TargetPos[3] )
+                                                    local dist = VDist2( unit.smartPosSwarm[1], unit.smartPosSwarm[3], unit.TargetPos[1], unit.TargetPos[3] )
                                                     if aiBrain:CheckBlockingTerrain(unitPos, targetPosition, unit.WeaponArc) then
                                                         --unit:SetCustomName('Fight micro WEAPON BLOCKED!!! ['..repr(target.UnitId)..'] dist: '..dist)
                                                         IssueMove({unit}, targetPosition )
@@ -5681,7 +5684,7 @@ Platoon = Class(SwarmPlatoonClass) {
                     -- prevent units from reclaiming while attack moving
                     v:RemoveCommandCap('RULEUCC_Reclaim')
                     v:RemoveCommandCap('RULEUCC_Repair')
-                    v.smartPos = {0,0,0}
+                    v.smartPosSwarm = {0,0,0}
                     if not v.MaxWeaponRange then
                         --WARN('Scanning: unit ['..repr(v.UnitId)..'] has no MaxWeaponRange - '..repr(self.BuilderName))
                     end

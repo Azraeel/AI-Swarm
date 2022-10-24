@@ -73,19 +73,6 @@ function CDRHealthLessThanSwarm(aiBrain, health)
     return math.floor(( armorPercent + shieldPercent ) / 2) < health
 end
 
-function CDRHealthLessThan(aiBrain, health)
-    local cdr = aiBrain:GetListOfUnits(categories.COMMAND, false)[1]
-    if cdr.Dead or not cdr.BeenDestroyed or cdr:BeenDestroyed() then
-        return false
-    end
-    local armorPercent = 100 / cdr:GetMaxHealth() * cdr:GetHealth()
-    local shieldPercent = armorPercent
-    if cdr.MyShield then
-        shieldPercent = 100 / cdr.MyShield:GetMaxHealth() * cdr.MyShield:GetHealth()
-    end
-    return math.floor(( armorPercent + shieldPercent ) / 2) < health
-end
-
 --{ UCBC, 'CanBuildCategorySwarm', { categories.RADAR * categories.TECH1 } },
 local FactionIndexToCategory = {[1] = categories.UEF, [2] = categories.AEON, [3] = categories.CYBRAN, [4] = categories.SERAPHIM, [5] = categories.NOMADS }
 function CanBuildCategorySwarm(aiBrain,category)

@@ -37,12 +37,15 @@ local FACTORYAIR = categories.FACTORY * categories.STRUCTURE * categories.AIR - 
 local FACTORYNAVAL = categories.FACTORY * categories.STRUCTURE * categories.NAVAL - categories.RESEARCH
 
 -- LAND HQs
+local FLHQ = categories.FACTORY * categories.STRUCTURE * categories.LAND * categories.RESEARCH
 local FLHQ2 = categories.FACTORY * categories.STRUCTURE * categories.LAND * categories.TECH2 * categories.RESEARCH
 local FLHQ3 = categories.FACTORY * categories.STRUCTURE * categories.LAND * categories.TECH3 * categories.RESEARCH
 -- AIR HQs
+local FAHQ = categories.FACTORY * categories.STRUCTURE * categories.AIR * categories.RESEARCH
 local FAHQ2 = categories.FACTORY * categories.STRUCTURE * categories.AIR * categories.TECH2 * categories.RESEARCH
 local FAHQ3 = categories.FACTORY * categories.STRUCTURE * categories.AIR * categories.TECH3 * categories.RESEARCH
 -- NAVAL HQs
+local FNHQ = categories.FACTORY * categories.STRUCTURE * categories.NAVAL * categories.RESEARCH
 local FNHQ2 = categories.FACTORY * categories.STRUCTURE * categories.NAVAL * categories.TECH2 * categories.RESEARCH
 local FNHQ3 = categories.FACTORY * categories.STRUCTURE * categories.NAVAL * categories.TECH3 * categories.RESEARCH
 
@@ -86,7 +89,7 @@ function StructureUpgradeThreadSwarm(unit, aiBrain, upgradeSpec, bypasseco)
     end
     local upgradebp = aiBrain:GetUnitBlueprint(upgradeID)
     local alternativebp = false
-    --LOG("What is upgradeID at the Start " ..repr(upgradeID))
+    --LOG("What is upgradeID at the Start " ..repr(upgradeID).. " and unit was " ..repr(unit:GetBlueprint().Description))
 
     local unitType, unitTech, unitFactionIndex = StructureTypeCheckSwarm(aiBrain, unitBp) -- 1: UEF, 2: Aeon, 3: Cybran, 4: Seraphim, 5: Nomads 
     --LOG("What is unitFactionIndex " ..unitFactionIndex)
@@ -98,25 +101,28 @@ function StructureUpgradeThreadSwarm(unit, aiBrain, upgradeSpec, bypasseco)
         if upgradeID then
             -- This is the support factory compatibility code
             if EntityCategoryContains( FACTORYLAND, unit) then -- 1: UEF, 2: Aeon, 3: Cybran, 4: Seraphim, 5: Nomads
-                if EntityCategoryContains( FLSF1, unit) and SWARMGETN( GetListOfUnits(aiBrain, FLHQ2, false, false )) > 0 then
-                    if unitFactionIndex == 1 then
-                        alternativebp = 'zeb9501'
-                    elseif unitFactionIndex == 2 then
-                        alternativebp = 'zab9501'
-                    elseif unitFactionIndex == 3 then
-                        alternativebp = 'zrb9501'
-                    elseif unitFactionIndex == 4 then
-                        alternativebp = 'zsb9501'
+                if EntityCategoryContains( FLSF1, unit) then
+                    --LOG(aiBrain.Nickname.. " I am a T1 Land Factory")
+                    if SWARMGETN( GetListOfUnits(aiBrain, FLHQ, false, false )) > 0 then
+                        if unitFactionIndex == 1 then
+                            alternativebp = 'zeb9501'
+                        elseif unitFactionIndex == 2 then
+                            alternativebp = 'zab9501'
+                        elseif unitFactionIndex == 3 then
+                            alternativebp = 'zrb9501'
+                        elseif unitFactionIndex == 4 then
+                            alternativebp = 'zsb9501'
+                        end
+                        --LOG(aiBrain.Nickname.. " I am upgrading to a T2 Support Factory")
+                        upgradebp = aiBrain:GetUnitBlueprint(alternativebp)
+                        upgradeID = alternativebp
                     end
                     --LOG("What is unitFactionIndex " ..repr(unitFactionIndex))
                     --LOG("What is alternativebp " ..repr(alternativebp))
-                    if alternativebp then
-                        upgradebp = aiBrain:GetUnitBlueprint(alternativebp)
-                    end
-                    if upgradebp then
-                        upgradeID = alternativebp
-                    end
-                elseif EntityCategoryContains( FLSF2, unit) and SWARMGETN( GetListOfUnits(aiBrain, FLHQ3, false, false )) > 0 then
+                end
+
+                if EntityCategoryContains( FLSF2, unit) and SWARMGETN( GetListOfUnits(aiBrain, FLHQ3, false, false )) > 0 then
+                    --LOG(aiBrain.Nickname.. " I am a T2 Land Factory")
                     if unitFactionIndex == 1 then
                         alternativebp = 'zeb9601'
                     elseif unitFactionIndex == 2 then
@@ -126,31 +132,33 @@ function StructureUpgradeThreadSwarm(unit, aiBrain, upgradeSpec, bypasseco)
                     elseif unitFactionIndex == 4 then
                         alternativebp = 'zsb9601'
                     end
-                    if alternativebp then
+                    --LOG(aiBrain.Nickname.. " I am upgrading to a T3 Support Factory")
+                    upgradebp = aiBrain:GetUnitBlueprint(alternativebp)
+                    upgradeID = alternativebp
+                end
+
+                if EntityCategoryContains( FLHQ2, unit) then
+                    LOG(aiBrain.Nickname.. " I am a T2 Land HQ and can only upgrade to a T3 HQ")
+                end
+
+            elseif EntityCategoryContains( FACTORYAIR, unit) then -- 1: UEF, 2: Aeon, 3: Cybran, 4: Seraphim, 5: Nomads
+                if EntityCategoryContains( FASF1, unit) then
+                    if SWARMGETN( GetListOfUnits(aiBrain, FAHQ, false, false )) > 0 then
+                        if unitFactionIndex == 1 then
+                           alternativebp = 'zeb9502'
+                        elseif unitFactionIndex == 2 then
+                            alternativebp = 'zab9502'
+                        elseif unitFactionIndex == 3 then
+                            alternativebp = 'zrb9502'
+                        elseif unitFactionIndex == 4 then
+                            alternativebp = 'zsb9502'
+                        end
                         upgradebp = aiBrain:GetUnitBlueprint(alternativebp)
-                    end
-                    if upgradebp then
                         upgradeID = alternativebp
                     end
                 end
-            elseif EntityCategoryContains( FACTORYAIR, unit) then -- 1: UEF, 2: Aeon, 3: Cybran, 4: Seraphim, 5: Nomads
-                if EntityCategoryContains( FASF1, unit) and SWARMGETN( GetListOfUnits(aiBrain, FAHQ2, false, false )) > 0 then
-                    if unitFactionIndex == 1 then
-                        alternativebp = 'zeb9502'
-                    elseif unitFactionIndex == 2 then
-                        alternativebp = 'zab9502'
-                    elseif unitFactionIndex == 3 then
-                        alternativebp = 'zrb9502'
-                    elseif unitFactionIndex == 4 then
-                        alternativebp = 'zsb9502'
-                    end
-                    if alternativebp then
-                        upgradebp = aiBrain:GetUnitBlueprint(alternativebp)
-                    end
-                    if upgradebp then
-                        upgradeID = alternativebp
-                    end
-                elseif EntityCategoryContains( FASF2, unit) and SWARMGETN( GetListOfUnits(aiBrain, FAHQ3, false, false )) > 0 then
+
+                if EntityCategoryContains( FASF2, unit) and SWARMGETN( GetListOfUnits(aiBrain, FAHQ3, false, false )) > 0 then
                     if unitFactionIndex == 1 then
                         alternativebp = 'zeb9602'
                     elseif unitFactionIndex == 2 then
@@ -160,31 +168,28 @@ function StructureUpgradeThreadSwarm(unit, aiBrain, upgradeSpec, bypasseco)
                     elseif unitFactionIndex == 4 then
                         alternativebp = 'zsb9602'
                     end
-                    if alternativebp then
+                    upgradebp = aiBrain:GetUnitBlueprint(alternativebp)
+                    upgradeID = alternativebp
+                end
+
+            elseif EntityCategoryContains( FACTORYNAVAL, unit) then -- 1: UEF, 2: Aeon, 3: Cybran, 4: Seraphim, 5: Nomads
+                if EntityCategoryContains( FNSF1, unit) then
+                    if SWARMGETN( GetListOfUnits(aiBrain, FNHQ, false, false )) > 0 then
+                        if unitFactionIndex == 1 then
+                            alternativebp = 'zeb9503'
+                        elseif unitFactionIndex == 2 then
+                            alternativebp = 'zab9503'
+                        elseif unitFactionIndex == 3 then
+                            alternativebp = 'zrb9503'
+                        elseif unitFactionIndex == 4 then
+                            alternativebp = 'zsb9503'
+                        end
                         upgradebp = aiBrain:GetUnitBlueprint(alternativebp)
-                    end
-                    if upgradebp then
                         upgradeID = alternativebp
                     end
                 end
-            elseif EntityCategoryContains( FACTORYNAVAL, unit) then -- 1: UEF, 2: Aeon, 3: Cybran, 4: Seraphim, 5: Nomads
-                if EntityCategoryContains( FNSF1, unit) and SWARMGETN( GetListOfUnits(aiBrain, FNHQ2, false, false )) > 0 then
-                    if unitFactionIndex == 1 then
-                        alternativebp = 'zeb9503'
-                    elseif unitFactionIndex == 2 then
-                        alternativebp = 'zab9503'
-                    elseif unitFactionIndex == 3 then
-                        alternativebp = 'zrb9503'
-                    elseif unitFactionIndex == 4 then
-                        alternativebp = 'zsb9503'
-                    end
-                    if alternativebp then
-                        upgradebp = aiBrain:GetUnitBlueprint(alternativebp)
-                    end
-                    if upgradebp then
-                        upgradeID = alternativebp
-                    end
-                elseif EntityCategoryContains( FNSF2, unit) and SWARMGETN( GetListOfUnits(aiBrain, FNHQ3, false, false )) > 0 then
+
+                if EntityCategoryContains( FNSF2, unit) and SWARMGETN( GetListOfUnits(aiBrain, FNHQ3, false, false )) > 0 then
                     if unitFactionIndex == 1 then
                         alternativebp = 'zeb9603'
                     elseif unitFactionIndex == 2 then
@@ -194,12 +199,8 @@ function StructureUpgradeThreadSwarm(unit, aiBrain, upgradeSpec, bypasseco)
                     elseif unitFactionIndex == 4 then
                         alternativebp = 'zsb9603'
                     end
-                    if alternativebp then
-                        upgradebp = aiBrain:GetUnitBlueprint(alternativebp)
-                    end
-                    if upgradebp then
-                        upgradeID = alternativebp
-                    end
+                    upgradebp = aiBrain:GetUnitBlueprint(alternativebp)
+                    upgradeID = alternativebp
                 end
             --LOG("What is upgradeID " ..repr(upgradebp))
             end
@@ -356,6 +357,7 @@ function StructureUpgradeThreadSwarm(unit, aiBrain, upgradeSpec, bypasseco)
                     end
                 --LOG('* AI-Swarm: low_trigger_good = true')
             else
+                --LOG(aiBrain.Nickname.. " " ..repr(unit:GetBlueprint().Description.. " " ..unit.Sync.id.. " Efficiency FAILS and unit was " ..repr(unit:GetBlueprint().Description)))
                 SWARMWAIT(10)
                 continue
             end
@@ -363,6 +365,7 @@ function StructureUpgradeThreadSwarm(unit, aiBrain, upgradeSpec, bypasseco)
             if (massEfficiency <= upgradeSpec.MassHighTrigger and energyEfficiency <= upgradeSpec.EnergyHighTrigger) then
                 --LOG('* AI-Swarm: hi_trigger_good = true')
             else
+                --LOG(aiBrain.Nickname.. " " ..repr(unit:GetBlueprint().Description.. " " ..unit.Sync.id.. " High Trigger FAILS "))
                 continue
             end
 
@@ -370,11 +373,13 @@ function StructureUpgradeThreadSwarm(unit, aiBrain, upgradeSpec, bypasseco)
 				or ( massStorage >= (massNeeded * .7) and energyStorage > (energyNeeded * .7) ) or bypasseco then
 				-- we need to have 15% of the resources stored -- some things like MEX can bypass this last check
 				if (massStorage > ( massNeeded * .15 * upgradeSpec.MassLowTrigger) and energyStorage > ( energyNeeded * .15 * upgradeSpec.EnergyLowTrigger)) or bypasseco then
+
                     if aiBrain.UpgradeIssued < aiBrain.UpgradeIssuedLimit then
+
 						if not unit.Dead then
 
                             upgradeIssued = true
-                            LOG("What is upgradeID " ..repr(upgradeID) .. " What Unit is upgrading " ..repr(unit:GetBlueprint().Description))
+                            LOG(aiBrain.Nickname.. " " ..repr(unit:GetBlueprint().Description.. " " ..unit.Sync.id.. " Upgrading to " ..repr(upgradebp.Description)))
                             IssueUpgrade({unit}, upgradeID)
 
                             -- if upgrade issued and not completely full --
@@ -384,13 +389,9 @@ function StructureUpgradeThreadSwarm(unit, aiBrain, upgradeSpec, bypasseco)
                                 ForkThread(StructureUpgradeDelaySwarm, aiBrain, aiBrain.UpgradeIssuedPeriod * .5)     -- otherwise halve the delay period
                             end
 
-                            if ScenarioInfo.StructureUpgradeDialog then
-                                --LOG("*AI DEBUG "..aiBrain.Nickname.." STRUCTUREUpgrade "..unit.Sync.id.." "..unit:GetBlueprint().Description.." upgrading to "..repr(upgradeID).." "..repr(__blueprints[upgradeID].Description).." at "..GetGameTimeSeconds() )
-                            end
-
-                            repeat
+                            while (not unit.Dead) and (not unit.UnitBeingBuilt:GetBlueprint().BlueprintId == upgradeID) do
                                 SWARMWAIT(50)
-                            until unit.Dead or (unit.UnitBeingBuilt:GetBlueprint().BlueprintId == upgradeID) -- Fix this!
+                            end
                         end
 
                         if unit.Dead then
@@ -403,26 +404,24 @@ function StructureUpgradeThreadSwarm(unit, aiBrain, upgradeSpec, bypasseco)
                             continue
                         end
                     else
-                        LOG("Could not do an upgrade because the UpgradeIssuedLimit was exceeded " .. repr(aiBrain.UpgradeIssued) .. " and UpgradedIsssuedLimit was actually " .. repr(aiBrain.UpgradeIssuedLimit))
+                        LOG(aiBrain.Nickname.. " Could not do an upgrade because the UpgradeIssuedLimit was exceeded " .. repr(aiBrain.UpgradeIssued) .. " and UpgradedIsssuedLimit was actually " .. repr(aiBrain.UpgradeIssuedLimit))
                     end
                 end
             else
-                if ScenarioInfo.StructureUpgradeDialog then
-                    if not ( massTrend >= massTrendNeeded ) then
-                        --LOG("*AI DEBUG "..aiBrain.Nickname.." STRUCTUREUpgrade "..unit.Sync.id.." "..unit:GetBlueprint().Description.." FAILS MASS Trend trigger "..massTrend.." needed "..massTrendNeeded)
-                    end
-                    if not ( energyTrend >= energyTrendNeeded ) then
-                        --LOG("*AI DEBUG "..aiBrain.Nickname.." STRUCTUREUpgrade "..unit.Sync.id.." "..unit:GetBlueprint().Description.." FAILS ENER Trend trigger "..energyTrend.." needed "..energyTrendNeeded)
-                    end
-                    if not (energyTrend >= energyMaintenance) then
-                        --LOG("*AI DEBUG "..aiBrain.Nickname.." STRUCTUREUpgrade "..unit.Sync.id.." "..unit:GetBlueprint().Description.." FAILS Maintenance trigger "..energyTrend.." "..energyMaintenance)  
-                    end
-                    if not ( massStorage >= (massNeeded * .8)) then
-                        --LOG("*AI DEBUG "..aiBrain.Nickname.." STRUCTUREUpgrade "..unit.Sync.id.." "..unit:GetBlueprint().Description.." FAILS MASS storage trigger "..massStorage.." needed "..(massNeeded*.8) )
-                    end
-                    if not (energyStorage > (energyNeeded * .4)) then
-                        --LOG("*AI DEBUG "..aiBrain.Nickname.." STRUCTUREUpgrade "..unit.Sync.id.." "..unit:GetBlueprint().Description.." FAILS ENER storage trigger "..energyStorage.." needed "..(energyNeeded*.4) )
-                    end
+                if not ( massTrend >= massTrendNeeded ) then
+                    --LOG(aiBrain.Nickname.." STRUCTUREUpgrade "..unit.Sync.id.." "..unit:GetBlueprint().Description.." FAILS MASS Trend trigger "..massTrend.." needed "..massTrendNeeded)
+                end
+                if not ( energyTrend >= energyTrendNeeded ) then
+                    --LOG(aiBrain.Nickname.." STRUCTUREUpgrade "..unit.Sync.id.." "..unit:GetBlueprint().Description.." FAILS ENER Trend trigger "..energyTrend.." needed "..energyTrendNeeded)
+                end
+                if not (energyTrend >= energyMaintenance) then
+                    --LOG(aiBrain.Nickname.." STRUCTUREUpgrade "..unit.Sync.id.." "..unit:GetBlueprint().Description.." FAILS Maintenance trigger "..energyTrend.." "..energyMaintenance)  
+                end
+                if not ( massStorage >= (massNeeded * .8)) then
+                    --LOG(aiBrain.Nickname.." STRUCTUREUpgrade "..unit.Sync.id.." "..unit:GetBlueprint().Description.." FAILS MASS storage trigger "..massStorage.." needed "..(massNeeded*.8) )
+                end
+                if not (energyStorage > (energyNeeded * .4)) then
+                    --LOG(aiBrain.Nickname.." STRUCTUREUpgrade "..unit.Sync.id.." "..unit:GetBlueprint().Description.." FAILS ENER storage trigger "..energyStorage.." needed "..(energyNeeded*.4) )
                 end
             end
         end
