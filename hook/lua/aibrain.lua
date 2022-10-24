@@ -41,7 +41,7 @@ AIBrain = Class(SwarmAIBrainClass) {
     end,
 
     InitializeSkirmishSystems = function(self)
-        if not self.Swarm then
+        if not self.Swarm then return
             SwarmAIBrainClass.InitializeSkirmishSystems(self)
         end
 
