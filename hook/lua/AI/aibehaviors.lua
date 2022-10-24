@@ -357,7 +357,7 @@ function StructureUpgradeThreadSwarm(unit, aiBrain, upgradeSpec, bypasseco)
                     end
                 --LOG('* AI-Swarm: low_trigger_good = true')
             else
-                LOG(aiBrain.Nickname.. " " ..repr(unit:GetBlueprint().Description.. " " ..unit.Sync.id.. " Efficiency FAILS and unit was " ..repr(unit:GetBlueprint().Description)))
+                --LOG(aiBrain.Nickname.. " " ..repr(unit:GetBlueprint().Description.. " " ..unit.Sync.id.. " Efficiency FAILS and unit was " ..repr(unit:GetBlueprint().Description)))
                 SWARMWAIT(10)
                 continue
             end
@@ -365,7 +365,7 @@ function StructureUpgradeThreadSwarm(unit, aiBrain, upgradeSpec, bypasseco)
             if (massEfficiency <= upgradeSpec.MassHighTrigger and energyEfficiency <= upgradeSpec.EnergyHighTrigger) then
                 --LOG('* AI-Swarm: hi_trigger_good = true')
             else
-                LOG(aiBrain.Nickname.. " " ..repr(unit:GetBlueprint().Description.. " " ..unit.Sync.id.. " High Trigger FAILS "))
+                --LOG(aiBrain.Nickname.. " " ..repr(unit:GetBlueprint().Description.. " " ..unit.Sync.id.. " High Trigger FAILS "))
                 continue
             end
 
@@ -409,19 +409,19 @@ function StructureUpgradeThreadSwarm(unit, aiBrain, upgradeSpec, bypasseco)
                 end
             else
                 if not ( massTrend >= massTrendNeeded ) then
-                    LOG(aiBrain.Nickname.." STRUCTUREUpgrade "..unit.Sync.id.." "..unit:GetBlueprint().Description.." FAILS MASS Trend trigger "..massTrend.." needed "..massTrendNeeded)
+                    --LOG(aiBrain.Nickname.." STRUCTUREUpgrade "..unit.Sync.id.." "..unit:GetBlueprint().Description.." FAILS MASS Trend trigger "..massTrend.." needed "..massTrendNeeded)
                 end
                 if not ( energyTrend >= energyTrendNeeded ) then
-                    LOG(aiBrain.Nickname.." STRUCTUREUpgrade "..unit.Sync.id.." "..unit:GetBlueprint().Description.." FAILS ENER Trend trigger "..energyTrend.." needed "..energyTrendNeeded)
+                    --LOG(aiBrain.Nickname.." STRUCTUREUpgrade "..unit.Sync.id.." "..unit:GetBlueprint().Description.." FAILS ENER Trend trigger "..energyTrend.." needed "..energyTrendNeeded)
                 end
                 if not (energyTrend >= energyMaintenance) then
-                    LOG(aiBrain.Nickname.." STRUCTUREUpgrade "..unit.Sync.id.." "..unit:GetBlueprint().Description.." FAILS Maintenance trigger "..energyTrend.." "..energyMaintenance)  
+                    --LOG(aiBrain.Nickname.." STRUCTUREUpgrade "..unit.Sync.id.." "..unit:GetBlueprint().Description.." FAILS Maintenance trigger "..energyTrend.." "..energyMaintenance)  
                 end
                 if not ( massStorage >= (massNeeded * .8)) then
-                    LOG(aiBrain.Nickname.." STRUCTUREUpgrade "..unit.Sync.id.." "..unit:GetBlueprint().Description.." FAILS MASS storage trigger "..massStorage.." needed "..(massNeeded*.8) )
+                    --LOG(aiBrain.Nickname.." STRUCTUREUpgrade "..unit.Sync.id.." "..unit:GetBlueprint().Description.." FAILS MASS storage trigger "..massStorage.." needed "..(massNeeded*.8) )
                 end
                 if not (energyStorage > (energyNeeded * .4)) then
-                    LOG(aiBrain.Nickname.." STRUCTUREUpgrade "..unit.Sync.id.." "..unit:GetBlueprint().Description.." FAILS ENER storage trigger "..energyStorage.." needed "..(energyNeeded*.4) )
+                    --LOG(aiBrain.Nickname.." STRUCTUREUpgrade "..unit.Sync.id.." "..unit:GetBlueprint().Description.." FAILS ENER storage trigger "..energyStorage.." needed "..(energyNeeded*.4) )
                 end
             end
         end
