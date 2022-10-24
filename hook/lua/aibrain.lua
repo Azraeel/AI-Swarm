@@ -41,8 +41,8 @@ AIBrain = Class(SwarmAIBrainClass) {
     end,
 
     InitializeSkirmishSystems = function(self)
-        if not self.Swarm then return
-            SwarmAIBrainClass.InitializeSkirmishSystems(self)
+        if not self.Swarm then
+            return SwarmAIBrainClass.InitializeSkirmishSystems(self)
         end
 
         --LOG('* AI-Swarm: Custom Skirmish System for '..ScenarioInfo.ArmySetup[self.Name].AIPersonality)

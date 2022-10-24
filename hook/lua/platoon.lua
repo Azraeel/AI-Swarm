@@ -793,7 +793,7 @@ Platoon = Class(SwarmPlatoonClass) {
             if VDist2(cdr.position[1], cdr.position[3], cdr.CDRHomeSwarm[1], cdr.CDRHomeSwarm[3]) < 75 then
                 -- only upgrade if we are good at health
                 local check = true
-                if SWARMTIME() <= 600 and aiBrain.AggressiveCommander == false then
+                if SWARMTIME() <= 420 and aiBrain.AggressiveCommander == false then
                     check = false
                 else
                 end
