@@ -255,8 +255,6 @@ BuilderGroup { BuilderGroupName = 'Swarm Shields Upgrader',
 
         Priority = 1000,
 
-        DelayEqualBuildPlattons = {'Shield', 2},
-
         InstanceCount = 10,
 
         BuilderConditions = {
@@ -271,8 +269,6 @@ BuilderGroup { BuilderGroupName = 'Swarm Shields Upgrader',
             { UCBC, 'UnitsGreaterAtLocation', { 'LocationType', 0, categories.TECH3 * categories.ENERGYPRODUCTION}},
 
             { UCBC, 'HaveLessThanUnitsInCategoryBeingUpgradeSwarm', { 2, categories.STRUCTURE * categories.SHIELD }},
-
-            { UCBC, 'CheckBuildPlattonDelay', { 'Shield' }},
         },
         BuilderType = 'Any',
     },
@@ -283,8 +279,6 @@ BuilderGroup { BuilderGroupName = 'Swarm Shields Upgrader',
 
         Priority = 1000,
 
-        DelayEqualBuildPlattons = {'Shield', 2},
-
         InstanceCount = 10,
 
         BuilderConditions = {
@@ -299,8 +293,6 @@ BuilderGroup { BuilderGroupName = 'Swarm Shields Upgrader',
             { UCBC, 'UnitsGreaterAtLocation', { 'LocationType', 0, categories.TECH3 * categories.ENERGYPRODUCTION}},
 
             { UCBC, 'HaveLessThanUnitsInCategoryBeingUpgradeSwarm', { 2, categories.STRUCTURE * categories.SHIELD }},
-
-            { UCBC, 'CheckBuildPlattonDelay', { 'Shield' }},
         },
         BuilderType = 'Any',
     },
@@ -311,8 +303,6 @@ BuilderGroup { BuilderGroupName = 'Swarm Shields Upgrader',
 
         Priority = 1000,
 
-        DelayEqualBuildPlattons = {'Shield', 2},
-
         InstanceCount = 10,
 
         BuilderConditions = {
@@ -327,8 +317,6 @@ BuilderGroup { BuilderGroupName = 'Swarm Shields Upgrader',
             { UCBC, 'UnitsGreaterAtLocation', { 'LocationType', 0, categories.TECH3 * categories.ENERGYPRODUCTION}},
 
             { UCBC, 'HaveLessThanUnitsInCategoryBeingUpgradeSwarm', { 2, categories.STRUCTURE * categories.SHIELD }},
-
-            { UCBC, 'CheckBuildPlattonDelay', { 'Shield' }},
         },
         BuilderType = 'Any',
     },
@@ -338,8 +326,6 @@ BuilderGroup { BuilderGroupName = 'Swarm Shields Upgrader',
         PlatoonTemplate = 'T2Shield4',
 
         Priority = 1000,
-
-        DelayEqualBuildPlattons = {'Shield', 2},
         
         InstanceCount = 10,
 
@@ -355,8 +341,6 @@ BuilderGroup { BuilderGroupName = 'Swarm Shields Upgrader',
             { UCBC, 'UnitsGreaterAtLocation', { 'LocationType', 1, categories.TECH3 * categories.ENERGYPRODUCTION}},
 
             { UCBC, 'HaveLessThanUnitsInCategoryBeingUpgradeSwarm', { 2, categories.STRUCTURE * categories.SHIELD }},
-
-            { UCBC, 'CheckBuildPlattonDelay', { 'Shield' }},
         },
         BuilderType = 'Any',
     },
@@ -366,8 +350,6 @@ BuilderGroup { BuilderGroupName = 'Swarm Shields Upgrader',
         PlatoonTemplate = 'T2Shield',
 
         Priority = 1000,
-
-        DelayEqualBuildPlattons = {'Shield', 2},
 
         InstanceCount = 10,
 
@@ -383,8 +365,6 @@ BuilderGroup { BuilderGroupName = 'Swarm Shields Upgrader',
             { UCBC, 'UnitsGreaterAtLocation', { 'LocationType', 1, categories.TECH3 * categories.ENERGYPRODUCTION}},
 
             { UCBC, 'HaveLessThanUnitsInCategoryBeingUpgradeSwarm', { 3, categories.STRUCTURE * categories.SHIELD }},
-
-            { UCBC, 'CheckBuildPlattonDelay', { 'Shield' }},
         },
         BuilderType = 'Any',
     },

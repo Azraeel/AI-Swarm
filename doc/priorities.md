@@ -1,7 +1,13 @@
 # Swarm AI Builder Priority List
 
+# ACU
 
-## Experimentals
+_ACU_
+
+# Priority 700 - Combat ACU Panic
+# Priority 750 - Combat ACU Military
+
+# Experimentals
 
 _Air Experimental_
 
@@ -22,6 +28,11 @@ _Land Experimental_
 # Priority 950 - S Land Experimental
 # Priority 950 - S Land Experimental - 2
 # Priority 950 - S Land Experimental - 3
+
+_Land Experimental Formers_
+
+# Priority 100 - SF Land Experimental 
+# Priority 100 - SF Land Experimental - Group
 
 _Water Builders_
 

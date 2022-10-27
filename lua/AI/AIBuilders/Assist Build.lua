@@ -12,7 +12,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
     -- ================== --
 
     Builder {
-        BuilderName = 'Engineer Assist Factory',
+        BuilderName = 'Swarm Engineer Assist Factory',
         PlatoonTemplate = 'EngineerAssistALLTECH',
         Priority = 1000,
         InstanceCount = 10,
@@ -20,6 +20,8 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
             { EBC, 'GreaterThanEconStorageCurrentSwarm', { 100, 1000}},
 
             { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 0.8, 1.0 }}, 
+
+            { EBC, 'GreaterThanEconTrendOverTimeSwarm', { 0.0, 2.0 } },
         },
         BuilderType = 'Any',
         BuilderData = {
@@ -28,109 +30,42 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
                 AssisteeType = categories.FACTORY,
                 AssistRange = 120,
                 AssistClosestUnit = true, 
-                AssistUntilFinished = true,
-                BeingBuiltCategories = {categories.LAND * categories.MOBILE},        -- Unitcategories must be type string
-                Time = 40,
+                AssistUntilFinished = false,
+                BeingBuiltCategories = {(categories.LAND + categories.AIR + categories.NAVAL) * categories.MOBILE},        -- Unitcategories must be type string
+                Time = 30,
             },
         }
     },
 
-    -- ===================== --
-    --   Factories Upgrade   --
-    -- ===================== --
-
-    Builder { BuilderName = 'S1 Assist 1st T2 Factory Upgrade',
-        PlatoonTemplate = 'T1EngineerAssistSwarm',
+    Builder { BuilderName = 'Swarm Factory Assist Upgrade',
+        PlatoonTemplate = 'EngineerAssistALLTECH',
         Priority = 150,
-        InstanceCount = 5,
+        InstanceCount = 10,
         BuilderConditions = {
             { EBC, 'GreaterThanEconStorageCurrentSwarm', { 100, 1000}},
 
             { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 1.0, 1.0 }},
+
+            { EBC, 'GreaterThanEconTrendOverTimeSwarm', { 0.0, 2.0 } },
         },
         BuilderType = 'Any',
         BuilderData = {
             Assist = {
                 AssistLocation = 'LocationType',
                 AssisteeType = categories.FACTORY,
-                AssistRange = 200,
+                AssistRange = 120,
                 AssistClosestUnit = true, 
-                AssistUntilFinished = true,
-                BeingBuiltCategories = {categories.STRUCTURE * categories.LAND * categories.FACTORY * categories.TECH2},        -- Unitcategories must be type string
-                Time = 75,
-            },
-        }
-    },
-    Builder { BuilderName = 'S1 Assist 1st T3 Factory Upgrade',
-        PlatoonTemplate = 'T1EngineerAssistSwarm',
-        Priority = 200,
-        InstanceCount = 5,
-        BuilderConditions = {
-            { EBC, 'GreaterThanEconStorageCurrentSwarm', { 100, 1000}},
-
-            { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 1.0, 1.0 }},
-        },
-        BuilderType = 'Any',
-        BuilderData = {
-            Assist = {
-                AssistLocation = 'LocationType',
-                AssisteeType = categories.FACTORY,
-                AssistRange = 200,
-                AssistClosestUnit = true, 
-                AssistUntilFinished = true,
-                BeingBuiltCategories = {categories.STRUCTURE * categories.LAND * categories.FACTORY * categories.TECH3},        -- Unitcategories must be type string
-                Time = 75,
-            },
-        }
-    },
-    Builder { BuilderName = 'S2 Assist 1st T3 Factory Upgrade',
-        PlatoonTemplate = 'T2EngineerAssistSwarm',
-        Priority = 210,
-        InstanceCount = 5,
-        BuilderConditions = {
-            { EBC, 'GreaterThanEconStorageCurrentSwarm', { 100, 1000}},
-
-            { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 1.0, 1.0 }},
-        },
-        BuilderType = 'Any',
-        BuilderData = {
-            Assist = {
-                AssistLocation = 'LocationType',
-                AssisteeType = categories.FACTORY,
-                AssistRange = 200,
-                AssistClosestUnit = true, 
-                AssistUntilFinished = true,
-                BeingBuiltCategories = {categories.STRUCTURE * categories.LAND * categories.FACTORY * categories.TECH3},        -- Unitcategories must be type string
-                Time = 75,
-            },
-        }
-    },
-    Builder { BuilderName = 'S2 Assist Factory Upgrade',
-        PlatoonTemplate = 'T2EngineerAssistSwarm',
-        Priority = 250,
-        InstanceCount = 5,
-        BuilderConditions = {
-            { EBC, 'GreaterThanEconStorageCurrentSwarm', { 100, 1000}},
-
-            { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 1.0, 1.0 }},
-        },
-        BuilderType = 'Any',
-        BuilderData = {
-            Assist = {
-                AssistLocation = 'LocationType',
-                AssisteeType = categories.FACTORY,
-                AssistRange = 200,
-                AssistClosestUnit = true,                                       -- Assist the closest unit instead unit with the least number of assisters
-                AssistUntilFinished = true,
-                BeingBuiltCategories = {categories.STRUCTURE * categories.FACTORY},                   -- Unitcategories must be type string
-                Time = 75,
+                AssistUntilFinished = false,
+                BeingBuiltCategories = {categories.STRUCTURE * categories.LAND * categories.FACTORY},        -- Unitcategories must be type string
+                Time = 30,
             },
         }
     },
 
-    -- ============ --
-    --    ENERGY    --
-    -- ============ --
+    -- =============== --
+    --  Energy Assist  --
+    -- =============== --
+
     Builder { BuilderName = 'S1 Assist Energy Turbo',
         PlatoonTemplate = 'T1EngineerAssistSwarm',
         Priority = 590,
@@ -231,7 +166,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
         }
     },
 
-    Builder { BuilderName = 'S1 Assist HYDROCARBON Turbo',
+    Builder { BuilderName = 'Swarm Assist HYDROCARBON Turbo',
         PlatoonTemplate = 'T1EngineerAssistSwarm',
         Priority = 650,
         InstanceCount = 1,
@@ -259,12 +194,14 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
     --    Mass Assist    --
     -- ================= --
 
-    Builder { BuilderName = 'S1 Assist Mass Upgrade',
+    Builder { BuilderName = 'Swarm Assist Mass Upgrade',
         PlatoonTemplate = 'T1EngineerAssistSwarm',
         Priority = 590,
         InstanceCount = 3,
         BuilderConditions = {
             { EBC, 'GreaterThanEconStorageCurrentSwarm', { 100, 1000}},
+
+            { EBC, 'GreaterThanEconTrendOverTimeSwarm', { 0.0, 8.0 } },
 
             { UCBC, 'BuildingGreaterAtLocation', { 'LocationType', 0, categories.STRUCTURE * categories.MASSPRODUCTION - categories.TECH1 }},
         },
@@ -286,12 +223,12 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
     --    General Assist   --
     -- =================== --
     Builder {
-        BuilderName = 'All Engineer Assist',
+        BuilderName = 'Swarm All Engineer Assist',
         PlatoonTemplate = 'EngineerAssistALLTECH',
         Priority = 950,
         InstanceCount = 30,
         BuilderConditions = {
-            { EBC, 'GreaterThanEconTrendOverTimeSwarm', { 0.0, 0.0 } },
+            { EBC, 'GreaterThanEconTrendOverTimeSwarm', { 0.0, 8.0 } },
 
             { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 1.0, 1.0 }},
 
@@ -324,7 +261,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
 
             { EBC, 'GreaterThanEconStorageCurrentSwarm', { 100, 1000}},
 
-            { EBC, 'GreaterThanMassTrendOverTimeSwarm', { 0.0 } },
+            { EBC, 'GreaterThanEconTrendOverTimeSwarm', { 0.0, 2.0 } },
         },
         BuilderType = 'Any',
         BuilderData = {
@@ -351,7 +288,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
 
             { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 1.0, 1.01 }},
 
-            { EBC, 'GreaterThanMassTrendOverTimeSwarm', { 0.0 } },
+            { EBC, 'GreaterThanEconTrendOverTimeSwarm', { 0.0, 2.0 } },
         },
         BuilderType = 'Any',
         BuilderData = {
@@ -379,7 +316,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
 
             { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 1.01, 1.02 }},
 
-            { EBC, 'GreaterThanMassTrendOverTimeSwarm', { 0.0 } },
+            { EBC, 'GreaterThanEconTrendOverTimeSwarm', { 0.0, 2.0 } },
         },
         BuilderType = 'Any',
         BuilderData = {
@@ -408,7 +345,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
 
             { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 1.02, 1.03 }},
 
-            { EBC, 'GreaterThanMassTrendOverTimeSwarm', { 0.0 } },
+            { EBC, 'GreaterThanEconTrendOverTimeSwarm', { 0.0, 2.0 } },
         },
         BuilderType = 'Any',
         BuilderData = {
@@ -433,7 +370,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
 
             { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 1.02, 1.03 }},
 
-            { EBC, 'GreaterThanMassTrendOverTimeSwarm', { 0.0 } },
+            { EBC, 'GreaterThanEconTrendOverTimeSwarm', { 0.0, 2.0 } },
         },
         BuilderType = 'Any',
         BuilderData = {
@@ -458,7 +395,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
 
             { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 1.03, 1.04 }},
 
-            { EBC, 'GreaterThanMassTrendOverTimeSwarm', { 0.0 } },
+            { EBC, 'GreaterThanEconTrendOverTimeSwarm', { 0.0, 2.0 } },
         },
         BuilderType = 'Any',
         BuilderData = {
@@ -487,7 +424,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
 
             { EBC, 'GreaterThanEconStorageCurrentSwarm', { 100, 1000}},
 
-            { EBC, 'GreaterThanMassTrendOverTimeSwarm', { 0.0 } },
+            { EBC, 'GreaterThanEconTrendOverTimeSwarm', { 0.0, 2.0 } },
         },
         BuilderType = 'Any',
         BuilderData = {
@@ -503,50 +440,10 @@ BuilderGroup { BuilderGroupName = 'Swarm Engineer Assistees',                   
         }
     },
 
-    -- =============== --
-    --    Finisher     --
-    -- =============== --
-    Builder { BuilderName = 'S1 Finisher',
-        PlatoonTemplate = 'T1EngineerBuilderSwarm',
-        PlatoonAIPlan = 'FinisherAISwarm',
-        Priority = 750,
-        InstanceCount = 10,
-        BuilderConditions = {
-            { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 1.01, 1.02 }},
+    -- =========== --
+    --    Repair   --
+    -- =========== --
 
-            { EBC, 'GreaterThanEconStorageCurrentSwarm', { 100, 1000}},
-
-            { EBC, 'GreaterThanMassTrendOverTimeSwarm', { 0.0 } },
-
-            { UCBC, 'UnfinishedUnitsAtLocationSwarm', { 'LocationType' }},
-        },
-        BuilderData = {
-            LocationType = 'LocationType',
-        },
-        BuilderType = 'Any',
-    },
-    Builder { BuilderName = 'S2 Finisher',
-        PlatoonTemplate = 'T2EngineerBuilderSwarm',
-        PlatoonAIPlan = 'FinisherAISwarm',
-        Priority = 760,
-        InstanceCount = 10,
-        BuilderConditions = {
-            { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 1.01, 1.02 }},
-
-            { EBC, 'GreaterThanEconStorageCurrentSwarm', { 100, 1000}},
-
-            { EBC, 'GreaterThanMassTrendOverTimeSwarm', { 0.0 } },
-
-            { UCBC, 'UnfinishedUnitsAtLocationSwarm', { 'LocationType' }},
-        },
-        BuilderData = {
-            LocationType = 'LocationType',
-        },
-        BuilderType = 'Any',
-    },
-    -- =============== --
-    --    Repair     --
-    -- =============== --
     Builder { BuilderName = 'S1 Engineer Repair',
         PlatoonTemplate = 'T1EngineerBuilderSwarm',
         PlatoonAIPlan = 'RepairAI',

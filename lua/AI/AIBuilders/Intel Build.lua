@@ -99,14 +99,17 @@ BuilderGroup {
     BuildersType = 'PlatoonFormBuilder',
     Builder {
         BuilderName = 'S1 Radar Upgrade',
+
         PlatoonTemplate = 'T1RadarUpgrade',
-        Priority = 10000,
+
+        Priority = 500,
+
         BuilderConditions = {
-            { EBC, 'GreaterThanEconTrendOverTimeSwarm', { 0.0, 0.0 } }, 
-
-            { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 0.85, 1.0 }}, 
-
             { EBC, 'GreaterThanEconStorageCurrentSwarm', { 100, 1000}},
+
+            { EBC, 'GreaterThanEconTrendOverTimeSwarm', { 0.0, 10.0 } }, 
+
+            { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 0.85, 1.02 }}, 
    
             { UCBC, 'HaveLessThanUnitsInCategoryBeingUpgradeSwarm', { 1, categories.RADAR * categories.TECH1 }},
         },
@@ -114,18 +117,21 @@ BuilderGroup {
     },
     Builder {
         BuilderName = 'S2 Radar Upgrade',
+
         PlatoonTemplate = 'T2RadarUpgrade',
-        Priority = 1000,
+
+        Priority = 600,
+
         BuilderConditions = {
+            { EBC, 'GreaterThanEconStorageCurrentSwarm', { 100, 1000}},
+
+            { EBC, 'GreaterThanEconTrendOverTimeSwarm', { 0.0, 100.0 } }, 
+
+            { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 0.85, 1.02 }}, 
+
             { UCBC, 'HaveGreaterThanUnitsWithCategory', { 0, categories.STRUCTURE * categories.ENERGYPRODUCTION * categories.TECH3 } },
          
             { UCBC, 'HaveLessThanUnitsWithCategory', { 1, categories.OMNI * categories.STRUCTURE }},
-           
-            { EBC, 'GreaterThanEconTrendOverTimeSwarm', { 0.0, 0.0 } }, 
-
-            { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 0.85, 1.0 }}, 
-
-            { EBC, 'GreaterThanEconStorageCurrentSwarm', { 100, 1000}},
            
             { UCBC, 'HaveLessThanUnitsInCategoryBeingUpgradeSwarm', { 1, categories.RADAR * categories.TECH2 }},
         },

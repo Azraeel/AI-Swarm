@@ -81,7 +81,6 @@ BuilderGroup { BuilderGroupName = 'Swarm Strategic Builder',
         BuilderName = 'Swarm SML Rush',
         PlatoonTemplate = 'EngineerBuilderT3&SUBSwarm',
         Priority = 900,
-        DelayEqualBuildPlattons = {'NukeBuilder', 3},
         InstanceCount = 1, 
         BuilderConditions = {
             { UCBC, 'HaveGreaterThanUnitsWithCategory', { 2, categories.ENERGYPRODUCTION * categories.TECH3 } },
@@ -97,8 +96,6 @@ BuilderGroup { BuilderGroupName = 'Swarm Strategic Builder',
             { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 1.1, 1.2 }},
 
             { EBC, 'GreaterThanEconStorageCurrentSwarm', { 100, 1000}},
-
-            { UCBC, 'CheckBuildPlattonDelay', { 'NukeBuilder' }},
 
             { UCBC, 'HaveLessThanUnitsInCategoryBeingBuilt', { 1, categories.NUKE * categories.STRUCTURE}},
         },
@@ -127,7 +124,6 @@ BuilderGroup { BuilderGroupName = 'Swarm Strategic Builder',
         BuilderName = 'Swarm SML Normal',
         PlatoonTemplate = 'EngineerBuilderT3&SUBSwarm',
         Priority = 870,
-        DelayEqualBuildPlattons = {'NukeBuilder', 3},
         InstanceCount = 1, 
         BuilderConditions = {
             { UCBC, 'HaveGreaterThanUnitsWithCategory', { 2, categories.ENERGYPRODUCTION * categories.TECH3 } },
@@ -143,8 +139,6 @@ BuilderGroup { BuilderGroupName = 'Swarm Strategic Builder',
             { EBC, 'GreaterThanEconEfficiencyOverTimeSwarm', { 1.15, 1.1 }},
 
             { EBC, 'GreaterThanEconStorageCurrentSwarm', { 100, 1000}},
-
-            { UCBC, 'CheckBuildPlattonDelay', { 'NukeBuilder' }},
 
             { UCBC, 'HaveLessThanUnitsInCategoryBeingBuilt', { 1, categories.NUKE * categories.STRUCTURE}},
         },
@@ -173,7 +167,6 @@ BuilderGroup { BuilderGroupName = 'Swarm Strategic Builder',
         BuilderName = 'Swarm SML Overwhelm',
         PlatoonTemplate = 'EngineerBuilderT3&SUBSwarm',
         Priority = 850,
-        DelayEqualBuildPlattons = {'NukeBuilder', 3},
         InstanceCount = 2, 
         BuilderConditions = {
         	{ UCBC, 'HaveGreaterThanUnitsWithCategory', { 4, categories.ENERGYPRODUCTION * categories.TECH3 } },
@@ -187,8 +180,6 @@ BuilderGroup { BuilderGroupName = 'Swarm Strategic Builder',
             { EBC, 'GreaterThanEconStorageCurrentSwarm', { 100, 1000}},     
 
             { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 0, categories.ENGINEER * categories.TECH3 }},
-
-            { UCBC, 'CheckBuildPlattonDelay', { 'NukeBuilder' }},
 
             { UCBC, 'HaveUnitRatioVersusEnemySwarm', { 2, categories.STRUCTURE * categories.NUKE * categories.TECH3, '<=', categories.STRUCTURE * categories.DEFENSE * categories.ANTIMISSILE * categories.TECH3 } },
 
@@ -221,14 +212,11 @@ BuilderGroup { BuilderGroupName = 'Swarm Strategic Builder',
         BuilderName = 'Swarm RapidArtillery',
         PlatoonTemplate = 'T3EngineerBuilderSUBSwarm',
         Priority = 1000,
-        DelayEqualBuildPlattons = {'Artillery', 3},
         InstanceCount = 1,
         BuilderConditions = {
         	{ UCBC, 'HaveGreaterThanUnitsWithCategory', { 1, categories.EXPERIMENTAL}},
 
             { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 0, categories.ENGINEER * categories.TECH3}},
-
-            { UCBC, 'CheckBuildPlattonDelay', { 'Artillery' }},
 
             { EBC, 'GreaterThanEnergyIncomeOverTimeSwarm', { 500 }},
 
@@ -263,14 +251,11 @@ BuilderGroup { BuilderGroupName = 'Swarm Strategic Builder',
         BuilderName = 'Swarm T4 Artillery',
         PlatoonTemplate = 'T3EngineerBuilderSUBSwarm',
         Priority = 1000,
-        DelayEqualBuildPlattons = {'Artillery', 3},
         InstanceCount = 1,
         BuilderConditions = {
             { UCBC, 'HaveGreaterThanUnitsWithCategory', { 1, categories.EXPERIMENTAL}},
 
             { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 0, categories.ENGINEER * categories.TECH3}},
-
-            { UCBC, 'CheckBuildPlattonDelay', { 'Artillery' }},
 
             { EBC, 'GreaterThanEnergyIncomeOverTimeSwarm', { 500 }},
 
@@ -305,14 +290,11 @@ BuilderGroup { BuilderGroupName = 'Swarm Strategic Builder',
         BuilderName = 'Swarm T3 Artillery',
         PlatoonTemplate = 'T3EngineerBuilderSUBSwarm',
         Priority = 1000,
-        DelayEqualBuildPlattons = {'Artillery', 3},
         InstanceCount = 1,
         BuilderConditions = {
             { UCBC, 'HaveGreaterThanUnitsWithCategory', { 1, categories.EXPERIMENTAL}},
 
             { UCBC, 'PoolGreaterAtLocation', { 'LocationType', 0, categories.ENGINEER * categories.TECH3}},
-
-            { UCBC, 'CheckBuildPlattonDelay', { 'Artillery' }},
 
             { EBC, 'GreaterThanEnergyIncomeOverTimeSwarm', { 500 }},
 

@@ -11,7 +11,6 @@ BuilderGroup {
         BuilderName = 'S4 Paragon 1st mass40',
         PlatoonTemplate = 'T3EngineerBuildernoSUBSwarm',
         Priority = 300,
-        DelayEqualBuildPlattons = {'Paragon', 60},
         BuilderConditions = {
             { UCBC, 'HasNotParagon', {} },
 
@@ -24,8 +23,6 @@ BuilderGroup {
             { UCBC, 'HaveGreaterThanUnitsWithCategory', { 0, categories.EXPERIMENTAL}},
 
             { EBC, 'GreaterThanEconStorageCurrentSwarm', { 100, 1000}},
-
-            { UCBC, 'CheckBuildPlattonDelay', { 'Paragon' }},
 
             { UCBC, 'HaveLessThanUnitsInCategoryBeingBuilt', { 1, categories.STRUCTURE * categories.EXPERIMENTAL * categories.ECONOMIC }},
 
@@ -51,7 +48,6 @@ BuilderGroup {
         BuilderName = 'S4 Paragon 1st 35min',
         PlatoonTemplate = 'T3EngineerBuildernoSUBSwarm',
         Priority = 350,
-        DelayEqualBuildPlattons = {'Paragon', 60},
         BuilderConditions = {
             { UCBC, 'HasNotParagon', {} },
 
@@ -60,8 +56,6 @@ BuilderGroup {
             { UCBC, 'CanBuildCategorySwarm', { categories.STRUCTURE * categories.EXPERIMENTAL * categories.ECONOMIC } },
 
             { UCBC, 'BuildOnlyOnLocationSwarm', { 'LocationType', 'MAIN' } },
-
-            { UCBC, 'CheckBuildPlattonDelay', { 'Paragon' }},
 
             { UCBC, 'HaveLessThanUnitsInCategoryBeingBuilt', { 1, categories.STRUCTURE * categories.EXPERIMENTAL * categories.ECONOMIC }},
 
@@ -87,7 +81,6 @@ BuilderGroup {
         BuilderName = 'S4 Paragon 1st HighTrend',
         PlatoonTemplate = 'T3EngineerBuildernoSUBSwarm',
         Priority = 350,
-        DelayEqualBuildPlattons = {'Paragon', 60},
         BuilderConditions = {
             { UCBC, 'HasNotParagon', {} },
 
@@ -98,8 +91,6 @@ BuilderGroup {
             { UCBC, 'CanBuildCategorySwarm', { categories.STRUCTURE * categories.EXPERIMENTAL * categories.ECONOMIC } },
 
             { UCBC, 'BuildOnlyOnLocationSwarm', { 'LocationType', 'MAIN' } },
-          
-            { UCBC, 'CheckBuildPlattonDelay', { 'Paragon' }},
             
             { UCBC, 'HaveLessThanUnitsInCategoryBeingBuilt', { 1, categories.STRUCTURE * categories.EXPERIMENTAL * categories.ECONOMIC }},
 

@@ -11,23 +11,24 @@ BuilderGroup {
     BuilderGroupName = 'S123 Energy Builders',                              
     BuildersType = 'EngineerBuilder',
     Builder {
-        BuilderName = 'Swarm Power low trend',
+        BuilderName = 'Swarm Power Low Trend',
+
         PlatoonTemplate = 'T1EngineerBuilderSwarm',
+
         Priority = 655,
-        InstanceCount = 2,                                                     
-        DelayEqualBuildPlattons = {'Energy', 3},
+
+        InstanceCount = 2,
+
         BuilderConditions = {
             { UCBC, 'HaveLessThanUnitsWithCategory', { 1, categories.ENERGYPRODUCTION - categories.TECH1 - categories.COMMAND } },
 
             { UCBC, 'HaveLessThanUnitsInCategoryBeingBuilt', { 1, categories.STRUCTURE * categories.ENERGYPRODUCTION * (categories.TECH2 + categories.TECH3) }},
-            
-            { UCBC, 'CheckBuildPlattonDelay', { 'Energy' }},
 
-            { EBC, 'LessThanEnergyTrendOverTimeSwarm', { 0.0 } },             
+            { EBC, 'LessThanEnergyTrendOverTimeSwarm', { 4.0 } },             
         },
         BuilderType = 'Any',
         BuilderData = {
-            NumAssistees = 1,
+            NumAssistees = 0,
             Construction = {
                 AdjacencyPriority = {
                     categories.STRUCTURE * categories.FACTORY * categories.AIR,
@@ -39,48 +40,6 @@ BuilderGroup {
                 BuildClose = true,
                 LocationType = 'LocationType',
                 BuildStructures = {
-                    'T1EnergyProduction',
-                },
-            }
-        }
-    },
-
-    --==========================--
-    --  Early Game Power Scale  --
-    --==========================--
-
-    Builder {
-        BuilderName = 'Swarm Power low trend - Scale Power',
-        PlatoonTemplate = 'T1EngineerBuilderSwarm',
-        Priority = 645,
-        InstanceCount = 2,                                                     
-        DelayEqualBuildPlattons = {'Energy', 3},
-        BuilderConditions = {
-            { UCBC, 'HaveLessThanUnitsWithCategory', { 1, categories.ENERGYPRODUCTION - categories.TECH1 - categories.COMMAND } },
-
-            { UCBC, 'HaveLessThanUnitsInCategoryBeingBuilt', { 1, categories.STRUCTURE * categories.ENERGYPRODUCTION * (categories.TECH2 + categories.TECH3) }},
-            
-            { UCBC, 'CheckBuildPlattonDelay', { 'Energy' }},
-
-            { EBC, 'GreaterThanMassEfficiencyOverTimeSwarm', { 0.95 }},
-
-            { EBC, 'LessThanEnergyTrendOverTimeSwarm', { 8.0 } },
-        },
-        BuilderType = 'Any',
-        BuilderData = {
-            NumAssistees = 1,
-            Construction = {
-                AdjacencyPriority = {
-                    categories.STRUCTURE * categories.FACTORY * categories.AIR,
-                    categories.RADAR * categories.STRUCTURE,
-                    categories.FACTORY * categories.STRUCTURE * categories.LAND,
-                    categories.MASSEXTRACTION * categories.TECH1,
-                    categories.ENERGYSTORAGE,   
-                },
-                BuildClose = true,
-                LocationType = 'LocationType',
-                BuildStructures = {
-                    'T1EnergyProduction',
                     'T1EnergyProduction',
                 },
             }
@@ -89,16 +48,15 @@ BuilderGroup {
 
     Builder {
         BuilderName = 'Swarm Power Hydrocarbon Normal',
+
         PlatoonTemplate = 'T1EngineerBuilderSwarm',
+
         Priority = 675,
-        DelayEqualBuildPlattons = {'Energy', 1},
+
         InstanceCount = 1,
+
         BuilderConditions = {
             { MABC, 'CanBuildOnHydroSwarm', { 'LocationType', 240, -1000, 4, 1, 'AntiSurface', 1 }},            
-
-            { EBC, 'GreaterThanEconIncomeOverTimeSwarm',  { 0.2, 1.0}}, 
-
-            { UCBC, 'CheckBuildPlattonDelay', { 'Energy' }},
         },
         BuilderType = 'Any',
         BuilderData = {
@@ -117,9 +75,13 @@ BuilderGroup {
 
     Builder {
         BuilderName = 'S2 Power',
+
         PlatoonTemplate = 'T2EngineerBuilderSwarm',
+
         Priority = 1000,
+
         InstanceCount = 1,
+
         BuilderConditions = {
             { UCBC, 'HaveLessThanUnitsWithCategory', { 2, categories.ENGINEER * categories.TECH3 } },
 
@@ -133,7 +95,7 @@ BuilderGroup {
         },
         BuilderType = 'Any',
         BuilderData = {
-            NumAssistees = 25,
+            NumAssistees = 6,
             Construction = {
                 DesiresAssist = true,
                 BuildClose = false,
@@ -159,18 +121,19 @@ BuilderGroup {
 
     Builder {
         BuilderName = 'S3 Power',
-        PlatoonTemplate = 'EngineerBuilderT3&SUBSwarm',
-        Priority = 2700,
-        DelayEqualBuildPlattons = {'Energy', 10},
-        InstanceCount = 1,
-        BuilderConditions = {
-            { UCBC, 'CheckBuildPlattonDelay', { 'Energy' }},
 
-            { EBC, 'LessThanEnergyTrendOverTimeSwarm', { 0.0 } },              -- Ratio from 0 to 1. (1=100%)
+        PlatoonTemplate = 'EngineerBuilderT3&SUBSwarm',
+
+        Priority = 2700,
+
+        InstanceCount = 1,
+
+        BuilderConditions = {
+            { EBC, 'LessThanEnergyTrendOverTimeSwarm', { 200.0 } },              -- Ratio from 0 to 1. (1=100%)
         },
         BuilderType = 'Any',
         BuilderData = {
-            NumAssistees = 40,
+            NumAssistees = 6,
             Construction = {
                 DesiresAssist = true,
                 BuildClose = false,
@@ -397,13 +360,14 @@ BuilderGroup {
 
     Builder {
         BuilderName = 'S3 Power Expansion',
+        
         PlatoonTemplate = 'EngineerBuilderT3&SUBSwarm',
-        Priority = 2700,
-        DelayEqualBuildPlattons = {'Energy', 10},
-        InstanceCount = 1,
-        BuilderConditions = {
-            { UCBC, 'CheckBuildPlattonDelay', { 'Energy' }},
 
+        Priority = 2700,
+
+        InstanceCount = 1,
+
+        BuilderConditions = {
             { UCBC, 'IsEngineerNotBuildingSwarm', { categories.ENERGYPRODUCTION * categories.TECH3 }},
 
             { EBC, 'LessThanEnergyTrendOverTimeSwarm', { 0.0 } },              -- Ratio from 0 to 1. (1=100%)
