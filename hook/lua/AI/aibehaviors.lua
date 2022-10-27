@@ -89,9 +89,21 @@ function StructureUpgradeThreadSwarm(unit, aiBrain, upgradeSpec, bypasseco)
     end
     local upgradebp = aiBrain:GetUnitBlueprint(upgradeID)
     local alternativebp = false
+    local factionCategory = false
     --LOG("What is upgradeID at the Start " ..repr(upgradeID).. " and unit was " ..repr(unit:GetBlueprint().Description))
 
-    local unitType, unitTech, unitFactionIndex = StructureTypeCheckSwarm(aiBrain, unitBp) -- 1: UEF, 2: Aeon, 3: Cybran, 4: Seraphim, 5: Nomads 
+    local unitType, unitTech, unitFactionIndex = StructureTypeCheckSwarm(aiBrain, unitBp) -- 1: UEF, 2: Aeon, 3: Cybran, 4: Seraphim, 5: Nomads
+
+    if unitFactionIndex == 1 then
+        factionCategory = 'UEF'
+    elseif unitFactionIndex == 2 then
+        factionCategory = 'AEON'
+    elseif unitFactionIndex == 3 then
+        factionCategory = 'CYBRAN'
+    elseif unitFactionIndex == 4 then
+        factionCategory = 'SERAPHIM'
+    end 
+
     --LOG("What is unitFactionIndex " ..unitFactionIndex)
     --LOG("What is unitType " ..unitType)
     --LOG("What is unitTech " ..unitTech)
@@ -103,7 +115,7 @@ function StructureUpgradeThreadSwarm(unit, aiBrain, upgradeSpec, bypasseco)
             if EntityCategoryContains( FACTORYLAND, unit) then -- 1: UEF, 2: Aeon, 3: Cybran, 4: Seraphim, 5: Nomads
                 if EntityCategoryContains( FLSF1, unit) then
                     --LOG(aiBrain.Nickname.. " I am a T1 Land Factory")
-                    if SWARMGETN( GetListOfUnits(aiBrain, FLHQ, false, false )) > 0 then
+                    if aiBrain.HQs[factionCategory]['LAND']['TECH2'] > 0 or aiBrain.HQs[factionCategory]['LAND']['TECH3'] > 0 then
                         if unitFactionIndex == 1 then
                             alternativebp = 'zeb9501'
                         elseif unitFactionIndex == 2 then
@@ -121,7 +133,7 @@ function StructureUpgradeThreadSwarm(unit, aiBrain, upgradeSpec, bypasseco)
                     --LOG("What is alternativebp " ..repr(alternativebp))
                 end
 
-                if EntityCategoryContains( FLSF2, unit) and SWARMGETN( GetListOfUnits(aiBrain, FLHQ3, false, false )) > 0 then
+                if EntityCategoryContains( FLSF2, unit) and aiBrain.HQs[factionCategory]['LAND']['TECH3'] > 0 then
                     --LOG(aiBrain.Nickname.. " I am a T2 Land Factory")
                     if unitFactionIndex == 1 then
                         alternativebp = 'zeb9601'
@@ -143,7 +155,7 @@ function StructureUpgradeThreadSwarm(unit, aiBrain, upgradeSpec, bypasseco)
 
             elseif EntityCategoryContains( FACTORYAIR, unit) then -- 1: UEF, 2: Aeon, 3: Cybran, 4: Seraphim, 5: Nomads
                 if EntityCategoryContains( FASF1, unit) then
-                    if SWARMGETN( GetListOfUnits(aiBrain, FAHQ, false, false )) > 0 then
+                    if aiBrain.HQs[factionCategory]['AIR']['TECH2'] > 0 or aiBrain.HQs[factionCategory]['AIR']['TECH3'] > 0 then
                         if unitFactionIndex == 1 then
                            alternativebp = 'zeb9502'
                         elseif unitFactionIndex == 2 then
@@ -158,7 +170,7 @@ function StructureUpgradeThreadSwarm(unit, aiBrain, upgradeSpec, bypasseco)
                     end
                 end
 
-                if EntityCategoryContains( FASF2, unit) and SWARMGETN( GetListOfUnits(aiBrain, FAHQ3, false, false )) > 0 then
+                if EntityCategoryContains( FASF2, unit) and aiBrain.HQs[factionCategory]['AIR']['TECH3'] > 0 then
                     if unitFactionIndex == 1 then
                         alternativebp = 'zeb9602'
                     elseif unitFactionIndex == 2 then
@@ -174,7 +186,7 @@ function StructureUpgradeThreadSwarm(unit, aiBrain, upgradeSpec, bypasseco)
 
             elseif EntityCategoryContains( FACTORYNAVAL, unit) then -- 1: UEF, 2: Aeon, 3: Cybran, 4: Seraphim, 5: Nomads
                 if EntityCategoryContains( FNSF1, unit) then
-                    if SWARMGETN( GetListOfUnits(aiBrain, FNHQ, false, false )) > 0 then
+                    if aiBrain.HQs[factionCategory]['NAVAL']['TECH2'] > 0 or aiBrain.HQs[factionCategory]['NAVAL']['TECH3'] > 0 then
                         if unitFactionIndex == 1 then
                             alternativebp = 'zeb9503'
                         elseif unitFactionIndex == 2 then
@@ -189,7 +201,7 @@ function StructureUpgradeThreadSwarm(unit, aiBrain, upgradeSpec, bypasseco)
                     end
                 end
 
-                if EntityCategoryContains( FNSF2, unit) and SWARMGETN( GetListOfUnits(aiBrain, FNHQ3, false, false )) > 0 then
+                if EntityCategoryContains( FNSF2, unit) and aiBrain.HQs[factionCategory]['NAVAL']['TECH3'] > 0 then
                     if unitFactionIndex == 1 then
                         alternativebp = 'zeb9603'
                     elseif unitFactionIndex == 2 then

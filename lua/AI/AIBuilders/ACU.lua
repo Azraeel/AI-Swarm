@@ -248,7 +248,7 @@ BuilderGroup {
     --==========================--
 
     Builder {
-        BuilderName = 'Swarm Commander Power low trend',
+        BuilderName = 'Swarm Commander Power Low Trend',
         PlatoonTemplate = 'CommanderBuilderSwarm',
         Priority = 645,
         BuilderConditions = {
