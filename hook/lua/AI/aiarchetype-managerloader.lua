@@ -280,15 +280,7 @@ function BaseTargetManagerThreadSwarm(aiBrain)
         distance = 8192
         SWARMWAIT(50)
         if not baseposition then
-            if aiBrain:PBMHasPlatoonList() then
-                for k,v in aiBrain.PBM.Locations do
-                    if v.LocationType == 'MAIN' then
-                        baseposition = v.Location
-                        radius = v.Radius
-                        break
-                    end
-                end
-            elseif aiBrain.BuilderManagers['MAIN'] then
+            if aiBrain.BuilderManagers['MAIN'] then
                 baseposition = aiBrain.BuilderManagers['MAIN'].FactoryManager.Location
                 radius = aiBrain.BuilderManagers['MAIN'].FactoryManager:GetLocationRadius()
             end

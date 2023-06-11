@@ -90,16 +90,6 @@ function HaveUnitRatioAtLocationSwarm(aiBrain, locType, ratio, categoryNeed, com
         radius = aiBrain.BuilderManagers[locType].FactoryManager:GetLocationRadius()
         BASEPOSTITIONSSWARM[AIName] = BASEPOSTITIONSSWARM[AIName] or {} 
         BASEPOSTITIONSSWARM[AIName][locType] = {Pos=baseposition, Rad=radius}
-    elseif aiBrain:PBMHasPlatoonList() then
-        for k,v in aiBrain.PBM.Locations do
-            if v.LocationType == locType then
-                baseposition = v.Location
-                radius = v.Radius
-                BASEPOSTITIONSSWARM[AIName] = BASEPOSTITIONSSWARM[AIName] or {} 
-                BASEPOSTITIONSSWARM[AIName][locType] = {baseposition, radius}
-                break
-            end
-        end
     end
     if not baseposition then
         return false
@@ -122,16 +112,6 @@ function HaveUnitRatioAtLocationSwarmRadiusVersusEnemy(aiBrain, ratio, locType, 
         radius = aiBrain.BuilderManagers[locType].FactoryManager:GetLocationRadius()
         BASEPOSTITIONSSWARM[AIName] = BASEPOSTITIONSSWARM[AIName] or {} 
         BASEPOSTITIONSSWARM[AIName][locType] = {Pos=baseposition, Rad=radius}
-    elseif aiBrain:PBMHasPlatoonList() then
-        for k,v in aiBrain.PBM.Locations do
-            if v.LocationType == locType then
-                baseposition = v.Location
-                radius = v.Radius
-                BASEPOSTITIONSSWARM[AIName] = BASEPOSTITIONSSWARM[AIName] or {} 
-                BASEPOSTITIONSSWARM[AIName][locType] = {baseposition, radius}
-                break
-            end
-        end
     end
     if not baseposition then
         return false
@@ -238,16 +218,6 @@ function GetUnitsBeingBuiltLocationSwarm(aiBrain, locType, buildingCategory, bui
         radius = aiBrain.BuilderManagers[locType].FactoryManager:GetLocationRadius()
         BASEPOSTITIONSSWARM[AIName] = BASEPOSTITIONSSWARM[AIName] or {} 
         BASEPOSTITIONSSWARM[AIName][locType] = {Pos=baseposition, Rad=radius}
-    elseif aiBrain:PBMHasPlatoonList() then
-        for k,v in aiBrain.PBM.Locations do
-            if v.LocationType == locType then
-                baseposition = v.Location
-                radius = v.Radius
-                BASEPOSTITIONSSWARM[AIName] = BASEPOSTITIONSSWARM[AIName] or {} 
-                BASEPOSTITIONSSWARM[AIName][locType] = {baseposition, radius}
-                break
-            end
-        end
     end
     if not baseposition then
         return false

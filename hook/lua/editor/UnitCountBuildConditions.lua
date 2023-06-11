@@ -148,16 +148,6 @@ function HaveUnitRatioAtLocationSwarm(aiBrain, locType, ratio, categoryNeed, com
         radius = aiBrain.BuilderManagers[locType].FactoryManager:GetLocationRadius()
         BASEPOSTITIONSSWARM[AIName] = BASEPOSTITIONSSWARM[AIName] or {} 
         BASEPOSTITIONSSWARM[AIName][locType] = {Pos=baseposition, Rad=radius}
-    elseif aiBrain:PBMHasPlatoonList() then
-        for k,v in aiBrain.PBM.Locations do
-            if v.LocationType == locType then
-                baseposition = v.Location
-                radius = v.Radius
-                BASEPOSTITIONSSWARM[AIName] = BASEPOSTITIONSSWARM[AIName] or {} 
-                BASEPOSTITIONSSWARM[AIName][locType] = {baseposition, radius}
-                break
-            end
-        end
     end
     if not baseposition then
         return false
@@ -180,16 +170,6 @@ function HaveUnitRatioAtLocationSwarmRadiusVersusEnemy(aiBrain, ratio, locType, 
         radius = aiBrain.BuilderManagers[locType].FactoryManager:GetLocationRadius()
         BASEPOSTITIONSSWARM[AIName] = BASEPOSTITIONSSWARM[AIName] or {} 
         BASEPOSTITIONSSWARM[AIName][locType] = {Pos=baseposition, Rad=radius}
-    elseif aiBrain:PBMHasPlatoonList() then
-        for k,v in aiBrain.PBM.Locations do
-            if v.LocationType == locType then
-                baseposition = v.Location
-                radius = v.Radius
-                BASEPOSTITIONSSWARM[AIName] = BASEPOSTITIONSSWARM[AIName] or {} 
-                BASEPOSTITIONSSWARM[AIName][locType] = {baseposition, radius}
-                break
-            end
-        end
     end
     if not baseposition then
         return false
@@ -296,16 +276,6 @@ function GetUnitsBeingBuiltLocationSwarm(aiBrain, locType, buildingCategory, bui
         radius = aiBrain.BuilderManagers[locType].FactoryManager:GetLocationRadius()
         BASEPOSTITIONSSWARM[AIName] = BASEPOSTITIONSSWARM[AIName] or {} 
         BASEPOSTITIONSSWARM[AIName][locType] = {Pos=baseposition, Rad=radius}
-    elseif aiBrain:PBMHasPlatoonList() then
-        for k,v in aiBrain.PBM.Locations do
-            if v.LocationType == locType then
-                baseposition = v.Location
-                radius = v.Radius
-                BASEPOSTITIONSSWARM[AIName] = BASEPOSTITIONSSWARM[AIName] or {} 
-                BASEPOSTITIONSSWARM[AIName][locType] = {baseposition, radius}
-                break
-            end
-        end
     end
     if not baseposition then
         return false
@@ -583,6 +553,33 @@ function ScalePlatoonSizeSwarm(aiBrain, locationType, type, unitCategory)
         else
             return false
         end
+    end
+    return false
+end
+
+---@param aiBrain AIBrain
+---@param sizetable number
+---@param category EntityCategory
+---@param idleReq boolean
+---@return boolean
+function HaveLessThanUnitsForMapSizeSwarm(aiBrain, sizetable, category, idleReq)
+    local numUnits
+    local total = 0
+    local mapSizeX, mapSizeZ = GetMapSize()
+    if not sizetable[mapSizeX] or not sizetable[mapSizeZ] then
+        return false
+    end
+    local numReq = sizetable[mapSizeX] or sizetable[mapSizeZ]
+    if type(category) == 'string' then
+        category = ParseEntityCategory(category)
+    end
+    if not idleReq then
+        numUnits = aiBrain:GetCurrentUnits(category)
+    else
+        numUnits = table.getn(aiBrain:GetListOfUnits(category, true))
+    end
+    if numUnits < numReq then
+        return true
     end
     return false
 end
