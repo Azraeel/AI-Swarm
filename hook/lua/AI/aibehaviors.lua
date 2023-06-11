@@ -76,7 +76,7 @@ end
 function StructureUpgradeThreadSwarm(unit, aiBrain, upgradeSpec, bypasseco) 
     --LOG('* AI-Swarm: Starting structure thread upgrade for'..aiBrain.Nickname)
 
-    local unitBp = unit:GetBlueprint()
+    local unitBp = unit.Blueprint
     local upgradeID = unitBp.General.UpgradesTo or false
 
     if not upgradeID then return end
@@ -346,7 +346,7 @@ function StructureUpgradeThreadSwarm(unit, aiBrain, upgradeSpec, bypasseco)
             --LOG('* AI-Swarm: massEfficiency'..massEfficiency)
             --energyEfficiency = math.min(energyIncome / energyRequested, 2)
             --LOG('* AI-Swarm: energyEfficiency'..energyEfficiency)
-            
+
             if (aiBrain.EconomyOverTimeCurrent.MassEfficiencyOverTime >= upgradeSpec.MassLowTrigger and aiBrain.EconomyOverTimeCurrent.EnergyEfficiencyOverTime >= upgradeSpec.EnergyLowTrigger)
                 or ((massStorageRatio > .60 and energyStorageRatio > .40))
                 or (massStorage > (massNeeded * .7) and energyStorage > (energyNeeded * .7 ) ) or bypasseco then
@@ -361,7 +361,7 @@ function StructureUpgradeThreadSwarm(unit, aiBrain, upgradeSpec, bypasseco)
                 SWARMWAIT(10)
                 continue
             end
-            
+
             if (massEfficiency <= upgradeSpec.MassHighTrigger and energyEfficiency <= upgradeSpec.EnergyHighTrigger) then
                 --LOG('* AI-Swarm: hi_trigger_good = true')
             else
@@ -379,7 +379,7 @@ function StructureUpgradeThreadSwarm(unit, aiBrain, upgradeSpec, bypasseco)
 						if not unit.Dead then
 
                             upgradeIssued = true
-                            LOG(aiBrain.Nickname.. " " ..repr(unit:GetBlueprint().Description.. " " ..unit.Sync.id.. " Upgrading to " ..repr(upgradebp.Description)))
+                            --LOG(aiBrain.Nickname.. " " ..repr(unit:GetBlueprint().Description.. " " ..unit.Sync.id.. " Upgrading to " ..repr(upgradebp.Description)))
                             IssueUpgrade({unit}, upgradeID)
 
                             -- if upgrade issued and not completely full --
@@ -389,7 +389,7 @@ function StructureUpgradeThreadSwarm(unit, aiBrain, upgradeSpec, bypasseco)
                                 ForkThread(StructureUpgradeDelaySwarm, aiBrain, aiBrain.UpgradeIssuedPeriod * .5)     -- otherwise halve the delay period
                             end
 
-                            while (not unit.Dead) and (not unit.UnitBeingBuilt:GetBlueprint().BlueprintId == upgradeID) do
+                            while (not unit.Dead) and (not unit.UnitBeingBuilt.Blueprint.BlueprintId == upgradeID) do
                                 SWARMWAIT(50)
                             end
                         end
@@ -437,8 +437,9 @@ function StructureUpgradeThreadSwarm(unit, aiBrain, upgradeSpec, bypasseco)
         local unitbeingbuiltbp = false
 		
 		local unitbeingbuilt = unit.UnitBeingBuilt
-
-        unitbeingbuiltbp = unitbeingbuilt:GetBlueprint()
+        if not IsDestroyed(unitbeingbuilt) then
+            unitbeingbuiltbp = unitbeingbuilt.Blueprint
+        end
 
         upgradeID = unitbeingbuiltbp.General.UpgradesTo or false
         --LOG('* AI-Swarm: T1 extractor upgrading to T2 then upgrades to :'..upgradeID)
@@ -451,6 +452,9 @@ function StructureUpgradeThreadSwarm(unit, aiBrain, upgradeSpec, bypasseco)
             unitbeingbuilt.DesiresAssist = true			-- let engineers know they can assist this upgrade
 
             --LOG('* AI-Swarm: Forking another instance of StructureUpgradeThreadSwarm')
+            if not EntityCategoryContains(categories.MASSEXTRACTION + categories.FACTORY, unitbeingbuilt) then
+                return
+            end
 			unitbeingbuilt.UpgradeThread = unitbeingbuilt:ForkThread( StructureUpgradeThreadSwarm, aiBrain, upgradeSpec, bypasseco )
         end
 		-- assign mass extractors to their own platoon 
