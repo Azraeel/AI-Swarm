@@ -9,6 +9,14 @@ PlatoonTemplate {
 }
 
 PlatoonTemplate {
+    Name = 'T1LandScoutFormSwarm',
+    Plan = 'ScoutingAISwarm',
+    GlobalSquads = {
+        { categories.MOBILE * categories.SCOUT * categories.TECH1, 1, 1, 'scout', 'none' }
+    }
+}
+
+PlatoonTemplate {
     Name = 'AISwarm LandAttack Micro - Basic',
     Plan = 'HuntAISwarm',
     GlobalSquads = {

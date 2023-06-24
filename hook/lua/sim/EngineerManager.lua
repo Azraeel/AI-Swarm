@@ -1,4 +1,5 @@
 local SwarmUtils = import('/mods/AI-Swarm/lua/AI/Swarmutilities.lua')
+local ALLBPS = __blueprints
 
 SwarmEngineerManager = EngineerManager
 EngineerManager = Class(SwarmEngineerManager) {
@@ -9,17 +10,15 @@ EngineerManager = Class(SwarmEngineerManager) {
         end
         if EntityCategoryContains(categories.FACTORY * categories.STRUCTURE, finishedUnit) and finishedUnit:GetAIBrain():GetArmyIndex() == self.Brain:GetArmyIndex() then
             self.Brain.BuilderManagers[self.LocationType].FactoryManager:AddFactory(finishedUnit)
-            local unitBp = finishedUnit:GetBlueprint()
-			local upgradeID = unitBp.General.UpgradesTo or false
-			if upgradeID and unitBp then
+			local upgradeID = finishedUnit.Blueprint.General.UpgradesTo or false
+			if upgradeID then
 				-- if upgradeID available then launch upgrade thread
 				SwarmUtils.StructureUpgradeInitializeSwarm(finishedUnit, self.Brain)
 			end
         end
         if EntityCategoryContains(categories.MASSEXTRACTION * categories.STRUCTURE, finishedUnit) and finishedUnit:GetAIBrain():GetArmyIndex() == self.Brain:GetArmyIndex() then
-            local unitBp = finishedUnit:GetBlueprint()
-            local upgradeID = unitBp.General.UpgradesTo or false
-			if upgradeID and unitBp then
+            local upgradeID = finishedUnit.Blueprint.General.UpgradesTo or false
+			if upgradeID then
 				--LOG('* AI-Swarm: UpgradeID')
 				SwarmUtils.StructureUpgradeInitializeSwarm(finishedUnit, self.Brain)
             end
