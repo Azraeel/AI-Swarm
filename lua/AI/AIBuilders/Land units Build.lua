@@ -525,7 +525,7 @@ BuilderGroup { BuilderGroupName = 'Swarm Land Scout Formers',
     BuildersType = 'PlatoonFormBuilder',
     
     Builder { BuilderName = 'Swarm Land Scout',
-        PlatoonTemplate = 'T1LandScoutForm',
+        PlatoonTemplate = 'T1LandScoutFormSwarm',
         Priority = 10000,
         InstanceCount = 10,
         BuilderConditions = {

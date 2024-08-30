@@ -529,6 +529,7 @@ AIBrain = Class(SwarmAIBrainClass) {
     EconomyTacticalMonitorSwarm = function(self, ALLBPS)
 
         SWARMWAIT(5)
+        local multiplier
 
         if self.CheatEnabled then
             multiplier = tonumber(ScenarioInfo.Options.BuildMult)
@@ -990,7 +991,7 @@ AIBrain = Class(SwarmAIBrainClass) {
                         end
                     end
                 end
-                aiBrain.EnemyStartLocations = enemyStarts
+                aiBrain.EnemyStartLocations = opponentStarts
             else -- Spawn locations were random. We don't know where our opponents are. Add all non-ally start locations to the scout list
                 local numOpponents = 0
                 for i = 1, 16 do
@@ -1010,6 +1011,7 @@ AIBrain = Class(SwarmAIBrainClass) {
 
                 -- If the start location is not ours or an ally's, it is suspicious
                 local starts = AIUtils.AIGetMarkerLocations(aiBrain, 'Start Location')
+                local startLocations = {}
                 for _, loc in starts do
                     -- If vacant
                     if not allyStarts[loc.Name] then
@@ -1043,14 +1045,14 @@ AIBrain = Class(SwarmAIBrainClass) {
                 for i=1, table.getn(self.InterestList) do
                     local loc = self.InterestList[i]
 
-                    if VDist2Sq(struct[1], struct[3], loc['Position'][1], loc['Position'][3]) < 10000 then -- If it's already in the list...ignore it!
+                    if VDist2Sq(struct[1], struct[2], loc['Position'][1], loc['Position'][3]) < 10000 then -- If it's already in the list...ignore it!
                         dupe = true
 
                         -- Check to see if it's already in the low priority list and ignore it if so because we want to keep the original order intact! (so things that have been high pri a long time are low pri once in a while so things that are low pri for a short time are high pri once in a while)
                         for j=1, table.getn(self.InterestList.LowPriority) do
                             local loc = self.InterestList.LowPriority[j]
 
-                            if VDist2Sq(struct[1], struct[3], loc['Position'][1], loc['Position'][3]) < 10000 then
+                            if VDist2Sq(struct[1], struct[2], loc['Position'][1], loc['Position'][3]) < 10000 then
                                 dupe = false
                                 break
                             end
@@ -1059,14 +1061,14 @@ AIBrain = Class(SwarmAIBrainClass) {
                         if dupe then -- Found it in the low pri list, don't add it to the high priority list! (This means that things that have been high pri a long time will stay high pri and things that are medium pri more often will slowly become low pri over time)
                             break  -- Found it in the low pri list, don't add it to the high priority list! (This means that things that have been low pri a long time will slowly become medium and then finally high pri over time)
                         elseif i == table.getn(self.InterestList) then -- Found it in the high pri list, move it to the low priority list! (This means that things that have been low pri a long time will slowly become medium and then finally high pri over time)
-                            table.insert(self.InterestList.LowPriority, { Position = struct[1], LastScouted = GetGameTimeSeconds(), LastAlert = -1 })
+                            table.insert(self.InterestList.LowPriority, { Position = {struct[1], GetSurfaceHeight(struct[1], struct[2]), struct[2]}, LastScouted = GetGameTimeSeconds(), LastAlert = -1 })
                             break
                         end
                     end
                 end
 
                 if not dupe then -- It's not already in the list, so add it to the high priority list! (This means that things that have been low pri a long time will slowly become medium and then finally high pri over time)
-                    table.insert(self.InterestList, { Position = struct[1], LastScouted = GetGameTimeSeconds(), LastAlert = -1 })
+                    table.insert(self.InterestList, { Position = {struct[1], GetSurfaceHeight(struct[1], struct[2]), struct[2]}, LastScouted = GetGameTimeSeconds(), LastAlert = -1 })
                 end
 
                 -- Sort the list based on low long it has been since it was scouted
@@ -1082,9 +1084,11 @@ AIBrain = Class(SwarmAIBrainClass) {
                     end
                 end)
 
-                -- Draw intel data on map:
+                -- Draw intel data on map: This should be disabled for release.
                 -- if a structure is visible and has been scouted at least once, then draw it as a point (with varying alpha based on last time it was scouted) with text that contains its threat value/type and the time since it was last scouted (with millisecond precision)
+                --[[
                 for _, loc in self.InterestList do
+                    LOG('InterestList '..repr(loc))
 
                     local threatType = 'StructuresNotMex'
 
@@ -1121,6 +1125,7 @@ AIBrain = Class(SwarmAIBrainClass) {
 
                     end
                 end
+                ]]
 
                 WaitSeconds(5) -- Don't flood the user with intel! We're not barbarians! (We might want to change this later on though...)
             end
@@ -1177,6 +1182,7 @@ AIBrain = Class(SwarmAIBrainClass) {
         local enemyDefenseSurface = 0
         local enemyDefenseSub = 0
         local enemyACUGun = 0
+        local bp
 
         --LOG('Starting Threat Check at'..GetGameTick())
         for index, brain in ArmyBrains do
@@ -1332,12 +1338,11 @@ AIBrain = Class(SwarmAIBrainClass) {
                 if not self.StructurePool then
                     SwarmUtils.CheckCustomPlatoonsSwarm(self)
                 end
-                local unitBp = v:GetBlueprint()
                 local StructurePool = self.StructurePool
                 --LOG('* AI-Swarm: Assigning built extractor to StructurePool')
                 self:AssignUnitsToPlatoon(StructurePool, {v}, 'Support', 'none' )
-                local upgradeID = unitBp.General.UpgradesTo or false
-                if upgradeID and unitBp then
+                local upgradeID = v.Blueprint.General.UpgradesTo or false
+                if upgradeID then
                     --LOG('* AI-Swarm: UpgradeID')
                     SwarmUtils.StructureUpgradeInitializeSwarm(v, self)
                 end

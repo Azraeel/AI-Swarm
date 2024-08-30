@@ -6470,6 +6470,9 @@ Platoon = Class(SwarmPlatoonClass) {
     end,
 
     ExtractorCallForHelpAISwarm = function(self, aiBrain)
+        if not aiBrain.InterestList then
+            aiBrain:BuildScoutLocationsSwarm()
+        end
         local checkTime = self.PlatoonData.DistressCheckTime or 4
         local pos = GetPlatoonPosition(self)
         while PlatoonExists(aiBrain, self) and pos do

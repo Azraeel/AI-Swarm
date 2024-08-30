@@ -88,6 +88,9 @@ function StructureUpgradeThreadSwarm(unit, aiBrain, upgradeSpec, bypasseco)
         bypasseco = false
     end
     local upgradebp = aiBrain:GetUnitBlueprint(upgradeID)
+    if not upgradebp then
+        return
+    end
     local alternativebp = false
     local factionCategory = false
     --LOG("What is upgradeID at the Start " ..repr(upgradeID).. " and unit was " ..repr(unit:GetBlueprint().Description))
@@ -113,26 +116,23 @@ function StructureUpgradeThreadSwarm(unit, aiBrain, upgradeSpec, bypasseco)
         if upgradeID then
             -- This is the support factory compatibility code
             if EntityCategoryContains( FACTORYLAND, unit) then -- 1: UEF, 2: Aeon, 3: Cybran, 4: Seraphim, 5: Nomads
-                if EntityCategoryContains( FLSF1, unit) then
+                if EntityCategoryContains( FLSF1, unit) and (aiBrain.HQs[factionCategory]['LAND']['TECH2'] > 0 or aiBrain.HQs[factionCategory]['LAND']['TECH3'] > 0) then
                     --LOG(aiBrain.Nickname.. " I am a T1 Land Factory")
-                    if aiBrain.HQs[factionCategory]['LAND']['TECH2'] > 0 or aiBrain.HQs[factionCategory]['LAND']['TECH3'] > 0 then
-                        if unitFactionIndex == 1 then
-                            alternativebp = 'zeb9501'
-                        elseif unitFactionIndex == 2 then
-                            alternativebp = 'zab9501'
-                        elseif unitFactionIndex == 3 then
-                            alternativebp = 'zrb9501'
-                        elseif unitFactionIndex == 4 then
-                            alternativebp = 'zsb9501'
-                        end
-                        --LOG(aiBrain.Nickname.. " I am upgrading to a T2 Support Factory")
-                        upgradebp = aiBrain:GetUnitBlueprint(alternativebp)
-                        upgradeID = alternativebp
+                    if unitFactionIndex == 1 then
+                        alternativebp = 'zeb9501'
+                    elseif unitFactionIndex == 2 then
+                        alternativebp = 'zab9501'
+                    elseif unitFactionIndex == 3 then
+                        alternativebp = 'zrb9501'
+                    elseif unitFactionIndex == 4 then
+                        alternativebp = 'zsb9501'
                     end
+                    --LOG(aiBrain.Nickname.. " I am upgrading to a T2 Support Factory")
+                    upgradebp = aiBrain:GetUnitBlueprint(alternativebp)
+                    upgradeID = alternativebp
                     --LOG("What is unitFactionIndex " ..repr(unitFactionIndex))
                     --LOG("What is alternativebp " ..repr(alternativebp))
                 end
-
                 if EntityCategoryContains( FLSF2, unit) and aiBrain.HQs[factionCategory]['LAND']['TECH3'] > 0 then
                     --LOG(aiBrain.Nickname.. " I am a T2 Land Factory")
                     if unitFactionIndex == 1 then
@@ -148,26 +148,22 @@ function StructureUpgradeThreadSwarm(unit, aiBrain, upgradeSpec, bypasseco)
                     upgradebp = aiBrain:GetUnitBlueprint(alternativebp)
                     upgradeID = alternativebp
                 end
-
                 if EntityCategoryContains( FLHQ2, unit) then
                     LOG(aiBrain.Nickname.. " I am a T2 Land HQ and can only upgrade to a T3 HQ")
                 end
-
             elseif EntityCategoryContains( FACTORYAIR, unit) then -- 1: UEF, 2: Aeon, 3: Cybran, 4: Seraphim, 5: Nomads
-                if EntityCategoryContains( FASF1, unit) then
-                    if aiBrain.HQs[factionCategory]['AIR']['TECH2'] > 0 or aiBrain.HQs[factionCategory]['AIR']['TECH3'] > 0 then
-                        if unitFactionIndex == 1 then
-                           alternativebp = 'zeb9502'
-                        elseif unitFactionIndex == 2 then
-                            alternativebp = 'zab9502'
-                        elseif unitFactionIndex == 3 then
-                            alternativebp = 'zrb9502'
-                        elseif unitFactionIndex == 4 then
-                            alternativebp = 'zsb9502'
-                        end
-                        upgradebp = aiBrain:GetUnitBlueprint(alternativebp)
-                        upgradeID = alternativebp
+                if EntityCategoryContains( FASF1, unit) and (aiBrain.HQs[factionCategory]['AIR']['TECH2'] > 0 or aiBrain.HQs[factionCategory]['AIR']['TECH3'] > 0) then
+                    if unitFactionIndex == 1 then
+                        alternativebp = 'zeb9502'
+                    elseif unitFactionIndex == 2 then
+                        alternativebp = 'zab9502'
+                    elseif unitFactionIndex == 3 then
+                        alternativebp = 'zrb9502'
+                    elseif unitFactionIndex == 4 then
+                        alternativebp = 'zsb9502'
                     end
+                    upgradebp = aiBrain:GetUnitBlueprint(alternativebp)
+                    upgradeID = alternativebp
                 end
 
                 if EntityCategoryContains( FASF2, unit) and aiBrain.HQs[factionCategory]['AIR']['TECH3'] > 0 then
@@ -183,24 +179,20 @@ function StructureUpgradeThreadSwarm(unit, aiBrain, upgradeSpec, bypasseco)
                     upgradebp = aiBrain:GetUnitBlueprint(alternativebp)
                     upgradeID = alternativebp
                 end
-
             elseif EntityCategoryContains( FACTORYNAVAL, unit) then -- 1: UEF, 2: Aeon, 3: Cybran, 4: Seraphim, 5: Nomads
-                if EntityCategoryContains( FNSF1, unit) then
-                    if aiBrain.HQs[factionCategory]['NAVAL']['TECH2'] > 0 or aiBrain.HQs[factionCategory]['NAVAL']['TECH3'] > 0 then
-                        if unitFactionIndex == 1 then
-                            alternativebp = 'zeb9503'
-                        elseif unitFactionIndex == 2 then
-                            alternativebp = 'zab9503'
-                        elseif unitFactionIndex == 3 then
-                            alternativebp = 'zrb9503'
-                        elseif unitFactionIndex == 4 then
-                            alternativebp = 'zsb9503'
-                        end
-                        upgradebp = aiBrain:GetUnitBlueprint(alternativebp)
-                        upgradeID = alternativebp
+                if EntityCategoryContains( FNSF1, unit) and (aiBrain.HQs[factionCategory]['NAVAL']['TECH2'] > 0 or aiBrain.HQs[factionCategory]['NAVAL']['TECH3'] > 0) then
+                    if unitFactionIndex == 1 then
+                        alternativebp = 'zeb9503'
+                    elseif unitFactionIndex == 2 then
+                        alternativebp = 'zab9503'
+                    elseif unitFactionIndex == 3 then
+                        alternativebp = 'zrb9503'
+                    elseif unitFactionIndex == 4 then
+                        alternativebp = 'zsb9503'
                     end
+                    upgradebp = aiBrain:GetUnitBlueprint(alternativebp)
+                    upgradeID = alternativebp
                 end
-
                 if EntityCategoryContains( FNSF2, unit) and aiBrain.HQs[factionCategory]['NAVAL']['TECH3'] > 0 then
                     if unitFactionIndex == 1 then
                         alternativebp = 'zeb9603'
@@ -216,6 +208,7 @@ function StructureUpgradeThreadSwarm(unit, aiBrain, upgradeSpec, bypasseco)
                 end
             --LOG("What is upgradeID " ..repr(upgradebp))
             end
+            return upgradebp
         end
     end
 
@@ -303,137 +296,155 @@ function StructureUpgradeThreadSwarm(unit, aiBrain, upgradeSpec, bypasseco)
         --LOG('* AI-Swarm: Upgrade main loop starting for'..aiBrain.Nickname)
         SWARMWAIT(upgradeSpec.UpgradeCheckWait * 10)
 
-        DecideUpgradeBP()
-        GetUpgradeEconomy()
-        --LOG("What is Upgrade BP " ..repr(upgradebp))
-        upgradeSpec = aiBrain:GetUpgradeSpecSwarm(unit)
-        --LOG('Upgrade Spec '..repr(upgradeSpec))
-        --LOG('Current low mass trigger '..upgradeSpec.MassLowTrigger)
-
-        if EntityCategoryContains( EXTRACTORALL, unit) and not ExtractorClosestSwarm(aiBrain, unit, unitBp) then
-            --LOG('This is not the Closest Extractor ' .. ' ' ..repr(unit:GetBlueprint().Description))
-            SWARMWAIT(10)
-            continue
-        end
-
-        if EntityCategoryContains( EXTRACTORALL, unit) then
-            
-            if (not unit.MAINBASE) or (unit.MAINBASE and not bypasseco and GetEconomyStored( aiBrain, 'MASS') < (massNeeded * 0.5)) then
-               --LOG('Mainbase Unit is ' .. ' ' ..repr(unit:GetBlueprint().Description))
-                if HaveUnitRatio( aiBrain, 1.6, categories.MASSEXTRACTION * categories.TECH1, '>=', categories.MASSEXTRACTION * categories.TECH2 ) and unitTech == 'TECH2' and unitType == 'MASSEXTRACTION' then
-                    --LOG('Too few tech2 extractors to go tech3')
-                    ecoStartTime = ecoStartTime + upgradeSpec.UpgradeCheckWait
-                    SWARMWAIT(10)
-                    continue
-                end
+        local upgradeBP = DecideUpgradeBP()
+        local waitHQLoop = false
+        if upgradeBP and upgradeBP.CategoriesHash.SUPPORTFACTORY then
+            if upgradeBP.CategoriesHash.LAND and upgradeBP.CategoriesHash.TECH2 and (aiBrain.HQs[factionCategory]['LAND']['TECH2'] < 1 and aiBrain.HQs[factionCategory]['LAND']['TECH3'] < 1) then
+                waitHQLoop = true
+            elseif upgradeBP.CategoriesHash.LAND and upgradeBP.CategoriesHash.TECH3 and aiBrain.HQs[factionCategory]['LAND']['TECH3'] < 1 then
+                waitHQLoop = true
+            elseif upgradeBP.CategoriesHash.AIR and upgradeBP.CategoriesHash.TECH2 and (aiBrain.HQs[factionCategory]['AIR']['TECH2'] < 1 and aiBrain.HQs[factionCategory]['AIR']['TECH3'] < 1) then
+                waitHQLoop = true
+            elseif upgradeBP.CategoriesHash.AIR and upgradeBP.CategoriesHash.TECH3 and aiBrain.HQs[factionCategory]['AIR']['TECH3'] < 1 then
+                waitHQLoop = true
+            elseif upgradeBP.CategoriesHash.NAVAL and upgradeBP.CategoriesHash.TECH2 and (aiBrain.HQs[factionCategory]['NAVAL']['TECH2'] < 1 and aiBrain.HQs[factionCategory]['NAVAL']['TECH3'] < 1) then
+                waitHQLoop = true
+            elseif upgradeBP.CategoriesHash.NAVAL and upgradeBP.CategoriesHash.TECH3 and aiBrain.HQs[factionCategory]['NAVAL']['TECH3'] < 1 then
+                waitHQLoop = true
             end
         end
+        if not waitHQLoop then
+            GetUpgradeEconomy()
+            --LOG("What is Upgrade BP " ..repr(upgradebp))
+            upgradeSpec = aiBrain:GetUpgradeSpecSwarm(unit)
+            --LOG('Upgrade Spec '..repr(upgradeSpec))
+            --LOG('Current low mass trigger '..upgradeSpec.MassLowTrigger)
 
-        --LOG('Current Upgrade Limit is :'..upgradeNumLimit)
-        --LOG('Upgrade Issued '..aiBrain.UpgradeIssued..' Upgrade Issued Limit '..aiBrain.UpgradeIssuedLimit)
-        if aiBrain.UpgradeIssued < aiBrain.UpgradeIssuedLimit then
-            --LOG('* AI-Swarm:'..aiBrain.Nickname)
-            --LOG('* AI-Swarm: UpgradeIssues and UpgradeIssuedLimit are set')
-            massStorage = GetEconomyStored( aiBrain, 'MASS')
-            --LOG('* AI-Swarm: massStorage'..massStorage)
-            energyStorage = GetEconomyStored( aiBrain, 'ENERGY')
-            --LOG('* AI-Swarm: energyStorage'..energyStorage)
-            massStorageRatio = GetEconomyStoredRatio(aiBrain, 'MASS')
-            --LOG('* AI-Swarm: massStorageRatio'..massStorageRatio)
-            energyStorageRatio = GetEconomyStoredRatio(aiBrain, 'ENERGY')
-            --LOG('* AI-Swarm: energyStorageRatio'..energyStorageRatio)
-            massIncome = GetEconomyIncome(aiBrain, 'MASS')
-            --LOG('* AI-Swarm: massIncome'..massIncome)
-            massRequested = GetEconomyRequested(aiBrain, 'MASS')
-            --LOG('* AI-Swarm: massRequested'..massRequested)
-            energyIncome = GetEconomyIncome(aiBrain, 'ENERGY')
-            --LOG('* AI-Swarm: energyIncome'..energyIncome)
-            energyRequested = GetEconomyRequested(aiBrain, 'ENERGY')
-            --LOG('* AI-Swarm: energyRequested'..energyRequested)
-            massTrend = aiBrain.EconomyOverTimeCurrent.MassTrendOverTime
-            --LOG('* AI-Swarm: massTrend'..massTrend)
-            energyTrend = aiBrain.EconomyOverTimeCurrent.EnergyTrendOverTime
-            --LOG('* AI-Swarm: energyTrend'..energyTrend)
-            --massEfficiency = math.min(massIncome / massRequested, 2)
-            --LOG('* AI-Swarm: massEfficiency'..massEfficiency)
-            --energyEfficiency = math.min(energyIncome / energyRequested, 2)
-            --LOG('* AI-Swarm: energyEfficiency'..energyEfficiency)
-
-            if (aiBrain.EconomyOverTimeCurrent.MassEfficiencyOverTime >= upgradeSpec.MassLowTrigger and aiBrain.EconomyOverTimeCurrent.EnergyEfficiencyOverTime >= upgradeSpec.EnergyLowTrigger)
-                or ((massStorageRatio > .60 and energyStorageRatio > .40))
-                or (massStorage > (massNeeded * .7) and energyStorage > (energyNeeded * .7 ) ) or bypasseco then
-                    if bypasseco then
-                        --LOG('Low Triggered bypasseco')
-                    else
-                        --LOG('* AI-Swarm: low_trigger_good = true')
-                    end
-                --LOG('* AI-Swarm: low_trigger_good = true')
-            else
-                --LOG(aiBrain.Nickname.. " " ..repr(unit:GetBlueprint().Description.. " " ..unit.Sync.id.. " Efficiency FAILS and unit was " ..repr(unit:GetBlueprint().Description)))
+            if EntityCategoryContains( EXTRACTORALL, unit) and not ExtractorClosestSwarm(aiBrain, unit, unitBp) then
+                --LOG('This is not the Closest Extractor ' .. ' ' ..repr(unit:GetBlueprint().Description))
                 SWARMWAIT(10)
                 continue
             end
 
-            if (massEfficiency <= upgradeSpec.MassHighTrigger and energyEfficiency <= upgradeSpec.EnergyHighTrigger) then
-                --LOG('* AI-Swarm: hi_trigger_good = true')
-            else
-                --LOG(aiBrain.Nickname.. " " ..repr(unit:GetBlueprint().Description.. " " ..unit.Sync.id.. " High Trigger FAILS "))
-                continue
-            end
-
-            if ( massTrend >= massTrendNeeded and energyTrend >= energyTrendNeeded and energyTrend >= energyMaintenance )
-				or ( massStorage >= (massNeeded * .7) and energyStorage > (energyNeeded * .7) ) or bypasseco then
-				-- we need to have 15% of the resources stored -- some things like MEX can bypass this last check
-				if (massStorage > ( massNeeded * .15 * upgradeSpec.MassLowTrigger) and energyStorage > ( energyNeeded * .15 * upgradeSpec.EnergyLowTrigger)) or bypasseco then
-
-                    if aiBrain.UpgradeIssued < aiBrain.UpgradeIssuedLimit then
-
-						if not unit.Dead then
-
-                            upgradeIssued = true
-                            --LOG(aiBrain.Nickname.. " " ..repr(unit:GetBlueprint().Description.. " " ..unit.Sync.id.. " Upgrading to " ..repr(upgradebp.Description)))
-                            IssueUpgrade({unit}, upgradeID)
-
-                            -- if upgrade issued and not completely full --
-                            if massStorageRatio < 1 or energyStorageRatio < 1 then
-                                ForkThread(StructureUpgradeDelaySwarm, aiBrain, aiBrain.UpgradeIssuedPeriod)  -- delay the next upgrade by the full amount
-                            else
-                                ForkThread(StructureUpgradeDelaySwarm, aiBrain, aiBrain.UpgradeIssuedPeriod * .5)     -- otherwise halve the delay period
-                            end
-
-                            while (not unit.Dead) and (not unit.UnitBeingBuilt.Blueprint.BlueprintId == upgradeID) do
-                                SWARMWAIT(50)
-                            end
-                        end
-
-                        if unit.Dead then
-                            --LOG("*AI DEBUG "..aiBrain.Nickname.." STRUCTUREUpgrade "..unit.Sync.id.." "..unit:GetBlueprint().Description.." to "..upgradeID.." failed.  Dead is "..repr(unit.Dead))
-                            upgradeIssued = false
-                        end
-
-                        if upgradeIssued then
-                            SWARMWAIT(10)
-                            continue
-                        end
-                    else
-                        LOG(aiBrain.Nickname.. " Could not do an upgrade because the UpgradeIssuedLimit was exceeded " .. repr(aiBrain.UpgradeIssued) .. " and UpgradedIsssuedLimit was actually " .. repr(aiBrain.UpgradeIssuedLimit))
+            if EntityCategoryContains( EXTRACTORALL, unit) then
+                
+                if (not unit.MAINBASE) or (unit.MAINBASE and not bypasseco and GetEconomyStored( aiBrain, 'MASS') < (massNeeded * 0.5)) then
+                --LOG('Mainbase Unit is ' .. ' ' ..repr(unit:GetBlueprint().Description))
+                    if HaveUnitRatio( aiBrain, 1.6, categories.MASSEXTRACTION * categories.TECH1, '>=', categories.MASSEXTRACTION * categories.TECH2 ) and unitTech == 'TECH2' and unitType == 'MASSEXTRACTION' then
+                        --LOG('Too few tech2 extractors to go tech3')
+                        ecoStartTime = ecoStartTime + upgradeSpec.UpgradeCheckWait
+                        SWARMWAIT(10)
+                        continue
                     end
                 end
-            else
-                if not ( massTrend >= massTrendNeeded ) then
-                    --LOG(aiBrain.Nickname.." STRUCTUREUpgrade "..unit.Sync.id.." "..unit:GetBlueprint().Description.." FAILS MASS Trend trigger "..massTrend.." needed "..massTrendNeeded)
+            end
+
+            --LOG('Current Upgrade Limit is :'..upgradeNumLimit)
+            --LOG('Upgrade Issued '..aiBrain.UpgradeIssued..' Upgrade Issued Limit '..aiBrain.UpgradeIssuedLimit)
+            if aiBrain.UpgradeIssued < aiBrain.UpgradeIssuedLimit then
+                --LOG('* AI-Swarm:'..aiBrain.Nickname)
+                --LOG('* AI-Swarm: UpgradeIssues and UpgradeIssuedLimit are set')
+                massStorage = GetEconomyStored( aiBrain, 'MASS')
+                --LOG('* AI-Swarm: massStorage'..massStorage)
+                energyStorage = GetEconomyStored( aiBrain, 'ENERGY')
+                --LOG('* AI-Swarm: energyStorage'..energyStorage)
+                massStorageRatio = GetEconomyStoredRatio(aiBrain, 'MASS')
+                --LOG('* AI-Swarm: massStorageRatio'..massStorageRatio)
+                energyStorageRatio = GetEconomyStoredRatio(aiBrain, 'ENERGY')
+                --LOG('* AI-Swarm: energyStorageRatio'..energyStorageRatio)
+                massIncome = GetEconomyIncome(aiBrain, 'MASS')
+                --LOG('* AI-Swarm: massIncome'..massIncome)
+                massRequested = GetEconomyRequested(aiBrain, 'MASS')
+                --LOG('* AI-Swarm: massRequested'..massRequested)
+                energyIncome = GetEconomyIncome(aiBrain, 'ENERGY')
+                --LOG('* AI-Swarm: energyIncome'..energyIncome)
+                energyRequested = GetEconomyRequested(aiBrain, 'ENERGY')
+                --LOG('* AI-Swarm: energyRequested'..energyRequested)
+                massTrend = aiBrain.EconomyOverTimeCurrent.MassTrendOverTime
+                --LOG('* AI-Swarm: massTrend'..massTrend)
+                energyTrend = aiBrain.EconomyOverTimeCurrent.EnergyTrendOverTime
+                --LOG('* AI-Swarm: energyTrend'..energyTrend)
+                --massEfficiency = math.min(massIncome / massRequested, 2)
+                --LOG('* AI-Swarm: massEfficiency'..massEfficiency)
+                --energyEfficiency = math.min(energyIncome / energyRequested, 2)
+                --LOG('* AI-Swarm: energyEfficiency'..energyEfficiency)
+
+                if (aiBrain.EconomyOverTimeCurrent.MassEfficiencyOverTime >= upgradeSpec.MassLowTrigger and aiBrain.EconomyOverTimeCurrent.EnergyEfficiencyOverTime >= upgradeSpec.EnergyLowTrigger)
+                    or ((massStorageRatio > .60 and energyStorageRatio > .40))
+                    or (massStorage > (massNeeded * .7) and energyStorage > (energyNeeded * .7 ) ) or bypasseco then
+                        if bypasseco then
+                            --LOG('Low Triggered bypasseco')
+                        else
+                            --LOG('* AI-Swarm: low_trigger_good = true')
+                        end
+                    --LOG('* AI-Swarm: low_trigger_good = true')
+                else
+                    --LOG(aiBrain.Nickname.. " " ..repr(unit:GetBlueprint().Description.. " " ..unit.Sync.id.. " Efficiency FAILS and unit was " ..repr(unit:GetBlueprint().Description)))
+                    SWARMWAIT(10)
+                    continue
                 end
-                if not ( energyTrend >= energyTrendNeeded ) then
-                    --LOG(aiBrain.Nickname.." STRUCTUREUpgrade "..unit.Sync.id.." "..unit:GetBlueprint().Description.." FAILS ENER Trend trigger "..energyTrend.." needed "..energyTrendNeeded)
+
+                if (massEfficiency <= upgradeSpec.MassHighTrigger and energyEfficiency <= upgradeSpec.EnergyHighTrigger) then
+                    --LOG('* AI-Swarm: hi_trigger_good = true')
+                else
+                    --LOG(aiBrain.Nickname.. " " ..repr(unit:GetBlueprint().Description.. " " ..unit.Sync.id.. " High Trigger FAILS "))
+                    continue
                 end
-                if not (energyTrend >= energyMaintenance) then
-                    --LOG(aiBrain.Nickname.." STRUCTUREUpgrade "..unit.Sync.id.." "..unit:GetBlueprint().Description.." FAILS Maintenance trigger "..energyTrend.." "..energyMaintenance)  
-                end
-                if not ( massStorage >= (massNeeded * .8)) then
-                    --LOG(aiBrain.Nickname.." STRUCTUREUpgrade "..unit.Sync.id.." "..unit:GetBlueprint().Description.." FAILS MASS storage trigger "..massStorage.." needed "..(massNeeded*.8) )
-                end
-                if not (energyStorage > (energyNeeded * .4)) then
-                    --LOG(aiBrain.Nickname.." STRUCTUREUpgrade "..unit.Sync.id.." "..unit:GetBlueprint().Description.." FAILS ENER storage trigger "..energyStorage.." needed "..(energyNeeded*.4) )
+
+                if ( massTrend >= massTrendNeeded and energyTrend >= energyTrendNeeded and energyTrend >= energyMaintenance )
+                    or ( massStorage >= (massNeeded * .7) and energyStorage > (energyNeeded * .7) ) or bypasseco then
+                    -- we need to have 15% of the resources stored -- some things like MEX can bypass this last check
+                    if (massStorage > ( massNeeded * .15 * upgradeSpec.MassLowTrigger) and energyStorage > ( energyNeeded * .15 * upgradeSpec.EnergyLowTrigger)) or bypasseco then
+
+                        if aiBrain.UpgradeIssued < aiBrain.UpgradeIssuedLimit then
+
+                            if not unit.Dead then
+
+                                upgradeIssued = true
+                                --LOG(aiBrain.Nickname.. " " ..repr(unit:GetBlueprint().Description.. " " ..unit.Sync.id.. " Upgrading to " ..repr(upgradebp.Description)))
+                                IssueUpgrade({unit}, upgradeID)
+
+                                -- if upgrade issued and not completely full --
+                                if massStorageRatio < 1 or energyStorageRatio < 1 then
+                                    ForkThread(StructureUpgradeDelaySwarm, aiBrain, aiBrain.UpgradeIssuedPeriod)  -- delay the next upgrade by the full amount
+                                else
+                                    ForkThread(StructureUpgradeDelaySwarm, aiBrain, aiBrain.UpgradeIssuedPeriod * .5)     -- otherwise halve the delay period
+                                end
+
+                                while (not unit.Dead) and (not unit.UnitBeingBuilt.Blueprint.BlueprintId == upgradeID) do
+                                    SWARMWAIT(50)
+                                end
+                            end
+
+                            if unit.Dead then
+                                --LOG("*AI DEBUG "..aiBrain.Nickname.." STRUCTUREUpgrade "..unit.Sync.id.." "..unit:GetBlueprint().Description.." to "..upgradeID.." failed.  Dead is "..repr(unit.Dead))
+                                upgradeIssued = false
+                            end
+
+                            if upgradeIssued then
+                                SWARMWAIT(10)
+                                continue
+                            end
+                        else
+                            LOG(aiBrain.Nickname.. " Could not do an upgrade because the UpgradeIssuedLimit was exceeded " .. repr(aiBrain.UpgradeIssued) .. " and UpgradedIsssuedLimit was actually " .. repr(aiBrain.UpgradeIssuedLimit))
+                        end
+                    end
+                else
+                    if not ( massTrend >= massTrendNeeded ) then
+                        --LOG(aiBrain.Nickname.." STRUCTUREUpgrade "..unit.Sync.id.." "..unit:GetBlueprint().Description.." FAILS MASS Trend trigger "..massTrend.." needed "..massTrendNeeded)
+                    end
+                    if not ( energyTrend >= energyTrendNeeded ) then
+                        --LOG(aiBrain.Nickname.." STRUCTUREUpgrade "..unit.Sync.id.." "..unit:GetBlueprint().Description.." FAILS ENER Trend trigger "..energyTrend.." needed "..energyTrendNeeded)
+                    end
+                    if not (energyTrend >= energyMaintenance) then
+                        --LOG(aiBrain.Nickname.." STRUCTUREUpgrade "..unit.Sync.id.." "..unit:GetBlueprint().Description.." FAILS Maintenance trigger "..energyTrend.." "..energyMaintenance)  
+                    end
+                    if not ( massStorage >= (massNeeded * .8)) then
+                        --LOG(aiBrain.Nickname.." STRUCTUREUpgrade "..unit.Sync.id.." "..unit:GetBlueprint().Description.." FAILS MASS storage trigger "..massStorage.." needed "..(massNeeded*.8) )
+                    end
+                    if not (energyStorage > (energyNeeded * .4)) then
+                        --LOG(aiBrain.Nickname.." STRUCTUREUpgrade "..unit.Sync.id.." "..unit:GetBlueprint().Description.." FAILS ENER storage trigger "..energyStorage.." needed "..(energyNeeded*.4) )
+                    end
                 end
             end
         end
@@ -572,6 +583,7 @@ function ExtractorClosestSwarm(aiBrain, unit, unitBp)
     local BasePosition = aiBrain.BuilderManagers['MAIN'].Position
     local DistanceToBase = nil
     local LowestDistanceToBase = nil
+    local lowestUnitPos
     local UnitPos
 
     if unitType == 'MASSEXTRACTION' and unitTech == 'TECH1' then
